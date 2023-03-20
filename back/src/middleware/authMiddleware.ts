@@ -12,7 +12,7 @@ const authMiddleware = async (ctx: Koa.Context, next: Koa.Next) => {
         const decodedToken = jwt.verify(token, process.env.JWT_KEY as Secret);
         ctx.state.user = decodedToken;
       } catch (error) {
-        console.error('Invalid token', error);
+        console.error('Invalid token', error); // TODO Quitar en producción
         ctx.throw(401, 'Invalid token');
       }
     }
