@@ -1,6 +1,6 @@
 import { InputHTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { dimensions } from '../../theme'
+import { dimensions } from '../../styles'
 
 type TInputText = InputHTMLAttributes<HTMLInputElement> & {
   error?: boolean | string

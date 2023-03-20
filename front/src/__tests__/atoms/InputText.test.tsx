@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { InputText } from '../../components/atoms'
-import { dimensions } from '../../theme'
+import { dimensions } from '../../styles'
 
 describe('InputText', () => {
   beforeEach(() => {

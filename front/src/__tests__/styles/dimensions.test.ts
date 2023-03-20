@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-unused-vars */
 import { describe, it, expect } from 'vitest'
-import { dimensions } from '../../theme'
+import { dimensions } from '../../styles'
 
 describe('dimensions', () => {
   it('should have spacing values that are strings and containing "rem"', () => {
