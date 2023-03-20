@@ -1,3 +1,3 @@
 import { FC } from 'react'
 
-export const Home: FC = () => <div>Home</div>
+export const Home: FC = () => <div>home</div>

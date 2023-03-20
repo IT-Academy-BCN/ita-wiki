@@ -1,5 +1,4 @@
-import { colors } from './colors'
-import { dimensions } from './dimensions'
-import { font } from './font'
+import colors from './colors'
+import dimensions from './dimensions'
 
-export { colors, dimensions, font }
+export { colors, dimensions }

@@ -1,9 +1,9 @@
-export const colors = {
+const colors = {
   primary: '#B91879',
   secondary: '#F9BB47',
   primaryDark: '#811155',
   info: '#2F80ED',
-  success: '#27AE60',
+  succes: '#27AE60',
   warning: '#E2AA3B',
   error: '#EB5757',
   black: {
@@ -20,3 +20,5 @@ export const colors = {
   },
   white: '#FFFFFF',
 }
+
+export default colors
