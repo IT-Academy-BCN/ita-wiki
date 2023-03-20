@@ -1,3 +1,4 @@
+import InputText from './InputText'
 import Text from './Text'
 
-export { Text }
+export { InputText, Text }
