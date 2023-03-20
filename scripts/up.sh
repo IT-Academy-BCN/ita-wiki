@@ -18,3 +18,5 @@ launchPostgres() {
     timeout 90s "until docker exec $DB_NAME pg_isready ; do sleep 3 ; done"
 }
 
+
+launchPostgres
