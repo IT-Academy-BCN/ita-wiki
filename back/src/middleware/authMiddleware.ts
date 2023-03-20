@@ -1,6 +1,3 @@
-// Create a middleware to check for cookies and that the token is valid.
-// Pass it to the KOA context
-// Use AsyncLocalStorage from Node.js to store it in the request session
 import Koa from 'koa';
 import { AsyncLocalStorage } from 'async_hooks';
 import jwt, { Secret } from 'jsonwebtoken';
