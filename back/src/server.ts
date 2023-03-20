@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-d
 import Koa from 'koa'
 import cors from '@koa/cors'
 import helmet from 'koa-helmet'
-import koaBody, { HttpMethodEnum } from 'koa-body'
+import { HttpMethodEnum, koaBody } from 'koa-body'
 import { appConfig } from './config/config'
 import { errorMiddleware } from './middleware'
 
