@@ -2,6 +2,9 @@
   "name": "front",
   "private": true,
   "version": "0.0.0",
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "type": "module",
   "scripts": {
     "dev": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm src/server.ts",
@@ -34,6 +37,7 @@
     "nodemon": "2.0.21",
     "prettier": "2.8.4",
     "supertest": "6.3.3",
+    "tsx": "^3.12.6",
     "typescript": "5.0.2",
     "vitest": "0.29.7"
   },
@@ -48,6 +52,7 @@
     "koa-body": "6.0.1",
     "koa-helmet": "7.0.1",
     "prisma": "4.11.0",
+    "ts-node": "^10.9.1",
     "zod": "3.21.4"
   }
 }
