@@ -1,4 +1,4 @@
-const dimensions = {
+export const dimensions = {
   spacing: {
     none: '0rem',
     xxxs: '0.5rem',
@@ -15,5 +15,3 @@ const dimensions = {
     base: '0.625rem',
   },
 }
-
-export default dimensions

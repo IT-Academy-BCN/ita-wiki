@@ -1,40 +1,50 @@
 import { InputHTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { dimensions } from '../../styles'
+import { colors, dimensions } from '../../styles'
 
-type TInputText = InputHTMLAttributes<HTMLInputElement> & {
+type TInputTextStyled = {
   error?: boolean | string
   margin?: string
   padding?: string
   borderRadius?: string
 }
 
-const InputTextSyled = styled.input<TInputText>`
+const InputTextSyled = styled.input<TInputTextStyled>`
   width: ${({ width }) => width || '100%'};
   height: ${({ height }) => height || '3.8rem'};
   margin: ${({ margin }) => margin || dimensions.spacing.lg};
   padding: ${({ padding }) => padding || dimensions.spacing.md};
   border-radius: ${({ borderRadius }) =>
     borderRadius || dimensions.borderRadius.base};
-  border: ${dimensions.spacing.none};
+  border: none;
 
-  &hover {
-    border: 1px solid rgb(150, 150, 150);
+  &:hover {
+    border: 1px solid ${colors.gray.gray4};
   }
 
-  &.error {
-    border: 1px solid rgb(235, 87, 87);
+  &&[data-error='true'] {
+    border: 1px solid ${colors.error};
   }
 
   &:focus {
     outline: 0 none;
     border: 1px solid
-      ${({ error }) => (error ? 'rgb(235, 87, 87)' : 'rgb(150, 150, 150)')};
+      ${({ error }) => (error ? colors.error : colors.gray.gray4)};
   }
 `
 
+type TInputText = InputHTMLAttributes<HTMLInputElement> & {
+  error?: boolean | string
+}
+
 function InputText({ error, ...rest }: TInputText) {
-  return <InputTextSyled type="text" error={error} {...rest} />
+  return (
+    <InputTextSyled
+      type="text"
+      data-error={error ? 'true' : undefined}
+      {...rest}
+    />
+  )
 }
 
 export default styled(InputText)``
