@@ -8,7 +8,7 @@ const verifyToken = (token: string) => {
   return decodedToken
 }
 
-const authMiddleware = async (ctx: Koa.Context, next: Koa.Next) => {
+export const authMiddleware = async (ctx: Koa.Context, next: Koa.Next) => {
   const token = ctx.cookies.get('token')
   if (!token) throw new UnauthorizedError()
 
@@ -21,5 +21,3 @@ const authMiddleware = async (ctx: Koa.Context, next: Koa.Next) => {
     throw new Error(`${error}`)
   }
 }
-
-export default authMiddleware
