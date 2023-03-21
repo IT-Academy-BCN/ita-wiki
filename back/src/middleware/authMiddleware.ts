@@ -1,23 +1,25 @@
-import Koa from 'koa';
-import { AsyncLocalStorage } from 'async_hooks';
-import jwt, { Secret } from 'jsonwebtoken';
+import Koa from 'koa'
+import jwt, { Secret } from 'jsonwebtoken'
+import { jwtLocalStorage } from '../helpers'
+import { UnauthorizedError } from '../helpers/errors'
 
-const asyncLocalStorage = new AsyncLocalStorage();
+const verifyToken = (token: string) => {
+  const decodedToken = jwt.verify(token, process.env.JWT_KEY as Secret)
+  return decodedToken
+}
 
 const authMiddleware = async (ctx: Koa.Context, next: Koa.Next) => {
-  asyncLocalStorage.run(ctx, async () => {
-    const token = ctx.cookies.get('token');
-    if (token) {
-      try {
-        const decodedToken = jwt.verify(token, process.env.JWT_KEY as Secret);
-        ctx.state.user = decodedToken;
-      } catch (error) {
-        console.error('Invalid token', error); // TODO Quitar en producción
-        ctx.throw(401, 'Invalid token');
-      }
-    }
-    await next();
-  });
-};
+  const token = ctx.cookies.get('token')
+  if (!token) throw new UnauthorizedError()
 
-export default authMiddleware;
+  try {
+    const decodedToken = verifyToken(token)
+    ctx.jwt.token = decodedToken
+    jwtLocalStorage.enterWith(ctx.jwt)
+    await next()
+  } catch (error) {
+    throw new Error(`${error}`)
+  }
+}
+
+export default authMiddleware
