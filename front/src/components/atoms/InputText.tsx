@@ -34,10 +34,10 @@ const InputTextSyled = styled.input<TInputTextStyled>`
 `
 
 type TInputText = InputHTMLAttributes<HTMLInputElement> & {
-  error?: boolean | string
+  error: boolean | string
 }
 
-function InputText({ error, ...rest }: TInputText) {
+function InputText({ error = 'false', ...rest }: TInputText) {
   return (
     <InputTextSyled
       type="text"

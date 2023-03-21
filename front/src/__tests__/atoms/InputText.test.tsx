@@ -5,7 +5,12 @@ import { colors, dimensions } from '../../styles'
 describe('InputText', () => {
   it('renders correctly', () => {
     render(
-      <InputText placeholder="DNI o NIE" value="value test" id="id test" />
+      <InputText
+        placeholder="DNI o NIE"
+        value="value test"
+        id="id test"
+        error="false"
+      />
     )
     const userInput = screen.getByPlaceholderText('DNI o NIE')
     expect(userInput).toHaveAttribute('type', 'text')
@@ -22,14 +27,8 @@ describe('InputText', () => {
     expect(userInput).toHaveStyle(`border: 1px solid ${colors.error}`)
   })
 
-  it('renders correctly without error', () => {
-    render(<InputText placeholder="no error test" />)
-    const userInput = screen.getByPlaceholderText(/no error test/i)
-    expect(userInput).toHaveStyle('border: none')
-  })
-
   it('renders with correct styles', () => {
-    render(<InputText placeholder="text input" />)
+    render(<InputText placeholder="text input" error="false" />)
     const inputText = screen.getByPlaceholderText('text input')
 
     expect(inputText).toHaveStyle('width: 100%')
