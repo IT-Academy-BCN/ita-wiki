@@ -1,13 +1,10 @@
-import Router from '@koa/router';
-import {login, register, demo} from '../controllers/auth.controller';
+import Router from '@koa/router'
+import { login } from '../controllers/auth.controller'
 
 const router = new Router({
-  prefix: '/auth'
-});
+  prefix: '/auth',
+})
 
-router.get('/demo', demo)
+router.post('/v1/login', login)
 
-router.post('/login', login);
-router.post('/register', register);
-
-export default router
+export const authRouter = router.routes()

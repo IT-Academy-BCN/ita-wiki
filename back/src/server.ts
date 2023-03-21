@@ -2,8 +2,8 @@ import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-d
 import Koa from 'koa'
 import cors from '@koa/cors'
 import helmet from 'koa-helmet'
-import router from './routes'
 import { HttpMethodEnum, koaBody } from 'koa-body'
+import * as Routes from './routes'
 import { appConfig } from './config/config'
 import { errorMiddleware } from './middleware'
 
@@ -24,9 +24,12 @@ app.use(
   })
 )
 app.use(errorMiddleware)
-app.use(router.routes())
-app.use(router.allowedMethods())
+
+// Routes
+app.use(Routes.authRouter)
 
 app.listen(appConfig.port, () => {
   console.log(`🚀 Server ready at http://localhost:${appConfig.port}`)
 })
+
+export { app }
