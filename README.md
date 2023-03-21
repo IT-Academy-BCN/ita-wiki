@@ -57,7 +57,7 @@ ITA Wiki is a project built with React.js and Node.js for students at the IT Aca
 Create a settings.json inside the .vscode file with the following content:
 ```
 {
-    "eslint.workingDirectories": ["frontend", "backend"]
+    "eslint.workingDirectories": ["front", "back"]
 }
 ```
 _The code above allows the ESLint VSCode extension to properly find each ESLint project configuration file._
