@@ -1,3 +1,4 @@
+import colors from './colors'
 import font from './font'
 
-export { font }
+export { colors, font }
