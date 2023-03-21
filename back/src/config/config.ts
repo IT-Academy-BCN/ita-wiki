@@ -14,4 +14,8 @@ const dbConfig = {
     'postgres://postgres:postgres@localhost:5432/postgres',
 }
 
-export { appConfig, dbConfig }
+const bcryptConfig = {
+  saltRounds: 10
+}
+
+export { appConfig, dbConfig, bcryptConfig }
