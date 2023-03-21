@@ -10,8 +10,7 @@ class DefaultError extends Error {
 }
 
 class UnauthorizedError extends DefaultError {
-  constructor(message: 'refresh_token' | 'sign_in') {
-    console.log('heeeereeee refresh_token')
+  constructor(message: string = 'Missing token') {
     super(401, `${message}`)
   }
 }
