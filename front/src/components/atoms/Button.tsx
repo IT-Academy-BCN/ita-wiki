@@ -1,22 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/require-default-props */
-import { ButtonHTMLAttributes } from 'react'
+import { ButtonHTMLAttributes, FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions } from '../../styles'
 
-type TButton = ButtonHTMLAttributes<HTMLButtonElement> & {
-  type: string
-  children: React.ReactNode
-  onClick?: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  padding?: string
-  margin?: string
-  backgroundColor?: string
-  color?: string
-  width?: string
-  border?: string
-  backgroundHover?: string
-  backgroundActive?: string
-}
+// Faltan props para el secondary button
+// Faltan para el size
+// Faltan para el disabled
 
 const StyledButton = styled.button<TButton>`
   display: flex;
@@ -27,8 +17,8 @@ const StyledButton = styled.button<TButton>`
   background-color: ${colors.primary};
   border-radius: ${dimensions.borderRadius.base};
   color: ${colors.white};
-  width: 320px;
-  border: 'none';
+  width: 100%;
+  border: none;
   cursor: pointer;
 
   &:hover {
@@ -41,13 +31,12 @@ const StyledButton = styled.button<TButton>`
   }
 `
 
-function Button({ type = 'submit', children, ...rest }: TButton) {
-  // Sustituir el contenido por el componente Text
-  return (
-    <StyledButton type={type} data-testid="button" {...rest}>
-      {children}
-    </StyledButton>
-  )
-}
+type TButton = ButtonHTMLAttributes<HTMLButtonElement>
+
+const Button: FC<TButton> = ({ type = 'submit', children, ...rest }) => (
+  <StyledButton type={type} data-testid="button" {...rest}>
+    {children}
+  </StyledButton>
+)
 
 export default styled(Button)``

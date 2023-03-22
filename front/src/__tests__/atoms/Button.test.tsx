@@ -3,24 +3,8 @@ import { dimensions, colors } from '../../styles'
 import { Button } from '../../components/atoms'
 
 describe('Button', () => {
-  beforeEach(() => {
-    render(
-      <Button
-        data-testid="button"
-        type="submit"
-        padding={dimensions.spacing.base}
-        margin={dimensions.spacing.xxs}
-        backgroundColor={colors.primary}
-        color={colors.white}
-        width="320px"
-        border="none"
-      >
-        Test text
-      </Button>
-    )
-  })
-
-  it('Renders with correct styles', () => {
+  it('renders correctly', () => {
+    render(<Button data-testid="button">Test text</Button>)
     const button = screen.getByTestId('button')
 
     expect(button).toBeInTheDocument()
@@ -29,11 +13,14 @@ describe('Button', () => {
     expect(button).toHaveStyle(`margin: ${dimensions.spacing.xxs}`)
     expect(button).toHaveStyle(`background-color: ${colors.primary}`)
     expect(button).toHaveStyle(`color: ${colors.white}`)
-    expect(button).toHaveStyle('width: 320px')
     expect(button).toHaveStyle('cursor: pointer')
   })
 
-  it('has onClick defined', () => {
+  it('renders correctly with secondary', () => {
+    render(<Button data-testid="button">Test text</Button>)
+    const button = screen.getByTestId('button')
+  })
+  it('allows to click', () => {
     const button = screen.getByTestId('button')
     fireEvent.click(button)
   })
