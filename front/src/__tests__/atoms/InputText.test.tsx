@@ -14,7 +14,7 @@ describe('InputText', () => {
     )
     const userInput = screen.getByPlaceholderText('DNI o NIE')
     expect(userInput).toHaveAttribute('type', 'text')
-    expect(screen.getByDisplayValue('value test')).toBeInTheDocument()
+    expect(userInput).toBeInTheDocument()
     expect(screen.getByDisplayValue('value test')).toHaveAttribute(
       'id',
       'id test'

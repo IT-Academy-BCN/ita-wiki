@@ -17,7 +17,8 @@
     "no-unused-vars": 2,
     "import/prefer-default-export": 0,
     "react/function-component-definition": 0,
-    "react/jsx-props-no-spreading": ["off"]
+    "react/jsx-props-no-spreading": ["off"],
+    "react/require-default-props": 0
   },
   "ignorePatterns": [
     "node_modules",
