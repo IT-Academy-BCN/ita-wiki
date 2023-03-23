@@ -1,4 +1,4 @@
-import { ValidationMessage } from './components/atoms/ValidationMessage'
+import { ValidationMessage } from './components/atoms'
 
 function App() {
   return (
