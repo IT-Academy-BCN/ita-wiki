@@ -1,7 +1,6 @@
 import { HTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { colors } from '../../styles'
-import font from '../../styles/font'
+import { colors, font } from '../../styles'
 
 type TText = HTMLAttributes<HTMLParagraphElement> & {
   fontSize?: string
@@ -11,7 +10,7 @@ type TText = HTMLAttributes<HTMLParagraphElement> & {
 
 const Text = styled.p<TText>`
   color: ${({ color }) => color || colors.black.black2};
-  font-size: ${({ fontSize }) => fontSize || font.normal};
+  font-size: ${({ fontSize }) => fontSize || font.base};
   font-weight: ${({ fontWeight }) => fontWeight || 'normal'};
   font-family: ${({ fontFamily }) => fontFamily || font.fontFamily};
 `
