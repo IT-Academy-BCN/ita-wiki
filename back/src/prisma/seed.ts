@@ -11,8 +11,9 @@ async function main() {
     dni: '45632452a',
     status: 'ACTIVE',
   }
+  const UserSeedSchema = UserSchema.omit({ id: true, createdAt: true, updatedAt: true });
 
-  const validatedData = UserSchema.parse(data)
+  const validatedData = UserSeedSchema.parse(data)
 
   const user = await prisma.user.create({
     data: validatedData,
