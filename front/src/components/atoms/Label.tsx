@@ -5,12 +5,13 @@ import Text from './Text'
 
 const LabelStyled = styled(Text)`
   color: ${colors.gray.gray2};
-  font-size: ${font.large};
+  font-size: ${font.base};
   font-weight: 700;
 `
 
-type TLabel = LabelHTMLAttributes<HTMLLabelElement> & {
+type TLabel = Omit<LabelHTMLAttributes<HTMLLabelElement>, 'htmlFor'> & {
   text: string
+  htmlFor: string
 }
 
 function Label({ htmlFor, text = '' }: TLabel) {
