@@ -1,7 +1,12 @@
 export const colors = {
   primary: '#B91879',
-  secondary: '#F9BB47',
   primaryDark: '#811155',
+  primaryLight: '#CE5DA1',
+  secondary: '#F9BB47',
+  secondaryDark: '#AE8332',
+  secondaryLight: '#FBCF7E',
+  outlineHover: '#F1CCE5',
+  outlineActive: '#E399CB',
   info: '#2F80ED',
   success: '#27AE60',
   warning: '#E2AA3B',
