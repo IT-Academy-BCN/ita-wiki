@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'modern-normalize/modern-normalize.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import paths from './constants/paths'
+import { paths } from './constants'
 import { Home, Login, Register, ErrorPage } from './pages'
 
 const router = createBrowserRouter([

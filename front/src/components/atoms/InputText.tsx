@@ -19,10 +19,11 @@ const InputTextSyled = styled.input<TInputTextStyled>`
 
 type TInputText = InputHTMLAttributes<HTMLInputElement> & {
   error?: boolean | string
+  type?: 'text' | 'password' | 'email'
 }
 
-function InputText({ error = false, ...rest }: TInputText) {
-  return <InputTextSyled type="text" error={!!error} {...rest} />
+function InputText({ error = false, type = 'text', ...rest }: TInputText) {
+  return <InputTextSyled type={type} error={!!error} {...rest} />
 }
 
 export default styled(InputText)``
