@@ -1,13 +1,11 @@
-import { Title } from './components/atoms'
+import { ValidationMessage } from './components/atoms'
 
 function App() {
   return (
     <div className="App">
-      <Title as="h2" fontWeight="bold">
-        Hola
-      </Title>
+      <ValidationMessage text="Success" color="success" />
+      <ValidationMessage />
     </div>
   )
 }
-
 export default App
