@@ -36,6 +36,12 @@ components:
         type: string
         example: "1212121"
       required: true
+    User:
+      in: query
+      name: user
+      schema:
+        type: object
+      required: true
 paths:
   "/demoRoute/users/{id}":
     get:
@@ -54,3 +60,34 @@ paths:
                 $ref: "#/components/schemas/DemoRouteUser"
         "204":
           description: No content - successful operation
+  /v1/auth/register:
+    post:
+      description: Registers a new user and returns an auth JWT as a cookie session
+      summary: Register a user
+      parameters:
+        - $ref: "#/components/parameters/User"
+      responses:
+        "200":
+          description: The user has been authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: OK
+                required:
+                  - message
+        "400":
+          description: DNI already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: DNI already exists
+                required:
+                  - message
