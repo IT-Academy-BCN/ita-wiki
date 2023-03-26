@@ -3,7 +3,7 @@ import { FlexBox } from '../../styles'
 
 describe('Flexbox', () => {
   it('renders correctly', () => {
-    render(<FlexBox direction="center" />)
-    expect(screen.getByText('center')).toBeInTheDocument()
+    render(<FlexBox>test</FlexBox>)
+    expect(screen.getByText('test')).toBeInTheDocument()
   })
 })
