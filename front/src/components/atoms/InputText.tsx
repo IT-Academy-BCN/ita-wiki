@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from 'react'
+import React, { InputHTMLAttributes } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions } from '../../styles'
 
@@ -6,7 +6,7 @@ type TInputTextStyled = {
   error: boolean
 }
 
-const InputTextSyled = styled.input<TInputTextStyled>`
+const InputTextStyled = styled.input<TInputTextStyled>`
   width: '100%';
   padding: ${dimensions.spacing.sm};
   border-radius: ${dimensions.borderRadius.base};
@@ -22,8 +22,10 @@ type TInputText = InputHTMLAttributes<HTMLInputElement> & {
   type?: 'text' | 'password' | 'email'
 }
 
-function InputText({ error = false, type = 'text', ...rest }: TInputText) {
-  return <InputTextSyled type={type} error={!!error} {...rest} />
-}
+const InputText = React.forwardRef<HTMLInputElement, TInputText>(
+  ({ error = false, type = 'text', ...rest }, ref) => (
+    <InputTextStyled type={type} error={!!error} ref={ref} {...rest} />
+  )
+)
 
 export default styled(InputText)``
