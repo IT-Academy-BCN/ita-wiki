@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { hashPassword, checkPassword } from '../helpers/passwordHash'
+import { hashPassword, checkPassword } from '../src/helpers/passwordHash'
 
 const prisma = new PrismaClient()
 

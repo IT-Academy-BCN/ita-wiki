@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { UserSchema } from '../schemas/UserSchema';
+import { UserSchema } from '../src/schemas/UserSchema'
 
 const prisma = new PrismaClient()
 
@@ -11,7 +11,11 @@ async function main() {
     dni: '45632452a',
     status: 'ACTIVE',
   }
-  const UserSeedSchema = UserSchema.omit({ id: true, createdAt: true, updatedAt: true });
+  const UserSeedSchema = UserSchema.omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+  })
 
   const validatedData = UserSeedSchema.parse(data)
 

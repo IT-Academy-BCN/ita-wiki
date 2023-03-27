@@ -21,7 +21,7 @@ export const loginController = async (ctx: Koa.Context) => {
   const isPasswordValid = await checkPassword(password, user.password)
 
   if (!isPasswordValid) {
-    throw ValidationError
+    throw new ValidationError('Invalid password')
   }
 
   const token = jwt.sign(
