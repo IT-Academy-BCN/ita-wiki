@@ -8,10 +8,11 @@ const prisma = new PrismaClient()
 
 export const loginController = async (ctx: Koa.Context) => {
   const { dni, password } = ctx.request.body
+  const dniUpperCase = dni.toUpperCase()
 
-  const user = await prisma.user.findFirst({
-    where: { dni: dni as string },
-    select: { id: true, password: true },
+  const user = await prisma.user.findUnique({
+    where: { dni: dniUpperCase as string },
+    select: { id: true, password: true }
   })
 
   if (!user) {
@@ -24,11 +25,9 @@ export const loginController = async (ctx: Koa.Context) => {
     throw new ValidationError('Invalid password')
   }
 
-  const token = jwt.sign(
-    { userId: user.id },
-    process.env.JWT_SECRET as Secret,
-    { expiresIn: '1d' }
-  )
+  const token = jwt.sign({ userId: user.id }, process.env.JWT_KEY as Secret, {
+    expiresIn: '1d'
+  })
 
   ctx.cookies.set('token', token, { httpOnly: true })
 

@@ -1,8 +1,0 @@
-POST http://localhost:8999/api/v1/auth/login
-Accept: application/json
-Content-Type: application/json
-
-{
-  "dni": "45632452a",
-  "password": "password"
-}

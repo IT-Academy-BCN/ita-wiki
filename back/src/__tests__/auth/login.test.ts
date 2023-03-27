@@ -1,22 +1,20 @@
-import { IncomingMessage, Server, ServerResponse } from 'http'
+/* eslint-disable no-promise-executor-return */
 import supertest from 'supertest'
-import { afterEach, beforeEach, expect, test } from 'vitest'
-import { app } from '../../server'
+import { expect, test } from 'vitest'
+import { server } from '../setup'
 
-let server: Server<typeof IncomingMessage, typeof ServerResponse>
-
-beforeEach(() => {
-  server = app.listen()
-})
-
-afterEach(() => {
-  server.close()
+test('/api/v1/auth/login', async () => {
+  const response = await supertest(server).post('/api/v1/auth/login').send({
+    dni: '45632452a',
+    password: 'password'
+  })
+  expect(response.status).toBe(204)
 })
 
 test('/api/v1/auth/login', async () => {
-  const response = await supertest(server).post('api/v1/auth/login').send({
+  const response = await supertest(server).post('/api/v1/auth/login').send({
     dni: '45632452a',
-    pwd: 'password'
+    password: 'wrong password'
   })
-  expect(response.status).toBe(200)
+  expect(response.status).toBe(400)
 })
