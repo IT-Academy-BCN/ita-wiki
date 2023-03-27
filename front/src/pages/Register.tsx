@@ -27,17 +27,16 @@ const Register: FC = () => {
   return (
     <div>
       <Title as="h1">Register 👋</Title>
-
       <div
         style={{
           margin: '10px',
           marginBottom: '70px',
-          border: '1px dotted red',
         }}
       >
         <Title as="h2">DEMO</Title>
         <InputGroup
           value={password}
+          icon="search"
           onChange={(e) => setPassword(e.target.value)}
           id="demo"
           placeholder="escribe algo"
@@ -48,6 +47,9 @@ const Register: FC = () => {
           validationMessage={validationTypeMessage}
         />
       </div>
+      <hr />
+      <hr />
+      <hr />
       <Input placeholder="simple input" onChange={() => console.log('hola')} />
       <div>
         <InputGroup
