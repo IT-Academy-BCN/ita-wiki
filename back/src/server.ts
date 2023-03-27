@@ -10,7 +10,7 @@ import { appConfig } from './config/config'
 import { errorMiddleware } from './middleware'
 import { generateOpenapiFile } from './openapi/generateFile'
 import { openapiFilename } from './openapi/config'
-import { swaggeruiHelmetMiddleware } from './middleware/swaggeruiHelmetMiddleware'
+import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
 import { swaggeruiUrl } from './openapi/config'
 
 
@@ -36,7 +36,7 @@ app.use(errorMiddleware)
 app.use(Routes.authRouter)
 
 // Swagger UI
-app.use(swaggeruiHelmetMiddleware);
+app.use(swaggeruiCSPMiddleware);
 generateOpenapiFile()
 const spec = yamljs.load(openapiFilename)
 app.use(koaSwagger({routePrefix: swaggeruiUrl, swaggerOptions: { spec } }))

@@ -16,3 +16,6 @@ export const DNISchema = z
       validNIEPrefixes.includes(firstLetter)
     )
   })
+  .openapi({
+    type: 'string',
+  })

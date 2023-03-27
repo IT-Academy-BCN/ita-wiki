@@ -9,11 +9,10 @@ registry.registerPath({
     'Registers a new user and returns an auth JWT as a cookie session',
   summary: 'Register a user',
   request: {
-    query: UserSchema,
     body: {
       content: {
         'application/json': {
-          schema: UserSchema,
+          schema: UserSchema.omit({id: true, status:true, createdAt: true, updatedAt:true}),
         },
       },
     },

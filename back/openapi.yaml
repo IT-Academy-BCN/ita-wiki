@@ -13,60 +13,12 @@ paths:
     post:
       description: Registers a new user and returns an auth JWT as a cookie session
       summary: Register a user
-      parameters:
-        - in: query
-          name: id
-          schema:
-            type: string
-          required: true
-        - in: query
-          name: email
-          schema:
-            type: string
-            format: email
-          required: true
-        - in: query
-          name: password
-          schema:
-            type: string
-            minLength: 8
-          required: true
-        - in: query
-          name: name
-          schema:
-            type: string
-          required: false
-        - in: query
-          name: status
-          schema:
-            type: string
-            enum: &a1
-              - ACTIVE
-              - INACTIVE
-          required: true
-        - in: query
-          name: createdAt
-          schema:
-            type: string
-          required: false
-        - in: query
-          name: updatedAt
-          schema:
-            type: string
-          required: false
-        - in: query
-          name: dni
-          schema:
-            type: string
-          required: true
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                id:
-                  type: string
                 email:
                   type: string
                   format: email
@@ -75,20 +27,11 @@ paths:
                   minLength: 8
                 name:
                   type: string
-                status:
-                  type: string
-                  enum: *a1
-                createdAt:
-                  type: string
-                updatedAt:
-                  type: string
                 dni:
                   type: string
               required:
-                - id
                 - email
                 - password
-                - status
                 - dni
       responses:
         "200":
