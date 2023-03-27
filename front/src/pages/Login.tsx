@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
