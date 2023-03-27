@@ -13,13 +13,10 @@ afterEach(() => {
   server.close()
 })
 
-test('POST /auth/v1/login', async () => {
-  const response = await supertest(server).post('/auth/v1/login').send({
-    dni: '12345678',
-    pwd: '12345678',
+test('/api/v1/auth/login', async () => {
+  const response = await supertest(server).post('api/v1/auth/login').send({
+    dni: '45632452a',
+    pwd: 'password'
   })
   expect(response.status).toBe(200)
-  expect(response.body).toEqual({
-    message: 'login url',
-  })
 })

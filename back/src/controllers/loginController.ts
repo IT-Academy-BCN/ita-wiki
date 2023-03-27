@@ -10,7 +10,7 @@ export const loginController = async (ctx: Koa.Context) => {
   try {
     const { dni, password } = ctx.request.body
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.user.findFirst({
       where: { dni },
       select: { id: true, password: true }
     })

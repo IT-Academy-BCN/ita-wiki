@@ -1,17 +1,11 @@
 import Router from '@koa/router'
 import { loginController } from '../controllers'
-import { parse, validate } from '../middleware'
-import { UserLoginSchema } from '../schemas'
+import { validateUserLogin } from '../middleware/loginMiddleware'
 
 const authRouter = new Router()
 
 authRouter.prefix('/api/v1/auth')
 
-authRouter.post(
-  '/login',
-  parse(UserLoginSchema),
-  validate(UserLoginSchema),
-  loginController
-)
+authRouter.post('/login', validateUserLogin, loginController)
 
 export { authRouter }
