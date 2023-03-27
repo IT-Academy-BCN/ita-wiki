@@ -16,7 +16,7 @@
     "prisma:studio": "prisma studio",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:migrate:reset": "prisma migrate reset --force",
-    "test": "vitest",
+    "test": "vitest --threads=false",
     "up": "../scripts/up.sh"
   },
   "devDependencies": {
@@ -36,6 +36,7 @@
     "eslint-config-airbnb-typescript": "17.0.0",
     "eslint-config-prettier": "8.7.0",
     "eslint-plugin-import": "2.27.5",
+    "node-html-parser": "6.1.5",
     "nodemon": "2.0.21",
     "prettier": "2.8.4",
     "supertest": "6.3.3",
