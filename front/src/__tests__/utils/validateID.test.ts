@@ -5,7 +5,7 @@ describe('validateID', () => {
     const result = validateID('12345678Z')
     expect(result).toEqual({
       error: false,
-      message: 'Correct ID',
+      message: 'Correct NIF/NIE',
     })
   })
 
@@ -13,7 +13,7 @@ describe('validateID', () => {
     const result = validateID('12345678z')
     expect(result).toEqual({
       error: false,
-      message: 'Correct ID',
+      message: 'Correct NIF/NIE',
     })
   })
 
@@ -21,7 +21,7 @@ describe('validateID', () => {
     const result = validateID('Y0124165W')
     expect(result).toEqual({
       error: false,
-      message: 'Correct ID',
+      message: 'Correct NIF/NIE',
     })
   })
 
@@ -29,7 +29,7 @@ describe('validateID', () => {
     const result = validateID('y0124165w')
     expect(result).toEqual({
       error: true,
-      message: 'Wrong ID, the letter of the NIF does not correspond',
+      message: 'Wrong NIF/NIE, the letter does not correspond',
     })
   })
 
@@ -37,7 +37,7 @@ describe('validateID', () => {
     const result = validateID('12345678P')
     expect(result).toEqual({
       error: true,
-      message: 'Wrong ID, the letter of the NIF does not correspond',
+      message: 'Wrong NIF/NIE, the letter does not correspond',
     })
   })
 
@@ -45,11 +45,7 @@ describe('validateID', () => {
     const result = validateID('12345678ZZ')
     expect(result).toEqual({
       error: true,
-      message: 'Wrong ID, invalid format',
+      message: 'Wrong NIF/NIE, invalid format',
     })
   })
 })
-
-// validateID('46712246m')
-validateID('Y0124165W')
-// validateID('X0523821gfF')
