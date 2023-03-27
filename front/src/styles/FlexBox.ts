@@ -1,9 +1,15 @@
 import styled from 'styled-components'
 
 type TFlexBox = {
-  direction?: string
-  justify?: string
-  align?: string
+  direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse'
+  justify?:
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly'
+  align?: 'stretch' | 'center' | 'start' | 'end' | 'baseline'
 }
 
 export const FlexBox = styled.div<TFlexBox>`
@@ -12,4 +18,3 @@ export const FlexBox = styled.div<TFlexBox>`
   justify-content: ${({ justify }) => justify || 'center'};
   align-items: ${({ align }) => align || 'center'};
 `
-
