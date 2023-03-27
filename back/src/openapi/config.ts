@@ -12,3 +12,5 @@ export const generatorConfig = {
   },
   servers: [{ url: 'v1' }],
 }
+
+export const swaggeruiUrl = '/api-docs'

@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 import Koa from 'koa'
 import cors from '@koa/cors'
-// import helmet from 'koa-helmet'
+import helmet from 'koa-helmet'
 import { HttpMethodEnum, koaBody } from 'koa-body'
 import yamljs from 'yamljs'
 import { koaSwagger } from 'koa2-swagger-ui'
@@ -10,13 +10,16 @@ import { appConfig } from './config/config'
 import { errorMiddleware } from './middleware'
 import { generateOpenapiFile } from './openapi/generateFile'
 import { openapiFilename } from './openapi/config'
+import { swaggeruiHelmetMiddleware } from './middleware/swaggeruiHelmetMiddleware'
+import { swaggeruiUrl } from './openapi/config'
+
 
 dotenv.config()
 
 const app = new Koa()
 
 app.use(cors())
-// app.use(helmet())  // TODO: HELMET BREAKS SWAGGER-UI RENDER
+app.use(helmet())
 app.use(
   koaBody({
     parsedMethods: [
@@ -33,9 +36,11 @@ app.use(errorMiddleware)
 app.use(Routes.authRouter)
 
 // Swagger UI
+app.use(swaggeruiHelmetMiddleware);
 generateOpenapiFile()
 const spec = yamljs.load(openapiFilename)
-app.use(koaSwagger({ routePrefix: '/api-docs', swaggerOptions: { spec } }))
+app.use(koaSwagger({routePrefix: swaggeruiUrl, swaggerOptions: { spec } }))
+
 
 app.listen(appConfig.port, () => {
   console.log(`🚀 Server ready at http://localhost:${appConfig.port}`)
