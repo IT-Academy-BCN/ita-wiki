@@ -1,3 +1,5 @@
 export { colors } from './colors'
 export { dimensions } from './dimensions'
+export { FlexBox } from './FlexBox'
 export { font } from './font'
+export { responsiveSizes, device } from './mediaQueries'
