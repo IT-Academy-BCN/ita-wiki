@@ -1,2 +1,2 @@
-import './demoRouter'
+// import './demoRouter'
 import './authRouter'

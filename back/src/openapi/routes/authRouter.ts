@@ -1,23 +1,6 @@
-import { registry } from '../registry'
 import { UserSchema } from '../../schemas'
+import { registry } from '../registry'
 import { z } from '../zod'
-
-// BUG: ESTO TENDRÍA QUE FUNCIONAR PERO EL OBJETO ESTÁ VACÍO EN SWAGGER-UI
-const UserParam = registry.registerParameter(
-  'User',
-  UserSchema.omit({
-    id: true,
-    status: true,
-    createdAt: true,
-    updatedAt: true,
-  }).openapi({
-    type: 'object',
-    param: {
-      name: 'user',
-      in: 'query',
-    },
-  })
-)
 
 registry.registerPath({
   method: 'post',
@@ -26,7 +9,14 @@ registry.registerPath({
     'Registers a new user and returns an auth JWT as a cookie session',
   summary: 'Register a user',
   request: {
-    query: UserParam,
+    query: UserSchema,
+    body: {
+      content: {
+        'application/json': {
+          schema: UserSchema,
+        },
+      },
+    },
   },
   responses: {
     200: {

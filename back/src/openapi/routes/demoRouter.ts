@@ -1,12 +1,10 @@
-
 import { registry } from '../registry'
 import { bearerAuth } from '../components/berarerAuth'
 import { z } from '../zod'
 
-
 /*
-* Full example of a JWT protected route that uses Zod schemas to declare request params and response body objects
-*/
+ * Full example of a JWT protected route that uses Zod schemas to declare request params and response body objects
+ */
 
 const UserIdSchema = registry.registerParameter(
   'UserId',
@@ -21,12 +19,8 @@ const UserIdSchema = registry.registerParameter(
 const UserSchema = registry.register(
   'DemoRouteUser',
   z.object({
-    id: z.string().openapi({
-      example: '1212121',
-    }),
-    name: z.string().openapi({
-      example: 'John Doe',
-    }),
+    id: z.string(),
+    name: z.string(),
     age: z.number().openapi({
       example: 42,
     }),

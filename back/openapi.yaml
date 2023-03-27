@@ -6,66 +6,90 @@ servers:
   - url: v1
 openapi: 3.0.0
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-  schemas:
-    DemoRouteUser:
-      type: object
-      properties:
-        id:
-          type: string
-          example: "1212121"
-        name:
-          type: string
-          example: John Doe
-        age:
-          type: number
-          example: 42
-      required:
-        - id
-        - name
-        - age
-  parameters:
-    UserId:
-      in: path
-      name: id
-      schema:
-        type: string
-        example: "1212121"
-      required: true
-    User:
-      in: query
-      name: user
-      schema:
-        type: object
-      required: true
+  schemas: {}
+  parameters: {}
 paths:
-  "/demoRoute/users/{id}":
-    get:
-      description: Get user data by its id
-      summary: Get a single user
-      security:
-        - bearerAuth: []
-      parameters:
-        - $ref: "#/components/parameters/UserId"
-      responses:
-        "200":
-          description: Object with user data.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DemoRouteUser"
-        "204":
-          description: No content - successful operation
   /v1/auth/register:
     post:
       description: Registers a new user and returns an auth JWT as a cookie session
       summary: Register a user
       parameters:
-        - $ref: "#/components/parameters/User"
+        - in: query
+          name: id
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: email
+          schema:
+            type: string
+            format: email
+          required: true
+        - in: query
+          name: password
+          schema:
+            type: string
+            minLength: 8
+          required: true
+        - in: query
+          name: name
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: &a1
+              - ACTIVE
+              - INACTIVE
+          required: true
+        - in: query
+          name: createdAt
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: updatedAt
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: dni
+          schema:
+            type: string
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                name:
+                  type: string
+                status:
+                  type: string
+                  enum: *a1
+                createdAt:
+                  type: string
+                updatedAt:
+                  type: string
+                dni:
+                  type: string
+              required:
+                - id
+                - email
+                - password
+                - status
+                - dni
       responses:
         "200":
           description: The user has been authenticated
