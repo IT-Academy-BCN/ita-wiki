@@ -1,47 +1,57 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import {
   Button,
-  InputText,
+  Input,
   Text,
   Title,
   ValidationMessage,
 } from '../components/atoms'
+import { UserLoginSchema } from '../../../back/src/schemas/UserLoginSchema'
 import { paths } from '../constants'
-import { colors } from '../styles'
+import { dimensions, colors, FlexBox } from '../styles'
 
-const FlexBox = styled.div`
-  display: flex;
-  flex-direction: column;
+const FlexBoxStyled = styled(FlexBox)`
   gap: 0.5rem;
   width: 100%;
 `
-
-const LoginStyled = styled.div`
+const LoginStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
+  gap: ${dimensions.spacing.sm};
   height: 100vh;
-  margin: 0;
-  padding: 3rem;
-  gap: 2rem;
-  display: flex;
-  flex-direction: column;
+  padding: ${dimensions.spacing.lg};
+`
+
+const TitleStyled = styled(Title)`
+  width: 100%;
+  margin: 3rem 0rem 0rem 0.2rem;
 `
 const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  justify-content: flex-start;
+  gap: ${dimensions.spacing.base};
+  width: 100%;
+  margin-top: -5rem;
 `
 
+const LinkStyled = styled(Link)`
+  color: ${colors.black.black1};
+  font-weight: 500;
+  margin: ${dimensions.spacing.md} ${dimensions.spacing.xxxs};
+`
 const LinkRegisterStyled = styled(Link)`
-  color: black;
+  color: ${colors.black.black1};
+`
+const ButtonStyled = styled(Button)`
+  margin: ${dimensions.spacing.none};
 `
 
 type TForm = {
-  id: string
+  dni: string
   password: string
 }
 
@@ -50,60 +60,51 @@ const Login: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<TForm>()
+  } = useForm<TForm>({
+    resolver: zodResolver(UserLoginSchema),
+  })
 
   const loginUser = (user: object) => {
+    // try & catch
     console.log('user:', user)
   }
 
   const onSubmit = handleSubmit((data) => {
-    const { id, password } = data
-    loginUser({ id, password })
+    const { dni, password } = data
+    loginUser({ dni, password })
   })
 
   return (
-    <LoginStyled>
-      <Title as="h1" fontWeight="bold">
+    <LoginStyled justify="space-between">
+      <TitleStyled as="h1" fontWeight="bold">
         Login
-      </Title>
+      </TitleStyled>
 
       <FormStyled onSubmit={onSubmit}>
-        <FlexBox>
-          <InputText
+        <FlexBoxStyled>
+          <Input
             placeholder="DNI o NIE"
-            {...register('id', {
-              // TODO -> validate: validateID()
-              required: true,
-              pattern: /^[XYZ]?\d{5,8}[A-Z]$/,
-            })}
-            error={errors.id && true}
+            {...register('dni')}
+            error={errors.dni && true}
           />
-          {/* {errors.id && (
-            <ValidationMessage color="error" text="DNI o NIE incorrecto..." />
-          )} */}
-          {errors.id?.type === 'required' && (
-            <ValidationMessage color="error" text="El campo es requerido" />
-          )}
-          {errors.id?.type === 'pattern' && (
-            <ValidationMessage color="error" text="El formato es incorrecto" />
-          )}
-        </FlexBox>
-        <FlexBox>
-          <InputText
+        </FlexBoxStyled>
+        <FlexBoxStyled align="start">
+          <Input
             type="password"
             placeholder="Contraseña"
-            {...register('password', {
-              required: true,
-            })}
+            {...register('password')}
             error={errors.password && true}
           />
-          {errors.password?.type === 'required' && (
+          {errors.password && (
             <ValidationMessage color="error" text="El campo es requerido" />
           )}
+        </FlexBoxStyled>
+        <FlexBox align="end">
+          <LinkStyled to={`${paths.register}`}>
+            Recordar/cambiar contraseña
+          </LinkStyled>
         </FlexBox>
-
-        <Text>Recordar/cambiar contraseña</Text>
-        <Button type="submit">Login</Button>
+        <ButtonStyled type="submit">Login</ButtonStyled>
       </FormStyled>
 
       <LinkRegisterStyled to={`${paths.register}`}>
