@@ -9,6 +9,12 @@ class DefaultError extends Error {
   }
 }
 
+class NotFoundError extends DefaultError {
+  constructor(message: string = 'Not found') {
+    super(404, `${message}`)
+  }
+}
+
 class UnauthorizedError extends DefaultError {
   constructor(message: string = 'Missing token') {
     super(401, `${message}`)
@@ -40,6 +46,7 @@ class ValidationError extends DefaultError {
 }
 
 export {
+  NotFoundError,
   DefaultError,
   UnauthorizedError,
   ForbiddenError,
