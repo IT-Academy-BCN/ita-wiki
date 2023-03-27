@@ -1,0 +1,36 @@
+name: Frontend on Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "front/**"
+
+jobs:
+  frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: front/package-lock.json
+
+#       - name: copy .env
+#         run: cp .env.development ./frontend/.env
+
+      - name: install dependencies
+        run: cd ./front && npm ci --legacy-peer-deps
+
+      - name: lint
+        run: cd ./front && npx eslint src/** --max-warnings 0
+
+      - name: test
+        run: cd ./front && npm run test
+
+      - name: build
+        run: cd ./front && npm run build

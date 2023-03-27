@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Link } from 'react-router-dom'
 import { Title } from '../components/atoms'
-import paths from '../constants/paths'
+import { paths } from '../constants'
 
 const Home: FC = () => (
   <>
