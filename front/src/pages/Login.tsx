@@ -1,7 +1,9 @@
+/* eslint-disable no-console */
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import styled from 'styled-components'
 import {
   Button,
@@ -63,10 +65,38 @@ const Login: FC = () => {
   } = useForm<TForm>({
     resolver: zodResolver(UserLoginSchema),
   })
+  const navigate = useNavigate()
+  const urls = 'http://localhost:8999/api/v1/auth'
+  const authToken = localStorage.getItem('token')
 
-  const loginUser = (user: object) => {
-    // try & catch
-    console.log('user:', user)
+  const loginUser = async (user: object) => {
+    try {
+      const response = await axios.post(urls, user)
+      console.log('response:', response)
+
+      if (response) {
+        localStorage.setItem('token', response.data.token)
+        localStorage.setItem('refresh_token', response.data.refreshToken)
+        navigate('/')
+        const userData = await axios
+          .create({
+            url: urls,
+            headers: { Authorization: `Bearer ${authToken}` },
+          })
+          .get(urls)
+          .then((res) => res.data)
+
+        if (userData) {
+          // login(userData)
+        }
+      }
+
+      if (response.data.code === 'error') {
+        console.log('data.error')
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const onSubmit = handleSubmit((data) => {
