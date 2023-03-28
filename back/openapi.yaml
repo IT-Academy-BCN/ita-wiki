@@ -1,0 +1,60 @@
+info:
+  version: 1.0.0
+  title: My API
+  description: This is the API
+servers:
+  - url: v1
+openapi: 3.0.0
+components:
+  schemas: {}
+  parameters: {}
+paths:
+  /v1/auth/register:
+    post:
+      description: Registers a new user and returns an auth JWT as a cookie session
+      summary: Register a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                name:
+                  type: string
+                dni:
+                  type: string
+              required:
+                - email
+                - password
+                - dni
+      responses:
+        "200":
+          description: The user has been authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: OK
+                required:
+                  - message
+        "400":
+          description: DNI already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: DNI already exists
+                required:
+                  - message
