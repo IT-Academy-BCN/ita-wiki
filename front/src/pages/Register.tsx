@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
 import { FC, useState } from 'react'
 import { Input, Title } from '../components/atoms'
@@ -25,7 +26,7 @@ const Register: FC = () => {
 
   return (
     <div>
-      <Title as="h1">Register 👋</Title>
+      <Title as="h1">Register 👋 PAGINA DE PRUEBAS SE PUEDE BORRAR</Title>
       <div
         style={{
           margin: '10px',
@@ -52,7 +53,7 @@ const Register: FC = () => {
       <Input
         name="input name"
         placeholder="simple input"
-        onChange={() => console.log('hola')}
+        onChange={() => console.log('test')}
       />
       <div>
         <InputGroup
@@ -60,12 +61,12 @@ const Register: FC = () => {
           inputName="input names"
           id="id0"
           placeholder="simple inputGroup"
-          onChange={() => console.log('hola')}
+          onChange={() => console.log('test')}
         />
         <InputGroup
           label="obligatoria"
           inputName="input names"
-          onChange={() => console.log('hola')}
+          onChange={() => console.log('test')}
           type="password"
           id="id1"
           placeholder="type password"
