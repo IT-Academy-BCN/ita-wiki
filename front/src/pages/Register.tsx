@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable no-nested-ternary */
 import { FC, useState } from 'react'
 import { Input, Title } from '../components/atoms'
@@ -35,6 +34,7 @@ const Register: FC = () => {
       >
         <Title as="h2">DEMO</Title>
         <InputGroup
+          label="hola"
           value={password}
           icon="search"
           onChange={(e) => setPassword(e.target.value)}
@@ -50,7 +50,11 @@ const Register: FC = () => {
       <hr />
       <hr />
       <hr />
-      <Input placeholder="simple input" onChange={() => console.log('hola')} />
+      <Input
+        name="input name"
+        placeholder="simple input"
+        onChange={() => console.log('hola')}
+      />
       <div>
         <InputGroup
           id="id0"
@@ -68,6 +72,8 @@ const Register: FC = () => {
         />
         <InputGroup
           id="id2"
+          hiddenLabel={false}
+          label="Label visible, hiddenLabel={false}"
           placeholder="hola"
           warning
           validationType="warning"

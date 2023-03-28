@@ -15,23 +15,29 @@ const InputGroupStyled = styled.div`
 `
 type TInputGroup = {
   id: string
+  inputName: string
+  label: string
   validationType?: 'success' | 'warning' | 'error'
   validationMessage?: string
   icon?: string
+  hiddenLabel?: boolean
 }
 
 function InputGroup({
   id,
+  inputName,
+  label,
   validationMessage,
   validationType,
+  hiddenLabel,
   icon,
   ...rest
 }: TInputGroup) {
   return (
     <InputGroupStyled>
-      <Label text="" htmlFor={id} />
+      <Label text={label} htmlFor={id} hiddenLabel={hiddenLabel} />
       <FlexBox direction="row" justify="flex-end">
-        <Input id={id} name={id} {...rest} />
+        <Input id={id} name={inputName} {...rest} />
         {!!icon && <Icon name={icon} />}
       </FlexBox>
       <ValidationMessage text={validationMessage} color={validationType} />
