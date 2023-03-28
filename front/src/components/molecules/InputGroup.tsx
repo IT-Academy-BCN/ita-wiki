@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { dimensions, FlexBox } from '../../styles'
 import { Icon, Input, Label, ValidationMessage } from '../atoms'
+import { TInput } from '../atoms/Input'
 
 const InputGroupStyled = styled.div`
   ${ValidationMessage} {
@@ -21,7 +22,7 @@ type TInputGroup = {
   validationMessage?: string
   icon?: string
   hiddenLabel?: boolean
-}
+} & TInput
 
 function InputGroup({
   id,

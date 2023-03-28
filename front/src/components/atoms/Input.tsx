@@ -17,7 +17,7 @@ const InputStyled = styled.input<TInput>`
   }
 `
 
-type TInput = InputHTMLAttributes<HTMLInputElement> & {
+export type TInput = InputHTMLAttributes<HTMLInputElement> & {
   error?: boolean | string
   success?: boolean
   warning?: boolean
