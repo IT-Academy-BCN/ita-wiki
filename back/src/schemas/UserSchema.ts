@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { DNISchema } from './DNISchema';
+import { z } from '../openapi/zod'
+import { DNISchema } from './DNISchema'
 
 export const UserSchema = z.object({
   id: z.string(),
