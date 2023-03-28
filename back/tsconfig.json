@@ -11,6 +11,7 @@
     "noUnusedLocals": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
