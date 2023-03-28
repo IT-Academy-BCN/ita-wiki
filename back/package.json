@@ -17,7 +17,7 @@
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:migrate:reset": "prisma migrate reset --force",
     "test": "vitest",
-    "up": "../scripts/up.sh"
+    "up": "cd ../scripts && ./up.sh && cd ../back && npm run prisma:migrate"
   },
   "devDependencies": {
     "@asteasolutions/zod-to-openapi": "4.5.0",
