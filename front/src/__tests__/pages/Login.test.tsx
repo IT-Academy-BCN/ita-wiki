@@ -8,7 +8,6 @@ import axios from 'axios'
 import { BrowserRouter } from 'react-router-dom'
 import { Login } from '../../pages'
 import { paths } from '../../constants'
-import { Input } from '../../components/atoms'
 
 describe('Login', () => {
   it('should import all dependencies correctly', () => {
