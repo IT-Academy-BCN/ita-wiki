@@ -11,6 +11,18 @@ jobs:
   backend:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:14.1
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        ports:
+          - 5432:${{ secrets.POSTGRES_PORT }}
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js
@@ -20,17 +32,29 @@ jobs:
           cache: "npm"
           cache-dependency-path: back/package-lock.json
 
-#       - name: copy .env
-#         run: cp .env.development ./backend/.env
-
       - name: install dependencies
         run: cd ./back && npm ci --legacy-peer-deps
 
       - name: lint
         run: cd ./back && npx eslint src/** --max-warnings 0
 
-      # - name: test
-      #   run: cd ./back && npm run test
+      - name: Set up Prisma
+        run: |
+          cd back
+          npx prisma generate
 
-      # - name: build
-      #   run: cd ./back && npm run build
+      - name: Run migrations
+        run: |
+          cd back
+          npx prisma migrate deploy
+
+      - name: Seed the database
+        run: |
+          cd back
+          npx prisma db seed
+
+      - name: test
+        run: cd ./back && npm run test
+
+      - name: build
+        run: cd ./back && npm run build

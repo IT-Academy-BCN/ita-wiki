@@ -1,5 +1,5 @@
 {
-  "name": "front",
+  "name": "back",
   "private": true,
   "version": "0.0.0",
   "prisma": {
@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm src/server.ts",
     "build": "tsc",
+    "bundle": "ncc build src/server.ts -o dist -m",
     "start": "node dist/index.js",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --ext .ts src --fix",
@@ -30,6 +31,7 @@
     "@types/yamljs": "^0.2.31",
     "@typescript-eslint/eslint-plugin": "5.55.0",
     "@typescript-eslint/parser": "5.55.0",
+    "@vercel/ncc": "0.36.1",
     "eslint": "8.36.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-config-airbnb-typescript": "17.0.0",
