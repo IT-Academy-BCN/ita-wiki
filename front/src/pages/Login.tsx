@@ -1,25 +1,60 @@
 /* eslint-disable no-console */
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components'
+import InputGroup from '../components/molecules/InputGroup'
 import {
   Button,
+  Icon,
   Input,
   Text,
   Title,
   ValidationMessage,
 } from '../components/atoms'
-import { UserLoginSchema } from '../../../back/src/schemas/UserLoginSchema'
 import { paths } from '../constants'
 import { dimensions, colors, FlexBox } from '../styles'
 
+const validNIEPrefixes = ['X', 'Y', 'Z']
+const validDNIPrefixes = [...Array(23).keys()].map((i) => (i + 1).toString())
+const DNI_REGEX = /^(([XYZ]\d{7,8})|(\d{8}))([a-zA-Z])$/i
+const DNISchema = z
+  .string()
+  .regex(DNI_REGEX)
+  .transform((value) => value.toUpperCase())
+  .refine((value) => {
+    const firstLetter = value.charAt(0)
+    return (
+      validDNIPrefixes.includes(firstLetter) ||
+      validNIEPrefixes.includes(firstLetter)
+    )
+  })
+
+const UserLoginSchema = z.object({
+  dni: DNISchema,
+  password: z.string().min(8),
+})
+
 const FlexBoxStyled = styled(FlexBox)`
   gap: 0.5rem;
+  margin-top: -${dimensions.spacing.base};
   width: 100%;
+
+  ${Icon} {
+    position: absolute;
+    margin-right: ${dimensions.spacing.base};
+    margin-top: ${dimensions.spacing.sm};
+    cursor: pointer;
+  }
 `
+const FlexErrorStyled = styled(FlexBox)`
+  height: ${dimensions.spacing.xxxs};
+  margin-left: 0.2rem;
+`
+
 const LoginStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
   gap: ${dimensions.spacing.sm};
@@ -29,25 +64,28 @@ const LoginStyled = styled(FlexBox)`
 
 const TitleStyled = styled(Title)`
   width: 100%;
-  margin: 3rem 0rem 0rem 0.2rem;
+  margin: 4rem 0rem 0rem 0.2rem;
 `
+
 const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: ${dimensions.spacing.base};
   width: 100%;
-  margin-top: -5rem;
+  margin-top: -4rem;
 `
 
 const LinkStyled = styled(Link)`
   color: ${colors.black.black1};
   font-weight: 500;
-  margin: ${dimensions.spacing.md} ${dimensions.spacing.xxxs};
+  margin: ${dimensions.spacing.sm} ${dimensions.spacing.xxxs};
 `
+
 const LinkRegisterStyled = styled(Link)`
   color: ${colors.black.black1};
 `
+
 const ButtonStyled = styled(Button)`
   margin: ${dimensions.spacing.none};
 `
@@ -58,6 +96,7 @@ type TForm = {
 }
 
 const Login: FC = () => {
+  const [isVisibility, setIsVisibility] = useState(false)
   const {
     register,
     handleSubmit,
@@ -65,30 +104,20 @@ const Login: FC = () => {
   } = useForm<TForm>({
     resolver: zodResolver(UserLoginSchema),
   })
+
   const navigate = useNavigate()
-  const urls = 'http://localhost:8999/api/v1/auth'
-  const authToken = localStorage.getItem('token')
+
+  const urls = 'http://localhost:8999/api/v1/auth/login'
 
   const loginUser = async (user: object) => {
+    console.log('user:', user)
     try {
       const response = await axios.post(urls, user)
       console.log('response:', response)
 
       if (response) {
         localStorage.setItem('token', response.data.token)
-        localStorage.setItem('refresh_token', response.data.refreshToken)
         navigate('/')
-        const userData = await axios
-          .create({
-            url: urls,
-            headers: { Authorization: `Bearer ${authToken}` },
-          })
-          .get(urls)
-          .then((res) => res.data)
-
-        if (userData) {
-          // login(userData)
-        }
       }
 
       if (response.data.code === 'error') {
@@ -111,24 +140,37 @@ const Login: FC = () => {
       </TitleStyled>
 
       <FormStyled onSubmit={onSubmit}>
-        <FlexBoxStyled>
+        <InputGroup
+          icon=""
+          id="dni"
+          label="dni"
+          placeholder="DNI o NIE"
+          hiddenLabel
+          {...register('dni')}
+          name="dni"
+          error={errors.dni && true}
+        />
+        <FlexBoxStyled align="start" direction="row" justify="flex-end">
           <Input
-            placeholder="DNI o NIE"
-            {...register('dni')}
-            error={errors.dni && true}
-          />
-        </FlexBoxStyled>
-        <FlexBoxStyled align="start">
-          <Input
-            type="password"
+            type={isVisibility ? 'text' : 'password'}
             placeholder="Contraseña"
             {...register('password')}
             error={errors.password && true}
           />
-          {errors.password && (
-            <ValidationMessage color="error" text="El campo es requerido" />
-          )}
+          <Icon
+            name="visibility_off"
+            color={colors.gray.gray4}
+            onClick={() => setIsVisibility(!isVisibility)}
+          />
         </FlexBoxStyled>
+        <FlexErrorStyled align="start">
+          {errors?.dni || errors?.password ? (
+            <ValidationMessage
+              color="error"
+              text="Identificador o contraseña incorrecto"
+            />
+          ) : null}
+        </FlexErrorStyled>
         <FlexBox align="end">
           <LinkStyled to={`${paths.register}`}>
             Recordar/cambiar contraseña
