@@ -1,99 +1,142 @@
-/* eslint-disable no-console */
-/* eslint-disable no-nested-ternary */
-import { FC, useState } from 'react'
-import { Input, Title } from '../components/atoms'
-import InputGroup from '../components/molecules/InputGroup'
+import { FC } from 'react'
+import { useForm } from 'react-hook-form'
+import styled from 'styled-components'
+import {
+  Title,
+  Input,
+  Button,
+  Label,
+  ValidationMessage,
+} from '../components/atoms'
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  width: 50%;
+`
+
+type TForm = {
+  email: string
+  userName: string
+  password: string
+  confirmPassword: string
+  required?: boolean
+  validate?: any
+}
 
 const Register: FC = () => {
-  const [password, setPassword] = useState('')
-  const { length } = password
-  const validationTypeCondition =
-    length < 4
-      ? 'error'
-      : length > 9
-      ? 'success'
-      : length === 6
-      ? 'warning'
-      : undefined
-  const validationTypeMessage =
-    length > 0 && length < 4
-      ? 'too short'
-      : length > 9
-      ? 'muy bien!'
-      : length === 6
-      ? 'hola'
-      : ''
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<TForm>()
+
+  const onSubmit = (data: object) => {
+    console.log(data)
+  }
+
+  const options = [
+    { id: 0, specialty: 'Especialidad' },
+    { id: 1, specialty: 'React' },
+    { id: 2, specialty: 'Angular' },
+    { id: 3, specialty: 'Vue' },
+    { id: 4, specialty: 'Node' },
+    { id: 5, specialty: 'Java' },
+    { id: 6, specialty: 'Fullstack' },
+  ]
 
   return (
     <div>
-      <Title as="h1">Register 👋 PAGINA DE PRUEBAS SE PUEDE BORRAR</Title>
-      <div
-        style={{
-          margin: '10px',
-          marginBottom: '70px',
-        }}
-      >
-        <Title as="h2">DEMO</Title>
-        <InputGroup
-          name="input names"
-          label="hola"
-          value={password}
-          icon="search"
-          onChange={(e) => setPassword(e.target.value)}
-          id="demo"
-          placeholder="escribe algo"
-          success={length > 8}
-          error={length > 0 && length < 4}
-          warning={length === 6}
-          validationType={validationTypeCondition}
-          validationMessage={validationTypeMessage}
+      <Title as="h1">Register 👋</Title>
+      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+        {/* ==> EMAIL */}
+        <Label text="Email" htmlFor="email" />
+        <Input
+          type="email"
+          placeholder="Email"
+          {...register('email', {
+            required: true,
+            pattern: /\S+@\S+\.\S+/,
+          })}
+          error={errors.email && true}
         />
-      </div>
-      <hr />
-      <Input
-        name="input name"
-        placeholder="simple input"
-        onChange={() => console.log('test')}
-      />
-      <div>
-        <InputGroup
-          label="obligatoria"
-          name="input names"
-          id="id0"
-          placeholder="simple inputGroup"
-          onChange={() => console.log('test')}
+        {errors.email?.type === 'required' && (
+          <ValidationMessage color="error" text="El campo es requerido" />
+        )}
+        {errors.email?.type === 'pattern' && (
+          <ValidationMessage color="error" text="Debe ser un email válido" />
+        )}
+
+        {/* ==> USERNAME */}
+        <Label text="Username" htmlFor="userName" />
+        <Input
+          type="text"
+          placeholder="Username"
+          {...register('userName', {
+            required: true,
+          })}
         />
-        <InputGroup
-          label="obligatoria"
-          name="input names"
-          onChange={() => console.log('test')}
+        {errors.userName && (
+          <ValidationMessage color="error" text="El campo es requerido" />
+        )}
+
+        {/* ==> CONTRASEÑA 1 */}
+        <Label text="Contraseña" htmlFor="password" />
+        <Input
           type="password"
-          id="id1"
-          placeholder="type password"
-          success
-          validationType="success"
-          validationMessage="todo ha ido bien!"
+          placeholder="Contraseña"
+          {...register('password', {
+            required: true,
+            minLength: 8,
+          })}
         />
-        <InputGroup
-          name="input names"
-          id="id2"
-          hiddenLabel={false}
-          label="Label visible, hiddenLabel={false}"
-          placeholder="hola"
-          warning
-          validationType="warning"
-          validationMessage="warning message"
+        {errors.password?.type === 'required' && (
+          <ValidationMessage color="error" text="El campo es requerido" />
+        )}
+        {errors.password?.type === 'minLength' && (
+          <ValidationMessage
+            color="error"
+            text="La contraseña debe tener mínimo 8 caracteres"
+          />
+        )}
+
+        {/* ==> CONTRASEÑA 2 */}
+        <Label text="Repetir contraseña" htmlFor="confirmPassword" />
+        <Input
+          type="password"
+          placeholder="Repetir contraseña"
+          {...register('confirmPassword', {
+            required: true,
+            minLength: 8,
+          })}
         />
-        <InputGroup
-          label="obligatoria"
-          name="input names"
-          id="id3"
-          placeholder="mundo"
-          error
-          validationType="error"
-          validationMessage="error message"
-        />
-      </div>
+
+        {watch('confirmPassword') !== watch('password') && (
+          <ValidationMessage
+            color="error"
+            text="Las contraseñas no coinciden"
+          />
+        )}
+
+        {/*  TODO create select component */}
+        <select>
+          {options.map((opt) => (
+            <option key={opt.id}>{opt.specialty}</option>
+          ))}
+        </select>
+
+        {/* ==> TODO generate an style */}
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <input type="checkbox" />
+          <p>Acepto términos legales</p>
+        </div>
+        <Button type="submit">Registrarme</Button>
+      </StyledForm>
+      <p>¿Tienes una cuenta? Entrar</p>
     </div>
   )
 }
