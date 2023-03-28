@@ -10,13 +10,14 @@ prisma.$use(async (params, next ) => {
       params.action === 'upsert' ||
       params.action === 'createMany'
     ) {
+      // eslint-disable-next-line no-param-reassign
       params.args.data.password = await hashPassword(params.args.data.password)
     }
 
     // Check if password matches on find
     else if (params.action === 'findUnique') {
       const { password } = params.args.data
-      const result = await next(params)      
+      const result = await next(params)
       if(result?.password) {
         result.passwordMatches = await checkPassword(password, result.password)
         return result

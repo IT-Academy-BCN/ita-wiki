@@ -1,8 +1,8 @@
 import { OpenAPIGenerator } from '@asteasolutions/zod-to-openapi'
-import { registry } from './registry'
-import { openapiVersion, generatorConfig, openapiFilename } from './config'
 import * as yaml from 'yaml'
 import * as fs from 'fs'
+import { registry } from './registry'
+import { openapiVersion, generatorConfig, openapiFilename } from './config'
 import './routes'
 
 export function generateOpenapiFile() {

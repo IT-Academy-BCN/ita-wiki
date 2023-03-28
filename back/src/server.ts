@@ -5,14 +5,13 @@ import helmet from 'koa-helmet'
 import { HttpMethodEnum, koaBody } from 'koa-body'
 import yamljs from 'yamljs'
 import { koaSwagger } from 'koa2-swagger-ui'
+import { fileURLToPath } from 'url'
 import * as Routes from './routes'
 import { appConfig } from './config/config'
 import { errorMiddleware } from './middleware'
 import { generateOpenapiFile } from './openapi/generateFile'
-import { openapiFilename } from './openapi/config'
+import { openapiFilename , swaggeruiUrl } from './openapi/config'
 import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
-import { swaggeruiUrl } from './openapi/config'
-import { fileURLToPath } from 'url'
 import './prisma/middleware'
 
 dotenv.config()
@@ -44,9 +43,11 @@ const spec = yamljs.load(openapiFilename)
 app.use(koaSwagger({ routePrefix: swaggeruiUrl, swaggerOptions: { spec } }))
 
 // Only listen if launched from terminal
+// eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
 const __filename = fileURLToPath(import.meta.url)
 if (process.argv[1] === __filename) {
   app.listen(appConfig.port, () => {
+    // eslint-disable-next-line no-console
     console.log(`🚀 Server ready at http://localhost:${appConfig.port}`)
   })
 }
