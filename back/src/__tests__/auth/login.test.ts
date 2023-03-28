@@ -3,10 +3,10 @@ import { expect, test, describe } from 'vitest'
 import { server } from '../setup'
 
 describe('Testing authentication endpoint', () => {
-  test('should succeed with correct credentials. Checks for status 204 and if there is a cookie called "token"', async () => {
+  test('should succeed with correct credentials', async () => {
     const response = await supertest(server).post('/api/v1/auth/login').send({
       dni: '45632452a',
-      password: 'password'
+      password: 'password',
     })
     expect(response.status).toBe(204)
 
@@ -14,19 +14,19 @@ describe('Testing authentication endpoint', () => {
     expect(cookie[0]).toMatch(/token/)
   })
 
-  test('should fail with incorrect credentials and return 401 and corresponding error message', async () => {
+  test('should fail with incorrect password', async () => {
     const response = await supertest(server).post('/api/v1/auth/login').send({
       dni: '45632452a',
-      password: 'wrong password'
+      password: 'wrong password',
     })
     expect(response.status).toBe(401)
     expect(response.body.error).toBe('Invalid password')
   })
 
-  test('should fail with user not found and return 401 and corresponding error message', async () => {
+  test('should fail with user not found', async () => {
     const response = await supertest(server).post('/api/v1/auth/login').send({
       dni: '11111111a',
-      password: 'password'
+      password: 'password',
     })
     expect(response.status).toBe(401)
     expect(response.body.error).toBe('User not found')
