@@ -13,6 +13,7 @@ import { openapiFilename } from './openapi/config'
 import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
 import { swaggeruiUrl } from './openapi/config'
 import { fileURLToPath } from 'url'
+import './prisma/middleware'
 
 dotenv.config()
 
