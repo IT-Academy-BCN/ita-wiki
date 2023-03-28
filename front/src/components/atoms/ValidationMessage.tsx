@@ -12,7 +12,7 @@ const ValidationMessageStyled = styled.p<TValidationMessageStyled>`
   font-size: ${font.xs};
 `
 
-type TValidationMessage = {
+export type TValidationMessage = {
   text?: string
   color?: 'success' | 'error' | 'warning'
 }

@@ -6,7 +6,7 @@ describe('InputGroupText', () => {
     render(
       <InputGroup
         label="label"
-        inputName="testname"
+        name="testname"
         id="testid"
         placeholder="text input"
       />
@@ -26,7 +26,7 @@ describe('InputGroupText', () => {
     render(
       <InputGroup
         id="testid"
-        inputName="testname"
+        name="testname"
         label="label"
         error
         validationMessage="error message"
@@ -37,12 +37,7 @@ describe('InputGroupText', () => {
 
   it('renders the icon correctly', () => {
     render(
-      <InputGroup
-        inputName="testname"
-        label="test"
-        id="testid"
-        icon="test icon"
-      />
+      <InputGroup name="testname" label="test" id="testid" icon="test icon" />
     )
     expect(screen.getByText('test icon')).toBeInTheDocument()
   })

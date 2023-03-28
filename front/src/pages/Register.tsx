@@ -35,7 +35,7 @@ const Register: FC = () => {
       >
         <Title as="h2">DEMO</Title>
         <InputGroup
-          inputName="input names"
+          name="input names"
           label="hola"
           value={password}
           icon="search"
@@ -58,14 +58,14 @@ const Register: FC = () => {
       <div>
         <InputGroup
           label="obligatoria"
-          inputName="input names"
+          name="input names"
           id="id0"
           placeholder="simple inputGroup"
           onChange={() => console.log('test')}
         />
         <InputGroup
           label="obligatoria"
-          inputName="input names"
+          name="input names"
           onChange={() => console.log('test')}
           type="password"
           id="id1"
@@ -75,7 +75,7 @@ const Register: FC = () => {
           validationMessage="todo ha ido bien!"
         />
         <InputGroup
-          inputName="input names"
+          name="input names"
           id="id2"
           hiddenLabel={false}
           label="Label visible, hiddenLabel={false}"
@@ -86,7 +86,7 @@ const Register: FC = () => {
         />
         <InputGroup
           label="obligatoria"
-          inputName="input names"
+          name="input names"
           id="id3"
           placeholder="mundo"
           error
