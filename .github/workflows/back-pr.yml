@@ -11,6 +11,9 @@ jobs:
   backend:
     runs-on: ubuntu-latest
 
+    env:
+      POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+
     services:
       postgres:
         image: postgres:14.1
@@ -19,7 +22,7 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         ports:
-          - ${{ secrets.POSTGRES_PORT }}:5432
+          - ${{ env.POSTGRES_PORT }}:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
 
