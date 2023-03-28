@@ -1,0 +1,36 @@
+name: Backend on Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "back/**"
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: back/package-lock.json
+
+#       - name: copy .env
+#         run: cp .env.development ./backend/.env
+
+      - name: install dependencies
+        run: cd ./back && npm ci --legacy-peer-deps
+
+      - name: lint
+        run: cd ./back && npx eslint src/** --max-warnings 0
+
+      # - name: test
+      #   run: cd ./back && npm run test
+
+      # - name: build
+      #   run: cd ./back && npm run build
