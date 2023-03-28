@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client'
-import { hashPassword, checkPassword } from '../src/helpers/passwordHash'
-
-const prisma = new PrismaClient()
+import { prisma } from '../client'
+import { hashPassword, checkPassword } from '../../helpers/passwordHash'
 
 prisma.$use(async (params, next) => {
   if (params.model === 'User' && params.args.data.password != null) {

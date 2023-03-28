@@ -1,13 +1,11 @@
-import { PrismaClient } from '@prisma/client'
-import { hashPassword } from '../src/helpers/passwordHash'
 import { UserSchema } from '../src/schemas/UserSchema'
-
-const prisma = new PrismaClient()
+import { prisma } from '../src/prisma/client'
+import '../src/prisma/middleware'
 
 async function main() {
   const data = {
     email: 'test@example.com',
-    password: await hashPassword('password'),
+    password: 'password',
     name: 'Test User',
     dni: '45632452a',
     status: 'ACTIVE'
