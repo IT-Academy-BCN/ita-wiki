@@ -12,11 +12,12 @@ const LabelStyled = styled(Text)`
 type TLabel = Omit<LabelHTMLAttributes<HTMLLabelElement>, 'htmlFor'> & {
   text: string
   htmlFor: string
+  hiddenLabel?: boolean
 }
 
-function Label({ htmlFor, text = '' }: TLabel) {
+function Label({ htmlFor, text = '', hiddenLabel = true }: TLabel) {
   return (
-    <LabelStyled as="label" htmlFor={htmlFor}>
+    <LabelStyled as="label" htmlFor={htmlFor} hidden={hiddenLabel}>
       {text}
     </LabelStyled>
   )

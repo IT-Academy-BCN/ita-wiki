@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { colors, dimensions } from '../../styles'
 
 const InputStyled = styled.input<TInput>`
-  width: '100%';
+  width: 100%;
   padding: ${dimensions.spacing.sm};
   border-radius: ${dimensions.borderRadius.base};
   border: 1px solid ${colors.gray.gray4};
@@ -17,7 +17,7 @@ const InputStyled = styled.input<TInput>`
   }
 `
 
-type TInput = InputHTMLAttributes<HTMLInputElement> & {
+export type TInput = InputHTMLAttributes<HTMLInputElement> & {
   error?: boolean | string
   success?: boolean
   warning?: boolean

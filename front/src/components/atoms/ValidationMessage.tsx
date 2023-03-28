@@ -5,14 +5,14 @@ type TValidationMessageStyled = {
   color: 'success' | 'error' | 'warning'
 }
 
-const ValidationMessageStyled = styled.span<TValidationMessageStyled>`
+const ValidationMessageStyled = styled.p<TValidationMessageStyled>`
   ${({ color }) => color === 'success' && `color: ${colors.success};`};
   ${({ color }) => color === 'error' && `color: ${colors.error};`};
   ${({ color }) => color === 'warning' && `color: ${colors.warning};`};
   font-size: ${font.xs};
 `
 
-type TValidationMessage = {
+export type TValidationMessage = {
   text?: string
   color?: 'success' | 'error' | 'warning'
 }
@@ -20,9 +20,14 @@ type TValidationMessage = {
 const ValidationMessage = ({
   text = '',
   color = 'success',
+  ...rest
 }: TValidationMessage) => {
   if (!text) return null
-  return <ValidationMessageStyled color={color}>{text}</ValidationMessageStyled>
+  return (
+    <ValidationMessageStyled color={color} {...rest}>
+      {text}
+    </ValidationMessageStyled>
+  )
 }
 
 export default styled(ValidationMessage)``
