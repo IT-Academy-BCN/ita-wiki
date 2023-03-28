@@ -8,8 +8,8 @@ type TBodyStyled = {
 }
 
 const BodyStyled = styled(FlexBox)<TBodyStyled>`
-  min-height: ${(props) => props.minHeight}vh;
-  width: ${(props) => props.width}vw;
+  min-height: ${(props) => props.minHeight}%;
+  width: ${(props) => props.width}%;
   color: ${({ color }) => color || colors.gray.gray5};
 `
 
