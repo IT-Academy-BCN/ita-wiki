@@ -1,22 +1,28 @@
 import styled from 'styled-components'
-import { FlexBox } from '../../styles'
+import { FlexBox, colors } from '../../styles'
 
 type TBodyStyled = {
   minHeight: number
   width: number
+  color?: string
 }
 
 const BodyStyled = styled(FlexBox)<TBodyStyled>`
-  min-height: 100vh;
-  width: 100vw;
+  min-height: ${(props) => props.minHeight}vh;
+  width: ${(props) => props.width}vw;
+  color: ${({ color }) => color || colors.gray.gray5};
 `
 
 type TBody = {
-  children: string
+  children: React.ReactNode
+} & Partial<TBodyStyled>
+
+function Body({ children, minHeight = 100, width = 100 }: TBody) {
+  return (
+    <BodyStyled minHeight={minHeight} width={width}>
+      {children}
+    </BodyStyled>
+  )
 }
 
-function Body({ children }: TBody) {
-  return <BodyStyled>{children}</BodyStyled>
-}
-
-export default Body
+export default styled(Body)``
