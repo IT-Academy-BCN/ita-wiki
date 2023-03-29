@@ -7,9 +7,9 @@ describe('Testing registration endpoint', () => {
     const response = await supertest(server)
       .post('/api/v1/auth/register')
       .send({
-        dni: '45632452a',
-        name: 'Example',
-        email: 'example@example.com',
+        dni: '45632452b',
+        name: 'Example2',
+        email: 'example2@example.com',
         password: 'password1'
       })
     expect(response.status).toBe(204)
@@ -22,8 +22,8 @@ describe('Testing registration endpoint', () => {
     const response = await supertest(server)
       .post('/api/v1/auth/register')
       .send({
-        dni: '45632452a',
-        name: 'Example',
+        dni: '45632452b',
+        name: 'Example2',
         email: 'anotherexample@example.com',
         password: 'password1'
       })
@@ -35,9 +35,9 @@ describe('Testing registration endpoint', () => {
     const response = await supertest(server)
       .post('/api/v1/auth/register')
       .send({
-        dni: '12345678z',
-        name: 'Example',
-        email: 'example@example.com',
+        dni: '45632452b',
+        name: 'Example2',
+        email: 'example2@example.com',
         password: 'password1'
       })
     expect(response.status).toBe(400)
