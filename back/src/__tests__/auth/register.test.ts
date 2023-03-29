@@ -46,4 +46,74 @@ describe('Testing registration endpoint', () => {
     expect(response.status).toBe(400)
     expect(response.body.error).toBe('Email already exists')
   })
+
+  test('should fail with invalid dni', async () => {
+    const response = await supertest(server)
+      .post('/api/v1/auth/register')
+      .send({
+        dni: 'notRealDNI',
+        name: 'Example2',
+        email: 'example2@example.com',
+        password: 'password1',
+        specialization: 'backend'
+      })
+    expect(response.status).toBe(400)
+    /* expect(response.body.error).toBe('Invalid DNI') */
+  })
+
+  test('should fail with invalid email', async () => {
+    const response = await supertest(server)
+      .post('/api/v1/auth/register')
+      .send({
+        dni: '45632452c',
+        name: 'Example2',
+        email: 'notAValidEmail',
+        password: 'password1',
+        specialization: 'backend'
+      })
+    expect(response.status).toBe(400)
+    /* expect(response.body.error).toBe('Invalid email') */
+  })
+
+  test('should fail with invalid password: too short', async () => {
+    const response = await supertest(server)
+      .post('/api/v1/auth/register')
+      .send({
+        dni: '45632452c',
+        name: 'Example2',
+        email: 'example2@example.com',
+        password: 'pswd1',
+        specialization: 'backend'
+      })
+    expect(response.status).toBe(400)
+    /* expect(response.body.error).toBe('Invalid password') */
+  })
+
+  test('should fail with invalid password: no numbers', async () => {
+    const response = await supertest(server)
+      .post('/api/v1/auth/register')
+      .send({
+        dni: '45632452c',
+        name: 'Example2',
+        email: 'example2@example.com',
+        password: 'password',
+        specialization: 'backend'
+      })
+    expect(response.status).toBe(400)
+    /* expect(response.body.error).toBe('Invalid password') */
+  })
+
+  test('should fail with invalid password: contains non-alfanumeric', async () => {
+    const response = await supertest(server)
+      .post('/api/v1/auth/register')
+      .send({
+        dni: '45632452c',
+        name: 'Example2',
+        email: 'example2@example.com',
+        password: 'password1?',
+        specialization: 'backend'
+      })
+    expect(response.status).toBe(400)
+    /* expect(response.body.error).toBe('Invalid password') */
+  })
 })
