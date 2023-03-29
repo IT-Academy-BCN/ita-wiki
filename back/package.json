@@ -17,8 +17,7 @@
     "prisma:studio": "prisma studio",
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:migrate:reset": "prisma migrate reset --force",
-    "testing": "npm run prisma:migrate:reset && vitest",
-    "test": "nodemon --ext ts --exec \"npm run testing\"",
+    "test": "npm run prisma:migrate:reset && vitest",
     "up": "cd ../scripts && ./up.sh && cd ../back && npm run prisma:migrate:reset"
   },
   "devDependencies": {
