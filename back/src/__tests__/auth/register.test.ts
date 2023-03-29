@@ -10,7 +10,8 @@ describe('Testing registration endpoint', () => {
         dni: '45632452b',
         name: 'Example2',
         email: 'example2@example.com',
-        password: 'password1'
+        password: 'password1',
+        specialization: 'backend'
       })
     expect(response.status).toBe(204)
 
@@ -25,7 +26,8 @@ describe('Testing registration endpoint', () => {
         dni: '45632452b',
         name: 'Example2',
         email: 'anotherexample@example.com',
-        password: 'password1'
+        password: 'password1',
+        specialization: 'backend'
       })
     expect(response.status).toBe(400)
     expect(response.body.error).toBe('DNI already exists')
@@ -35,10 +37,11 @@ describe('Testing registration endpoint', () => {
     const response = await supertest(server)
       .post('/api/v1/auth/register')
       .send({
-        dni: '45632452b',
+        dni: '45632452c',
         name: 'Example2',
         email: 'example2@example.com',
-        password: 'password1'
+        password: 'password1',
+        specialization: 'backend'
       })
     expect(response.status).toBe(400)
     expect(response.body.error).toBe('Email already exists')
