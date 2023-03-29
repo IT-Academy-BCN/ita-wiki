@@ -1,8 +1,9 @@
 import Router from '@koa/router'
 import { z } from 'zod'
 import { loginController } from '../controllers'
+import { registerController } from '../controllers/registerController'
 import { validate } from '../middleware'
-import { UserLoginSchema } from '../schemas'
+import { UserLoginSchema, UserRegisterSchema } from '../schemas'
 
 const authRouter = new Router()
 
@@ -12,6 +13,12 @@ authRouter.post(
   '/login',
   validate(z.object({ body: UserLoginSchema })),
   loginController
+)
+
+authRouter.post(
+  '/register',
+  validate(z.object({ body: UserRegisterSchema })),
+  registerController
 )
 
 export { authRouter }

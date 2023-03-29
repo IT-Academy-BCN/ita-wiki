@@ -18,7 +18,7 @@
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:migrate:reset": "prisma migrate reset --force",
     "test": "vitest",
-    "up": "cd ../scripts && ./up.sh && cd ../back && npm run prisma:migrate"
+    "up": "cd ../scripts && ./up.sh && cd ../back && npm run prisma:migrate:reset && npm run prisma:migrate"
   },
   "devDependencies": {
     "@types/bcrypt": "5.0.0",
