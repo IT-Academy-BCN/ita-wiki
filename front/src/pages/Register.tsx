@@ -1,23 +1,61 @@
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { z } from 'zod'
+import axios from 'axios'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { Title, Text, Button, ValidationMessage } from '../components/atoms'
 import InputGroup from '../components/molecules/InputGroup'
 import { paths } from '../constants'
-import { FlexBox } from '../styles'
+import { colors, dimensions, FlexBox } from '../styles'
+
+const RegisterStyled = styled(FlexBox)`
+  background-color: ${colors.gray.gray5};
+  padding: 3rem;
+  height: 100%;
+`
 
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  width: 50%;
+  gap: 1rem;
 `
+
 const LinkLoginStyled = styled(Link)`
   color: black;
+  margin-left: 0.5rem;
 `
+
+const SelectStyled = styled.select`
+  padding: 1rem;
+  border-radius: ${dimensions.borderRadius.base};
+  width: 100%;
+  border: 1px solid ${colors.gray.gray4};
+`
+
+const validNIEPrefixes = ['X', 'Y', 'Z']
+const validDNIPrefixes = [...Array(23).keys()].map((i) => (i + 1).toString())
+const DNI_REGEX = /^(([XYZ]\d{7,8})|(\d{8}))([a-zA-Z])$/i
+const DNISchema = z
+  .string()
+  .regex(DNI_REGEX)
+  .transform((value) => value.toUpperCase())
+  .refine((value) => {
+    const firstLetter = value.charAt(0)
+    return (
+      validDNIPrefixes.includes(firstLetter) ||
+      validNIEPrefixes.includes(firstLetter)
+    )
+  })
+
+const UserRegisterSchema = z.object({
+  dni: DNISchema,
+  email: z.string(),
+  userName: z.string(),
+  specialization: z.string(),
+  password: z.string().min(8),
+})
 
 type TForm = {
   dni: string
@@ -26,7 +64,7 @@ type TForm = {
   password: string
   confirmPassword: string
   specialization: string
-  accept: string
+  accept: boolean
   required: boolean
 }
 
@@ -36,11 +74,34 @@ const Register: FC = () => {
     handleSubmit,
     formState: { errors },
     getValues,
-  } = useForm<TForm>()
+    reset,
+  } = useForm<TForm>({ resolver: zodResolver(UserRegisterSchema) })
 
-  const onSubmit = (data: object) => {
-    console.log(data)
+  const navigate = useNavigate()
+  const url = 'http://localhost:8999/api/v1/auth/register'
+
+  const registerNewUser = async (user: object) => {
+    console.log('user', user)
+    try {
+      const response = await axios.post(url, user)
+      console.log('res', response)
+      if (response) {
+        localStorage.setItem('token', response.data.token)
+        navigate('/')
+      }
+      if (response.data.code === 'error') {
+        console.log('error')
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
+
+  const onSubmit = handleSubmit((data) => {
+    const { dni, userName, specialization, password, accept } = data
+    registerNewUser({ dni, userName, specialization, password, accept })
+    reset()
+  })
 
   const options = [
     { id: 0, specialization: 'Especialidad' },
@@ -53,9 +114,11 @@ const Register: FC = () => {
   ]
 
   return (
-    <div>
-      <Title as="h1">Register 👋</Title>
-      <StyledForm onSubmit={handleSubmit(onSubmit)}>
+    <RegisterStyled>
+      <Title as="h1" fontWeight="bold">
+        Register
+      </Title>
+      <StyledForm onSubmit={onSubmit}>
         <FlexBox>
           <InputGroup
             id="dni"
@@ -69,6 +132,7 @@ const Register: FC = () => {
               required: true,
             })}
           />
+
           <InputGroup
             id="email"
             label="email"
@@ -128,8 +192,7 @@ const Register: FC = () => {
           />
 
           {/*  TODO create select component */}
-
-          <select
+          <SelectStyled
             {...register('specialization', {
               required: true,
             })}
@@ -137,7 +200,7 @@ const Register: FC = () => {
             {options.map((opt) => (
               <option key={opt.id}>{opt.specialization}</option>
             ))}
-          </select>
+          </SelectStyled>
 
           {/* TODO generate checkbox component? */}
           <FlexBox direction="row">
@@ -159,10 +222,10 @@ const Register: FC = () => {
         </FlexBox>
       </StyledForm>
       <Text fontWeight="bold">
-        ¿Tienes una cuenta?{' '}
+        ¿Tienes una cuenta?
         <LinkLoginStyled to={paths.login}>Entrar</LinkLoginStyled>
       </Text>
-    </div>
+    </RegisterStyled>
   )
 }
 export default Register
