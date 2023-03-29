@@ -64,7 +64,7 @@ type TForm = {
   password: string
   confirmPassword: string
   specialization: string
-  accept: boolean
+  accept: string
   required: boolean
 }
 
@@ -98,8 +98,8 @@ const Register: FC = () => {
   }
 
   const onSubmit = handleSubmit((data) => {
-    const { dni, userName, specialization, password, accept } = data
-    registerNewUser({ dni, userName, specialization, password, accept })
+    const { dni, userName, specialization, password } = data
+    registerNewUser({ dni, userName, specialization, password })
     reset()
   })
 
