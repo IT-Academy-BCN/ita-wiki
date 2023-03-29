@@ -1,2 +1,2 @@
-export { DNISchema } from "./DNISchema";
-export { UserSchema } from "./UserSchema";
+export { UserSchema } from './UserSchema'
+export { UserLoginSchema } from './UserLoginSchema'
