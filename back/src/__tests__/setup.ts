@@ -3,7 +3,8 @@ import { IncomingMessage, Server, ServerResponse } from 'http'
 
 import { app } from '../server'
 
-export let server : Server<typeof IncomingMessage, typeof ServerResponse>
+// eslint-disable-next-line import/no-mutable-exports
+export let server: Server<typeof IncomingMessage, typeof ServerResponse>
 
 beforeAll(() => {
   server = app.listen()

@@ -1,1 +1,1 @@
-export { authRouter } from './auth.router'
+export { authRouter } from './authRouter'

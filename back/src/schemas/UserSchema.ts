@@ -7,7 +7,7 @@ export const UserSchema = z.object({
   password: z.string().min(8),
   name: z.string().optional(),
   status: z.enum(['ACTIVE', 'INACTIVE']),
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
-  dni: DNISchema,
-})
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  dni: DNISchema
+});
