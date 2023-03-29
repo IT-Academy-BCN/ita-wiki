@@ -4,7 +4,7 @@ import { DNISchema } from './DNISchema'
 export const UserSchema = z.object({
   id: z.string(),
   email: z.string().email(),
-  password: z.string().min(8).regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*$/),
+  password: z.string().min(8),
   name: z.string().optional(),
   status: z.enum(['ACTIVE', 'INACTIVE']),
   createdAt: z.date(),
