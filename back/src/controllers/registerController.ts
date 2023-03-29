@@ -1,6 +1,6 @@
 import { Middleware, Context } from 'koa'
-import { prisma } from '../prisma/client'
 import jwt, { Secret } from 'jsonwebtoken'
+import { prisma } from '../prisma/client'
 
 export const registerController: Middleware = async (ctx: Context) => {
   const { dni, password, name, email } = ctx.request.body
@@ -22,7 +22,7 @@ export const registerController: Middleware = async (ctx: Context) => {
 
     // Check Email unique
     const userByEmail = await prisma.user.findUnique({
-      where: { email: email },
+      where: { email },
       select: { id: true },
     })
 
@@ -45,7 +45,7 @@ export const registerController: Middleware = async (ctx: Context) => {
     })
     ctx.cookies.set('token', token, { httpOnly: true })
     ctx.status = 204
-  } 
+  }
   catch (error) {
     ctx.status = 500
     ctx.body = { error }

@@ -6,7 +6,7 @@ describe('Testing authentication endpoint', () => {
   test('should succeed with correct credentials', async () => {
     const response = await supertest(server).post('/api/v1/auth/login').send({
       dni: '45632452a',
-      password: 'password',
+      password: 'password1',
     })
     expect(response.status).toBe(204)
 
@@ -26,7 +26,7 @@ describe('Testing authentication endpoint', () => {
   test('should fail with user not found', async () => {
     const response = await supertest(server).post('/api/v1/auth/login').send({
       dni: '11111111a',
-      password: 'password',
+      password: 'password1',
     })
     expect(response.status).toBe(401)
     expect(response.body.error).toBe('User not found')

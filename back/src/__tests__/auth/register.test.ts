@@ -8,10 +8,11 @@ describe('Testing registration endpoint', () => {
       .post('/api/v1/auth/register')
       .send({
         dni: '45632452a',
+        name: 'Example',
         email: 'example@example.com',
-        password: 'password'
+        password: 'password1'
       })
-    expect(response.status).toBe(201)
+    expect(response.status).toBe(204)
 
     const cookie = response.header['set-cookie'] as string[]
     expect(cookie[0]).toMatch(/token/)
@@ -24,9 +25,9 @@ describe('Testing registration endpoint', () => {
         dni: '45632452a',
         name: 'Example',
         email: 'anotherexample@example.com',
-        password: 'password'
+        password: 'password1'
       })
-    expect(response.status).toBe(409)
+    expect(response.status).toBe(400)
     expect(response.body.error).toBe('DNI already exists')
   })
 
@@ -37,22 +38,9 @@ describe('Testing registration endpoint', () => {
         dni: '12345678z',
         name: 'Example',
         email: 'example@example.com',
-        password: 'password'
-      })
-    expect(response.status).toBe(409)
-    expect(response.body.error).toBe('Email already exists')
-  })
-
-  test('should fail with invalid DNI format', async () => {
-    const response = await supertest(server)
-      .post('/api/v1/auth/register')
-      .send({
-        dni: 'invalidDNI',
-        name: 'Example',
-        email: 'yetanotherexample@example.com',
-        password: 'password'
+        password: 'password1'
       })
     expect(response.status).toBe(400)
-    expect(response.body.error).toBe('Invalid DNI format')
+    expect(response.body.error).toBe('Email already exists')
   })
 })

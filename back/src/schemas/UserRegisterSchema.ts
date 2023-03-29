@@ -5,8 +5,8 @@ import { passwordRegex } from './regex/passwordRegex'
 export const UserRegisterSchema = UserSchema.pick({
   email: true,
   name: true,
-  dni: true,
+  dni: true
 }).extend({
-    specialization: z.string(),
-    password: z.string().min(8).regex(passwordRegex),
+  specialization: z.string(),
+  password: z.string().min(8).regex(passwordRegex)
 })
