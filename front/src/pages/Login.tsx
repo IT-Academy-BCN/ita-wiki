@@ -7,14 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components'
 import InputGroup from '../components/molecules/InputGroup'
-import {
-  Button,
-  Icon,
-  Input,
-  Text,
-  Title,
-  ValidationMessage,
-} from '../components/atoms'
+import { Button, Text, Title, ValidationMessage } from '../components/atoms'
 import { paths } from '../constants'
 import { dimensions, colors, FlexBox } from '../styles'
 
@@ -38,18 +31,6 @@ const UserLoginSchema = z.object({
   password: z.string().min(8),
 })
 
-const FlexBoxStyled = styled(FlexBox)`
-  gap: 0.5rem;
-  margin-top: -${dimensions.spacing.base};
-  width: 100%;
-
-  ${Icon} {
-    position: absolute;
-    margin-right: ${dimensions.spacing.base};
-    margin-top: ${dimensions.spacing.sm};
-    cursor: pointer;
-  }
-`
 const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.xxxs};
   margin-left: 0.2rem;
@@ -141,28 +122,25 @@ const Login: FC = () => {
 
       <FormStyled onSubmit={onSubmit}>
         <InputGroup
-          icon=""
           id="dni"
           label="dni"
           placeholder="DNI o NIE"
-          hiddenLabel
           {...register('dni')}
           name="dni"
           error={errors.dni && true}
         />
-        <FlexBoxStyled align="start" direction="row" justify="flex-end">
-          <Input
-            type={isVisibility ? 'text' : 'password'}
-            placeholder="Contraseña"
-            {...register('password')}
-            error={errors.password && true}
-          />
-          <Icon
-            name="visibility_off"
-            color={colors.gray.gray4}
-            onClick={() => setIsVisibility(!isVisibility)}
-          />
-        </FlexBoxStyled>
+        <InputGroup
+          type={isVisibility ? 'text' : 'password'}
+          id="password"
+          label="password"
+          placeholder="Contraseña"
+          {...register('password')}
+          name="password"
+          color={colors.gray.gray4}
+          iconClick={() => setIsVisibility(!isVisibility)}
+          icon="visibility_off"
+          error={errors.password && true}
+        />
         <FlexErrorStyled align="start">
           {errors?.dni || errors?.password ? (
             <ValidationMessage
