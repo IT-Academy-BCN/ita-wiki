@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -91,21 +90,14 @@ const Login: FC = () => {
   const urls = 'http://localhost:8999/api/v1/auth/login'
 
   const loginUser = async (user: object) => {
-    console.log('user:', user)
     try {
       const response = await axios.post(urls, user)
-      console.log('response:', response)
 
-      if (response) {
-        localStorage.setItem('token', response.data.token)
+      if (response.status === 204) {
         navigate('/')
       }
-
-      if (response.data.code === 'error') {
-        console.log('data.error')
-      }
     } catch (error) {
-      console.log(error)
+      throw new Error('Error logging in user')
     }
   }
 

@@ -8,4 +8,10 @@ export const handlers = [
       ctx.status(204)
     )
   ),
+  rest.post('/login', (req, res, ctx) =>
+    res(
+      // Respond with a 204 status code
+      ctx.status(401)
+    )
+  ),
 ]
