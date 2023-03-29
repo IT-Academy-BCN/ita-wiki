@@ -2,15 +2,10 @@ import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import {
-  Title,
-  Input,
-  Button,
-  Label,
-  ValidationMessage,
-} from '../components/atoms'
+import { Title, Text, Button, ValidationMessage } from '../components/atoms'
 import InputGroup from '../components/molecules/InputGroup'
 import { paths } from '../constants'
+import { FlexBox } from '../styles'
 
 const StyledForm = styled.form`
   display: flex;
@@ -20,8 +15,12 @@ const StyledForm = styled.form`
   padding: 2rem;
   width: 50%;
 `
+const LinkLoginStyled = styled(Link)`
+  color: black;
+`
 
 type TForm = {
+  dni: string
   email: string
   userName: string
   password: string
@@ -36,7 +35,7 @@ const Register: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
+    getValues,
   } = useForm<TForm>()
 
   const onSubmit = (data: object) => {
@@ -57,73 +56,79 @@ const Register: FC = () => {
     <div>
       <Title as="h1">Register 👋</Title>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
-        <InputGroup
-          id="email"
-          label="email"
-          type="email"
-          placeholder="Email"
-          error={errors.email && true}
-          validationMessage="El campo es requerido"
-          validationType="error"
-          {...register('email', {
-            required: true,
-          })}
-        />
+        <FlexBox>
+          <InputGroup
+            id="dni"
+            label="dni"
+            type="text"
+            placeholder="DNI"
+            error={errors.userName && true}
+            validationMessage="El campo es requerido"
+            validationType="error"
+            {...register('dni', {
+              required: true,
+            })}
+          />
+          <InputGroup
+            id="email"
+            label="email"
+            type="email"
+            placeholder="Email"
+            error={errors.email && true}
+            validationMessage="El campo es requerido"
+            validationType="error"
+            {...register('email', {
+              required: true,
+            })}
+          />
 
-        <InputGroup
-          id="userName"
-          label="userName"
-          type="text"
-          placeholder="Username"
-          error={errors.userName && true}
-          validationMessage="El campo es requerido"
-          validationType="error"
-          {...register('userName', {
-            required: true,
-          })}
-        />
-        <div>
-          <Label text="contraseña" htmlFor="password" />
-          <Input
+          <InputGroup
+            id="userName"
+            label="userName"
+            type="text"
+            placeholder="Username"
+            error={errors.userName && true}
+            validationMessage="El campo es requerido"
+            validationType="error"
+            {...register('userName', {
+              required: true,
+            })}
+          />
+
+          <InputGroup
+            id="password"
+            label="password"
             type="password"
-            placeholder="Repetir contraseña"
+            placeholder="password"
+            error={errors.password && true}
+            validationMessage="El campo es requerido"
+            validationType="error"
             {...register('password', {
               required: true,
-              minLength: 8,
             })}
-            error={errors.password && true}
           />
-          {errors.password?.type === 'required' && (
-            <ValidationMessage color="error" text="El campo es requerido" />
-          )}
-          {errors.password?.type === 'minLength' && (
-            <ValidationMessage
-              color="error"
-              text="La contraseña debe tener mínimo 8 caracteres"
-            />
-          )}
-        </div>
 
-        <div>
-          <Label text="Repetir contraseña" htmlFor="confirmPassword" />
-          <Input
+          <InputGroup
+            id="confirmPassword"
+            label="confirmPassword"
             type="password"
-            placeholder="Repetir contraseña"
+            placeholder="confirmPassword"
+            error={errors.confirmPassword && true}
+            validationMessage={
+              errors.confirmPassword &&
+              errors.confirmPassword.type === 'validate'
+                ? 'Las contraseñas no coinciden'
+                : 'El campo es requerido'
+            }
+            validationType="error"
             {...register('confirmPassword', {
               required: true,
-              minLength: 8,
+              validate: (value) => value === getValues('password'),
             })}
-            error={errors.confirmPassword && true}
           />
-          {watch('confirmPassword') !== watch('password') && (
-            <ValidationMessage
-              color="error"
-              text="Las contraseñas no coinciden"
-            />
-          )}
-        </div>
-        {/*  TODO create select component */}
-        <div style={{ marginTop: '1rem' }}>
+
+          {/*  TODO create select component */}
+
           <select
             {...register('specialization', {
               required: true,
@@ -133,26 +138,30 @@ const Register: FC = () => {
               <option key={opt.id}>{opt.specialization}</option>
             ))}
           </select>
-        </div>
 
-        {/* TODO generate an style or a checkbox component */}
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <input
-            type="checkbox"
-            {...register('accept', {
-              required: true,
-            })}
-          />
-          <p>Acepto términos legales</p>
-        </div>
-        {errors.accept?.type === 'required' && (
-          <ValidationMessage color="error" text="El campo es requerido" />
-        )}
-        <Button type="submit">Registrarme</Button>
+          {/* TODO generate checkbox component? */}
+          <FlexBox direction="row">
+            <input
+              type="checkbox"
+              {...register('accept', {
+                required: true,
+              })}
+            />
+            <Text>Acepto términos legales</Text>
+          </FlexBox>
+          {errors.accept?.type === 'required' && (
+            <ValidationMessage
+              color="error"
+              text="Es necesario aceptar términos legales"
+            />
+          )}
+          <Button type="submit">Registrarme</Button>
+        </FlexBox>
       </StyledForm>
-      <p>
-        ¿Tienes una cuenta? <Link to={paths.login}>Entrar</Link>{' '}
-      </p>
+      <Text fontWeight="bold">
+        ¿Tienes una cuenta?{' '}
+        <LinkLoginStyled to={paths.login}>Entrar</LinkLoginStyled>
+      </Text>
     </div>
   )
 }
