@@ -1,3 +1,4 @@
+/* eslint max-classes-per-file: 0 */
 import { ZodIssue } from "zod"
 
 /* eslint-disable max-classes-per-file */
