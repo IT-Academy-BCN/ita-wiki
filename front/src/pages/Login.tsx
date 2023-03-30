@@ -1,107 +1,152 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import styled from 'styled-components'
-import {
-  Button,
-  Input,
-  Text,
-  Title,
-  ValidationMessage,
-} from '../components/atoms'
+import InputGroup from '../components/molecules/InputGroup'
+import { Button, Text, Title, ValidationMessage } from '../components/atoms'
 import { paths } from '../constants'
-import { colors } from '../styles'
+import { dimensions, colors, FlexBox } from '../styles'
 
-const FlexBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
+const validNIEPrefixes = ['X', 'Y', 'Z']
+const validDNIPrefixes = [...Array(23).keys()].map((i) => (i + 1).toString())
+const DNI_REGEX = /^(([XYZ]\d{7,8})|(\d{8}))([a-zA-Z])$/i
+const DNISchema = z
+  .string()
+  .regex(DNI_REGEX)
+  .transform((value) => value.toUpperCase())
+  .refine((value) => {
+    const firstLetter = value.charAt(0)
+    return (
+      validDNIPrefixes.includes(firstLetter) ||
+      validNIEPrefixes.includes(firstLetter)
+    )
+  })
+
+const UserLoginSchema = z.object({
+  dni: DNISchema,
+  password: z.string().min(8),
+})
+
+const FlexErrorStyled = styled(FlexBox)`
+  height: ${dimensions.spacing.xxxs};
+  margin-left: 0.2rem;
 `
 
-const LoginStyled = styled.div`
+const LoginStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
+  gap: ${dimensions.spacing.sm};
   height: 100vh;
-  margin: 0;
-  padding: 3rem;
-  gap: 2rem;
-  display: flex;
-  flex-direction: column;
+  padding: ${dimensions.spacing.lg};
 `
+
+const TitleStyled = styled(Title)`
+  width: 100%;
+  margin: 4rem 0rem 0rem 0.2rem;
+`
+
 const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  justify-content: flex-start;
+  gap: ${dimensions.spacing.base};
+  width: 100%;
+  margin-top: -4rem;
+`
+
+const LinkStyled = styled(Link)`
+  color: ${colors.black.black1};
+  font-weight: 500;
+  margin: ${dimensions.spacing.sm} ${dimensions.spacing.xxxs};
 `
 
 const LinkRegisterStyled = styled(Link)`
-  color: black;
+  color: ${colors.black.black1};
+`
+
+const ButtonStyled = styled(Button)`
+  margin: ${dimensions.spacing.none};
 `
 
 type TForm = {
-  id: string
+  dni: string
   password: string
 }
 
 const Login: FC = () => {
+  const [isVisibility, setIsVisibility] = useState(false)
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<TForm>()
+  } = useForm<TForm>({
+    resolver: zodResolver(UserLoginSchema),
+  })
 
-  const loginUser = (user: object) => {
-    console.log('user:', user)
+  const navigate = useNavigate()
+
+  const urls = 'http://localhost:8999/api/v1/auth/login'
+
+  const loginUser = async (user: object) => {
+    try {
+      const response = await axios.post(urls, user)
+
+      if (response.status === 204) {
+        navigate('/')
+      }
+    } catch (error) {
+      throw new Error('Error logging in user')
+    }
   }
 
   const onSubmit = handleSubmit((data) => {
-    const { id, password } = data
-    loginUser({ id, password })
+    const { dni, password } = data
+    loginUser({ dni, password })
   })
 
   return (
-    <LoginStyled>
-      <Title as="h1" fontWeight="bold">
+    <LoginStyled justify="space-between">
+      <TitleStyled as="h1" fontWeight="bold">
         Login
-      </Title>
+      </TitleStyled>
 
       <FormStyled onSubmit={onSubmit}>
-        <FlexBox>
-          <Input
-            placeholder="DNI o NIE"
-            {...register('id', {
-              // TODO -> validate: validateID()
-              required: true,
-              pattern: /^[XYZ]?\d{5,8}[A-Z]$/,
-            })}
-            error={errors.id && true}
-          />
-          {/* {errors.id && (
-            <ValidationMessage color="error" text="DNI o NIE incorrecto..." />
-          )} */}
-          {errors.id?.type === 'required' && (
-            <ValidationMessage color="error" text="El campo es requerido" />
-          )}
-          {errors.id?.type === 'pattern' && (
-            <ValidationMessage color="error" text="El formato es incorrecto" />
-          )}
+        <InputGroup
+          id="dni"
+          label="dni"
+          placeholder="DNI o NIE"
+          {...register('dni')}
+          name="dni"
+          error={errors.dni && true}
+        />
+        <InputGroup
+          type={isVisibility ? 'text' : 'password'}
+          id="password"
+          label="password"
+          placeholder="Contraseña"
+          {...register('password')}
+          name="password"
+          color={colors.gray.gray4}
+          iconClick={() => setIsVisibility(!isVisibility)}
+          icon="visibility_off"
+          error={errors.password && true}
+        />
+        <FlexErrorStyled align="start">
+          {errors?.dni || errors?.password ? (
+            <ValidationMessage
+              color="error"
+              text="Identificador o contraseña incorrecto"
+            />
+          ) : null}
+        </FlexErrorStyled>
+        <FlexBox align="end">
+          <LinkStyled to={`${paths.register}`}>
+            Recordar/cambiar contraseña
+          </LinkStyled>
         </FlexBox>
-        <FlexBox>
-          <Input
-            type="password"
-            placeholder="Contraseña"
-            {...register('password', {
-              required: true,
-            })}
-            error={errors.password && true}
-          />
-          {errors.password?.type === 'required' && (
-            <ValidationMessage color="error" text="El campo es requerido" />
-          )}
-        </FlexBox>
-
-        <Text>Recordar/cambiar contraseña</Text>
-        <Button type="submit">Login</Button>
+        <ButtonStyled type="submit">Login</ButtonStyled>
       </FormStyled>
 
       <LinkRegisterStyled to={`${paths.register}`}>

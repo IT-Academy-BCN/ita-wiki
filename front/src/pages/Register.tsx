@@ -32,6 +32,7 @@ const SelectStyled = styled.select`
   border-radius: ${dimensions.borderRadius.base};
   width: 100%;
   border: 1px solid ${colors.gray.gray4};
+  color: ${colors.gray.gray3};
 `
 
 const validNIEPrefixes = ['X', 'Y', 'Z']
@@ -52,7 +53,7 @@ const DNISchema = z
 const UserRegisterSchema = z.object({
   dni: DNISchema,
   email: z.string(),
-  userName: z.string(),
+  name: z.string(),
   specialization: z.string(),
   password: z.string().min(8),
 })
@@ -60,7 +61,7 @@ const UserRegisterSchema = z.object({
 type TForm = {
   dni: string
   email: string
-  userName: string
+  name: string
   password: string
   confirmPassword: string
   specialization: string
@@ -81,36 +82,31 @@ const Register: FC = () => {
   const url = 'http://localhost:8999/api/v1/auth/register'
 
   const registerNewUser = async (user: object) => {
-    console.log('user', user)
     try {
       const response = await axios.post(url, user)
-      console.log('res', response)
-      if (response) {
-        localStorage.setItem('token', response.data.token)
+      if (response.status === 204) {
         navigate('/')
       }
-      if (response.data.code === 'error') {
-        console.log('error')
-      }
     } catch (error) {
-      console.log(error)
+      throw new Error('Error registering new user')
     }
   }
 
   const onSubmit = handleSubmit((data) => {
-    const { dni, userName, specialization, password } = data
-    registerNewUser({ dni, userName, specialization, password })
+    const { email, password, name, dni, specialization } = data
+    registerNewUser({ email, password, name, dni, specialization })
     reset()
   })
 
   const options = [
-    { id: 0, specialization: 'Especialidad' },
-    { id: 1, specialization: 'React' },
-    { id: 2, specialization: 'Angular' },
-    { id: 3, specialization: 'Vue' },
-    { id: 4, specialization: 'Node' },
-    { id: 5, specialization: 'Java' },
-    { id: 6, specialization: 'Fullstack' },
+    { id: 0, value: '', specialization: 'Especialidad' },
+    { id: 1, value: 'react', specialization: 'React' },
+    { id: 2, value: 'angular', specialization: 'Angular' },
+    { id: 3, value: 'vue', specialization: 'Vue' },
+    { id: 4, value: 'node', specialization: 'Node' },
+    { id: 5, value: 'java', specialization: 'Java' },
+    { id: 6, value: 'fullstack', specialization: 'Fullstack' },
+    { id: 7, value: 'dataScience', specialization: 'Data Science' },
   ]
 
   return (
@@ -121,11 +117,12 @@ const Register: FC = () => {
       <StyledForm onSubmit={onSubmit}>
         <FlexBox>
           <InputGroup
+            data-testid="DNI"
             id="dni"
             label="dni"
             type="text"
             placeholder="DNI"
-            error={errors.userName && true}
+            error={errors.dni && true}
             validationMessage="El campo es requerido"
             validationType="error"
             {...register('dni', {
@@ -134,6 +131,7 @@ const Register: FC = () => {
           />
 
           <InputGroup
+            data-testid="email"
             id="email"
             label="email"
             type="email"
@@ -147,19 +145,21 @@ const Register: FC = () => {
           />
 
           <InputGroup
-            id="userName"
-            label="userName"
+            data-testid="name"
+            id="name"
+            label="name"
             type="text"
             placeholder="Username"
-            error={errors.userName && true}
+            error={errors.name && true}
             validationMessage="El campo es requerido"
             validationType="error"
-            {...register('userName', {
+            {...register('name', {
               required: true,
             })}
           />
 
           <InputGroup
+            data-testid="password"
             id="password"
             label="password"
             type="password"
@@ -167,16 +167,21 @@ const Register: FC = () => {
             error={errors.password && true}
             validationMessage="El campo es requerido"
             validationType="error"
+            color={colors.gray.gray4}
+            icon="visibility_off"
             {...register('password', {
               required: true,
             })}
           />
 
           <InputGroup
+            data-testid="confirmPassword"
             id="confirmPassword"
             label="confirmPassword"
             type="password"
-            placeholder="confirmPassword"
+            placeholder="Confirmar password"
+            icon="visibility_off"
+            color={colors.gray.gray4}
             error={errors.confirmPassword && true}
             validationMessage={
               errors.confirmPassword &&
@@ -193,30 +198,43 @@ const Register: FC = () => {
 
           {/*  TODO create select component */}
           <SelectStyled
+            data-testid="specialization"
             {...register('specialization', {
               required: true,
             })}
           >
             {options.map((opt) => (
-              <option key={opt.id}>{opt.specialization}</option>
+              <option key={opt.id} value={opt.value}>
+                {opt.specialization}
+              </option>
             ))}
           </SelectStyled>
+          {errors.specialization?.type === 'required' && (
+            <ValidationMessage color="error" text="El campo es requerido" />
+          )}
 
           {/* TODO generate checkbox component? */}
           <FlexBox direction="row">
             <input
+              style={{ marginRight: '1rem' }}
               type="checkbox"
               {...register('accept', {
                 required: true,
               })}
             />
-            <Text>Acepto términos legales</Text>
+            {errors.accept?.type === 'required' ? (
+              <Text color={colors.error}>Acepto términos legales</Text>
+            ) : (
+              <Text>Acepto términos legales</Text>
+            )}
           </FlexBox>
-          {errors.accept?.type === 'required' && (
-            <ValidationMessage
-              color="error"
-              text="Es necesario aceptar términos legales"
-            />
+          {errors.accept && (
+            <p>hay que aceptar</p>
+
+            // <ValidationMessage
+            //   color="error"
+            //   text="Es necesario aceptar los términos legales"
+            // />
           )}
           <Button type="submit">Registrarme</Button>
         </FlexBox>

@@ -8,4 +8,17 @@ export const handlers = [
       ctx.status(204)
     )
   ),
+  
+  // Handles a POST /register request
+  rest.post('auth/register', (req, res, ctx) =>
+  res(
+    // Respond with a 204 status code
+    ctx.status(204)
+  )
+  ),
+  rest.post('auth/register', (req, res, ctx) =>
+    res(
+      ctx.status(400)
+    )
+  ),
 ]
