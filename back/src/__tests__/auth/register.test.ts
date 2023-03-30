@@ -58,7 +58,7 @@ describe('Testing registration endpoint', () => {
         specialization: 'backend'
       })
     expect(response.status).toBe(400)
-    /* expect(response.body.error).toBe('Invalid DNI') */
+    expect(response.body.message).toBe('Invalid')
   })
 
   test('should fail with invalid email', async () => {
@@ -72,7 +72,7 @@ describe('Testing registration endpoint', () => {
         specialization: 'backend'
       })
     expect(response.status).toBe(400)
-    /* expect(response.body.error).toBe('Invalid email') */
+    expect(response.body.message).toBe('Invalid email')
   })
 
   test('should fail with invalid password: too short', async () => {
@@ -86,7 +86,7 @@ describe('Testing registration endpoint', () => {
         specialization: 'backend'
       })
     expect(response.status).toBe(400)
-    /* expect(response.body.error).toBe('Invalid password') */
+    expect(response.body.message).toBe('String must contain at least 8 character(s)')
   })
 
   test('should fail with invalid password: no numbers', async () => {
@@ -100,7 +100,7 @@ describe('Testing registration endpoint', () => {
         specialization: 'backend'
       })
     expect(response.status).toBe(400)
-    /* expect(response.body.error).toBe('Invalid password') */
+    expect(response.body.message).toBe('Invalid')
   })
 
   test('should fail with invalid password: contains non-alfanumeric', async () => {
@@ -114,6 +114,6 @@ describe('Testing registration endpoint', () => {
         specialization: 'backend'
       })
     expect(response.status).toBe(400)
-    /* expect(response.body.error).toBe('Invalid password') */
+    expect(response.body.message).toBe('Invalid')
   })
 })
