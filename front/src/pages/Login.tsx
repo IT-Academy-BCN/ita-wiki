@@ -129,7 +129,7 @@ const Login: FC = () => {
           {...register('password')}
           name="password"
           color={colors.gray.gray4}
-          iconClick={() => setIsVisibility(!isVisibility)}
+          onClick={() => setIsVisibility(!isVisibility)}
           icon="visibility_off"
           error={errors.password && true}
         />
