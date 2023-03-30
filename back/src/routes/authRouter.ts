@@ -1,7 +1,6 @@
 import Router from '@koa/router'
 import { z } from 'zod'
-import { loginController } from '../controllers'
-import { registerController } from '../controllers/registerController'
+import { loginController, registerController } from '../controllers'
 import { errorMiddleware, validate } from '../middleware'
 import { UserLoginSchema, UserRegisterSchema } from '../schemas'
 
