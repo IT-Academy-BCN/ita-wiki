@@ -27,7 +27,7 @@ describe('Select', () => {
 
     fireEvent.change(screen.getByRole('combobox'), { target: { value: '1' } })
 
-    expect(screen.getByRole('combobox')).toHaveValue('1')
-    expect(screen.getByText('Angular')).toBeInTheDocument()
+    expect(screen.getByDisplayValue('React')).toBeInTheDocument()
+    expect(screen.getByText('Fullstack')).toBeInTheDocument()
   })
 })
