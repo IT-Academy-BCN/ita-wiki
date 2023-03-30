@@ -8,7 +8,7 @@ const errorMiddleware = async (ctx: Context, next: Next) => {
     await next()
   } catch (error: any) {
     if (error instanceof ZodError) {
-      error = new ValidationError(`${error.errors}`)
+      error = new ValidationError(JSON.stringify(error.errors[0]))
     } else if (error?.errorInfo?.code === 'auth/id-token-expired') {
       error = new UnauthorizedError('refresh_token')
     }
