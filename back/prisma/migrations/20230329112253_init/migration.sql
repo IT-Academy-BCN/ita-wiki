@@ -5,6 +5,7 @@ CREATE TYPE "USER_STATUS" AS ENUM ('ACTIVE', 'INACTIVE');
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+    "dni" VARCHAR(10) NOT NULL,
     "password" TEXT NOT NULL,
     "name" TEXT,
     "status" "USER_STATUS" NOT NULL DEFAULT 'INACTIVE',
@@ -16,3 +17,6 @@ CREATE TABLE "users" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_dni_key" ON "users"("dni");

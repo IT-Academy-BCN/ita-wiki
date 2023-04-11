@@ -41,7 +41,6 @@ function Select({
     const option = options.find((op) => op.value === value)
     setSelectedOption(option ?? null)
   }
-  console.log('state SELECT', selectedOption)
 
   return (
     <SelectStyled
