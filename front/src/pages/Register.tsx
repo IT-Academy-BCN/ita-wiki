@@ -59,21 +59,24 @@ const UserRegisterSchema = z
   .object({
     dni: DNISchema,
     email: z
-      .string({ required_error: 'El campo es requerido' })
+      .string({ required_error: 'Este campo es obligatorio' })
       .min(1, { message: 'Este campo es obligatorio' })
       .email('Debe ser un correo válido'),
     name: z
-      .string({ required_error: 'El campo es requerido' })
+      .string({ required_error: 'Este campo es obligatorio' })
       .min(1, { message: 'Este campo es obligatorio' }),
-    specialization: z.string({ required_error: 'El campo es requerido' }),
+    specialization: z.string({ required_error: 'Este campo es obligatorio' }),
     password: z
-      .string({ required_error: 'El campo es requerido' })
+      .string({ required_error: 'Este campo es obligatorio' })
       .min(8, { message: 'La contraseña debe tener mínimo 8 caracteres' })
       .regex(new RegExp(passRegex), {
         message:
-          'La contraseña debe contener al menos un número, usar mayúsculas y minúsculas y un número',
+          'La contraseña debe contener al menos un número, mayúsculas y minúsculas',
       }),
-    confirmPassword: z.string({ required_error: 'El campo es requerido' }),
+    confirmPassword: z.string({ required_error: 'Este campo es obligatorio' }),
+    accept: z.boolean({
+      required_error: 'Es necesario aceptar los términos legales',
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     path: ['confirmPassword'],
@@ -97,7 +100,6 @@ const Register: FC = () => {
     register,
     handleSubmit,
     formState: { errors },
-    getValues,
     reset,
   } = useForm<TForm>({ resolver: zodResolver(UserRegisterSchema) })
 
@@ -138,129 +140,122 @@ const Register: FC = () => {
         Register
       </Title>
       <StyledForm onSubmit={onSubmit}>
-        <FlexBox>
-          <InputGroup
-            required
-            data-testid="DNI"
-            id="dni"
-            label="dni"
-            type="text"
-            placeholder="DNI"
-            error={errors.dni && true}
-            validationMessage={errors.dni?.message}
-            validationType="error"
-            {...register('dni')}
-          />
+        <InputGroup
+          required
+          data-testid="DNI"
+          id="dni"
+          label="dni"
+          type="text"
+          placeholder="DNI"
+          error={errors.dni && true}
+          validationMessage={errors.dni?.message}
+          validationType="error"
+          {...register('dni')}
+        />
 
-          <InputGroup
-            required
-            data-testid="email"
-            id="email"
-            label="email"
-            type="email"
-            placeholder="Email"
-            error={errors.email && true}
-            validationMessage={errors.email?.message}
-            validationType="error"
-            {...register('email')}
-          />
+        <InputGroup
+          required
+          data-testid="email"
+          id="email"
+          label="email"
+          type="email"
+          placeholder="Email"
+          error={errors.email && true}
+          validationMessage={errors.email?.message}
+          validationType="error"
+          {...register('email')}
+        />
 
-          <InputGroup
-            required
-            data-testid="name"
-            id="name"
-            label="name"
-            type="text"
-            placeholder="Username"
-            error={errors.name && true}
-            validationMessage={errors.name?.message}
-            validationType="error"
-            {...register('name')}
-          />
+        <InputGroup
+          required
+          data-testid="name"
+          id="name"
+          label="name"
+          type="text"
+          placeholder="Username"
+          error={errors.name && true}
+          validationMessage={errors.name?.message}
+          validationType="error"
+          {...register('name')}
+        />
 
-          <InputGroup
-            required
-            data-testid="password"
-            id="password"
-            label="password"
-            type={visibility ? 'text' : 'password'}
-            placeholder="password"
-            error={errors.password && true}
-            validationMessage={errors.password?.message}
-            validationType="error"
-            color={colors.gray.gray4}
-            icon={visibility ? 'visibility' : 'visibility_off'}
-            onClick={() => setVisibility(!visibility)}
-            {...register('password')}
-          />
+        <InputGroup
+          required
+          data-testid="password"
+          id="password"
+          label="password"
+          type={visibility ? 'text' : 'password'}
+          placeholder="password"
+          error={errors.password && true}
+          validationMessage={errors.password?.message}
+          validationType="error"
+          color={colors.gray.gray4}
+          icon={visibility ? 'visibility' : 'visibility_off'}
+          iconClick={() => setVisibility(!visibility)}
+          {...register('password')}
+        />
 
-          <InputGroup
-            required
-            data-testid="confirmPassword"
-            id="confirmPassword"
-            label="confirmPassword"
-            type={visibility ? 'text' : 'password'}
-            placeholder="Confirmar password"
-            icon={visibility ? 'visibility' : 'visibility_off'}
-            // iconClick={() => setVisibility(!visibility)}
-            color={colors.gray.gray4}
-            error={errors.confirmPassword && true}
-            // validationMessage={
-            //   errors.confirmPassword &&
-            //   errors.confirmPassword.type === 'validate'
-            //     ? 'Las contraseñas no coinciden'
-            //     : 'El campo es requerido'
-            // }
-            validationMessage={errors.confirmPassword?.message}
-            validationType="error"
-            {...register('confirmPassword', {
-              required: true,
-              validate: (value) => value === getValues('password'),
-            })}
-          />
+        <InputGroup
+          required
+          data-testid="confirmPassword"
+          id="confirmPassword"
+          label="confirmPassword"
+          type={visibility ? 'text' : 'password'}
+          placeholder="Confirmar password"
+          icon={visibility ? 'visibility' : 'visibility_off'}
+          iconClick={() => setVisibility(!visibility)}
+          color={colors.gray.gray4}
+          error={errors.confirmPassword && true}
+          validationMessage={errors.confirmPassword?.message}
+          validationType="error"
+          {...register('confirmPassword')}
+        />
 
-          {/*  TODO create select component */}
-          <SelectStyled
-            data-testid="specialization"
-            {...register('specialization', {
-              required: true,
-            })}
-          >
-            {options.map((opt) => (
-              <option key={opt.id} value={opt.value}>
-                {opt.specialization}
-              </option>
-            ))}
-          </SelectStyled>
-          {errors.specialization?.type === 'required' && (
-            <ValidationMessage color="error" text="El campo es requerido" />
+        {/*  TODO create select component */}
+        <SelectStyled
+          required
+          data-testid="specialization"
+          {...register('specialization')}
+        >
+          {options.map((opt) => (
+            <option key={opt.id} value={opt.value}>
+              {opt.specialization}
+            </option>
+          ))}
+        </SelectStyled>
+        {errors.specialization?.type === 'required' && (
+          <ValidationMessage
+            color="error"
+            text={errors.specialization?.message}
+          />
+        )}
+
+        {errors.specialization?.type === 'required' && (
+          <ValidationMessage
+            color="error"
+            text={errors.specialization?.message}
+          />
+        )}
+
+        {/* TODO generate checkbox component group? */}
+        <FlexBox direction="row">
+          <input
+            required
+            style={{ marginRight: '1rem' }}
+            type="checkbox"
+            {...register('accept')}
+          />
+          {errors.accept?.type === 'required' ? (
+            <Text color={colors.error}>Acepto términos legales</Text>
+          ) : (
+            <Text>Acepto términos legales</Text>
           )}
 
-          {/* TODO generate checkbox component? */}
-          <FlexBox direction="row">
-            <input
-              style={{ marginRight: '1rem' }}
-              type="checkbox"
-              {...register('accept', {
-                required: true,
-              })}
-            />
-            {errors.accept?.type === 'required' ? (
-              <Text color={colors.error}>Acepto términos legales</Text>
-            ) : (
-              <Text>Acepto términos legales</Text>
-            )}
-          </FlexBox>
           {errors.accept && (
-            <p>hay que aceptar</p>
-
-            // <ValidationMessage
-            //   color="error"
-            //   text="Es necesario aceptar los términos legales"
-            // />
+            <ValidationMessage color="error" text={errors.accept?.message} />
           )}
-          <Button type="submit">Registrarme</Button>
         </FlexBox>
+        <Button type="submit">Registrarme</Button>
       </StyledForm>
       <Text fontWeight="bold">
         ¿Tienes una cuenta?

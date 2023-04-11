@@ -18,7 +18,7 @@ describe('Register', () => {
     expect(screen.getByText(/Registrarme/i)).toBeInTheDocument()
   })
 
-  it('Should renders a message if any input is empty', async () => {
+  it('registers new users', async () => {
     render(
       <BrowserRouter>
         <Register />
@@ -31,32 +31,16 @@ describe('Register', () => {
     userEvent.type(screen.getByLabelText('confirmPassword'), 'password')
     userEvent.type(screen.getByTestId('specialization'), 'specialization')
 
-    userEvent.click(screen.getByText(/Registrarme/i))
-
-    await waitFor(() => {
-      expect(screen.getAllByText('El campo es requerido')).toBeDefined()
-    })
-  })
-
-  it('Should register new users', async () => {
-    render(
-      <BrowserRouter>
-        <Register />
-      </BrowserRouter>
-    )
-
-    userEvent.click(screen.getByText(/Registrarme/i))
-
     const response = await axios.post(
       'http://localhost:8999/api/v1/auth/register'
     )
-    expect(response.data).toEqual([
-      {
-        email: 'user@example.com',
-        password: 'stringst',
-        name: 'string',
-        dni: 'string',
-      },
-    ])
+
+    await waitFor(() => {
+      expect(window.location.pathname).toBe('/')
+      expect(response.status).toEqual(204)
+      expect(
+        screen.queryByText('Este campo es obligatorio')
+      ).not.toBeInTheDocument()
+    })
   })
 })
