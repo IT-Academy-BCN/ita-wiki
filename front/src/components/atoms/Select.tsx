@@ -1,4 +1,4 @@
-import React, { SelectHTMLAttributes, useState } from 'react'
+import { SelectHTMLAttributes, useState } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions } from '../../styles'
 
@@ -22,39 +22,38 @@ type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
   placeholder?: string
 }
 
-const Select = React.forwardRef<HTMLSelectElement, TSelect>(
-  ({ options = [], error = false, placeholder = 'Options' }, ref) => {
-    const [selectedOption, setSelectedOption] = useState<{
-      value: string
-      label: string
-    } | null>(null)
+function Select({
+  options = [],
+  error = false,
+  placeholder = 'Options',
+}: TSelect) {
+  const [selectedOption, setSelectedOption] = useState<{
+    value: string
+    label: string
+  } | null>(null)
 
-    const handleSelectChange = (
-      event: React.ChangeEvent<HTMLSelectElement>
-    ) => {
-      const { value } = event.target
-      const option = options.find((op) => op.value === value)
-      setSelectedOption(option ?? null)
-    }
-
-    return (
-      <SelectStyled
-        value={selectedOption?.value ?? ''}
-        onChange={handleSelectChange}
-        error={error}
-        ref={ref}
-      >
-        <option disabled value="">
-          {placeholder}
-        </option>
-        {options.map(({ value, label }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </SelectStyled>
-    )
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.target
+    const option = options.find((op) => op.value === value)
+    setSelectedOption(option ?? null)
   }
-)
 
-export default Select
+  return (
+    <SelectStyled
+      value={selectedOption?.value ?? ''}
+      onChange={handleSelectChange}
+      error={error}
+    >
+      <option disabled value="">
+        {placeholder}
+      </option>
+      {options.map(({ value, label }) => (
+        <option key={value} value={value}>
+          {label}
+        </option>
+      ))}
+    </SelectStyled>
+  )
+}
+
+export { Select }
