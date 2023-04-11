@@ -16,8 +16,14 @@ const SelectStyled = styled.select<TSelect>`
     outline: 0 none;
   }
 `
+
+type TOption = {
+  value: string
+  label: string
+}
+
 type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
-  options?: { value: string; label: string }[]
+  options?: TOption[]
   error?: boolean | string
   placeholder?: string
 }
@@ -27,10 +33,7 @@ function Select({
   error = false,
   placeholder = 'Options',
 }: TSelect) {
-  const [selectedOption, setSelectedOption] = useState<{
-    value: string
-    label: string
-  } | null>(null)
+  const [selectedOption, setSelectedOption] = useState<TOption | null>(null)
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target
