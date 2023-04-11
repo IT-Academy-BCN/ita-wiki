@@ -37,6 +37,17 @@ Here are some of the useful scripts you can use:
 -   `"test"`: runs the tests using the `vitest` test runner.
 -   `"up"`: changes directory to the `scripts` folder and runs the `up.sh` script, which starts the database server and other dependencies. Then, it changes directory back to the `back` folder and runs the `prisma:migrate` script.
 
-### Landing Tutorial
+## Golden Rules
 
-If you don't have much experience with TypeScript or Prisma ORM, you may be interested in watching the following tutorial: [REST API with TypeScript and Prisma ORM](https://www.youtube.com/watch?v=RebA5J-rlwg). This tutorial covers the basics of TypeScript and how it can be used with Node.js to create web applications.
+1.  All code contributions must pass the CI/CD pipeline, which includes running linters, tests, and other checks. Please do not try to make pull requests that do not pass these validations.
+2.  Code must follow the project's ESLint configuration. Make sure your editor is configured to use the project's `.eslintrc` file (It should be automatically detected by ESLint if you are using Visual Studio Code).
+3.  All code contributions must have accompanying tests.
+
+## Very Useful Documentation
+
+Here are some useful links to official documentation for the technologies used in this project:
+
+-   [Prisma](https://www.prisma.io/docs) - Prisma ORM documentation.
+-   [vitest](https://vitest.dev/guide/) - vitest testing framework documentation.
+
+If you are new to TypeScript or Prisma ORM, you may want to watch the following tutorial before diving into the project: [REST API with TypeScript and Prisma ORM](https://www.youtube.com/watch?v=RebA5J-rlwg). This tutorial covers the basics of TypeScript and how it can be used with Node.js to create web applications.
