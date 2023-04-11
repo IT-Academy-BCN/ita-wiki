@@ -5,7 +5,7 @@ import '../src/prisma/middleware'
 async function main() {
   const data = {
     email: 'test@example.com',
-    password: 'password',
+    password: 'password1',
     name: 'Test User',
     dni: '45632452a',
     status: 'ACTIVE'
