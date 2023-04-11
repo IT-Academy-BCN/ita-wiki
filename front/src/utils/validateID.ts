@@ -23,16 +23,16 @@ export function validateID(dni: string) {
     if (letter !== correctLetter) {
       return {
         error: true,
-        message: 'Wrong ID, the letter of the NIF does not correspond',
+        message: 'Wrong NIF/NIE, the letter does not correspond',
       }
     }
     return {
       error: false,
-      message: 'Correct ID',
+      message: 'Correct NIF/NIE',
     }
   }
   return {
     error: true,
-    message: 'Wrong ID, invalid format',
+    message: 'Wrong NIF/NIE, invalid format',
   }
 }
