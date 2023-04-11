@@ -1,5 +1,4 @@
 import { Middleware, Context } from 'koa'
-import jwt, { Secret } from 'jsonwebtoken'
 import { prisma } from '../prisma/client'
 
 export const registerController: Middleware = async (ctx: Context) => {
@@ -34,10 +33,14 @@ export const registerController: Middleware = async (ctx: Context) => {
   const user = await prisma.user.create({
     data: { dni: dni.toUpperCase(), password, name, email },
   })
+  
+  if(!user || user.dni != dni.toUpperCase()){
+    ctx.status = 500
+    ctx.body = {
+      error: 'Database error',
+    }
+    return
+  }
 
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_KEY as Secret, {
-    expiresIn: '1d',
-  })
-  ctx.cookies.set('token', token, { httpOnly: true })
   ctx.status = 204
 }
