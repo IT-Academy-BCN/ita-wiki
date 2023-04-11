@@ -4,7 +4,7 @@ export default function ErrorPage() {
   return (
     <>
       <Title as="h1">Vaya! 😭</Title>
-      <Text>Page not found.</Text>
+      <Text>Page not found!</Text>
     </>
   )
 }
