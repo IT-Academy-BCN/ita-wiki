@@ -13,7 +13,7 @@ export const loginController = async (ctx: Koa.Context) => {
   })
 
   if (!user) {
-    ctx.status = 401
+    ctx.status = 404
     ctx.body = { error: 'User not found' }
     return
   }
@@ -21,7 +21,7 @@ export const loginController = async (ctx: Koa.Context) => {
   const isPasswordValid = await checkPassword(password, user.password)
 
   if (!isPasswordValid) {
-    ctx.status = 401
+    ctx.status = 422
     ctx.body = { error: 'Invalid password' }
     return
   }
