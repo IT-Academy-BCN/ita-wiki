@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import axios from 'axios'
@@ -12,19 +12,22 @@ import { colors, dimensions, FlexBox } from '../styles'
 
 const RegisterStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
-  padding: 3rem;
-  height: 100%;
+  padding: ${dimensions.spacing.lg};
+  gap: ${dimensions.spacing.sm};
+  height: 100vh;
 `
 
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  justify-content: flex-start;
+  gap: ${dimensions.spacing.base};
+  width: 100%;
 `
 
 const LinkLoginStyled = styled(Link)`
   color: black;
-  margin-left: 0.5rem;
+  margin-left: ${dimensions.spacing.xxxs};
 `
 
 const SelectStyled = styled.select`
@@ -39,7 +42,7 @@ const validNIEPrefixes = ['X', 'Y', 'Z']
 const validDNIPrefixes = [...Array(23).keys()].map((i) => (i + 1).toString())
 const DNI_REGEX = /^(([XYZ]\d{7,8})|(\d{8}))([a-zA-Z])$/i
 const DNISchema = z
-  .string()
+  .string({ required_error: 'El campo es requerido' })
   .regex(DNI_REGEX)
   .transform((value) => value.toUpperCase())
   .refine((value) => {
@@ -50,13 +53,32 @@ const DNISchema = z
     )
   })
 
-const UserRegisterSchema = z.object({
-  dni: DNISchema,
-  email: z.string(),
-  name: z.string(),
-  specialization: z.string(),
-  password: z.string().min(8),
-})
+const passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+
+const UserRegisterSchema = z
+  .object({
+    dni: DNISchema,
+    email: z
+      .string({ required_error: 'El campo es requerido' })
+      .min(1, { message: 'Este campo es obligatorio' })
+      .email('Debe ser un correo válido'),
+    name: z
+      .string({ required_error: 'El campo es requerido' })
+      .min(1, { message: 'Este campo es obligatorio' }),
+    specialization: z.string({ required_error: 'El campo es requerido' }),
+    password: z
+      .string({ required_error: 'El campo es requerido' })
+      .min(8, { message: 'La contraseña debe tener mínimo 8 caracteres' })
+      .regex(new RegExp(passRegex), {
+        message:
+          'La contraseña debe contener al menos un número, usar mayúsculas y minúsculas y un número',
+      }),
+    confirmPassword: z.string({ required_error: 'El campo es requerido' }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'Las contraseñas deben ser iguales',
+  })
 
 type TForm = {
   dni: string
@@ -70,6 +92,7 @@ type TForm = {
 }
 
 const Register: FC = () => {
+  const [visibility, setVisibility] = useState(false)
   const {
     register,
     handleSubmit,
@@ -117,78 +140,78 @@ const Register: FC = () => {
       <StyledForm onSubmit={onSubmit}>
         <FlexBox>
           <InputGroup
+            required
             data-testid="DNI"
             id="dni"
             label="dni"
             type="text"
             placeholder="DNI"
             error={errors.dni && true}
-            validationMessage="El campo es requerido"
+            validationMessage={errors.dni?.message}
             validationType="error"
-            {...register('dni', {
-              required: true,
-            })}
+            {...register('dni')}
           />
 
           <InputGroup
+            required
             data-testid="email"
             id="email"
             label="email"
             type="email"
             placeholder="Email"
             error={errors.email && true}
-            validationMessage="El campo es requerido"
+            validationMessage={errors.email?.message}
             validationType="error"
-            {...register('email', {
-              required: true,
-            })}
+            {...register('email')}
           />
 
           <InputGroup
+            required
             data-testid="name"
             id="name"
             label="name"
             type="text"
             placeholder="Username"
             error={errors.name && true}
-            validationMessage="El campo es requerido"
+            validationMessage={errors.name?.message}
             validationType="error"
-            {...register('name', {
-              required: true,
-            })}
+            {...register('name')}
           />
 
           <InputGroup
+            required
             data-testid="password"
             id="password"
             label="password"
-            type="password"
+            type={visibility ? 'text' : 'password'}
             placeholder="password"
             error={errors.password && true}
-            validationMessage="El campo es requerido"
+            validationMessage={errors.password?.message}
             validationType="error"
             color={colors.gray.gray4}
-            icon="visibility_off"
-            {...register('password', {
-              required: true,
-            })}
+            icon={visibility ? 'visibility' : 'visibility_off'}
+            onClick={() => setVisibility(!visibility)}
+            {...register('password')}
           />
 
           <InputGroup
+            required
             data-testid="confirmPassword"
             id="confirmPassword"
             label="confirmPassword"
-            type="password"
+            type={visibility ? 'text' : 'password'}
             placeholder="Confirmar password"
-            icon="visibility_off"
+            icon={visibility ? 'visibility' : 'visibility_off'}
+            // iconClick={() => setVisibility(!visibility)}
             color={colors.gray.gray4}
             error={errors.confirmPassword && true}
-            validationMessage={
-              errors.confirmPassword &&
-              errors.confirmPassword.type === 'validate'
-                ? 'Las contraseñas no coinciden'
-                : 'El campo es requerido'
-            }
+            // validationMessage={
+            //   errors.confirmPassword &&
+            //   errors.confirmPassword.type === 'validate'
+            //     ? 'Las contraseñas no coinciden'
+            //     : 'El campo es requerido'
+            // }
+            validationMessage={errors.confirmPassword?.message}
             validationType="error"
             {...register('confirmPassword', {
               required: true,
