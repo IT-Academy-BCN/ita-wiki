@@ -6,11 +6,15 @@ This project uses a set of technologies to facilitate the development of web app
 
 Before running the project, make sure you have Docker Desktop installed. Once you have Docker Desktop installed and running, follow the steps below:
 
-1.  Install the required dependencies:
+1. cd into the back folder if you haven't already:
+
+     `cd back`
+
+2. Install the required dependencies:
 
      `npm i`
 
- 2.  Start the project in docker:
+3. Start the project in docker:
 
     `npm run up`
 
