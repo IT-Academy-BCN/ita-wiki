@@ -1,7 +1,8 @@
 info:
   version: 1.0.0
-  title: My API
-  description: This is the API
+  title: IT Academy Wiki
+  description: Our app implements a Wiki to be used as a knowledge base by the
+    students of the Barcelona Activa's IT Academy
 servers:
   - url: v1
 openapi: 3.0.0
@@ -9,10 +10,88 @@ components:
   schemas: {}
   parameters: {}
 paths:
-  /v1/auth/register:
+  /api/v1/auth/login:
     post:
-      description: Registers a new user and returns an auth JWT as a cookie session
-      summary: Register a user
+      tags:
+        - auth
+      description: Takes a DNI and a password and returns a session cookie
+      summary: Logs in a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dni:
+                  type: string
+                password:
+                  type: string
+                  minLength: 8
+              required:
+                - dni
+                - password
+      responses:
+        "204":
+          description: The user has been authenticated
+        "400":
+          description: Zod validation error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: array
+                    items:
+                      type: object
+                      properties: {}
+                    example:
+                      - validation: regex
+                        code: invalid_string
+                        message: Invalid
+                        path:
+                          - body
+                          - dni
+                      - code: invalid_type
+                        expected: string
+                        received: undefined
+                        path:
+                          - body
+                          - password
+                        message: Required
+                required:
+                  - message
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User not found
+                required:
+                  - message
+        "422":
+          description: Invalid password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid password
+                required:
+                  - message
+  /api/v1/auth/register:
+    post:
+      tags:
+        - auth
+      description: Takes a DNI, a password, a name and an email an registers a user to
+        the system
+      summary: Registers a new user
       requestBody:
         content:
           application/json:
@@ -22,30 +101,24 @@ paths:
                 email:
                   type: string
                   format: email
-                password:
-                  type: string
-                  minLength: 8
                 name:
                   type: string
                 dni:
                   type: string
+                specialization:
+                  type: string
+                password:
+                  type: string
+                  minLength: 8
+                  pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*$
               required:
                 - email
-                - password
                 - dni
+                - specialization
+                - password
       responses:
-        "200":
-          description: The user has been authenticated
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: OK
-                required:
-                  - message
+        "204":
+          description: The user has been registered
         "400":
           description: DNI already exists
           content:
@@ -56,5 +129,17 @@ paths:
                   message:
                     type: string
                     example: DNI already exists
+                required:
+                  - message
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
                 required:
                   - message
