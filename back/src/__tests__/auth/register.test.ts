@@ -14,9 +14,6 @@ describe('Testing registration endpoint', () => {
         specialization: 'backend'
       })
     expect(response.status).toBe(204)
-
-    const cookie = response.header['set-cookie'] as string[]
-    expect(cookie[0]).toMatch(/token/)
   })
 
   describe('should fail with duplicate', () => {

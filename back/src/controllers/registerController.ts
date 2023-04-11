@@ -34,7 +34,7 @@ export const registerController: Middleware = async (ctx: Context) => {
     data: { dni: dni.toUpperCase(), password, name, email },
   })
   
-  if(!user || user.dni != dni.toUpperCase()){
+  if(!user || user.dni !== dni.toUpperCase()){
     ctx.status = 500
     ctx.body = {
       error: 'Database error',
