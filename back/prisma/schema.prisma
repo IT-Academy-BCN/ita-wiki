@@ -50,7 +50,7 @@ enum RESOURCE_TYPE {
 
 model Topic {
   id        String     @id @default(cuid())
-  topic     String
+  topic     String     @unique
   resources Resource[]
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime   @updatedAt @map("updated_at")
