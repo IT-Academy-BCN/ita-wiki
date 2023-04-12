@@ -32,6 +32,7 @@ function Select({
   options = [],
   error = false,
   placeholder = 'Options',
+  ...rest
 }: TSelect) {
   const [selectedOption, setSelectedOption] = useState<TOption | null>(null)
 
@@ -46,6 +47,7 @@ function Select({
       value={selectedOption?.value ?? ''}
       onChange={handleSelectChange}
       error={error}
+      {...rest}
     >
       <option disabled value="">
         {placeholder}
@@ -59,4 +61,4 @@ function Select({
   )
 }
 
-export { Select }
+export { Select, type TSelect }
