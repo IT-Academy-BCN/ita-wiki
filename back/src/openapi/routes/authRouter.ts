@@ -97,16 +97,41 @@ registry.registerPath({
   },
   responses: {
     204: {
-      description: 'The user has been registered'
+      description: 'The user has been registered',
     },
-    // TODO No se cómo poner mas de una respuesta para el mismo código. Para el 400 devuelven 'DNi already exists', 'Email already exists' y los errores de validación de Zod. Como los códigos hacen de clave del objeto, no se puede poner repetido, y tampoco acepta una lista
     400: {
-      description: 'DNI already exists',
+      description: 'Invalid input',
       content: {
         'application/json': {
-          schema: z.object({
-            message: z.string().openapi({ example: 'DNI already exists' }),
-          }),
+          schema: {
+            oneOf: [
+              z.object({
+                message: z.string().openapi({ example: 'DNI already exists' }),
+              },
+              z.object({
+                message: z.string().openapi({ example: 'Email already exists' })
+              }),
+              z.object({
+                message: z.array(z.object({})).openapi({
+                  example: [
+                    {
+                      validation: 'regex',
+                      code: 'invalid_string',
+                      message: 'Invalid',
+                      path: ['body', 'dni'],
+                    },
+                    {
+                      code: 'invalid_type',
+                      expected: 'string',
+                      received: 'undefined',
+                      path: ['body', 'password'],
+                      message: 'Required',
+                    },
+                  ],
+                }),
+              }),
+            ]
+          },
         },
       },
     },
