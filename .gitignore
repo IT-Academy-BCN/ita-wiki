@@ -1,3 +1,4 @@
 .vscode/
 test.http
 .DS_Store
+node_modules/
