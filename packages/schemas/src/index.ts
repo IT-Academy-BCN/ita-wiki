@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const validNIEPrefixes = ["X", "Y", "Z"];
+
 const validDNIPrefixes = [...Array(23).keys()].map((i) => (i + 1).toString());
 const DNI_REGEX = /^(([XYZ]\d{7,8})|(\d{8}))([a-zA-Z])$/i;
 const DNISchema = z
