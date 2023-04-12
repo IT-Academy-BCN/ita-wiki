@@ -19,15 +19,20 @@ from {
 `
 
 const SpinnerStyled = styled.div<TSpinnerStyled>`
-  height: ${(p) => (p.height ? p.height : '119px')};
+  height: ${(p) => (p.height ? p.height : '133px')};
   width: ${(p) => (p.width ? p.width : '133px')};
-  border: ${(p) => (p.borderWidth ? p.borderWidth : '4px')} solid #d1d5db;
-  border-top-color: ${(p) => (p.borderColor ? p.borderColor : colors.info)};
+  border: ${(p) => (p.borderWidth ? p.borderWidth : '20px')} solid
+    ${colors.outlineHover};
+  border-top-color: ${(p) => (p.borderColor ? p.borderColor : colors.primary)};
+  border-right-color: ${(p) =>
+    p.borderColor ? p.borderColor : colors.primary};
   border-radius: 50%;
   animation: ${spinnerAnimation}
-    ${(p) => (p.duration ? `${p.duration}ms` : '800ms')} linear infinite;
+    ${(p) => (p.duration ? `${p.duration}ms` : '1s')} linear infinite;
 `
 
-export const Spinner = ({ ...props }: TSpinnerStyled) => {
-  <SpinnerStyled {...props} />
+function Spinner({ ...props }: TSpinnerStyled): JSX.Element {
+  return <SpinnerStyled {...props} />
 }
+
+export default styled(Spinner)``
