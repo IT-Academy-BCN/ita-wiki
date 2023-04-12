@@ -15,7 +15,7 @@ const StyledButton = styled.button<TButton>`
   cursor: pointer;
   width: 100%;
   color: ${colors.white};
-  border: 2px solid ${colors.primaryDark};
+  border: 2px solid ${colors.primary};
   background-color: ${colors.primary};
 
   ${({ secondary }) =>
