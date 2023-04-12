@@ -33,9 +33,9 @@ model Resource {
   url           String
   resource_type RESOURCE_TYPE
   topic         Topic         @relation(fields: [topicId], references: [id])
-  topicId       String        @unique
+  topicId       String
   user          User          @relation(fields: [userId], references: [id])
-  userId        String        @unique
+  userId        String
   createdAt     DateTime      @default(now()) @map("created_at")
   updatedAt     DateTime      @updatedAt @map("updated_at")
 
