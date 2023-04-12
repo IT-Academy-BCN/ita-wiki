@@ -1,100 +1,267 @@
-/* eslint-disable no-console */
-/* eslint-disable no-nested-ternary */
 import { FC, useState } from 'react'
-import { Input, Title } from '../components/atoms'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import axios from 'axios'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Link, useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
+import { Title, Text, Button, ValidationMessage } from '../components/atoms'
 import InputGroup from '../components/molecules/InputGroup'
+import { paths } from '../constants'
+import { colors, dimensions, FlexBox } from '../styles'
+
+const RegisterStyled = styled(FlexBox)`
+  background-color: ${colors.gray.gray5};
+  padding: ${dimensions.spacing.lg};
+  gap: ${dimensions.spacing.sm};
+  height: 100vh;
+`
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: ${dimensions.spacing.base};
+  width: 100%;
+`
+
+const LinkLoginStyled = styled(Link)`
+  color: black;
+  margin-left: ${dimensions.spacing.xxxs};
+`
+
+const SelectStyled = styled.select`
+  padding: 1rem;
+  border-radius: ${dimensions.borderRadius.base};
+  width: 100%;
+  border: 1px solid ${colors.gray.gray4};
+  color: ${colors.gray.gray3};
+`
+
+const validNIEPrefixes = ['X', 'Y', 'Z']
+const validDNIPrefixes = [...Array(23).keys()].map((i) => (i + 1).toString())
+const DNI_REGEX = /^(([XYZ]\d{7,8})|(\d{8}))([a-zA-Z])$/i
+const DNISchema = z
+  .string({ required_error: 'El campo es requerido' })
+  .regex(DNI_REGEX)
+  .transform((value) => value.toUpperCase())
+  .refine((value) => {
+    const firstLetter = value.charAt(0)
+    return (
+      validDNIPrefixes.includes(firstLetter) ||
+      validNIEPrefixes.includes(firstLetter)
+    )
+  })
+
+const passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/
+
+const UserRegisterSchema = z
+  .object({
+    dni: DNISchema,
+    email: z
+      .string({ required_error: 'Este campo es obligatorio' })
+      .min(1, { message: 'Este campo es obligatorio' })
+      .email('Debe ser un correo válido'),
+    name: z
+      .string({ required_error: 'Este campo es obligatorio' })
+      .min(1, { message: 'Este campo es obligatorio' }),
+    specialization: z.string({ required_error: 'Este campo es obligatorio' }),
+    password: z
+      .string({ required_error: 'Este campo es obligatorio' })
+      .min(8, { message: 'La contraseña debe tener mínimo 8 caracteres' })
+      .regex(new RegExp(passRegex), {
+        message:
+          'La contraseña debe contener al menos un número, mayúsculas y minúsculas',
+      }),
+    confirmPassword: z.string({ required_error: 'Este campo es obligatorio' }),
+    accept: z.boolean({
+      required_error: 'Es necesario aceptar los términos legales',
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ['confirmPassword'],
+    message: 'Las contraseñas deben ser iguales',
+  })
+
+type TForm = {
+  dni: string
+  email: string
+  name: string
+  password: string
+  confirmPassword: string
+  specialization: string
+  accept: string
+  required: boolean
+}
 
 const Register: FC = () => {
-  const [password, setPassword] = useState('')
-  const { length } = password
-  const validationTypeCondition =
-    length < 4
-      ? 'error'
-      : length > 9
-      ? 'success'
-      : length === 6
-      ? 'warning'
-      : undefined
-  const validationTypeMessage =
-    length > 0 && length < 4
-      ? 'too short'
-      : length > 9
-      ? 'muy bien!'
-      : length === 6
-      ? 'hola'
-      : ''
+  const [visibility, setVisibility] = useState(false)
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<TForm>({ resolver: zodResolver(UserRegisterSchema) })
+
+  const navigate = useNavigate()
+  const url = 'http://localhost:8999/api/v1/auth/register'
+
+  const registerNewUser = async (user: object) => {
+    try {
+      const response = await axios.post(url, user)
+      if (response.status === 204) {
+        navigate('/')
+      }
+    } catch (error) {
+      throw new Error('Error registering new user')
+    }
+  }
+
+  const onSubmit = handleSubmit((data) => {
+    const { email, password, name, dni, specialization } = data
+    registerNewUser({ email, password, name, dni, specialization })
+    reset()
+  })
+
+  const options = [
+    { id: 0, value: '', specialization: 'Especialidad' },
+    { id: 1, value: 'react', specialization: 'React' },
+    { id: 2, value: 'angular', specialization: 'Angular' },
+    { id: 3, value: 'vue', specialization: 'Vue' },
+    { id: 4, value: 'node', specialization: 'Node' },
+    { id: 5, value: 'java', specialization: 'Java' },
+    { id: 6, value: 'fullstack', specialization: 'Fullstack' },
+    { id: 7, value: 'dataScience', specialization: 'Data Science' },
+  ]
 
   return (
-    <div>
-      <Title as="h1">Register 👋 PAGINA DE PRUEBAS SE PUEDE BORRAR</Title>
-      <div
-        style={{
-          margin: '10px',
-          marginBottom: '70px',
-        }}
-      >
-        <Title as="h2">DEMO</Title>
+    <RegisterStyled>
+      <Title as="h1" fontWeight="bold">
+        Register
+      </Title>
+      <StyledForm onSubmit={onSubmit}>
         <InputGroup
-          name="input names"
-          label="hola"
-          value={password}
-          icon="search"
-          onChange={(e) => setPassword(e.target.value)}
-          id="demo"
-          placeholder="escribe algo"
-          success={length > 8}
-          error={length > 0 && length < 4}
-          warning={length === 6}
-          validationType={validationTypeCondition}
-          validationMessage={validationTypeMessage}
-        />
-      </div>
-      <hr />
-      <Input
-        name="input name"
-        placeholder="simple input"
-        onChange={() => console.log('test')}
-      />
-      <div>
-        <InputGroup
-          label="obligatoria"
-          name="input names"
-          id="id0"
-          placeholder="simple inputGroup"
-          onChange={() => console.log('test')}
-        />
-        <InputGroup
-          label="obligatoria"
-          name="input names"
-          onChange={() => console.log('test')}
-          type="password"
-          id="id1"
-          placeholder="type password"
-          success
-          validationType="success"
-          validationMessage="todo ha ido bien!"
-        />
-        <InputGroup
-          name="input names"
-          id="id2"
-          hiddenLabel={false}
-          label="Label visible, hiddenLabel={false}"
-          placeholder="hola"
-          warning
-          validationType="warning"
-          validationMessage="warning message"
-        />
-        <InputGroup
-          label="obligatoria"
-          name="input names"
-          id="id3"
-          placeholder="mundo"
-          error
+          required
+          data-testid="DNI"
+          id="dni"
+          label="dni"
+          type="text"
+          placeholder="DNI"
+          error={errors.dni && true}
+          validationMessage={errors.dni?.message}
           validationType="error"
-          validationMessage="error message"
+          {...register('dni')}
         />
-      </div>
-    </div>
+
+        <InputGroup
+          required
+          data-testid="email"
+          id="email"
+          label="email"
+          type="email"
+          placeholder="Email"
+          error={errors.email && true}
+          validationMessage={errors.email?.message}
+          validationType="error"
+          {...register('email')}
+        />
+
+        <InputGroup
+          required
+          data-testid="name"
+          id="name"
+          label="name"
+          type="text"
+          placeholder="Username"
+          error={errors.name && true}
+          validationMessage={errors.name?.message}
+          validationType="error"
+          {...register('name')}
+        />
+
+        <InputGroup
+          required
+          data-testid="password"
+          id="password"
+          label="password"
+          type={visibility ? 'text' : 'password'}
+          placeholder="password"
+          error={errors.password && true}
+          validationMessage={errors.password?.message}
+          validationType="error"
+          color={colors.gray.gray4}
+          icon={visibility ? 'visibility' : 'visibility_off'}
+          iconClick={() => setVisibility(!visibility)}
+          {...register('password')}
+        />
+
+        <InputGroup
+          required
+          data-testid="confirmPassword"
+          id="confirmPassword"
+          label="confirmPassword"
+          type={visibility ? 'text' : 'password'}
+          placeholder="Confirmar password"
+          icon={visibility ? 'visibility' : 'visibility_off'}
+          iconClick={() => setVisibility(!visibility)}
+          color={colors.gray.gray4}
+          error={errors.confirmPassword && true}
+          validationMessage={errors.confirmPassword?.message}
+          validationType="error"
+          {...register('confirmPassword')}
+        />
+
+        {/*  TODO create select component */}
+        <SelectStyled
+          required
+          data-testid="specialization"
+          {...register('specialization')}
+        >
+          {options.map((opt) => (
+            <option key={opt.id} value={opt.value}>
+              {opt.specialization}
+            </option>
+          ))}
+        </SelectStyled>
+        {errors.specialization?.type === 'required' && (
+          <ValidationMessage
+            color="error"
+            text={errors.specialization?.message}
+          />
+        )}
+
+        {errors.specialization?.type === 'required' && (
+          <ValidationMessage
+            color="error"
+            text={errors.specialization?.message}
+          />
+        )}
+
+        {/* TODO generate checkbox component group? */}
+        <FlexBox direction="row">
+          <input
+            required
+            style={{ marginRight: '1rem' }}
+            type="checkbox"
+            {...register('accept')}
+          />
+          {errors.accept?.type === 'required' ? (
+            <Text color={colors.error}>Acepto términos legales</Text>
+          ) : (
+            <Text>Acepto términos legales</Text>
+          )}
+
+          {errors.accept && (
+            <ValidationMessage color="error" text={errors.accept?.message} />
+          )}
+        </FlexBox>
+        <Button type="submit">Registrarme</Button>
+      </StyledForm>
+      <Text fontWeight="bold">
+        ¿Tienes una cuenta?
+        <LinkLoginStyled to={paths.login}>Entrar</LinkLoginStyled>
+      </Text>
+    </RegisterStyled>
   )
 }
 export default Register
