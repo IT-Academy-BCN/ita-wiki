@@ -1,6 +1,6 @@
 {
   "name": "@itacademy/schemas",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Zod schemas for BE and FE.",
   "main": "./dist/index.js",
   "scripts": {
