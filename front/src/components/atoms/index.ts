@@ -1,6 +1,6 @@
 import { Label } from './Label'
 import { Select } from './Select'
-import Spinner from './Spinner'
+import {Spinner} from './Spinner'
 import { Title } from './Title'
 import Button from './Button'
 import Icon from './Icon'
