@@ -15,7 +15,7 @@ const DNISchema = z
     );
   });
 
-const UserLoginSchema = z.object({
+export const UserLoginSchema = z.object({
   dni: DNISchema,
   password: z.string().min(8),
 });
