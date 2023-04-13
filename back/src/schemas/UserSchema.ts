@@ -9,5 +9,6 @@ export const UserSchema = z.object({
   status: z.enum(['ACTIVE', 'INACTIVE']),
   createdAt: z.date(),
   updatedAt: z.date(),
-  dni: DNISchema
+  dni: DNISchema,
+  role: z.enum(['ADMIN', 'REGISTERED'])
 });
