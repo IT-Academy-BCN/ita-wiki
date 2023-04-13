@@ -12,21 +12,11 @@ Before running the project, make sure you have Docker Desktop installed. Once yo
 
 2. Install the required dependencies:
 
-   `npm i`
+   `npm i` if there are version incompatibilty between dependencies `npm i --legacy-peer-deps`
 
-3. Start the project in docker:
+3. Start the project:
 
-   `npm run up`
-
-The above command will start the application and run the migrations using Prisma.
-
-4. Open another terminal and launch the front with the command:
-   `npm run front`
-
-Now the project is setup and running on local enviroment.
-
-5. In order to start contributing to the project and solvieng issues you must create and change to new branch for the issue number (#id) and the issue name, never work on main branch.
-   `git checkout -b issueNumber-name-of-issue`
+   `npm run dev`
 
 ## Scripts
 
