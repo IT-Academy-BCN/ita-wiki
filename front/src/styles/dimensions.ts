@@ -13,5 +13,6 @@ export const dimensions = {
   },
   borderRadius: {
     base: '0.625rem',
+    sm: '1.25rem',
   },
 }
