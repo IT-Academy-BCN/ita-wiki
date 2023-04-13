@@ -14,10 +14,12 @@ const ModalBackgroundStyled = styled(FlexBox)`
 const ModalContainerSyled = styled(FlexBox)`
   background-color: ${colors.white};
   border-radius: ${dimensions.borderRadius.sm};
-  height: 90%;
+  height: 700px;
+  margin: 6rem auto 2rem;
   padding: ${dimensions.spacing.xl} 1rem;
   position: relative;
-  width: 96%;
+  width: 100%;
+  max-width: 355px;
 
   ${Icon} {
     cursor: pointer;
