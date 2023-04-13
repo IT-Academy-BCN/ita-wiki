@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserLoginSchema = void 0;
 const zod_1 = require("zod");
 const validNIEPrefixes = ["X", "Y", "Z"];
 const validDNIPrefixes = [...Array(23).keys()].map((i) => (i + 1).toString());
@@ -13,7 +14,7 @@ const DNISchema = zod_1.z
     return (validDNIPrefixes.includes(firstLetter) ||
         validNIEPrefixes.includes(firstLetter));
 });
-const UserLoginSchema = zod_1.z.object({
+exports.UserLoginSchema = zod_1.z.object({
     dni: DNISchema,
     password: zod_1.z.string().min(8),
 });

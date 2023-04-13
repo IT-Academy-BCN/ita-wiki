@@ -2,7 +2,7 @@
   "name": "@itacademy/schemas",
   "version": "0.0.2",
   "description": "Zod schemas for BE and FE.",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "test",
     "build": "tsc",
@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://github.com/IT-Academy-BCN/ita-wiki/issues"
   },
-  "homepage": "https://github.com/IT-Academy-BCN/ita-wiki#readme",
+  "homepage": "https://github.com/IT-Academy-BCN/ita-wiki/tree/main/packages/schemas#readme",
   "peerDependencies": {
     "zod": "3.21.4"
   },
