@@ -1,4 +1,5 @@
 import InputGroup from './InputGroup'
 import SelectGroup from './SelectGroup'
+import TextareaGroup from './TextareaGroup'
 
-export { InputGroup, SelectGroup }
+export { InputGroup, SelectGroup, TextareaGroup }

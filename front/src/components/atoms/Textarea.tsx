@@ -1,4 +1,4 @@
-import { TextareaHTMLAttributes } from 'react'
+import React, { TextareaHTMLAttributes } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions } from '../../styles'
 
@@ -10,12 +10,14 @@ const TextareaStyled = styled.textarea<TTextarea>`
 `
 
 export type TTextarea = TextareaHTMLAttributes<HTMLTextAreaElement> & {
-  rows?: number
+  rows: number
   cols?: number
 }
 
-const Textarea = ({ rows = 10, cols = 1, ...rest }: TTextarea) => (
-  <TextareaStyled rows={rows} cols={cols} {...rest} />
+const Textarea = React.forwardRef<HTMLTextAreaElement, TTextarea>(
+  ({ cols = 1, ...rest }, ref) => (
+    <TextareaStyled cols={cols} ref={ref} {...rest} />
+  )
 )
 
-export default Textarea
+export default styled(Textarea)``
