@@ -11,8 +11,7 @@ describe('Testing resources endpoint', () => {
       password: 'password1'
     })
     // eslint-disable-next-line prefer-destructuring
-    authToken = response.header['set-cookie'][0]
-    console.log(`authToken: ${authToken}`)
+    authToken = response.header['set-cookie'][0].split(";")[0]
   })
 
   test('should create a new resource', async () => {
@@ -43,8 +42,6 @@ describe('Testing resources endpoint', () => {
       resource_type: 'INVALIDE-RESOURCE',
       topicId: 'clgg7b9ud0002lbd1rivgox0c',
       userId: 'clgg7b9tt0000lbd1j54jdjc9',
-      createdAt: new Date(),
-      updatedAt: new Date()
     }
 
     const response = await supertest(server)
