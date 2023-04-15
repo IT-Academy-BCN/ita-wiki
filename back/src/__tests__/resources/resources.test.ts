@@ -21,9 +21,7 @@ describe('Testing resources endpoint', () => {
       url: 'https://example.com/resource',
       resource_type: 'BLOG',
       topicId: 'clgg7b9ud0002lbd1rivgox0c',
-      userId: 'clgg7b9tt0000lbd1j54jdjc9',
-      createdAt: new Date(),
-      updatedAt: new Date()
+      userId: 'clgg7b9tt0000lbd1j54jdjc9'
     }
 
     const response = await supertest(server)
