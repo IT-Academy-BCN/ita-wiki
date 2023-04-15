@@ -22,11 +22,18 @@ registry.registerPath({
     204: {
       description: 'The user has been authenticated',
       headers: {
-        ['Set-Cookie']: z.string().openapi({
-          example:
-            'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM; path=/; httponly',
-          description: 'JWT session cookie',
-        })
+        
+        'Set-Cookie': {
+          schema: 
+
+            // I CANNOT USE A ZOD OBJECT
+            // --------------------------
+            // z.string().openapi({
+            //   example:
+            //     'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM; path=/; httponly',
+            //   description: 'JWT session cookie',
+            // })
+        }
       }
     },
     404: {
@@ -78,6 +85,15 @@ registry.registerPath({
   },
 })
 
+// @ts-ignore
+const DniErrorResponse = registry.register(
+  "DniErrorResponse",
+  z.object({
+    message: z.string().openapi({ example: 'DNI already exists' }),
+  }  )
+)
+
+
 registry.registerPath({
   method: 'post',
   tags: ['auth'],
@@ -104,31 +120,24 @@ registry.registerPath({
         'application/json': {
           schema: {
             oneOf: [
-              z.object({
-                message: z.string().openapi({ example: 'DNI already exists' }),
-              },
-              z.object({
-                message: z.string().openapi({ example: 'Email already exists' })
-              }),
-              z.object({
-                message: z.array(z.object({})).openapi({
-                  example: [
-                    {
-                      validation: 'regex',
-                      code: 'invalid_string',
-                      message: 'Invalid',
-                      path: ['body', 'dni'],
-                    },
-                    {
-                      code: 'invalid_type',
-                      expected: 'string',
-                      received: 'undefined',
-                      path: ['body', 'password'],
-                      message: 'Required',
-                    },
-                  ],
-                }),
-              }),
+              
+              // I CANNOT USE A ZOD OBJECT
+              // --------------------------
+              // z.object({
+              //   message: z.string().openapi({ example: 'DNI already exists' }),
+              // }),
+              
+              // I CANNOT PASS A REGISTERED SCHEMA BY NAME
+              // -----------------------------------------
+              // 'DniErrorResponse',
+              
+              // I CANNOT PASS A REGISTERED SCHEMA BY $REF
+              // -----------------------------------------
+              // '#/components/schemas/DniErrorResponse',
+              
+              // I CANNOT USE THE RETURNED OBJ FROM REGISTERING THE SCHEMA
+              // ----------------------------------------------------------
+              // DniErrorResponse,
             ]
           },
         },
