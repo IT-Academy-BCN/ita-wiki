@@ -1,5 +1,5 @@
 import Koa from 'koa'
-import jwt, { Secret } from 'jsonwebtoken'
+import jwt, { JsonWebTokenError, Secret } from 'jsonwebtoken'
 
 export const authMiddleware = async (ctx: Koa.Context, next: Koa.Next) => {
   const token = ctx.cookies.get('token')
@@ -11,9 +11,14 @@ export const authMiddleware = async (ctx: Koa.Context, next: Koa.Next) => {
 
   try {
     jwt.verify(token, process.env.JWT_KEY as Secret)
-    await next()
+    await next() 
   } catch (error) {
-    ctx.status = 405
-    ctx.body = 'Token is not valid'
+    if(error instanceof JsonWebTokenError){
+      ctx.status = 405
+      ctx.body = 'Token is not valid'
+    }
+    else
+      // We don't want to catch Zod or controller errors
+      throw error 
   }
 }
