@@ -2,6 +2,7 @@ import { UserLoginSchema } from '../../../schemas'
 import { registry } from '../../registry'
 import { z } from '../../zod'
 import { ValidationError } from '../../components/errorSchemas'
+import { setCookieHeader } from '../../components/setCookieHeader'
 
 
 const pathRoot = '/api/v1/auth'
@@ -23,17 +24,7 @@ registry.registerPath({
   responses: {
     204: {
       description: 'The user has been authenticated',
-      headers: {
-        'Set-Cookie': {
-          // I CANNOT USE A ZOD OBJECT
-          // --------------------------
-          // z.string().openapi({
-          //   example:
-          //     'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM; path=/; httponly',
-          //   description: 'JWT session cookie',
-          // })
-        },
-      },
+      headers: { 'Set-Cookie': setCookieHeader.ref }
     },
     404: {
       description: 'User not found',
