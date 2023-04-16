@@ -15,8 +15,8 @@ const ModalContainerSyled = styled(FlexBox)`
   background-color: ${colors.white};
   border-radius: ${dimensions.borderRadius.sm};
   height: 700px;
-  margin: 6rem auto 2rem;
-  padding: ${dimensions.spacing.xl} 1rem;
+  margin: 6rem auto ${dimensions.spacing.xl};
+  padding: ${dimensions.spacing.xl} ${dimensions.spacing.base};
   position: relative;
   width: 100%;
   max-width: 355px;
@@ -45,6 +45,7 @@ const Modal = ({ children, isOpen, toggleModal, title }: TModal) =>
           onClick={toggleModal}
           role="img"
           aria-label="Close icon"
+          wght={700}
         />
         <FlexBox>
           <Title as="h1" fontWeight="bold" color={colors.black.black3}>
