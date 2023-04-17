@@ -48,6 +48,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
+            shopt -s nullglob
             rm -rf ${{ secrets.FRONT_DEV_PWD }}/*
       
       - name: dev deploy - send files
