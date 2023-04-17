@@ -17,7 +17,7 @@ describe('InputGroupText', () => {
 
     expect(label).toBeInTheDocument()
     expect(input).toBeInTheDocument()
-    expect(label).toHasaveAttribute('for', 'testid')
+    expect(label).toHaveAttribute('for', 'testid')
     expect(input).toHaveAttribute('id', 'testid')
     expect(input).toHaveAttribute('name', 'testname')
   })
