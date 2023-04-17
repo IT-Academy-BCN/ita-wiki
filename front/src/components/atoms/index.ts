@@ -7,6 +7,7 @@ import Icon from './Icon'
 import Input from './Input'
 import Text from './Text'
 import ValidationMessage from './ValidationMessage'
+import Textarea from './Textarea'
 
 export {
   Label,
@@ -18,4 +19,5 @@ export {
   Spinner,
   Text,
   ValidationMessage,
+  Textarea
 }
