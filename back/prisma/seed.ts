@@ -23,11 +23,14 @@ async function main() {
   })
   console.log(user)
 
-  const topicDataArray = [{
-    topic: 'React'
-  },{
-    topic: 'Javascript'
-  }]
+  const topicDataArray = [
+    {
+      topic: 'React'
+    },
+    {
+      topic: 'Javascript'
+    }
+  ]
 
   const TopicSeedSchema = TopicSchema.omit({
     id: true,
@@ -41,9 +44,9 @@ async function main() {
     updatedAt: true
   })
 
-  topicDataArray.forEach(async topicData => {
+  topicDataArray.forEach(async (topicData) => {
     const validatedTopicData = TopicSeedSchema.parse(topicData)
-    
+
     const topic = await prisma.topic.create({
       data: validatedTopicData
     })
@@ -53,7 +56,13 @@ async function main() {
       description: 'Lorem ipsum',
       url: `http://www.example.com/resource/${topicData.topic}.html`,
       resource_type: 'BLOG',
-      topicId: topic.id,
+      topics: {
+        connect: [
+          {
+            id: topic.id
+          }
+        ]
+      },
       userId: user.id
     }
 
@@ -62,9 +71,7 @@ async function main() {
     await prisma.resource.create({
       data: validatedResourceData
     })
-
-  });
-
+  })
 }
 
 main()
