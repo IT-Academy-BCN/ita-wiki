@@ -27,7 +27,7 @@ jobs:
         run: cd ./front && npm ci --legacy-peer-deps
 
       - name: lint
-        run: cd ./front && npx eslint src/** --max-warnings 0
+        run: cd ./front && npx eslint src --max-warnings 0
 
       - name: test
         run: cd ./front && npm run test
