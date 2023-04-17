@@ -37,6 +37,7 @@ Here are some of the useful scripts you can use:
 
 Here are some useful links to official documentation for the technologies used in this project:
 
-- [Typescript](https://www.typescriptlang.org/docs/handbook/react.html) -Typescript documentation.
+- [Atomic design methodology](https://atomicdesign.bradfrost.com/chapter-2/)
+- [Typescript](https://www.typescriptlang.org/docs/handbook/react.html) - Typescript documentation.
 - [vitest](https://vitest.dev/guide/) - vitest testing framework documentation.
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - React Testing Library documentation.
