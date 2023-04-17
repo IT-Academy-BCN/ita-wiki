@@ -22,4 +22,18 @@ describe('TextareaGroup', () => {
     expect(textarea).toHaveAttribute('rows', '5')
     expect(textarea).toHaveAttribute('name', 'test-name')
   })
+
+  it('renders error message', () => {
+    render(
+      <TextareaGroup
+        id="textareaGroup"
+        name="textareGroupName"
+        label="textareaGroupLabel"
+        rows={10}
+        error
+        validationMessage="error message"
+      />
+    )
+    expect(screen.getByText('error message')).toBeInTheDocument()
+  })
 })

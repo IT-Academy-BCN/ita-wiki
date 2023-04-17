@@ -7,11 +7,22 @@ const TextareaStyled = styled.textarea<TTextarea>`
   border: 1px solid ${colors.gray.gray4};
   padding: ${dimensions.spacing.sm};
   border-radius: ${dimensions.borderRadius.base};
+
+  ${({ success }) => success && `border: 1px solid ${colors.success};`}
+  ${({ warning }) => warning && `border: 1px solid ${colors.warning};`}
+  ${({ error }) => error && `border: 1px solid ${colors.error};`}
+
+&:focus {
+    outline: 0 none;
+  }
 `
 
 export type TTextarea = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   rows: number
   cols?: number
+  error?: boolean | string
+  success?: boolean
+  warning?: boolean
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TTextarea>(

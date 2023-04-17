@@ -1,10 +1,12 @@
 import { forwardRef, Ref } from 'react'
 import styled from 'styled-components'
 import Textarea, { TTextarea } from '../atoms/Textarea'
-import { Label } from '../atoms'
-import { dimensions } from '../../styles'
+import { Label, ValidationMessage } from '../atoms'
+import { dimensions, FlexBox } from '../../styles'
+import { TValidationMessage } from '../atoms/ValidationMessage'
 
-const TextareaGroupStyled = styled.div`
+const TextareaGroupStyled = styled(FlexBox)`
+  align-items: flex-start;
   ${Textarea} {
     margin-top: ${dimensions.spacing.xs};
   }
@@ -16,11 +18,23 @@ type TTextareaGroup = {
   name: string
   label: string
   hiddenLabel?: boolean
+  validationMessage?: TValidationMessage['text']
+  validationType?: TValidationMessage['color']
 } & TTextarea
 
 const TextareaGroup = forwardRef(
   (
-    { label, id, name, hiddenLabel, rows, cols, ...rest }: TTextareaGroup,
+    {
+      label,
+      id,
+      name,
+      hiddenLabel,
+      rows,
+      cols,
+      validationMessage,
+      validationType,
+      ...rest
+    }: TTextareaGroup,
     ref: Ref<HTMLTextAreaElement>
   ) => (
     <TextareaGroupStyled>
@@ -33,6 +47,7 @@ const TextareaGroup = forwardRef(
         ref={ref}
         data-testid="textarea"
       />
+      <ValidationMessage text={validationMessage} color={validationType} />
     </TextareaGroupStyled>
   )
 )
