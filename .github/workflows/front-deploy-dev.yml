@@ -48,8 +48,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            shopt -s nullglob
-            rm -rf ${{ secrets.FRONT_DEV_PWD }}/*
+            find ${{ secrets.FRONT_DEV_PWD }} -mindepth 1 -maxdepth 1 -exec rm -rf {} \;
       
       - name: dev deploy - send files
         uses: appleboy/scp-action@master
