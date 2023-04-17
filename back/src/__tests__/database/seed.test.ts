@@ -29,8 +29,8 @@ describe('Seeded data exists in the Database', () => {
         expect(seedTopic).not.toBe(null)
     })
 
-    test('There exist two resources in the database', async () => {
+    test('There exist three resources in the database', async () => {
         const seedResources = await prisma.resource.count()
-        expect(seedResources).toBe(2)
+        expect(seedResources).toBe(3)
     })
 })
