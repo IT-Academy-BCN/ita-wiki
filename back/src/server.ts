@@ -36,6 +36,7 @@ app.use(errorMiddleware)
 // Routes
 app.use(Routes.authRouter.routes())
 app.use(Routes.resourcesRouter.routes())
+app.use(Routes.topicsRouter.routes())
 
 // Swagger UI
 app.use(swaggeruiCSPMiddleware)
