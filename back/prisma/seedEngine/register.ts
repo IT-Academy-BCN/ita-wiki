@@ -4,9 +4,9 @@ import { registerUsers } from './register/users'
 import { Data } from './types'
 
 /**
- * Registers a data object specification to the database
- * IMPORTANT: It is essential that the order of registration respects FK dependencies. For example, if Resource
- * has a FK to User and another to Topic, then registerUsers and registerTopics must be called before.
+ * Registers a data specification object to the database
+ * IMPORTANT: The order of registration needs to respects FK dependencies. For example, if Resource has a FK to User 
+ * and another one to Topic, then registerUsers and registerTopics must be called before.
  * @param data 
  */
 export const register = async (data: Data) => {

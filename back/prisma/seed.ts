@@ -1,7 +1,4 @@
-// import { TopicSchema, ResourceSchema } from '../src/schemas'
-// import { prisma } from '../src/prisma/client'
 import '../src/prisma/middleware'
-
 import { register } from './seedEngine/register'
 
 const data = {
