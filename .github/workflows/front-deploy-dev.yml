@@ -58,4 +58,4 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           source: ${{ github.workspace }}/front/dist/*
           target: ${{ secrets.FRONT_DEV_PWD }}
-          strip_components: 1
+          strip_components: 3
