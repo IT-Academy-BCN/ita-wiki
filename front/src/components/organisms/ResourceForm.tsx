@@ -19,13 +19,12 @@ const options = [
 ]
 
 type TResourceForm = {
-  title: 'New Resource'
   isOpen: boolean
   toggleModal: () => void
 }
 
-export const ResourceForm = ({ title, isOpen, toggleModal }: TResourceForm) => (
-  <Modal title={title} isOpen={isOpen} toggleModal={toggleModal}>
+export const ResourceForm = ({ isOpen, toggleModal }: TResourceForm) => (
+  <Modal title="Nuevo Recurso" isOpen={isOpen} toggleModal={toggleModal}>
     <form>
       <InputGroup
         label="Título"
