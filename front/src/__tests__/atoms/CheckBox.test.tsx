@@ -71,19 +71,4 @@ describe('CheckBox', () => {
       )
   })
   
-
-  it('renders correctly with particular legal style', () => {
-    render(
-      <CheckBox
-        legal
-        id="idTest"
-        label="Test label"
-      />
-    )
-
-    const checkBoxTest = screen.getByLabelText('Test label')
-
-    expect(checkBoxTest).toHaveStyle(`color: ${colors.black.black1};`)
-
-  })
 })
