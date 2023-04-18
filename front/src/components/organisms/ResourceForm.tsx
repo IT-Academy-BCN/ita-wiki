@@ -1,4 +1,4 @@
-import { InputGroup, SelectGroup } from '../molecules'
+import { Modal, InputGroup, SelectGroup } from '../molecules'
 import { Button } from '../atoms'
 
 const options = [
@@ -18,25 +18,39 @@ const options = [
   { value: '14', label: 'Testing' },
 ]
 
-export const ResourceForm = () => (
-  <form>
-    <InputGroup
-      label="Título"
-      hiddenLabel
-      id="title"
-      name="title"
-      placeholder="Título"
-    />
-    <InputGroup
-      label="Descripción"
-      hiddenLabel
-      id="description"
-      name="description"
-      placeholder="Descripción"
-    />
-    <InputGroup label="URL" hiddenLabel id="url" name="url" placeholder="URL" />
-    <SelectGroup id="topic" name="topic" label="tema" options={options} />
-    <Button>Editar</Button>
-    <Button>Cancelar</Button>
-  </form>
+type TResourceForm = {
+  title: 'New Resource'
+  isOpen: boolean
+  toggleModal: () => void
+}
+
+export const ResourceForm = ({ title, isOpen, toggleModal }: TResourceForm) => (
+  <Modal title={title} isOpen={isOpen} toggleModal={toggleModal}>
+    <form>
+      <InputGroup
+        label="Título"
+        hiddenLabel
+        id="title"
+        name="title"
+        placeholder="Título"
+      />
+      <InputGroup
+        label="Descripción"
+        hiddenLabel
+        id="description"
+        name="description"
+        placeholder="Descripción"
+      />
+      <InputGroup
+        label="URL"
+        hiddenLabel
+        id="url"
+        name="url"
+        placeholder="URL"
+      />
+      <SelectGroup id="topic" name="topic" label="tema" options={options} />
+      <Button>Editar</Button>
+      <Button>Cancelar</Button>
+    </form>
+  </Modal>
 )
