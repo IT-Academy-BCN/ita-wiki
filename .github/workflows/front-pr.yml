@@ -20,17 +20,22 @@ jobs:
           cache: "npm"
           cache-dependency-path: front/package-lock.json
 
-#       - name: copy .env
-#         run: cp .env.development ./frontend/.env
-
       - name: install dependencies
-        run: cd ./front && npm ci --legacy-peer-deps
+        run: |
+            cd ${{ github.workspace }}/front
+            npm ci --legacy-peer-deps
 
       - name: lint
-        run: cd ./front && npx eslint src/** --max-warnings 0
+        run: |
+            cd ${{ github.workspace }}/front
+            npx eslint src --max-warnings 0
 
       - name: test
-        run: cd ./front && npm run test
+        run: |
+            cd ${{ github.workspace }}/front
+            npm run test
 
       - name: build
-        run: cd ./front && npm run build
+        run: |
+            cd ${{ github.workspace }}/front
+            npm run build
