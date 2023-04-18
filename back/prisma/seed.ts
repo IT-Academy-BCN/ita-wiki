@@ -8,7 +8,8 @@ async function main() {
     password: 'password1',
     name: 'Test User',
     dni: '45632452a',
-    status: 'ACTIVE'
+    status: 'ACTIVE',
+    role: 'ADMIN'
   }
   const UserSeedSchema = UserSchema.omit({
     id: true,
