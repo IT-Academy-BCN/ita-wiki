@@ -1,103 +1,32 @@
-import '../src/prisma/middleware'
-import { register } from './seedEngine/register'
+import { prisma } from '../src/prisma/client'
+import { users } from './data/users'
+import { topics } from './data/topics'
+import { resources } from './data/resources'
 
-const data = {
-  users: [
-    {
-      name: 'Guillem Parrado',
-      email: 'gp@example.com',
-      password: 'password1',
-      dni: '12345678A',
-      status: 'ACTIVE',
-    },
-    {
-      name: 'Iván Legrán',
-      email: 'il@example.com',
-      password: 'password2',
-      dni: '23456789B',
-      status: 'ACTIVE',
-    },
-    {
-      name: 'Oriol Sastre',
-      email: 'os@example.com',
-      password: 'password3',
-      dni: '34567891C',
-      status: 'ACTIVE',
-    },
-    {
-      name: 'Cristina Carrillo',
-      email: 'cc@example.com',
-      password: 'password4',
-      dni: '45678912D',
-      status: 'ACTIVE',
-    },
-    {
-      name: 'Dani Morera',
-      email: 'dm@example.com',
-      password: 'password5',
-      dni: '56789123E',
-      status: 'ACTIVE',
-    },
-    {
-      email: 'test@example.com',
-      password: 'password1',
-      name: 'Test User',
-      dni: '45632452a',
-      status: 'ACTIVE'
-    }
-  ],
-  topics: [
-    {
-      topic: 'React',
-    },
-    {
-      topic: 'Javascript',
-    },
-    {
-      topic: 'Node',
-    },
-    {
-      topic: 'Python',
-    },
-    {
-      topic: 'Django',
-    },
-    
-  ],
-  resources: [
-    {
-      title: 'My resource in React',
-      description: 'Lorem ipsum',
-      url: 'http://www.example.com/resource/React.html',
-      resource_type: 'BLOG',
-      topicId: 0,  // The topic index in the topics array
-      userId: 3    // The user index in the users array
-    },
-    {
-      title: 'My resource in Node',
-      description: 'Lorem ipsum',
-      url: 'http://www.example.com/resource/Node.html',
-      resource_type: 'BLOG',
-      topicId: 1,  // The topic index in the topics array
-      userId: 3    // The user index in the users array
-    },
-    {
-      title: 'My second resource in React',
-      description: 'Lorem ipsum',
-      url: 'http://www.example.com/resource/React2.html',
-      resource_type: 'BLOG',
-      topicId: 2,  // The topic index in the topics array
-      userId: 3    // The user index in the users array
-    },
-    {
-      title: 'My resource in Javascript',
-      description: 'Lorem ipsum',
-      url: 'http://www.example.com/resource/Javascript.html',
-      resource_type: 'BLOG',
-      topicId: 1,  // The topic index in the topics array
-      userId: 4    // The user index in the users array
-    }
-  ],
+async function seedDB() {
+  await prisma.user.createMany({
+    data: users,
+  })
+
+  await prisma.topic.createMany({
+    data: topics,
+  })
+
+  const user = await prisma.user.findUnique({
+    where: { email: users[0].email },
+  })
+
+  const topicReact = await prisma.topic.findFirst({
+    where: { topic: 'React' },
+  })
+
+  const resourcesWithUserAndTopic = resources.map((resource) => ({
+    ...resource,
+    userId: user?.id,
+    topicId: topics[0].id,
+  }))
+
+  await prisma.resource.createMany({
+    data: resourcesWithUserAndTopic,
+  })
 }
-
-register(data)
