@@ -1,6 +1,5 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { expect } from 'vitest'
-import { fireEvent } from '@testing-library/react'
 import { CheckBox } from '../../components/atoms'
 import { colors } from '../../styles'
 
@@ -27,9 +26,9 @@ describe('CheckBox', () => {
 
     fireEvent.click(checkBoxTest)
 
-      await waitFor(() => {
+      await waitFor(() => 
         expect(checkBoxTest).toBeChecked() 
-      })
+      )
   })
   
   it('renders label that checks its checkbox when is clicked', async () => {
@@ -47,9 +46,9 @@ describe('CheckBox', () => {
 
     fireEvent.click(labelTest)
 
-      await waitFor(() => {
+      await waitFor(() => 
         expect(checkBoxTest).toBeChecked() 
-      })
+      )
   })
 
   it('renders checkbox checked by default when provided and user can uncheck it', async () => {
@@ -57,7 +56,7 @@ describe('CheckBox', () => {
       <CheckBox
         id="idTest"
         label={"Test label"}
-        defaultChecked={true}
+        defaultChecked
       />
     )
 
@@ -67,9 +66,9 @@ describe('CheckBox', () => {
 
     fireEvent.click(checkBoxTest)
 
-      await waitFor(() => {
+      await waitFor(() => 
         expect(checkBoxTest).not.toBeChecked() 
-      })
+      )
   })
   
 
