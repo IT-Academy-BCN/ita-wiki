@@ -29,8 +29,21 @@ describe('Seeded data exists in the Database', () => {
         expect(seedTopic).not.toBe(null)
     })
 
-    test('There exist four resources in the database', async () => {
-        const seedResources = await prisma.resource.count()
-        expect(seedResources).toBe(4)
+    test('Resources exist in the database', async () => {
+        const titles = [
+            'My resource in React',
+            'My second resource in React',
+            'My resource in Node',
+            'My resource in Javascript'
+        ]
+
+        // eslint-disable-next-line guard-for-in, no-restricted-syntax
+        for (const i in titles) {
+            expect (await prisma.resource.findFirst({
+                where: {
+                    title: titles[i]
+                }
+            })).not.toEqual(null)
+        }
     })
 })
