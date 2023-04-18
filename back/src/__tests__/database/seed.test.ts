@@ -2,10 +2,19 @@ import { expect, test, describe } from 'vitest'
 import { prisma } from '../../prisma/client'
 
 describe('Seeded data exists in the Database', () => {
-    test('User with email test@example.com exists', async () => {
+    test('User with email admin@admin.com exists', async () => {
         const seedUser = await prisma.user.findUnique({
             where: {
-                email: 'test@example.com'
+                email: 'admin@admin.com'
+            }
+        })
+        expect(seedUser).not.toBe(null)
+    })
+
+    test('User with email registered@registered.com exists', async () => {
+        const seedUser = await prisma.user.findUnique({
+            where: {
+                email: 'registered@registered.com'
             }
         })
         expect(seedUser).not.toBe(null)
