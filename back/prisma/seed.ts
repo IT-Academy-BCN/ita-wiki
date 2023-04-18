@@ -12,21 +12,35 @@ async function seedDB() {
     data: topics,
   })
 
-  const user = await prisma.user.findUnique({
-    where: { email: users[0].email },
+  const userAdmin = await prisma.user.findUnique({
+    where: { email: 'admin@admin.com' },
+  })
+
+  const userRegistered = await prisma.user.findUnique({
+    where: { email: 'registered@registered.com' },
   })
 
   const topicReact = await prisma.topic.findFirst({
     where: { topic: 'React' },
   })
 
-  const resourcesWithUserAndTopic = resources.map((resource) => ({
+  const topicNode = await prisma.topic.findFirst({
+    where: { topic: 'Node' },
+  })
+
+  const resourceUsers = [userAdmin, userAdmin, userRegistered, userRegistered]
+  const resourceTopics = [topicReact, topicNode, topicReact, topicNode]
+
+  const resourcesWithUserAndTopic = resources.map((resource, index) => ({
     ...resource,
-    userId: user?.id,
-    topicId: topics[0].id,
+    userId: resourceUsers[index]?.id || "",
+    topicId: resourceTopics[index]?.id || "",
   }))
 
   await prisma.resource.createMany({
     data: resourcesWithUserAndTopic,
   })
 }
+
+
+seedDB()
