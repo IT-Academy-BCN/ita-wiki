@@ -9,7 +9,7 @@ describe('CheckBox', () => {
     render(
       <CheckBox
         id="idTest"
-        label={"Test label"}
+        label="Test label"
       />
     )
 
@@ -35,7 +35,7 @@ describe('CheckBox', () => {
     render(
       <CheckBox
         id="idTest"
-        label={"Test label"}
+        label="Test label"
       />
     )
 
@@ -55,7 +55,7 @@ describe('CheckBox', () => {
     render(
       <CheckBox
         id="idTest"
-        label={"Test label"}
+        label="Test label"
         defaultChecked
       />
     )
@@ -75,9 +75,9 @@ describe('CheckBox', () => {
   it('renders correctly with particular legal style', () => {
     render(
       <CheckBox
-        legal={true}
+        legal
         id="idTest"
-        label={"Test label"}
+        label="Test label"
       />
     )
 
