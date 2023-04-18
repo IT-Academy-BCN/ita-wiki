@@ -33,7 +33,6 @@ const StyledCheckBox = styled.input<TCheckBox>`
 `
 
 type TCheckBox = InputHTMLAttributes<HTMLInputElement> & {
-    type?: string;
     id: string;
     label: string;
     defaultChecked?: boolean;
