@@ -37,6 +37,13 @@ const data = {
       password: 'password5',
       dni: '56789123E',
       status: 'ACTIVE',
+    },
+    {
+      email: 'test@example.com',
+      password: 'password1',
+      name: 'Test User',
+      dni: '45632452a',
+      status: 'ACTIVE'
     }
   ],
   topics: [

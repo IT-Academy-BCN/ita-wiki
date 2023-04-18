@@ -9,7 +9,11 @@ import { validateMany } from '../validateMany'
  * @param data 
  */
 export const registerUsers = async (data: Data) => {
-  const { users } = data
+
+  const users = data.users.map((user) => ({
+    ...user,
+    dni: user.dni.toUpperCase()
+  }))
 
   validateMany(
     users,
