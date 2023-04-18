@@ -12,7 +12,7 @@ export const users: Prisma.UserCreateArgs['data'][] = [
   {
     email: 'registered@registered.com',
     password: 'password2',
-    name: 'Registered User',
+    name: 'Django Unchained',
     dni: '23456789B',
     status: 'ACTIVE',
     // Faltará type: "registered" cuando esté disponible en main
