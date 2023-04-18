@@ -1,5 +1,8 @@
+import { useForm } from 'react-hook-form'
+import styled from 'styled-components'
 import { Modal, InputGroup, SelectGroup } from '../molecules'
 import { Button } from '../atoms'
+import { dimensions } from '../../styles'
 
 const options = [
   { value: '1', label: 'Primeros pasos' },
@@ -18,14 +21,31 @@ const options = [
   { value: '14', label: 'Testing' },
 ]
 
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: ${dimensions.spacing.base};
+  width: 100%;
+`
+
 type TResourceForm = {
   isOpen: boolean
   toggleModal: () => void
 }
 
 export const ResourceForm = ({ isOpen, toggleModal }: TResourceForm) => (
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(),
+  })
+
+
   <Modal title="Nuevo Recurso" isOpen={isOpen} toggleModal={toggleModal}>
-    <form>
+    <StyledForm>
       <InputGroup
         label="Título"
         hiddenLabel
@@ -50,6 +70,6 @@ export const ResourceForm = ({ isOpen, toggleModal }: TResourceForm) => (
       <SelectGroup id="topic" name="topic" label="tema" options={options} />
       <Button>Editar</Button>
       <Button>Cancelar</Button>
-    </form>
+    </StyledForm>
   </Modal>
 )
