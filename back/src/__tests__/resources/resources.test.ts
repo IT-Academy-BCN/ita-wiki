@@ -10,7 +10,7 @@ describe('Testing resources endpoint', () => {
 
   beforeAll(async () => {
     const response = await supertest(server).post('/api/v1/auth/login').send({
-      dni: '45632452a',
+      dni: '12345678a',
       password: 'password1'
     })
     // eslint-disable-next-line prefer-destructuring
