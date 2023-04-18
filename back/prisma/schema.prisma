@@ -48,12 +48,24 @@ enum RESOURCE_TYPE {
   TUTORIAL
 }
 
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  topics    Topic[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
+
 model Topic {
-  id        String     @id @default(cuid())
-  topic     String     @unique
-  resources Resource[]
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @updatedAt @map("updated_at")
+  id         String     @id @default(cuid())
+  topic      String     @unique
+  category   Category   @relation(fields: [categoryId], references: [id])
+  categoryId String
+  resources  Resource[]
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
 
   @@map("topics")
 }
