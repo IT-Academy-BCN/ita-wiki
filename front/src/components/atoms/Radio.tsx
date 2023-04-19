@@ -8,7 +8,12 @@ type TRadioOptions = {
   label: string
 }
 
-type TRadio = { options: TRadioOptions[]; name: string; hiddenLabel?: boolean }
+type TRadio = {
+  options: TRadioOptions[]
+  name: string
+  hiddenLabel?: boolean
+  defaultChecked?: string
+}
 
 const RadioStyled = styled(FlexBox)`
   flex-direction: row;
@@ -25,13 +30,20 @@ const RadioStyled = styled(FlexBox)`
 
 const Radio = forwardRef(
   (
-    { options, name, hiddenLabel = false, ...rest }: TRadio,
+    { options, name, hiddenLabel = false, defaultChecked, ...rest }: TRadio,
     ref: Ref<HTMLInputElement>
   ) => (
     <RadioStyled {...rest}>
       {options.map(({ id, label }) => (
         <FlexBox direction="row" key={id}>
-          <input type="radio" id={id} value={id} name={name} ref={ref} />
+          <input
+            type="radio"
+            id={id}
+            value={id}
+            name={name}
+            ref={ref}
+            defaultChecked={defaultChecked === id}
+          />
           <Label htmlFor={id} text={label} hiddenLabel={hiddenLabel} />
         </FlexBox>
       ))}
