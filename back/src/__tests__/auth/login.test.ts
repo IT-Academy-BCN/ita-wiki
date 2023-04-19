@@ -5,7 +5,7 @@ import { server } from '../setup'
 describe('Testing authentication endpoint', () => {
   test('should succeed with correct credentials', async () => {
     const response = await supertest(server).post('/api/v1/auth/login').send({
-      dni: '45632452a',
+      dni: '12345678a',
       password: 'password1',
     })
     expect(response.status).toBe(204)
@@ -16,7 +16,7 @@ describe('Testing authentication endpoint', () => {
 
   test('should fail with incorrect password', async () => {
     const response = await supertest(server).post('/api/v1/auth/login').send({
-      dni: '45632452a',
+      dni: '12345678a',
       password: 'wrong password',
     })
     expect(response.status).toBe(422)

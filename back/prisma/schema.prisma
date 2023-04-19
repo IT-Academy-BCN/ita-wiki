@@ -14,7 +14,9 @@ model User {
   password  String
   name      String?
   status    USER_STATUS @default(INACTIVE)
+  role      USER_ROLE @default(REGISTERED)
   resources Resource[]
+  media Media[]
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
 
@@ -24,6 +26,11 @@ model User {
 enum USER_STATUS {
   ACTIVE
   INACTIVE
+}
+
+enum USER_ROLE {
+  ADMIN 
+  REGISTERED
 }
 
 model Resource {
@@ -56,4 +63,16 @@ model Topic {
   updatedAt DateTime   @updatedAt @map("updated_at")
 
   @@map("topics")
+}
+
+model Media {
+  id        String     @id @default(cuid())
+  mimetype  String
+  filepath  String
+  user      User       @relation(fields: [userId], references: [id])
+  userId    String     @map("user_id")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  @@map("media")
 }

@@ -2,6 +2,7 @@ import { FC } from 'react'
 import { Link } from 'react-router-dom'
 import { Title } from '../components/atoms'
 import { paths } from '../constants'
+import { TextareaGroup } from '../components/molecules'
 
 const Home: FC = () => (
   <>
@@ -15,6 +16,14 @@ const Home: FC = () => (
     <div>
       <Link to={paths.resource}>Resource</Link>
     </div>
+    <TextareaGroup
+      id="prueba"
+      name="textarea"
+      label="textarea"
+      rows={10}
+      validationMessage="Está mal"
+      validationType="error"
+    />
   </>
 )
 
