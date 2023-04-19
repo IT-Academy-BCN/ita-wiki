@@ -64,9 +64,11 @@ export const ResourceForm = () => {
     resolver: zodResolver(ResourceFormSchema),
   })
 
+  /* eslint-disable no-return-assign, no-param-reassign */
   const onSubmit = handleSubmit((data) => {
-    
+    console.log(data)
   })
+  /* eslint-enable no-return-assign, no-param-reassign */
 
   return (
     <ResourceFormStyled onSubmit={onSubmit}>
