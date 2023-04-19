@@ -60,7 +60,7 @@ type TResourceForm = {
   url: string
 }
 
-export const ResourceForm = ({ isOpen, toggleModal }: TResourceForm) => {
+const ResourceForm = ({ isOpen, toggleModal }: TResourceForm) => {
   const {
     register,
     handleSubmit,
@@ -132,3 +132,5 @@ export const ResourceForm = ({ isOpen, toggleModal }: TResourceForm) => {
     </Modal>
   )
 }
+
+export { ResourceForm }
