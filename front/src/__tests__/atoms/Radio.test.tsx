@@ -51,4 +51,29 @@ describe('Radio', () => {
       expect(radioTest).toBeChecked()
     })
   })
+
+  it('renders radio checked by default when provided and user can uncheck it', async () => {
+    render(
+      <Radio
+        options={options}
+        name="radioTest"
+        defaultChecked={options[1].id}
+      />
+    )
+
+    test.each(options)('renders radio %s', ({ label, id }) => {
+      const radioTest = screen.getByLabelText(label)
+      const labelTest = screen.getByText(label)
+
+      if (id === options[1].id) {
+        expect(radioTest).toBeChecked()
+      } else {
+        expect(radioTest).not.toBeChecked()
+      }
+
+      fireEvent.click(labelTest)
+
+      expect(radioTest).toBeChecked()
+    })
+  })
 })
