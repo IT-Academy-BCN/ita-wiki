@@ -17,16 +17,16 @@ describe('Modal', () => {
     expect(screen.getByText('Modal content')).toBeInTheDocument()
   })
 
-  it('calls toggleModal function when close icon is clicked', () => {
+  it('calls toggleModal function when close icon, background or "Escape" is clicked', () => {
     render(
       <Modal isOpen toggleModal={mockToggleModal} title="Test Modal">
         <Text>Modal content</Text>
       </Modal>
     )
-    const closeIcon = screen.getByRole('img')
 
-    fireEvent.click(closeIcon)
-
-    expect(mockToggleModal).toHaveBeenCalledTimes(1)
+    fireEvent.click(screen.getByTestId('modal-background'))
+    fireEvent.click(screen.getByRole('img'))
+    fireEvent.keyDown(document, { key: 'Escape' })
+    expect(mockToggleModal).toHaveBeenCalledTimes(3)
   })
 })

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { Icon, Title } from '../atoms'
@@ -36,10 +37,27 @@ type TModal = {
   toggleModal: () => void
 }
 
-const Modal = ({ children, isOpen, toggleModal, title }: TModal) =>
-  isOpen ? (
-    <ModalBackgroundStyled>
-      <ModalContainerSyled justify="flex-start">
+const Modal = ({ children, isOpen, toggleModal, title }: TModal) => {
+  useEffect(() => {
+    const handleKeyDown = (event: { key: string }) => {
+      if (event.key === 'Escape') {
+        toggleModal()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [toggleModal])
+
+  return isOpen ? (
+    <ModalBackgroundStyled onClick={toggleModal} data-testid="modal-background">
+      <ModalContainerSyled
+        justify="flex-start"
+        onClick={(e) => e.stopPropagation()}
+      >
         <Icon
           name="close"
           onClick={toggleModal}
@@ -56,5 +74,6 @@ const Modal = ({ children, isOpen, toggleModal, title }: TModal) =>
       </ModalContainerSyled>
     </ModalBackgroundStyled>
   ) : null
+}
 
 export { Modal }

@@ -12,6 +12,9 @@ const Home: FC = () => (
     <div>
       <Link to={paths.login}>Login</Link>
     </div>
+    <div>
+      <Link to={paths.resource}>Resource</Link>
+    </div>
   </>
 )
 
