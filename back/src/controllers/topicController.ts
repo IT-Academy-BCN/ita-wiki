@@ -5,7 +5,7 @@ export const getTopics: Middleware = async (ctx: Koa.Context) => {
     const topics = await prisma.topic.findMany({
         select: {
             id: true,
-            topic: true,
+            name: true,
         }
     });
     ctx.status = 200;

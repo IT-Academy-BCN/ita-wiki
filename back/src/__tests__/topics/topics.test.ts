@@ -14,7 +14,7 @@ describe('Testing topics endpoint', () => {
                 expect.arrayContaining([
                     expect.objectContaining({
                         id: expect.any(String),
-                        topic: expect.any(String)
+                        name: expect.any(String)
                     })
                 ])
             )
