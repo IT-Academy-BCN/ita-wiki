@@ -60,16 +60,18 @@ export const ResourceForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<TResourceForm>({
     resolver: zodResolver(ResourceFormSchema),
   })
 
-  /* eslint-disable no-return-assign no-console */
   const onSubmit = handleSubmit((data) => {
+    const { title, description, url, topic, resourceType } = data
     /* eslint-disable next-line */
-    console.log(data)
+    //registerNewUser({ title, description, url, topic, resourceType })
+    reset()
   })
-  /* eslint-enable no-return-assign no-console */
+
 
   return (
     <ResourceFormStyled onSubmit={onSubmit}>
