@@ -22,7 +22,7 @@ const router = createBrowserRouter([
   },
   {
     path: 'add-resource',
-    element: <AddResource/>,
+    element: <AddResource />,
   },
 ])
 

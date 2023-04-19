@@ -3,16 +3,9 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
-import { Modal, InputGroup, SelectGroup } from '../molecules'
+import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage } from '../atoms'
 import { FlexBox, dimensions } from '../../styles'
-
-const ResourceFormSchema = z.object({
-  description: z.string(),
-  title: z.string(),
-  topic: z.string(),
-  url: z.string(),
-})
 
 const options = [
   { value: '1', label: 'Primeros pasos' },
@@ -51,16 +44,17 @@ const FlexErrorStyled = styled(FlexBox)`
   margin-left: 0.2rem;
 `
 
-type TResourceForm = {
-  description: string
-  isOpen: boolean
-  title: string
-  toggleModal: () => void
-  topic: string
-  url: string
-}
+const ResourceFormSchema = z.object({
+  title: z.string(),
+  description: z.string().optional(),
+  url: z.string(),
+  topic: z.string(),
+  resourceType: z.string(),
+})
 
-const ResourceForm = ({ isOpen, toggleModal }: TResourceForm) => {
+type TResourceForm = z.infer<typeof ResourceFormSchema>
+
+export const ResourceForm = () => {
   const {
     register,
     handleSubmit,
@@ -74,63 +68,58 @@ const ResourceForm = ({ isOpen, toggleModal }: TResourceForm) => {
   })
 
   return (
-    <Modal title="Nuevo Recurso" isOpen={isOpen} toggleModal={toggleModal}>
-      <form onSubmit={onSubmit}>
-        <InputGroup
-          hiddenLabel
-          id="title"
-          label="Título"
-          placeholder="Título"
-          {...register('title')}
-          name="title"
-          error={errors.title && true}
-        />
-        <InputGroup
-          hiddenLabel
-          id="description"
-          label="Descripción"
-          placeholder="Descripción"
-          {...register('description')}
-          name="description"
-          error={errors.description && true}
-        />
-        <InputGroup
-          hiddenLabel
-          id="url"
-          label="URL"
-          placeholder="URL"
-          {...register('url')}
-          name="url"
-          error={errors.url && true}
-        />
-        <SelectGroup
-          id="topic"
-          label="Tema"
-          options={options}
-          {...register('topic')}
-          name="topic"
-          error={errors.topic && true}
-        />
-        <CheckBoxStyled direction="row">
-          <input type="checkbox" value="video" id="video" />
-          <label htmlFor="video">Video</label>
-          <input type="checkbox" value="curso" id="curso" />
-          <label htmlFor="curso">Curso</label>
-          <input type="checkbox" value="blog" id="blog" />
-          <label htmlFor="blog">Blog</label>
-        </CheckBoxStyled>
-        <FlexErrorStyled align="start">
-          {errors?.title || errors?.description || errors?.url ? (
-            <ValidationMessage color="error" text="Rellene todos los campos" />
-          ) : null}
-        </FlexErrorStyled>
-        <ButtonContainerStyled align="stretch">
-          <ButtonStyled>Editar</ButtonStyled>
-          <ButtonStyled>Cancelar</ButtonStyled>
-        </ButtonContainerStyled>
-      </form>
-    </Modal>
+    <form onSubmit={onSubmit}>
+      <InputGroup
+        hiddenLabel
+        id="title"
+        label="Título"
+        placeholder="Título"
+        {...register('title')}
+        name="title"
+        error={errors.title?.message}
+      />
+      <InputGroup
+        hiddenLabel
+        id="description"
+        label="Descripción"
+        placeholder="Descripción"
+        {...register('description')}
+        name="description"
+        error={errors.description?.message}
+      />
+      <InputGroup
+        hiddenLabel
+        id="url"
+        label="URL"
+        placeholder="URL"
+        {...register('url')}
+        name="url"
+        error={errors.url?.message}
+      />
+      <SelectGroup
+        id="topic"
+        label="Tema"
+        options={options}
+        {...register('topic')}
+        name="topic"
+        error={errors.topic?.message}
+      />
+      <CheckBoxStyled direction="row">
+        <input type="checkbox" value="video" id="video" />
+        <label htmlFor="video">Video</label>
+        <input type="checkbox" value="curso" id="curso" />
+        <label htmlFor="curso">Curso</label>
+        <input type="checkbox" value="blog" id="blog" />
+        <label htmlFor="blog">Blog</label>
+      </CheckBoxStyled>
+      <FlexErrorStyled align="start">
+        {errors?.title || errors?.description || errors?.url ? (
+          <ValidationMessage color="error" text="Rellene todos los campos" />
+        ) : null}
+      </FlexErrorStyled>
+      <ButtonContainerStyled align="stretch">
+        <ButtonStyled>Cancelar</ButtonStyled>
+      </ButtonContainerStyled>
+    </form>
   )
 }
-
-export { ResourceForm }
