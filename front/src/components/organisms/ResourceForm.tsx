@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
 import { InputGroup, SelectGroup } from '../molecules'
-import { Button, ValidationMessage } from '../atoms'
+import { Button, ValidationMessage, Radio } from '../atoms'
 import { FlexBox, dimensions } from '../../styles'
 
 const options = [
@@ -23,11 +23,6 @@ const options = [
   { value: '13', label: 'Proyectos' },
   { value: '14', label: 'Testing' },
 ]
-
-const CheckBoxStyled = styled(FlexBox)`
-  gap: 2rem;
-  margin-top: 2rem;
-`
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -54,6 +49,12 @@ const ResourceFormSchema = z.object({
 
 type TResourceForm = z.infer<typeof ResourceFormSchema>
 
+const ResourceFormStyled = styled.form`
+  ${Radio} {
+    margin-top: ${dimensions.spacing.xl};
+  }
+`
+
 export const ResourceForm = () => {
   const {
     register,
@@ -68,7 +69,7 @@ export const ResourceForm = () => {
   })
 
   return (
-    <form onSubmit={onSubmit}>
+    <ResourceFormStyled onSubmit={onSubmit}>
       <InputGroup
         hiddenLabel
         id="title"
@@ -104,22 +105,23 @@ export const ResourceForm = () => {
         name="topic"
         error={errors.topic?.message}
       />
-      <CheckBoxStyled direction="row">
-        <input type="checkbox" value="video" id="video" />
-        <label htmlFor="video">Video</label>
-        <input type="checkbox" value="curso" id="curso" />
-        <label htmlFor="curso">Curso</label>
-        <input type="checkbox" value="blog" id="blog" />
-        <label htmlFor="blog">Blog</label>
-      </CheckBoxStyled>
+      <Radio
+        {...register('resourceType')}
+        options={[
+          { id: 'video', label: 'Video' },
+          { id: 'curso', label: 'Curso' },
+          { id: 'blog', label: 'Blog' },
+        ]}
+        name="resourceType"
+      />
       <FlexErrorStyled align="start">
         {errors?.title || errors?.description || errors?.url ? (
           <ValidationMessage color="error" text="Rellene todos los campos" />
         ) : null}
       </FlexErrorStyled>
       <ButtonContainerStyled align="stretch">
-        <ButtonStyled>Cancelar</ButtonStyled>
+        <ButtonStyled type="submit">Guardar</ButtonStyled>
       </ButtonContainerStyled>
-    </form>
+    </ResourceFormStyled>
   )
 }

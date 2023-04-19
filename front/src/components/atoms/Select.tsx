@@ -1,4 +1,4 @@
-import { SelectHTMLAttributes, forwardRef, useState } from 'react'
+import { SelectHTMLAttributes, forwardRef } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions } from '../../styles'
 
@@ -29,36 +29,18 @@ type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
 }
 
 const Select = forwardRef<HTMLSelectElement, TSelect>(
-  ({ options = [], error = false, placeholder = 'Options', ...rest }, ref) => {
-    const [selectedOption, setSelectedOption] = useState<TOption | null>(null)
-
-    const handleSelectChange = (
-      event: React.ChangeEvent<HTMLSelectElement>
-    ) => {
-      const { value } = event.target
-      const option = options.find((op) => op.value === value)
-      setSelectedOption(option ?? null)
-    }
-
-    return (
-      <SelectStyled
-        value={selectedOption?.value ?? ''}
-        onChange={handleSelectChange}
-        error={error}
-        ref={ref}
-        {...rest}
-      >
-        <option disabled value="">
-          {placeholder}
+  ({ options = [], error = false, placeholder = 'Options', ...rest }, ref) => (
+    <SelectStyled error={error} ref={ref} {...rest}>
+      <option disabled selected value="">
+        {placeholder}
+      </option>
+      {options.map(({ value, label }) => (
+        <option key={value} value={value}>
+          {label}
         </option>
-        {options.map(({ value, label }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </SelectStyled>
-    )
-  }
+      ))}
+    </SelectStyled>
+  )
 )
 
 export { Select, type TSelect }
