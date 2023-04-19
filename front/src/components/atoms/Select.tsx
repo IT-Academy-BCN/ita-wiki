@@ -1,4 +1,4 @@
-import { SelectHTMLAttributes, useState } from 'react'
+import { SelectHTMLAttributes, forwardRef, useState } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions } from '../../styles'
 
@@ -28,37 +28,37 @@ type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
   placeholder?: string
 }
 
-function Select({
-  options = [],
-  error = false,
-  placeholder = 'Options',
-  ...rest
-}: TSelect) {
-  const [selectedOption, setSelectedOption] = useState<TOption | null>(null)
+const Select = forwardRef<HTMLSelectElement, TSelect>(
+  ({ options = [], error = false, placeholder = 'Options', ...rest }, ref) => {
+    const [selectedOption, setSelectedOption] = useState<TOption | null>(null)
 
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.target
-    const option = options.find((op) => op.value === value)
-    setSelectedOption(option ?? null)
-  }
+    const handleSelectChange = (
+      event: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+      const { value } = event.target
+      const option = options.find((op) => op.value === value)
+      setSelectedOption(option ?? null)
+    }
 
-  return (
-    <SelectStyled
-      value={selectedOption?.value ?? ''}
-      onChange={handleSelectChange}
-      error={error}
-      {...rest}
-    >
-      <option disabled value="">
-        {placeholder}
-      </option>
-      {options.map(({ value, label }) => (
-        <option key={value} value={value}>
-          {label}
+    return (
+      <SelectStyled
+        value={selectedOption?.value ?? ''}
+        onChange={handleSelectChange}
+        error={error}
+        ref={ref}
+        {...rest}
+      >
+        <option disabled value="">
+          {placeholder}
         </option>
-      ))}
-    </SelectStyled>
-  )
-}
+        {options.map(({ value, label }) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
+      </SelectStyled>
+    )
+  }
+)
 
 export { Select, type TSelect }
