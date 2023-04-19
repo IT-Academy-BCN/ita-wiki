@@ -65,7 +65,7 @@ model Category {
 
 model Topic {
   id         String              @id @default(cuid())
-  name       String              @unique
+  name       String              
   category   Category            @relation(fields: [categoryId], references: [id])
   categoryId String
   resources  TopicsOnResources[]
