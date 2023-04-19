@@ -65,7 +65,7 @@ export const ResourceForm = () => {
   })
 
   const onSubmit = handleSubmit((data) => {
-    console.log(data)
+    
   })
 
   return (
