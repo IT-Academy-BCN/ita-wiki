@@ -2,12 +2,13 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import axios from 'axios'
 import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio } from '../atoms'
 import { FlexBox, dimensions } from '../../styles'
-import { useNavigate } from 'react-router-dom'
+
 
 const options = [
   { value: '1', label: 'Primeros pasos' },
@@ -68,11 +69,11 @@ export const ResourceForm = () => {
   })
 
   const navigate = useNavigate()
-  const url = 'http://localhost:8999/api/v1/auth/resource'
+  const urlBE = 'http://localhost:8999/api/v1/auth/resource'
 
   const registerNewResource  = async (resource: object) => {
     try {
-      const response = await axios.post(url, resource)
+      const response = await axios.post(urlBE, resource)
       if (response.status === 204) {
         navigate('/')
       }
