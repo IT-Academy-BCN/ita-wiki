@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -8,7 +7,6 @@ import axios from 'axios'
 import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio } from '../atoms'
 import { FlexBox, dimensions } from '../../styles'
-
 
 const options = [
   { value: '1', label: 'Primeros pasos' },
@@ -29,7 +27,7 @@ const options = [
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
-  padding: 2rem 0.4rem 0rem;
+  padding: ${dimensions.spacing.xl} 0.4rem 0rem;
 `
 
 const ButtonStyled = styled(Button)`
@@ -43,10 +41,18 @@ const FlexErrorStyled = styled(FlexBox)`
 `
 
 const ResourceFormSchema = z.object({
-  title: z.string({ required_error: "Este campo es obligatorio" }).min(1, { message: "Este campo es obligatorio" }),
+  title: z
+    .string({ required_error: 'Este campo es obligatorio' })
+    .min(1, { message: 'Este campo es obligatorio' }),
   description: z.string().optional(),
-  url: z.string({ required_error: "Este campo es obligatorio" }).url({ message: "La URL proporcionada no es válida" }),
-  topic: z.string({ required_error: "Este campo es obligatorio" }).includes('Options', { message: "Este campo es obligatorio" }),
+  url: z
+    .string({ required_error: 'Este campo es obligatorio' })
+    .url({ message: 'La URL proporcionada no es válida' }),
+  topic: z
+    .string({ required_error: 'Este campo es obligatorio' })
+    .refine((val) => options.map((o) => o.value).includes(val), {
+      message: 'El tema seleccionado no es válido',
+    }),
   resourceType: z.string(),
 })
 
@@ -71,7 +77,7 @@ export const ResourceForm = () => {
   const navigate = useNavigate()
   const urlBE = 'http://localhost:8999/api/v1/auth/resource'
 
-  const registerNewResource  = async (resource: object) => {
+  const registerNewResource = async (resource: object) => {
     try {
       const response = await axios.post(urlBE, resource)
       if (response.status === 204) {
@@ -82,13 +88,11 @@ export const ResourceForm = () => {
     }
   }
 
-
   const onSubmit = handleSubmit((data) => {
     const { title, description, url, topic, resourceType } = data
     registerNewResource({ title, description, url, topic, resourceType })
     reset()
   })
-
 
   return (
     <ResourceFormStyled onSubmit={onSubmit}>
@@ -142,7 +146,7 @@ export const ResourceForm = () => {
       />
       <FlexErrorStyled align="start">
         {errors?.title || errors?.description || errors?.url ? (
-          <ValidationMessage color="error" text="Rellene todos los campos" />
+          <ValidationMessage />
         ) : null}
       </FlexErrorStyled>
       <ButtonContainerStyled align="stretch">

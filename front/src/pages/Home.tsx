@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { ResourceForm } from '../components/organisms'
 import { Title } from '../components/atoms'
 import { paths } from '../constants'
+import { Modal } from '../components/molecules'
 
 const Home: FC = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -24,7 +25,9 @@ const Home: FC = () => {
       <button type="button" onClick={openModal}>
         Abrir modal
       </button>
-      <ResourceForm isOpen={isOpen} toggleModal={() => setIsOpen(false)} />
+      <Modal isOpen={isOpen} toggleModal={() => setIsOpen(false)}>
+        <ResourceForm />
+      </Modal>
     </>
   )
 }
