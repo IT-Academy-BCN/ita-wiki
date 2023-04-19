@@ -34,15 +34,4 @@ describe('ResourceForm', () => {
       expect(screen.getByText('Este campo es obligatorio')).toBeInTheDocument()
     )
   })
-
-  //   it('should submit form when button is clicked', async () => {
-  //     const mockSubmit = vi.fn()
-  //     const { getByText } = render(
-  //       <BrowserRouter>
-  //         <ResourceForm onSubmit={mockSubmit} />
-  //       </BrowserRouter>
-  //     )
-  //     fireEvent.click(getByText(/Guardar/i))
-  //     await waitFor(() => expect(mockSubmit).toHaveBeenCalled())
-  //   })
 })
