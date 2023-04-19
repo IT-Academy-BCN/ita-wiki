@@ -40,10 +40,10 @@ const FlexErrorStyled = styled(FlexBox)`
 `
 
 const ResourceFormSchema = z.object({
-  title: z.string(),
+  title: z.string({ required_error: "Este campo es obligatorio" }).min(1, { message: "Este campo es obligatorio" }),
   description: z.string().optional(),
-  url: z.string(),
-  topic: z.string(),
+  url: z.string({ required_error: "Este campo es obligatorio" }).url({ message: "La URL proporcionada no es válida" }),
+  topic: z.string({ required_error: "Este campo es obligatorio" }).includes('Options', { message: "Este campo es obligatorio" }),
   resourceType: z.string(),
 })
 
@@ -77,7 +77,9 @@ export const ResourceForm = () => {
         placeholder="Título"
         {...register('title')}
         name="title"
-        error={errors.title?.message}
+        error={errors.title && true}
+        validationMessage={errors.title?.message}
+        validationType="error"
       />
       <InputGroup
         hiddenLabel
@@ -86,7 +88,6 @@ export const ResourceForm = () => {
         placeholder="Descripción"
         {...register('description')}
         name="description"
-        error={errors.description?.message}
       />
       <InputGroup
         hiddenLabel
@@ -95,7 +96,9 @@ export const ResourceForm = () => {
         placeholder="URL"
         {...register('url')}
         name="url"
-        error={errors.url?.message}
+        error={errors.url && true}
+        validationMessage={errors.url?.message}
+        validationType="error"
       />
       <SelectGroup
         id="topic"
@@ -103,7 +106,8 @@ export const ResourceForm = () => {
         options={options}
         {...register('topic')}
         name="topic"
-        error={errors.topic?.message}
+        error={errors.topic && true}
+        validationMessage={errors.topic?.message}
       />
       <Radio
         {...register('resourceType')}
