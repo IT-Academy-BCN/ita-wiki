@@ -64,7 +64,7 @@ model Media {
   mimetype  String
   filepath  String
   user      User       @relation(fields: [userId], references: [id])
-  userId    String
+  userId    String     @map("user_id")
   createdAt DateTime   @default(now()) @map("created_at")
   updatedAt DateTime   @updatedAt @map("updated_at")
 
