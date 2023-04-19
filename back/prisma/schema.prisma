@@ -16,6 +16,7 @@ model User {
   status    USER_STATUS @default(INACTIVE)
   role      USER_ROLE   @default(REGISTERED)
   resources Resource[]
+  media Media[]
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
 
@@ -75,6 +76,18 @@ model Topic {
   @@map("topics")
 }
 
+model Media {
+  id        String     @id @default(cuid())
+  mimetype  String
+  filepath  String
+  user      User       @relation(fields: [userId], references: [id])
+  userId    String     @map("user_id")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  @@map("media")
+}
+
 model TopicsOnResources {
   resource   Resource @relation(fields: [resourceId], references: [id])
   resourceId String
@@ -83,4 +96,5 @@ model TopicsOnResources {
   assignedAt DateTime @default(now())
 
   @@id([topicId, resourceId])
+
 }
