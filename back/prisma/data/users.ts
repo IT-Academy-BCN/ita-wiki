@@ -7,7 +7,7 @@ export const users: Prisma.UserCreateArgs['data'][] = [
     name: 'Kevin Mamaqi',
     dni: '12345678A',
     status: 'ACTIVE',
-    // Faltará type: "admin" cuando esté disponible en main
+    role: "ADMIN"
   },
   {
     email: 'registered@registered.com',
@@ -15,6 +15,5 @@ export const users: Prisma.UserCreateArgs['data'][] = [
     name: 'Django Unchained',
     dni: '23456789B',
     status: 'ACTIVE',
-    // Faltará type: "registered" cuando esté disponible en main
   }
 ]

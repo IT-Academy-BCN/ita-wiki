@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 
 export const resources: Omit<
   Prisma.ResourceCreateArgs['data'],
-  'userId' | 'topicId'
+  'userId'
 >[] = [
   {
     title: 'My resource in React',
