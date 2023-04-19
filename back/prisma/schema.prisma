@@ -14,6 +14,7 @@ model User {
   password  String
   name      String?
   status    USER_STATUS @default(INACTIVE)
+  role      USER_ROLE @default(REGISTERED)
   resources Resource[]
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
@@ -24,6 +25,11 @@ model User {
 enum USER_STATUS {
   ACTIVE
   INACTIVE
+}
+
+enum USER_ROLE {
+  ADMIN 
+  REGISTERED
 }
 
 model Resource {
