@@ -20,19 +20,19 @@ describe('Seeded data exists in the Database', () => {
         expect(seedUser).not.toBe(null)
     })
 
-    test('Topic React exists', async () => {
-        const seedTopic = await prisma.topic.findUnique({
+    test('Category React exists', async () => {
+        const seedTopic = await prisma.category.findUnique({
             where: {
-                topic: 'React'
+                name: 'React'
             }
         })
         expect(seedTopic).not.toBe(null)
     })
 
-    test('Topic Javascript exists', async () => {
-        const seedTopic = await prisma.topic.findUnique({
+    test('Category Javascript exists', async () => {
+        const seedTopic = await prisma.category.findUnique({
             where: {
-                topic: 'Javascript'
+                name: 'Javascript'
             }
         })
         expect(seedTopic).not.toBe(null)

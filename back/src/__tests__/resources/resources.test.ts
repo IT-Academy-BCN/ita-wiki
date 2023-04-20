@@ -5,31 +5,36 @@ import { prisma } from '../../prisma/client'
 
 describe('Testing resources endpoint', () => {
   let authToken: string
-  let existingTopicId : string | undefined
-  let existingUserId : string | undefined
+  let existingUserEmail: string | undefined
+  let topicIds: string[] | undefined[]
 
   beforeAll(async () => {
     const response = await supertest(server).post('/api/v1/auth/login').send({
-      dni: '12345678a',
-      password: 'password1'
+      dni: '23456789B',
+      password: 'password2',
     })
     // eslint-disable-next-line prefer-destructuring
-    authToken = response.header['set-cookie'][0].split(";")[0]
+    authToken = response.header['set-cookie'][0].split(';')[0]
 
-    existingTopicId = (await prisma.topic.findFirst())?.id
-    existingUserId = (await prisma.user.findFirst())?.id
+    existingUserEmail = (
+      await prisma.user.findFirst({
+        where: {
+          role: 'REGISTERED',
+        },
+      })
+    )?.email
+
+    topicIds = (await prisma.topic.findMany()).map((topic) => topic.id)
   })
 
-  test('should create a new resource', async () => {
-
-    
+  test('should create a new resource with topics', async () => {
     const newResource = {
       title: 'New Resource',
       description: 'This is a new resource',
       url: 'https://example.com/resource',
       resource_type: 'BLOG',
-      topicId: existingTopicId,
-      userId: existingUserId
+      topics: topicIds,
+      userEmail: existingUserEmail,
     }
 
     const response = await supertest(server)
@@ -40,14 +45,32 @@ describe('Testing resources endpoint', () => {
     expect(response.status).toBe(204)
   })
 
-  test('should fail with invalid resource type', async () => {
+  test('should fail without topics', async () => {
+    const newResource = {
+      title: 'New Resource',
+      description: 'This is a new resource',
+      url: 'https://example.com/resource',
+      resource_type: 'BLOG',
+      topics: [],
+      userEmail: existingUserEmail,
+    }
+
+    const response = await supertest(server)
+      .post('/api/v1/resources/create')
+      .set('Cookie', authToken)
+      .send(newResource)
+
+    expect(response.status).toBe(204)
+  })
+
+  test('should fail with wrong resource type', async () => {
     const invalidResource = {
       title: 'Invalid Resource',
       description: 'This is a new resource',
       url: 'https://example.com/resource',
       resource_type: 'INVALIDE-RESOURCE',
-      topicId: existingTopicId,
-      userId: existingUserId,
+      topicId: topicIds,
+      userEmail: existingUserEmail,
     }
 
     const response = await supertest(server)

@@ -23,40 +23,80 @@ async function seedDB() {
 
   const categoryNode = await prisma.category.findUnique({
     where: { name: 'Node' },
-  })  
+  })
 
-  const topicCategories = [categoryReact, categoryNode, categoryReact, categoryNode] 
+  const topicCategories = [
+    categoryReact,
+    categoryNode,
+    categoryReact,
+    categoryNode,
+  ]
 
   const mapedTopics = topics.map((topic, index) => ({
     ...topic,
-    categoryId: topicCategories[index]?.id || "",
+    categoryId: topicCategories[index]?.id || '',
   }))
 
   await prisma.topic.createMany({
     data: mapedTopics,
   })
-  
+
   const userRegistered = await prisma.user.findUnique({
     where: { email: 'registered@registered.com' },
   })
-  
+
   const resourceUsers = [userAdmin, userAdmin, userRegistered, userRegistered]
-  
+
   const resourcesWithUser = resources.map((resource, index) => ({
     ...resource,
-    userId: resourceUsers[index]?.id || "",
+    userId: resourceUsers[index]?.id || '',
   }))
 
-  // TODO: MAP MANY TO MANY
-  /*
-  
-
-  */
   await prisma.resource.createMany({
     data: resourcesWithUser,
   })
 
-}
+  // Resources
 
+  const eventosTopic = await prisma.topic.findFirst({
+    where: { name: 'Eventos' },
+  })
+
+  const listasTopic = await prisma.topic.findFirst({
+    where: { name: 'Listas' },
+  })
+
+  const firstResource = await prisma.resource.findFirst({
+    where: { title: 'My resource in React' },
+  })
+
+  const secondResource = await prisma.resource.findFirst({
+    where: { title: 'My resource in Node' },
+  })
+
+  const topicsOnResources = [
+    {
+      topicId: eventosTopic?.id || '',
+      resourceId: firstResource?.id || '',
+    },
+    {
+      topicId: listasTopic?.id || '',
+      resourceId: firstResource?.id || '',
+    },
+    {
+      topicId: eventosTopic?.id || '',
+      resourceId: secondResource?.id || '',
+    },
+    {
+      topicId: listasTopic?.id || '',
+      resourceId: secondResource?.id || '',
+    }
+  ]
+
+  await prisma.topicsOnResources.createMany({
+    // @ts-ignore
+    data: topicsOnResources,
+  })
+}
 
 seedDB()
