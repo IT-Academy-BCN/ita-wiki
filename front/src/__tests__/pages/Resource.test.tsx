@@ -10,7 +10,7 @@ describe('Resource', () => {
     expect(screen.getByRole('button', { name: 'Cursos' })).toBeInTheDocument()
   })
 
-  test('modal opens and closes correctly', () => {
+  it('modal opens and closes correctly', () => {
     render(<Resource />)
 
     fireEvent.click(screen.getByRole('button', { name: /\+/i }))

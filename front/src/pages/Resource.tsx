@@ -6,7 +6,7 @@ import { Modal, SelectGroup } from '../components/molecules'
 import { CardResource } from '../components/molecules/CardResource'
 import icons from '../assets/icons'
 
-type TstackData = {
+type TStackData = {
   createdBy: string
   createdOn: string
   description: string
@@ -24,7 +24,7 @@ type TstackData = {
   url: string
 }
 
-const stackData: TstackData[] = [
+const stackData: TStackData[] = [
   {
     createdBy: 'Ona Costa',
     createdOn: '2022-08-09T09:42:25.717Z',
