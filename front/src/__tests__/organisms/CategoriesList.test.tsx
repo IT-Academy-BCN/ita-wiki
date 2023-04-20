@@ -1,8 +1,8 @@
 // update the test with updated data structure
 
+import { BrowserRouter } from 'react-router-dom'
 import { render, screen } from '@testing-library/react'
 import { CategoriesList } from '../../components/organisms'
-import { BrowserRouter } from 'react-router-dom'
 
 describe('CategoriesList', () => {
   const categoriesMock = [
