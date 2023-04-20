@@ -39,6 +39,6 @@ Here are some useful links to official documentation for the technologies used i
 
 - [Atomic design methodology](https://atomicdesign.bradfrost.com/chapter-2/)
 - [Typescript](https://www.typescriptlang.org/docs/handbook/react.html) - Typescript documentation.
-- [vitest](https://vitest.dev/guide/) - vitest testing framework documentation.
+- [vitest](https://vitest.dev/guide/) - Vitest testing framework documentation.
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - React Testing Library documentation.
-
+  

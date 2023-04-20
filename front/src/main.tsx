@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 import 'modern-normalize/modern-normalize.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { paths } from './constants'
-import { Home, Login, Register, ErrorPage, Information } from './pages'
+import { Home, Login, Register, ErrorPage, Information, AddResource } from './pages'
 
 const router = createBrowserRouter([
   {
@@ -22,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: paths.information,
     element: <Information />,
+  },
+  {
+    path: 'add-resource',
+    element: <AddResource />,
   },
 ])
 
