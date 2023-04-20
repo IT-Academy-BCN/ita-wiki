@@ -26,6 +26,7 @@ const CategoriesList = ({ categories }: Tcategories) => (
       {categories.map((category: Tcategory) => (
         <CategoryBlock
           key={category.id}
+          id={category.id}
           img={category.img}
           category={category.category}
           resources={category.resources}

@@ -2,6 +2,7 @@
 
 import { render, screen } from '@testing-library/react'
 import { CategoriesList } from '../../components/organisms'
+import { BrowserRouter } from 'react-router-dom'
 
 describe('CategoriesList', () => {
   const categoriesMock = [
@@ -21,7 +22,11 @@ describe('CategoriesList', () => {
     },
   ]
   it('renders CategoriesList component with title and categories', () => {
-    render(<CategoriesList categories={categoriesMock} />)
+    render(
+      <BrowserRouter>
+        <CategoriesList categories={categoriesMock} />
+      </BrowserRouter>
+    )
 
     expect(screen.getByText('Categorías')).toBeInTheDocument()
     expect(screen.getByText('Category 1')).toBeInTheDocument()

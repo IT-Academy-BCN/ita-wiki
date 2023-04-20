@@ -1,7 +1,9 @@
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { Icon, Text } from '../atoms'
 import { FlexBox, colors, dimensions } from '../../styles'
 import icons from '../../assets/icons'
+import { paths } from '../../constants'
 
 const HowToHelpCardStyled = styled(FlexBox)`
   min-width: 320px;
@@ -27,7 +29,7 @@ const IconStyled = styled(Icon)`
   padding-right: ${dimensions.spacing.base};
 `
 
-const DivStyled1 = styled.div`
+const ColorLightCircle = styled.div`
   position: relative;
   left: -60px;
   top: -5px;
@@ -37,7 +39,7 @@ const DivStyled1 = styled.div`
   background-color: ${colors.primaryLight};
 `
 
-const DivStyled2 = styled.div`
+const ColorCircle = styled.div`
   position: relative;
   left: -230px;
   top: -20px;
@@ -48,15 +50,17 @@ const DivStyled2 = styled.div`
 `
 
 const HowToHelpCard = () => (
-  <HowToHelpCardStyled direction="row" justify="flex-start">
-    <DivStyled1 />
-    <DivStyled2 />
-    <FlexBoxStyled direction="row" justify="space-between">
-      <ImgStyled src={icons.newFolder} alt="new folder" />
-      <Text fontWeight="bold">¿Cómo colaborar en la wiki?</Text>
-      <IconStyled name="arrow_forward_ios" color={colors.gray.gray3} />
-    </FlexBoxStyled>
-  </HowToHelpCardStyled>
+  <Link to={paths.information}>
+    <HowToHelpCardStyled direction="row" justify="flex-start">
+      <ColorLightCircle />
+      <ColorCircle />
+      <FlexBoxStyled direction="row" justify="space-between">
+        <ImgStyled src={icons.newFolder} alt="new folder" />
+        <Text fontWeight="bold">¿Cómo colaborar en la wiki?</Text>
+        <IconStyled name="arrow_forward_ios" color={colors.gray.gray3} />
+      </FlexBoxStyled>
+    </HowToHelpCardStyled>
+  </Link>
 )
 
 export { HowToHelpCard }
