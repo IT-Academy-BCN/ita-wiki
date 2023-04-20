@@ -1,3 +1,6 @@
+import { CategoriesList } from './CategoriesList'
+import { HowToHelpCard } from './HowToHelpCard'
+import { ResourcesList } from './ResourcesList'
 import {ResourceForm} from './ResourceForm'
 
-export { ResourceForm }
+export { ResourcesList, HowToHelpCard, CategoriesList, ResourceForm }
