@@ -1,11 +1,13 @@
 import styled from 'styled-components'
 import { FC } from 'react'
-import { CategoriesList } from '../components/organisms/CategoriesList'
 import icons from '../assets/icons'
 import { FlexBox, colors, dimensions } from '../styles'
 import { InputGroup } from '../components/molecules'
-import { HowToHelpCard } from '../components/organisms/HowToHelpCard'
-import { ResourcesList } from '../components/organisms/ResourcesList'
+import {
+  HowToHelpCard,
+  CategoriesList,
+  ResourcesList,
+} from '../components/organisms'
 
 type Tcategories = {
   id: number
@@ -16,6 +18,7 @@ type Tcategories = {
 }
 
 type Tresource = {
+  id: number
   title: string
   createdBy: string
   createdOn: string
@@ -61,24 +64,28 @@ const categories: Tcategories[] = [
 
 const resources: Tresource[] = [
   {
+    id: 1,
     title: 'Context en 5 minutos!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
   },
   {
+    id: 2,
     title: 'Context en 5 minutos!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
   },
   {
+    id: 3,
     title: 'Context en 5 minutos!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
   },
   {
+    id: 4,
     title: 'Context en 5 minutos!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',

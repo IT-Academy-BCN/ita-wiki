@@ -24,21 +24,21 @@ const IconStyled = styled(Icon)`
 `
 
 type TCategoryBlock = {
-  img?: string
-  category?: string
+  img: string
+  category: string
   resources?: number
   topics?: number
 }
 
 const CategoryBlock = ({
   img,
-  category = 'Unknow',
+  category,
   resources = 0,
   topics = 0,
 }: TCategoryBlock) => (
   <CategoryBlockStyled direction="row" justify="space-between">
     <ContentStyled direction="row">
-      <ImgStyled src={img} alt="logo" />
+      <ImgStyled src={img} alt={`${category} logo`} />
       <FlexBoxStyled align="start">
         <TitleStyled as="h3" fontWeight="bold">
           {category}
