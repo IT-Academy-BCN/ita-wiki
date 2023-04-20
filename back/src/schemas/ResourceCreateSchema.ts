@@ -1,7 +1,7 @@
 import { z } from '../openapi/zod'
-import { ResourceSchema } from './ResourceSchema'
+import { resourceSchema } from './resourceSchema'
 
-export const ResourceCreateSchema = ResourceSchema.omit({
+export const resourceCreateSchema = resourceSchema.omit({
   id: true,
   createdAt: true,
   updatedAt: true,

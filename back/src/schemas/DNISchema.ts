@@ -5,7 +5,7 @@ const validDNIPrefixes = [...Array(23).keys()].map((i) => (i + 1).toString())
 
 const DNI_REGEX = /^(([XYZ]\d{7,8})|(\d{8}))([a-zA-Z])$/i
 
-export const DNISchema = z
+export const dniSchema = z
   .string()
   .regex(DNI_REGEX)
   .transform((value) => value.toUpperCase())

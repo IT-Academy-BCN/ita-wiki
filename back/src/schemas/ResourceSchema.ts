@@ -1,6 +1,6 @@
 import { z } from '../openapi/zod'
 
-export const ResourceSchema = z.object({
+export const resourceSchema = z.object({
   id: z.string(),
   title: z.string(),
   description: z.string().optional(),

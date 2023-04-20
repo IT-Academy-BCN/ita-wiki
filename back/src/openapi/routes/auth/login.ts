@@ -1,4 +1,4 @@
-import { UserLoginSchema } from '../../../schemas'
+import { userLoginSchema } from '../../../schemas'
 import { registry } from '../../registry'
 import { z } from '../../zod'
 import { ValidationError } from '../../components/errorSchemas'
@@ -16,7 +16,7 @@ registry.registerPath({
     body: {
       content: {
         'application/json': {
-          schema: UserLoginSchema,
+          schema: userLoginSchema,
         },
       },
     },

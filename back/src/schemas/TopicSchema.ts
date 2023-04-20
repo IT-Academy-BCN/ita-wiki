@@ -1,6 +1,6 @@
 import { z } from '../openapi/zod'
 
-export const TopicSchema = z.object({
+export const topicSchema = z.object({
   id: z.string(),
   topic: z.string(),
   createdAt: z.date(),
