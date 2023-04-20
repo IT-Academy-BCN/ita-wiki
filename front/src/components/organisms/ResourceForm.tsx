@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import axios from 'axios'
 import { InputGroup, SelectGroup } from '../molecules'
-import { Button, ValidationMessage, Radio } from '../atoms'
+import { Button, Radio } from '../atoms'
 import { FlexBox, dimensions } from '../../styles'
 
 const options = [
@@ -33,11 +33,6 @@ const ButtonContainerStyled = styled(FlexBox)`
 const ButtonStyled = styled(Button)`
   font-weight: 500;
   margin: 0rem;
-`
-
-const FlexErrorStyled = styled(FlexBox)`
-  height: ${dimensions.spacing.xxxs};
-  margin-left: 0.2rem;
 `
 
 const ResourceFormSchema = z.object({
