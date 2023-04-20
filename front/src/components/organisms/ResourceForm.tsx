@@ -144,11 +144,6 @@ export const ResourceForm = () => {
         ]}
         name="resourceType"
       />
-      <FlexErrorStyled align="start">
-        {errors?.title || errors?.description || errors?.url ? (
-          <ValidationMessage />
-        ) : null}
-      </FlexErrorStyled>
       <ButtonContainerStyled align="stretch">
         <ButtonStyled type="submit">Guardar</ButtonStyled>
       </ButtonContainerStyled>
