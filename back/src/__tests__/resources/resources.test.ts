@@ -32,7 +32,7 @@ describe('Testing resources endpoint', () => {
       title: 'New Resource',
       description: 'This is a new resource',
       url: 'https://example.com/resource',
-      resource_type: 'BLOG',
+      resourceType: 'BLOG',
       topics: topicIds,
       userEmail: existingUserEmail,
     }
@@ -50,7 +50,7 @@ describe('Testing resources endpoint', () => {
       title: 'New Resource',
       description: 'This is a new resource',
       url: 'https://example.com/resource',
-      resource_type: 'BLOG',
+      resourceType: 'BLOG',
       topics: [],
       userEmail: existingUserEmail,
     }
@@ -68,7 +68,7 @@ describe('Testing resources endpoint', () => {
       title: 'Invalid Resource',
       description: 'This is a new resource',
       url: 'https://example.com/resource',
-      resource_type: 'INVALIDE-RESOURCE',
+      resourceType: 'INVALIDE-RESOURCE',
       topicId: topicIds,
       userEmail: existingUserEmail,
     }

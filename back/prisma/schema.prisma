@@ -34,16 +34,16 @@ enum USER_ROLE {
 }
 
 model Resource {
-  id            String              @id @default(cuid())
-  title         String
-  description   String?
-  url           String
-  resourceType RESOURCE_TYPE
-  topics        TopicsOnResources[]
-  user          User                @relation(fields: [user_id], references: [id])
-  userId        String              @map("used_id")
-  createdAt     DateTime            @default(now()) @map("created_at")
-  updatedAt     DateTime            @updatedAt @map("updated_at")
+  id           String              @id @default(cuid())
+  title        String
+  description  String?
+  url          String
+  resourceType RESOURCE_TYPE       @map("resource_type")
+  topics       TopicsOnResources[]
+  user         User                @relation(fields: [userId], references: [id])
+  userId       String              @map("user_id")
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
 
   @@map("resource")
 }
@@ -66,9 +66,9 @@ model Category {
 
 model Topic {
   id         String              @id @default(cuid())
-  name       String              
-  category   Category            @relation(fields: [category_id], references: [id])
-  categoryId String
+  name       String
+  category   Category            @relation(fields: [categoryId], references: [id])
+  categoryId String              @map("category_id")
   resources  TopicsOnResources[]
   createdAt  DateTime            @default(now()) @map("created_at")
   updatedAt  DateTime            @updatedAt @map("updated_at")
@@ -77,24 +77,23 @@ model Topic {
 }
 
 model Media {
-  id        String     @id @default(cuid())
+  id        String   @id @default(cuid())
   mimeType  String
   filePath  String
-  user      User       @relation(fields: [userId], references: [id])
-  userId    String     @map("user_id")
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @updatedAt @map("updated_at")
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("media")
 }
 
 model TopicsOnResources {
-  resource   Resource @relation(fields: [resource_id], references: [id])
-  resourceId String
-  topic      Topic    @relation(fields: [topic_id], references: [id])
-  topicId    String
-  assignedAt DateTime @default(now())
+  resource   Resource @relation(fields: [resourceId], references: [id])
+  resourceId String   @map("resource_id")
+  topic      Topic    @relation(fields: [topicId], references: [id])
+  topicId    String   @map("topic_id")
+  createdAt  DateTime @default(now()) @map("created_at")
 
   @@id([topicId, resourceId])
-
 }

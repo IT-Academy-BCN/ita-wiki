@@ -5,7 +5,7 @@ export const ResourceSchema = z.object({
   title: z.string(),
   description: z.string().optional(),
   url: z.string().url(),
-  resource_type: z.enum(['BLOG', 'VIDEO', 'TUTORIAL']),
+  resourceType: z.enum(['BLOG', 'VIDEO', 'TUTORIAL']),
   topics: z.array(z.object({
     id: z.string()
   })),
