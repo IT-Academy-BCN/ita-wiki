@@ -12,10 +12,8 @@ import { errorMiddleware } from './middleware'
 import { generateOpenapiFile } from './openapi/generateFile'
 import { openapiFilename , swaggeruiUrl } from './openapi/config'
 import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
-import './prisma/middleware'
 
 dotenv.config()
-
 
 const app = new Koa()
 
@@ -36,6 +34,7 @@ app.use(errorMiddleware)
 // Routes
 app.use(Routes.authRouter.routes())
 app.use(Routes.resourcesRouter.routes())
+app.use(Routes.topicsRouter.routes())
 
 // Swagger UI
 app.use(swaggeruiCSPMiddleware)
