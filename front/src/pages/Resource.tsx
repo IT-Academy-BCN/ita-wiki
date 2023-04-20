@@ -160,7 +160,7 @@ const Resource: FC = () => {
       <HeaderContainerStyled align="stretch">
         <FlexBox direction="row" justify="space-between">
           <Title as="h1" fontWeight="bold">
-            Recursos React.js
+            Resource
           </Title>
           <Modal
             isOpen={isOpen}
