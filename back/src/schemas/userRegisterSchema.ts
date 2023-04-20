@@ -1,8 +1,8 @@
-import { UserSchema } from './UserSchema'
+import { userSchema } from './userSchema'
 import { z } from '../openapi/zod'
 import { passwordRegex } from './regex/passwordRegex'
 
-export const UserRegisterSchema = UserSchema.pick({
+export const userRegisterSchema = userSchema.pick({
   email: true,
   name: true,
   dni: true

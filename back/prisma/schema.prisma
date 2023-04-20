@@ -12,15 +12,15 @@ model User {
   email     String      @unique
   dni       String      @unique @db.VarChar(10)
   password  String
-  name      String?
+  name      String
   status    USER_STATUS @default(INACTIVE)
-  role      USER_ROLE @default(REGISTERED)
+  role      USER_ROLE   @default(REGISTERED)
   resources Resource[]
-  media Media[]
+  media     Media[]
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
 
-  @@map("users")
+  @@map("user")
 }
 
 enum USER_STATUS {
@@ -29,24 +29,23 @@ enum USER_STATUS {
 }
 
 enum USER_ROLE {
-  ADMIN 
+  ADMIN
   REGISTERED
 }
 
 model Resource {
-  id            String        @id @default(cuid())
-  title         String
-  description   String?
-  url           String
-  resource_type RESOURCE_TYPE
-  topic         Topic         @relation(fields: [topicId], references: [id])
-  topicId       String
-  user          User          @relation(fields: [userId], references: [id])
-  userId        String
-  createdAt     DateTime      @default(now()) @map("created_at")
-  updatedAt     DateTime      @updatedAt @map("updated_at")
+  id           String              @id @default(cuid())
+  title        String
+  description  String?
+  url          String
+  resourceType RESOURCE_TYPE       @map("resource_type")
+  topics       TopicsOnResources[]
+  user         User                @relation(fields: [userId], references: [id])
+  userId       String              @map("user_id")
+  createdAt    DateTime            @default(now()) @map("created_at")
+  updatedAt    DateTime            @updatedAt @map("updated_at")
 
-  @@map("resources")
+  @@map("resource")
 }
 
 enum RESOURCE_TYPE {
@@ -55,24 +54,46 @@ enum RESOURCE_TYPE {
   TUTORIAL
 }
 
-model Topic {
-  id        String     @id @default(cuid())
-  topic     String     @unique
-  resources Resource[]
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @updatedAt @map("updated_at")
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  topics    Topic[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@map("topics")
+  @@map("category")
+}
+
+model Topic {
+  id         String              @id @default(cuid())
+  name       String
+  category   Category            @relation(fields: [categoryId], references: [id])
+  categoryId String              @map("category_id")
+  resources  TopicsOnResources[]
+  createdAt  DateTime            @default(now()) @map("created_at")
+  updatedAt  DateTime            @updatedAt @map("updated_at")
+
+  @@map("topic")
 }
 
 model Media {
-  id        String     @id @default(cuid())
-  mimetype  String
-  filepath  String
-  user      User       @relation(fields: [userId], references: [id])
-  userId    String     @map("user_id")
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @updatedAt @map("updated_at")
+  id        String   @id @default(cuid())
+  mimeType  String   @map("mime_type")
+  filePath  String   @map("file_path")
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("media")
+}
+
+model TopicsOnResources {
+  resource   Resource @relation(fields: [resourceId], references: [id])
+  resourceId String   @map("resource_id")
+  topic      Topic    @relation(fields: [topicId], references: [id])
+  topicId    String   @map("topic_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@id([topicId, resourceId])
 }

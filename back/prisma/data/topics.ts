@@ -1,19 +1,19 @@
 import { Prisma } from '@prisma/client'
 
-export const topics: Prisma.TopicCreateArgs['data'][] = [
+export const topics: Omit<
+  Prisma.TopicCreateArgs['data'],
+  'categoryId'
+>[] = [
   {
-    topic: 'React',
+    name: "Components",
   },
   {
-    topic: 'Javascript',
+    name: "Eventos",
   },
   {
-    topic: 'Node',
+    name: "Listas",
   },
   {
-    topic: 'Python',
-  },
-  {
-    topic: 'Django',
-  },
+    name: "Estilos",
+  }
 ]
