@@ -39,7 +39,7 @@ type TModal = {
 const Modal = ({ children, isOpen, toggleModal, title }: TModal) =>
   isOpen ? (
     <ModalBackgroundStyled>
-      <ModalContainerSyled justify="flex-start">
+      <ModalContainerSyled justify="flex-start" align="stretch">
         <Icon
           name="close"
           onClick={toggleModal}

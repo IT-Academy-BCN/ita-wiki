@@ -1,7 +1,7 @@
 import { InputHTMLAttributes, forwardRef, Ref } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, FlexBox } from '../../styles'
-
+import Label from './Label'
 
 const CheckBoxWrapper = styled(FlexBox)`
   flex-direction: row;
@@ -19,48 +19,42 @@ const StyledCheckBox = styled.input<TCheckBox>`
   color: ${colors.gray.gray2};
   cursor: pointer;
 
-    &:checked {
-      background-color: ${colors.primary};
-      border-color: ${colors.primary};
-    }
+  &:checked {
+    background-color: ${colors.primary};
+    border-color: ${colors.primary};
+  }
 
-    &:checked::before {
-      content: '\\2713';
-      color: white;
-      display: inline-block;
-      padding-left: 0.2rem;
-    }
+  &:checked::before {
+    content: '\\2713';
+    color: white;
+    display: inline-block;
+    padding-left: 0.2rem;
+  }
 `
 
 type TCheckBox = InputHTMLAttributes<HTMLInputElement> & {
-    id: string;
-    label: string;
-    defaultChecked?: boolean;
+  id: string
+  label: string
+  defaultChecked?: boolean
 }
 
-
-const CheckBox = forwardRef( 
+const CheckBox = forwardRef(
   (
-    {
-      id, 
-      label, 
-      defaultChecked=false
-    }: TCheckBox,
-    ref: Ref<HTMLInputElement> 
+    { id, label, defaultChecked = false }: TCheckBox,
+    ref: Ref<HTMLInputElement>
   ) => (
     <CheckBoxWrapper>
       <StyledCheckBox
         type="checkbox"
-        ref={ref} 
+        ref={ref}
         id={id}
         name={id}
         defaultChecked={defaultChecked}
         label={label}
       />
-      <label htmlFor={id}>{label}</label>
+      <Label htmlFor={id} text={label} />
     </CheckBoxWrapper>
   )
 )
 
 export default styled(CheckBox)``
-

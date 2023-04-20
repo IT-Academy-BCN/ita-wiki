@@ -4,6 +4,7 @@ import 'modern-normalize/modern-normalize.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { paths } from './constants'
 import { Home, Login, Register, ErrorPage } from './pages'
+import { AddResource } from './pages/AddResource'
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     path: paths.register,
     element: <Register />,
+  },
+  {
+    path: 'add-resource',
+    element: <AddResource />,
   },
 ])
 
