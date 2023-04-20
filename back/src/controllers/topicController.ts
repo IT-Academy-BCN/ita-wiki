@@ -13,7 +13,7 @@ export const getTopics: Middleware = async (ctx: Koa.Context) => {
 }
 
 export const getTopicsByCategoryId: Middleware = async (ctx: Koa.Context) => {
-    const {categoryId} = ctx.request.body;
+    const {categoryId} = ctx.params;
     const topics = await prisma.topic.findMany({
         where: {
             categoryId
