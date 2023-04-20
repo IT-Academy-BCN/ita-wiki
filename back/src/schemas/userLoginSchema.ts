@@ -1,4 +1,4 @@
-import { userSchema } from './userSchema1'
+import { userSchema } from './userSchema'
 
 export const userLoginSchema = userSchema.pick({
   dni: true,

@@ -1,4 +1,4 @@
-import { userSchema } from './userSchema1'
+import { userSchema } from './userSchema'
 import { z } from '../openapi/zod'
 import { passwordRegex } from './regex/passwordRegex'
 

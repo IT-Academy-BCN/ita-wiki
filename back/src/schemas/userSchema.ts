@@ -1,5 +1,5 @@
 import { z } from '../openapi/zod'
-import { dniSchema } from './dniSchema1'
+import { dniSchema } from './dniSchema'
 
 export const userSchema = z.object({
   id: z.string(),
