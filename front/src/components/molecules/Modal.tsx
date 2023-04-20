@@ -4,11 +4,27 @@ import { FlexBox, colors, dimensions } from '../../styles'
 import { Icon, Title } from '../atoms'
 
 const ModalBackgroundStyled = styled(FlexBox)`
-  background-color: rgba(0, 0, 0, 0.68);
-  height: 100%;
+  bottom: 0;
   left: 0;
+  right: 0;
   top: 0;
+  display: flex;
+  opacity: 1;
+  overflow: hidden;
+  padding: 0.2rem;
   position: fixed;
+  z-index: 1000;
+`
+const ModalWrapper = styled(FlexBox)`
+  background-color: rgba(0, 0, 0, 0.68);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  cursor: default;
+  display: block;
+  height: 100%;
+  position: absolute;
   width: 100%;
 `
 
@@ -21,6 +37,7 @@ const ModalContainerSyled = styled(FlexBox)`
   position: relative;
   width: 100%;
   max-width: 355px;
+  z-index: 1;
 
   ${Icon} {
     cursor: pointer;
@@ -38,26 +55,23 @@ type TModal = {
 }
 
 const Modal = ({ children, isOpen, toggleModal, title }: TModal) => {
-  useEffect(() => {
-    const handleKeyDown = (event: { key: string }) => {
-      if (event.key === 'Escape') {
-        toggleModal()
-      }
+  const handleKeyDown = (event: { key: string }) => {
+    if (event.key === 'Escape') {
+      toggleModal()
     }
-
+  }
+  useEffect(() => {
     document.addEventListener('keydown', handleKeyDown)
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [toggleModal])
+  })
 
   return isOpen ? (
-    <ModalBackgroundStyled onClick={toggleModal} data-testid="modal-background">
-      <ModalContainerSyled
-        justify="flex-start"
-        onClick={(e) => e.stopPropagation()}
-      >
+    <ModalBackgroundStyled>
+      <ModalWrapper onClick={toggleModal} data-testid="modal-wrapper" />
+      <ModalContainerSyled justify="flex-start">
         <Icon
           name="close"
           onClick={toggleModal}

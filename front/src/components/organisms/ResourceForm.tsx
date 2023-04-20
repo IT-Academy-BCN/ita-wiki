@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import axios from 'axios'
 import { InputGroup, SelectGroup } from '../molecules'
-import { Button, Radio } from '../atoms'
+import { Button, ValidationMessage, Radio } from '../atoms'
 import { FlexBox, dimensions } from '../../styles'
 
 const options = [
@@ -27,12 +27,17 @@ const options = [
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
-  padding: ${dimensions.spacing.xl} 0.4rem 0rem;
+  margin-top: ${dimensions.spacing.xl};
 `
 
 const ButtonStyled = styled(Button)`
   font-weight: 500;
   margin: 0rem;
+`
+
+const FlexErrorStyled = styled(FlexBox)`
+  height: ${dimensions.spacing.xxxs};
+  margin-left: 0.2rem;
 `
 
 const ResourceFormSchema = z.object({
@@ -139,6 +144,11 @@ export const ResourceForm = () => {
         ]}
         name="resourceType"
       />
+      <FlexErrorStyled align="start">
+        {errors?.title || errors?.description || errors?.url ? (
+          <ValidationMessage />
+        ) : null}
+      </FlexErrorStyled>
       <ButtonContainerStyled align="stretch">
         <ButtonStyled type="submit">Guardar</ButtonStyled>
       </ButtonContainerStyled>

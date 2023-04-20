@@ -24,7 +24,7 @@ describe('Modal', () => {
       </Modal>
     )
 
-    fireEvent.click(screen.getByTestId('modal-background'))
+    fireEvent.click(screen.getByTestId('modal-wrapper'))
     fireEvent.click(screen.getByRole('img'))
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(mockToggleModal).toHaveBeenCalledTimes(3)

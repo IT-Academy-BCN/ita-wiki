@@ -5,6 +5,7 @@ import { FlexBox, colors, dimensions } from '../styles'
 import { Modal, SelectGroup } from '../components/molecules'
 import { CardResource } from '../components/molecules/CardResource'
 import icons from '../assets/icons'
+import { ResourceForm } from '../components/organisms'
 
 type TStackData = {
   createdBy: string
@@ -120,6 +121,12 @@ const ButtonAddStyled = styled(Button)`
   width: 52px;
 `
 
+const ButtonStyled = styled(Button)`
+  font-weight: 500;
+  margin: ${dimensions.spacing.xxxs} ${dimensions.spacing.xl};
+  color: ${colors.gray.gray3};
+`
+
 const ButtonContainterStyled = styled(FlexBox)`
   margin-top: 0.8rem;
 
@@ -167,7 +174,10 @@ const Resource: FC = () => {
             toggleModal={() => setIsOpen(false)}
             title="Nuevo Recurso"
           >
-            Formulario Nuevo Recurso
+            <ResourceForm />
+            <ButtonStyled outline onClick={() => setIsOpen(false)}>
+              Cancelar
+            </ButtonStyled>
           </Modal>
           <ButtonAddStyled onClick={openModal}>+</ButtonAddStyled>
         </FlexBox>
