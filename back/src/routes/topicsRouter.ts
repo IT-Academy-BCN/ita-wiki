@@ -11,7 +11,7 @@ topicsRouter.get(
 )
 
 topicsRouter.get(
-  '/:categoryId',
+  '/category/:categoryId',
   getTopicsByCategoryId
 )
 

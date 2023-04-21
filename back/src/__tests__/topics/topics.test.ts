@@ -31,7 +31,7 @@ describe('Testing topics endpoint', () => {
                 },
               });
             const  categoryId = category?.id
-            const response = await supertest(server).get(`/api/v1/topics/${categoryId}`)
+            const response = await supertest(server).get(`/api/v1/topics/category/${categoryId}`)
 
             expect(response.status).toBe(200);
             expect(response.body).toBeInstanceOf(Array)
