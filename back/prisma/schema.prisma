@@ -41,6 +41,7 @@ model Resource {
   url          String
   resourceType RESOURCE_TYPE       @map("resource_type")
   topics       TopicsOnResources[]
+  favorites    Favorites[]
   user         User                @relation(fields: [userId], references: [id])
   userId       String              @map("user_id")
   createdAt    DateTime            @default(now()) @map("created_at")
@@ -100,18 +101,22 @@ model TopicsOnResources {
 }
 
 model FavoriteToUser{
-  user User @relation(fields: [userId], references: [id])
-  userId String @map("user_id")
-  favorite Favorites @relation(fields: [favoriteId], references: [id])
-  favoriteId String @map("favorite_id")
-  createdAt  DateTime @default(now()) @map("created_at")
+  user        User          @relation(fields: [userId], references: [id])
+  userId      String        @map("user_id")
+  favorite    Favorites     @relation(fields: [favoriteId], references: [id])
+  favoriteId  String        @map("favorite_id")
+  createdAt   DateTime      @default(now()) @map("created_at")
 
   @@id([userId, favoriteId])
 }
 
 model Favorites {
-  id        String   @id @default(cuid())
-  user  FavoriteToUser[]
+  id            String              @id @default(cuid())
+  user          FavoriteToUser[]
+  resource      Resource            @relation(fields: [resourceId], references: [id])
+  resourceId    String              @map("resource_id")         
+  createdAt     DateTime            @default(now()) @map("created_at")
+  updatedAt     DateTime            @updatedAt @map("updated_at")
 
   @@map("favorites")
 }
