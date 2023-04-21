@@ -34,3 +34,23 @@ export const createResource: Middleware = async (ctx: Koa.Context) => {
     ctx.body = { error: 'Invalid resource type' }
   }
 }
+
+export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
+  const { userId } = ctx.params;
+  
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: {
+      resources: true
+    }
+  })
+
+  if(user === null){
+    ctx.status = 404;
+    ctx.body = { error: 'User not found'}
+    return
+  }
+
+  ctx.status = 200;
+  ctx.body = user.resources;
+}
