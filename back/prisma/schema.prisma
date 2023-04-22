@@ -17,7 +17,7 @@ model User {
   role      USER_ROLE   @default(REGISTERED)
   resources Resource[]
   media     Media[]
-  favorite  FavoriteToUser[]
+  favorite  Favorites[]
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
 
@@ -100,23 +100,13 @@ model TopicsOnResources {
   @@id([topicId, resourceId])
 }
 
-model FavoriteToUser{
+model Favorites {
   user        User          @relation(fields: [userId], references: [id])
   userId      String        @map("user_id")
-  favorite    Favorites     @relation(fields: [favoriteId], references: [id])
-  favoriteId  String        @map("favorite_id")
+  resource    Resource      @relation(fields: [resourceId], references: [id])
+  resourceId  String        @map("resource_id")
   createdAt   DateTime      @default(now()) @map("created_at")
 
-  @@id([userId, favoriteId])
-}
-
-model Favorites {
-  id            String              @id @default(cuid())
-  user          FavoriteToUser[]
-  resource      Resource            @relation(fields: [resourceId], references: [id])
-  resourceId    String              @map("resource_id")         
-  createdAt     DateTime            @default(now()) @map("created_at")
-  updatedAt     DateTime            @updatedAt @map("updated_at")
-
+  @@id([userId, resourceId])
   @@map("favorites")
 }
