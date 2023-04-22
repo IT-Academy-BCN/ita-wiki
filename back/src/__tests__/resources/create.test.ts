@@ -3,7 +3,7 @@ import { expect, test, describe, beforeAll } from 'vitest'
 import { server } from '../setup'
 import { prisma } from '../../prisma/client'
 
-describe('Testing resources endpoint', () => {
+describe('Testing resource creation endpoint', () => {
   let authToken: string
   let existingUserEmail: string | undefined
   let topicIds: string[] | undefined[]
@@ -60,7 +60,7 @@ describe('Testing resources endpoint', () => {
       .set('Cookie', authToken)
       .send(newResource)
 
-    expect(response.status).toBe(204)
+    expect(response.status).toBe(422)
   })
 
   test('should fail with wrong resource type', async () => {
