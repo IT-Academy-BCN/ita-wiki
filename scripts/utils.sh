@@ -65,12 +65,20 @@ function cd_git_root {
 # Returns 1 if timed out 0 otherwise
 timeout() {
     time=$1
-    # start the command in a subshell to avoid problem with pipes
-    # (spawn accepts one command)
-    command="/bin/sh -c \"$2\""
-    expect -c "set echo \"-noecho\"; set timeout $time; spawn -noecho $command; expect timeout { exit 1 } eof { exit 0 }"
-    if [ $? = 1 ]; then
+    command="$2"
+
+    eval "${command}" &
+    command_pid=$!
+
+    elapsed=0
+    while pgrep -P "${command_pid}" >/dev/null 2>&1 && [ "${elapsed}" -lt "${time}" ]; do
+        sleep 1
+        elapsed=$((elapsed + 1))
+    done
+
+    if pgrep -P "${command_pid}" >/dev/null 2>&1; then
         echo "Timeout after ${time} seconds"
+        kill "${command_pid}" 2>/dev/null
     fi
 }
 

@@ -73,3 +73,8 @@ Create a settings.json inside the .vscode file with the following content:
 The code above allows the ESLint VSCode extension to properly find each ESLint project configuration file. This will help ensure that you're following the project's coding standards and guidelines as you contribute to the project.
 
 With this guide, we hope you feel better prepared to contribute to our project. Remember, don't hesitate to ask questions and reach out for support if needed. We're excited to have you on board and look forward to your contributions!
+
+
+### Registering bash to npm 
+
+Windows users should register Bash as the default shell for launching npm scripts in order to run `npm run up` successfully, as seen [in this article](https://dsebastien.medium.com/fixing-bash-is-not-recognized-as-an-internal-or-external-command-when-used-within-npm-scripts-on-61614391e417).

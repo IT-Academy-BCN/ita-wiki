@@ -4,7 +4,8 @@ This project uses a set of technologies to facilitate the development of web app
 
 ## Getting Started
 
-Before running the project, make sure you have Docker Desktop installed. Once you have Docker Desktop installed and running, follow the steps below:
+Before running the project, make sure you have Docker Desktop installed. If you are on Windows, you'll also need to register bash as the default shell for running npm scripts, as seen [in this article](https://dsebastien.medium.com/fixing-bash-is-not-recognized-as-an-internal-or-external-command-when-used-within-npm-scripts-on-61614391e417).
+Once you have Docker Desktop installed and running, follow the steps below:
 
 1. cd into the back folder if you haven't already:
 
@@ -19,6 +20,7 @@ Before running the project, make sure you have Docker Desktop installed. Once yo
     `npm run up`
 
 The above command will start the application and run the migrations using Prisma.
+
 
 ## Scripts
 
