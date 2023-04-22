@@ -1,74 +1,102 @@
-import { UserSchema, TopicSchema, ResourceSchema } from '../src/schemas'
 import { prisma } from '../src/prisma/client'
-import '../src/prisma/middleware'
+import { users } from './data/users'
+import { topics } from './data/topics'
+import { categories } from './data/categories'
+import { resources } from './data/resources'
 
-async function main() {
-  const userData = {
-    email: 'test@example.com',
-    password: 'password1',
-    name: 'Test User',
-    dni: '45632452a',
-    status: 'ACTIVE'
-  }
-  const UserSeedSchema = UserSchema.omit({
-    id: true,
-    createdAt: true,
-    updatedAt: true
+async function seedDB() {
+  await prisma.user.createMany({
+    data: users,
   })
 
-  const validatedUserData = UserSeedSchema.parse(userData)
-
-  const user = await prisma.user.create({
-    data: validatedUserData
-  })
-  console.log(user)
-
-  const topicDataArray = [{
-    topic: 'React'
-  },{
-    topic: 'Javascript'
-  }]
-
-  const TopicSeedSchema = TopicSchema.omit({
-    id: true,
-    createdAt: true,
-    updatedAt: true
+  await prisma.category.createMany({
+    data: categories,
   })
 
-  const ResourceSeedSchema = ResourceSchema.omit({
-    id: true,
-    createdAt: true,
-    updatedAt: true
+  const userAdmin = await prisma.user.findUnique({
+    where: { email: 'admin@admin.com' },
   })
 
-  topicDataArray.forEach(async topicData => {
-    const validatedTopicData = TopicSeedSchema.parse(topicData)
-    
-    const topic = await prisma.topic.create({
-      data: validatedTopicData
-    })
+  const categoryReact = await prisma.category.findUnique({
+    where: { name: 'React' },
+  })
 
-    const resourceData = {
-      title: `My resource in ${topicData.topic}`,
-      description: 'Lorem ipsum',
-      url: `http://www.example.com/resource/${topicData.topic}.html`,
-      resource_type: 'BLOG',
-      topicId: topic.id,
-      userId: user.id
+  const categoryNode = await prisma.category.findUnique({
+    where: { name: 'Node' },
+  })
+
+  const topicCategories = [
+    categoryReact,
+    categoryNode,
+    categoryReact,
+    categoryNode,
+  ]
+
+  const mapedTopics = topics.map((topic, index) => ({
+    ...topic,
+    categoryId: topicCategories[index]?.id || '',
+  }))
+
+  await prisma.topic.createMany({
+    data: mapedTopics,
+  })
+
+  const userRegistered = await prisma.user.findUnique({
+    where: { email: 'registered@registered.com' },
+  })
+
+  const resourceUsers = [userAdmin, userAdmin, userRegistered, userRegistered]
+
+  const resourcesWithUser = resources.map((resource, index) => ({
+    ...resource,
+    userId: resourceUsers[index]?.id || '',
+  }))
+
+  await prisma.resource.createMany({
+    data: resourcesWithUser,
+  })
+
+  // Resources
+
+  const eventosTopic = await prisma.topic.findFirst({
+    where: { name: 'Eventos' },
+  })
+
+  const listasTopic = await prisma.topic.findFirst({
+    where: { name: 'Listas' },
+  })
+
+  const firstResource = await prisma.resource.findFirst({
+    where: { title: 'My resource in React' },
+  })
+
+  const secondResource = await prisma.resource.findFirst({
+    where: { title: 'My resource in Node' },
+  })
+
+  const topicsOnResources = [
+    {
+      topicId: eventosTopic?.id || '',
+      resourceId: firstResource?.id || '',
+    },
+    {
+      topicId: listasTopic?.id || '',
+      resourceId: firstResource?.id || '',
+    },
+    {
+      topicId: eventosTopic?.id || '',
+      resourceId: secondResource?.id || '',
+    },
+    {
+      topicId: listasTopic?.id || '',
+      resourceId: secondResource?.id || '',
     }
+  ]
 
-    const validatedResourceData = ResourceSeedSchema.parse(resourceData)
-
-    await prisma.resource.create({
-      data: validatedResourceData
-    })
-
-  });
-
+  await prisma.topicsOnResources.createMany({
+    // @ts-ignore
+    data: topicsOnResources,
+  })
 }
 
-main()
-  .catch((e) => console.error(e))
-  .finally(async () => {
-    await prisma.$disconnect()
-  })
+seedDB()

@@ -10,6 +10,7 @@ type TFlexBox = {
     | 'space-around'
     | 'space-evenly'
   align?: 'stretch' | 'center' | 'start' | 'end' | 'baseline'
+  gap?: string
 }
 
 export const FlexBox = styled.div<TFlexBox>`
@@ -17,4 +18,5 @@ export const FlexBox = styled.div<TFlexBox>`
   flex-direction: ${({ direction }) => direction || 'column'};
   justify-content: ${({ justify }) => justify || 'center'};
   align-items: ${({ align }) => align || 'center'};
+  gap: ${({ gap }) => gap || '0'};
 `

@@ -2,8 +2,9 @@ import { AccessModal } from './AccessModal'
 import { Modal } from './Modal'
 import InputGroup from './InputGroup'
 import SelectGroup from './SelectGroup'
+import { CategoryBlock } from './CategoryBlock'
 import TextareaGroup from './TextareaGroup'
-// import { CardResource } from './CardResourceTemp'
+import { CardResourceHome } from './CardResourceHome'
 import { CardResourceTemp } from './CardResourceTemp'
 
 export {
@@ -11,7 +12,8 @@ export {
   InputGroup,
   Modal,
   SelectGroup,
+  CategoryBlock,
   TextareaGroup,
-  // CardResource,
+  CardResourceHome,
   CardResourceTemp,
 }

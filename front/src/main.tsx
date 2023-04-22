@@ -1,9 +1,17 @@
 import ReactDOM from 'react-dom/client'
-// eslint-disable-next-line import/no-extraneous-dependencies
 import 'modern-normalize/modern-normalize.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { paths } from './constants'
-import { Home, Login, Register, ErrorPage, HomeDesktop } from './pages'
+import {
+  Home,
+  Login,
+  Register,
+  ErrorPage,
+  Resource,
+  HomeDesktop,
+} from './pages'
+import { Information } from './pages/Information'
+import { AddResource } from './pages/AddResource'
 
 const router = createBrowserRouter([
   {
@@ -18,6 +26,18 @@ const router = createBrowserRouter([
   {
     path: paths.register,
     element: <Register />,
+  },
+  {
+    path: paths.resource,
+    element: <Resource />,
+  },
+  {
+    path: paths.information,
+    element: <Information />,
+  },
+  {
+    path: 'add-resource',
+    element: <AddResource />,
   },
   {
     path: paths.homedesktop,

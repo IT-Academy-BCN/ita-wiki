@@ -2,35 +2,57 @@ import { expect, test, describe } from 'vitest'
 import { prisma } from '../../prisma/client'
 
 describe('Seeded data exists in the Database', () => {
-    test('User with email test@example.com exists', async () => {
+    test('User with email admin@admin.com exists', async () => {
         const seedUser = await prisma.user.findUnique({
             where: {
-                email: 'test@example.com'
+                email: 'admin@admin.com'
             }
         })
         expect(seedUser).not.toBe(null)
     })
 
-    test('Topic React exists', async () => {
-        const seedTopic = await prisma.topic.findUnique({
+    test('User with email registered@registered.com exists', async () => {
+        const seedUser = await prisma.user.findUnique({
             where: {
-                topic: 'React'
+                email: 'registered@registered.com'
+            }
+        })
+        expect(seedUser).not.toBe(null)
+    })
+
+    test('Category React exists', async () => {
+        const seedTopic = await prisma.category.findUnique({
+            where: {
+                name: 'React'
             }
         })
         expect(seedTopic).not.toBe(null)
     })
 
-    test('Topic Javascript exists', async () => {
-        const seedTopic = await prisma.topic.findUnique({
+    test('Category Javascript exists', async () => {
+        const seedTopic = await prisma.category.findUnique({
             where: {
-                topic: 'Javascript'
+                name: 'Javascript'
             }
         })
         expect(seedTopic).not.toBe(null)
     })
 
-    test('There exist three resources in the database', async () => {
-        const seedResources = await prisma.resource.count()
-        expect(seedResources).toBe(3)
+    test('Resources exist in the database', async () => {
+        const titles = [
+            'My resource in React',
+            'My second resource in React',
+            'My resource in Node',
+            'My resource in Javascript'
+        ]
+
+        // eslint-disable-next-line guard-for-in, no-restricted-syntax
+        for (const i in titles) {
+            expect (await prisma.resource.findFirst({
+                where: {
+                    title: titles[i]
+                }
+            })).not.toEqual(null)
+        }
     })
 })

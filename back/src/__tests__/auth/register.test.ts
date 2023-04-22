@@ -11,7 +11,7 @@ describe('Testing registration endpoint', () => {
         name: 'Example2',
         email: 'example2@example.com',
         password: 'password1',
-        specialization: 'backend'
+        specialization: 'backend', 
       })
     expect(response.status).toBe(204)
   })
