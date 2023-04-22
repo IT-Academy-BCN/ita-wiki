@@ -20,12 +20,12 @@ export const resources: Omit<
     title: 'My second resource in React',
     description: 'Lorem ipsum',
     url: 'http://www.example.com/resource/React2.html',
-    resourceType: 'BLOG',
+    resourceType: 'VIDEO',
   },
   {
     title: 'My resource in Javascript',
     description: 'Lorem ipsum',
     url: 'http://www.example.com/resource/Javascript.html',
-    resourceType: 'BLOG',
+    resourceType: 'TUTORIAL',
   },
 ]
