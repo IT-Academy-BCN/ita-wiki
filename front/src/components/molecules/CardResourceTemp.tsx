@@ -56,7 +56,7 @@ type TCardResource = {
   likes: number
   description: string
 }
-const CardResource = ({
+const CardResourceTemp = ({
   likes,
   title,
   description,
@@ -99,4 +99,4 @@ const CardResource = ({
   </CardContainerStyled>
 )
 
-export { CardResource }
+export { CardResourceTemp }
