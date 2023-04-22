@@ -96,4 +96,5 @@ model TopicsOnResources {
   createdAt  DateTime @default(now()) @map("created_at")
 
   @@id([topicId, resourceId])
+  @@map("topic_resource")
 }
