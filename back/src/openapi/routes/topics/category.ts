@@ -1,11 +1,11 @@
+import { appConfig } from '../../../config/config'
 import { registry } from '../../registry'
 
-
-const pathRoot = '/api/v1/topics'
+const prefix = '/topics'
 registry.registerPath({
   method: 'get',
   tags: ['topics'],
-  path: `${pathRoot}/category/:categoryId`,
+  path: `${appConfig.pathRoot}${prefix}/category/:categoryId`,
   description: 'Takes a category Id and returns the list of topics sharing that category',
   summary: 'Returns topics by category',
   parameters: [

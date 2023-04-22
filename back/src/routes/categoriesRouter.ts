@@ -3,7 +3,7 @@ import { getCategories } from '../controllers'
 
 const categoriesRouter = new Router()
 
-categoriesRouter.prefix('/api/v1/categories')
+categoriesRouter.prefix('/categories')
 
 categoriesRouter.get(
   '/',

@@ -192,7 +192,7 @@ paths:
                     example: Database error
                 required:
                   - message
-  /api/v1/categories/:
+  /api/v1/categories:
     get:
       tags:
         - categories

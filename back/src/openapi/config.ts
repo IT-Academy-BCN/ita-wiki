@@ -1,3 +1,5 @@
+import { appConfig } from "../config/config"
+
 type OpenVersionType = '3.0.0' | '3.0.1' | '3.0.2' | '3.0.3' | '3.1.0'
 export const openapiVersion: OpenVersionType = '3.0.0'
 
@@ -12,4 +14,4 @@ export const generatorConfig = {
   servers: [{ url: 'v1' }]
 }
 
-export const swaggeruiUrl = '/api-docs'
+export const swaggeruiUrl = `${appConfig.pathRoot}/api-docs`

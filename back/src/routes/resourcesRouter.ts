@@ -6,7 +6,7 @@ import { resourceCreateSchema } from '../schemas'
 
 const resourcesRouter = new Router()
 
-resourcesRouter.prefix('/api/v1/resources')
+resourcesRouter.prefix('/resources')
 
 resourcesRouter.post(
   '/create',

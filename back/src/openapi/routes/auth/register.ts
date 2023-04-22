@@ -2,14 +2,15 @@ import { userRegisterSchema } from '../../../schemas'
 import { registry } from '../../registry'
 import { z } from '../../zod'
 import { DniError, EmailError, ValidationError } from '../../components/errorSchemas'
+import { appConfig } from '../../../config/config'
 
 
-const pathRoot = '/api/v1/auth'
+const prefix = '/auth'
 
 registry.registerPath({
   method: 'post',
   tags: ['auth'],
-  path: `${pathRoot}/register`,
+  path: `${appConfig.pathRoot}${prefix}/register`,
   description:
     'Takes a DNI, a password, a name and an email an registers a user to the system',
   summary: 'Registers a new user',

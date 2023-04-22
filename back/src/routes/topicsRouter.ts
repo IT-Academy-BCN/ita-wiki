@@ -3,7 +3,7 @@ import { getTopics , getTopicsByCategoryId} from '../controllers'
 
 const topicsRouter = new Router()
 
-topicsRouter.prefix('/api/v1/topics')
+topicsRouter.prefix('/topics')
 
 topicsRouter.get(
   '/',

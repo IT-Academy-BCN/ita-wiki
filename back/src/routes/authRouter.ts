@@ -6,7 +6,7 @@ import { userLoginSchema, userRegisterSchema } from '../schemas'
 
 const authRouter = new Router()
 
-authRouter.prefix('/api/v1/auth')
+authRouter.prefix('/auth')
 
 authRouter.post(
   '/login',
