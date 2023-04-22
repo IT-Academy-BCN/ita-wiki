@@ -5,7 +5,7 @@ import SelectGroup from './SelectGroup'
 import { CategoryBlock } from './CategoryBlock'
 import TextareaGroup from './TextareaGroup'
 import { CardResourceHome } from './CardResourceHome'
-import { CardResourceTemp } from './CardResourceTemp'
+import { CardResource } from './CardResource'
 
 export {
   AccessModal,
@@ -15,5 +15,5 @@ export {
   CategoryBlock,
   TextareaGroup,
   CardResourceHome,
-  CardResourceTemp,
+  CardResource,
 }

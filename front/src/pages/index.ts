@@ -6,15 +6,4 @@ import ErrorPage from './ErrorPage'
 import Login from './Login'
 import Register from './Register'
 
-import { HomeDesktop } from './HomeDesktop'
-
-export {
-  Home,
-  Login,
-  Register,
-  ErrorPage,
-  Information,
-  AddResource,
-  Resource,
-  HomeDesktop,
-}
+export { Home, Login, Register, ErrorPage, Information, AddResource, Resource }

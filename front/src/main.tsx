@@ -2,14 +2,7 @@ import ReactDOM from 'react-dom/client'
 import 'modern-normalize/modern-normalize.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { paths } from './constants'
-import {
-  Home,
-  Login,
-  Register,
-  ErrorPage,
-  Resource,
-  HomeDesktop,
-} from './pages'
+import { Home, Login, Register, ErrorPage, Resource } from './pages'
 import { Information } from './pages/Information'
 import { AddResource } from './pages/AddResource'
 
@@ -38,10 +31,6 @@ const router = createBrowserRouter([
   {
     path: 'add-resource',
     element: <AddResource />,
-  },
-  {
-    path: paths.homedesktop,
-    element: <HomeDesktop />,
   },
 ])
 
