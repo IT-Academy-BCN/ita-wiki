@@ -9,7 +9,7 @@ export const generatorConfig = {
     title: 'IT Academy Wiki',
     description: 'Our app implements a Wiki to be used as a knowledge base by the students of the Barcelona Activa\'s IT Academy'
   },
-  servers: [{ url: 'v1' }]
+  // servers: [{ url: 'v1' }]
 }
 
 export const swaggeruiUrl = '/api-docs'
