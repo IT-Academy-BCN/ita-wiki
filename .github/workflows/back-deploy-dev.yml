@@ -50,6 +50,8 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
+          source ~/.zshrc
+          
           # Enter the deployment directory
           cd ${{ secrets.BACK_DEV_PWD }}
 
