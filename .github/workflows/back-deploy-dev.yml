@@ -37,8 +37,11 @@ jobs:
       uses: Burnett01/rsync-deployments@5.2.1
       with:
         switches: -avz --delete
-        src: ${{ github.workspace }}/back/
-        dest: ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_HOST }}:${{ secrets.BACK_DEV_PWD }}
+        path: ${{ github.workspace }}/back/
+        remote_path: ${{ secrets.BACK_DEV_PWD }}
+        remote_host: ${{ secrets.SERVER_HOST }}
+        remote_user: ${{ secrets.SERVER_USERNAME }}
+        remote_key: ${{ secrets.SERVER_SSH_KEY }}
         exclude: |
           .env
           node_modules
