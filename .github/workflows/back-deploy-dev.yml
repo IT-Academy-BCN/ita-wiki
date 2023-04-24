@@ -51,7 +51,8 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           source ~/.zshrc
-          
+          sudo chown -R $(whoami) .
+
           # Enter the deployment directory
           cd ${{ secrets.BACK_DEV_PWD }}
 
