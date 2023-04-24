@@ -5,7 +5,6 @@
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
-  "type": "module",
   "scripts": {
     "dev": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm src/server.ts",
     "build": "tsc",
