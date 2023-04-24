@@ -37,12 +37,12 @@ jobs:
       uses: Burnett01/rsync-deployments@5.2.1
       with:
         switches: -avz --delete --exclude=.env --exclude=node_modules
-        path: ${{ github.workspace }}/back/
+        path: back/
         remote_path: ${{ secrets.BACK_DEV_PWD }}
         remote_host: ${{ secrets.SERVER_HOST }}
         remote_user: ${{ secrets.SERVER_USERNAME }}
         remote_key: ${{ secrets.SERVER_SSH_KEY }}
-
+       
     - name: Deploy back-end - run commands
       uses: appleboy/ssh-action@master
       with:
