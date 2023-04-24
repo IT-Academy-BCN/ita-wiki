@@ -38,21 +38,21 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
 
-      - name: Deploy to VPS
-        env:
-          DEPLOY_SERVER: ${{ secrets.SERVER_HOST }}
-          DEPLOY_USER: ${{ secrets.SERVER_USERNAME }}
-          DEPLOY_PATH: ${{ secrets.BACK_DEV_PWD }}
-        run: |
-          ssh -o StrictHostKeyChecking=no -p 22 $DEPLOY_USER@$DEPLOY_SERVER "bash -s" <<-EOF
-            # Ensure the deployment directory exists
-            mkdir -p $BACK_DEV_PWD
+    - name: Deploy to VPS
+      env:
+        DEPLOY_SERVER: ${{ secrets.SERVER_HOST }}
+        DEPLOY_USER: ${{ secrets.SERVER_USERNAME }}
+        DEPLOY_PATH: ${{ secrets.BACK_DEV_PWD }}
+      run: |
+        ssh -o StrictHostKeyChecking=no -p 22 $DEPLOY_USER@$DEPLOY_SERVER "bash -s" <<-EOF
+          # Ensure the deployment directory exists
+          mkdir -p $DEPLOY_PATH
 
-            # Clean/Replace/Add/Remove files based on changes
-            rsync -avz --delete --exclude '.env' --exclude 'node_modules' ./back/ $DEPLOY_USER@$DEPLOY_SERVER:$BACK_DEV_PWD
+          # Clean/Replace/Add/Remove files based on changes
+          rsync -avz --delete --exclude '.env' --exclude 'node_modules' ./back/ $DEPLOY_USER@$DEPLOY_SERVER:$DEPLOY_PATH
 
-            # Enter the deployment directory
-            cd $BACK_DEV_PWD
+          # Enter the deployment directory
+          cd $DEPLOY_PATH
 
             # Install production dependencies
             npm ci --only=production
