@@ -45,16 +45,9 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
-          echo "Creating info.txt in the root of the VPS"
-          cat > /info.txt <<- EOM
-          Current PATH: $PATH
-          npm location: $(which npm || echo 'npm not found')
-          npx location: $(which npx || echo 'npx not found')
-          pm2 location: $(which pm2 || echo 'pm2 not found')
-          HOME: $HOME
-          Current working directory: $(pwd)
-          Current user: $(whoami)
-          EOM
-          echo "info.txt created successfully"
-
+          source ~/.zshrc
+          echo "Current PATH: $PATH"
+          echo "npm location: $(which npm || echo 'npm not found')"
+          echo "npx location: $(which npx || echo 'npx not found')"
+          echo "pm2 location: $(which pm2 || echo 'pm2 not found')"
 
