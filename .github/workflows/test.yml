@@ -49,4 +49,6 @@ jobs:
           which npm
           which npx
           which pm2
-          echo $HOME
+          echo "$HOME"
+          pwd
+          
