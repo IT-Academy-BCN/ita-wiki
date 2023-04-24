@@ -3,10 +3,11 @@ import { z } from 'zod'
 import { authMiddleware, validate } from '../middleware'
 import { createResource } from '../controllers'
 import { resourceCreateSchema } from '../schemas'
+import { pathRoot } from './routes'
 
 const resourcesRouter = new Router()
 
-resourcesRouter.prefix('/resources')
+resourcesRouter.prefix(pathRoot.v1.resources)
 
 resourcesRouter.post(
   '/create',

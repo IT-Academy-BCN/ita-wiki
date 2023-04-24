@@ -1,11 +1,10 @@
-import { appConfig } from '../../../config/config'
+import { pathRoot } from '../../../routes/routes'
 import { registry } from '../../registry'
 
-const prefix = '/topics'
 registry.registerPath({
   method: 'get',
   tags: ['topics'],
-  path: `${appConfig.pathRoot}${prefix}`,
+  path: `${pathRoot.v1.topics}`,
   description: 'Returns a list of all topics',
   summary: 'Returns topics',
   responses: {

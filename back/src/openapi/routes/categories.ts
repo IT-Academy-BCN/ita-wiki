@@ -1,13 +1,11 @@
-import { appConfig } from '../../config/config'
+import { pathRoot } from '../../routes/routes'
 import { registry } from '../registry'
 import { z } from '../zod'
-
-const prefix = '/categories'
 
 registry.registerPath({
   method: 'get',
   tags: ['categories'],
-  path: `${appConfig.pathRoot}${prefix}`,
+  path: `${pathRoot.v1.categories}`,
   description:
     'Get all categories saved in the database',
   summary: 'Get all categories',

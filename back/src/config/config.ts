@@ -1,6 +1,5 @@
 const appConfig = {
   port: process.env.PORT || 8999,
-  pathRoot: '/api/v1',
   jwtKey: process.env.JWT_KEY || 'secret',
   jwtExpiration: process.env.JWT_EXPIRATION || '14d',
 }
