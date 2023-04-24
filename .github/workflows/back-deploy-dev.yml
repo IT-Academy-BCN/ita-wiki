@@ -51,7 +51,6 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           source ~/.zshrc
-          sudo chown -R $(whoami) .
 
           # Enter the deployment directory
           cd ${{ secrets.BACK_DEV_PWD }}
@@ -60,6 +59,7 @@ jobs:
           npm ci --only=production
 
           # Run Prisma migrations
+          sudo chown -R $(whoami) .
           npx prisma migrate deploy
 
           # Stop the app with PM2
