@@ -236,11 +236,13 @@ const LinkStyled = styled.a<TLinkStyled>`
   padding: ${dimensions.spacing.xxs};
   width: 100%;
   margin-top: ${dimensions.spacing.base};
+  cursor: pointer;
 `
 const CategoryLinkStyled = styled.a<TLinkStyled>`
   color: ${({ active }) => (active ? colors.black.black3 : colors.gray.gray3)};
   font-weight: ${({ active }) => (active ? 'bold' : 'regular')};
   margin-top: ${dimensions.spacing.xxl};
+  cursor: pointer;
 `
 // END style Desktop
 
