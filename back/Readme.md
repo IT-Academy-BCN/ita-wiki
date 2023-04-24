@@ -1,4 +1,4 @@
-# It Academy Project - Wiki
+# It Academy Project - Wiki (ITA Wiki)
 
 This project uses a set of technologies to facilitate the development of web applications and APIs. The goal of this README is to provide a guide for new project members to integrate more easily and start contributing as soon as possible.
 
