@@ -46,4 +46,7 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           echo "Current PATH: $PATH"
-
+          which npm
+          which npx
+          which pm2
+          echo $HOME
