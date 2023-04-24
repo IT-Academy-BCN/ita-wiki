@@ -15,54 +15,54 @@ jobs:
     if: github.event.pull_request.merged == true
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
 
-      - name: Install dependencies
-        run: |
-          cd ${{ github.workspace }}/back
-          npm ci
-
-      - name: Build TypeScript
-        run: |
-          cd ${{ github.workspace }}/back
-          npm run build
-
-      - name: Install SSH key
-        uses: webfactory/ssh-agent@v0.5.3
-        with:
-          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
-
-    - name: Deploy to VPS
-      env:
-        DEPLOY_SERVER: ${{ secrets.SERVER_HOST }}
-        DEPLOY_USER: ${{ secrets.SERVER_USERNAME }}
-        DEPLOY_PATH: ${{ secrets.BACK_DEV_PWD }}
+    - name: Install dependencies
       run: |
-        ssh -o StrictHostKeyChecking=no -p 22 $DEPLOY_USER@$DEPLOY_SERVER "bash -s" <<-EOF
-          # Ensure the deployment directory exists
-          mkdir -p $DEPLOY_PATH
+        cd ${{ github.workspace }}/back
+        npm ci
 
-          # Clean/Replace/Add/Remove files based on changes
-          rsync -avz --delete --exclude '.env' --exclude 'node_modules' ./back/ $DEPLOY_USER@$DEPLOY_SERVER:$DEPLOY_PATH
+    - name: Build TypeScript
+      run: |
+        cd ${{ github.workspace }}/back
+        npm run build
 
+    - name: Deploy back-end - sync files
+      uses: Burnett01/rsync-deployments@5.2.1
+      with:
+        switches: -avz --delete --exclude=.env --exclude=node_modules
+        path: back/
+        remote_path: ${{ secrets.BACK_DEV_PWD }}
+        remote_host: ${{ secrets.SERVER_HOST }}
+        remote_user: ${{ secrets.SERVER_USERNAME }}
+        remote_key: ${{ secrets.SERVER_SSH_KEY }}
+       
+    - name: Deploy back-end - run commands
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          source ~/.zshrc
+          
           # Enter the deployment directory
-          cd $DEPLOY_PATH
+          cd ${{ secrets.BACK_DEV_PWD }}
 
-            # Install production dependencies
-            npm ci --only=production
+          # Install production dependencies
+          npm ci --only=production
 
-            # Run Prisma migrations
-            npx prisma migrate deploy
+          # Run Prisma migrations
+          npx prisma migrate deploy
 
-            # Stop the app with PM2
-            pm2 stop dev-server || true 
+          # Stop the app with PM2
+          pm2 stop server-dev || true
 
-            # Start the app with PM2
-            pm2 start --name dev-server --node-args="--experimental-specifier-resolution=node" dist/src/server.js
-          EOF
+          # Start the app with PM2 and the specified flag
+          pm2 start --name server-dev dist/src/server.js 
