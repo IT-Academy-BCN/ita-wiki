@@ -34,7 +34,7 @@ jobs:
         npm run build
 
     - name: Install SSH key
-      uses: webfactory/ssh-agent@v0.5.3
+      uses: webfactory/ssh-agent@v0.8.0
       with:
         ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
 
