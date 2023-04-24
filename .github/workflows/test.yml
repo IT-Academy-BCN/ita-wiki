@@ -46,9 +46,10 @@ jobs:
         key: ${{ secrets.SERVER_SSH_KEY }}
         script: |
           echo "Current PATH: $PATH"
-          which npm
-          which npx
-          which pm2
-          echo "$HOME"
-          pwd
-          
+          echo "npm location: $(which npm || echo 'npm not found')"
+          echo "npx location: $(which npx || echo 'npx not found')"
+          echo "pm2 location: $(which pm2 || echo 'pm2 not found')"
+          echo "HOME: $HOME"
+          echo "Current working directory: $(pwd)"
+          echo "Current user: $(whoami)"
+
