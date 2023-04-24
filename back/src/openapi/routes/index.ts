@@ -1,4 +1,5 @@
 import './auth/login'
 import './auth/register'
+import './categories'
 import './topics/category'
 import './topics/topics'
