@@ -1,0 +1,68 @@
+name: Deploy to VPS
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+    paths:
+      - "back/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
+    - name: Install dependencies
+      run: |
+        cd ${{ github.workspace }}/back
+        npm ci
+
+    - name: Build TypeScript
+      run: |
+        cd ${{ github.workspace }}/back
+        npm run build
+
+    - name: Install SSH key
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
+
+    - name: Deploy to VPS
+      env:
+        DEPLOY_SERVER: ${{ secrets.SERVER_HOST }}
+        DEPLOY_USER: ${{ secrets.SERVER_USERNAME }}
+        DEPLOY_PATH: ${{ secrets.BACK_DEV_PWD }}
+      run: |
+        ssh -o StrictHostKeyChecking=no -p 22 $DEPLOY_USER@$DEPLOY_SERVER "bash -s" <<-EOF
+          # Ensure the deployment directory exists
+          mkdir -p $BACK_DEV_PWD
+
+          # Clean/Replace/Add/Remove files based on changes
+          rsync -avz --delete --exclude '.env' --exclude 'node_modules' ./back/ $DEPLOY_USER@$DEPLOY_SERVER:$BACK_DEV_PWD
+
+          # Enter the deployment directory
+          cd $BACK_DEV_PWD
+
+          # Install production dependencies
+          npm ci --only=production
+
+          # Run Prisma migrations
+          npx prisma migrate deploy
+
+          # Stop the app with PM2
+          pm2 stop dev-server || true 
+
+          # Start the app with PM2
+          pm2 start --name dev-server --node-args="--experimental-specifier-resolution=node" dist/src/server.js
+        EOF
