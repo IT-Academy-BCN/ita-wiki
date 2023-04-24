@@ -42,7 +42,7 @@ jobs:
         remote_host: ${{ secrets.SERVER_HOST }}
         remote_user: ${{ secrets.SERVER_USERNAME }}
         remote_key: ${{ secrets.SERVER_SSH_KEY }}
-       
+
     - name: Deploy back-end - run commands
       uses: appleboy/ssh-action@master
       with:
