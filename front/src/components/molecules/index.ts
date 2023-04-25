@@ -1,19 +1,21 @@
 import { AccessModal } from './AccessModal'
-import { Modal } from './Modal'
-import InputGroup from './InputGroup'
-import SelectGroup from './SelectGroup'
 import { CategoryBlock } from './CategoryBlock'
-import TextareaGroup from './TextareaGroup'
-import { CardResourceHome } from './CardResourceHome'
 import { CardResource } from './CardResource'
+import { CardResourceHome } from './CardResourceHome'
+import InputGroup from './InputGroup'
+import { Modal } from './Modal'
+import SelectGroup from './SelectGroup'
+import TextareaGroup from './TextareaGroup'
+import VoteCounter from './VoteCounter'
 
 export {
   AccessModal,
+  CategoryBlock,
+  CardResource,
+  CardResourceHome,
   InputGroup,
   Modal,
   SelectGroup,
-  CategoryBlock,
   TextareaGroup,
-  CardResourceHome,
-  CardResource,
+  VoteCounter
 }
