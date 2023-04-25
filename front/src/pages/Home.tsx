@@ -170,10 +170,12 @@ const DivStyled = styled.div`
 `
 
 const CategoriesContainerStyled = styled(FlexBox)`
-  padding: ${dimensions.spacing.lg};
-  margin-right: 1rem;
+  padding-left: ${dimensions.spacing.xxs};
+  padding-right: ${dimensions.spacing.xs};
+  margin-right: ${dimensions.spacing.sm};
   align-items: flex-start;
   color: ${colors.gray.gray3};
+  min-width: 11.5rem;
 `
 
 const UserResourcesContainerStyled = styled(FlexBox)`
@@ -224,7 +226,7 @@ const VideoContainer = styled(FlexBox)`
 
 const ImgStyled = styled.img`
   height: 30px;
-  margin-right: ${dimensions.spacing.base};
+  margin-right: ${dimensions.spacing.xxxs};
   margin-top: ${dimensions.spacing.xxl};
 `
 
@@ -244,9 +246,17 @@ const LinkStyled = styled.a<TLinkStyled>`
 `
 const CategoryLinkStyled = styled.a<TLinkStyled>`
   color: ${({ active }) => (active ? colors.black.black3 : colors.gray.gray3)};
-  font-weight: ${({ active }) => (active ? 'bold' : 'regular')};
+  font-weight: bold;
   margin-top: ${dimensions.spacing.xxl};
   cursor: pointer;
+
+    &::before {
+      content: '${({ active }) => (active ? '●' : '' )}';
+      font-size: larger;
+      color: ${colors.primary};
+      margin-right: 0.3rem;
+    }
+
 `
 // END style Desktop
 
