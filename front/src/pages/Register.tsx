@@ -5,7 +5,7 @@ import axios from 'axios'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { Title, Text, Button, ValidationMessage } from '../components/atoms'
+import { Title, Text, Button, CheckBox, ValidationMessage } from '../components/atoms'
 import InputGroup from '../components/molecules/InputGroup'
 import { paths } from '../constants'
 import { colors, dimensions, FlexBox } from '../styles'
@@ -26,8 +26,27 @@ const StyledForm = styled.form`
 `
 
 const LinkLoginStyled = styled(Link)`
-  color: black;
+  color: ${colors.black.black1};
   margin-left: ${dimensions.spacing.xxxs};
+`
+
+const CheckBoxStyled = styled(CheckBox)`
+  margin-top: ${dimensions.spacing.base};
+  margin-bottom: ${dimensions.spacing.base};
+  color: ${colors.black.black1};
+
+  > input {
+    color:  ${colors.black.black1};
+    border: 1px solid ${colors.black.black1};
+
+      &:checked {
+        border: 2px solid ${colors.primary};
+      }
+  }
+`
+
+const LegalTermsLinkStyled = styled(Link)`
+  color: inherit;
 `
 
 const SelectStyled = styled.select`
@@ -36,6 +55,10 @@ const SelectStyled = styled.select`
   width: 100%;
   border: 1px solid ${colors.gray.gray4};
   color: ${colors.gray.gray3};
+`
+
+const ButtonStyled = styled(Button)`
+  margin: ${dimensions.spacing.none};
 `
 
 type TForm = {
@@ -60,6 +83,7 @@ const Register: FC = () => {
 
   const navigate = useNavigate()
   const url = 'http://localhost:8999/api/v1/auth/register'
+
 
   const registerNewUser = async (user: object) => {
     try {
@@ -88,6 +112,8 @@ const Register: FC = () => {
     { id: 6, value: 'fullstack', specialization: 'Fullstack' },
     { id: 7, value: 'dataScience', specialization: 'Data Science' },
   ]
+
+  const legalTermsText: JSX.Element = <span>Acepto <LegalTermsLinkStyled to="#">términos legales</LegalTermsLinkStyled></span>
 
   return (
     <RegisterStyled>
@@ -191,26 +217,20 @@ const Register: FC = () => {
             text={errors.specialization?.message}
           />
         )}
-
-        {/* TODO generate checkbox component group? */}
-        <FlexBox direction="row">
-          <input
-            required
-            style={{ marginRight: '1rem' }}
-            type="checkbox"
+        <FlexBox justify='flex-start' direction='row'>
+          <CheckBoxStyled 
+            required={true} 
+            id="accept" 
+            label={legalTermsText}     
             {...register('accept')}
           />
-          {errors.accept?.type === 'required' ? (
-            <Text color={colors.error}>Acepto términos legales</Text>
-          ) : (
-            <Text>Acepto términos legales</Text>
-          )}
-
+        </FlexBox>
+        <FlexBox>
           {errors.accept && (
             <ValidationMessage color="error" text={errors.accept?.message} />
           )}
         </FlexBox>
-        <Button type="submit">Registrarme</Button>
+        <ButtonStyled type="submit">Registrarme</ButtonStyled>
       </StyledForm>
       <Text fontWeight="bold">
         ¿Tienes una cuenta?

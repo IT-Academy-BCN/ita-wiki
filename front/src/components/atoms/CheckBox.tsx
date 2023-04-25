@@ -1,58 +1,67 @@
-import { InputHTMLAttributes, forwardRef, Ref } from 'react'
+import { InputHTMLAttributes, forwardRef, Ref, ReactElement } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, FlexBox } from '../../styles'
 import Label from './Label'
 
-const CheckBoxWrapper = styled(FlexBox)`
+
+export const CheckBoxWrapper = styled(FlexBox)`
   flex-direction: row;
   gap: ${dimensions.spacing.xxs};
   color: ${colors.gray.gray2};
-`
 
-const StyledCheckBox = styled.input<TCheckBox>`
-  -webkit-appearance: none;
-  appearance: none;
-  width: ${dimensions.spacing.md};
-  height: ${dimensions.spacing.md};
-  border-radius: ${dimensions.borderRadius.xs};
-  border: 2px solid ${colors.gray.gray3};
-  color: ${colors.gray.gray2};
-  cursor: pointer;
+    ${Label} {
+      font-weight: normal;
+      display: inline-block;
+      color: inherit;
+    }
 
-  &:checked {
-    background-color: ${colors.primary};
-    border-color: ${colors.primary};
-  }
+    > input {
+      -webkit-appearance: none;
+      appearance: none;
+      width: ${dimensions.spacing.md};
+      height: ${dimensions.spacing.md};
+      border-radius: ${dimensions.borderRadius.xs};
+      border: 2px solid ${colors.gray.gray3};
+      color: ${colors.gray.gray2};
+      cursor: pointer;
 
-  &:checked::before {
-    content: '\\2713';
-    color: white;
-    display: inline-block;
-    padding-left: 0.2rem;
-  }
+      &:checked {
+        background-color: ${colors.primary};
+        border-color: ${colors.primary};
+      }
+
+      &:checked::before {
+        content: '\\2713';
+        color: white;
+        display: inline-block;
+        padding-left: 0.3rem;
+      }
+    } 
 `
 
 type TCheckBox = InputHTMLAttributes<HTMLInputElement> & {
   id: string
-  label: string
+  label: string | JSX.Element
   defaultChecked?: boolean
+  required?: boolean
+  className?: string
 }
 
 const CheckBox = forwardRef(
   (
-    { id, label, defaultChecked = false }: TCheckBox,
+    { id, label, defaultChecked = false, required = false, className }: TCheckBox,
     ref: Ref<HTMLInputElement>
   ) => (
-    <CheckBoxWrapper>
-      <StyledCheckBox
+    <CheckBoxWrapper className={className}>
+      <input
         type="checkbox"
         ref={ref}
         id={id}
         name={id}
         defaultChecked={defaultChecked}
-        label={label}
+        required={required}
       />
-      <Label htmlFor={id} text={label} />
+    <Label htmlFor={id} text={label} />
     </CheckBoxWrapper>
   )
 )
