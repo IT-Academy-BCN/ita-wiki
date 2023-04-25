@@ -53,6 +53,7 @@ jobs:
             -Dsonar.projectKey=ita-wiki-front
             -Dsonar.projectName=ita-wiki-front
             -Dsonar.sources=src
+            -Dsonar.organization=it-academy-bcn
             -Dsonar.exclusions=**/node_modules/**
             -Dsonar.tests=src
             -Dsonar.test.inclusions=**/*.test.ts,**/*.test.tsx
