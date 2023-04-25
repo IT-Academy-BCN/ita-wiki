@@ -14,7 +14,7 @@ Quicklinks:
 - <a href="https://www.figma.com/file/ScWpDKxEB3wEGbztXMSJO3/MVP-Wiki-IT-Academy">Visual design</a>.
 - <a href="https://dev.itadirectory.eurecatacademy.org/">Development server</a>.
 
-### Procedures
+### Important procedures and meetings
 
 - We have a daily at 9.00AM everyday and it is mandatary to assist.
 - We have a sprint planning once each two weeks, preferably on mondays.
