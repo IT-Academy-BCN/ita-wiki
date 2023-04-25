@@ -3,6 +3,7 @@ CREATE TABLE "viewed_resource" (
     "user_id" TEXT NOT NULL,
     "resource_id" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "viewed_resource_pkey" PRIMARY KEY ("user_id","resource_id")
 );
