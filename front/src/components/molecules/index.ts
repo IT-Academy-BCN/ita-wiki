@@ -6,6 +6,7 @@ import { CategoryBlock } from './CategoryBlock'
 import TextareaGroup from './TextareaGroup'
 import { CardResourceHome } from './CardResourceHome'
 import { CardResource } from './CardResource'
+import { CreateAuthor } from './CreateAuthor'
 
 export {
   AccessModal,
@@ -16,4 +17,5 @@ export {
   TextareaGroup,
   CardResourceHome,
   CardResource,
+  CreateAuthor
 }
