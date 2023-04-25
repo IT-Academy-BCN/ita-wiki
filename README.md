@@ -14,6 +14,14 @@ Quicklinks:
 - <a href="https://www.figma.com/file/ScWpDKxEB3wEGbztXMSJO3/MVP-Wiki-IT-Academy">Visual design</a>.
 - <a href="https://dev.itadirectory.eurecatacademy.org/">Development server</a>.
 
+### Important procedures and meetings
+
+- We have a daily at 9.00AM everyday and it is mandatary to assist.
+- We have a sprint planning once each two weeks, preferably on mondays.
+- We have a sprint review (retro) once each two weeks, preferably on thursdays.
+- The project requires a dedication of 15~25 hours.
+
+IMPORTANT: If you cannot dedicate enough time, nor be on the meetings, please reach out to the project lead.
 
 ### Frontend and Backend
 
