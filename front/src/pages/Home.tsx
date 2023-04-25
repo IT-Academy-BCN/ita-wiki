@@ -2,7 +2,11 @@ import styled from 'styled-components'
 import { FC, SetStateAction, useState } from 'react'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions } from '../styles'
-import { CardResource, InputGroup } from '../components/molecules'
+import {
+  CardResource,
+  InputGroup,
+  ResourceTitleLink,
+} from '../components/molecules'
 import {
   HowToHelpCard,
   CategoriesList,
@@ -226,11 +230,6 @@ const ImgStyled = styled.img`
   margin-top: ${dimensions.spacing.xxl};
 `
 
-const TextStyled = styled(Text)`
-  margin: 0rem;
-  margin-top: 5px;
-`
-
 type TLinkStyled = {
   active?: boolean
 }
@@ -251,13 +250,12 @@ const CategoryLinkStyled = styled.a<TLinkStyled>`
   margin-top: ${dimensions.spacing.xxl};
   cursor: pointer;
 
-    &::before {
-      content: '${({ active }) => (active ? '●' : '' )}';
-      font-size: larger;
-      color: ${colors.primary};
-      margin-right: 0.3rem;
-    }
-
+  &::before {
+    content: '${({ active }) => (active ? '●' : '')}';
+    font-size: larger;
+    color: ${colors.primary};
+    margin-right: 0.3rem;
+  }
 `
 // END style Desktop
 
@@ -378,10 +376,11 @@ const Home: FC = () => {
               {/* ==> CONTENIDO FAVORITOS */}
               {resources.map((fav) => (
                 <UserResourcesContainerStyled key={fav.id}>
-                  <TextStyled fontWeight="bold">{fav.title}</TextStyled>
-                  <TextStyled fontSize="small" color={colors.gray.gray3}>
-                    {fav.description}
-                  </TextStyled>
+                  <ResourceTitleLink
+                    url={fav.img}
+                    title={fav.title}
+                    description={fav.description}
+                  />
                 </UserResourcesContainerStyled>
               ))}
 
@@ -395,10 +394,11 @@ const Home: FC = () => {
               {/* ==> CONTENIDO MIS RECURSOS */}
               {resources.map((res) => (
                 <UserResourcesContainerStyled key={res.id}>
-                  <TextStyled fontWeight="bold">{res.title}</TextStyled>
-                  <TextStyled fontSize="small" color={colors.gray.gray3}>
-                    {res.description}
-                  </TextStyled>
+                  <ResourceTitleLink
+                    url={res.img}
+                    title={res.title}
+                    description={res.description}
+                  />
                 </UserResourcesContainerStyled>
               ))}
             </SideColumnContainer>
