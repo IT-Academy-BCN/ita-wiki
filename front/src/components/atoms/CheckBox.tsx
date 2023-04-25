@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, forwardRef, Ref, ReactElement } from 'react'
+import { InputHTMLAttributes, forwardRef, Ref } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, FlexBox } from '../../styles'
 import Label from './Label'

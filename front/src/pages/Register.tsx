@@ -219,7 +219,7 @@ const Register: FC = () => {
         )}
         <FlexBox justify='flex-start' direction='row'>
           <CheckBoxStyled 
-            required={true} 
+            required
             id="accept" 
             label={legalTermsText}     
             {...register('accept')}
