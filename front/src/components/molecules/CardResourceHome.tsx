@@ -1,8 +1,7 @@
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions, font } from '../../styles'
 import { Text } from '../atoms'
-// eslint-disable-next-line import/no-cycle
-import {CreateAuthor} from './index'
+import { CreateAuthor } from './CreateAuthor'
 
 // TODO: this component should be combined with CardResource.tsx
 // the difference here you can not vote
@@ -29,7 +28,12 @@ type TCardResourceHome = {
   title: string
   description: string
 }
-const CardResourceHome = ({ title, description, createdBy, createdOn }: TCardResourceHome) => (
+const CardResourceHome = ({
+  title,
+  description,
+  createdBy,
+  createdOn,
+}: TCardResourceHome) => (
   <CardContainerStyled direction="row" align="start" justify="flex-start">
     <FlexBoxStyled align="start" justify="flex-start">
       <TextStyled fontSize={font.xs} fontWeight="bold">
@@ -38,7 +42,7 @@ const CardResourceHome = ({ title, description, createdBy, createdOn }: TCardRes
       <TextStyled fontSize={font.xss} color={colors.gray.gray3}>
         {description}
       </TextStyled>
-      <CreateAuthor createdBy={createdBy} createdOn={createdOn}/>
+      <CreateAuthor createdBy={createdBy} createdOn={createdOn} />
     </FlexBoxStyled>
   </CardContainerStyled>
 )
