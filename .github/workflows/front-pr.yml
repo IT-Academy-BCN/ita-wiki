@@ -41,6 +41,7 @@ jobs:
         run: |
             cd ${{ github.workspace }}/front
             npm run build
+      
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
@@ -49,8 +50,8 @@ jobs:
         with:
           projectBaseDir: front
           args: >
-            -Dsonar.projectKey=busco-graphile-front
-            -Dsonar.projectName="Frontend React App"
+            -Dsonar.projectKey=ita-wiki-front
+            -Dsonar.projectName=ita-wiki-front
             -Dsonar.sources=src
             -Dsonar.exclusions=**/node_modules/**
             -Dsonar.tests=src
