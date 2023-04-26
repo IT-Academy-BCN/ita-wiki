@@ -6,53 +6,54 @@ import React, {
   useState,
 } from 'react'
 
+type TUser = {
+  name: string
+  avatar: string
+} | null
+
 type TAuthContext = {
-  isLoggedIn: boolean
-  user: object
+  user: TUser
   children: React.ReactNode
+  setUser: (user: TUser) => void
 }
 
 export const authContext = createContext<TAuthContext>({
-  isLoggedIn: false,
   children: null,
-  user: {},
+  user: null,
+  setUser: () => {},
 })
 
 // hook
 export const useAuth = () => {
   const context = useContext(authContext)
+
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
+
   return context
 }
 
-export const AuthProvider: React.FC<TAuthContext> = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [user, setUser] = useState({})
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState(null)
+export const AuthProvider: React.FC<Omit<TAuthContext, 'user' | 'setUser'>> = ({
+  children,
+}) => {
+  const [user, setUser] = useState<TUser>(null)
 
   const url =
     'https://dev.api.itadirectory.eurecatacademy.org/api/v1/auth/login'
 
-  const value = useMemo(
-    () => ({ isLoggedIn, children, user, loading, error }),
-    [children, error, isLoggedIn, loading, user]
-  )
+  const value = useMemo(() => ({ children, user, setUser }), [children, user])
 
   useEffect(() => {
-    setLoading(true)
-    setError(null)
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
         setUser(data)
-        setIsLoggedIn(true)
-        setLoading(false)
       })
-      .catch((err) => {
-        setError(err)
-        setLoading(false)
+      .catch(() => {
+        setUser(null)
       })
-  }, [url])
+  }, [])
 
   return <authContext.Provider value={value}>{children}</authContext.Provider>
 }

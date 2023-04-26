@@ -5,6 +5,7 @@ import { paths } from './constants'
 import { Home, Login, Register, ErrorPage, Resource } from './pages'
 import { Information } from './pages/Information'
 import { AddResource } from './pages/AddResource'
+import { AuthProvider } from './context/AuthProvider'
 
 const router = createBrowserRouter([
   {
@@ -37,4 +38,8 @@ const router = createBrowserRouter([
 const rootElement = document.getElementById('root')
 if (!rootElement) throw new Error('Failed to find the root element')
 const root = ReactDOM.createRoot(rootElement)
-root.render(<RouterProvider router={router} />)
+root.render(
+  <AuthProvider>
+    <RouterProvider router={router} />
+  </AuthProvider>
+)
