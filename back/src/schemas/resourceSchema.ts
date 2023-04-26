@@ -3,7 +3,7 @@ import { z } from '../openapi/zod'
 export const resourceSchema = z.object({
   id: z.string(),
   title: z.string(),
-  slug: z.string(),
+  slug: z.string().optional(),
   description: z.string().optional(),
   url: z.string().url(),
   resourceType: z.enum(['BLOG', 'VIDEO', 'TUTORIAL']),

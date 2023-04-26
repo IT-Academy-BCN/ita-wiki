@@ -37,7 +37,7 @@ enum USER_ROLE {
 model Resource {
   id           String              @id @default(cuid())
   title        String
-  slug         String              @unique
+  slug         String?             @unique
   description  String?
   url          String
   resourceType RESOURCE_TYPE       @map("resource_type")
@@ -70,7 +70,7 @@ model Category {
 model Topic {
   id         String              @id @default(cuid())
   name       String
-  slug       String              @unique
+  slug       String?             @unique
   category   Category            @relation(fields: [categoryId], references: [id])
   categoryId String              @map("category_id")
   resources  TopicsOnResources[]
