@@ -7,7 +7,7 @@ export const cookieAuth = registry.registerComponent(
   'cookieAuth',
   {
     type: 'apiKey',
-    bearerFormat: 'JWT',
+    in: 'cookie',
     name: 'token'
   }
 )
