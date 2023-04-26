@@ -6,12 +6,10 @@ import Label from './Label'
 
 export const CheckBoxWrapper = styled(FlexBox)`
   flex-direction: row;
-  gap: ${dimensions.spacing.xxs};
   color: ${colors.gray.gray2};
 
     ${Label} {
       font-weight: normal;
-      display: inline-block;
       color: inherit;
     }
 
@@ -24,6 +22,7 @@ export const CheckBoxWrapper = styled(FlexBox)`
       border: 2px solid ${colors.gray.gray3};
       color: ${colors.gray.gray2};
       cursor: pointer;
+      margin-right: ${dimensions.spacing.xxs};
 
       &:checked {
         background-color: ${colors.primary};
@@ -41,7 +40,8 @@ export const CheckBoxWrapper = styled(FlexBox)`
 
 type TCheckBox = InputHTMLAttributes<HTMLInputElement> & {
   id: string
-  label: string | JSX.Element
+  label: string
+  hiddenLabel?: boolean
   defaultChecked?: boolean
   required?: boolean
   className?: string
@@ -49,7 +49,13 @@ type TCheckBox = InputHTMLAttributes<HTMLInputElement> & {
 
 const CheckBox = forwardRef(
   (
-    { id, label, defaultChecked = false, required = false, className }: TCheckBox,
+    { id, 
+      label = "", 
+      hiddenLabel,
+      defaultChecked = false,
+      required = false,  
+      className 
+    }: TCheckBox,
     ref: Ref<HTMLInputElement>
   ) => (
     <CheckBoxWrapper className={className}>
@@ -61,7 +67,7 @@ const CheckBox = forwardRef(
         defaultChecked={defaultChecked}
         required={required}
       />
-    <Label htmlFor={id} text={label} />
+    <Label htmlFor={id} text={label} hidden={hiddenLabel} />
     </CheckBoxWrapper>
   )
 )

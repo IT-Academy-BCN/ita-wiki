@@ -33,16 +33,18 @@ const LinkLoginStyled = styled(Link)`
 const CheckBoxStyled = styled(CheckBox)`
   margin-top: ${dimensions.spacing.base};
   margin-bottom: ${dimensions.spacing.base};
-  color: ${colors.black.black1};
-
+  
   > input {
-    color:  ${colors.black.black1};
     border: 1px solid ${colors.black.black1};
 
       &:checked {
         border: 2px solid ${colors.primary};
       }
   }
+`
+
+const TextStyled = styled(Text)`
+  color: ${colors.black.black1}; 
 `
 
 const LegalTermsLinkStyled = styled(Link)`
@@ -112,8 +114,6 @@ const Register: FC = () => {
     { id: 6, value: 'fullstack', specialization: 'Fullstack' },
     { id: 7, value: 'dataScience', specialization: 'Data Science' },
   ]
-
-  const legalTermsText: JSX.Element = <span>Acepto <LegalTermsLinkStyled to="#">términos legales</LegalTermsLinkStyled></span>
 
   return (
     <RegisterStyled>
@@ -218,12 +218,16 @@ const Register: FC = () => {
           />
         )}
         <FlexBox justify='flex-start' direction='row'>
-          <CheckBoxStyled 
-            required
-            id="accept" 
-            label={legalTermsText}     
-            {...register('accept')}
-          />
+
+            <CheckBoxStyled 
+              required
+              id="accept"  
+              label=""
+              hiddenLabel   
+              {...register('accept')}
+            /> 
+            <TextStyled as="label" htmlFor="accept">Acepto <LegalTermsLinkStyled to="#">términos legales</LegalTermsLinkStyled></TextStyled>
+
         </FlexBox>
         <FlexBox>
           {errors.accept && (

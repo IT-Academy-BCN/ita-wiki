@@ -9,7 +9,7 @@ const LabelStyled = styled.label`
 `
 
 export type TLabel = Omit<LabelHTMLAttributes<HTMLLabelElement>, 'htmlFor'> & {
-  text: string | JSX.Element
+  text: string
   htmlFor: string
   hiddenLabel?: boolean
 }
