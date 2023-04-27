@@ -1,4 +1,5 @@
 import Koa, { Middleware } from 'koa'
+import jwt, { Secret } from 'jsonwebtoken'
 import { prisma } from '../prisma/client'
 
 export const createResource: Middleware = async (ctx: Koa.Context) => {
@@ -36,7 +37,9 @@ export const createResource: Middleware = async (ctx: Koa.Context) => {
 }
 
 export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
-  const { userId } = ctx.params;
+  
+  const token = ctx.cookies.get('token') as string
+  const { userId } = jwt.verify(token, process.env.JWT_KEY as Secret) as { userId: string }
   
   const user = await prisma.user.findUnique({
     where: { id: userId },

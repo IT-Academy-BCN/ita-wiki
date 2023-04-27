@@ -17,8 +17,8 @@ resourcesRouter.post(
 )
 
 resourcesRouter.get(
-  '/user/:userId',
-  validate(z.object({ params: z.object({userId: z.string().cuid()}) })),
+  '/me',
+  authMiddleware,
   getResourcesByUserId
 )
 
