@@ -70,5 +70,5 @@ describe('CheckBox', () => {
         expect(checkBoxTest).not.toBeChecked() 
       )
   })
-  
+
 })
