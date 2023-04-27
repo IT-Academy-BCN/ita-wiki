@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { CreateAuthor } from '../../components/molecules/CreateAuthor'
+import { CreateAuthor } from '../../components/molecules'
 import icons from '../../assets/icons'
 
 describe('CreateAuthor', () => {
@@ -15,5 +15,15 @@ describe('CreateAuthor', () => {
     )
 
     expect(screen.getByAltText('Author icon')).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        `${createdBy}, ${new Date(createdOn).toLocaleDateString('es-ES', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })}
+    `
+      )
+    ).toBeInTheDocument()
   })
 })

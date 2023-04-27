@@ -24,6 +24,7 @@ type Tresource = {
   createdBy: string
   createdOn: string
   description: string
+  img: string
 }
 const categories: Tcategories[] = [
   {
@@ -70,6 +71,7 @@ const resources: Tresource[] = [
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Proyecto práctico',
+    img: icons.profileAvatar,
   },
   {
     id: 2,
@@ -77,6 +79,7 @@ const resources: Tresource[] = [
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
+    img: icons.profileAvatar,
   },
   {
     id: 3,
@@ -84,6 +87,7 @@ const resources: Tresource[] = [
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
+    img: icons.profileAvatar,
   },
   {
     id: 4,
@@ -91,6 +95,7 @@ const resources: Tresource[] = [
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
+    img: icons.profileAvatar,
   },
 ]
 const dataSubjects = [
