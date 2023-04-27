@@ -26,3 +26,22 @@ export const getTopicsByCategoryId: Middleware = async (ctx: Koa.Context) => {
     ctx.status = 200;
     ctx.body = topics;
 }
+
+export const getTopicsByResourceId: Middleware = async (ctx: Koa.Context) => {
+    const { resourceId } = ctx.params;
+    const topics = await prisma.topicsOnResources.findMany({
+        where: {
+             resourceId
+        },
+        include: {
+            topic: {
+                select: {
+                    id: true,
+                    name: true
+                }
+            }
+        }
+    });
+    ctx.status = 200;
+    ctx.body = topics;
+}

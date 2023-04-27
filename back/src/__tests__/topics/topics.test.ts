@@ -47,3 +47,37 @@ describe('Testing topics endpoint', () => {
         })
     })
 })
+
+describe('GET /topics/resource/:resourceId', () => {
+    
+    test('Should return an array of topics related to the specified resource with a valid resourceId', async () => {
+        
+        const testResource1 = await prisma.resource.findUnique({
+            
+            where: {
+                id: 'clgyxvl9q000b3fnkcdgjt2da'
+            },
+        }); 
+
+        const response = await supertest(server).get(`/api/v1/topics/resource/${testResource1?.id}`);
+        
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBeGreaterThan(0);
+
+    });
+
+    test('Should fail to return an array of topics related to the specified resource with an invalid resourceId', async () => {
+        const testResource2 = await prisma.resource.findUnique({
+            
+            where: {
+                id: 'hola'
+            },
+        }); 
+
+        const response = await supertest(server).get(`/api/v1/topics/resource/${testResource2?.id}`);
+        
+        expect(response.status).toBe(404);
+        
+    })
+
+});
