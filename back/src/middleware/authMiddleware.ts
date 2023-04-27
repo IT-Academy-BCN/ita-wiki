@@ -5,7 +5,7 @@ export const authMiddleware = async (ctx: Koa.Context, next: Koa.Next) => {
   const token = ctx.cookies.get('token')
   if (!token) {
     ctx.status = 401
-    ctx.body = 'Unauthorized: Missing token'
+    ctx.body = { error: 'Unauthorized: Missing token' }
     return
   }
 
@@ -15,7 +15,7 @@ export const authMiddleware = async (ctx: Koa.Context, next: Koa.Next) => {
   } catch (error) {
     if(error instanceof jwt.JsonWebTokenError){
       ctx.status = 405
-      ctx.body = 'Token is not valid'
+      ctx.body = { error: 'Token is not valid' }
     }
     else
       // We don't want to catch Zod or controller errors
