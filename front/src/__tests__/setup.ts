@@ -1,4 +1,5 @@
 import { expect, afterEach } from 'vitest'
+import fetch from 'cross-fetch'
 import { cleanup } from '@testing-library/react'
 import matchers from '@testing-library/jest-dom/matchers'
 import { server } from '../__mocks__/server'
@@ -11,6 +12,7 @@ afterEach(() => {
   cleanup()
 })
 
+global.fetch = fetch
 // Establish API mocking before all tests.
 beforeAll(() => server.listen())
 // Reset any request handlers that we may add during the tests,
