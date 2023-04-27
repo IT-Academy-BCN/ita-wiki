@@ -14,16 +14,16 @@ describe('CreateAuthor', () => {
       />
     )
 
+    const res = `${createdBy}, ${new Date(createdOn).toLocaleDateString(
+      'es-ES',
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      }
+    )}`
+
     expect(screen.getByAltText('Author icon')).toBeInTheDocument()
-    expect(
-      screen.getByText(
-        `${createdBy}, ${new Date(createdOn).toLocaleDateString('es-ES', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })}
-    `
-      )
-    ).toBeInTheDocument()
+    expect(screen.getByText(res)).toBeInTheDocument()
   })
 })
