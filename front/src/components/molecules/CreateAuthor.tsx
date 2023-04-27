@@ -14,13 +14,13 @@ const MetaInfo = styled(Text)`
 type TCreateAuthor = {
   createdBy: string
   createdOn: string
-  img: string
+  img?: string
 }
 
 export const CreateAuthor = ({ createdBy, createdOn, img }: TCreateAuthor) => (
   <FlexBox direction="row">
     <TextStyled fontSize={font.xss} color={colors.gray.gray3}>
-      <img src={img} alt="Author icon" /> 
+      {img ? <img src={img} alt="Author icon" /> : '😺'}
     </TextStyled>
     <MetaInfo>
       {createdBy},{' '}

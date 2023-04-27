@@ -24,6 +24,7 @@ describe('CreateAuthor', () => {
     )}`
 
     expect(screen.getByAltText('Author icon')).toBeInTheDocument()
+    expect(screen.getByRole('img')).toHaveAttribute('src', icons.profileAvatar)
     expect(screen.getByText(res)).toBeInTheDocument()
   })
 })
