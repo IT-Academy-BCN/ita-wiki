@@ -1,4 +1,4 @@
-# It Academy Project - Wiki
+# It Academy Project - Wiki (ITA Wiki)
 
 This project uses a set of technologies to facilitate the development of web applications and APIs. The goal of this README is to provide a guide for new project members to integrate more easily and start contributing as soon as possible.
 
@@ -47,7 +47,7 @@ Here are some of the useful scripts you can use:
 
 Here are some useful links to official documentation for the technologies used in this project:
 
--   [Prisma](https://www.prisma.io/docs) - Prisma ORM documentation.
--   [vitest](https://vitest.dev/guide/) - vitest testing framework documentation.
+- [Prisma](https://www.prisma.io/docs) - Prisma ORM documentation.
+- [vitest](https://vitest.dev/guide/) - vitest testing framework documentation.
 
 If you are new to TypeScript or Prisma ORM, you may want to watch the following tutorial before diving into the project: [REST API with TypeScript and Prisma ORM](https://www.youtube.com/watch?v=RebA5J-rlwg). This tutorial covers the basics of TypeScript and how it can be used with Node.js to create web applications.

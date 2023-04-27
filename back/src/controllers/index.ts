@@ -1,4 +1,5 @@
 export { loginController } from './loginController'
 export { registerController } from './registerController'
 export * from './resourceController'
-export { getTopics } from './topicController'
+export { getTopics, getTopicsByCategoryId } from './topicController'
+export { getCategories } from './categoryController'

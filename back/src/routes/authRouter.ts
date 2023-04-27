@@ -3,10 +3,11 @@ import { z } from 'zod'
 import { loginController, registerController } from '../controllers'
 import { validate } from '../middleware'
 import { userLoginSchema, userRegisterSchema } from '../schemas'
+import { pathRoot } from './routes'
 
 const authRouter = new Router()
 
-authRouter.prefix('/api/v1/auth')
+authRouter.prefix(pathRoot.v1.auth)
 
 authRouter.post(
   '/login',

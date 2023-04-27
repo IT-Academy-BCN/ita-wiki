@@ -192,3 +192,50 @@ paths:
                     example: Database error
                 required:
                   - message
+  /api/v1/categories:
+    get:
+      tags:
+        - categories
+      description: Get all categories saved in the database
+      summary: Get all categories
+      responses:
+        "200":
+          description: Categories fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                      example: Javascript
+                  required:
+                    - id
+                    - name
+  /api/v1/topics/category/:categoryId:
+    get:
+      tags:
+        - topics
+      description: Takes a category Id and returns the list of topics sharing that category
+      summary: Returns topics by category
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          description: ID of the category for which to retrieve topics
+      responses:
+        "200":
+          description: The server has successfully received the parameter
+  /api/v1/topics:
+    get:
+      tags:
+        - topics
+      description: Returns a list of all topics
+      summary: Returns topics
+      responses:
+        "200":
+          description: The server has successfully received the parameter
