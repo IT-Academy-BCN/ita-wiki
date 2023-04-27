@@ -28,6 +28,7 @@ describe('AuthProvider', () => {
     renderHook(() => {
       try {
         useAuth()
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (e: any) {
         if (e instanceof Error) {
           expect(`${e.message}`).toEqual(
