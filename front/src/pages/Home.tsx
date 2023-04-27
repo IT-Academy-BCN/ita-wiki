@@ -250,13 +250,12 @@ const CategoryLinkStyled = styled.a<TLinkStyled>`
   margin-top: ${dimensions.spacing.xxl};
   cursor: pointer;
 
-    &::before {
-      content: '${({ active }) => (active ? '●' : '' )}';
-      font-size: larger;
-      color: ${colors.primary};
-      margin-right: 0.3rem;
-    }
-
+  &::before {
+    content: '${({ active }) => (active ? '●' : '')}';
+    font-size: larger;
+    color: ${colors.primary};
+    margin-right: 0.3rem;
+  }
 `
 // END style Desktop
 
