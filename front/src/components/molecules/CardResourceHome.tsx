@@ -27,12 +27,14 @@ type TCardResourceHome = {
   createdOn: string
   title: string
   description: string
+  img: string
 }
 const CardResourceHome = ({
   title,
   description,
   createdBy,
   createdOn,
+  img
 }: TCardResourceHome) => (
   <CardContainerStyled direction="row" align="start" justify="flex-start">
     <FlexBoxStyled align="start" justify="flex-start">
@@ -42,7 +44,7 @@ const CardResourceHome = ({
       <TextStyled fontSize={font.xss} color={colors.gray.gray3}>
         {description}
       </TextStyled>
-      <CreateAuthor createdBy={createdBy} createdOn={createdOn} />
+      <CreateAuthor createdBy={createdBy} createdOn={createdOn} img={img} />
     </FlexBoxStyled>
   </CardContainerStyled>
 )

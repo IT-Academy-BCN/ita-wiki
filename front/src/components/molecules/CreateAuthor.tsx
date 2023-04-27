@@ -5,7 +5,7 @@ import { Text } from '../atoms'
 const TextStyled = styled(Text)`
   margin: 0.2rem;
 `
-const MetaInfo = styled.p`
+const MetaInfo = styled(Text)`
   font-weight: bold;
   font-size: 10px;
   color: ${colors.gray.gray4};
@@ -14,12 +14,13 @@ const MetaInfo = styled.p`
 type TCreateAuthor = {
   createdBy: string
   createdOn: string
+  img: string
 }
 
-export const CreateAuthor = ({ createdBy, createdOn }: TCreateAuthor) => (
+export const CreateAuthor = ({ createdBy, createdOn, img }: TCreateAuthor) => (
   <FlexBox direction="row">
     <TextStyled fontSize={font.xss} color={colors.gray.gray3}>
-      😺
+      <img src={img} alt="Author icon" /> 
     </TextStyled>
     <MetaInfo>
       {createdBy},{' '}
