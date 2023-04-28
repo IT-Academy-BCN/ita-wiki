@@ -1,12 +1,13 @@
 import { FC, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
+import { useParams } from 'react-router-dom'
 import { Button, Text, Title } from '../components/atoms'
 import { FlexBox, colors, dimensions } from '../styles'
 import { Modal, SelectGroup } from '../components/molecules'
 import { CardResource } from '../components/molecules/CardResource'
 import icons from '../assets/icons'
-import { ResourceForm , Navbar} from '../components/organisms'
+import { ResourceForm, Navbar } from '../components/organisms'
 
 type TStackData = {
   createdBy: string
@@ -24,6 +25,14 @@ type TStackData = {
     video: boolean
   }
   url: string
+}
+
+type TCategories = {
+  id: number
+  category: string
+  resources: number
+  topics: number
+  img: string
 }
 
 const stackData: TStackData[] = [
@@ -102,7 +111,6 @@ const options = [
   { value: '1', label: 'Redux Toolkit' },
 ]
 
-
 const HeaderContainerStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
   padding: 5rem ${dimensions.spacing.base} ${dimensions.spacing.xl};
@@ -156,6 +164,8 @@ const TextContainerStyled = styled(FlexBox)`
 `
 
 const Resource: FC = () => {
+  const { categoryId } = useParams()
+
   const [isOpen, setIsOpen] = useState(false)
 
   const openModal = () => {
@@ -167,7 +177,7 @@ const Resource: FC = () => {
   return (
     <>
       <HeaderContainerStyled align="stretch">
-        <Navbar title='Wiki'/>
+        <Navbar title="Wiki" />
         <FlexBox direction="row" justify="space-between">
           <Title as="h1" fontWeight="bold">
             Recursos de {state?.name}

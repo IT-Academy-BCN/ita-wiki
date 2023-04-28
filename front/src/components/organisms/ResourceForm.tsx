@@ -28,11 +28,11 @@ const options = [
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
   margin-top: ${dimensions.spacing.xl};
-`
 
-const ButtonStyled = styled(Button)`
-  font-weight: 500;
-  margin: 0rem;
+  ${Button} {
+    font-weight: 500;
+    margin: 0rem;
+  }
 `
 
 const FlexErrorStyled = styled(FlexBox)`
@@ -48,15 +48,18 @@ const ResourceFormSchema = z.object({
   url: z
     .string({ required_error: 'Este campo es obligatorio' })
     .url({ message: 'La URL proporcionada no es válida' }),
-  topic: z
-    .string({ required_error: 'Este campo es obligatorio' })
-    .refine((val) => options.map((o) => o.value).includes(val), {
+  topics: z.array(
+    z.string().refine((val) => options.map((o) => o.value).includes(val), {
       message: 'El tema seleccionado no es válido',
-    }),
+    })
+  ),
   resourceType: z.string(),
+  userEmail: z.string().optional(),
 })
 
-type TResourceForm = z.infer<typeof ResourceFormSchema>
+type TResourceForm = z.infer<typeof ResourceFormSchema> & {
+  topics: string[]
+}
 
 const ResourceFormStyled = styled.form`
   ${Radio} {
@@ -75,11 +78,22 @@ export const ResourceForm = () => {
   })
 
   const navigate = useNavigate()
-  const urlBE = 'http://localhost:8999/api/v1/auth/resource'
+
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM'
+  const URL = 'http://localhost:8999/api/v1/resources/create'
 
   const registerNewResource = async (resource: object) => {
+    console.log('resource:', resource)
+
     try {
-      const response = await axios.post(urlBE, resource)
+      const config = {
+        headers: {
+          Cookie: `token=${token}`,
+        },
+      }
+
+      const response = await axios.post(URL, resource, config)
       if (response.status === 204) {
         navigate('/')
       }
@@ -89,8 +103,22 @@ export const ResourceForm = () => {
   }
 
   const onSubmit = handleSubmit((data) => {
-    const { title, description, url, topic, resourceType } = data
-    registerNewResource({ title, description, url, topic, resourceType })
+    const {
+      title,
+      description,
+      url,
+      topics,
+      resourceType,
+      userEmail = 'admin@admin.com',
+    } = data
+    registerNewResource({
+      title,
+      description,
+      url,
+      topics: Array.isArray(topics) ? topics : [topics],
+      resourceType: Array.isArray(resourceType) ? resourceType : [resourceType],
+      userEmail,
+    })
     reset()
   })
 
@@ -127,20 +155,21 @@ export const ResourceForm = () => {
         validationType="error"
       />
       <SelectGroup
-        id="topic"
+        id="topics"
         label="Tema"
         options={options}
-        {...register('topic')}
-        name="topic"
-        error={errors.topic && true}
-        validationMessage={errors.topic?.message}
+        {...register('topics')}
+        multiple
+        name="topics"
+        error={errors.topics && true}
+        validationMessage={errors.topics?.message}
       />
       <Radio
         {...register('resourceType')}
         options={[
-          { id: 'video', label: 'Video' },
-          { id: 'curso', label: 'Curso' },
-          { id: 'blog', label: 'Blog' },
+          { id: 'VIDEO', label: 'Video' },
+          { id: 'TUTORIAL', label: 'Curso' },
+          { id: 'BLOG', label: 'Blog' },
         ]}
         name="resourceType"
       />
@@ -150,7 +179,7 @@ export const ResourceForm = () => {
         ) : null}
       </FlexErrorStyled>
       <ButtonContainerStyled align="stretch">
-        <ButtonStyled type="submit">Guardar</ButtonStyled>
+        <Button type="submit">Guardar</Button>
       </ButtonContainerStyled>
     </ResourceFormStyled>
   )
