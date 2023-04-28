@@ -18,6 +18,7 @@ model User {
   resources Resource[]
   media     Media[]
   favorite  Favorites[]
+  viewed    ViewedResource[]
   createdAt DateTime    @default(now()) @map("created_at")
   updatedAt DateTime    @updatedAt @map("updated_at")
 
@@ -43,6 +44,7 @@ model Resource {
   resourceType RESOURCE_TYPE       @map("resource_type")
   topics       TopicsOnResources[]
   favorites    Favorites[]
+  viewed       ViewedResource[]
   user         User                @relation(fields: [userId], references: [id])
   userId       String              @map("user_id")
   createdAt    DateTime            @default(now()) @map("created_at")
@@ -111,4 +113,16 @@ model Favorites {
 
   @@id([userId, resourceId])
   @@map("favorites")
+}
+
+model ViewedResource {
+  user        User          @relation(fields: [userId], references: [id])
+  userId      String        @map("user_id")
+  resource    Resource      @relation(fields: [resourceId], references: [id])
+  resourceId  String        @map("resource_id")
+  createdAt   DateTime      @default(now()) @map("created_at")
+  updatedAt   DateTime      @updatedAt @map("updated_at")
+
+  @@id([userId, resourceId])
+  @@map("viewed_resource")
 }

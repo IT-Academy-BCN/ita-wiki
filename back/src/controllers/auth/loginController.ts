@@ -1,7 +1,7 @@
 import Koa from 'koa'
 import jwt, { Secret } from 'jsonwebtoken'
-import { prisma } from '../prisma/client'
-import { checkPassword } from '../helpers/passwordHash'
+import { prisma } from '../../prisma/client'
+import { checkPassword } from '../../helpers/passwordHash'
 
 export const loginController = async (ctx: Koa.Context) => {
   const { dni, password } = ctx.request.body
