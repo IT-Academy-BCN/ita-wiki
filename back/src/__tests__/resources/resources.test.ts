@@ -30,6 +30,7 @@ describe('Testing resources endpoint', () => {
   test('should create a new resource with topics', async () => {
     const newResource = {
       title: 'New Resource',
+      slug:'new-resource',
       description: 'This is a new resource',
       url: 'https://example.com/resource',
       resourceType: 'BLOG',
