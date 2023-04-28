@@ -34,6 +34,22 @@ components:
           example: Email already exists
       required:
         - message
+    MissingTokenError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unauthorized: Missing token"
+      required:
+        - error
+    InvalidTokenError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Token is not valid
+      required:
+        - error
     ValidationError:
       type: array
       items:
@@ -239,13 +255,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Unauthorized: Missing token"
-                required:
-                  - error
+                $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: User not found
           content:
@@ -258,6 +268,12 @@ paths:
                     example: User not found
                 required:
                   - error
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
         "500":
           description: Other error
           content:
@@ -294,6 +310,75 @@ paths:
                   required:
                     - id
                     - name
+  /api/v1/resources/me:
+    get:
+      tags:
+        - resources
+      description: Returns all the posted resources by a logged in user.
+      summary: Get resources by logged in user
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: All resources posted by user are returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  url:
+                    type: string
+                    format: uri
+                  resourceType:
+                    type: string
+                    enum:
+                      - BLOG
+                      - VIDEO
+                      - TUTORIAL
+                  userId:
+                    type: string
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string
+                required:
+                  - id
+                  - title
+                  - url
+                  - resourceType
+                  - userId
+                  - createdAt
+                  - updatedAt
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+                required:
+                  - error
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/topics/category/:categoryId:
     get:
       tags:
