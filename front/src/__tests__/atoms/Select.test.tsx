@@ -2,13 +2,12 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { Select } from '../../components/atoms'
 
 describe('Select', () => {
-  it('renders correctly with default props', () => {
+  it('renders correctly', () => {
     render(<Select placeholder="Test Select" />)
 
     const select = screen.getByRole('combobox')
 
     expect(select).toBeInTheDocument()
-    expect(select).toHaveValue('')
     expect(select).toHaveTextContent('Test Select')
   })
 
