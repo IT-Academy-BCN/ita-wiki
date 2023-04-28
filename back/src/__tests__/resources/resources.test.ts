@@ -60,7 +60,7 @@ describe('Testing resources endpoint', () => {
       .set('Cookie', authToken)
       .send(newResource)
 
-    expect(response.status).toBe(204)
+    expect(response.status).toBe(422)
   })
 
   test('should fail with wrong resource type', async () => {
