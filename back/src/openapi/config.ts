@@ -12,4 +12,4 @@ export const generatorConfig = {
   // servers: [{ url: 'v1' }]
 }
 
-export const swaggeruiUrl = '/api-docs'
+export const swaggeruiUrl = `/api/v1/api-docs`

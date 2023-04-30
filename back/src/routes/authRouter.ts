@@ -1,12 +1,13 @@
 import Router from '@koa/router'
 import { z } from 'zod'
-import { loginController, registerController } from '../controllers'
-import { validate } from '../middleware'
+import { authMeController, loginController, registerController } from '../controllers'
+import { validate, authMiddleware } from '../middleware'
 import { userLoginSchema, userRegisterSchema } from '../schemas'
+import { pathRoot } from './routes'
 
 const authRouter = new Router()
 
-authRouter.prefix('/api/v1/auth')
+authRouter.prefix(pathRoot.v1.auth)
 
 authRouter.post(
   '/login',
@@ -18,6 +19,12 @@ authRouter.post(
   '/register',
   validate(z.object({ body: userRegisterSchema })),
   registerController
+)
+
+authRouter.get(
+  '/me',
+  authMiddleware,
+  authMeController
 )
 
 export { authRouter }

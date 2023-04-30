@@ -3,13 +3,12 @@ import { registry } from '../../registry'
 import { z } from '../../zod'
 import { ValidationError } from '../../components/errorSchemas'
 import { setCookieHeader } from '../../components/setCookieHeader'
+import { pathRoot } from '../../../routes/routes'
 
-
-const pathRoot = '/api/v1/auth'
 registry.registerPath({
   method: 'post',
   tags: ['auth'],
-  path: `${pathRoot}/login`,
+  path: `${pathRoot.v1.auth}/login`,
   description: 'Takes a DNI and a password and returns a session cookie',
   summary: 'Logs in a user',
   request: {

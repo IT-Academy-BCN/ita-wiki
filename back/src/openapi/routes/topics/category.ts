@@ -1,11 +1,10 @@
+import { pathRoot } from '../../../routes/routes'
 import { registry } from '../../registry'
 
-
-const pathRoot = '/api/v1/topics'
 registry.registerPath({
   method: 'get',
   tags: ['topics'],
-  path: `${pathRoot}/category/:categoryId`,
+  path: `${pathRoot.v1.topics}/category/:categoryId`,
   description: 'Takes a category Id and returns the list of topics sharing that category',
   summary: 'Returns topics by category',
   parameters: [

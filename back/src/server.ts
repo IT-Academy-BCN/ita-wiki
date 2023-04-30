@@ -5,12 +5,11 @@ import helmet from 'koa-helmet'
 import { HttpMethodEnum, koaBody } from 'koa-body'
 import yamljs from 'yamljs'
 import { koaSwagger } from 'koa2-swagger-ui'
-import { fileURLToPath } from 'url'
 import * as Routes from './routes'
 import { appConfig } from './config/config'
 import { errorMiddleware } from './middleware'
 import { generateOpenapiFile } from './openapi/generateFile'
-import { openapiFilename , swaggeruiUrl } from './openapi/config'
+import { openapiFilename, swaggeruiUrl } from './openapi/config'
 import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
 
 dotenv.config()
@@ -25,8 +24,8 @@ app.use(
       HttpMethodEnum.POST,
       HttpMethodEnum.PUT,
       HttpMethodEnum.PATCH,
-      HttpMethodEnum.DELETE
-    ]
+      HttpMethodEnum.DELETE,
+    ],
   })
 )
 app.use(errorMiddleware)
@@ -35,6 +34,7 @@ app.use(errorMiddleware)
 app.use(Routes.authRouter.routes())
 app.use(Routes.resourcesRouter.routes())
 app.use(Routes.topicsRouter.routes())
+app.use(Routes.categoriesRouter.routes())
 
 // Swagger UI
 app.use(swaggeruiCSPMiddleware)
@@ -44,12 +44,10 @@ app.use(koaSwagger({ routePrefix: swaggeruiUrl, swaggerOptions: { spec } }))
 
 // Only listen if launched from terminal
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
-const __filename = fileURLToPath(import.meta.url)
-if (process.argv[1] === __filename) {
-  app.listen(appConfig.port, () => {
-    // eslint-disable-next-line no-console
-    console.log(`🚀 Server ready at http://localhost:${appConfig.port}`)
-  })
-}
+
+app.listen(appConfig.port, () => {
+  // eslint-disable-next-line no-console
+  console.log(`🚀 Server ready at http://localhost:${appConfig.port}`)
+})
 
 export { app }

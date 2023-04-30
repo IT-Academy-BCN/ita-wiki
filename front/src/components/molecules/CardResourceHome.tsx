@@ -2,8 +2,8 @@ import styled from 'styled-components'
 import { FlexBox, colors, dimensions, font } from '../../styles'
 import { Text } from '../atoms'
 
-// TODO: this component should be combined with the
-// similar component in the Resources page
+// TODO: this component should be combined with CardResource.tsx
+// the difference here you can not vote
 
 const CardContainerStyled = styled(FlexBox)`
   border-radius: ${dimensions.borderRadius.sm};

@@ -1,11 +1,7 @@
 /*
   Warnings:
 
-  - You are about to drop the column `filePath` on the `media` table. All the data in the column will be lost.
-  - You are about to drop the column `mimeType` on the `media` table. All the data in the column will be lost.
   - You are about to drop the `TopicsOnResources` table. If the table is not empty, all the data it contains will be lost.
-  - Added the required column `file_path` to the `media` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `mime_type` to the `media` table without a default value. This is not possible if the table is not empty.
 
 */
 -- DropForeignKey
@@ -13,12 +9,6 @@ ALTER TABLE "TopicsOnResources" DROP CONSTRAINT "TopicsOnResources_resource_id_f
 
 -- DropForeignKey
 ALTER TABLE "TopicsOnResources" DROP CONSTRAINT "TopicsOnResources_topic_id_fkey";
-
--- AlterTable
-ALTER TABLE "media" DROP COLUMN "filePath",
-DROP COLUMN "mimeType",
-ADD COLUMN     "file_path" TEXT NOT NULL,
-ADD COLUMN     "mime_type" TEXT NOT NULL;
 
 -- DropTable
 DROP TABLE "TopicsOnResources";

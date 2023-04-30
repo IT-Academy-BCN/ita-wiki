@@ -1,5 +1,5 @@
 import Koa, { Middleware } from 'koa'
-import { prisma } from '../prisma/client'
+import { prisma } from '../../prisma/client'
 
 export const createResource: Middleware = async (ctx: Koa.Context) => {
   const resource = ctx.request.body

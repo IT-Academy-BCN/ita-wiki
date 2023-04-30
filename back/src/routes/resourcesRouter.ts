@@ -1,12 +1,15 @@
 import Router from '@koa/router'
 import { z } from 'zod'
 import { authMiddleware, validate } from '../middleware'
-import { createResource, getResources } from '../controllers'
 import { resourceCreateSchema } from '../schemas'
+import { pathRoot } from './routes'
+
+import { createResource, getResources, getResourcesByUserId } from '../controllers'
+
 
 const resourcesRouter = new Router()
 
-resourcesRouter.prefix('/api/v1/resources')
+resourcesRouter.prefix(pathRoot.v1.resources)
 
 resourcesRouter.post(
   '/create',
@@ -18,6 +21,12 @@ resourcesRouter.post(
 resourcesRouter.get(
   '/',
   getResources
+)
+
+resourcesRouter.get(
+  '/me',
+  authMiddleware,
+  getResourcesByUserId
 )
 
 export { resourcesRouter }
