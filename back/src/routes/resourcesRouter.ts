@@ -23,7 +23,7 @@ resourcesRouter.get(
 )
 
 resourcesRouter.get(
-  '/resource/topic/:topicId',
+  '/topic/:topicId',
   getResourcesByTopicId
   
 )
