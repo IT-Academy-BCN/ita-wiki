@@ -410,9 +410,13 @@ paths:
       summary: Returns a collection of resources
       parameters:
         - in: query
-          name: type
+          name: resourceType
           schema:
             type: string
+            enum:
+              - BLOG
+              - VIDEO
+              - TUTORIAL
             example: BLOG
           required: false
         - in: query
@@ -431,44 +435,52 @@ paths:
                 properties: {}
                 example:
                   resources:
-                    - id: clgtomj8j000cxn5tu23lmm4e
-                      title: My resource in Node
-                      description: Lorem ipsum
-                      url: http://www.example.com/resource/Node.html
-                      resourceType: BLOG
-                      createdAt: 2023-04-23T17:27:24.643Z
-                      updatedAt: 2023-04-23T17:27:24.643Z
-                      userEmail: admin@admin.com
-                      topics:
-                        - id: clgtomj8e0008xn5tvyzxwe9a
-                          name: Eventos
-                          categoryId: clgtomj870004xn5t7yla5883
-                          createdAt: 2023-04-23T17:27:24.639Z
-                          updatedAt: 2023-04-23T17:27:24.639Z
-                        - id: clgtomj8e0009xn5taqirdqns
-                          name: Listas
-                          categoryId: clgtomj870002xn5tr6axu4em
-                          createdAt: 2023-04-23T17:27:24.639Z
-                          updatedAt: 2023-04-23T17:27:24.639Z
-                    - id: clgtomj8j000bxn5tnr8r9g0o
+                    - id: clh4tra53000bxnmnzsf4dqq9
                       title: My resource in React
                       description: Lorem ipsum
                       url: http://www.example.com/resource/React.html
                       resourceType: BLOG
-                      createdAt: 2023-04-23T17:27:24.643Z
-                      updatedAt: 2023-04-23T17:27:24.643Z
-                      userEmail: admin@admin.com
+                      createdAt: 2023-05-01T12:36:32.151Z
+                      updatedAt: 2023-05-01T12:36:32.151Z
+                      user:
+                        name: Kevin Mamaqi
+                        email: admin@admin.com
                       topics:
-                        - id: clgtomj8e0008xn5tvyzxwe9a
-                          name: Eventos
-                          categoryId: clgtomj870004xn5t7yla5883
-                          createdAt: 2023-04-23T17:27:24.639Z
-                          updatedAt: 2023-04-23T17:27:24.639Z
-                        - id: clgtomj8e0009xn5taqirdqns
-                          name: Listas
-                          categoryId: clgtomj870002xn5tr6axu4em
-                          createdAt: 2023-04-23T17:27:24.639Z
-                          updatedAt: 2023-04-23T17:27:24.639Z
+                        - topic:
+                            id: clh4tra4z0008xnmn7zrgvce7
+                            name: Eventos
+                            categoryId: clh4tra4t0004xnmn13adhwjv
+                            createdAt: 2023-05-01T12:36:32.148Z
+                            updatedAt: 2023-05-01T12:36:32.148Z
+                        - topic:
+                            id: clh4tra4z0009xnmn97g0hm6o
+                            name: Listas
+                            categoryId: clh4tra4t0002xnmnhj48vvba
+                            createdAt: 2023-05-01T12:36:32.148Z
+                            updatedAt: 2023-05-01T12:36:32.148Z
+                    - id: clh4tra53000cxnmnf8f4gkao
+                      title: My resource in Node
+                      description: Lorem ipsum
+                      url: http://www.example.com/resource/Node.html
+                      resourceType: BLOG
+                      createdAt: 2023-05-01T12:36:32.151Z
+                      updatedAt: 2023-05-01T12:36:32.151Z
+                      user:
+                        name: Kevin Mamaqi
+                        email: admin@admin.com
+                      topics:
+                        - topic:
+                            id: clh4tra4z0008xnmn7zrgvce7
+                            name: Eventos
+                            categoryId: clh4tra4t0004xnmn13adhwjv
+                            createdAt: 2023-05-01T12:36:32.148Z
+                            updatedAt: 2023-05-01T12:36:32.148Z
+                        - topic:
+                            id: clh4tra4z0009xnmn97g0hm6o
+                            name: Listas
+                            categoryId: clh4tra4t0002xnmnhj48vvba
+                            createdAt: 2023-05-01T12:36:32.148Z
+                            updatedAt: 2023-05-01T12:36:32.148Z
         "500":
           description: Internal error
           content:

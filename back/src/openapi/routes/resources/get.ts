@@ -1,3 +1,4 @@
+import { resourcesGetSchema } from '../../../schemas/resourcesGetSchema'
 import { registry } from '../../registry'
 import { z } from '../../zod'
 
@@ -9,10 +10,7 @@ registry.registerPath({
   description: 'Returns a collection of resources based on type and topic',
   summary: 'Returns a collection of resources',
   request: {
-  query: z.object({
-    type: z.string().optional().openapi({ example: 'BLOG' }),
-    topic: z.string().optional().openapi({ example: 'Listas' }),
-  })
+  query: resourcesGetSchema
   },
   responses: {
     200: {
@@ -20,64 +18,78 @@ registry.registerPath({
       content: {
         'application/json': {
           // FALTARIA CREAR ZOD SCHEMA EN SCHEMAS Y SUSTITUIRLO POR ESTE ZOD OBJECT (dejar el example)
-          schema: z.object({}).openapi({ example: {
-            "resources": [
-              {
-                "id": "clgtomj8j000cxn5tu23lmm4e",
-                "title": "My resource in Node",
-                "description": "Lorem ipsum",
-                "url": "http://www.example.com/resource/Node.html",
-                "resourceType": "BLOG",
-                "createdAt": "2023-04-23T17:27:24.643Z",
-                "updatedAt": "2023-04-23T17:27:24.643Z",
-                "userEmail": "admin@admin.com",
-                "topics": [
-                  {
-                    "id": "clgtomj8e0008xn5tvyzxwe9a",
-                    "name": "Eventos",
-                    "categoryId": "clgtomj870004xn5t7yla5883",
-                    "createdAt": "2023-04-23T17:27:24.639Z",
-                    "updatedAt": "2023-04-23T17:27:24.639Z"
+          schema: z.object({}).openapi({ example: 
+            {
+              resources: [
+                {
+                  id: "clh4tra53000bxnmnzsf4dqq9",
+                  title: "My resource in React",
+                  description: "Lorem ipsum",
+                  url: "http://www.example.com/resource/React.html",
+                  resourceType: "BLOG",
+                  createdAt: "2023-05-01T12:36:32.151Z",
+                  updatedAt: "2023-05-01T12:36:32.151Z",
+                  user: {
+                    name: "Kevin Mamaqi",
+                    email: "admin@admin.com",
                   },
-                  {
-                    "id": "clgtomj8e0009xn5taqirdqns",
-                    "name": "Listas",
-                    "categoryId": "clgtomj870002xn5tr6axu4em",
-                    "createdAt": "2023-04-23T17:27:24.639Z",
-                    "updatedAt": "2023-04-23T17:27:24.639Z"
-                  }
-                ]
-              },
-              {
-                "id": "clgtomj8j000bxn5tnr8r9g0o",
-                "title": "My resource in React",
-                "description": "Lorem ipsum",
-                "url": "http://www.example.com/resource/React.html",
-                "resourceType": "BLOG",
-                "createdAt": "2023-04-23T17:27:24.643Z",
-                "updatedAt": "2023-04-23T17:27:24.643Z",
-                "userEmail": "admin@admin.com",
-                "topics": [
-                  {
-                    "id": "clgtomj8e0008xn5tvyzxwe9a",
-                    "name": "Eventos",
-                    "categoryId": "clgtomj870004xn5t7yla5883",
-                    "createdAt": "2023-04-23T17:27:24.639Z",
-                    "updatedAt": "2023-04-23T17:27:24.639Z"
+                  topics: [
+                    {
+                      topic: {
+                        id: "clh4tra4z0008xnmn7zrgvce7",
+                        name: "Eventos",
+                        categoryId: "clh4tra4t0004xnmn13adhwjv",
+                        createdAt: "2023-05-01T12:36:32.148Z",
+                        updatedAt: "2023-05-01T12:36:32.148Z",
+                      },
+                    },
+                    {
+                      topic: {
+                        id: "clh4tra4z0009xnmn97g0hm6o",
+                        name: "Listas",
+                        categoryId: "clh4tra4t0002xnmnhj48vvba",
+                        createdAt: "2023-05-01T12:36:32.148Z",
+                        updatedAt: "2023-05-01T12:36:32.148Z",
+                      },
+                    },
+                  ],
+                },
+                {
+                  id: "clh4tra53000cxnmnf8f4gkao",
+                  title: "My resource in Node",
+                  description: "Lorem ipsum",
+                  url: "http://www.example.com/resource/Node.html",
+                  resourceType: "BLOG",
+                  createdAt: "2023-05-01T12:36:32.151Z",
+                  updatedAt: "2023-05-01T12:36:32.151Z",
+                  user: {
+                    name: "Kevin Mamaqi",
+                    email: "admin@admin.com",
                   },
-                  {
-                    "id": "clgtomj8e0009xn5taqirdqns",
-                    "name": "Listas",
-                    "categoryId": "clgtomj870002xn5tr6axu4em",
-                    "createdAt": "2023-04-23T17:27:24.639Z",
-                    "updatedAt": "2023-04-23T17:27:24.639Z"
-                  }
-                ]
-              }
-            ]
-          } }),
-
-          
+                  topics: [
+                    {
+                      topic: {
+                        id: "clh4tra4z0008xnmn7zrgvce7",
+                        name: "Eventos",
+                        categoryId: "clh4tra4t0004xnmn13adhwjv",
+                        createdAt: "2023-05-01T12:36:32.148Z",
+                        updatedAt: "2023-05-01T12:36:32.148Z",
+                      },
+                    },
+                    {
+                      topic: {
+                        id: "clh4tra4z0009xnmn97g0hm6o",
+                        name: "Listas",
+                        categoryId: "clh4tra4t0002xnmnhj48vvba",
+                        createdAt: "2023-05-01T12:36:32.148Z",
+                        updatedAt: "2023-05-01T12:36:32.148Z",
+                      },
+                    },
+                  ],
+                },
+              ],
+            }
+          }),
         },
       }
     },

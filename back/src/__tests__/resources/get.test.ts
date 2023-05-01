@@ -48,7 +48,7 @@ describe('Testing resources get endpoint', () => {
 
       response.body.resources.forEach((resource : any) => {
         expect(
-          resource.topics.map((t : any) => t.name)
+          resource.topics.map((t : any) => t.topic.name)
         ).toContain(topicName)
       })
   })
@@ -79,7 +79,7 @@ describe('Testing resources get endpoint', () => {
 
       response.body.resources.forEach((resource : any) => {
         expect(
-          resource.topics.map((t : any) => t.name)
+          resource.topics.map((t : any) => t.topic.name)
         ).toContain(topicName)
         expect(resource.resourceType).toBe('BLOG')
       })
