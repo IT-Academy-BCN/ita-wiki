@@ -84,8 +84,6 @@ export const ResourceForm = () => {
   const URL = 'http://localhost:8999/api/v1/resources/create'
 
   const registerNewResource = async (resource: object) => {
-    console.log('resource:', resource)
-
     try {
       const config = {
         headers: {
