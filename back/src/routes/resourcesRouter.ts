@@ -1,7 +1,7 @@
 import Router from '@koa/router'
 import { z } from 'zod'
 import { authMiddleware, validate } from '../middleware'
-import { createResource, getResourcesByUserId } from '../controllers'
+import { createResource, getResourcesByUserId, getResourcesByTopicId } from '../controllers'
 import { resourceCreateSchema } from '../schemas'
 import { pathRoot } from './routes'
 
@@ -21,5 +21,13 @@ resourcesRouter.get(
   authMiddleware,
   getResourcesByUserId
 )
+
+resourcesRouter.get(
+  '/resource/topic/:topicId',
+  getResourcesByTopicId
+  
+)
+
+
 
 export { resourcesRouter }

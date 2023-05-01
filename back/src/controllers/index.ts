@@ -1,6 +1,6 @@
 export { loginController } from './auth/loginController'
 export { registerController } from './auth/registerController'
 export { authMeController } from './auth/authMeController'
-export { createResource, getResourcesByUserId } from './resourceController'
+export { createResource, getResourcesByUserId, getResourcesByTopicId } from './resourceController'
 export { getTopics, getTopicsByCategoryId } from './topicController'
 export { getCategories } from './categoryController'
