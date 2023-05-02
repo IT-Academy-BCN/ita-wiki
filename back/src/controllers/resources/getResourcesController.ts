@@ -17,11 +17,10 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
     select: {
       id: true,
       title: true,
+      slug: true,
       description: true,
       url: true,
       resourceType: true,
-      createdAt: true,
-      updatedAt: true,
       user: {
         select: {
           name: true,
@@ -32,7 +31,9 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
         select: {
           topic: true
         }
-      }
+      },
+      createdAt: true,
+      updatedAt: true,
     }
   })
 

@@ -1,4 +1,4 @@
-import { z } from '../openapi/zod'
+import { z } from '../../openapi/zod'
 import { resourceSchema } from './resourceSchema'
 
 export const resourceCreateSchema = resourceSchema.omit({
