@@ -13,6 +13,9 @@ Quicklinks:
 
 - <a href="https://www.figma.com/file/ScWpDKxEB3wEGbztXMSJO3/MVP-Wiki-IT-Academy">Visual design</a>.
 - <a href="https://dev.itadirectory.eurecatacademy.org/">Development server</a>.
+- <a href="https://dev.api.itadirectory.eurecatacademy.org/api/v1/api-docs">Swagger docs</a>.
+- <a href="https://dev.itadirectory.eurecatacademy.org/">Demo front dev</a>.
+
 
 ### Important procedures and meetings
 

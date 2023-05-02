@@ -3,8 +3,6 @@ info:
   title: IT Academy Wiki
   description: Our app implements a Wiki to be used as a knowledge base by the
     students of the Barcelona Activa's IT Academy
-servers:
-  - url: v1
 openapi: 3.0.0
 components:
   headers:
@@ -14,6 +12,11 @@ components:
         example: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM;
           path=/; httponly
         description: Sets the JWT session cookie
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
   schemas:
     DniError:
       type: object
@@ -31,6 +34,22 @@ components:
           example: Email already exists
       required:
         - message
+    MissingTokenError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unauthorized: Missing token"
+      required:
+        - error
+    InvalidTokenError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Token is not valid
+      required:
+        - error
     ValidationError:
       type: array
       items:
@@ -192,6 +211,81 @@ paths:
                     example: Database error
                 required:
                   - message
+  /api/v1/auth/me:
+    get:
+      tags:
+        - auth
+      description: Returns information of a logged in user. Token recieved in the
+        login necessary.
+      summary: Get user information
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Token is valid and user information is returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  dni:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                  role:
+                    type: string
+                    enum:
+                      - ADMIN
+                      - REGISTERED
+                  status:
+                    type: string
+                    enum:
+                      - ACTIVE
+                      - INACTIVE
+                required:
+                  - dni
+                  - email
+                  - role
+                  - status
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+                required:
+                  - error
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
   /api/v1/categories:
     get:
       tags:
@@ -216,6 +310,77 @@ paths:
                   required:
                     - id
                     - name
+  /api/v1/resources/me:
+    get:
+      tags:
+        - resources
+      description: Returns all the posted resources by a logged in user.
+      summary: Get resources by logged in user
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: All resources posted by user are returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  slug:
+                    type: string
+                  description:
+                    type: string
+                  url:
+                    type: string
+                    format: uri
+                  resourceType:
+                    type: string
+                    enum:
+                      - BLOG
+                      - VIDEO
+                      - TUTORIAL
+                  userId:
+                    type: string
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string
+                required:
+                  - id
+                  - title
+                  - url
+                  - resourceType
+                  - userId
+                  - createdAt
+                  - updatedAt
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+                required:
+                  - error
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/topics/category/:categoryId:
     get:
       tags:
@@ -239,3 +404,95 @@ paths:
       responses:
         "200":
           description: The server has successfully received the parameter
+  /api/v1/resources:
+    get:
+      tags:
+        - resources
+      description: Returns a collection of resources based on type and topic
+      summary: Returns a collection of resources
+      parameters:
+        - in: query
+          name: resourceType
+          schema:
+            type: string
+            enum:
+              - BLOG
+              - VIDEO
+              - TUTORIAL
+            example: BLOG
+          required: false
+        - in: query
+          name: topic
+          schema:
+            type: string
+            example: Listas
+          required: false
+      responses:
+        "200":
+          description: Sucessful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+                example:
+                  resources:
+                    - id: clh4tra53000bxnmnzsf4dqq9
+                      title: My resource in React
+                      description: Lorem ipsum
+                      url: http://www.example.com/resource/React.html
+                      resourceType: BLOG
+                      createdAt: 2023-05-01T12:36:32.151Z
+                      updatedAt: 2023-05-01T12:36:32.151Z
+                      user:
+                        name: Kevin Mamaqi
+                        email: admin@admin.com
+                      topics:
+                        - topic:
+                            id: clh4tra4z0008xnmn7zrgvce7
+                            name: Eventos
+                            categoryId: clh4tra4t0004xnmn13adhwjv
+                            createdAt: 2023-05-01T12:36:32.148Z
+                            updatedAt: 2023-05-01T12:36:32.148Z
+                        - topic:
+                            id: clh4tra4z0009xnmn97g0hm6o
+                            name: Listas
+                            categoryId: clh4tra4t0002xnmnhj48vvba
+                            createdAt: 2023-05-01T12:36:32.148Z
+                            updatedAt: 2023-05-01T12:36:32.148Z
+                    - id: clh4tra53000cxnmnf8f4gkao
+                      title: My resource in Node
+                      description: Lorem ipsum
+                      url: http://www.example.com/resource/Node.html
+                      resourceType: BLOG
+                      createdAt: 2023-05-01T12:36:32.151Z
+                      updatedAt: 2023-05-01T12:36:32.151Z
+                      user:
+                        name: Kevin Mamaqi
+                        email: admin@admin.com
+                      topics:
+                        - topic:
+                            id: clh4tra4z0008xnmn7zrgvce7
+                            name: Eventos
+                            categoryId: clh4tra4t0004xnmn13adhwjv
+                            createdAt: 2023-05-01T12:36:32.148Z
+                            updatedAt: 2023-05-01T12:36:32.148Z
+                        - topic:
+                            id: clh4tra4z0009xnmn97g0hm6o
+                            name: Listas
+                            categoryId: clh4tra4t0002xnmnhj48vvba
+                            createdAt: 2023-05-01T12:36:32.148Z
+                            updatedAt: 2023-05-01T12:36:32.148Z
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: '{"message":"\nInvalid `.findMany()` invocation
+                      in\n/ita-wiki/back/src/controllers/getResourcesController.ts:27:8\n'
+                required:
+                  - message
