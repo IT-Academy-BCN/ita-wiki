@@ -159,7 +159,7 @@ export const ResourceForm = () => {
         {...register('topics')}
         multiple
         name="topics"
-        error={errors.topics && true}
+        error={!!errors.topics}
         validationMessage={errors.topics?.message}
       />
       <Radio
