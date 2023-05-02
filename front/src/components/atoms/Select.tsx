@@ -52,4 +52,4 @@ const Select = forwardRef<HTMLSelectElement, TSelect>(
   )
 )
 
-export { Select }
+export { Select, type TSelect }
