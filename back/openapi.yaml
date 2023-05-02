@@ -310,100 +310,6 @@ paths:
                   required:
                     - id
                     - name
-  /api/v1/resources/me:
-    get:
-      tags:
-        - resources
-      description: Returns all the posted resources by a logged in user.
-      summary: Get resources by logged in user
-      security:
-        - cookieAuth: []
-      responses:
-        "200":
-          description: All resources posted by user are returned.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  title:
-                    type: string
-                  slug:
-                    type: string
-                  description:
-                    type: string
-                  url:
-                    type: string
-                    format: uri
-                  resourceType:
-                    type: string
-                    enum:
-                      - BLOG
-                      - VIDEO
-                      - TUTORIAL
-                  userId:
-                    type: string
-                  createdAt:
-                    type: string
-                  updatedAt:
-                    type: string
-                required:
-                  - id
-                  - title
-                  - url
-                  - resourceType
-                  - userId
-                  - createdAt
-                  - updatedAt
-        "401":
-          description: Missing token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MissingTokenError"
-        "404":
-          description: User not found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: User not found
-                required:
-                  - error
-        "405":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
-  /api/v1/topics/category/:categoryId:
-    get:
-      tags:
-        - topics
-      description: Takes a category Id and returns the list of topics sharing that category
-      summary: Returns topics by category
-      parameters:
-        - name: categoryId
-          in: path
-          required: true
-          description: ID of the category for which to retrieve topics
-      responses:
-        "200":
-          description: The server has successfully received the parameter
-  /api/v1/topics:
-    get:
-      tags:
-        - topics
-      description: Returns a list of all topics
-      summary: Returns topics
-      responses:
-        "200":
-          description: The server has successfully received the parameter
   /api/v1/resources:
     get:
       tags:
@@ -496,3 +402,134 @@ paths:
                       in\n/ita-wiki/back/src/controllers/getResourcesController.ts:27:8\n'
                 required:
                   - message
+  /api/v1/resources/me:
+    get:
+      tags:
+        - resources
+      description: Returns all the posted resources by a logged in user.
+      summary: Get resources by logged in user
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: All resources posted by user are returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  slug:
+                    type: string
+                  description:
+                    type: string
+                  url:
+                    type: string
+                    format: uri
+                  resourceType:
+                    type: string
+                    enum: &a1
+                      - BLOG
+                      - VIDEO
+                      - TUTORIAL
+                  userId:
+                    type: string
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string
+                required:
+                  - id
+                  - title
+                  - url
+                  - resourceType
+                  - userId
+                  - createdAt
+                  - updatedAt
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+                required:
+                  - error
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+  /api/v1/resources/create:
+    post:
+      tags:
+        - resources
+      description: Allows a logged in user to post a resource.
+      summary: Post a resource
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                url:
+                  type: string
+                  format: uri
+                resourceType:
+                  type: string
+                  enum: *a1
+                topics:
+                  type: array
+                  items:
+                    type: string
+                userEmail:
+                  type: string
+              required:
+                - title
+                - url
+                - resourceType
+                - topics
+                - userEmail
+      responses: {}
+  /api/v1/topics/category/:categoryId:
+    get:
+      tags:
+        - topics
+      description: Takes a category Id and returns the list of topics sharing that category
+      summary: Returns topics by category
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          description: ID of the category for which to retrieve topics
+      responses:
+        "200":
+          description: The server has successfully received the parameter
+  /api/v1/topics:
+    get:
+      tags:
+        - topics
+      description: Returns a list of all topics
+      summary: Returns topics
+      responses:
+        "200":
+          description: The server has successfully received the parameter
