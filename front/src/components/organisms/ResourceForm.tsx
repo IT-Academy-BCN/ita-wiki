@@ -100,7 +100,7 @@ export const ResourceForm = () => {
     }
   }
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     const {
       title,
       description,
@@ -109,15 +109,21 @@ export const ResourceForm = () => {
       resourceType,
       userEmail = 'admin@admin.com',
     } = data
-    registerNewResource({
-      title,
-      description,
-      url,
-      topics: Array.isArray(topics) ? topics : [topics],
-      resourceType: Array.isArray(resourceType) ? resourceType : [resourceType],
-      userEmail,
-    })
-    reset()
+    try {
+      await registerNewResource({
+        title,
+        description,
+        url,
+        topics: Array.isArray(topics) ? topics : [topics],
+        resourceType: Array.isArray(resourceType)
+          ? resourceType
+          : [resourceType],
+        userEmail,
+      })
+      reset()
+    } catch (error) {
+      throw new Error('Error sending new resource data')
+    }
   })
 
   return (
