@@ -29,9 +29,20 @@ type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
 }
 
 const Select = forwardRef<HTMLSelectElement, TSelect>(
-  ({ options = [], error = false, placeholder = 'Options', ...rest }, ref) => (
-    <SelectStyled error={error} ref={ref} defaultValue={placeholder} {...rest}>
-      <option disabled>{placeholder}</option>
+  (
+    {
+      options = [],
+      error = false,
+      placeholder = 'Options',
+      defaultValue = '',
+      ...rest
+    },
+    ref
+  ) => (
+    <SelectStyled error={error} ref={ref} defaultValue={defaultValue} {...rest}>
+      <option value="" disabled>
+        {placeholder}
+      </option>
       {options.map(({ value, label }) => (
         <option key={value} value={value}>
           {label}
@@ -41,4 +52,4 @@ const Select = forwardRef<HTMLSelectElement, TSelect>(
   )
 )
 
-export { Select, type TSelect }
+export { Select }
