@@ -1,5 +1,5 @@
 import { Middleware, Context } from 'koa'
-import { prisma } from '../prisma/client'
+import { prisma } from '../../prisma/client'
 
 export const registerController: Middleware = async (ctx: Context) => {
   const { dni, password, name, email } = ctx.request.body
