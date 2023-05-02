@@ -362,7 +362,7 @@ paths:
                         url:
                           type: string
                           format: uri
-                          example: http://tutorials.cat/learn/javascript
+                          example: https://tutorials.cat/learn/javascript
                         resourceType:
                           type: string
                           enum: &a1
@@ -461,7 +461,7 @@ paths:
                   url:
                     type: string
                     format: uri
-                    example: http://tutorials.cat/learn/javascript
+                    example: https://tutorials.cat/learn/javascript
                   resourceType:
                     type: string
                     enum: *a1

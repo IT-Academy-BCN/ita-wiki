@@ -18,7 +18,7 @@ registry.registerPath({
       content: {
         'application/json': {
           schema: z.object({
-            resources: resourceGetSchema
+            resources: z.array(resourceGetSchema)
           })
         },
       }
