@@ -379,6 +379,58 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
+  /api/v1/resources/vote/:resourceId/:vote:
+    put:
+      tags:
+        - resources
+        - vote
+      description: Allows a user to vote for a resource. Vote can be 1 for an upvote,
+        -1 for a downvote or 0 to cancel a previous vote.
+      summary: Allows a user to vote for a resource.
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: resourceId
+          schema:
+            type: string
+            description: ID of the resource to vote
+          required: true
+        - in: path
+          name: vote
+          schema:
+            type: integer
+            maximum: 1
+            minimum: -1
+            description: 1 for upvote, -1 for downvote, 0 to cancel previous vote.
+          required: true
+      responses:
+        "204":
+          description: Vote was sent and stored successfully.
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+                required:
+                  - error
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/topics/category/:categoryId:
     get:
       tags:

@@ -1,0 +1,33 @@
+import Koa, { Middleware } from 'koa'
+import jwt, { Secret } from 'jsonwebtoken'
+import { prisma } from "../../prisma/client"
+import { NotFoundError } from '../../helpers/errors'
+
+export const putResourceVote: Middleware = async (ctx: Koa.Context) => {
+  
+    const token = ctx.cookies.get('token') as string
+    const { userId } = jwt.verify(token, process.env.JWT_KEY as Secret) as { userId: string }
+    const { resourceId, vote } = ctx.params
+
+    const resource = await prisma.resource.findUnique({
+        where: { id: resourceId }
+    })
+
+    if(!resource) throw new NotFoundError('Resource not found')
+
+    await prisma.vote.upsert({
+        where: {
+            userId_resourceId: { userId, resourceId }
+        },
+        update: {
+            vote
+        },
+        create: {
+            userId,
+            resourceId,
+            vote
+        }
+    })
+
+    ctx.status = 204;
+}
