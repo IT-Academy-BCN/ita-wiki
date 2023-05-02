@@ -38,7 +38,7 @@ class MissingParamError extends DefaultError {
 
 class UnsupportedMediaType extends DefaultError {
   constructor(message?: string) {
-    super(415, message || 'Unsupported media type')
+    super(415, message ?? 'Unsupported media type')
   }
 }
 
