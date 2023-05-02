@@ -11,7 +11,7 @@ describe("Testing VOTE endpoint, PUT method", async () => {
     }
 
     test("Should return error if no token is provided", async () => {
-        const response = await supertest(server).put(`/api/v1/resources/vote/${resource?.id}/1`)
+        const response = await supertest(server).put(`/api/v1/resources/vote/${resource!.id}/1`)
         expect(response.status).toBe(401);        
         expect(response.body.error).toBe('Unauthorized: Missing token')
     })
@@ -25,7 +25,7 @@ describe("Testing VOTE endpoint, PUT method", async () => {
 
         it("Should succeed with valid params", async () => {
             const response = await supertest(server)
-                .put(`/api/v1/resources/vote/${resource?.id}/1`)
+                .put(`/api/v1/resources/vote/${resource!.id}/1`)
                 .set('Cookie', authToken)
             expect(response.status).toBe(204);
         })
@@ -35,6 +35,14 @@ describe("Testing VOTE endpoint, PUT method", async () => {
                 .put(`/api/v1/resources/vote/someInvalidResourceId/1`)
                 .set('Cookie', authToken)
             expect(response.status).toBe(400);
+        })
+
+        it("Should fail with valid resourceId but does not belong to one", async () => {
+            const response = await supertest(server)
+                .put(`/api/v1/resources/vote/cjld2cjxh0000qzrmn831i7rn/1`)
+                .set('Cookie', authToken)
+            expect(response.status).toBe(404);
+            expect(response.body).toBe({message: 'Resource not found'})
         })
 
         it("Should fail with invalid vote", async () => {

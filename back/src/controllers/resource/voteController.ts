@@ -9,6 +9,8 @@ export const putResourceVote: Middleware = async (ctx: Koa.Context) => {
     const { userId } = jwt.verify(token, process.env.JWT_KEY as Secret) as { userId: string }
     const { resourceId, vote } = ctx.params
 
+    const voteInt = parseInt(vote, 10)
+
     const resource = await prisma.resource.findUnique({
         where: { id: resourceId }
     })
@@ -20,12 +22,12 @@ export const putResourceVote: Middleware = async (ctx: Koa.Context) => {
             userId_resourceId: { userId, resourceId }
         },
         update: {
-            vote
+            vote: voteInt
         },
         create: {
             userId,
             resourceId,
-            vote
+            vote: voteInt
         }
     })
 
