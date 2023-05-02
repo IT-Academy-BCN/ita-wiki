@@ -59,6 +59,7 @@
     "koa-body": "6.0.1",
     "koa-helmet": "7.0.1",
     "koa2-swagger-ui": "^5.7.0",
+    "slugify": "^1.6.6",
     "ts-node": "^10.9.1",
     "yaml": "^2.2.2",
     "yamljs": "^0.3.0",
