@@ -27,14 +27,6 @@ type TStackData = {
   url: string
 }
 
-type TCategories = {
-  id: number
-  category: string
-  resources: number
-  topics: number
-  img: string
-}
-
 const stackData: TStackData[] = [
   {
     createdBy: 'Ona Costa',
