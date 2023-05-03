@@ -3,7 +3,7 @@ import { expect, test, describe, beforeAll } from 'vitest'
 import { server } from '../setup'
 import { prisma } from '../../prisma/client'
 
-describe('Testing resources endpoint', () => {
+describe('Testing resource creation endpoint', () => {
   let authToken: string
   let existingUserEmail: string | undefined
   let topicIds: string[] | undefined[]
@@ -30,6 +30,7 @@ describe('Testing resources endpoint', () => {
   test('should create a new resource with topics', async () => {
     const newResource = {
       title: 'New Resource',
+      slug:'new-resource',
       description: 'This is a new resource',
       url: 'https://example.com/resource',
       resourceType: 'BLOG',
@@ -60,7 +61,7 @@ describe('Testing resources endpoint', () => {
       .set('Cookie', authToken)
       .send(newResource)
 
-    expect(response.status).toBe(204)
+    expect(response.status).toBe(422)
   })
 
   test('should fail with wrong resource type', async () => {
