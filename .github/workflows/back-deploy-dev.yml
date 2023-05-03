@@ -61,6 +61,7 @@ jobs:
           # Run Prisma migrations
           sudo chown -R $(whoami) .
           npx prisma migrate deploy
+          npx prisma generate
 
           # Stop the app with PM2
           pm2 stop server-dev || true

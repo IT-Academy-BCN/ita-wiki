@@ -32,6 +32,8 @@
     "@typescript-eslint/eslint-plugin": "5.55.0",
     "@typescript-eslint/parser": "5.55.0",
     "@vitejs/plugin-react-swc": "^3.0.0",
+    "@vitest/coverage-c8": "0.30.1",
+    "cross-fetch": "3.1.5",
     "eslint": "8.36.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "17.0.0",
@@ -43,8 +45,8 @@
     "jsdom": "^21.1.1",
     "msw": "^1.1.0",
     "prettier": "2.8.4",
-    "typescript": "^5.0.2",
+    "typescript": "^5.0.4",
     "vite": "^4.2.0",
-    "vitest": "0.29.3"
+    "vitest": "0.30.1"
   }
 }

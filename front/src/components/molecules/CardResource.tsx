@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions, font } from '../../styles'
 import { Icon, Text } from '../atoms'
-import { AvatarInfo } from './AvatarInfo'
+import { CreateAuthor } from './CreateAuthor'
 
 const CardContainerStyled = styled(FlexBox)`
   border-radius: ${dimensions.borderRadius.sm};
@@ -83,7 +83,7 @@ const CardResource = ({
           {description}
         </Text>
       </FlexBox>
-      <AvatarInfo createdBy={createdBy} createdOn={createdOn} img={img} />
+      <CreateAuthor createdBy={createdBy} createdOn={createdOn} img={img} />
     </FlexBoxStyled>
   </CardContainerStyled>
 )

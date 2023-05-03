@@ -8,18 +8,20 @@ datasource db {
 }
 
 model User {
-  id        String      @id @default(cuid())
-  email     String      @unique
-  dni       String      @unique @db.VarChar(10)
+  id        String           @id @default(cuid())
+  email     String           @unique
+  dni       String           @unique @db.VarChar(10)
   password  String
   name      String
-  status    USER_STATUS @default(INACTIVE)
-  role      USER_ROLE   @default(REGISTERED)
+  status    USER_STATUS      @default(INACTIVE)
+  role      USER_ROLE        @default(REGISTERED)
   resources Resource[]
   media     Media[]
   favorite  Favorites[]
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime    @updatedAt @map("updated_at")
+  viewed    ViewedResource[]
+  vote      Vote[]
+  createdAt DateTime         @default(now()) @map("created_at")
+  updatedAt DateTime         @updatedAt @map("updated_at")
 
   @@map("user")
 }
@@ -37,11 +39,14 @@ enum USER_ROLE {
 model Resource {
   id           String              @id @default(cuid())
   title        String
+  slug         String             @unique
   description  String?
   url          String
   resourceType RESOURCE_TYPE       @map("resource_type")
   topics       TopicsOnResources[]
   favorites    Favorites[]
+  viewed       ViewedResource[]
+  vote         Vote[]
   user         User                @relation(fields: [userId], references: [id])
   userId       String              @map("user_id")
   createdAt    DateTime            @default(now()) @map("created_at")
@@ -69,6 +74,7 @@ model Category {
 model Topic {
   id         String              @id @default(cuid())
   name       String
+  slug       String             @unique
   category   Category            @relation(fields: [categoryId], references: [id])
   categoryId String              @map("category_id")
   resources  TopicsOnResources[]
@@ -98,15 +104,41 @@ model TopicsOnResources {
   createdAt  DateTime @default(now()) @map("created_at")
 
   @@id([topicId, resourceId])
+  @@map("topic_resource")
 }
 
 model Favorites {
-  user        User          @relation(fields: [userId], references: [id])
-  userId      String        @map("user_id")
-  resource    Resource      @relation(fields: [resourceId], references: [id])
-  resourceId  String        @map("resource_id")
-  createdAt   DateTime      @default(now()) @map("created_at")
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @map("user_id")
+  resource   Resource @relation(fields: [resourceId], references: [id])
+  resourceId String   @map("resource_id")
+  createdAt  DateTime @default(now()) @map("created_at")
 
   @@id([userId, resourceId])
   @@map("favorites")
+}
+
+model ViewedResource {
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @map("user_id")
+  resource   Resource @relation(fields: [resourceId], references: [id])
+  resourceId String   @map("resource_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@id([userId, resourceId])
+  @@map("viewed_resource")
+}
+
+model Vote {
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String   @map("user_id")
+  resource   Resource @relation(fields: [resourceId], references: [id])
+  resourceId String   @map("resource_id")
+  vote       Int      @db.SmallInt // 1 upvote, -1 downvote
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@id([userId, resourceId])
+  @@map("vote")
 }

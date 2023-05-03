@@ -2,7 +2,11 @@ import styled from 'styled-components'
 import { FC, SetStateAction, useState } from 'react'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions } from '../styles'
-import { CardResource, InputGroup } from '../components/molecules'
+import {
+  CardResource,
+  InputGroup,
+  ResourceTitleLink,
+} from '../components/molecules'
 import {
   HowToHelpCard,
   CategoriesList,
@@ -24,6 +28,7 @@ type Tresource = {
   createdBy: string
   createdOn: string
   description: string
+  img: string
 }
 const categories: Tcategories[] = [
   {
@@ -70,6 +75,7 @@ const resources: Tresource[] = [
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Proyecto práctico',
+    img: icons.profileAvatar,
   },
   {
     id: 2,
@@ -77,6 +83,7 @@ const resources: Tresource[] = [
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
+    img: icons.profileAvatar,
   },
   {
     id: 3,
@@ -84,6 +91,7 @@ const resources: Tresource[] = [
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
+    img: icons.profileAvatar,
   },
   {
     id: 4,
@@ -91,6 +99,7 @@ const resources: Tresource[] = [
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
+    img: icons.profileAvatar,
   },
 ]
 const dataSubjects = [
@@ -161,10 +170,12 @@ const DivStyled = styled.div`
 `
 
 const CategoriesContainerStyled = styled(FlexBox)`
-  padding: ${dimensions.spacing.lg};
-  margin-right: 1rem;
+  padding-left: ${dimensions.spacing.xxs};
+  padding-right: ${dimensions.spacing.xs};
+  margin-right: ${dimensions.spacing.sm};
   align-items: flex-start;
   color: ${colors.gray.gray3};
+  min-width: 11.5rem;
 `
 
 const UserResourcesContainerStyled = styled(FlexBox)`
@@ -215,13 +226,8 @@ const VideoContainer = styled(FlexBox)`
 
 const ImgStyled = styled.img`
   height: 30px;
-  margin-right: ${dimensions.spacing.base};
+  margin-right: ${dimensions.spacing.xxxs};
   margin-top: ${dimensions.spacing.xxl};
-`
-
-const TextStyled = styled(Text)`
-  margin: 0rem;
-  margin-top: 5px;
 `
 
 type TLinkStyled = {
@@ -240,9 +246,16 @@ const LinkStyled = styled.a<TLinkStyled>`
 `
 const CategoryLinkStyled = styled.a<TLinkStyled>`
   color: ${({ active }) => (active ? colors.black.black3 : colors.gray.gray3)};
-  font-weight: ${({ active }) => (active ? 'bold' : 'regular')};
+  font-weight: bold;
   margin-top: ${dimensions.spacing.xxl};
   cursor: pointer;
+
+  &::before {
+    content: '${({ active }) => (active ? '●' : '')}';
+    font-size: larger;
+    color: ${colors.primary};
+    margin-right: 0.3rem;
+  }
 `
 // END style Desktop
 
@@ -363,10 +376,11 @@ const Home: FC = () => {
               {/* ==> CONTENIDO FAVORITOS */}
               {resources.map((fav) => (
                 <UserResourcesContainerStyled key={fav.id}>
-                  <TextStyled fontWeight="bold">{fav.title}</TextStyled>
-                  <TextStyled fontSize="small" color={colors.gray.gray3}>
-                    {fav.description}
-                  </TextStyled>
+                  <ResourceTitleLink
+                    url={fav.img}
+                    title={fav.title}
+                    description={fav.description}
+                  />
                 </UserResourcesContainerStyled>
               ))}
 
@@ -380,10 +394,11 @@ const Home: FC = () => {
               {/* ==> CONTENIDO MIS RECURSOS */}
               {resources.map((res) => (
                 <UserResourcesContainerStyled key={res.id}>
-                  <TextStyled fontWeight="bold">{res.title}</TextStyled>
-                  <TextStyled fontSize="small" color={colors.gray.gray3}>
-                    {res.description}
-                  </TextStyled>
+                  <ResourceTitleLink
+                    url={res.img}
+                    title={res.title}
+                    description={res.description}
+                  />
                 </UserResourcesContainerStyled>
               ))}
             </SideColumnContainer>

@@ -3,8 +3,6 @@ info:
   title: IT Academy Wiki
   description: Our app implements a Wiki to be used as a knowledge base by the
     students of the Barcelona Activa's IT Academy
-servers:
-  - url: v1
 openapi: 3.0.0
 components:
   headers:
@@ -14,6 +12,11 @@ components:
         example: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM;
           path=/; httponly
         description: Sets the JWT session cookie
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: token
   schemas:
     DniError:
       type: object
@@ -31,6 +34,22 @@ components:
           example: Email already exists
       required:
         - message
+    MissingTokenError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Unauthorized: Missing token"
+      required:
+        - error
+    InvalidTokenError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Token is not valid
+      required:
+        - error
     ValidationError:
       type: array
       items:
@@ -153,6 +172,7 @@ paths:
                 email:
                   type: string
                   format: email
+                  example: user@example.cat
                 name:
                   type: string
                 dni:
@@ -192,6 +212,82 @@ paths:
                     example: Database error
                 required:
                   - message
+  /api/v1/auth/me:
+    get:
+      tags:
+        - auth
+      description: Returns information of a logged in user. Token recieved in the
+        login necessary.
+      summary: Get user information
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Token is valid and user information is returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  dni:
+                    type: string
+                  email:
+                    type: string
+                    format: email
+                    example: user@example.cat
+                  role:
+                    type: string
+                    enum:
+                      - ADMIN
+                      - REGISTERED
+                  status:
+                    type: string
+                    enum:
+                      - ACTIVE
+                      - INACTIVE
+                required:
+                  - dni
+                  - email
+                  - role
+                  - status
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+                required:
+                  - error
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
   /api/v1/categories:
     get:
       tags:
@@ -216,6 +312,249 @@ paths:
                   required:
                     - id
                     - name
+  /api/v1/resources:
+    get:
+      tags:
+        - resources
+      description: Returns a collection of resources based on type and topic
+      summary: Returns a collection of resources
+      parameters:
+        - in: query
+          name: resourceType
+          schema:
+            type: string
+            enum:
+              - BLOG
+              - VIDEO
+              - TUTORIAL
+            example: BLOG
+          required: false
+        - in: query
+          name: topic
+          schema:
+            type: string
+            example: Listas
+          required: false
+      responses:
+        "200":
+          description: Sucessful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                          example: My Resource in Javascript
+                        slug:
+                          type: string
+                          example: my-resource-in-javascript
+                        description:
+                          type: string
+                          example: Lorem ipsum javascript
+                        url:
+                          type: string
+                          format: uri
+                          example: https://tutorials.cat/learn/javascript
+                        resourceType:
+                          type: string
+                          enum: &a1
+                            - BLOG
+                            - VIDEO
+                            - TUTORIAL
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                        user:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            email:
+                              type: string
+                              format: email
+                              example: user@example.cat
+                          required:
+                            - email
+                        topics:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              name:
+                                type: string
+                              slug:
+                                type: string
+                              createdAt:
+                                type: string
+                              updatedAt:
+                                type: string
+                              categoryId:
+                                type: string
+                            required:
+                              - id
+                              - name
+                              - createdAt
+                              - updatedAt
+                              - categoryId
+                      required:
+                        - id
+                        - title
+                        - url
+                        - resourceType
+                        - createdAt
+                        - updatedAt
+                        - user
+                        - topics
+                required:
+                  - resources
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: '{"message":"\nInvalid `.findMany()` invocation
+                      in\n/ita-wiki/back/src/controllers/getResourcesController.ts:27:8\n'
+                required:
+                  - message
+  /api/v1/resources/me:
+    get:
+      tags:
+        - resources
+      description: Returns all the posted resources by a logged in user.
+      summary: Get resources by logged in user
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: All resources posted by user are returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                    example: My Resource in Javascript
+                  slug:
+                    type: string
+                    example: my-resource-in-javascript
+                  description:
+                    type: string
+                    example: Lorem ipsum javascript
+                  url:
+                    type: string
+                    format: uri
+                    example: https://tutorials.cat/learn/javascript
+                  resourceType:
+                    type: string
+                    enum: *a1
+                  userId:
+                    type: string
+                  createdAt:
+                    type: string
+                  updatedAt:
+                    type: string
+                required:
+                  - id
+                  - title
+                  - url
+                  - resourceType
+                  - userId
+                  - createdAt
+                  - updatedAt
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+                required:
+                  - error
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+  /api/v1/resources/vote/:resourceId/:vote:
+    put:
+      tags:
+        - resources
+        - vote
+      description: Allows a user to vote for a resource. Vote can be 1 for an upvote,
+        -1 for a downvote or 0 to cancel a previous vote.
+      summary: Allows a user to vote for a resource.
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: resourceId
+          schema:
+            type: string
+            description: ID of the resource to vote
+          required: true
+        - in: path
+          name: vote
+          schema:
+            type: integer
+            maximum: 1
+            minimum: -1
+            description: 1 for upvote, -1 for downvote, 0 to cancel previous vote.
+          required: true
+      responses:
+        "204":
+          description: Vote was sent and stored successfully.
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+                required:
+                  - error
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/topics/category/:categoryId:
     get:
       tags:
