@@ -9,6 +9,7 @@ type Tresource = {
   createdBy: string
   createdOn: string
   description: string
+  img: string
 }
 
 type Tresources = {
@@ -43,6 +44,7 @@ const ResourcesList = ({ title, resources }: Tresources) => (
           createdBy={resource.createdBy}
           createdOn={resource.createdOn}
           description={resource.description}
+          img={resource.img}
         />
       ))}
     </FlexBoxStyled>
