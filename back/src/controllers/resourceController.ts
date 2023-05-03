@@ -1,6 +1,7 @@
 import Koa, { Middleware } from 'koa'
 import jwt, { Secret } from 'jsonwebtoken'
 import { prisma } from '../prisma/client'
+import { MissingParamError } from '../helpers/errors'
 
 export const createResource: Middleware = async (ctx: Koa.Context) => {
   try {
@@ -62,13 +63,9 @@ export const getResourcesByTopicId: Middleware = async (ctx: Koa.Context) => {
   
   const {topicId} = ctx.params;
   console.log('param value: ', topicId);
+  console.log('param type: ', typeof topicId);
 
-  if(!topicId){
-    ctx.status = 400;
-    ctx.body = { error: 'Missing topicId parameter'};
-    return;
-  
-  }
+  if(!topicId) throw new MissingParamError('topicId');
 
   const resourcesList = await prisma.resource.findMany({
     where: { 
