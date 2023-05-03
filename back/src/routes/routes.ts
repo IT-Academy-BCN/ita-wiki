@@ -4,5 +4,6 @@ export const pathRoot = {
         categories: '/api/v1/categories',
         resources: '/api/v1/resources',
         topics: '/api/v1/topics',
+        favorites: '/api/v1/favorites'
     }
 }
