@@ -2,6 +2,7 @@ import { Select } from './Select'
 import { Spinner } from './Spinner'
 import { Title } from './Title'
 import Button from './Button'
+import Link from './Link'
 import CheckBox from './CheckBox'
 import Icon from './Icon'
 import Input from './Input'
@@ -13,6 +14,7 @@ import ValidationMessage from './ValidationMessage'
 
 export {
   Button,
+  Link,
   CheckBox,
   Icon,
   Input,
