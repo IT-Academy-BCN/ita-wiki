@@ -17,6 +17,12 @@ type TCreateAuthor = {
   img?: string
 }
 
+const dateFormatOption: Intl.DateTimeFormatOptions = {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}
+
 export const CreateAuthor = ({ createdBy, createdOn, img }: TCreateAuthor) => (
   <FlexBox direction="row">
     <TextStyled fontSize={font.xss} color={colors.gray.gray3}>
@@ -24,11 +30,7 @@ export const CreateAuthor = ({ createdBy, createdOn, img }: TCreateAuthor) => (
     </TextStyled>
     <MetaInfo>
       {createdBy},{' '}
-      {new Date(createdOn).toLocaleDateString('es-ES', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      })}
+      {new Date(createdOn).toLocaleDateString('es-ES', dateFormatOption)}
     </MetaInfo>
   </FlexBox>
 )
