@@ -1,21 +1,50 @@
 import styled from 'styled-components'
+import React, { useState } from 'react'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
 
-const StyledIconIncrease = styled(Icon)`
+const StyledIcon = styled(Icon)`
+  color: ${colors.gray.gray3};
   &:hover {
-    color: ${colors.success};
+    color: ${({ name }) =>
+      (name === 'expand_less' && colors.success) ||
+      (name === 'expand_more' && colors.error)};
   }
 `
 
-function VoteCounter() {
+// TODO: call to API to post the votes
+// TODO: are this votes personal or general?
+type TVoteCounter = {
+  vote: number
+}
+
+const VoteCounter: React.FC<TVoteCounter> = ({ vote = 0 }) => {
+  const [, setVote] = useState(0)
+
+  const handleIncrease = () => {
+    setVote(vote + 1)
+  }
+
+  const handleDecrease = () => {
+    setVote(vote - 1)
+  }
+
   return (
-    <FlexBox>
-      <StyledIconIncrease name="expand_less" color={colors.gray.gray3} />
+    <FlexBox data-testid="voteCounter">
+      <StyledIcon
+        name="expand_less"
+        onClick={handleIncrease}
+        data-testid="increase"
+      />
       <Text fontWeight="bold" style={{ marginTop: '0', marginBottom: '0' }}>
-        10
+        {vote}
       </Text>
-      <Icon name="expand_more" color={colors.gray.gray3} />
+      <StyledIcon
+        name="expand_more"
+        id="decrease"
+        onClick={handleDecrease}
+        data-testid="decrease"
+      />
     </FlexBox>
   )
 }

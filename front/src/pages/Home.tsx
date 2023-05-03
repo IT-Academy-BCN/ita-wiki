@@ -13,7 +13,6 @@ import {
   ResourcesList,
 } from '../components/organisms'
 import { Icon, Text, Title } from '../components/atoms'
-import VoteCounter from '../components/molecules/VoteCounter'
 
 type Tcategories = {
   id: number
@@ -291,9 +290,6 @@ const Home: FC = () => {
       </MobileStyled>
       <DesktopStyled>
         <MainContainer>
-          {/* ==> OJO ELIMINAR!! */}
-          <VoteCounter />
-
           <CategoriesContainerStyled>
             {categories.map((category) => (
               <FlexBox direction="row" key={category.id}>
