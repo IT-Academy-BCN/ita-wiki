@@ -5,9 +5,15 @@ import axios from 'axios'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { Title, Text, Button, CheckBox, ValidationMessage } from '../components/atoms'
+import {
+  Title,
+  Text,
+  Button,
+  CheckBox,
+  ValidationMessage,
+} from '../components/atoms'
 import InputGroup from '../components/molecules/InputGroup'
-import { paths } from '../constants'
+import { paths, urls } from '../constants'
 import { colors, dimensions, FlexBox } from '../styles'
 
 const RegisterStyled = styled(FlexBox)`
@@ -33,18 +39,18 @@ const LinkLoginStyled = styled(Link)`
 const CheckBoxStyled = styled(CheckBox)`
   margin-top: ${dimensions.spacing.base};
   margin-bottom: ${dimensions.spacing.base};
-  
+
   > input {
     border: 1px solid ${colors.black.black1};
 
-      &:checked {
-        border: 2px solid ${colors.primary};
-      }
+    &:checked {
+      border: 2px solid ${colors.primary};
+    }
   }
 `
 
 const TextStyled = styled(Text)`
-  color: ${colors.black.black1}; 
+  color: ${colors.black.black1};
 `
 
 const LegalTermsLinkStyled = styled(Link)`
@@ -84,12 +90,10 @@ const Register: FC = () => {
   } = useForm<TForm>({ resolver: zodResolver(UserRegisterSchema) })
 
   const navigate = useNavigate()
-  const url = 'http://localhost:8999/api/v1/auth/register'
-
 
   const registerNewUser = async (user: object) => {
     try {
-      const response = await axios.post(url, user)
+      const response = await axios.post(urls.register, user)
       if (response.status === 204) {
         navigate('/')
       }
@@ -217,17 +221,18 @@ const Register: FC = () => {
             text={errors.specialization?.message}
           />
         )}
-        <FlexBox justify='flex-start' direction='row'>
-
-            <CheckBoxStyled 
-              required
-              id="accept"  
-              label=""
-              hiddenLabel   
-              {...register('accept')}
-            /> 
-            <TextStyled as="label" htmlFor="accept">Acepto <LegalTermsLinkStyled to="#">términos legales</LegalTermsLinkStyled></TextStyled>
-
+        <FlexBox justify="flex-start" direction="row">
+          <CheckBoxStyled
+            required
+            id="accept"
+            label=""
+            hiddenLabel
+            {...register('accept')}
+          />
+          <TextStyled as="label" htmlFor="accept">
+            Acepto{' '}
+            <LegalTermsLinkStyled to="#">términos legales</LegalTermsLinkStyled>
+          </TextStyled>
         </FlexBox>
         <FlexBox>
           {errors.accept && (
