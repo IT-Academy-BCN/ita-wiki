@@ -1,5 +1,3 @@
-import { getResourcesByTopicId } from './resourceController'
-
 export { loginController } from './auth/loginController'
 export { registerController } from './auth/registerController'
 export { authMeController } from './auth/authMeController'

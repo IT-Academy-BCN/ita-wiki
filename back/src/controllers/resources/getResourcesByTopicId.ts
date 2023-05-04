@@ -1,6 +1,6 @@
 import Koa, { Middleware } from 'koa'
-import { prisma } from '../prisma/client'
-import { MissingParamError } from '../helpers/errors'
+import { prisma } from '../../prisma/client'
+import { MissingParamError } from '../../helpers/errors'
 
 export const getResourcesByTopicId: Middleware = async (ctx: Koa.Context) => {
   
