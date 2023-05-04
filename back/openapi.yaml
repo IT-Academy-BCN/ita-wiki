@@ -509,7 +509,21 @@ paths:
                 - resourceType
                 - topics
                 - userEmail
-      responses: {}
+      responses:
+        "204":
+          description: Resource has been posted
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/topics/category/:categoryId:
     get:
       tags:
