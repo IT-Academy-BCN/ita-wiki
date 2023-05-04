@@ -62,10 +62,8 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
 export const getResourcesByTopicId: Middleware = async (ctx: Koa.Context) => {
   
   const {topicId} = ctx.params;
-  console.log('param value: ', topicId);
-  console.log('param type: ', typeof topicId);
 
-  if(!topicId) throw new MissingParamError('topicId');
+  if(!topicId) throw new MissingParamError('topicId')
 
   const resourcesList = await prisma.resource.findMany({
     where: { 
@@ -81,7 +79,6 @@ export const getResourcesByTopicId: Middleware = async (ctx: Koa.Context) => {
 }
 });
 
-  console.log(resourcesList);
   ctx.status = 200;
   ctx.body = resourcesList
 

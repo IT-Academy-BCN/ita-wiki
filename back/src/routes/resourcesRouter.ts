@@ -24,6 +24,7 @@ resourcesRouter.get(
 
 resourcesRouter.get(
   '/topic/:topicId',
+  validate(z.object({params: z.object({topicId: z.string().cuid()})})),
   getResourcesByTopicId
   
 )
