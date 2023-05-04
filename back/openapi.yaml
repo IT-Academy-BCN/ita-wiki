@@ -172,6 +172,7 @@ paths:
                 email:
                   type: string
                   format: email
+                  example: user@example.cat
                 name:
                   type: string
                 dni:
@@ -235,6 +236,7 @@ paths:
                   email:
                     type: string
                     format: email
+                    example: user@example.cat
                   role:
                     type: string
                     enum:
@@ -340,55 +342,82 @@ paths:
             application/json:
               schema:
                 type: object
-                properties: {}
-                example:
+                properties:
                   resources:
-                    - id: clh4tra53000bxnmnzsf4dqq9
-                      title: My resource in React
-                      description: Lorem ipsum
-                      url: http://www.example.com/resource/React.html
-                      resourceType: BLOG
-                      createdAt: 2023-05-01T12:36:32.151Z
-                      updatedAt: 2023-05-01T12:36:32.151Z
-                      user:
-                        name: Kevin Mamaqi
-                        email: admin@admin.com
-                      topics:
-                        - topic:
-                            id: clh4tra4z0008xnmn7zrgvce7
-                            name: Eventos
-                            categoryId: clh4tra4t0004xnmn13adhwjv
-                            createdAt: 2023-05-01T12:36:32.148Z
-                            updatedAt: 2023-05-01T12:36:32.148Z
-                        - topic:
-                            id: clh4tra4z0009xnmn97g0hm6o
-                            name: Listas
-                            categoryId: clh4tra4t0002xnmnhj48vvba
-                            createdAt: 2023-05-01T12:36:32.148Z
-                            updatedAt: 2023-05-01T12:36:32.148Z
-                    - id: clh4tra53000cxnmnf8f4gkao
-                      title: My resource in Node
-                      description: Lorem ipsum
-                      url: http://www.example.com/resource/Node.html
-                      resourceType: BLOG
-                      createdAt: 2023-05-01T12:36:32.151Z
-                      updatedAt: 2023-05-01T12:36:32.151Z
-                      user:
-                        name: Kevin Mamaqi
-                        email: admin@admin.com
-                      topics:
-                        - topic:
-                            id: clh4tra4z0008xnmn7zrgvce7
-                            name: Eventos
-                            categoryId: clh4tra4t0004xnmn13adhwjv
-                            createdAt: 2023-05-01T12:36:32.148Z
-                            updatedAt: 2023-05-01T12:36:32.148Z
-                        - topic:
-                            id: clh4tra4z0009xnmn97g0hm6o
-                            name: Listas
-                            categoryId: clh4tra4t0002xnmnhj48vvba
-                            createdAt: 2023-05-01T12:36:32.148Z
-                            updatedAt: 2023-05-01T12:36:32.148Z
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                          example: My Resource in Javascript
+                        slug:
+                          type: string
+                          example: my-resource-in-javascript
+                        description:
+                          type: string
+                          example: Lorem ipsum javascript
+                        url:
+                          type: string
+                          format: uri
+                          example: https://tutorials.cat/learn/javascript
+                        resourceType:
+                          type: string
+                          enum: &a1
+                            - BLOG
+                            - VIDEO
+                            - TUTORIAL
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                        user:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            email:
+                              type: string
+                              format: email
+                              example: user@example.cat
+                          required:
+                            - email
+                        topics:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              name:
+                                type: string
+                              slug:
+                                type: string
+                              createdAt:
+                                type: string
+                              updatedAt:
+                                type: string
+                              categoryId:
+                                type: string
+                            required:
+                              - id
+                              - name
+                              - createdAt
+                              - updatedAt
+                              - categoryId
+                      required:
+                        - id
+                        - title
+                        - url
+                        - resourceType
+                        - createdAt
+                        - updatedAt
+                        - user
+                        - topics
+                required:
+                  - resources
         "500":
           description: Internal error
           content:
@@ -422,19 +451,20 @@ paths:
                     type: string
                   title:
                     type: string
+                    example: My Resource in Javascript
                   slug:
                     type: string
+                    example: my-resource-in-javascript
                   description:
                     type: string
+                    example: Lorem ipsum javascript
                   url:
                     type: string
                     format: uri
+                    example: https://tutorials.cat/learn/javascript
                   resourceType:
                     type: string
-                    enum: &a1
-                      - BLOG
-                      - VIDEO
-                      - TUTORIAL
+                    enum: *a1
                   userId:
                     type: string
                   createdAt:
@@ -473,51 +503,52 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
-  /api/v1/resources/create:
-    post:
+  /api/v1/resources/vote/:resourceId/:vote:
+    put:
       tags:
         - resources
-      description: Allows a logged in user to post a resource.
-      summary: Post a resource
+        - vote
+      description: Allows a user to vote for a resource. Vote can be 1 for an upvote,
+        -1 for a downvote or 0 to cancel a previous vote.
+      summary: Allows a user to vote for a resource.
       security:
         - cookieAuth: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                title:
-                  type: string
-                description:
-                  type: string
-                url:
-                  type: string
-                  format: uri
-                resourceType:
-                  type: string
-                  enum: *a1
-                topics:
-                  type: array
-                  items:
-                    type: string
-                userEmail:
-                  type: string
-              required:
-                - title
-                - url
-                - resourceType
-                - topics
-                - userEmail
+      parameters:
+        - in: path
+          name: resourceId
+          schema:
+            type: string
+            description: ID of the resource to vote
+          required: true
+        - in: path
+          name: vote
+          schema:
+            type: integer
+            maximum: 1
+            minimum: -1
+            description: 1 for upvote, -1 for downvote, 0 to cancel previous vote.
+          required: true
       responses:
         "204":
-          description: Resource has been posted
+          description: Vote was sent and stored successfully.
         "401":
           description: Missing token
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+                required:
+                  - error
         "405":
           description: Invalid token
           content:

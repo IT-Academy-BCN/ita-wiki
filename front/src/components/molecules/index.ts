@@ -7,6 +7,7 @@ import { ResourceTitleLink } from './ResourceTitleLink'
 import InputGroup from './InputGroup'
 import SelectGroup from './SelectGroup'
 import TextareaGroup from './TextareaGroup'
+import { CreateAuthor } from './CreateAuthor'
 
 export {
   AccessModal,
@@ -18,4 +19,5 @@ export {
   ResourceTitleLink,
   SelectGroup,
   TextareaGroup,
+  CreateAuthor,
 }
