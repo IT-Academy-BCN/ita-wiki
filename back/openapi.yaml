@@ -431,6 +431,57 @@ paths:
                       in\n/ita-wiki/back/src/controllers/getResourcesController.ts:27:8\n'
                 required:
                   - message
+  /api/v1/resources/create:
+    post:
+      tags:
+        - resources
+      description: Allows a logged in user to post a resource.
+      summary: Post a resource
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: My Resource in Javascript
+                description:
+                  type: string
+                  example: Lorem ipsum javascript
+                url:
+                  type: string
+                  format: uri
+                  example: https://tutorials.cat/learn/javascript
+                resourceType:
+                  type: string
+                  enum: *a1
+                topics:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - title
+                - url
+                - resourceType
+                - topics
+      responses:
+        "204":
+          description: Resource has been posted
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/resources/me:
     get:
       tags:
