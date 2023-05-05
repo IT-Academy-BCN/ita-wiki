@@ -31,14 +31,14 @@ resourcesRouter.get(
 
 resourcesRouter.get(
   '/topic/:topicId',
-  validate(z.object({params: z.object({topicId: z.string().cuid()})})),
+  validate(z.object({params: z.object({ topicId: z.string().trim().min(1)})})),
   getResourcesByTopicId
   
 )
 
 resourcesRouter.get(
   '/topic/slug/:slug',
-  validate(z.object({params: z.object({slug: z.string().cuid()})})),
+  validate(z.object({params: z.object({ slug: z.string().trim().min(1)})})),
   getResourcesByTopicSlug
 )
 

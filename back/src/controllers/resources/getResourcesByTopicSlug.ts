@@ -4,24 +4,28 @@ import { MissingParamError, NotFoundError } from '../../helpers/errors'
 
 export const getResourcesByTopicSlug: Middleware = async (ctx: Koa.Context) => {
   
-    const { slug } = ctx.params;
+  const { slug } = ctx.params;
   
-    if(!slug) throw new MissingParamError('slug');
+  if(!slug) throw new MissingParamError('slug');
     
-    const slugFound = await prisma.topic.findUnique({
-      where: { slug }
-    });
+  const slugFound = await prisma.topic.findUnique({ where: { slug }}); 
 
-    if(!slugFound) throw new NotFoundError('Topic not found');
+  if(!slugFound) throw new NotFoundError('Topic not found');
 
-    const resourcesList = await prisma.resource.findMany({
-      where: {
-          topics: {
-              some: {
-                  topic: { slug }
-              }
+  const resourcesList = await prisma.resource.findMany({
+    where: {
+      topics: {
+        some: {
+          topic: {
+            slug
           }
+        }
       }
+    },
+    select: {
+      id: true,
+      title: true,
+    }
   });
   
     ctx.status = 200;
