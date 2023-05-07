@@ -24,13 +24,13 @@ export const resources: Omit<
     slug: slugify('My second resource in React', { lower: true }),
     description: 'Lorem ipsum',
     url: 'http://www.example.com/resource/React2.html',
-    resourceType: 'BLOG',
+    resourceType: 'VIDEO',
   },
   {
     title: 'My resource in Javascript',
     slug: slugify('My resource in Javascript', { lower: true }),
     description: 'Lorem ipsum',
     url: 'http://www.example.com/resource/Javascript.html',
-    resourceType: 'BLOG',
+    resourceType: 'TUTORIAL',
   },
 ]

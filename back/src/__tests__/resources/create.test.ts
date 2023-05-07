@@ -3,7 +3,7 @@ import { expect, test, describe, beforeAll } from 'vitest'
 import { server } from '../setup'
 import { prisma } from '../../prisma/client'
 
-describe('Testing resources endpoint', () => {
+describe('Testing resource creation endpoint', () => {
   let authToken: string
   let existingUserEmail: string | undefined
   let topicIds: string[] | undefined[]
