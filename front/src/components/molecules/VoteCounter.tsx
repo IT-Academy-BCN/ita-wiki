@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
 
@@ -12,14 +12,30 @@ const StyledIcon = styled(Icon)`
   }
 `
 
-// TODO: call to API to post the votes
+// TODO: call to API to put the votes
 // TODO: are this votes personal or general?
 type TVoteCounter = {
   vote: number
+  resourceId: string
 }
 
-const VoteCounter: React.FC<TVoteCounter> = ({ vote = 0 }) => {
+const VoteCounter: React.FC<TVoteCounter> = ({ vote = 0, resourceId }) => {
   const [, setVote] = useState(0)
+  const url = `https://dev.api.itadirectory.eurecatacademy.org/api/v1/resources/vote/${resourceId}/${vote}`
+
+  useEffect(() => {
+    const requestOptions = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vote }),
+    }
+
+    fetch(url, requestOptions).then(async (res) => {
+      const data = await res.json()
+      setVote(data)
+      console.log('data', data)
+    })
+  }, [url, vote])
 
   const handleIncrease = () => {
     setVote(vote + 1)
@@ -36,7 +52,11 @@ const VoteCounter: React.FC<TVoteCounter> = ({ vote = 0 }) => {
         onClick={handleIncrease}
         data-testid="increase"
       />
-      <Text fontWeight="bold" style={{ marginTop: '0', marginBottom: '0' }}>
+      <Text
+        fontWeight="bold"
+        style={{ marginTop: '0', marginBottom: '0' }}
+        data-testid="voteTest"
+      >
         {vote}
       </Text>
       <StyledIcon
