@@ -13,6 +13,9 @@ import {
   ResourcesList,
 } from '../components/organisms'
 import { Icon, Text, Title } from '../components/atoms'
+import { urls } from '../constants/urls'
+import axios from 'axios'
+import { useQuery } from '@tanstack/react-query'
 
 type Tcategories = {
   id: number
@@ -22,14 +25,6 @@ type Tcategories = {
   img: string
 }
 
-type Tresource = {
-  id: number
-  title: string
-  createdBy: string
-  createdOn: string
-  description: string
-  img: string
-}
 const categories: Tcategories[] = [
   {
     id: 1,
@@ -67,6 +62,33 @@ const categories: Tcategories[] = [
     topics: 1,
   },
 ]
+
+// Categories from BE
+type TcategoriesBE = {
+  id: number
+  name: string
+}
+const fetchCategories = () => {
+  return axios.get(urls.categoriesURL)
+}
+
+const categoriesIcons: Record<string, string> = {
+  React: icons.react,
+  Angular: icons.angular,
+  Node: icons.node,
+  PHP: icons.php,
+  Java: icons.java,
+  'Data Science': icons.dataScience,
+}
+
+type Tresource = {
+  id: number
+  title: string
+  createdBy: string
+  createdOn: string
+  description: string
+  img: string
+}
 
 const resources: Tresource[] = [
   {
@@ -269,6 +291,17 @@ const Home: FC = () => {
     setActiveCategory(cat)
   }
 
+  const {
+    isLoading,
+    data: categoriesBE,
+    isError,
+  } = useQuery({
+    queryKey: ['categories'],
+    queryFn: fetchCategories,
+  })
+
+  console.log(categoriesBE?.data)
+
   return (
     <>
       <MobileStyled>
@@ -291,17 +324,17 @@ const Home: FC = () => {
       <DesktopStyled>
         <MainContainer>
           <CategoriesContainerStyled>
-            {categories.map((category) => (
+            {categoriesBE?.data.map((category: TcategoriesBE) => (
               <FlexBox direction="row" key={category.id}>
                 <ImgStyled
-                  src={category.img}
-                  alt={`${category.category} logo`}
+                  src={categoriesIcons[category.name]}
+                  alt={`${category.name} logo`}
                 />
                 <CategoryLinkStyled
-                  active={activeCategory === category.category}
-                  onClick={() => handleCategoryClick(category.category)}
+                  active={activeCategory === category.name}
+                  onClick={() => handleCategoryClick(category.name)}
                 >
-                  {category.category}
+                  {category.name}
                 </CategoryLinkStyled>
               </FlexBox>
             ))}
