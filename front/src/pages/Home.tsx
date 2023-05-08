@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { FC, SetStateAction, useState } from 'react'
+import { FC, SetStateAction, useRef, useState } from 'react'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import {
@@ -269,6 +269,19 @@ const Home: FC = () => {
     setActiveCategory(cat)
   }
 
+  type TSearchRef = {
+    value: string
+  }
+  
+  const searchRef = useRef<TSearchRef>()
+  const iconClick = () => {
+    console.log(searchRef.current?.value)
+    const searchResource = resources.filter((resource) =>
+      resource.title.includes(searchRef.current?.value || "")
+    )
+    console.log(searchResource)
+  }
+
   return (
     <>
       <MobileStyled>
@@ -310,12 +323,6 @@ const Home: FC = () => {
           <DivStyled>
             {/* ==> COLUMNA BÚSQUEDA */}
             <SideColumnContainer>
-              <InputGroup
-                label="search-resource"
-                name="search-resource"
-                placeholder="Buscar recurso concreto"
-                id="search-resource"
-              />
               <Text fontWeight="bold">Temas de React</Text>
               {dataSubjects.map((sub) => (
                 <LinkStyled
@@ -367,6 +374,15 @@ const Home: FC = () => {
             {/* ==> COLUMNA USUARIO */}
             <SideColumnContainer>
               {/* TÍTULO 1 */}
+                <InputGroup
+                  label="search-resource"
+                  name="search-resource"
+                  placeholder="Buscar recurso concreto"
+                  id="search-resource"
+                  icon="search"
+                  ref={searchRef}
+                  iconClick={iconClick}
+                />
               <ContainerGapStyled>
                 <Icon name="favorite" fill={0} />
                 <Title as="h2" fontWeight="bold">

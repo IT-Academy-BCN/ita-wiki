@@ -6,6 +6,7 @@ const IconStyled = styled.span<TIcon>`
     'wght' ${({ wght }) => wght}, 'GRAD' ${({ grad }) => grad},
     'opsz' ${({ opsz }) => opsz};
   color: ${({ color }) => color};
+  cursor: pointer;
 `
 type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
   name: string
@@ -15,6 +16,7 @@ type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
   opsz?: number
   className?: string
   color?: string
+  cursor?: string
 }
 
 const Icon: React.FC<TIcon> = ({
