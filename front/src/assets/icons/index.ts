@@ -1,5 +1,6 @@
 import angular from './angular.svg'
 import arrowDown from './arrow-down.svg'
+import chevronDown from './chevron-down.svg'
 import dataScience from './data-science.svg'
 import editPen from './edit-pen.svg'
 import javascript from './javascript.svg'
@@ -12,6 +13,7 @@ import vue from './vue.svg'
 const icons = {
   angular,
   arrowDown,
+  chevronDown,
   dataScience,
   editPen,
   javascript,
