@@ -71,7 +71,7 @@ describe("Testing VOTE endpoint, PUT method", async () => {
                 .put(`${pathRoot.v1.resources}/cjld2cjxh0000qzrmn831i7rn/1`)
                 .set('Cookie', authToken)
             expect(response.status).toBe(404);
-            expect(response.body).toStrictEqual({message: 'Resource not found'})
+            expect(response.body).toBe({message: 'Resource not found'})
         })
 
         it("Should fail with invalid vote", async () => {
