@@ -4,9 +4,11 @@ import { server } from '../setup'
 
 describe('GET /api/v1/resources/topic/:topicId', () => {
 
-    test('Should respond OK status and return resources as an array.', async () => {
+    const url = `/api/v1/resources/topic`;
+
+    test('Should respond OK status when topic ID exists in database and return resources associated with that topic ID as an array.', async () => {
         
-            const response = await supertest(server).get('/api/v1/resources/topic/clha9en5g00083fbudw53w030')
+            const response = await supertest(server).get(`${url}/clhehsqne00083fh77jj6tr03`)
             
             expect(response.status).toBe(200);
             expect(response.body).toBeInstanceOf(Array)
@@ -22,7 +24,7 @@ describe('GET /api/v1/resources/topic/:topicId', () => {
 
        test('should fail if topic ID does not exist in database', async () => {
 
-            const response = await supertest(server).get('/api/v1/resources/topic/blaaaaaaaaaaaah');
+            const response = await supertest(server).get(`${url}/this-topic-does-not-exist`);
             
             expect(response.status).toBe(404);
             expect(response.body.message).toEqual('Topic not found'); 
