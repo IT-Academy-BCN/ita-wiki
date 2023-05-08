@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { FC, SetStateAction, useRef, useState } from 'react'
+import { FC, SetStateAction, useEffect, useRef, useState } from 'react'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import {
@@ -262,6 +262,9 @@ const CategoryLinkStyled = styled.a<TLinkStyled>`
 const Home: FC = () => {
   const [activeLink, setActiveLink] = useState('')
   const [activeCategory, setActiveCategory] = useState('')
+  const searchRef = useRef<TSearchRef>()
+  const [searchResources, setSearchResources] = useState(resources)
+
   const handleClick = (link: SetStateAction<string>) => {
     setActiveLink(link)
   }
@@ -272,14 +275,14 @@ const Home: FC = () => {
   type TSearchRef = {
     value: string
   }
-  
-  const searchRef = useRef<TSearchRef>()
+
   const iconClick = () => {
-    console.log(searchRef.current?.value)
-    const searchResource = resources.filter((resource) =>
-      resource.title.includes(searchRef.current?.value || "")
+    const searchValue = searchRef.current?.value || ''
+    setSearchResources(
+      resources.filter((resource) =>
+        resource.title.toLowerCase().includes(searchValue.toLowerCase())
+      )
     )
-    console.log(searchResource)
   }
 
   return (
@@ -359,7 +362,7 @@ const Home: FC = () => {
                   <Text color={colors.gray.gray3}>Fecha</Text>
                 </FlexBox>
               </FlexBox>
-              {resources.map((resource) => (
+              {searchResources.map((resource) => (
                 <CardResource
                   key={resource.id}
                   img={icons.profileAvatar}
@@ -374,15 +377,15 @@ const Home: FC = () => {
             {/* ==> COLUMNA USUARIO */}
             <SideColumnContainer>
               {/* TÍTULO 1 */}
-                <InputGroup
-                  label="search-resource"
-                  name="search-resource"
-                  placeholder="Buscar recurso concreto"
-                  id="search-resource"
-                  icon="search"
-                  ref={searchRef}
-                  iconClick={iconClick}
-                />
+              <InputGroup
+                label="search-resource"
+                name="search-resource"
+                placeholder="Buscar recurso concreto"
+                id="search-resource"
+                icon="search"
+                ref={searchRef}
+                iconClick={iconClick}
+              />
               <ContainerGapStyled>
                 <Icon name="favorite" fill={0} />
                 <Title as="h2" fontWeight="bold">
