@@ -1,12 +1,11 @@
-import { Resource } from '@prisma/client'
 import supertest from 'supertest'
-import { expect, describe, it, beforeAll, afterAll } from 'vitest'
-import { sampleUser, server } from '../setup'
+import { expect, describe, it, beforeAll } from 'vitest'
+import { server } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 
 let authToken: string
-let resource: Resource
+let resource: any
 beforeAll(async () => {
     const response = await supertest(server).post('/api/v1/auth/login').send({
       dni: '23456789B',
@@ -15,23 +14,7 @@ beforeAll(async () => {
     // eslint-disable-next-line prefer-destructuring
     authToken = response.header['set-cookie'][0].split(';')[0]
 
-    resource = await prisma.resource.create({data: {
-        title: "vote test resource",
-        slug: "vote-test-resource",
-        url: "https://www.sampleurl.cat",
-        resourceType: 'VIDEO',
-        userId: sampleUser.id,
-    }})
-})
-
-afterAll(async () => {
-    const deleteVotes = prisma.vote.deleteMany({
-        where: {resourceId: resource.id},
-    })
-    const deleteResource = prisma.resource.delete({
-        where: {id: resource.id}
-    })
-    await prisma.$transaction([deleteVotes,deleteResource])
+    resource = await prisma.resource.findFirst()
 })
 
 
