@@ -1,27 +1,72 @@
+import { Resource } from '@prisma/client'
 import supertest from 'supertest'
-import { expect, test, describe, it } from 'vitest'
-import { server } from '../setup'
+import { expect, describe, it, beforeAll, afterAll } from 'vitest'
+import { sampleUser, server } from '../setup'
 import { prisma } from '../../prisma/client'
 
-describe("Testing VOTE endpoint, PUT method", async () => {
-    const resource = await prisma.resource.findFirst()
-    const loginInfo = {
-        dni: '23456789B',
-        password: 'password2'
-    }
+let authToken: string
+let resource: Resource
+beforeAll(async () => {
+    const response = await supertest(server).post('/api/v1/auth/login').send({
+      dni: '23456789B',
+      password: 'password2',
+    })
+    // eslint-disable-next-line prefer-destructuring
+    authToken = response.header['set-cookie'][0].split(';')[0]
 
-    test("Should return error if no token is provided", async () => {
-        const response = await supertest(server).put(`/api/v1/resources/vote/${resource!.id}/1`)
+    resource = await prisma.resource.create({data: {
+        title: "vote test resource",
+        slug: "vote-test-resource",
+        url: "https://www.sampleurl.cat",
+        resourceType: 'VIDEO',
+        userId: sampleUser.id,
+    }})
+})
+
+afterAll(async () => {
+    const deleteVotes = prisma.vote.deleteMany({
+        where: {resourceId: resource.id},
+    })
+    const deleteResource = prisma.resource.delete({
+        where: {id: resource.id}
+    })
+    await prisma.$transaction([deleteVotes,deleteResource])
+})
+
+
+describe("Testing VOTE endpoint, GET method", async () => {
+    it("Should succeed with valid params", async () => {
+        const response = await supertest(server).get(`/api/v1/resources/vote/${resource.id}`)
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual(expect.objectContaining({
+            voteCount: expect.objectContaining({
+                upvote: expect.any(Number),
+                downvote: expect.any(Number),
+                total: expect.any(Number),
+            })
+        }))
+    })
+
+    it("Should fail with invalid resourceId", async () => {
+        const response = await supertest(server).get(`/api/v1/resources/vote/someInvalidResourceId`)
+        expect(response.status).toBe(400);
+    })
+
+    it("Should fail with valid resourceId but does not belong to one", async () => {
+        const response = await supertest(server).get(`/api/v1/resources/vote/cjld2cjxh0000qzrmn831i7rn`)
+        expect(response.status).toBe(404);
+        expect(response.body).toStrictEqual({message: 'Resource not found'})
+    })
+})
+
+describe("Testing VOTE endpoint, PUT method", async () => {
+    it("Should return error if no token is provided", async () => {
+        const response = await supertest(server).put(`/api/v1/resources/vote/${resource.id}/1`)
         expect(response.status).toBe(401);        
         expect(response.body.error).toBe('Unauthorized: Missing token')
     })
 
-    test("With valid token", async () => {
-        const login = await supertest(server).post('/api/v1/auth/login').send({
-            dni: loginInfo.dni,
-            password: loginInfo.password,
-        })
-        const authToken = login.header['set-cookie'][0].split(';')[0]
+    describe("With valid token", async () => {
 
         it("Should succeed with valid params", async () => {
             const response = await supertest(server)
@@ -42,19 +87,12 @@ describe("Testing VOTE endpoint, PUT method", async () => {
                 .put(`/api/v1/resources/vote/cjld2cjxh0000qzrmn831i7rn/1`)
                 .set('Cookie', authToken)
             expect(response.status).toBe(404);
-            expect(response.body).toBe({message: 'Resource not found'})
+            expect(response.body).toStrictEqual({message: 'Resource not found'})
         })
 
         it("Should fail with invalid vote", async () => {
             const response = await supertest(server)
-                .put(`/api/v1/resources/vote/someInvalidResourceId/5`)
-                .set('Cookie', authToken)
-            expect(response.status).toBe(400);
-        })
-
-        it("Should fail with missing vote", async () => {
-            const response = await supertest(server)
-                .put(`/api/v1/resources/vote/someInvalidResourceId/`)
+                .put(`/api/v1/resources/vote/${resource!.id}/5`)
                 .set('Cookie', authToken)
             expect(response.status).toBe(400);
         })
