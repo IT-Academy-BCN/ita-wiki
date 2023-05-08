@@ -23,32 +23,42 @@ const DropdownExpand = keyframes`
   }
 `
 
-const DropdownMenu = styled.div`
+const DropdownMenu = styled.ul`
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
   position: absolute;
   width: 100%;
-  left: -0.9rem;
-  top: 32px;
+  top: 44px;
   background-color: ${colors.white};
   border-radius: 20px;
   box-shadow: 1px 2px 5px ${colors.gray.gray5};
   animation-name: ${DropdownExpand};
   animation-duration: 0.5s;
 
-  > div {
+  > li {
+    margin: 0;
+    padding: 0;
+    text-indent: 0;
+    list-style-type: none;
     display: flex;
-    padding-left: 1rem;
     align-items: center;
     color: ${colors.gray.gray1};
-    height: 45px;
-    width: 100%;
     font-weight: normal;
 
-    &:hover {
+    &:hover button {
       color: ${colors.white};
+      font-weight: normal;
       background-color: ${colors.primary};
       border-radius: 20px;
-      font-weight: normal;
     }
+  }
+
+  > li button {
+    background-color: transparent;
+    border: none;
+    height: 45px;
+    width: 100%;
   }
 `
 
@@ -60,10 +70,12 @@ const DropdownButton = styled.div<TDropdown>`
   height: 45px;
   cursor: pointer;
 
-  > div {
+  > button {
+    background-color: ${colors.white};
+    border: none;
     font-weight: bold;
-    margin-top: 0.7rem;
-    margin-left: 0.9rem;
+    margin-top: 0.6rem;
+    margin-left: 0.4rem;
   }
 `
 
@@ -149,7 +161,8 @@ const Dropdown = forwardRef(
     return (
       <div ref={ref}>
         <DropdownButton data-testid="dropdown">
-          <div
+          <button
+            type="button"
             data-testid="header"
             onClick={() =>
               setDropdown({ ...dropdown, isOpen: !dropdown.isOpen })
@@ -157,6 +170,7 @@ const Dropdown = forwardRef(
             onKeyDown={() =>
               setDropdown({ ...dropdown, isOpen: !dropdown.isOpen })
             }
+            role="textbox"
           >
             <span>{dropdown.typeSelected.label}</span>
             <ChevronImg
@@ -164,18 +178,19 @@ const Dropdown = forwardRef(
               alt="expand"
               menuOpen={dropdown.isOpen}
             />
-          </div>
+          </button>
           {dropdown.isOpen && (
             <DropdownMenu data-testid="menu">
               {options.map((option) => (
-                <div
-                  key={option.value}
-                  onClick={() => handleSelectedOption(option, option.value)}
-                  onKeyDown={() => handleSelectedOption(option, option.value)}
-                  role={option.value}
-                >
-                  {option.label}
-                </div>
+                <li key={option.value}>
+                  <button
+                    type="button"
+                    onClick={() => handleSelectedOption(option, option.value)}
+                    onKeyDown={() => handleSelectedOption(option, option.value)}
+                  >
+                    {option.label}
+                  </button>
+                </li>
               ))}
             </DropdownMenu>
           )}
