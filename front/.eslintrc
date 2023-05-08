@@ -7,7 +7,7 @@
     "plugin:@typescript-eslint/recommended",
     "prettier"
   ],
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "@tanstack/query"],
   "parserOptions": {
     "parser": "@typescript-eslint/parser",
     "project": "./tsconfig.json"
