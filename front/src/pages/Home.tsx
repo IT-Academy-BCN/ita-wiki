@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { FC, SetStateAction, useEffect, useRef, useState } from 'react'
+import { FC, SetStateAction, useRef, useState } from 'react'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import {
