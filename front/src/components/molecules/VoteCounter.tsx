@@ -12,8 +12,6 @@ const StyledIcon = styled(Icon)`
   }
 `
 
-// TODO: call to API to put the votes
-// TODO: are this votes personal or general?
 type TVoteCounter = {
   vote: number
   resourceId: string
@@ -21,7 +19,8 @@ type TVoteCounter = {
 
 const VoteCounter: React.FC<TVoteCounter> = ({ vote = 0, resourceId }) => {
   const [, setVote] = useState(0)
-  const url = `https://dev.api.itadirectory.eurecatacademy.org/api/v1/resources/vote/${resourceId}/${vote}`
+  // TODO: change url for constant in urls
+  const url = `http://localhost:8999/api/v1/resources/vote/${resourceId}/${vote}`
 
   useEffect(() => {
     const requestOptions = {

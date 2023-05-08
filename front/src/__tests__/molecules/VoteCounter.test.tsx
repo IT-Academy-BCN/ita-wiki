@@ -1,5 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { rest } from 'msw'
 import { VoteCounter } from '../../components/molecules'
+import { server } from '../../__mocks__/server'
 import { colors } from '../../styles'
 
 describe('Vote counter molecule', () => {

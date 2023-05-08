@@ -9,4 +9,8 @@ export const handlers = [
   rest.post('http://localhost:8999/api/v1/auth/register', (req, res, ctx) =>
     res(ctx.status(204))
   ),
+
+  rest.put('http://localhost:8999/api/v1/resources/vote/:resourceId/:vote', (req, res, ctx) => 
+  res(ctx.status(204))
+  )
 ]
