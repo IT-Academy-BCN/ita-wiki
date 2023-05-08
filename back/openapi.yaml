@@ -395,18 +395,18 @@ paths:
                                 type: string
                               slug:
                                 type: string
+                              categoryId:
+                                type: string
                               createdAt:
                                 type: string
                               updatedAt:
                                 type: string
-                              categoryId:
-                                type: string
                             required:
                               - id
                               - name
+                              - categoryId
                               - createdAt
                               - updatedAt
-                              - categoryId
                       required:
                         - id
                         - title
@@ -619,7 +619,24 @@ paths:
           description: ID of the category for which to retrieve topics
       responses:
         "200":
-          description: The server has successfully received the parameter
+          description: Topics by category id retrieved  successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    slug:
+                      type: string
+                  required:
+                    - id
+                    - name
+                    - slug
   /api/v1/topics:
     get:
       tags:
@@ -628,4 +645,24 @@ paths:
       summary: Returns topics
       responses:
         "200":
-          description: The server has successfully received the parameter
+          description: Topics retrieved succesfully,
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    slug:
+                      type: string
+                    categoryId:
+                      type: string
+                  required:
+                    - id
+                    - name
+                    - slug
+                    - categoryId
