@@ -1,20 +1,13 @@
 import supertest from 'supertest'
 import { expect, test, describe, beforeAll } from 'vitest'
-import { server } from '../setup'
+import { server, authToken } from '../setup'
 import { prisma } from '../../prisma/client'
+import { pathRoot } from '../../routes/routes'
 
 describe('Testing resource creation endpoint', () => {
-  let authToken: string
   let topicIds: string[] | undefined[]
 
   beforeAll(async () => {
-    const response = await supertest(server).post('/api/v1/auth/login').send({
-      dni: '23456789B',
-      password: 'password2',
-    })
-    // eslint-disable-next-line prefer-destructuring
-    authToken = response.header['set-cookie'][0].split(';')[0]
-
     topicIds = (await prisma.topic.findMany()).map((topic) => topic.id)
   })
 
@@ -29,7 +22,7 @@ describe('Testing resource creation endpoint', () => {
     }
 
     const response = await supertest(server)
-      .post('/api/v1/resources/create')
+      .post(`${pathRoot.v1.resources}/create`)
       .set('Cookie', authToken)
       .send(newResource)
 
@@ -46,7 +39,7 @@ describe('Testing resource creation endpoint', () => {
     }
 
     const response = await supertest(server)
-      .post('/api/v1/resources/create')
+      .post(`${pathRoot.v1.resources}/create`)
       .set('Cookie', authToken)
       .send(newResource)
 
@@ -63,7 +56,7 @@ describe('Testing resource creation endpoint', () => {
     }
 
     const response = await supertest(server)
-      .post('/api/v1/resources/create')
+      .post(`${pathRoot.v1.resources}/create`)
       .set('Cookie', authToken)
       .send(invalidResource)
 

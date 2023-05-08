@@ -1,23 +1,12 @@
 import supertest from 'supertest'
-import { expect, test, describe, beforeAll } from 'vitest'
+import { expect, test, describe } from 'vitest'
 import { server } from '../setup'
+import { pathRoot } from '../../routes/routes'
 
 describe('Testing resources get endpoint', () => {
-  let authToken: string
-
-  beforeAll(async () => {
-    const response = await supertest(server).post('/api/v1/auth/login').send({
-      dni: '23456789B',
-      password: 'password2',
-    })
-    // eslint-disable-next-line prefer-destructuring
-    authToken = response.header['set-cookie'][0].split(';')[0]
-  })
-
   test('should get all resources by resourceType ', async () => {
     const response = await supertest(server)
-      .get('/api/v1/resources')
-      .set('Cookie', authToken)
+      .get(`${pathRoot.v1.resources}`)
       .query({ type: 'BLOG' })
       
       expect(response.status).toBe(200)
@@ -27,8 +16,7 @@ describe('Testing resources get endpoint', () => {
 
   test('should fail with wrong resourceType', async () => {
     const response = await supertest(server)
-      .get('/api/v1/resources')
-      .set('Cookie', authToken)
+      .get(`${pathRoot.v1.resources}`)
       .query({ type: 'WRONG TYPE' })
       
       expect(response.status).toBe(500)
@@ -39,8 +27,7 @@ describe('Testing resources get endpoint', () => {
     const topicName = 'Listas'
 
     const response = await supertest(server)
-      .get('/api/v1/resources')
-      .set('Cookie', authToken)
+      .get(`${pathRoot.v1.resources}`)
       .query({ topic: topicName })
       
       expect(response.status).toBe(200)
@@ -58,8 +45,7 @@ describe('Testing resources get endpoint', () => {
     const topicName = 'This topic does not exist'
 
     const response = await supertest(server)
-      .get('/api/v1/resources')
-      .set('Cookie', authToken)
+      .get(`${pathRoot.v1.resources}`)
       .query({ topic: topicName })
       
       expect(response.status).toBe(200)
@@ -70,8 +56,7 @@ describe('Testing resources get endpoint', () => {
     const topicName = 'Listas'
 
     const response = await supertest(server)
-      .get('/api/v1/resources')
-      .set('Cookie', authToken)
+      .get(`${pathRoot.v1.resources}`)
       .query({ topic: topicName })
       
       expect(response.status).toBe(200)
@@ -89,8 +74,7 @@ describe('Testing resources get endpoint', () => {
   test('should get all resources', async () => {
 
     const response = await supertest(server)
-      .get('/api/v1/resources')
-      .set('Cookie', authToken)
+      .get(`${pathRoot.v1.resources}`)
       .query({})
       
       expect(response.status).toBe(200)

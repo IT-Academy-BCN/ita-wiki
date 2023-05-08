@@ -1,11 +1,12 @@
 import supertest from 'supertest'
 import { expect, test, describe } from 'vitest'
 import { server } from '../setup'
+import { pathRoot } from '../../routes/routes'
 
 describe('Testing categories endpoint', () => {
     describe('Testing GET method',  () => {
         test('Should respond OK status and return categories as an array. As per seed data, it should not be empty, and contain objects with an id and category name.', async () => {
-            const response = await supertest(server).get('/api/v1/categories')
+            const response = await supertest(server).get(`${pathRoot.v1.categories}`)
             
             expect(response.status).toBe(200);
             expect(response.body).toBeInstanceOf(Array)

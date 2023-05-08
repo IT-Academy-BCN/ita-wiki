@@ -1,10 +1,11 @@
 import supertest from 'supertest'
 import { expect, test, describe } from 'vitest'
 import { server } from '../setup'
+import { pathRoot } from '../../routes/routes'
 
 describe('Testing authentication endpoint', () => {
   test('should succeed with correct credentials', async () => {
-    const response = await supertest(server).post('/api/v1/auth/login').send({
+    const response = await supertest(server).post(`${pathRoot.v1.auth}/login`).send({
       dni: '12345678a',
       password: 'password1',
     })
@@ -15,7 +16,7 @@ describe('Testing authentication endpoint', () => {
   })
 
   test('should fail with incorrect password', async () => {
-    const response = await supertest(server).post('/api/v1/auth/login').send({
+    const response = await supertest(server).post(`${pathRoot.v1.auth}/login`).send({
       dni: '12345678a',
       password: 'wrong password',
     })
@@ -24,7 +25,7 @@ describe('Testing authentication endpoint', () => {
   })
 
   test('should fail with user not found', async () => {
-    const response = await supertest(server).post('/api/v1/auth/login').send({
+    const response = await supertest(server).post(`${pathRoot.v1.auth}/login`).send({
       dni: '11111111a',
       password: 'password1',
     })
