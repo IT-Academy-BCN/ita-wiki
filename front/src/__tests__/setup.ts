@@ -1,8 +1,7 @@
-import { expect, afterEach } from 'vitest'
+import { expect, afterEach, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
 import { QueryClient } from '@tanstack/react-query'
 import matchers from '@testing-library/jest-dom/matchers'
-import 'whatwg-fetch' // Import the fetch polyfill
 import { server } from '../__mocks__/server'
 
 export const queryClient = new QueryClient({
@@ -16,8 +15,24 @@ export const queryClient = new QueryClient({
 // extends Vitest's expect method with methods from react-testing-library
 expect.extend(matchers)
 
+type TConstants = {
+  urls: Record<string, string>
+  paths: Record<string, string>
+}
+
 // Establish API mocking before all tests.
 beforeAll(() => {
+  vi.mock('../constants', async (importOriginal) => {
+    const mod: TConstants = await importOriginal()
+    const newUrls: TConstants['urls'] = {}
+    Object.keys(mod.urls).forEach((key) => {
+      newUrls[key] = `http://localhost:3000${mod.urls[key]}`
+    })
+    return {
+      ...mod,
+      urls: newUrls,
+    }
+  })
   server.listen()
 })
 
