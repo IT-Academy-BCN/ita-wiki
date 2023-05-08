@@ -32,16 +32,6 @@ export const getResourceVote: Middleware = async (ctx: Koa.Context) => {
         downvote,
         total: (upvote-downvote)
     } }
-
-    /* const res = await prisma.vote.groupBy({
-        by: ['vote'],
-        where: {
-            resourceId,
-            vote: {not: 0},
-        },
-        _sum: {vote: true}
-    }) 
-    ctx.body = res; */
 }
 
 export const putResourceVote: Middleware = async (ctx: Koa.Context) => {
