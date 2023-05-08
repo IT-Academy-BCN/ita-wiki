@@ -20,7 +20,7 @@ describe('GET /api/v1/resources/topic/:topicId', () => {
                 ]))
         });
 
-       test('should fail if topic ID does not exist', async () => {
+       test('should fail if topic ID does not exist in database', async () => {
 
             const response = await supertest(server).get('/api/v1/resources/topic/blaaaaaaaaaaaah');
             
