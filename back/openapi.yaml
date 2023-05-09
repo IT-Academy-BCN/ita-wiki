@@ -309,9 +309,13 @@ paths:
                     name:
                       type: string
                       example: Javascript
+                    slug:
+                      type: string
+                      example: javascript
                   required:
                     - id
                     - name
+                    - slug
   /api/v1/resources:
     get:
       tags:
