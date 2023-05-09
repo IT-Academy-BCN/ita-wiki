@@ -6,7 +6,6 @@ import {
   CardResource,
   InputGroup,
   ResourceTitleLink,
-  VoteCounter,
 } from '../components/molecules'
 import {
   HowToHelpCard,
