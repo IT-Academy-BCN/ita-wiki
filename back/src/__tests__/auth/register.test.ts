@@ -5,12 +5,12 @@ import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 
 
-afterAll(() => {
-  prisma.user.delete({
+afterAll(async () => {
+  await prisma.user.delete({
     where: {email: 'example2@example.com'}
   })
 })
-describe('Testing registration endpoint', async () => {
+describe('Testing registration endpoint', () => {
   test('should succeed with correct credentials', async () => {
     const response = await supertest(server)
       .post(`${pathRoot.v1.auth}/register`)
@@ -24,7 +24,7 @@ describe('Testing registration endpoint', async () => {
     expect(response.status).toBe(204)
   })
 
-  /* describe('should fail with duplicate', () => {
+  describe('should fail with duplicate', () => {
     test('should fail with duplicate: DNI', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
@@ -52,7 +52,7 @@ describe('Testing registration endpoint', async () => {
       expect(response.status).toBe(400)
       expect(response.body.error).toBe('Email already exists')
     })
-  }) */
+  })
 
   describe("should fail with missing required fields", () => {
     test('should fail with missing required fields: dni', async () => {

@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import { expect, test, describe, beforeAll } from 'vitest'
+import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import { server, authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
@@ -11,10 +11,19 @@ describe('Testing resource creation endpoint', () => {
     topicIds = (await prisma.topic.findMany()).map((topic) => topic.id)
   })
 
+  afterAll(async () => {
+    await prisma.topicsOnResources.deleteMany({
+      where: {resource: {slug: 'test-resource'}}
+    })
+    
+    await prisma.resource.delete({
+      where: {slug: 'test-resource'}
+    })
+  })
+
   test('should create a new resource with topics', async () => {
     const newResource = {
-      title: 'New Resource',
-      slug:'new-resource',
+      title: 'Test Resource',
       description: 'This is a new resource',
       url: 'https://example.com/resource',
       resourceType: 'BLOG',
