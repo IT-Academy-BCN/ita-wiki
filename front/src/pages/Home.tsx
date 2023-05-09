@@ -6,6 +6,7 @@ import {
   CardResource,
   InputGroup,
   ResourceTitleLink,
+  VoteCounter,
 } from '../components/molecules'
 import {
   HowToHelpCard,
@@ -274,6 +275,7 @@ const Home: FC = () => {
       <MobileStyled>
         <GrayBackground />
         <HeaderContainerStyled>
+          <VoteCounter />
           <HowToHelpCard />
           <InputGroup
             label="Buscar"

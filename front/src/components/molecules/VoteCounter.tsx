@@ -1,7 +1,9 @@
 import styled from 'styled-components'
-import React, { useEffect, useState } from 'react'
+import { FC, useState } from 'react'
+import { useMutation } from '@tanstack/react-query'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
+import { urls } from '../../constants'
 
 const StyledIcon = styled(Icon)`
   color: ${colors.gray.gray3};
@@ -13,36 +15,33 @@ const StyledIcon = styled(Icon)`
 `
 
 type TVoteCounter = {
-  vote: number
+  vote: string
   resourceId: string
 }
 
-const VoteCounter: React.FC<TVoteCounter> = ({ vote = 0, resourceId }) => {
-  const [, setVote] = useState(0)
-  // TODO: change url for constant in urls
-  const url = `http://localhost:8999/api/v1/resources/vote/${resourceId}/${vote}`
+const fetcher = async (resourceId: string, vote: string) => {
+  const url = urls.vote
+    .replace(':resourceId', resourceId)
+    .replace(':vote', vote)
+  const res = await fetch(url)
+  return res.json()
+}
 
-  useEffect(() => {
-    const requestOptions = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ vote }),
-    }
+const VoteCounter: FC<TVoteCounter> = ({ vote, resourceId }) => {
+  const [newVote, setNewVote] = useState(Number(vote))
 
-    fetch(url, requestOptions).then(async (res) => {
-      const data = await res.json()
-      setVote(data)
-      console.log('data', data)
-    })
-  }, [url, vote])
+  const newVotation = useMutation({
+    mutationKey: ['vote', 'resourceId'],
+    mutationFn: () => fetcher(resourceId, vote),
+  })
 
-  const handleIncrease = () => {
-    setVote(vote + 1)
+  const handleIncrease = async () => {
+    const res = await newVotation
+    setNewVote(newVote + 1)
+    console.log(res)
   }
 
-  const handleDecrease = () => {
-    setVote(vote - 1)
-  }
+  const handleDecrease = () => {}
 
   return (
     <FlexBox data-testid="voteCounter">

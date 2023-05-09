@@ -33,4 +33,5 @@ describe('Vote counter molecule', () => {
       expect(screen.getByTestId('voteTest')).toHaveTextContent('1')
     })
   })
+  it('Fetches vote')
 })
