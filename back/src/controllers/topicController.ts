@@ -6,6 +6,8 @@ export const getTopics: Middleware = async (ctx: Koa.Context) => {
         select: {
             id: true,
             name: true,
+            slug: true,
+            categoryId: true
         }
     });
     ctx.status = 200;
@@ -13,7 +15,7 @@ export const getTopics: Middleware = async (ctx: Koa.Context) => {
 }
 
 export const getTopicsByCategoryId: Middleware = async (ctx: Koa.Context) => {
-    const {categoryId} = ctx.params;
+    const { categoryId } = ctx.params;
     const topics = await prisma.topic.findMany({
         where: {
             categoryId
@@ -21,6 +23,7 @@ export const getTopicsByCategoryId: Middleware = async (ctx: Koa.Context) => {
         select: {
             id: true,
             name: true,
+            slug: true
         }
     });
     ctx.status = 200;

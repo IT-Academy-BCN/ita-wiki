@@ -172,6 +172,7 @@ paths:
                 email:
                   type: string
                   format: email
+                  example: user@example.cat
                 name:
                   type: string
                 dni:
@@ -235,6 +236,7 @@ paths:
                   email:
                     type: string
                     format: email
+                    example: user@example.cat
                   role:
                     type: string
                     enum:
@@ -307,9 +309,183 @@ paths:
                     name:
                       type: string
                       example: Javascript
+                    slug:
+                      type: string
+                      example: javascript
                   required:
                     - id
                     - name
+                    - slug
+  /api/v1/resources:
+    get:
+      tags:
+        - resources
+      description: Returns a collection of resources based on type and topic
+      summary: Returns a collection of resources
+      parameters:
+        - in: query
+          name: resourceType
+          schema:
+            type: string
+            enum:
+              - BLOG
+              - VIDEO
+              - TUTORIAL
+            example: BLOG
+          required: false
+        - in: query
+          name: topic
+          schema:
+            type: string
+            example: Listas
+          required: false
+      responses:
+        "200":
+          description: Sucessful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                          example: My Resource in Javascript
+                        slug:
+                          type: string
+                          example: my-resource-in-javascript
+                        description:
+                          type: string
+                          example: Lorem ipsum javascript
+                        url:
+                          type: string
+                          format: uri
+                          example: https://tutorials.cat/learn/javascript
+                        resourceType:
+                          type: string
+                          enum: &a1
+                            - BLOG
+                            - VIDEO
+                            - TUTORIAL
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                        user:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            email:
+                              type: string
+                              format: email
+                              example: user@example.cat
+                          required:
+                            - email
+                        topics:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              name:
+                                type: string
+                              slug:
+                                type: string
+                              categoryId:
+                                type: string
+                              createdAt:
+                                type: string
+                              updatedAt:
+                                type: string
+                            required:
+                              - id
+                              - name
+                              - categoryId
+                              - createdAt
+                              - updatedAt
+                      required:
+                        - id
+                        - title
+                        - url
+                        - resourceType
+                        - createdAt
+                        - updatedAt
+                        - user
+                        - topics
+                required:
+                  - resources
+        "500":
+          description: Internal error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: '{"message":"\nInvalid `.findMany()` invocation
+                      in\n/ita-wiki/back/src/controllers/getResourcesController.ts:27:8\n'
+                required:
+                  - message
+  /api/v1/resources/create:
+    post:
+      tags:
+        - resources
+      description: Allows a logged in user to post a resource.
+      summary: Post a resource
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: My Resource in Javascript
+                description:
+                  type: string
+                  example: Lorem ipsum javascript
+                url:
+                  type: string
+                  format: uri
+                  example: https://tutorials.cat/learn/javascript
+                resourceType:
+                  type: string
+                  enum: *a1
+                topics:
+                  type: array
+                  items:
+                    type: string
+              required:
+                - title
+                - url
+                - resourceType
+                - topics
+      responses:
+        "204":
+          description: Resource has been posted
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/resources/me:
     get:
       tags:
@@ -330,17 +506,20 @@ paths:
                     type: string
                   title:
                     type: string
+                    example: My Resource in Javascript
+                  slug:
+                    type: string
+                    example: my-resource-in-javascript
                   description:
                     type: string
+                    example: Lorem ipsum javascript
                   url:
                     type: string
                     format: uri
+                    example: https://tutorials.cat/learn/javascript
                   resourceType:
                     type: string
-                    enum:
-                      - BLOG
-                      - VIDEO
-                      - TUTORIAL
+                    enum: *a1
                   userId:
                     type: string
                   createdAt:
@@ -379,6 +558,108 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
+  /api/v1/resources/vote/:resourceId:
+    get:
+      tags:
+        - resources
+        - vote
+      description: Get the vote count for a resource, separeted in total votes,
+        upvotes and downvotes
+      summary: Get the vote count for a resource.
+      parameters:
+        - in: path
+          name: resourceId
+          schema:
+            type: string
+            description: ID of the resource to get the vote count
+          required: true
+      responses:
+        "200":
+          description: Successful operation. Votes are retrieved and summed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  voteCount:
+                    type: object
+                    properties:
+                      upvote:
+                        type: integer
+                      downvote:
+                        type: integer
+                      total:
+                        type: integer
+                    required:
+                      - upvote
+                      - downvote
+                      - total
+                required:
+                  - voteCount
+        "404":
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Resource not found
+                required:
+                  - error
+  /api/v1/resources/vote/:resourceId/:vote:
+    put:
+      tags:
+        - resources
+        - vote
+      description: Allows a user to vote for a resource. Vote can be 1 for an upvote,
+        -1 for a downvote or 0 to cancel a previous vote.
+      summary: Allows a user to vote for a resource.
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: resourceId
+          schema:
+            type: string
+            description: ID of the resource to vote
+          required: true
+        - in: path
+          name: vote
+          schema:
+            type: integer
+            maximum: 1
+            minimum: -1
+            description: 1 for upvote, -1 for downvote, 0 to cancel previous vote.
+          required: true
+      responses:
+        "204":
+          description: Vote was sent and stored successfully.
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+                required:
+                  - error
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/topics/category/:categoryId:
     get:
       tags:
@@ -392,7 +673,24 @@ paths:
           description: ID of the category for which to retrieve topics
       responses:
         "200":
-          description: The server has successfully received the parameter
+          description: Topics by category id retrieved  successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    slug:
+                      type: string
+                  required:
+                    - id
+                    - name
+                    - slug
   /api/v1/topics:
     get:
       tags:
@@ -401,4 +699,24 @@ paths:
       summary: Returns topics
       responses:
         "200":
-          description: The server has successfully received the parameter
+          description: Topics retrieved succesfully,
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    slug:
+                      type: string
+                    categoryId:
+                      type: string
+                  required:
+                    - id
+                    - name
+                    - slug
+                    - categoryId

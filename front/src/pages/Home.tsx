@@ -28,7 +28,7 @@ type Tresource = {
   createdBy: string
   createdOn: string
   description: string
-  url: string
+  img: string
 }
 const categories: Tcategories[] = [
   {
@@ -75,7 +75,7 @@ const resources: Tresource[] = [
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Proyecto práctico',
-    url: 'https://www.youtube.com/shorts/tR0IZnDt_5Q',
+    img: icons.profileAvatar,
   },
   {
     id: 2,
@@ -83,7 +83,7 @@ const resources: Tresource[] = [
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
-    url: 'https://www.youtube.com/watch?v=SbhzQqP1p70',
+    img: icons.profileAvatar,
   },
   {
     id: 3,
@@ -91,7 +91,7 @@ const resources: Tresource[] = [
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
-    url: 'https://www.youtube.com/watch?v=Ae33_gdJgnQ',
+    img: icons.profileAvatar,
   },
   {
     id: 4,
@@ -99,7 +99,7 @@ const resources: Tresource[] = [
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
-    url: 'https://www.youtube.com/watch?v=j-jzI3wkkVk&t=5s',
+    img: icons.profileAvatar,
   },
 ]
 const dataSubjects = [
@@ -297,7 +297,7 @@ const Home: FC = () => {
             color={colors.gray.gray3}
           />
         </HeaderContainerStyled>
-        <CategoriesList categories={categories} />
+        <CategoriesList />
         <ResourcesList title="Recursos que te gustan" resources={resources} />
         <ResourcesList title="Tus recursos" resources={resources} />
       </MobileStyled>
@@ -393,7 +393,7 @@ const Home: FC = () => {
               {resources.map((fav) => (
                 <UserResourcesContainerStyled key={fav.id}>
                   <ResourceTitleLink
-                    url={fav.url}
+                    url={fav.img}
                     title={fav.title}
                     description={fav.description}
                   />
@@ -411,7 +411,7 @@ const Home: FC = () => {
               {resources.map((res) => (
                 <UserResourcesContainerStyled key={res.id}>
                   <ResourceTitleLink
-                    url={res.url}
+                    url={res.img}
                     title={res.title}
                     description={res.description}
                   />
