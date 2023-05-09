@@ -15,7 +15,8 @@ describe('Testing categories endpoint', () => {
         expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(String),
-            name: expect.any(String)
+            name: expect.any(String),
+            slug: expect.any(String)
           })
         ])
       )
