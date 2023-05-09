@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import { expect, test, describe } from 'vitest'
-import { server } from '../setup'
+import { server } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 
 describe('Testing resources get endpoint', () => {

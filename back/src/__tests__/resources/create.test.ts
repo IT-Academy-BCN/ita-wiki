@@ -1,6 +1,7 @@
 import supertest from 'supertest'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
-import { server, authToken } from '../setup'
+import { server } from '../globalSetup'
+import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 
@@ -32,7 +33,7 @@ describe('Testing resource creation endpoint', () => {
 
     const response = await supertest(server)
       .post(`${pathRoot.v1.resources}/create`)
-      .set('Cookie', authToken)
+      .set('Cookie', authToken.admin)
       .send(newResource)
 
     expect(response.status).toBe(204)
@@ -49,7 +50,7 @@ describe('Testing resource creation endpoint', () => {
 
     const response = await supertest(server)
       .post(`${pathRoot.v1.resources}/create`)
-      .set('Cookie', authToken)
+      .set('Cookie', authToken.admin)
       .send(newResource)
 
     expect(response.status).toBe(422)
@@ -66,7 +67,7 @@ describe('Testing resource creation endpoint', () => {
 
     const response = await supertest(server)
       .post(`${pathRoot.v1.resources}/create`)
-      .set('Cookie', authToken)
+      .set('Cookie', authToken.admin)
       .send(invalidResource)
 
     expect(response.status).toBe(400)

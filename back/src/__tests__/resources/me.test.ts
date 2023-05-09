@@ -1,8 +1,32 @@
 import supertest from 'supertest'
-import { expect, test, describe } from 'vitest'
-import { server, authToken, testUser } from '../setup'
+import { expect, test, describe, beforeAll, afterAll } from 'vitest'
+import { server, testUserData } from '../globalSetup'
+import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
+
+beforeAll(async () => {
+  const testUser = await prisma.user.findUnique({
+    where: {dni: testUserData.user.dni}
+  })
+  
+  await prisma.resource.create({
+    data: {
+      title: 'Test Resource',
+      slug: 'test-resource',
+      description: 'This is a new resource',
+      url: 'https://example.com/resource',
+      resourceType: 'BLOG',
+      userId: testUser!.id
+    }
+  })
+})
+
+afterAll(async () => {
+  await prisma.resource.delete({
+    where: { slug: 'test-resource' },
+  })
+})
 
 describe("Testing resources/me endpoint", () => {
   test("Should return error if no token is provided", async () => {
@@ -11,30 +35,21 @@ describe("Testing resources/me endpoint", () => {
     expect(response.body.error).toBe('Unauthorized: Missing token')
   })
 
-  test("User with no resources posted returns empty array", async () => {
+  test("User with no resources posted returns empty array.", async () => {
+    // User admin has no posted resources
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}/me`)
-      .set('Cookie', authToken)
+      .set('Cookie', authToken.admin)
       
     expect(response.status).toBe(200);
     expect(response.body).toEqual([])
   })
 
   test("Should return resources from user", async () => {
-    await prisma.resource.create({
-      data: {
-        title: 'Test Resource',
-        slug: 'test-resource',
-        description: 'This is a new resource',
-        url: 'https://example.com/resource',
-        resourceType: 'BLOG',
-        userId: testUser.id
-      }
-    })
-
+    // Normal user has a resource created for this test.
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}/me`)
-      .set('Cookie', authToken)
+      .set('Cookie', authToken.user)
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(expect.arrayContaining([
@@ -49,9 +64,5 @@ describe("Testing resources/me endpoint", () => {
         updatedAt: expect.any(String),
       })
     ]))
-
-    await prisma.resource.delete({
-      where: { slug: 'test-resource' },
-    })
   })
 })

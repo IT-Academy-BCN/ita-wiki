@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import { expect, test, describe } from 'vitest'
-import { server } from '../setup'
+import { server } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 
 describe('Testing authentication endpoint', () => {
@@ -26,7 +26,7 @@ describe('Testing authentication endpoint', () => {
 
   test('should fail with user not found', async () => {
     const response = await supertest(server).post(`${pathRoot.v1.auth}/login`).send({
-      dni: '11111111a',
+      dni: '11111111b',
       password: 'password1',
     })
     expect(response.status).toBe(404)

@@ -1,13 +1,13 @@
 import supertest from 'supertest'
 import { expect, test, describe, afterAll } from 'vitest'
-import { server } from '../setup'
+import { server } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 
 
 afterAll(async () => {
-  await prisma.user.delete({
-    where: {email: 'example2@example.com'}
+  await prisma.user.deleteMany({
+    where: { email: 'example2@example.com' }
   })
 })
 describe('Testing registration endpoint', () => {
@@ -19,7 +19,7 @@ describe('Testing registration endpoint', () => {
         name: 'Example2',
         email: 'example2@example.com',
         password: 'password1',
-        specialization: 'backend', 
+        specialization: 'backend',
       })
     expect(response.status).toBe(204)
   })
@@ -38,7 +38,7 @@ describe('Testing registration endpoint', () => {
       expect(response.status).toBe(400)
       expect(response.body.error).toBe('DNI already exists')
     })
-  
+
     test('should fail with duplicate: email', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
@@ -127,7 +127,7 @@ describe('Testing registration endpoint', () => {
       expect(response.body.message[0].validation).toBe('regex')
       expect(response.body.message[0].path).toContain('dni')
     })
-  
+
     test('should fail with invalid input: email', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
@@ -142,7 +142,7 @@ describe('Testing registration endpoint', () => {
       expect(response.body.message[0].validation).toBe('email')
       expect(response.body.message[0].path).toContain('email')
     })
-  
+
     test('should fail with invalid input: password too short', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
@@ -157,7 +157,7 @@ describe('Testing registration endpoint', () => {
       expect(response.body.message[0].path).toContain('password')
       expect(response.body.message[0].code).toBe('too_small')
     })
-  
+
     test('should fail with invalid input: password has no numbers', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
@@ -172,7 +172,7 @@ describe('Testing registration endpoint', () => {
       expect(response.body.message[0].validation).toBe('regex')
       expect(response.body.message[0].path).toContain('password')
     })
-  
+
     test('should fail with invalid input: password contains non-alfanumeric', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
