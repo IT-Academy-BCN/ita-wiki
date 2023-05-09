@@ -275,7 +275,6 @@ const Home: FC = () => {
       <MobileStyled>
         <GrayBackground />
         <HeaderContainerStyled>
-          <VoteCounter resourceId="sdjgfdsjgkfd" />
           <HowToHelpCard />
           <InputGroup
             label="Buscar"

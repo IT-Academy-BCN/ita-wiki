@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { FC, useState } from 'react'
-import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query'
+import { FC } from 'react'
+import { useMutation } from '@tanstack/react-query'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
 import { urls } from '../../constants'
@@ -19,10 +19,10 @@ type TVoteCounter = {
   resourceId: string
 }
 
-const fetcher = async (resourceId: string, voteVaue: string) => {
+const fetcher = async (resourceId: string, voteValue: string) => {
   const url = urls.vote
     .replace(':resourceId', resourceId)
-    .replace(':vote', voteVaue)
+    .replace(':vote', voteValue)
   const res = await fetch(url)
   return res.json()
 }
