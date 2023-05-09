@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { FC, SetStateAction, useRef, useState } from 'react'
+import { FC, SetStateAction, useState } from 'react'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import {
@@ -13,6 +13,7 @@ import {
   ResourcesList,
 } from '../components/organisms'
 import { Icon, Text, Title } from '../components/atoms'
+import { useSearch } from '../utils/hooks/useSearch'
 
 type Tcategories = {
   id: number
@@ -68,7 +69,7 @@ const categories: Tcategories[] = [
   },
 ]
 
-const resources: Tresource[] = [
+export const resources: Tresource[] = [
   {
     id: 1,
     title: 'JavaScript en 45 segundos!',
@@ -259,11 +260,11 @@ const CategoryLinkStyled = styled.a<TLinkStyled>`
 `
 // END style Desktop
 
+
+
 const Home: FC = () => {
   const [activeLink, setActiveLink] = useState('')
   const [activeCategory, setActiveCategory] = useState('')
-  const searchRef = useRef<HTMLInputElement>(null)
-  const [searchResources, setSearchResources] = useState(resources)
 
   const handleClick = (link: SetStateAction<string>) => {
     setActiveLink(link)
@@ -272,15 +273,7 @@ const Home: FC = () => {
     setActiveCategory(cat)
   }
 
-
-  const iconClick = () => {
-    const searchValue = searchRef.current?.value || ''
-    setSearchResources(
-      resources.filter((resource) =>
-        resource.title.toLowerCase().includes(searchValue.toLowerCase())
-      )
-    )
-  }
+  const { iconClick, searchRef, searchResources } = useSearch()
 
   return (
     <>
