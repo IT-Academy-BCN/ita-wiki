@@ -75,13 +75,13 @@ const dataSubjects = [
 ]
 
 // TODO: mobile first!
-export const MobileStyled = styled.div`
+const MobileStyled = styled.div`
   display: block;
   @media only ${device.Laptop} {
     display: none;
   }
 `
-export const DesktopStyled = styled.div`
+const DesktopStyled = styled.div`
   display: none;
   @media only ${device.Laptop} {
     display: block;
@@ -168,12 +168,6 @@ const VideoContainer = styled(FlexBox)`
   border-radius: ${dimensions.borderRadius.base};
   padding-right: ${dimensions.spacing.xxxs};
   padding-left: ${dimensions.spacing.xxxs};
-`
-
-export const ImgStyled = styled.img`
-  height: 30px;
-  margin-right: ${dimensions.spacing.xxxs};
-  margin-top: ${dimensions.spacing.xxl};
 `
 
 type TLinkStyled = {

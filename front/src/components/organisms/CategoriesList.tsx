@@ -1,13 +1,31 @@
 import { FC, useState } from 'react'
+import axios from 'axios'
 import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
-import { FlexBox, colors, dimensions } from '../../styles'
+import { FlexBox, colors, device, dimensions } from '../../styles'
 import { CategoryBlock } from '../molecules'
 import { Spinner, Title } from '../atoms'
 import icons from '../../assets/icons'
 import { urls } from '../../constants'
-import { DesktopStyled, ImgStyled, MobileStyled } from '../../pages/Home'
-import axios from 'axios'
+
+const ImgStyled = styled.img`
+  height: 30px;
+  margin-right: ${dimensions.spacing.xxxs};
+  margin-top: ${dimensions.spacing.xxl};
+`
+
+const MobileStyled = styled.div`
+  display: block;
+  @media only ${device.Laptop} {
+    display: none;
+  }
+`
+const DesktopStyled = styled.div`
+  display: none;
+  @media only ${device.Laptop} {
+    display: block;
+  }
+`
 
 const SmallSpinner = styled(Spinner)`
   width: 70px;
@@ -63,22 +81,21 @@ type TCategory = {
   topics: number
   img: string
 }
+/*
+const getCategories = () =>
+  fetch(urls.getCategories)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error fetching categories: ${res.statusText}`)
+      }
+      return res.json()
+    })
+    .catch((err) => {
+      throw new Error(`Error fetching categories: ${err.message}`)
+    })
+    */
 
-// const getCategories = () =>
-//   fetch(urls.getCategories)
-//     .then((res) => {
-//       if (!res.ok) {
-//         throw new Error(`Error fetching categories: ${res.statusText}`)
-//       }
-//       return res.json()
-//     })
-//     .catch((err) => {
-//       throw new Error(`Error fetching categories: ${err.message}`)
-//     })
-
-const getCategories = () => {
-  return axios.get(urls.getCategories)
-}
+const getCategories = () => axios.get(urls.getCategories);
 
 export const CategoriesList: FC = () => {
   const [activeCategory, setActiveCategory] = useState('')

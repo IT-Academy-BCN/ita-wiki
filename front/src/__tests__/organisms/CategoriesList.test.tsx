@@ -17,7 +17,7 @@ describe('CategoriesList', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Categorías')).toBeInTheDocument()
-      //expect(screen.findAllByText('React')).toBeInTheDocument()
+      // expect(screen.findAllByText('React')).toBeInTheDocument()
     })
   })
 
