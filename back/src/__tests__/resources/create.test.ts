@@ -5,7 +5,6 @@ import { prisma } from '../../prisma/client'
 
 describe('Testing resource creation endpoint', () => {
   let authToken: string
-  let existingUserEmail: string | undefined
   let topicIds: string[] | undefined[]
 
   beforeAll(async () => {
@@ -15,14 +14,6 @@ describe('Testing resource creation endpoint', () => {
     })
     // eslint-disable-next-line prefer-destructuring
     authToken = response.header['set-cookie'][0].split(';')[0]
-
-    existingUserEmail = (
-      await prisma.user.findFirst({
-        where: {
-          role: 'REGISTERED',
-        },
-      })
-    )?.email
 
     topicIds = (await prisma.topic.findMany()).map((topic) => topic.id)
   })
@@ -34,8 +25,7 @@ describe('Testing resource creation endpoint', () => {
       description: 'This is a new resource',
       url: 'https://example.com/resource',
       resourceType: 'BLOG',
-      topics: topicIds,
-      userEmail: existingUserEmail,
+      topics: topicIds
     }
 
     const response = await supertest(server)
@@ -52,8 +42,7 @@ describe('Testing resource creation endpoint', () => {
       description: 'This is a new resource',
       url: 'https://example.com/resource',
       resourceType: 'BLOG',
-      topics: [],
-      userEmail: existingUserEmail,
+      topics: []
     }
 
     const response = await supertest(server)
@@ -70,8 +59,7 @@ describe('Testing resource creation endpoint', () => {
       description: 'This is a new resource',
       url: 'https://example.com/resource',
       resourceType: 'INVALIDE-RESOURCE',
-      topicId: topicIds,
-      userEmail: existingUserEmail,
+      topicId: topicIds
     }
 
     const response = await supertest(server)
