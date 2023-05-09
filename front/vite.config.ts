@@ -10,6 +10,7 @@ export default defineConfig({
       '/api': {
         target: 'https://dev.api.itadirectory.eurecatacademy.org/',
         changeOrigin: true,
+        // rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },

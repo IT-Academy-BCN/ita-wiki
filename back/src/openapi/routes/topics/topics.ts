@@ -1,5 +1,6 @@
 import { pathRoot } from '../../../routes/routes'
 import { registry } from '../../registry'
+import { z } from '../../zod'
 
 registry.registerPath({
   method: 'get',
@@ -9,7 +10,18 @@ registry.registerPath({
   summary: 'Returns topics',
   responses: {
     200: {
-      description: 'The server has successfully received the parameter'
+      description: 'Topics retrieved succesfully,',
+      content: {
+        'application/json': {
+          schema: z.array(
+            z.object({
+              id: z.string(),
+              name: z.string(),
+              slug: z.string(),
+              categoryId: z.string(),
+            }))
+        },
+      }
     },
   },
 })
