@@ -262,7 +262,7 @@ const CategoryLinkStyled = styled.a<TLinkStyled>`
 const Home: FC = () => {
   const [activeLink, setActiveLink] = useState('')
   const [activeCategory, setActiveCategory] = useState('')
-  const searchRef = useRef<TSearchRef>()
+  const searchRef = useRef<HTMLInputElement>(null)
   const [searchResources, setSearchResources] = useState(resources)
 
   const handleClick = (link: SetStateAction<string>) => {
@@ -272,9 +272,6 @@ const Home: FC = () => {
     setActiveCategory(cat)
   }
 
-  type TSearchRef = {
-    value: string
-  }
 
   const iconClick = () => {
     const searchValue = searchRef.current?.value || ''
