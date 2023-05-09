@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { FC, useState } from 'react'
-import { useMutation } from '@tanstack/react-query'
+import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
 import { urls } from '../../constants'
@@ -15,53 +15,47 @@ const StyledIcon = styled(Icon)`
 `
 
 type TVoteCounter = {
-  vote: string
+  voteCount: string
   resourceId: string
 }
 
-const fetcher = async (resourceId: string, vote: string) => {
+const fetcher = async (resourceId: string, voteVaue: string) => {
   const url = urls.vote
     .replace(':resourceId', resourceId)
-    .replace(':vote', vote)
+    .replace(':vote', voteVaue)
   const res = await fetch(url)
   return res.json()
 }
 
-const VoteCounter: FC<TVoteCounter> = ({ vote, resourceId }) => {
-  const [newVote, setNewVote] = useState(Number(vote))
-
+const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId }) => {
   const newVotation = useMutation({
-    mutationKey: ['vote', 'resourceId'],
-    mutationFn: () => fetcher(resourceId, vote),
+    mutationKey: ['vote', resourceId],
+    mutationFn: (voteValue: string) => fetcher(resourceId, voteValue),
   })
 
-  const handleIncrease = async () => {
-    const res = await newVotation
-    setNewVote(newVote + 1)
-    console.log(res)
+  const handleClick = (voteValue: number) => {
+    newVotation.mutate(voteValue.toString())
   }
-
-  const handleDecrease = () => {}
 
   return (
     <FlexBox data-testid="voteCounter">
       <StyledIcon
         name="expand_less"
-        onClick={handleIncrease}
         data-testid="increase"
+        onClick={() => handleClick(1)}
       />
       <Text
         fontWeight="bold"
         style={{ marginTop: '0', marginBottom: '0' }}
         data-testid="voteTest"
       >
-        {vote}
+        {voteCount}
       </Text>
       <StyledIcon
         name="expand_more"
         id="decrease"
-        onClick={handleDecrease}
         data-testid="decrease"
+        onClick={() => handleClick(-1)}
       />
     </FlexBox>
   )
