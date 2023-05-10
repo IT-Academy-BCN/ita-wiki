@@ -263,6 +263,7 @@ const CategoryLinkStyled = styled.a<TLinkStyled>`
 const Home: FC = () => {
   const [activeLink, setActiveLink] = useState('')
   const [activeCategory, setActiveCategory] = useState('')
+  const [query, setQuery] = useState('')
 
   const handleClick = (link: SetStateAction<string>) => {
     setActiveLink(link)
@@ -271,7 +272,10 @@ const Home: FC = () => {
     setActiveCategory(cat)
   }
 
-  const { filteredItems } = useSearch(resources, /* query */)
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value)
+  }
+  const { filteredItems } = useSearch(resources, query)
 
   return (
     <>
@@ -371,6 +375,7 @@ const Home: FC = () => {
                 placeholder="Buscar recurso concreto"
                 id="search-resource"
                 icon="search"
+                onChange={handleInput}
               />
               <ContainerGapStyled>
                 <Icon name="favorite" fill={0} />

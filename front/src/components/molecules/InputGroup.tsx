@@ -24,6 +24,7 @@ type TInputGroup = {
   validationMessage?: TValidationMessage['text']
   icon?: string
   iconClick?: () => void
+  onChange?: () => void
   hiddenLabel?: boolean
 } & TInput
 
@@ -38,6 +39,7 @@ const InputGroup = forwardRef(
       hiddenLabel,
       icon,
       iconClick,
+      onChange,
       ...rest
     }: TInputGroup,
     ref: Ref<HTMLInputElement>
@@ -45,7 +47,8 @@ const InputGroup = forwardRef(
     <InputGroupStyled>
       <Label text={label} htmlFor={id} hiddenLabel={hiddenLabel} />
       <FlexBox direction="row" justify="flex-end">
-        <Input id={id} name={name} {...rest} ref={ref} />
+        <Input id={id} name={name} onChange={onChange} 
+        {...rest} ref={ref} />
         {!!icon && <Icon name={icon} onClick={iconClick} {...rest} />}
       </FlexBox>
       <ValidationMessage text={validationMessage} color={validationType} />

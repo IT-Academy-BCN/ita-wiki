@@ -22,11 +22,12 @@ export type TInput = InputHTMLAttributes<HTMLInputElement> & {
   success?: boolean
   warning?: boolean
   type?: 'text' | 'password' | 'email'
+  onChange?: () => void
 }
 
 const Input = React.forwardRef<HTMLInputElement, TInput>(
   (
-    { error = false, warning = false, success = false, type = 'text', ...rest },
+    { error = false, warning = false, success = false, type = 'text', onChange, ...rest },
     ref
   ) => (
     <InputStyled
@@ -35,6 +36,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       success={success}
       warning={warning}
       ref={ref}
+      onChange={onChange}       
       {...rest}
     />
   )
