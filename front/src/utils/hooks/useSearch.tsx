@@ -24,3 +24,4 @@ export const useSearch = (items: TObjectWithTitle[], query: string) => {
 
   return { filteredItems }
 }
+

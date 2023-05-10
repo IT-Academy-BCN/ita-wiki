@@ -269,8 +269,7 @@ const Home: FC = () => {
     setActiveLink(link)
   }
   const handleCategoryClick = (cat: SetStateAction<string>) => {
-    setActiveCategory(cat)
-  }
+    setActiveCategory(cat)  }
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)

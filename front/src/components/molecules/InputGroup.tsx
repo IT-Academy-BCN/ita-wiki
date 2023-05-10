@@ -24,7 +24,7 @@ type TInputGroup = {
   validationMessage?: TValidationMessage['text']
   icon?: string
   iconClick?: () => void
-  onChange?: () => void
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   hiddenLabel?: boolean
 } & TInput
 
