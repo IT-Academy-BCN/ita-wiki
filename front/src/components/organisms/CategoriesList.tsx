@@ -104,7 +104,7 @@ export const CategoriesList: FC = () => {
     queryFn: getCategories,
   })
 
-  if (isLoading) return <SmallSpinner />
+  if (isLoading) return <SmallSpinner role="status" />
   if (error) return <p>Ha habido un error...</p>
   return (
     <>
