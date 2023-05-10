@@ -1,29 +1,16 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { screen, waitFor } from '@testing-library/react'
+import { render } from '../test-utils'
 import { VoteCounter } from '../../components/molecules'
 import { colors } from '../../styles'
-import { mswServer } from '../setup'
-import { voteHandlers } from '../../__mocks__/handlers'
 
 describe('Vote counter molecule', () => {
   it('renders correctly', () => {
-    const queryClient = new QueryClient()
-    render(
-      <QueryClientProvider client={queryClient}>
-        <VoteCounter voteCount="0" resourceId="test" />
-      </QueryClientProvider>
-    )
+    render(<VoteCounter voteCount="0" resourceId="test" />)
 
     expect(screen.getByTestId('voteCounter')).toBeInTheDocument()
   })
   it('Icons has correct styles', () => {
-    const queryClient = new QueryClient()
-
-    render(
-      <QueryClientProvider client={queryClient}>
-        <VoteCounter voteCount="0" resourceId="test" />
-      </QueryClientProvider>
-    )
+    render(<VoteCounter voteCount="0" resourceId="test" />)
 
     const increase = screen.getByTestId('increase')
     const decrease = screen.getByTestId('decrease')
@@ -36,13 +23,7 @@ describe('Vote counter molecule', () => {
   })
 
   it('Fetches vote', async () => {
-    const queryClient = new QueryClient()
-    mswServer.use(...voteHandlers)
-    render(
-      <QueryClientProvider client={queryClient}>
-        <VoteCounter voteCount="0" resourceId="test" />
-      </QueryClientProvider>
-    )
+    render(<VoteCounter voteCount="0" resourceId="test" />)
     await waitFor(() =>
       expect(screen.getByTestId('voteTest')).toBeInTheDocument()
     )

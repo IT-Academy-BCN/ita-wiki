@@ -23,8 +23,17 @@ const fetcher = async (resourceId: string, voteValue: string) => {
   const url = urls.vote
     .replace(':resourceId', resourceId)
     .replace(':vote', voteValue)
-  const res = await fetch(url)
-  return res.json()
+
+  fetch(url)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error('error fetching votes')
+      }
+      return res.json()
+    })
+    .catch((err) => {
+      throw new Error(`error fetching votes: ${err.message}`)
+    })
 }
 
 const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId }) => {
@@ -32,6 +41,9 @@ const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId }) => {
     mutationKey: ['vote', resourceId],
     mutationFn: (voteValue: string) => fetcher(resourceId, voteValue),
   })
+
+  if (newVotation.isError)
+    return <p data-testid="voteError">Ha habido un error</p>
 
   const handleClick = (voteValue: number) => {
     newVotation.mutate(voteValue.toString())
