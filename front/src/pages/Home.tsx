@@ -271,7 +271,7 @@ const Home: FC = () => {
     setActiveCategory(cat)
   }
 
-  const { iconClick, searchRef, searchResources } = useSearch(resources)
+  const { filteredItems } = useSearch(resources, /* query */)
 
   return (
     <>
@@ -350,7 +350,7 @@ const Home: FC = () => {
                   <Text color={colors.gray.gray3}>Fecha</Text>
                 </FlexBox>
               </FlexBox>
-              {searchResources.map((resource) => (
+              {filteredItems.map((resource) => (
                 <CardResource
                   key={resource.id}
                   img={icons.profileAvatar}
@@ -371,8 +371,6 @@ const Home: FC = () => {
                 placeholder="Buscar recurso concreto"
                 id="search-resource"
                 icon="search"
-                ref={searchRef}
-                iconClick={iconClick}
               />
               <ContainerGapStyled>
                 <Icon name="favorite" fill={0} />
