@@ -1,5 +1,4 @@
 import { FC, useState } from 'react'
-import axios from 'axios'
 import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions } from '../../styles'
@@ -27,7 +26,7 @@ const DesktopStyled = styled.div`
   }
 `
 
-const SmallSpinner = styled(Spinner)`
+export const SmallSpinner = styled(Spinner)`
   width: 70px;
   height: 70px;
   margin: 0 auto;
@@ -81,7 +80,7 @@ type TCategory = {
   topics: number
   img: string
 }
-/*
+
 const getCategories = () =>
   fetch(urls.getCategories)
     .then((res) => {
@@ -93,9 +92,6 @@ const getCategories = () =>
     .catch((err) => {
       throw new Error(`Error fetching categories: ${err.message}`)
     })
-    */
-
-const getCategories = () => axios.get(urls.getCategories);
 
 export const CategoriesList: FC = () => {
   const [activeCategory, setActiveCategory] = useState('')
@@ -118,7 +114,7 @@ export const CategoriesList: FC = () => {
             Categorías
           </Title>
           <FlexBox gap="1rem" align="stretch">
-            {data?.data.map((category: TCategory) => (
+            {data?.map((category: TCategory) => (
               <CategoryBlock
                 key={category.id}
                 name={category.name}
@@ -130,7 +126,7 @@ export const CategoriesList: FC = () => {
       </MobileStyled>
       <DesktopStyled>
         <CategoriesContainerStyled>
-          {data?.data.map((category: TCategory) => (
+          {data?.map((category: TCategory) => (
             <FlexBox direction="row" key={category.id}>
               <ImgStyled
                 src={categoryImg[category.name]}
