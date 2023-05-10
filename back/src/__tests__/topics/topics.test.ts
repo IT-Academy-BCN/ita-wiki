@@ -6,7 +6,8 @@ import { pathRoot } from '../../routes/routes'
 
 describe('Testing topics endpoint', () => {
   describe('Testing GET method', () => {
-    test('Should respond OK status and return topics as an array. As per seed data, it should not be empty, and contain objects with an id and topic.', async () => {
+    test('Should respond OK status and return topics as an array.', async () => {
+      // At least a testing topic has been created for this test on globalSetup.
       const response = await supertest(server).get(`${pathRoot.v1.topics}`)
 
       expect(response.status).toBe(200);
@@ -27,14 +28,11 @@ describe('Testing topics endpoint', () => {
 
   describe('Testing GET /topics/:categoryId', () => {
     test('Should respond OK status and return topics as an array.', async () => {
-
+      // A testing Topic on testing Category has been created for this test on globalSetup.
       const category = await prisma.category.findUnique({
-        where: {
-          name: 'React',
-        },
+        where: {name: 'Testing'},
       });
-      const categoryId = category?.id
-      const response = await supertest(server).get(`${pathRoot.v1.topics}/category/${categoryId}`)
+      const response = await supertest(server).get(`${pathRoot.v1.topics}/category/${category!.id}`)
 
       expect(response.status).toBe(200);
       expect(response.body).toBeInstanceOf(Array)

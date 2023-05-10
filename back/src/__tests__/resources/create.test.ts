@@ -5,23 +5,22 @@ import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 
+let topicIds: string[] | undefined[]
+
+beforeAll(async () => {
+  topicIds = (await prisma.topic.findMany()).map((topic) => topic.id)
+})
+
+afterAll(async () => {
+  await prisma.topicsOnResources.deleteMany({
+    where: { resource: { slug: 'test-resource' } }
+  })
+  await prisma.resource.delete({
+    where: { slug: 'test-resource' }
+  })
+})
+
 describe('Testing resource creation endpoint', () => {
-  let topicIds: string[] | undefined[]
-
-  beforeAll(async () => {
-    topicIds = (await prisma.topic.findMany()).map((topic) => topic.id)
-  })
-
-  afterAll(async () => {
-    await prisma.topicsOnResources.deleteMany({
-      where: {resource: {slug: 'test-resource'}}
-    })
-    
-    await prisma.resource.delete({
-      where: {slug: 'test-resource'}
-    })
-  })
-
   test('should create a new resource with topics', async () => {
     const newResource = {
       title: 'Test Resource',

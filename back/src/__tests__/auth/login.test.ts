@@ -1,13 +1,13 @@
 import supertest from 'supertest'
 import { expect, test, describe } from 'vitest'
-import { server } from '../globalSetup'
+import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 
 describe('Testing authentication endpoint', () => {
   test('should succeed with correct credentials', async () => {
     const response = await supertest(server).post(`${pathRoot.v1.auth}/login`).send({
-      dni: '12345678a',
-      password: 'password1',
+      dni: testUserData.admin.dni,
+      password: testUserData.admin.password,
     })
     expect(response.status).toBe(204)
 
@@ -17,7 +17,7 @@ describe('Testing authentication endpoint', () => {
 
   test('should fail with incorrect password', async () => {
     const response = await supertest(server).post(`${pathRoot.v1.auth}/login`).send({
-      dni: '12345678a',
+      dni: testUserData.admin.dni,
       password: 'wrong password',
     })
     expect(response.status).toBe(422)
