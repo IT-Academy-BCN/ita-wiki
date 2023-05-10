@@ -431,6 +431,63 @@ paths:
                       in\n/ita-wiki/back/src/controllers/getResourcesController.ts:27:8\n'
                 required:
                   - message
+  /api/v1/resources/topic/:topicId:
+    get:
+      tags:
+        - resources
+      description: Returns a list of resources by topic
+      summary: Takes in a topic id and returns a list of resources associated with
+        that topic ID
+      parameters:
+        - in: path
+          name: topicId
+          schema:
+            type: string
+            minLength: 1
+            description: ID of topic for which to retrieve resources
+          required: true
+      responses:
+        "200":
+          description: Resources found
+        "404":
+          description: Topic not found
+  /api/v1/resources/topic/slug/:slug:
+    get:
+      tags:
+        - resources
+      description: Returns a list of resources by topic slug
+      summary: Takes in a topic slug and returns a list of resources associated with
+        that topic slug
+      parameters:
+        - in: path
+          name: slug
+          schema:
+            type: string
+            minLength: 1
+            description: topic slug associated with the resources
+          required: true
+      responses:
+        "200":
+          description: Resources found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      minLength: 1
+                    slug:
+                      type: string
+                      minLength: 1
+                      example: eventos
+                  required:
+                    - id
+                    - slug
+        "404":
+          description: Topic not found
   /api/v1/resources/me:
     get:
       tags:
