@@ -284,7 +284,7 @@ const Home: FC = () => {
             color={colors.gray.gray3}
           />
         </HeaderContainerStyled>
-        <CategoriesList categories={categories} />
+        <CategoriesList />
         <ResourcesList title="Recursos que te gustan" resources={resources} />
         <ResourcesList title="Tus recursos" resources={resources} />
       </MobileStyled>
