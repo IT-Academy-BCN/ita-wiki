@@ -1,18 +1,26 @@
-import { useRef, useState } from "react"
-import { resources } from "../../pages/Home"
+import { useEffect, useState } from 'react'
 
-export const useSearch = () => {
-  const searchRef = useRef<HTMLInputElement>(null)
-  const [searchResources, setSearchResources] = useState(resources)
+type TObjectWithTitle = {
+  title: string
+  [key: string]: any
+}
 
-  const iconClick = () => {
-    const searchValue = searchRef.current?.value || ''
-    setSearchResources(
-      resources.filter((resource) =>
-        resource.title.toLowerCase().includes(searchValue.toLowerCase())
+export const useSearch = (items: TObjectWithTitle[], query: string) => {
+  const [filteredItems, setFilteredItems] = useState<TObjectWithTitle[]>(items)
+
+  useEffect(() => {
+    if (query) {
+      const lowerCaseQuery = query.toLowerCase()
+
+      setFilteredItems(
+        items.filter((item) =>
+          item.title.toLowerCase().includes(lowerCaseQuery)
+        )
       )
-    )
-  }
+    } else {
+      setFilteredItems(items)
+    }
+  }, [items, query])
 
-  return { iconClick, searchRef, searchResources }
+  return { filteredItems }
 }

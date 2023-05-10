@@ -260,8 +260,6 @@ const CategoryLinkStyled = styled.a<TLinkStyled>`
 `
 // END style Desktop
 
-
-
 const Home: FC = () => {
   const [activeLink, setActiveLink] = useState('')
   const [activeCategory, setActiveCategory] = useState('')
@@ -273,7 +271,7 @@ const Home: FC = () => {
     setActiveCategory(cat)
   }
 
-  const { iconClick, searchRef, searchResources } = useSearch()
+  const { iconClick, searchRef, searchResources } = useSearch(resources)
 
   return (
     <>
