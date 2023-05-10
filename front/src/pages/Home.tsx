@@ -6,6 +6,7 @@ import {
   CardResource,
   InputGroup,
   ResourceTitleLink,
+  Avatar,
 } from '../components/molecules'
 import {
   HowToHelpCard,
@@ -13,6 +14,7 @@ import {
   ResourcesList,
 } from '../components/organisms'
 import { Icon, Text, Title } from '../components/atoms'
+
 
 type Tcategories = {
   id: number
@@ -272,6 +274,7 @@ const Home: FC = () => {
   return (
     <>
       <MobileStyled>
+      <Avatar/>
         <GrayBackground />
         <HeaderContainerStyled>
           <HowToHelpCard />

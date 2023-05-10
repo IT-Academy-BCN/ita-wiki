@@ -3,7 +3,7 @@ import Avatar from '../../components/molecules/AvatarProfile';
 
 describe('Avatar', () => {
   it('renders image when logged in', () => {
-    const imageUrl = 'https://example.com/avatar.jpg';
+    const imageUrl = 'https://cdn-icons-png.flaticon.com/512/16/16410.png';
     render(<Avatar isLoggedIn image={imageUrl} />);
 
     const imageElement = screen.getByAltText('Avatar');
