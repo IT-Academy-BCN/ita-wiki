@@ -1,12 +1,12 @@
-import { resourceGetSchema, resourcesGetSchemaParams } from '../../../schemas'
 import { registry } from '../../registry'
 import { z } from '../../zod'
+import { pathRoot } from '../../../routes/routes'
+import { resourceGetSchema, resourcesGetSchemaParams } from '../../../schemas'
 
-const pathRoot = '/api/v1/resources'
 registry.registerPath({
   method: 'get',
   tags: ['resources'],
-  path: `${pathRoot}`,
+  path: `${pathRoot.v1.resources}`,
   description: 'Returns a collection of resources based on type and topic',
   summary: 'Returns a collection of resources',
   request: {

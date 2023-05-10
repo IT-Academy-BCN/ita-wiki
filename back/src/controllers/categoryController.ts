@@ -6,6 +6,7 @@ export const getCategories: Middleware = async (ctx: Koa.Context) => {
         select: {
             id: true,
             name: true,
+            slug: true
         }
     });
     ctx.status = 200;
