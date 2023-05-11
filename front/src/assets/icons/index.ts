@@ -8,6 +8,9 @@ import newFolder from './new-folder-dynamic-color.svg'
 import profileAvatar from './profile-avatar.svg'
 import react from './react.svg'
 import vue from './vue.svg'
+import node from './nodejs-logo.svg'
+import php from './php.svg'
+import java from './java.svg'
 
 const icons = {
   angular,
@@ -20,6 +23,9 @@ const icons = {
   profileAvatar,
   react,
   vue,
+  node,
+  php,
+  java,
 }
 
 export default icons

@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { FC, SetStateAction, useState } from 'react'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions } from '../styles'
+import { Icon, Text, Title } from '../components/atoms'
 import {
   CardResource,
   InputGroup,
@@ -12,6 +13,7 @@ import {
   CategoriesList,
   ResourcesList,
 } from '../components/organisms'
+<<<<<<< HEAD
 import { Icon, Text, Title } from '../components/atoms'
 import { useSearch } from '../utils/hooks/useSearch'
 
@@ -25,12 +27,19 @@ type TCategories = {
 
 type TResource = {
   id: number
+=======
+
+type Tresource = {
+  id: string
+>>>>>>> main
   title: string
   createdBy: string
   createdOn: string
   description: string
   img: string
+  url: string
 }
+<<<<<<< HEAD
 const categories: TCategories[] = [
   {
     id: 1,
@@ -68,39 +77,45 @@ const categories: TCategories[] = [
     topics: 1,
   },
 ]
+=======
+>>>>>>> main
 
 export const resources: TResource[] = [
   {
-    id: 1,
+    id: 'resourceId1',
     title: 'JavaScript en 45 segundos!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Proyecto práctico',
     img: icons.profileAvatar,
+    url: 'https://www.google.com/search?q=link1',
   },
   {
-    id: 2,
+    id: 'resourceId2',
     title: 'REST API de cero a  ninja!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
     img: icons.profileAvatar,
+    url: 'https://www.google.com/search?q=link2',
   },
   {
-    id: 3,
+    id: 'resourceId3',
     title: 'Context en 5 minutos!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
     img: icons.profileAvatar,
+    url: 'https://www.google.com/search?q=link3',
   },
   {
-    id: 4,
+    id: 'resourceId4',
     title: 'Redux para principiantes!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
     img: icons.profileAvatar,
+    url: 'https://www.google.com/search?q=link4',
   },
 ]
 const dataSubjects = [
@@ -170,24 +185,16 @@ const DivStyled = styled.div`
   border-radius: ${dimensions.borderRadius.base};
 `
 
-const CategoriesContainerStyled = styled(FlexBox)`
-  padding-left: ${dimensions.spacing.xxs};
-  padding-right: ${dimensions.spacing.xs};
-  margin-right: ${dimensions.spacing.sm};
-  align-items: flex-start;
-  color: ${colors.gray.gray3};
-  min-width: 11.5rem;
-`
-
 const UserResourcesContainerStyled = styled(FlexBox)`
-  margin-top: ${dimensions.spacing.base};
   align-items: flex-start;
-  margin-bottom: ${dimensions.spacing.lg};
+  margin-bottom: ${dimensions.spacing.md};
 `
 
 const ContainerGapStyled = styled(FlexBox)`
   flex-direction: row;
   gap: ${dimensions.spacing.xxxs};
+  margin-top: ${dimensions.spacing.xl};
+  margin-bottom: ${dimensions.spacing.xl};
 `
 
 const SideColumnContainer = styled(FlexBox)`
@@ -225,12 +232,6 @@ const VideoContainer = styled(FlexBox)`
   padding-left: ${dimensions.spacing.xxxs};
 `
 
-const ImgStyled = styled.img`
-  height: 30px;
-  margin-right: ${dimensions.spacing.xxxs};
-  margin-top: ${dimensions.spacing.xxl};
-`
-
 type TLinkStyled = {
   active?: boolean
 }
@@ -245,29 +246,21 @@ const LinkStyled = styled.a<TLinkStyled>`
   margin-top: ${dimensions.spacing.base};
   cursor: pointer;
 `
-const CategoryLinkStyled = styled.a<TLinkStyled>`
-  color: ${({ active }) => (active ? colors.black.black3 : colors.gray.gray3)};
-  font-weight: bold;
-  margin-top: ${dimensions.spacing.xxl};
-  cursor: pointer;
 
-  &::before {
-    content: '${({ active }) => (active ? '●' : '')}';
-    font-size: larger;
-    color: ${colors.primary};
-    margin-right: 0.3rem;
-  }
-`
 // END style Desktop
 
 const Home: FC = () => {
   const [activeLink, setActiveLink] = useState('')
+<<<<<<< HEAD
   const [activeCategory, setActiveCategory] = useState('')
   const [query, setQuery] = useState('')
+=======
+>>>>>>> main
 
   const handleClick = (link: SetStateAction<string>) => {
     setActiveLink(link)
   }
+<<<<<<< HEAD
   const handleCategoryClick = (cat: SetStateAction<string>) => {
     setActiveCategory(cat)  }
 
@@ -275,6 +268,8 @@ const Home: FC = () => {
     setQuery(e.target.value)
   }
   const { filteredItems } = useSearch(resources, query)
+=======
+>>>>>>> main
 
   return (
     <>
@@ -297,22 +292,7 @@ const Home: FC = () => {
       </MobileStyled>
       <DesktopStyled>
         <MainContainer>
-          <CategoriesContainerStyled>
-            {categories.map((category) => (
-              <FlexBox direction="row" key={category.id}>
-                <ImgStyled
-                  src={category.img}
-                  alt={`${category.category} logo`}
-                />
-                <CategoryLinkStyled
-                  active={activeCategory === category.category}
-                  onClick={() => handleCategoryClick(category.category)}
-                >
-                  {category.category}
-                </CategoryLinkStyled>
-              </FlexBox>
-            ))}
-          </CategoriesContainerStyled>
+          <CategoriesList />
           {/* ==> CONTAINER CON LAS LAS COLUMNAS */}
           <DivStyled>
             {/* ==> COLUMNA BÚSQUEDA */}
@@ -356,12 +336,12 @@ const Home: FC = () => {
               {filteredItems.map((resource) => (
                 <CardResource
                   key={resource.id}
+                  title={resource.title}
+                  description={resource.description}
+                  url={resource.url}
                   img={icons.profileAvatar}
                   createdBy={resource.createdBy}
                   createdOn={resource.createdOn}
-                  title={resource.title}
-                  likes={10}
-                  description={resource.description}
                 />
               ))}
             </MiddleColumnContainer>
