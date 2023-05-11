@@ -13,7 +13,6 @@ import {
   CategoriesList,
   ResourcesList,
 } from '../components/organisms'
-<<<<<<< HEAD
 import { Icon, Text, Title } from '../components/atoms'
 import { useSearch } from '../utils/hooks/useSearch'
 
@@ -27,11 +26,6 @@ type TCategories = {
 
 type TResource = {
   id: number
-=======
-
-type Tresource = {
-  id: string
->>>>>>> main
   title: string
   createdBy: string
   createdOn: string
@@ -39,7 +33,6 @@ type Tresource = {
   img: string
   url: string
 }
-<<<<<<< HEAD
 const categories: TCategories[] = [
   {
     id: 1,
@@ -77,8 +70,6 @@ const categories: TCategories[] = [
     topics: 1,
   },
 ]
-=======
->>>>>>> main
 
 export const resources: TResource[] = [
   {
