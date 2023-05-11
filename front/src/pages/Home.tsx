@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { FC, SetStateAction, useState } from 'react'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions } from '../styles'
+import { Icon, Text, Title } from '../components/atoms'
 import {
   CardResource,
   InputGroup,
@@ -12,49 +13,53 @@ import {
   CategoriesList,
   ResourcesList,
 } from '../components/organisms'
-import { Icon, Text, Title } from '../components/atoms'
 
 type Tresource = {
-  id: number
+  id: string
   title: string
   createdBy: string
   createdOn: string
   description: string
   img: string
+  url: string
 }
 
 const resources: Tresource[] = [
   {
-    id: 1,
+    id: 'resourceId1',
     title: 'JavaScript en 45 segundos!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Proyecto práctico',
     img: icons.profileAvatar,
+    url: 'https://www.google.com/search?q=link1',
   },
   {
-    id: 2,
+    id: 'resourceId2',
     title: 'REST API de cero a  ninja!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
     img: icons.profileAvatar,
+    url: 'https://www.google.com/search?q=link2',
   },
   {
-    id: 3,
+    id: 'resourceId3',
     title: 'Context en 5 minutos!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
     img: icons.profileAvatar,
+    url: 'https://www.google.com/search?q=link3',
   },
   {
-    id: 4,
+    id: 'resourceId4',
     title: 'Redux para principiantes!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
     img: icons.profileAvatar,
+    url: 'https://www.google.com/search?q=link4',
   },
 ]
 const dataSubjects = [
@@ -266,12 +271,12 @@ const Home: FC = () => {
               {resources.map((resource) => (
                 <CardResource
                   key={resource.id}
+                  title={resource.title}
+                  description={resource.description}
+                  url={resource.url}
                   img={icons.profileAvatar}
                   createdBy={resource.createdBy}
                   createdOn={resource.createdOn}
-                  title={resource.title}
-                  likes={10}
-                  description={resource.description}
                 />
               ))}
             </MiddleColumnContainer>
