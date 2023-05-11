@@ -14,14 +14,6 @@ import {
 } from '../components/organisms'
 import { Icon, Text, Title } from '../components/atoms'
 
-type Tcategories = {
-  id: number
-  category: string
-  resources: number
-  topics: number
-  img: string
-}
-
 type Tresource = {
   id: number
   title: string
@@ -30,43 +22,6 @@ type Tresource = {
   description: string
   img: string
 }
-const categories: Tcategories[] = [
-  {
-    id: 1,
-    img: icons.angular,
-    resources: 49,
-    category: 'Angular',
-    topics: 6,
-  },
-  {
-    id: 2,
-    img: icons.react,
-    category: 'React',
-    resources: 65,
-    topics: 7,
-  },
-  {
-    id: 3,
-    img: icons.vue,
-    category: 'Vue',
-    resources: 32,
-    topics: 8,
-  },
-  {
-    id: 4,
-    img: icons.javascript,
-    category: 'Javascript',
-    resources: 44,
-    topics: 3,
-  },
-  {
-    id: 5,
-    img: icons.dataScience,
-    category: 'Data Science',
-    resources: 23,
-    topics: 1,
-  },
-]
 
 const resources: Tresource[] = [
   {
@@ -169,15 +124,6 @@ const DivStyled = styled.div`
   border-radius: ${dimensions.borderRadius.base};
 `
 
-const CategoriesContainerStyled = styled(FlexBox)`
-  padding-left: ${dimensions.spacing.xxs};
-  padding-right: ${dimensions.spacing.xs};
-  margin-right: ${dimensions.spacing.sm};
-  align-items: flex-start;
-  color: ${colors.gray.gray3};
-  min-width: 11.5rem;
-`
-
 const UserResourcesContainerStyled = styled(FlexBox)`
   margin-top: ${dimensions.spacing.base};
   align-items: flex-start;
@@ -224,12 +170,6 @@ const VideoContainer = styled(FlexBox)`
   padding-left: ${dimensions.spacing.xxxs};
 `
 
-const ImgStyled = styled.img`
-  height: 30px;
-  margin-right: ${dimensions.spacing.xxxs};
-  margin-top: ${dimensions.spacing.xxl};
-`
-
 type TLinkStyled = {
   active?: boolean
 }
@@ -244,29 +184,14 @@ const LinkStyled = styled.a<TLinkStyled>`
   margin-top: ${dimensions.spacing.base};
   cursor: pointer;
 `
-const CategoryLinkStyled = styled.a<TLinkStyled>`
-  color: ${({ active }) => (active ? colors.black.black3 : colors.gray.gray3)};
-  font-weight: bold;
-  margin-top: ${dimensions.spacing.xxl};
-  cursor: pointer;
 
-  &::before {
-    content: '${({ active }) => (active ? '●' : '')}';
-    font-size: larger;
-    color: ${colors.primary};
-    margin-right: 0.3rem;
-  }
-`
 // END style Desktop
 
 const Home: FC = () => {
   const [activeLink, setActiveLink] = useState('')
-  const [activeCategory, setActiveCategory] = useState('')
+
   const handleClick = (link: SetStateAction<string>) => {
     setActiveLink(link)
-  }
-  const handleCategoryClick = (cat: SetStateAction<string>) => {
-    setActiveCategory(cat)
   }
 
   return (
@@ -290,22 +215,7 @@ const Home: FC = () => {
       </MobileStyled>
       <DesktopStyled>
         <MainContainer>
-          <CategoriesContainerStyled>
-            {categories.map((category) => (
-              <FlexBox direction="row" key={category.id}>
-                <ImgStyled
-                  src={category.img}
-                  alt={`${category.category} logo`}
-                />
-                <CategoryLinkStyled
-                  active={activeCategory === category.category}
-                  onClick={() => handleCategoryClick(category.category)}
-                >
-                  {category.category}
-                </CategoryLinkStyled>
-              </FlexBox>
-            ))}
-          </CategoriesContainerStyled>
+          <CategoriesList />
           {/* ==> CONTAINER CON LAS LAS COLUMNAS */}
           <DivStyled>
             {/* ==> COLUMNA BÚSQUEDA */}
