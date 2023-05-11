@@ -13,19 +13,10 @@ import {
   CategoriesList,
   ResourcesList,
 } from '../components/organisms'
-import { Icon, Text, Title } from '../components/atoms'
 import { useSearch } from '../utils/hooks/useSearch'
 
-type TCategories = {
-  id: number
-  category: string
-  resources: number
-  topics: number
-  img: string
-}
-
 type TResource = {
-  id: number
+  id: string
   title: string
   createdBy: string
   createdOn: string
@@ -33,45 +24,8 @@ type TResource = {
   img: string
   url: string
 }
-const categories: TCategories[] = [
-  {
-    id: 1,
-    img: icons.angular,
-    resources: 49,
-    category: 'Angular',
-    topics: 6,
-  },
-  {
-    id: 2,
-    img: icons.react,
-    category: 'React',
-    resources: 65,
-    topics: 7,
-  },
-  {
-    id: 3,
-    img: icons.vue,
-    category: 'Vue',
-    resources: 32,
-    topics: 8,
-  },
-  {
-    id: 4,
-    img: icons.javascript,
-    category: 'Javascript',
-    resources: 44,
-    topics: 3,
-  },
-  {
-    id: 5,
-    img: icons.dataScience,
-    category: 'Data Science',
-    resources: 23,
-    topics: 1,
-  },
-]
 
-export const resources: TResource[] = [
+const resources: TResource[] = [
   {
     id: 'resourceId1',
     title: 'JavaScript en 45 segundos!',
@@ -127,13 +81,13 @@ const dataSubjects = [
 ]
 
 // TODO: mobile first!
-const MobileStyled = styled.div`
+export const MobileStyled = styled.div`
   display: block;
   @media only ${device.Laptop} {
     display: none;
   }
 `
-const DesktopStyled = styled.div`
+export const DesktopStyled = styled.div`
   display: none;
   @media only ${device.Laptop} {
     display: block;
@@ -242,25 +196,16 @@ const LinkStyled = styled.a<TLinkStyled>`
 
 const Home: FC = () => {
   const [activeLink, setActiveLink] = useState('')
-<<<<<<< HEAD
-  const [activeCategory, setActiveCategory] = useState('')
   const [query, setQuery] = useState('')
-=======
->>>>>>> main
 
   const handleClick = (link: SetStateAction<string>) => {
     setActiveLink(link)
   }
-<<<<<<< HEAD
-  const handleCategoryClick = (cat: SetStateAction<string>) => {
-    setActiveCategory(cat)  }
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
   }
   const { filteredItems } = useSearch(resources, query)
-=======
->>>>>>> main
 
   return (
     <>
