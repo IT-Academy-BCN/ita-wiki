@@ -9,7 +9,7 @@ export const createResource: Middleware = async (ctx: Koa.Context) => {
   const { userId } = jwt.verify(token, process.env.JWT_KEY as Secret) as { userId: string }
   const resource = ctx.request.body
 
-  const slug = slugify(resource.title)
+  const slug = slugify(resource.title, { lower: true })
 
   const topicIds = resource.topics
   delete resource.topics
