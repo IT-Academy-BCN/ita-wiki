@@ -125,14 +125,15 @@ const DivStyled = styled.div`
 `
 
 const UserResourcesContainerStyled = styled(FlexBox)`
-  margin-top: ${dimensions.spacing.base};
   align-items: flex-start;
-  margin-bottom: ${dimensions.spacing.lg};
+  margin-bottom: ${dimensions.spacing.md};
 `
 
 const ContainerGapStyled = styled(FlexBox)`
   flex-direction: row;
   gap: ${dimensions.spacing.xxxs};
+  margin-top: ${dimensions.spacing.xl};
+  margin-bottom: ${dimensions.spacing.xl};
 `
 
 const SideColumnContainer = styled(FlexBox)`
