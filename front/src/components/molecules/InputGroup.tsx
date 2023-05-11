@@ -24,7 +24,6 @@ type TInputGroup = {
   validationMessage?: TValidationMessage['text']
   icon?: string
   iconClick?: () => void
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   hiddenLabel?: boolean
 } & TInput
 
@@ -37,9 +36,9 @@ const InputGroup = forwardRef(
       validationMessage,
       validationType,
       hiddenLabel,
+      onChange,
       icon,
       iconClick,
-      onChange,
       ...rest
     }: TInputGroup,
     ref: Ref<HTMLInputElement>
