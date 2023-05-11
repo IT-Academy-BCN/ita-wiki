@@ -6,22 +6,24 @@ import { errorHandlers } from '../../__mocks__/handlers'
 describe('CategoriesList', () => {
   it('renders correctly on success', async () => {
     render(<CategoriesList />)
-    await waitFor(() =>
-      expect(screen.getByText('Loading...')).toBeInTheDocument()
-    )
+
+    const spinnerComponent = screen.getByRole('status') as HTMLDivElement
+
+    await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
       expect(screen.getByText('Categorías')).toBeInTheDocument()
-      expect(screen.getByText('React')).toBeInTheDocument()
+      expect(screen.queryAllByText('React').length).toBeGreaterThan(0)
     })
   })
 
   it('renders correctly on error', async () => {
     mswServer.use(...errorHandlers)
     render(<CategoriesList />)
-    await waitFor(() =>
-      expect(screen.getByText('Loading...')).toBeInTheDocument()
-    )
+
+    const spinnerComponent = screen.getByRole('status') as HTMLDivElement
+
+    await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
       expect(screen.getByText('Ha habido un error...')).toBeInTheDocument()

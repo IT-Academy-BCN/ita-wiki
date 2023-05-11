@@ -44,10 +44,10 @@ app.use(koaSwagger({ routePrefix: swaggeruiUrl, swaggerOptions: { spec } }))
 
 // Only listen if launched from terminal
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
-
-app.listen(appConfig.port, () => {
-  // eslint-disable-next-line no-console
-  console.log(`🚀 Server ready at http://localhost:${appConfig.port}`)
-})
-
+if (process.env.NODE_ENV !== "test") {
+  app.listen(appConfig.port, () => {
+    // eslint-disable-next-line no-console
+    console.log(`🚀 Server ready at http://localhost:${appConfig.port}`)
+  })
+}
 export { app }
