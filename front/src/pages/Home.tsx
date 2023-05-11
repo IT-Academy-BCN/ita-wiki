@@ -6,6 +6,7 @@ import {
   CardResource,
   InputGroup,
   ResourceTitleLink,
+  VoteCounter,
 } from '../components/molecules'
 import {
   HowToHelpCard,
@@ -283,6 +284,7 @@ const Home: FC = () => {
             icon="search"
             color={colors.gray.gray3}
           />
+          <VoteCounter resourceId="testing" voteCount="0" />
         </HeaderContainerStyled>
         <CategoriesList />
         <ResourcesList title="Recursos que te gustan" resources={resources} />

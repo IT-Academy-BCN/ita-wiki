@@ -25,7 +25,7 @@ export const handlers = [
 
 rest.put(urls.vote, (_, res, ctx) => 
     res(
-      ctx.status(200),
+      ctx.status(204),
       ctx.json([
         {
           voteCount: '1'
@@ -42,7 +42,7 @@ export const errorHandlers = [
   ),
 
   rest.put(urls.vote, (_, res, ctx) =>
-  res(ctx.status(500), ctx.json({message: 'Internal server error'}))
+  res(ctx.status(401), ctx.json({message: 'User not found'}))
   )
 ]
 

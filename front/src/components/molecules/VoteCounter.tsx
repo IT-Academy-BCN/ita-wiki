@@ -23,8 +23,16 @@ const fetcher = async (resourceId: string, voteValue: string) => {
   const url = urls.vote
     .replace(':resourceId', resourceId)
     .replace(':vote', voteValue)
-
-  fetch(url)
+  const data = {
+    voteCount: voteValue,
+    resourceId,
+  }
+  const requestOptions = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }
+  fetch(url, requestOptions)
     .then((res) => {
       if (!res.ok) {
         throw new Error('error fetching votes')
@@ -34,6 +42,7 @@ const fetcher = async (resourceId: string, voteValue: string) => {
     .catch((err) => {
       throw new Error(`error fetching votes: ${err.message}`)
     })
+  console.log(data)
 }
 
 const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId }) => {

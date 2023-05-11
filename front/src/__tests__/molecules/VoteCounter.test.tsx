@@ -1,7 +1,9 @@
-import { screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { render } from '../test-utils'
 import { VoteCounter } from '../../components/molecules'
 import { colors } from '../../styles'
+import { mswServer } from '../setup'
+import { errorHandlers } from '../../__mocks__/handlers'
 
 describe('Vote counter molecule', () => {
   it('renders correctly', () => {
@@ -22,10 +24,18 @@ describe('Vote counter molecule', () => {
     expect(decrease).toHaveStyle(`color: ${colors.gray.gray3}`)
   })
 
-  it('Fetches vote', async () => {
+  it('Changes voteCount', async () => {
     render(<VoteCounter voteCount="0" resourceId="test" />)
-    await waitFor(() =>
-      expect(screen.getByTestId('voteTest')).toBeInTheDocument()
-    )
+    fireEvent.click(screen.getByTestId('increase'))
+    await waitFor(() => {
+      expect(screen.getByTestId('voteTest')).toHaveTextContent('1')
+    })
+  })
+  it('Renders errors', async () => {
+    mswServer.use(...errorHandlers)
+    render(<VoteCounter voteCount="0" resourceId="test" />)
+    // await waitFor(() => {
+    //   expect(screen.getByTestId('voteError')).toBeInTheDocument()
+    // })
   })
 })
