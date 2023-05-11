@@ -15,7 +15,7 @@ import {
 import { Icon, Text, Title } from '../components/atoms'
 import { useSearch } from '../utils/hooks/useSearch'
 
-type Tcategories = {
+type TCategories = {
   id: number
   category: string
   resources: number
@@ -23,7 +23,7 @@ type Tcategories = {
   img: string
 }
 
-type Tresource = {
+type TResource = {
   id: number
   title: string
   createdBy: string
@@ -31,7 +31,7 @@ type Tresource = {
   description: string
   img: string
 }
-const categories: Tcategories[] = [
+const categories: TCategories[] = [
   {
     id: 1,
     img: icons.angular,
@@ -69,7 +69,7 @@ const categories: Tcategories[] = [
   },
 ]
 
-export const resources: Tresource[] = [
+export const resources: TResource[] = [
   {
     id: 1,
     title: 'JavaScript en 45 segundos!',
