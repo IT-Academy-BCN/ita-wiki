@@ -37,7 +37,7 @@ resourcesRouter.get(
 )
 
 resourcesRouter.get(
-  'topic/slug/:slug',
+  '/topic/slug/:slug',
   validate(z.object({ params: z.object({
     slug: z.string().trim().min(1)
   })})),
