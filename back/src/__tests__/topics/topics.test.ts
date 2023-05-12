@@ -1,52 +1,51 @@
 import supertest from 'supertest'
 import { expect, test, describe } from 'vitest'
-import { server } from '../setup'
+import { server } from '../globalSetup'
 import { prisma } from '../../prisma/client'
+import { pathRoot } from '../../routes/routes'
 
 describe('Testing topics endpoint', () => {
-    describe('Testing GET method',  () => {
-        test('Should respond OK status and return topics as an array. As per seed data, it should not be empty, and contain objects with an id and topic.', async () => {
-            const response = await supertest(server).get('/api/v1/topics')
+  describe('Testing GET method', () => {
+    test('Should respond OK status and return topics as an array.', async () => {
+      // At least a testing topic has been created for this test on globalSetup.
+      const response = await supertest(server).get(`${pathRoot.v1.topics}`)
 
-            expect(response.status).toBe(200);
-            expect(response.body).toBeInstanceOf(Array)
-            expect(response.body.length).toBeGreaterThan(0)
-            expect(response.body).toEqual(
-                expect.arrayContaining([
-                    expect.objectContaining({
-                        id: expect.any(String),
-                        name: expect.any(String),
-                        slug: expect.any(String),
-                        categoryId: expect.any(String)
-                    })
-                ])
-            )
-        })
+      expect(response.status).toBe(200);
+      expect(response.body).toBeInstanceOf(Array)
+      expect(response.body.length).toBeGreaterThan(0)
+      expect(response.body).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            name: expect.any(String),
+            slug: expect.any(String),
+            categoryId: expect.any(String)
+          })
+        ])
+      )
     })
+  })
 
-    describe('Testing GET /topics/:categoryId', () => {
-        test('Should respond OK status and return topics as an array.', async () => {
-            
-            const category = await prisma.category.findUnique({
-                where: {
-                  name: 'React',
-                },
-              });
-            const  categoryId = category?.id
-            const response = await supertest(server).get(`/api/v1/topics/category/${categoryId}`)
+  describe('Testing GET /topics/:categoryId', () => {
+    test('Should respond OK status and return topics as an array.', async () => {
+      // A testing Topic on testing Category has been created for this test on globalSetup.
+      const category = await prisma.category.findUnique({
+        where: {name: 'Testing'},
+      });
+      const response = await supertest(server).get(`${pathRoot.v1.topics}/category/${category!.id}`)
 
-            expect(response.status).toBe(200);
-            expect(response.body).toBeInstanceOf(Array)
-            expect(response.body.length).toBeGreaterThan(0)
-            expect(response.body).toEqual(
-                expect.arrayContaining([
-                    expect.objectContaining({
-                        id: expect.any(String),
-                        name: expect.any(String),
-                        slug: expect.any(String)
-                    })
-                ])
-            )
-        })
+      expect(response.status).toBe(200);
+      expect(response.body).toBeInstanceOf(Array)
+      expect(response.body.length).toBeGreaterThan(0)
+      expect(response.body).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            name: expect.any(String),
+            slug: expect.any(String)
+          })
+        ])
+      )
     })
+  })
 })
