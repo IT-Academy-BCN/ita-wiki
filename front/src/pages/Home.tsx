@@ -23,7 +23,7 @@ import { useSearch } from '../utils/hooks/useSearch'
   img: string
 } */
 
-type TResource = {
+export type TResource = {
   id: string
   title: string
   createdBy: string
@@ -71,7 +71,7 @@ type TResource = {
   },
 ] */
 
-const resources: TResource[] = [
+export const resources: TResource[] = [
   {
     id: 'resourceId1',
     title: 'JavaScript en 45 segundos!',
