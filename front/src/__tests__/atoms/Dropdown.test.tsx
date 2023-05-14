@@ -2,73 +2,83 @@ import { render, screen } from '@testing-library/react'
 import { expect } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { Dropdown } from '../../components/atoms'
-import { colors } from '../../styles'
 
 describe('Dropdown', () => {
   it('renders correctly', () => {
-    render(<Dropdown />)
+    render(
+      <Dropdown>
+        <p>Test children content</p>
+      </Dropdown>
+    )
 
     const dropdown = screen.getByTestId('dropdown')
+    const dropdownHeader = screen.getByTestId('dropdown-header')
 
     expect(dropdown).toBeInTheDocument()
-    expect(dropdown).toHaveStyle(`border: 1px solid ${colors.gray.gray3};`)
-    expect(dropdown).toHaveTextContent(/vídeos/i)
-    expect(screen.queryByText(/blogs/i)).not.toBeInTheDocument()
+    expect(dropdown).toHaveStyle(`cursor: pointer;`)
+    expect(dropdownHeader).toHaveTextContent(/selecciona/i)
+    expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
+    expect(screen.queryByText('Test children content')).not.toBeInTheDocument()
+    expect(screen.queryByTitle('Cerrar')).not.toBeInTheDocument()
   })
 
-  it('renders dropdown options when user clicks on it', async () => {
-    render(<Dropdown />)
+  it('renders dropdown children when user clicks on it', async () => {
+    render(
+      <Dropdown>
+        <p>Test children content</p>
+      </Dropdown>
+    )
 
-    const dropdownHeader = screen.getByTestId('header')
+    const dropdownHeader = screen.getByTestId('dropdown-header')
 
+    expect(screen.queryByText('Test children content')).not.toBeInTheDocument()
+
+    expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
     await userEvent.click(dropdownHeader)
 
-    expect(screen.queryByTestId('menu')).toBeInTheDocument()
-    expect(screen.queryByText(/blogs/i)).toBeVisible()
+    expect(screen.queryByText('Test children content')).toBeVisible()
+    expect(screen.getByTitle('Cerrar')).toBeInTheDocument()
   })
 
-  it('renders options provided as props instead of default options', () => {
-    const testOptions = [
-      { value: 'testValue', label: 'Test' },
-      { value: 'testValueTwo', label: 'Test2' },
-      { value: 'testValueThree', label: 'Test3' },
-    ]
+  it('renders placeholder provided instead of default', () => {
+    render(
+      <Dropdown placeholder="Test placeholder">
+        <p>Test children content</p>
+      </Dropdown>
+    )
 
-    render(<Dropdown options={testOptions} />)
+    const dropdownHeader = screen.getByTestId('dropdown-header')
 
-    const dropdown = screen.getByTestId('dropdown')
-
-    expect(dropdown).toHaveTextContent(/test/i)
-    expect(dropdown).not.toHaveTextContent(/vídeos/i)
+    expect(dropdownHeader).toHaveTextContent(/Test placeholder/i)
+    expect(dropdownHeader).not.toHaveTextContent(/selecciona/i)
   })
 
-  it('renders option clicked by user in dropdown header and closes the menu', async () => {
-    render(<Dropdown />)
+  it('renders value provided instead of placeholder', () => {
+    render(
+      <Dropdown selectedValue="Test selected value">
+        <p>Test children content</p>
+      </Dropdown>
+    )
 
-    const dropdownHeader = screen.getByTestId('header')
+    const dropdownHeader = screen.getByTestId('dropdown-header')
 
-    expect(dropdownHeader.textContent).toBe('Vídeos')
-
-    await userEvent.click(dropdownHeader)
-
-    expect(screen.getByTestId('menu')).toBeInTheDocument()
-
-    await userEvent.click(screen.getByText(/blog/i))
-
-    expect(dropdownHeader.textContent).toBe('Blogs')
-    expect(dropdownHeader.textContent).not.toBe('Vídeos')
-    expect(screen.queryByTestId('menu')).not.toBeInTheDocument()
+    expect(dropdownHeader).toHaveTextContent(/Test selected value/i)
+    expect(dropdownHeader).not.toHaveTextContent(/selecciona/i)
   })
 
   it('a click outside the dropdown closes its menu', async () => {
-    render(<Dropdown />)
+    render(
+      <Dropdown>
+        <p>Test children content</p>
+      </Dropdown>
+    )
 
-    const dropdownHeader = screen.getByTestId('header')
+    const dropdownHeader = screen.getByTestId('dropdown-header')
 
     await userEvent.click(dropdownHeader)
-    expect(screen.getByTestId('menu')).toBeVisible()
+    expect(screen.getByText('Test children content')).toBeVisible()
 
     await userEvent.click(document.body)
-    expect(screen.queryByTestId('menu')).not.toBeInTheDocument()
+    expect(screen.queryByText('Test children content')).not.toBeInTheDocument()
   })
 })
