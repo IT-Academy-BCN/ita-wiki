@@ -3,6 +3,13 @@ import { prisma } from '../prisma/client'
 
 export const getUserFavoriteResources: Middleware = async (ctx: Koa.Context) => {
     const { userId } = ctx.params;
+
+    if (!userId) {
+        ctx.status = 400;
+        ctx.body = { error: 'User ID is required' };
+        return;
+      }
+      
     const favorites = await prisma.favorites.findMany({
         where: {
             userId

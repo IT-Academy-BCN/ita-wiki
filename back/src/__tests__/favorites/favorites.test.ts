@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import { expect, test, describe } from 'vitest'
-import { server } from '../setup'
+import { server } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 
 describe('Testing /favorites/ endpoint', () => {
