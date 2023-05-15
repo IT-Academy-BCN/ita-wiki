@@ -19,7 +19,7 @@ type TVoteCounter = {
   resourceId: string
 }
 
-const fetcher = async (resourceId: string, voteValue: string) => {
+export const voteMutation = async (resourceId: string, voteValue: string) => {
   const url = urls.vote
     .replace(':resourceId', resourceId)
     .replace(':vote', voteValue)
@@ -32,7 +32,7 @@ const fetcher = async (resourceId: string, voteValue: string) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   }
-  fetch(url, requestOptions)
+  return fetch(url, requestOptions)
     .then((res) => {
       if (!res.ok) {
         throw new Error('error fetching votes')
@@ -40,14 +40,14 @@ const fetcher = async (resourceId: string, voteValue: string) => {
       return res.json()
     })
     .catch((err) => {
-      throw new Error(`error fetching votes: ${err.message}`)
+      throw new Error(`${err}`)
     })
 }
 
 export const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId }) => {
   const newVotation = useMutation({
     mutationKey: ['vote', resourceId],
-    mutationFn: (voteValue: string) => fetcher(resourceId, voteValue),
+    mutationFn: (voteValue: string) => voteMutation(resourceId, voteValue),
   })
 
   const handleClick = (voteValue: number) => {
