@@ -8,7 +8,7 @@ import { Modal } from './Modal'
 import { ResourceTitleLink } from './ResourceTitleLink'
 import SelectGroup from './SelectGroup'
 import TextareaGroup from './TextareaGroup'
-import VoteCounter from './VoteCounter'
+import { VoteCounter } from './VoteCounter'
 
 export {
   AccessModal,
@@ -21,5 +21,5 @@ export {
   SelectGroup,
   TextareaGroup,
   CreateAuthor,
-  VoteCounter
+  VoteCounter,
 }

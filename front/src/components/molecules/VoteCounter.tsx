@@ -42,20 +42,20 @@ const fetcher = async (resourceId: string, voteValue: string) => {
     .catch((err) => {
       throw new Error(`error fetching votes: ${err.message}`)
     })
-  console.log(data)
 }
 
-const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId }) => {
+export const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId }) => {
   const newVotation = useMutation({
     mutationKey: ['vote', resourceId],
     mutationFn: (voteValue: string) => fetcher(resourceId, voteValue),
   })
 
-  if (newVotation.isError)
-    return <p data-testid="voteError">Ha habido un error</p>
-
   const handleClick = (voteValue: number) => {
     newVotation.mutate(voteValue.toString())
+  }
+
+  if (newVotation.error) {
+    return <p data-testid="voteError">{`${newVotation.error}`}</p>
   }
 
   return (
@@ -81,5 +81,3 @@ const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId }) => {
     </FlexBox>
   )
 }
-
-export default VoteCounter
