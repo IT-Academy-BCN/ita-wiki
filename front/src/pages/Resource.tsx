@@ -213,11 +213,11 @@ const Resource: FC = () => {
         <CardResource
           img={sd?.img}
           key={sd.createdOn}
-          likes={sd.likes}
           title={sd.title}
           description={sd.description}
           createdBy={sd.createdBy}
           createdOn={sd.createdOn}
+          url={sd.url}
         />
       ))}
     </>
