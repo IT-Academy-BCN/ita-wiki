@@ -216,9 +216,9 @@ const Resource: FC = () => {
           title={sd.title}
           url={sd.url}
           description={sd.description}
+          likes={sd.likes}
           createdBy={sd.createdBy}
           createdOn={sd.createdOn}
-          url={sd.url}
         />
       ))}
     </>
