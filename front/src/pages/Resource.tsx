@@ -214,6 +214,7 @@ const Resource: FC = () => {
           img={sd?.img}
           key={sd.createdOn}
           title={sd.title}
+          url={sd.url}
           description={sd.description}
           createdBy={sd.createdBy}
           createdOn={sd.createdOn}
