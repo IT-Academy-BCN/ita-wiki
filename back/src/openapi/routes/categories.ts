@@ -17,7 +17,8 @@ registry.registerPath({
             schema: z.array(
                 z.object({
                     id: z.string(),
-                    name: z.string().openapi({ example: 'Javascript'})
+                    name: z.string().openapi({ example: 'Javascript'}),
+                    slug: z.string().openapi({ example: 'javascript'}),
                 })
             )
         }

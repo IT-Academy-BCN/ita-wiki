@@ -1,6 +1,5 @@
 import { AccessModal } from './AccessModal'
 import { CardResource } from './CardResource'
-import { CardResourceHome } from './CardResourceHome'
 import { CategoryBlock } from './CategoryBlock'
 import { CreateAuthor } from './CreateAuthor'
 import InputGroup from './InputGroup'
@@ -13,7 +12,6 @@ import { VoteCounter } from './VoteCounter'
 export {
   AccessModal,
   CardResource,
-  CardResourceHome,
   CategoryBlock,
   InputGroup,
   Modal,

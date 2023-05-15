@@ -2,7 +2,7 @@
 import supertest from 'supertest'
 import { expect, test } from 'vitest'
 import { parse } from 'node-html-parser'
-import { server } from '../setup'
+import { server } from '../globalSetup'
 import { swaggeruiUrl } from '../../openapi/config'
 
 test(`GET ${swaggeruiUrl}`, async () => {

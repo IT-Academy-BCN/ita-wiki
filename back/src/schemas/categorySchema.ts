@@ -1,10 +1,12 @@
 import { z } from '../openapi/zod'
 
-export const topicSchema = z.object({
+export const categorySchema = z.object({
   id: z.string(),
   name: z.string(),
   slug: z.string().optional(),
-  categoryId: z.string(),
+  topics: z.array(z.object({
+    id: z.string().cuid()
+  })),
   createdAt: z.date(),
   updatedAt: z.date()
 });
