@@ -3,12 +3,8 @@ import axios from 'axios'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
 import { Register } from '../../pages'
-import { server } from '../../__mocks__/server'
 
 describe('Register', () => {
-  beforeAll(() => server.listen())
-  afterEach(() => server.resetHandlers())
-  afterAll(() => server.close())
   it('Register renders correctly', () => {
     render(
       <BrowserRouter>

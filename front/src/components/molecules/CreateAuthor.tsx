@@ -2,13 +2,14 @@ import styled from 'styled-components'
 import { FlexBox, colors, font } from '../../styles'
 import { Text } from '../atoms'
 
-const TextStyled = styled(Text)`
-  margin: 0.2rem;
+const StyledDiv = styled.div`
+  padding-right: 4px;
+  margin: 0;
 `
 const MetaInfo = styled(Text)`
-  font-weight: bold;
-  font-size: 10px;
-  color: ${colors.gray.gray4};
+  font-weight: ${font.medium};
+  font-size: ${font.xss};
+  color: ${colors.gray.gray3};
 `
 
 type TCreateAuthor = {
@@ -25,9 +26,7 @@ const dateFormatOption: Intl.DateTimeFormatOptions = {
 
 export const CreateAuthor = ({ createdBy, createdOn, img }: TCreateAuthor) => (
   <FlexBox direction="row">
-    <TextStyled fontSize={font.xss} color={colors.gray.gray3}>
-      {img ? <img src={img} alt="Author icon" /> : '😺'}
-    </TextStyled>
+    <StyledDiv>{img ? <img src={img} alt="Author icon" /> : '😺'}</StyledDiv>
     <MetaInfo>
       {createdBy},{' '}
       {new Date(createdOn).toLocaleDateString('es-ES', dateFormatOption)}

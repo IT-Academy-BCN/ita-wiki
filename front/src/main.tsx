@@ -1,6 +1,8 @@
 import ReactDOM from 'react-dom/client'
 import 'modern-normalize/modern-normalize.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { paths } from './constants'
 import { Home, Login, Register, ErrorPage, Resource } from './pages'
 import { Information } from './pages/Information'
@@ -35,11 +37,16 @@ const router = createBrowserRouter([
   },
 ])
 
+const queryClient = new QueryClient()
+
 const rootElement = document.getElementById('root')
 if (!rootElement) throw new Error('Failed to find the root element')
 const root = ReactDOM.createRoot(rootElement)
 root.render(
   <AuthProvider>
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+    </QueryClientProvider>
   </AuthProvider>
 )
