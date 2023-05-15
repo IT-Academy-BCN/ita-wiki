@@ -75,7 +75,9 @@ While we encourage collaboration and support among team members, it's important 
 4. Once the issue is resolved, a new pull-request from your branch to main is required.
 
 ### Setup ESLint in VSCode
-Create a settings.json inside the .vscode file with the following content:
+1. Install the ESLint VSCode extension.
+2. In the root folder of the whole project create a .vscode folder.
+3. Create a settings.json file in the .vscode folder with the following content:
 ```
 {
     "eslint.workingDirectories": ["front", "back"]
