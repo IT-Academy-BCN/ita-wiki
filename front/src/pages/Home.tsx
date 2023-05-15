@@ -7,7 +7,6 @@ import {
   CardResource,
   InputGroup,
   ResourceTitleLink,
-  VoteCounter,
 } from '../components/molecules'
 import {
   HowToHelpCard,
@@ -23,6 +22,7 @@ type Tresource = {
   description: string
   img: string
   url: string
+  likes: number
 }
 
 const resources: Tresource[] = [
@@ -34,6 +34,7 @@ const resources: Tresource[] = [
     description: 'Proyecto práctico',
     img: icons.profileAvatar,
     url: 'https://www.google.com/search?q=link1',
+    likes: 5,
   },
   {
     id: 'resourceId2',
@@ -43,6 +44,7 @@ const resources: Tresource[] = [
     description: 'Teoria con ejemplos',
     img: icons.profileAvatar,
     url: 'https://www.google.com/search?q=link2',
+    likes: 22,
   },
   {
     id: 'resourceId3',
@@ -52,6 +54,7 @@ const resources: Tresource[] = [
     description: 'Teoria con ejemplos',
     img: icons.profileAvatar,
     url: 'https://www.google.com/search?q=link3',
+    likes: 56,
   },
   {
     id: 'resourceId4',
@@ -61,6 +64,7 @@ const resources: Tresource[] = [
     description: 'Teoria con ejemplos',
     img: icons.profileAvatar,
     url: 'https://www.google.com/search?q=link4',
+    likes: 125,
   },
 ]
 const dataSubjects = [
@@ -215,7 +219,6 @@ const Home: FC = () => {
             icon="search"
             color={colors.gray.gray3}
           />
-          <VoteCounter resourceId="testing" voteCount="0" />
         </HeaderContainerStyled>
         <CategoriesList />
         <ResourcesList title="Recursos que te gustan" resources={resources} />
@@ -279,6 +282,7 @@ const Home: FC = () => {
                   img={icons.profileAvatar}
                   createdBy={resource.createdBy}
                   createdOn={resource.createdOn}
+                  likes={resource.likes}
                 />
               ))}
             </MiddleColumnContainer>

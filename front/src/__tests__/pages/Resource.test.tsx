@@ -1,14 +1,10 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
+import { fireEvent, screen } from '@testing-library/react'
+import { render } from '../test-utils'
 import { Resource } from '../../pages'
 
 describe('Resource', () => {
   it('renders correctly', () => {
-    render(
-      <BrowserRouter>
-        <Resource />
-      </BrowserRouter>
-    )
+    render(<Resource />)
 
     expect(screen.getByText(/resource/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: '+' })).toBeInTheDocument()
@@ -16,11 +12,7 @@ describe('Resource', () => {
   })
 
   it('modal opens and closes correctly', () => {
-    render(
-      <BrowserRouter>
-        <Resource />
-      </BrowserRouter>
-    )
+    render(<Resource />)
 
     fireEvent.click(screen.getByRole('button', { name: /\+/i }))
 
