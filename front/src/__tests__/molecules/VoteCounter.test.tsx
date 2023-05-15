@@ -25,7 +25,7 @@ describe('Vote counter molecule', () => {
   )
 
   it('renders correctly', () => {
-    render(<VoteCounter voteCount="0" resourceId="test" />)
+    render(<VoteCounter voteCount={0} resourceId="test" />)
     expect(screen.getByTestId('increase')).toBeInTheDocument()
     expect(screen.getByTestId('decrease')).toBeInTheDocument()
     expect(screen.getByTestId('voteCounter')).toBeInTheDocument()
@@ -33,7 +33,7 @@ describe('Vote counter molecule', () => {
   })
 
   it('makes the correct request', async () => {
-    render(<VoteCounter voteCount="0" resourceId="test" />)
+    render(<VoteCounter voteCount={0} resourceId="test" />)
 
     const increase = screen.getByTestId('increase')
     const decrease = screen.getByTestId('decrease')

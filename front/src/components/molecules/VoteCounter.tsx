@@ -15,7 +15,7 @@ const StyledIcon = styled(Icon)`
 `
 
 type TVoteCounter = {
-  voteCount: string
+  voteCount: number
   resourceId: string
 }
 
