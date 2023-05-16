@@ -211,8 +211,8 @@ const Resource: FC = () => {
 
       {stackData.map((sd) => (
         <CardResource
+          id={sd.createdOn}
           img={sd?.img}
-          key={sd.createdOn}
           title={sd.title}
           url={sd.url}
           description={sd.description}
