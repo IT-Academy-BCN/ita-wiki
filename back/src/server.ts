@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import fs from 'fs'
 import Koa from 'koa'
 import cors from '@koa/cors'
 import helmet from 'koa-helmet'
@@ -14,6 +15,10 @@ import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
 
 dotenv.config()
 
+fs.mkdir('/static/media', { recursive: true }, (err) => {
+  // eslint-disable-next-line no-console
+  if (err) console.log('Static/media folder was not created')
+})
 const app = new Koa()
 
 app.use(cors())
@@ -35,6 +40,7 @@ app.use(Routes.authRouter.routes())
 app.use(Routes.resourcesRouter.routes())
 app.use(Routes.topicsRouter.routes())
 app.use(Routes.categoriesRouter.routes())
+app.use(Routes.mediaRouter.routes())
 
 // Swagger UI
 app.use(swaggeruiCSPMiddleware)
@@ -44,7 +50,7 @@ app.use(koaSwagger({ routePrefix: swaggeruiUrl, swaggerOptions: { spec } }))
 
 // Only listen if launched from terminal
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
-if (process.env.NODE_ENV !== "test") {
+if (process.env.NODE_ENV !== 'test') {
   app.listen(appConfig.port, () => {
     // eslint-disable-next-line no-console
     console.log(`🚀 Server ready at http://localhost:${appConfig.port}`)
