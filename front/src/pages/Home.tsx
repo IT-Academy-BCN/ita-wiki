@@ -276,7 +276,7 @@ const Home: FC = () => {
               </FlexBox>
               {filteredItems.map((resource) => (
                 <CardResource
-                  data-testid="card-resource"
+                  data-testid="cardResource"
                   key={resource.id}
                   title={resource.title}
                   description={resource.description}
@@ -292,10 +292,11 @@ const Home: FC = () => {
             <SideColumnContainer>
               {/* TÍTULO 1 */}
               <InputGroup
-                label="search-resource"
-                name="search-resource"
+                data-testid="inputGroupSearch"
+                label="searchResource"
+                name="searchResource"
                 placeholder="Buscar recurso concreto"
-                id="search-resource"
+                id="searchResource"
                 icon="search"
                 onChange={handleInput}
               />
