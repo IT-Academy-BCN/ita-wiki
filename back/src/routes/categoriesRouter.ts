@@ -6,9 +6,6 @@ const categoriesRouter = new Router()
 
 categoriesRouter.prefix(pathRoot.v1.categories)
 
-categoriesRouter.get(
-  '/',
-  getCategories
-)
+categoriesRouter.get('/', getCategories)
 
 export { categoriesRouter }

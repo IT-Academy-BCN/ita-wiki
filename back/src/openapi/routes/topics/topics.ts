@@ -19,9 +19,10 @@ registry.registerPath({
               name: z.string(),
               slug: z.string(),
               categoryId: z.string(),
-            }))
+            })
+          ),
         },
-      }
+      },
     },
   },
 })

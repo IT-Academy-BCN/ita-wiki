@@ -6,14 +6,17 @@ import { MissingParamError } from '../../helpers/errors'
 
 export const createResource: Middleware = async (ctx: Koa.Context) => {
   const token = ctx.cookies.get('token') as string
-  const { userId } = jwt.verify(token, process.env.JWT_KEY as Secret) as { userId: string }
+  const { userId } = jwt.verify(token, process.env.JWT_KEY as Secret) as {
+    userId: string
+  }
   const resource = ctx.request.body
 
   const slug = slugify(resource.title, { lower: true })
 
   const topicIds = resource.topics
   delete resource.topics
-  if (topicIds.length === 0) throw new MissingParamError('Must contain at least one topic')
+  if (topicIds.length === 0)
+    throw new MissingParamError('Must contain at least one topic')
 
   const resourceId = await prisma.resource.create({
     data: { ...resource, userId, slug },

@@ -8,7 +8,7 @@ describe('Testing categories endpoint', () => {
     test('Should respond OK status and return categories as an array. As per seed data, it should not be empty, and contain objects with an id and category name.', async () => {
       const response = await supertest(server).get(`${pathRoot.v1.categories}`)
 
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(200)
       expect(response.body).toBeInstanceOf(Array)
       expect(response.body.length).toBeGreaterThan(0)
       expect(response.body).toEqual(
@@ -16,8 +16,8 @@ describe('Testing categories endpoint', () => {
           expect.objectContaining({
             id: expect.any(String),
             name: expect.any(String),
-            slug: expect.any(String)
-          })
+            slug: expect.any(String),
+          }),
         ])
       )
     })
