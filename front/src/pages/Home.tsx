@@ -7,26 +7,13 @@ import {
   CardResource,
   InputGroup,
   ResourceTitleLink,
-  Avatar,
 } from '../components/molecules'
 import {
   HowToHelpCard,
   CategoriesList,
   ResourcesList,
+  Navbar
 } from '../components/organisms'
-<<<<<<< HEAD
-import { Icon, Text, Title } from '../components/atoms'
-
-
-type Tcategories = {
-  id: number
-  category: string
-  resources: number
-  topics: number
-  img: string
-}
-=======
->>>>>>> main
 
 type Tresource = {
   id: string
@@ -222,7 +209,7 @@ const Home: FC = () => {
   return (
     <>
       <MobileStyled>
-      <Avatar/>
+      <Navbar title={''}/>
         <GrayBackground />
         <HeaderContainerStyled>
           <HowToHelpCard />
