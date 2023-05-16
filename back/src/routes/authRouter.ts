@@ -1,6 +1,10 @@
 import Router from '@koa/router'
 import { z } from 'zod'
-import { authMeController, loginController, registerController } from '../controllers'
+import {
+  authMeController,
+  loginController,
+  registerController,
+} from '../controllers'
 import { validate, authMiddleware } from '../middleware'
 import { userLoginSchema, userRegisterSchema } from '../schemas'
 import { pathRoot } from './routes'
@@ -21,10 +25,6 @@ authRouter.post(
   registerController
 )
 
-authRouter.get(
-  '/me',
-  authMiddleware,
-  authMeController
-)
+authRouter.get('/me', authMiddleware, authMeController)
 
 export { authRouter }

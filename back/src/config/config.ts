@@ -15,7 +15,7 @@ const dbConfig = {
 }
 
 const bcryptConfig = {
-  saltRounds: 10
+  saltRounds: 10,
 }
 
 export { appConfig, dbConfig, bcryptConfig }
