@@ -40,7 +40,7 @@ describe('Testing POST media endpoint', () => {
     // Uploaded image exists and is a square
     const uploadedFile = existsSync(response.body.filePath)
     expect(uploadedFile).toBe(true)
-    
+
     const imageMetadata = await sharp(response.body.filePath).metadata()
     expect(imageMetadata.height).toEqual(imageMetadata.width)
 
