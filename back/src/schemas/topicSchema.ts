@@ -6,5 +6,5 @@ export const topicSchema = z.object({
   slug: z.string().optional(),
   categoryId: z.string(),
   createdAt: z.date(),
-  updatedAt: z.date()
-});
+  updatedAt: z.date(),
+})

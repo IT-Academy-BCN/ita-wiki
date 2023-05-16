@@ -1,5 +1,5 @@
 import { IncomingMessage, Server, ServerResponse } from 'http'
-import { prisma } from "../prisma/client"
+import { prisma } from '../prisma/client'
 import { app } from '../server'
 
 // eslint-disable-next-line import/no-mutable-exports
@@ -12,48 +12,47 @@ export const testUserData = {
     email: 'testingUser@user.cat',
     name: 'testingUser',
     dni: '11111111A',
-    password: 'testingPswd1'
+    password: 'testingPswd1',
   },
   admin: {
     email: 'testingAdmin@user.cat',
     name: 'testingAdmin',
     dni: '22222222B',
     password: 'testingPswd2',
-    role: "ADMIN",
-  }
+    role: 'ADMIN',
+  },
 }
 
 export const setup = async () => {
   // First delete in case a test failed and teardown function was not executed. DeleteMany will not break if records are not found in the database
   await prisma.user.deleteMany({
-    where: { dni: { in: [testUserData.admin.dni, testUserData.user.dni] } }
+    where: { dni: { in: [testUserData.admin.dni, testUserData.user.dni] } },
   })
   await prisma.topic.deleteMany({ where: { slug: 'testing' } })
   await prisma.category.deleteMany({ where: { slug: 'testing' } })
 
   await prisma.user.createMany({
-    data: [testUserData.admin, testUserData.user]
+    data: [testUserData.admin, testUserData.user],
   })
   const testCategory = await prisma.category.create({
     data: {
-      name: "Testing",
-      slug: "testing"
-    }
+      name: 'Testing',
+      slug: 'testing',
+    },
   })
 
   await prisma.topic.create({
     data: {
       name: 'Testing',
       slug: 'testing',
-      categoryId: testCategory.id
-    }
+      categoryId: testCategory.id,
+    },
   })
-
 }
 
 export const teardown = async () => {
   await prisma.user.deleteMany({
-    where: { dni: { in: [testUserData.admin.dni, testUserData.user.dni] } }
+    where: { dni: { in: [testUserData.admin.dni, testUserData.user.dni] } },
   })
   await prisma.topic.deleteMany({ where: { slug: 'testing' } })
   await prisma.category.deleteMany({ where: { slug: 'testing' } })

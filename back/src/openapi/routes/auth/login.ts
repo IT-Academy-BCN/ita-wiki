@@ -23,7 +23,7 @@ registry.registerPath({
   responses: {
     204: {
       description: 'The user has been authenticated',
-      headers: { 'Set-Cookie': setCookieHeader.ref }
+      headers: { 'Set-Cookie': setCookieHeader.ref },
     },
     404: {
       description: 'User not found',

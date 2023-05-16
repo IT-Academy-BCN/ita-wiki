@@ -1,5 +1,5 @@
 /* eslint max-classes-per-file: 0 */
-import { ZodIssue } from "zod"
+import { ZodIssue } from 'zod'
 
 /* eslint-disable max-classes-per-file */
 class DefaultError extends Error {
@@ -45,7 +45,7 @@ class UnsupportedMediaType extends DefaultError {
 class ValidationError {
   public status: number
   public message: ZodIssue[]
-  constructor(message : ZodIssue[]) {
+  constructor(message: ZodIssue[]) {
     this.status = 400
     this.message = message
   }

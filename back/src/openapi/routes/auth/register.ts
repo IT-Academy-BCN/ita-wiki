@@ -1,7 +1,11 @@
 import { userRegisterSchema } from '../../../schemas'
 import { registry } from '../../registry'
 import { z } from '../../zod'
-import { DniError, EmailError, ValidationError } from '../../components/errorSchemas'
+import {
+  DniError,
+  EmailError,
+  ValidationError,
+} from '../../components/errorSchemas'
 import { pathRoot } from '../../../routes/routes'
 
 registry.registerPath({
