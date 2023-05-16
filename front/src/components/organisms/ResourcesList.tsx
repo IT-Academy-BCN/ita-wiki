@@ -1,15 +1,17 @@
 import styled from 'styled-components'
 import { FlexBox, dimensions } from '../../styles'
 import { Title } from '../atoms'
-import { CardResourceHome } from '../molecules'
+import { CardResource } from '../molecules'
 
 type Tresource = {
-  id: number
+  id: string
   title: string
   createdBy: string
   createdOn: string
   description: string
   img: string
+  url: string
+  likes: number
 }
 
 type Tresources = {
@@ -38,13 +40,15 @@ const ResourcesList = ({ title, resources }: Tresources) => (
     </TitleStyled>
     <FlexBoxStyled direction="row">
       {resources.map((resource) => (
-        <CardResourceHome
+        <CardResource
           key={resource.id}
           title={resource.title}
+          description={resource.description}
+          url={resource.url}
+          img={resource.img}
           createdBy={resource.createdBy}
           createdOn={resource.createdOn}
-          description={resource.description}
-          img={resource.img}
+          likes={resource.likes}
         />
       ))}
     </FlexBoxStyled>

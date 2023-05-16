@@ -11,14 +11,13 @@ export const authMiddleware = async (ctx: Koa.Context, next: Koa.Next) => {
 
   try {
     jwt.verify(token, process.env.JWT_KEY as Secret)
-    await next() 
+    await next()
   } catch (error) {
-    if(error instanceof jwt.JsonWebTokenError){
+    if (error instanceof jwt.JsonWebTokenError) {
       ctx.status = 405
       ctx.body = { error: 'Token is not valid' }
     }
-    else
-      // We don't want to catch Zod or controller errors
-      throw error 
+    // We don't want to catch Zod or controller errors
+    else throw error
   }
 }

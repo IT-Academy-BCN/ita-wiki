@@ -28,27 +28,27 @@ const LinkStyled = styled(Link)`
 `
 
 type TCategoryBlock = {
-  id: number
+  slug?: string // TODO: add slug to the API. Maque required once it is done
   img: string
-  category: string
+  name: string
   resources?: number
   topics?: number
 }
 
 const CategoryBlock = ({
-  id,
+  slug,
   img,
-  category,
+  name,
   resources = 0,
   topics = 0,
 }: TCategoryBlock) => (
-  <LinkStyled to={`/category/${id}`}>
+  <LinkStyled to={`/categories/${slug}`} data-testid="categoryBlock">
     <CategoryBlockStyled direction="row" justify="space-between">
       <ContentStyled direction="row">
-        <ImgStyled src={img} alt={`${category} logo`} />
+        <ImgStyled src={img} alt={`${name} logo`} />
         <FlexBoxStyled align="start">
           <TitleStyled as="h3" fontWeight="bold">
-            {category}
+            {name}
           </TitleStyled>
           <Text as="span" color={colors.gray.gray3} fontSize={font.xss}>
             {resources} Recursos · {topics} Temas

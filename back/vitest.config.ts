@@ -7,5 +7,7 @@ export default defineConfig({
       provider: 'c8',
       reporter: ['lcov', 'text'],
     },
+    setupFiles: ['./src/__tests__/setup.ts'],
+    globalSetup: ['./src/__tests__/globalSetup.ts']
   },
 })

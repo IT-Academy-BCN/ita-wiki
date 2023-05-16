@@ -1,5 +1,6 @@
 import angular from './angular.svg'
 import arrowDown from './arrow-down.svg'
+import chevronDown from './chevron-down.svg'
 import dataScience from './data-science.svg'
 import editPen from './edit-pen.svg'
 import javascript from './javascript.svg'
@@ -8,10 +9,14 @@ import newFolder from './new-folder-dynamic-color.svg'
 import profileAvatar from './profile-avatar.svg'
 import react from './react.svg'
 import vue from './vue.svg'
+import node from './nodejs-logo.svg'
+import php from './php.svg'
+import java from './java.svg'
 
 const icons = {
   angular,
   arrowDown,
+  chevronDown,
   dataScience,
   editPen,
   javascript,
@@ -20,6 +25,9 @@ const icons = {
   profileAvatar,
   react,
   vue,
+  node,
+  php,
+  java,
 }
 
 export default icons

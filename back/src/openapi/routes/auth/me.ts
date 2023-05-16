@@ -3,7 +3,10 @@ import { registry } from '../../registry'
 import { z } from '../../zod'
 import { pathRoot } from '../../../routes/routes'
 import { cookieAuth } from '../../components/cookieAuth'
-import { invalidTokenResponse, missingTokenResponse } from '../../components/responses/authMiddleware'
+import {
+  invalidTokenResponse,
+  missingTokenResponse,
+} from '../../components/responses/authMiddleware'
 
 // const authCookie = z.string().openapi({example: 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhUmFuZG9tVXNlcklkIiwiaWF0IjoxNjgyNTAwNjczLCJleHAiOjE2ODI1ODcwNzN9.fvH3xbno7DQW3IPOekXz5D8H6TUpAq99UCK-_jY_qgI;'})
 
@@ -11,7 +14,8 @@ registry.registerPath({
   method: 'get',
   tags: ['auth'],
   path: `${pathRoot.v1.auth}/me`,
-  description: 'Returns information of a logged in user. Token recieved in the login necessary.',
+  description:
+    'Returns information of a logged in user. Token recieved in the login necessary.',
   summary: 'Get user information',
   security: [{ [cookieAuth.name]: [] }],
   responses: {
@@ -19,15 +23,15 @@ registry.registerPath({
       description: 'Token is valid and user information is returned.',
       content: {
         'application/json': {
-            schema: userSchema.pick({
-                name: true,
-                dni: true,
-                email:true,
-                role: true,
-                status: true
-            })
-        }
-      }
+          schema: userSchema.pick({
+            name: true,
+            dni: true,
+            email: true,
+            role: true,
+            status: true,
+          }),
+        },
+      },
     },
     401: missingTokenResponse,
     405: invalidTokenResponse,
@@ -35,9 +39,9 @@ registry.registerPath({
       description: 'User not found',
       content: {
         'application/json': {
-            schema: z.object({
-                error: z.string().openapi({ example: 'User not found' }),
-            }),
+          schema: z.object({
+            error: z.string().openapi({ example: 'User not found' }),
+          }),
         },
       },
     },

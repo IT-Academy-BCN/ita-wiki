@@ -1,51 +1,50 @@
+import { useState } from 'react'
 import styled from 'styled-components'
-import { FlexBox, colors, dimensions, font } from '../../styles'
-import { Icon, Text } from '../atoms'
+import { FlexBox, colors, dimensions } from '../../styles'
+import { Text } from '../atoms'
 import { CreateAuthor } from './CreateAuthor'
+import { ResourceTitleLink } from './ResourceTitleLink'
+import { VoteCounter } from './VoteCounter'
+import icons from '../../assets/icons'
 
 const CardContainerStyled = styled(FlexBox)`
   border-radius: ${dimensions.borderRadius.sm};
   border: 1px solid ${colors.gray.gray3};
-  height: 100px;
-  margin: ${dimensions.spacing.xs} auto;
-  padding: 0.1rem;
-  width: 340px;
+  height: 7rem;
+  margin: ${dimensions.spacing.xxxs} auto;
+  padding: 0.8rem 0.6rem 0.6rem 0.2rem;
+  width: 100%;
+  min-width: 15rem;
+  position: relative;
+`
+
+const StyledSvg = styled.div`
+  position: absolute;
+  top: ${dimensions.spacing.xxs};
+  right: ${dimensions.spacing.xxs};
+  padding: 2px;
+  background-color: rgba(255, 255, 255, 0.5);
 `
 
 const CounterContainerStyled = styled(FlexBox)`
-  margin: ${dimensions.spacing.xxxs} 0.8rem ${dimensions.spacing.xs};
+  margin: 0 ${dimensions.spacing.xs};
+  align-self: flex-start;
 
   ${Text} {
     margin: 0rem;
-  }
-`
-
-const ArrowLessIcon = styled(Icon)`
-  color: ${colors.gray.gray3};
-  cursor: pointer;
-
-  &:hover {
-    color: ${colors.success};
-  }
-`
-const ArrowMoreIcon = styled(Icon)`
-  color: ${colors.gray.gray3};
-  cursor: pointer;
-
-  &:hover {
-    color: ${colors.error};
   }
 `
 
 const FlexBoxStyled = styled(FlexBox)`
-  margin-top: 1rem;
+  height: 100%;
 
   ${FlexBox} {
-    margin-left: 0.3rem;
+    gap: 2px;
   }
 
   ${Text} {
     margin: 0rem;
+    margin-top: 2px;
   }
 `
 
@@ -54,38 +53,43 @@ type TCardResource = {
   createdOn: string
   description: string
   img: string
+  key: string
   likes: number
   title: string
+  url: string
 }
-const CardResource = ({
+
+export const CardResource = ({
   createdBy,
   createdOn,
   description,
   img,
   likes,
+  key,
   title,
-}: TCardResource) => (
-  <CardContainerStyled direction="row" align="start" justify="flex-start">
-    <CounterContainerStyled align="start">
-      <ArrowLessIcon name="expand_less" opsz={20} />
-      <Text fontSize={font.xs} fontWeight="bold">
-        {likes}
-      </Text>
-      <ArrowMoreIcon name="expand_more" />
-    </CounterContainerStyled>
+  url,
+}: TCardResource) => {
+  const [editable] = useState<boolean>(false)
 
-    <FlexBoxStyled align="start" justify="flex-start">
-      <FlexBox align="start">
-        <Text fontSize={font.xs} fontWeight="bold">
-          {title}
-        </Text>
-        <Text fontSize={font.xss} color={colors.gray.gray3}>
-          {description}
-        </Text>
-      </FlexBox>
-      <CreateAuthor createdBy={createdBy} createdOn={createdOn} img={img} />
-    </FlexBoxStyled>
-  </CardContainerStyled>
-)
-
-export { CardResource }
+  return (
+    <CardContainerStyled
+      direction="row"
+      align="center"
+      justify="flex-start"
+      id={key}
+    >
+      {editable && (
+        <StyledSvg>
+          <img src={icons.editPen} alt="Editar recurso" />
+        </StyledSvg>
+      )}
+      <CounterContainerStyled>
+        <VoteCounter voteCount={likes} resourceId={key} />
+      </CounterContainerStyled>
+      <FlexBoxStyled align="start" justify="space-between" gap="4px">
+        <ResourceTitleLink description={description} title={title} url={url} />
+        <CreateAuthor createdBy={createdBy} createdOn={createdOn} img={img} />
+      </FlexBoxStyled>
+    </CardContainerStyled>
+  )
+}

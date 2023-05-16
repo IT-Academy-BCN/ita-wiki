@@ -3,7 +3,7 @@ import { dniSchema } from './dniSchema'
 
 export const userSchema = z.object({
   id: z.string(),
-  email: z.string().email().openapi({example: 'user@example.cat'}),
+  email: z.string().email().openapi({ example: 'user@example.cat' }),
   dni: dniSchema,
   password: z.string().min(8),
   name: z.string().optional(),
@@ -11,4 +11,4 @@ export const userSchema = z.object({
   role: z.enum(['ADMIN', 'REGISTERED']),
   createdAt: z.date(),
   updatedAt: z.date(),
-});
+})
