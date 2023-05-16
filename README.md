@@ -91,22 +91,3 @@ While we encourage collaboration and support among team members, it's important 
 The code above allows the ESLint VSCode extension to properly find each ESLint project configuration file. This will help ensure that you're following the project's coding standards and guidelines as you contribute to the project.
 
 With this guide, we hope you feel better prepared to contribute to our project. Remember, don't hesitate to ask questions and reach out for support if needed. We're excited to have you on board and look forward to your contributions!
-
-### Use of context AuthProvider
-
-AuthProvider gives us access to the user information in all our app. It tell us if the user is logged and the name and avatar he/she uses.
-
-To use it, we call the custom hook useAuth:
-
-```
-const { user } = useAuth()
-```
-
-This user would be the next object:
-
-```
-{
-    name: 'Jane'
-    avatar: 'avatarJane'
-}
-```

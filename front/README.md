@@ -33,6 +33,25 @@ Here are some of the useful scripts you can use:
 2.  Code must follow the project's ESLint configuration. Make sure your editor is configured to use the project's `.eslintrc` file (It should be automatically detected by ESLint if you are using Visual Studio Code).
 3.  All code contributions must have accompanying tests.
 
+### Use of context AuthProvider
+
+AuthProvider gives us access to the user information in all our app. It tell us if the user is logged and the name and avatar he/she uses.
+
+To use it, we call the custom hook useAuth:
+
+```
+const { user } = useAuth()
+```
+
+This user would be the next object:
+
+```
+{
+    name: 'Jane'
+    avatar: 'avatarJane'
+}
+```
+
 ## Very Useful Documentation
 
 Here are some useful links to official documentation for the technologies used in this project:
@@ -41,4 +60,3 @@ Here are some useful links to official documentation for the technologies used i
 - [Typescript](https://www.typescriptlang.org/docs/handbook/react.html) - Typescript documentation.
 - [vitest](https://vitest.dev/guide/) - Vitest testing framework documentation.
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - React Testing Library documentation.
-
