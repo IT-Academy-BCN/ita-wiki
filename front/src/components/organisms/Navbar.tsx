@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import { FlexBox } from '../../styles'
+import { FlexBox , colors} from '../../styles'
 import { Title } from '../atoms'
 import { useAuth } from '../../context/AuthProvider'
 
@@ -9,9 +9,9 @@ type TNavbar = {
 }
 
 const NavbarStyled = styled(FlexBox)`
-  background-color: black;
+  background-color: ${colors.black.black3};
   ${Title} {
-    color: white;
+    color: ${colors.white}
   }
 `
 
@@ -22,4 +22,6 @@ export const Navbar: FC<TNavbar> = ({ title }) => {
       <Title as="h1">{title}</Title>
     </NavbarStyled>
   )
-}
+};
+
+export default styled(Navbar)``
