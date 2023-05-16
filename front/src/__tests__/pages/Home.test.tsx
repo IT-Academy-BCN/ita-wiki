@@ -10,29 +10,21 @@ describe('HomePage', () => {
   it('detects search-resource input & input change', () => {
     render(<Home />)
 
-    // Encontrar el buscador
     const inputSearch = screen.getByTestId<HTMLInputElement>('inputGroupSearch')
     expect(inputSearch).toBeInTheDocument()
 
-    // Escribir en el buscador
+    const initialResources = resources
+    const cardResourcesNoSearch = screen.getAllByTestId('cardResource')
+    expect(cardResourcesNoSearch).toHaveLength(initialResources.length)
+
+    // Filter results
     fireEvent.change(inputSearch, { target: { value: 'javascript' } })
     expect(inputSearch.value).toBe('javascript')
-  })
 
-  it.skip('filters items when the user search', () => {
-    render(<Home />)
-
-    // Comprobar que inicialmente estan todos los elementos
-    const cardResourcesNoSearch = screen.getAllByTestId('cardResource')
-    expect(cardResourcesNoSearch).toBeInTheDocument()
-    expect(cardResourcesNoSearch.length).toBe(resources.length)
-
-    // Comprobar que cuando el usuario escribe solo estan los elementos que coinciden con su busqueda
     const filteredItems = resources.filter((resource) =>
       resource.title.toLowerCase().includes('javascript')
     )
     const cardResources = screen.getAllByTestId('cardResource')
-    expect(cardResources).toBeInTheDocument()
-    expect(cardResources.length).toBe(filteredItems.length)
+    expect(cardResources).toHaveLength(filteredItems.length)
   })
 })

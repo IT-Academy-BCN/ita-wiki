@@ -278,6 +278,7 @@ const Home: FC = () => {
                 <CardResource
                   data-testid="cardResource"
                   key={resource.id}
+                  id={resource.id}
                   title={resource.title}
                   description={resource.description}
                   url={resource.url}
