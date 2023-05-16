@@ -15,14 +15,6 @@ import {
 } from '../components/organisms'
 import { useSearch } from '../hooks'
 
-/* type TCategories = {
-  id: number
-  category: string
-  resources: number
-  topics: number
-  img: string
-} */
-
 export type TResource = {
   id: string
   title: string
@@ -209,14 +201,11 @@ const LinkStyled = styled.a<TLinkStyled>`
 
 const Home: FC = () => {
   const [activeLink, setActiveLink] = useState('')
-  /* const [activeCategory, setActiveCategory] = useState('') */
   const [query, setQuery] = useState('')
 
   const handleClick = (link: SetStateAction<string>) => {
     setActiveLink(link)
   }
-  /* const handleCategoryClick = (cat: SetStateAction<string>) => {
-    setActiveCategory(cat)  } */
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
@@ -287,6 +276,7 @@ const Home: FC = () => {
               </FlexBox>
               {filteredItems.map((resource) => (
                 <CardResource
+                  data-testid="card-resource"
                   key={resource.id}
                   title={resource.title}
                   description={resource.description}

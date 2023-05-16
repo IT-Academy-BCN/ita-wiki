@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 
 type TObjectWithTitle = {
   title: string
-  [key: string]: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
+  [
+    key: string
+  ]: any /* eslint-disable-line @typescript-eslint/no-explicit-any */
 }
 
 export const useSearch = (items: TObjectWithTitle[], query: string) => {
@@ -24,4 +26,3 @@ export const useSearch = (items: TObjectWithTitle[], query: string) => {
 
   return { filteredItems }
 }
-

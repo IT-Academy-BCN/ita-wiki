@@ -46,7 +46,7 @@ const InputGroup = forwardRef(
     <InputGroupStyled>
       <Label text={label} htmlFor={id} hiddenLabel={hiddenLabel} />
       <FlexBox direction="row" justify="flex-end">
-        <Input id={id} name={name} onChange={onChange} 
+        <Input data-testid={id} id={id} name={name} onChange={onChange} 
         {...rest} ref={ref} />
         {!!icon && <Icon name={icon} onClick={iconClick} {...rest} />}
       </FlexBox>

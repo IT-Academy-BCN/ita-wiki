@@ -27,7 +27,14 @@ export type TInput = InputHTMLAttributes<HTMLInputElement> & {
 
 const Input = React.forwardRef<HTMLInputElement, TInput>(
   (
-    { error = false, warning = false, success = false, type = 'text', onChange, ...rest },
+    {
+      error = false,
+      warning = false,
+      success = false,
+      type = 'text',
+      onChange,
+      ...rest
+    },
     ref
   ) => (
     <InputStyled
@@ -35,7 +42,7 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       error={!!error}
       success={success}
       warning={warning}
-      onChange={onChange}       
+      onChange={onChange}
       {...rest}
       ref={ref}
     />
