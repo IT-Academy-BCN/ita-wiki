@@ -10,7 +10,7 @@ describe('Testing topics endpoint', () => {
       // At least a testing topic has been created for this test on globalSetup.
       const response = await supertest(server).get(`${pathRoot.v1.topics}`)
 
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(200)
       expect(response.body).toBeInstanceOf(Array)
       expect(response.body.length).toBeGreaterThan(0)
       expect(response.body).toEqual(
@@ -19,8 +19,8 @@ describe('Testing topics endpoint', () => {
             id: expect.any(String),
             name: expect.any(String),
             slug: expect.any(String),
-            categoryId: expect.any(String)
-          })
+            categoryId: expect.any(String),
+          }),
         ])
       )
     })
@@ -30,11 +30,13 @@ describe('Testing topics endpoint', () => {
     test('Should respond OK status and return topics as an array.', async () => {
       // A testing Topic on testing Category has been created for this test on globalSetup.
       const category = await prisma.category.findUnique({
-        where: {name: 'Testing'},
-      });
-      const response = await supertest(server).get(`${pathRoot.v1.topics}/category/${category!.id}`)
+        where: { name: 'Testing' },
+      })
+      const response = await supertest(server).get(
+        `${pathRoot.v1.topics}/category/${category!.id}`
+      )
 
-      expect(response.status).toBe(200);
+      expect(response.status).toBe(200)
       expect(response.body).toBeInstanceOf(Array)
       expect(response.body.length).toBeGreaterThan(0)
       expect(response.body).toEqual(
@@ -42,8 +44,8 @@ describe('Testing topics endpoint', () => {
           expect.objectContaining({
             id: expect.any(String),
             name: expect.any(String),
-            slug: expect.any(String)
-          })
+            slug: expect.any(String),
+          }),
         ])
       )
     })

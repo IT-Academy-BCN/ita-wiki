@@ -13,10 +13,10 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await prisma.topicsOnResources.deleteMany({
-    where: { resource: { slug: 'test-resource' } }
+    where: { resource: { slug: 'test-resource' } },
   })
   await prisma.resource.delete({
-    where: { slug: 'test-resource' }
+    where: { slug: 'test-resource' },
   })
 })
 
@@ -27,7 +27,7 @@ describe('Testing resource creation endpoint', () => {
       description: 'This is a new resource',
       url: 'https://example.com/resource',
       resourceType: 'BLOG',
-      topics: topicIds
+      topics: topicIds,
     }
 
     const response = await supertest(server)
@@ -44,7 +44,7 @@ describe('Testing resource creation endpoint', () => {
       description: 'This is a new resource',
       url: 'https://example.com/resource',
       resourceType: 'BLOG',
-      topics: []
+      topics: [],
     }
 
     const response = await supertest(server)
@@ -61,7 +61,7 @@ describe('Testing resource creation endpoint', () => {
       description: 'This is a new resource',
       url: 'https://example.com/resource',
       resourceType: 'INVALIDE-RESOURCE',
-      topicId: topicIds
+      topicId: topicIds,
     }
 
     const response = await supertest(server)

@@ -14,6 +14,7 @@ describe('CardResource component', () => {
         img={icons.profileAvatar}
         createdBy="Test author name"
         createdOn="2022-08-09T09:42:25.717Z"
+        likes={124}
       />
     )
     expect(screen.queryByAltText('Editar recurso')).not.toBeInTheDocument()
@@ -21,5 +22,6 @@ describe('CardResource component', () => {
     expect(
       screen.getByText('Test resource description 12345')
     ).toBeInTheDocument()
+    expect(screen.getByText('124')).toBeInTheDocument()
   })
 })
