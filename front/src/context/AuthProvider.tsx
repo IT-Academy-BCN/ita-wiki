@@ -6,6 +6,8 @@ import React, {
   useState,
 } from 'react'
 
+import { urls } from '../constants'
+
 type TUser = {
   name: string
   avatar: string
@@ -39,15 +41,13 @@ export const AuthProvider: React.FC<Omit<TAuthContext, 'user' | 'setUser'>> = ({
 }) => {
   const [user, setUser] = useState<TUser>(null)
 
-  const url =
-    'https://dev.api.itadirectory.eurecatacademy.org/api/v1/auth/login'
-
   const value = useMemo(() => ({ children, user, setUser }), [children, user])
 
   useEffect(() => {
-    fetch(url)
+    fetch(urls.getMe)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data)
         setUser(data)
       })
       .catch(() => {
