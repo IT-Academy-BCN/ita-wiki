@@ -1,4 +1,5 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions } from '../../styles'
@@ -36,6 +37,12 @@ const CategoriesListStyled = styled(FlexBox)`
   padding: 0 ${dimensions.spacing.lg};
   margin-bottom: ${dimensions.spacing.lg};
 `
+
+const LinkCategory = styled(Link)`
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+`
 const CategoriesContainerStyled = styled(FlexBox)`
   padding-left: ${dimensions.spacing.xxs};
   padding-right: ${dimensions.spacing.xs};
@@ -71,14 +78,13 @@ const categoryImg: Record<string, string> = {
   'Data Science': icons.dataScience,
 }
 
-type SetStateAction<S> = S | ((prevState: S) => S)
-
 type TCategory = {
-  id: number
+  id: string
+  img: string
   name: string
   resources: number
+  slug: string
   topics: number
-  img: string
 }
 
 const getCategories = () =>
@@ -93,16 +99,16 @@ const getCategories = () =>
       throw new Error(`Error fetching categories: ${err.message}`)
     })
 
-export const CategoriesList: FC = () => {
-  const [activeCategory, setActiveCategory] = useState('')
-  const handleCategoryClick = (cat: SetStateAction<string>) => {
-    setActiveCategory(cat)
-  }
-
+export const CategoriesList: FC<{ linkActive: string }> = ({
+  linkActive = '',
+}) => {
   const { isLoading, data, error } = useQuery({
     queryKey: ['getCategories'],
     queryFn: getCategories,
   })
+
+  //@@@ PER DETECTAR SLUG
+  if (!isLoading && data) console.log(data)
 
   if (isLoading) return <SmallSpinner role="status" />
   if (error) return <p>Ha habido un error...</p>
@@ -127,18 +133,18 @@ export const CategoriesList: FC = () => {
       <DesktopStyled>
         <CategoriesContainerStyled>
           {data?.map((category: TCategory) => (
-            <FlexBox direction="row" key={category.id}>
-              <ImgStyled
-                src={categoryImg[category.name]}
-                alt={`${category.name} logo`}
-              />
-              <CategoryLinkStyled
-                active={activeCategory === category.name}
-                onClick={() => handleCategoryClick(category.name)}
-              >
-                {category.name}
-              </CategoryLinkStyled>
-            </FlexBox>
+            <LinkCategory to={`/categories/${category.id}`} key={category.id}>
+              <FlexBox direction="row">
+                {/* <LinkCategory to={`paths.categories/, {slug: category.slug}`}> */}
+                <ImgStyled
+                  src={categoryImg[category.name]}
+                  alt={`${category.name} logo`}
+                />
+                <CategoryLinkStyled active={linkActive === category.id}>
+                  {category.name}
+                </CategoryLinkStyled>
+              </FlexBox>
+            </LinkCategory>
           ))}
         </CategoriesContainerStyled>
       </DesktopStyled>
