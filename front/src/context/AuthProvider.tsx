@@ -17,12 +17,16 @@ type TAuthContext = {
   user: TUser
   children: React.ReactNode
   setUser: (user: TUser) => void
+  error: string
+  setError: (error: string) => void
 }
 
 export const authContext = createContext<TAuthContext>({
   children: null,
   user: null,
   setUser: () => {},
+  error: '',
+  setError: () => {},
 })
 
 // hook
@@ -36,21 +40,30 @@ export const useAuth = () => {
   return context
 }
 
-export const AuthProvider: React.FC<Omit<TAuthContext, 'user' | 'setUser'>> = ({
-  children,
-}) => {
+export const AuthProvider: React.FC<
+  Omit<TAuthContext, 'user' | 'setUser' | 'error' | 'setError'>
+> = ({ children }) => {
   const [user, setUser] = useState<TUser>(null)
+  const [error, setError] = useState('')
 
-  const value = useMemo(() => ({ children, user, setUser }), [children, user])
+  const value = useMemo(
+    () => ({ children, user, setUser, error, setError }),
+    [children, user, error]
+  )
 
   useEffect(() => {
     fetch(urls.getMe)
-      .then((response) => response.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(res.statusText)
+        }
+        return res.json()
+      })
       .then((data) => {
-        console.log(data)
         setUser(data)
       })
-      .catch(() => {
+      .catch((err) => {
+        setError(err.message)
         setUser(null)
       })
   }, [])
