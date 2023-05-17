@@ -2,3 +2,4 @@
 export { errorMiddleware } from './errorMiddleware'
 export { validate, parse } from './validate'
 export { authMiddleware } from './authMiddleware'
+export { uploadImage } from './uploadImageMiddleware'
