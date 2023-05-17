@@ -68,6 +68,7 @@ export const CardResource = ({
   id,
   title,
   url,
+  ...rest
 }: TCardResource) => {
   const [editable] = useState<boolean>(false)
 
@@ -77,6 +78,7 @@ export const CardResource = ({
       align="center"
       justify="flex-start"
       id={id}
+      {...rest}
     >
       {editable && (
         <StyledSvg>

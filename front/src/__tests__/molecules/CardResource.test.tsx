@@ -7,7 +7,7 @@ describe('CardResource component', () => {
   it('renders correctly', () => {
     render(
       <CardResource
-        key="resourceId1"
+        id="resourceId1"
         title="Test resource title"
         description="Test resource description 12345"
         url="https://www.google.com"

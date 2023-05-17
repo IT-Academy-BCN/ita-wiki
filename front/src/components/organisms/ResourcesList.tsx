@@ -42,6 +42,7 @@ const ResourcesList = ({ title, resources }: Tresources) => (
       {resources.map((resource) => (
         <CardResource
           key={resource.id}
+          id={resource.id}
           title={resource.title}
           description={resource.description}
           url={resource.url}
