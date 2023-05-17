@@ -316,6 +316,67 @@ paths:
                     - id
                     - name
                     - slug
+  /api/v1/topics:
+    get:
+      tags:
+        - topics
+      description: Returns a list of all topics. Filter by category id or category
+        slug possible. If both filters are sent, will only search by category
+        id.
+      summary: Returns topics. Filter by category possible.
+      parameters:
+        - in: query
+          name: categoryId
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: slug
+          schema:
+            type: string
+            example: javascript
+          required: false
+      responses:
+        "200":
+          description: Topics retrieved succesfully,
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  topics:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        slug:
+                          type: string
+                        categoryId:
+                          type: string
+                      required:
+                        - id
+                        - name
+                        - categoryId
+                required:
+                  - topics
+        "404":
+          description: Category was not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    examples:
+                      - No category found with this id
+                      - No category found with this slug
+                required:
+                  - message
   /api/v1/resources:
     get:
       tags:
@@ -660,66 +721,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
-  /api/v1/topics/category/:categoryId:
-    get:
-      tags:
-        - topics
-      description: Takes a category Id and returns the list of topics sharing that category
-      summary: Returns topics by category
-      parameters:
-        - name: categoryId
-          in: path
-          required: true
-          description: ID of the category for which to retrieve topics
-      responses:
-        "200":
-          description: Topics by category id retrieved  successfully.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    name:
-                      type: string
-                    slug:
-                      type: string
-                  required:
-                    - id
-                    - name
-                    - slug
-  /api/v1/topics:
-    get:
-      tags:
-        - topics
-      description: Returns a list of all topics
-      summary: Returns topics
-      responses:
-        "200":
-          description: Topics retrieved succesfully,
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    name:
-                      type: string
-                    slug:
-                      type: string
-                    categoryId:
-                      type: string
-                  required:
-                    - id
-                    - name
-                    - slug
-                    - categoryId
   /api/v1/media:
     post:
       tags:
