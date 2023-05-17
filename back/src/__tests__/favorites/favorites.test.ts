@@ -32,7 +32,7 @@ beforeAll(async () => {
   )
 
 const favoritesData = resources.map(resource => ({
-  topicId: testTopic.id,
+  userId: resources.userId,
   resourceId: resource.id
 }))
 
