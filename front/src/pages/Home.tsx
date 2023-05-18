@@ -209,8 +209,8 @@ const Home: FC = () => {
   return (
     <>
       <MobileStyled>
-      <Navbar title={''}/>
         <GrayBackground />
+        <Navbar title="Wiki"/>
         <HeaderContainerStyled>
           <HowToHelpCard />
           <InputGroup
