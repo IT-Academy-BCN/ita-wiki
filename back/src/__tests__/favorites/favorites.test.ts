@@ -1,29 +1,28 @@
 import supertest from 'supertest'
+import { RESOURCE_TYPE, User } from '@prisma/client'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 
 beforeAll(async () => {
-  const userData = testUserData.admin.dni
-
   const testUser = await prisma.user.findUnique({
-    where: { dni: userData },
-  })
+    where: { dni: testUserData.admin.dni },
+  }) as User
 
   const resourceData = [
     {
-      title: 'test-resource-1-blog',
-      slug: 'test-resource-1-blog',
+      title: 'test-resource-1-favorites',
+      slug: 'test-resource-1-favorites',
       url: 'https://sample.com',
-      userId: testUser?.id,
-      resourceType: 'BLOG',
+      userId: testUser.id,
+      resourceType: 'BLOG' as RESOURCE_TYPE
     },
     {
-      title: 'test-resource-2-video',
-      slug: 'test-resource-2-video',
+      title: 'test-resource-2-favorites',
+      slug: 'test-resource-2-favorites',
       url: 'https://sample.com',
-      userId: testUser?.id,
-      resourceType: 'VIDEO',
+      userId: testUser.id,
+      resourceType: 'VIDEO' as RESOURCE_TYPE
     },
   ]
 
@@ -31,14 +30,13 @@ beforeAll(async () => {
     resourceData.map((resource) => prisma.resource.create({ data: resource }))
   )
 
-const favoritesData = resources.map(resource => ({
-  userId: resources.userId,
-  resourceId: resource.id
-}))
+  const favoritesData = resources.map((resource) => ({
+    userId: resource.userId,
+    resourceId: resource.id,
+  }))
 
-  // create favorites for each user
   await prisma.favorites.createMany({
-    data:favoritesData
+    data: favoritesData,
   })
 })
 
@@ -54,19 +52,14 @@ afterAll(async () => {
 describe('Testing /favorites/ endpoint', () => {
   describe('Testing GET /by-user/:userId', () => {
     test('Should respond OK status and return favorites as an array.', async () => {
-      const user = await prisma.user.findUnique({
-        where: {
-          email: 'registered@registered.com',
-        },
-      })
-      const userId = user?.id
+      const userId = 'placeholder'
       const response = await supertest(server).get(
         `/api/v1/favorites/by-user/${userId}`
       )
 
       expect(response.status).toBe(200)
-      // expect(response.body).toBeInstanceOf(Array)
-      // expect(response.body.length).toBeGreaterThan(0)
+      expect(response.body).toBeInstanceOf(Array)
+      expect(response.body.length).toBeGreaterThan(0)
       expect(response.body).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
