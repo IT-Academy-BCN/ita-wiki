@@ -14,6 +14,7 @@ import {
   ResourcesList,
 } from '../components/organisms'
 import { useSearch } from '../hooks'
+import CheckGroupState from '../components/organisms/CheckGroupState'
 
 export type TResource = {
   id: string
@@ -248,6 +249,7 @@ const Home: FC = () => {
                   {sub.subject}
                 </LinkStyled>
               ))}
+              <CheckGroupState/>
             </SideColumnContainer>
             {/* ==> COLUMNA RECURSOS */}
             <MiddleColumnContainer>
