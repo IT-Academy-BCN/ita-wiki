@@ -21,18 +21,11 @@ type TAuthContext = {
   setError: (error: string) => void
 }
 
-export const authContext = createContext<TAuthContext>({
-  children: null,
-  user: null,
-  setUser: () => {},
-  error: '',
-  setError: () => {},
-})
+const authContext = createContext<TAuthContext | null>(null)
 
 // hook
 export const useAuth = () => {
   const context = useContext(authContext)
-
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider')
   }
