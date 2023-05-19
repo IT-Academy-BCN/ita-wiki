@@ -3,39 +3,38 @@ import styled from 'styled-components'
 import { colors, dimensions, FlexBox } from '../../styles'
 import Label from './Label'
 
-
 export const CheckBoxWrapper = styled(FlexBox)`
   flex-direction: row;
   color: ${colors.gray.gray2};
 
-    ${Label} {
-      font-weight: normal;
-      color: inherit;
+  ${Label} {
+    font-weight: normal;
+    color: inherit;
+  }
+
+  > input {
+    -webkit-appearance: none;
+    appearance: none;
+    width: ${dimensions.spacing.md};
+    height: ${dimensions.spacing.md};
+    border-radius: ${dimensions.borderRadius.xs};
+    border: 2px solid ${colors.gray.gray3};
+    color: ${colors.gray.gray2};
+    cursor: pointer;
+    margin-right: ${dimensions.spacing.xxs};
+
+    &:checked {
+      background-color: ${colors.primary};
+      border-color: ${colors.primary};
     }
 
-    > input {
-      -webkit-appearance: none;
-      appearance: none;
-      width: ${dimensions.spacing.md};
-      height: ${dimensions.spacing.md};
-      border-radius: ${dimensions.borderRadius.xs};
-      border: 2px solid ${colors.gray.gray3};
-      color: ${colors.gray.gray2};
-      cursor: pointer;
-      margin-right: ${dimensions.spacing.xxs};
-
-      &:checked {
-        background-color: ${colors.primary};
-        border-color: ${colors.primary};
-      }
-
-      &:checked::before {
-        content: '\\2713';
-        color: white;
-        display: inline-block;
-        padding-left: 0.3rem;
-      }
-    } 
+    &:checked::before {
+      content: '\\2713';
+      color: white;
+      display: inline-block;
+      padding-left: 0.3rem;
+    }
+  }
 `
 
 type TCheckBox = InputHTMLAttributes<HTMLInputElement> & {
@@ -45,16 +44,20 @@ type TCheckBox = InputHTMLAttributes<HTMLInputElement> & {
   defaultChecked?: boolean
   required?: boolean
   className?: string
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const CheckBox = forwardRef(
   (
-    { id, 
-      label = "", 
+    {
+      id,
+      label = '',
       hiddenLabel,
       defaultChecked = false,
-      required = false,  
-      className 
+      required = false,
+      className,
+      onChange,
+      ...rest
     }: TCheckBox,
     ref: Ref<HTMLInputElement>
   ) => (
@@ -66,8 +69,10 @@ const CheckBox = forwardRef(
         name={id}
         defaultChecked={defaultChecked}
         required={required}
+        onChange={onChange}
+        {...rest}
       />
-    <Label htmlFor={id} text={label} hidden={hiddenLabel} />
+      <Label htmlFor={id} text={label} hidden={hiddenLabel} />
     </CheckBoxWrapper>
   )
 )
