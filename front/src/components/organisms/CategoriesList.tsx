@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions } from '../../styles'
@@ -54,7 +54,7 @@ const CategoriesContainerStyled = styled(FlexBox)`
 type TLinkStyled = {
   active?: boolean
 }
-const CategoryLinkStyled = styled.a<TLinkStyled>`
+const CategoryStyled = styled.span<TLinkStyled>`
   color: ${({ active }) => (active ? colors.black.black3 : colors.gray.gray3)};
   font-weight: bold;
   margin-top: ${dimensions.spacing.xxl};
@@ -67,6 +67,9 @@ const CategoryLinkStyled = styled.a<TLinkStyled>`
     margin-right: 0.3rem;
   }
 `
+//@@@ Test dels inks que funcionin: https://stackoverflow.com/questions/70933293/how-to-test-link-using-react-testing-library-and-jest
+//BO: https://stackoverflow.com/questions/69878146/how-can-i-test-react-router-with-jest, però versió antiga, MILLOR:
+//https:stackoverflow.com/questions/69859509/cannot-read-properties-of-undefined-reading-pathname-when-testing-pages-in
 
 // TODO: Remove once we receive img property from the API
 const categoryImg: Record<string, string> = {
@@ -99,16 +102,13 @@ const getCategories = () =>
       throw new Error(`Error fetching categories: ${err.message}`)
     })
 
-export const CategoriesList: FC<{ linkActive: string }> = ({
-  linkActive = '',
-}) => {
+export const CategoriesList: FC = () => {
   const { isLoading, data, error } = useQuery({
     queryKey: ['getCategories'],
     queryFn: getCategories,
   })
 
-  //@@@ PER DETECTAR SLUG
-  if (!isLoading && data) console.log(data)
+  const { slug } = useParams()
 
   if (isLoading) return <SmallSpinner role="status" />
   if (error) return <p>Ha habido un error...</p>
@@ -123,6 +123,7 @@ export const CategoriesList: FC<{ linkActive: string }> = ({
             {data?.map((category: TCategory) => (
               <CategoryBlock
                 key={category.id}
+                slug={category.slug}
                 name={category.name}
                 img={categoryImg[category.name]}
               />
@@ -133,16 +134,19 @@ export const CategoriesList: FC<{ linkActive: string }> = ({
       <DesktopStyled>
         <CategoriesContainerStyled>
           {data?.map((category: TCategory) => (
-            <LinkCategory to={`/categories/${category.id}`} key={category.id}>
+            <LinkCategory
+              to={`/category/${category.slug}`}
+              state={{ name: category.name }}
+              key={category.id}
+            >
               <FlexBox direction="row">
-                {/* <LinkCategory to={`paths.categories/, {slug: category.slug}`}> */}
                 <ImgStyled
                   src={categoryImg[category.name]}
                   alt={`${category.name} logo`}
                 />
-                <CategoryLinkStyled active={linkActive === category.id}>
+                <CategoryStyled active={slug === category.slug}>
                   {category.name}
-                </CategoryLinkStyled>
+                </CategoryStyled>
               </FlexBox>
             </LinkCategory>
           ))}

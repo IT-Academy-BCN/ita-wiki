@@ -1,5 +1,5 @@
 import { AddResource } from './AddResource'
-import { Categories } from './Categories'
+import { Category } from './Category'
 import { Home } from './Home'
 import { Information } from './Information'
 import { Resource } from './Resource'
@@ -8,7 +8,7 @@ import Login from './Login'
 import Register from './Register'
 
 export {
-  Categories,
+  Category,
   Home,
   Login,
   Register,
