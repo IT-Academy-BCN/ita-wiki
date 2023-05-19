@@ -86,7 +86,7 @@ const dataSubjects = [
 ]
 
 // TODO: mobile first!
-const MobileStyled = styled.div`
+export const MobileStyled = styled.div`
   display: block;
   @media only ${device.Laptop} {
     display: none;
