@@ -8,7 +8,7 @@ export {
   getResourcesByTopicSlug,
 } from './resources/getResourcesByTopic'
 export { getResourcesByUserId } from './resources/getResourcesByUserId'
-export { getResourceVote, putResourceVote } from './resources/voteController'
+export { getVote, putVote } from './vote/voteController'
 export { getTopics } from './topicController'
 export { getCategories } from './categoryController'
 export { postMedia } from './media/postMediaController'
