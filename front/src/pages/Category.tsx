@@ -103,7 +103,6 @@ const stackData: TStackData[] = [
   },
 ]
 
-// TODO: mobile first!
 export const MobileStyled = styled.div`
   display: block;
   @media only ${device.Laptop} {
