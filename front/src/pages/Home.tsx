@@ -10,7 +10,7 @@ import {
 } from '../components/organisms'
 import { Title, Text, Icon } from '../components/atoms'
 
-type Tresource = {
+export type TResource = {
   id: string
   title: string
   createdBy: string
@@ -21,7 +21,7 @@ type Tresource = {
   likes: number
 }
 
-const resources: Tresource[] = [
+export const resources: TResource[] = [
   {
     id: 'resourceId1',
     title: 'JavaScript en 45 segundos!',
@@ -65,13 +65,13 @@ const resources: Tresource[] = [
 ]
 
 // TODO: mobile first!
-const MobileStyled = styled.div`
+export const MobileStyled = styled.div`
   display: block;
   @media only ${device.Laptop} {
     display: none;
   }
 `
-const DesktopStyled = styled.div`
+export const DesktopStyled = styled.div`
   display: none;
   @media only ${device.Laptop} {
     display: block;

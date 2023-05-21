@@ -9,5 +9,6 @@ export {
 } from './resources/getResourcesByTopic'
 export { getResourcesByUserId } from './resources/getResourcesByUserId'
 export { getResourceVote, putResourceVote } from './resources/voteController'
-export { getTopics, getTopicsByCategoryId } from './topicController'
+export { getTopics } from './topicController'
 export { getCategories } from './categoryController'
+export { postMedia } from './media/postMediaController'
