@@ -67,9 +67,6 @@ const CategoryStyled = styled.span<TLinkStyled>`
     margin-right: 0.3rem;
   }
 `
-//@@@ Test dels inks que funcionin: https://stackoverflow.com/questions/70933293/how-to-test-link-using-react-testing-library-and-jest
-//BO: https://stackoverflow.com/questions/69878146/how-can-i-test-react-router-with-jest, però versió antiga, MILLOR:
-//https:stackoverflow.com/questions/69859509/cannot-read-properties-of-undefined-reading-pathname-when-testing-pages-in
 
 // TODO: Remove once we receive img property from the API
 const categoryImg: Record<string, string> = {
@@ -138,6 +135,7 @@ export const CategoriesList: FC = () => {
               to={`/category/${category.slug}`}
               state={{ name: category.name }}
               key={category.id}
+              data-testid={category.name}
             >
               <FlexBox direction="row">
                 <ImgStyled

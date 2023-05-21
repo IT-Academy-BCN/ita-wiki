@@ -1,5 +1,5 @@
-import { fireEvent, screen } from '@testing-library/react'
-import { render } from '../test-utils'
+import { fireEvent } from '@testing-library/react'
+import { render, screen } from '../test-utils'
 import { Resource } from '../../pages'
 
 describe('Resource', () => {

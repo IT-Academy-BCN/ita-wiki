@@ -18,22 +18,22 @@ export const handlers = [
         {
           id: '1',
           name: 'React',
+          slug: 'react',
         },
       ])
     )
   ),
 
-rest.put(urls.vote, (_, res, ctx) => 
+  rest.put(urls.vote, (_, res, ctx) =>
     res(
       ctx.status(204),
       ctx.json([
         {
-          voteCount: '1'
-        }
+          voteCount: '1',
+        },
       ])
     )
-  )
-
+  ),
 ]
 
 export const errorHandlers = [
@@ -42,7 +42,6 @@ export const errorHandlers = [
   ),
 
   rest.put(urls.vote, (_, res, ctx) =>
-  res(ctx.status(401), ctx.json({message: 'User not found'}))
-  )
+    res(ctx.status(401), ctx.json({ message: 'User not found' }))
+  ),
 ]
-

@@ -165,14 +165,12 @@ const Resource: FC = () => {
 
   const { state } = useLocation()
 
-  const category = state.name || ''
-
   return (
     <>
       <HeaderContainerStyled align="stretch">
         <FlexBox direction="row" justify="space-between">
           <Title as="h1" fontWeight="bold">
-            Recursos de {category}
+            Recursos de {state?.name}
           </Title>
           <Modal
             isOpen={isOpen}
