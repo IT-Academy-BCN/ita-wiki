@@ -725,7 +725,7 @@ paths:
       tags:
         - resources
       summary: Returns a list of resources by topic ID
-      description: Takes in an existing topic ID and returns a list of resources by topic
+      description: Takes in a valid topic ID and returns a list of resources by topic
       parameters:
         - in: path
           name: topicId
@@ -743,9 +743,9 @@ paths:
     get:
       tags:
         - resources
-      description: Returns a list of resources by topic slug
-      summary: Takes in a topic slug and returns a list of resources associated with
-        that topic slug
+      summary: Returns a list of resources by topic slug
+      description: Takes in a valid topic slug and returns a list of resources
+        associated with that topic slug
       parameters:
         - in: path
           name: slug
