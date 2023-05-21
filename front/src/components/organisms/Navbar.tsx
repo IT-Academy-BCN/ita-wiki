@@ -1,9 +1,12 @@
 import { FC, useState } from 'react';
 import styled from 'styled-components';
+// import { Link } from 'react-router-dom';
+// import { paths } from '../../constants';
 import { useAuth } from '../../context/AuthProvider';
 import { FlexBox, colors, dimensions } from '../../styles';
 import { Title, Icon } from '../atoms';
 import defaultAvatar from '../../assets/icons/profile-avatar.svg';
+
 
 type TNavbar = {
   title: string;
@@ -71,7 +74,9 @@ const DropdownItem = styled(FlexBox)`
 const IconWrapper = styled(FlexBox)`
   margin-left: 2rem;
 `;
-
+/* const LinkStyled = styled(Link)`
+  
+` */
 
 export const Navbar: FC<TNavbar> = ({ title }) => {
   const { user } = useAuth();
@@ -98,10 +103,12 @@ export const Navbar: FC<TNavbar> = ({ title }) => {
       {isDropdownOpen && (
           <DropdownMenu>
             <DropdownItem>
+              {/* <LinkStyled to={`${paths.profile}`}> */}
               <span>Perfil</span>
               <IconWrapper>
                 <Icon name="person" fill={0} />
               </IconWrapper>
+              {/* </LinkStyled> */}
             </DropdownItem>
             <DropdownItem onClick={handleLogout}>
               <span>Salir</span>
