@@ -4,7 +4,6 @@ import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 
-
 let testUser: User
 
 beforeAll(async () => {
@@ -44,7 +43,6 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-
   await prisma.favorites.deleteMany({
     where: { userId: testUser.id },
   })
