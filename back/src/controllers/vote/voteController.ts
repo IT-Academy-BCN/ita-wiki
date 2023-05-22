@@ -1,15 +1,12 @@
 import Koa, { Middleware } from 'koa'
-import jwt, { Secret } from 'jsonwebtoken'
 import { prisma } from '../../prisma/client'
 import { NotFoundError } from '../../helpers/errors'
 
-export const getResourceVote: Middleware = async (ctx: Koa.Context) => {
+export const getVote: Middleware = async (ctx: Koa.Context) => {
   const { resourceId } = ctx.params
-
   const resource = await prisma.resource.findUnique({
     where: { id: resourceId },
   })
-
   if (!resource) throw new NotFoundError('Resource not found')
 
   const upvote = await prisma.vote.count({
@@ -18,7 +15,6 @@ export const getResourceVote: Middleware = async (ctx: Koa.Context) => {
       vote: 1,
     },
   })
-
   const downvote = await prisma.vote.count({
     where: {
       resourceId,
@@ -36,19 +32,22 @@ export const getResourceVote: Middleware = async (ctx: Koa.Context) => {
   }
 }
 
-export const putResourceVote: Middleware = async (ctx: Koa.Context) => {
-  const token = ctx.cookies.get('token') as string
-  const { userId } = jwt.verify(token, process.env.JWT_KEY as Secret) as {
-    userId: string
-  }
-  const { resourceId, vote } = ctx.params
+export const putVote: Middleware = async (ctx: Koa.Context) => {
+  const { userId } = ctx.params
+  const { resourceId, vote } = ctx.request.body
 
-  const voteInt = parseInt(vote, 10)
+  let voteInt: number
+  if (vote === 'up') {
+    voteInt = 1
+  } else if (vote === 'down') {
+    voteInt = -1
+  } else {
+    voteInt = 0
+  }
 
   const resource = await prisma.resource.findUnique({
     where: { id: resourceId },
   })
-
   if (!resource) throw new NotFoundError('Resource not found')
 
   await prisma.vote.upsert({

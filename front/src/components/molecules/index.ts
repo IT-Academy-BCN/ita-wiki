@@ -8,6 +8,7 @@ import { ResourceTitleLink } from './ResourceTitleLink'
 import SelectGroup from './SelectGroup'
 import TextareaGroup from './TextareaGroup'
 import { VoteCounter } from './VoteCounter'
+import {CardHome} from './CardHome'
 
 export {
   AccessModal,
@@ -20,4 +21,5 @@ export {
   TextareaGroup,
   CreateAuthor,
   VoteCounter,
+  CardHome
 }

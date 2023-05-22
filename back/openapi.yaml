@@ -316,6 +316,67 @@ paths:
                     - id
                     - name
                     - slug
+  /api/v1/topics:
+    get:
+      tags:
+        - topics
+      description: Returns a list of all topics. Filter by category id or category
+        slug possible. If both filters are sent, will only search by category
+        id.
+      summary: Returns topics. Filter by category possible.
+      parameters:
+        - in: query
+          name: categoryId
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: slug
+          schema:
+            type: string
+            example: javascript
+          required: false
+      responses:
+        "200":
+          description: Topics retrieved succesfully,
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  topics:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        slug:
+                          type: string
+                        categoryId:
+                          type: string
+                      required:
+                        - id
+                        - name
+                        - categoryId
+                required:
+                  - topics
+        "404":
+          description: Category was not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    examples:
+                      - No category found with this id
+                      - No category found with this slug
+                required:
+                  - message
   /api/v1/resources:
     get:
       tags:
@@ -486,6 +547,62 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
+  "/api/v1/resources/topic/{topicId}":
+    get:
+      tags:
+        - resources
+      summary: Returns a list of resources by topic ID
+      description: Takes in a valid topic ID and returns a list of resources by topic
+      parameters:
+        - in: path
+          name: topicId
+          schema:
+            type: string
+            minLength: 1
+            description: ID of topic for which to retrieve resources
+          required: true
+      responses:
+        "200":
+          description: Resources found
+        "404":
+          description: Topic not found
+  "/api/v1/resources/topic/slug/{slug}":
+    get:
+      tags:
+        - resources
+      summary: Returns a list of resources by topic slug
+      description: Takes in a valid topic slug and returns a list of resources
+        associated with that topic slug
+      parameters:
+        - in: path
+          name: slug
+          schema:
+            type: string
+            minLength: 1
+            description: topic slug associated with the resources
+          required: true
+      responses:
+        "200":
+          description: Resources found
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      minLength: 1
+                    slug:
+                      type: string
+                      minLength: 1
+                      example: eventos
+                  required:
+                    - id
+                    - slug
+        "404":
+          description: Topic not found
   /api/v1/resources/me:
     get:
       tags:
@@ -558,10 +675,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
-  /api/v1/resources/vote/:resourceId:
+  "/api/v1/vote/{resourceId}":
     get:
       tags:
-        - resources
         - vote
       description: Get the vote count for a resource, separeted in total votes,
         upvotes and downvotes
@@ -586,10 +702,15 @@ paths:
                     properties:
                       upvote:
                         type: integer
+                        minimum: 0
+                        example: 14
                       downvote:
                         type: integer
+                        minimum: 0
+                        example: 2
                       total:
                         type: integer
+                        example: 12
                     required:
                       - upvote
                       - downvote
@@ -608,34 +729,104 @@ paths:
                     example: Resource not found
                 required:
                   - error
-  /api/v1/resources/vote/:resourceId/:vote:
+  /api/v1/vote:
     put:
       tags:
-        - resources
         - vote
-      description: Allows a user to vote for a resource. Vote can be 1 for an upvote,
-        -1 for a downvote or 0 to cancel a previous vote.
+      description: Allows a user to vote for a resource. Vote can be "up", "down"  or
+        "cancel" to cancel a previous vote.
       summary: Allows a user to vote for a resource.
       security:
         - cookieAuth: []
-      parameters:
-        - in: path
-          name: resourceId
-          schema:
-            type: string
-            description: ID of the resource to vote
-          required: true
-        - in: path
-          name: vote
-          schema:
-            type: integer
-            maximum: 1
-            minimum: -1
-            description: 1 for upvote, -1 for downvote, 0 to cancel previous vote.
-          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resourceId:
+                  type: string
+                  description: ID of the resource to vote
+                vote:
+                  type: string
+                  enum:
+                    - up
+                    - down
+                    - cancel
+                  description: Upvote, downvote or cancel a previous vote.
+              required:
+                - resourceId
+                - vote
       responses:
         "204":
           description: Vote was sent and stored successfully.
+        "400":
+          description: Validation error. Either resourceId or vote are not correct
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User or resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    examples:
+                      - User not found
+                      - Resource not found
+                required:
+                  - message
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+  /api/v1/media:
+    post:
+      tags:
+        - media
+      description: Allows a user to post media. Media must be an image in a field
+        called "media" and must be <=2MB. Images will be cropped to square and
+        with a max size of 1000x1000px.
+      summary: Post media
+      security:
+        - cookieAuth: []
+      requestBody:
+        description: Image to upload
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                media:
+                  description: File must be a valid image.
+                  type: string
+                  format: binary
+      responses:
+        "201":
+          description: Media was uploaded sucessfully. File path for uploaded image is
+            returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  filePath:
+                    type: string
+                    example: static/media/new_media-1684228383338.png
+                required:
+                  - filePath
         "401":
           description: Missing token
           content:
@@ -660,119 +851,39 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
-  /api/v1/topics/category/:categoryId:
-    get:
-      tags:
-        - topics
-      description: Takes a category Id and returns the list of topics sharing that category
-      summary: Returns topics by category
-      parameters:
-        - name: categoryId
-          in: path
-          required: true
-          description: ID of the category for which to retrieve topics
-      responses:
-        "200":
-          description: Topics by category id retrieved  successfully.
+        "415":
+          description: Unsupported media type. File must be an image.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    name:
-                      type: string
-                    slug:
-                      type: string
-                  required:
-                    - id
-                    - name
-                    - slug
-  /api/v1/topics:
-    get:
-      tags:
-        - topics
-      description: Returns a list of all topics
-      summary: Returns topics
-      responses:
-        "200":
-          description: Topics retrieved succesfully,
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: File must be an image
+                required:
+                  - message
+        "422":
+          description: Missing media. No image was sent in the request.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    name:
-                      type: string
-                    slug:
-                      type: string
-                    categoryId:
-                      type: string
-                  required:
-                    - id
-                    - name
-                    - slug
-                    - categoryId
-  /api/v1/resources/topic/:topicId:
-    get:
-      tags:
-        - resources
-      summary: Returns a list of resources by topic ID
-      description: Takes in an existing topic ID and returns a list of resources by topic
-      parameters:
-        - in: path
-          name: topicId
-          schema:
-            type: string
-            minLength: 1
-            description: ID of topic for which to retrieve resources
-          required: true
-      responses:
-        "200":
-          description: Resources found
-        "404":
-          description: Topic not found
-  /api/v1/resources/topic/slug/:slug:
-    get:
-      tags:
-        - resources
-      description: Returns a list of resources by topic slug
-      summary: Takes in a topic slug and returns a list of resources associated with
-        that topic slug
-      parameters:
-        - in: path
-          name: slug
-          schema:
-            type: string
-            minLength: 1
-            description: topic slug associated with the resources
-          required: true
-      responses:
-        "200":
-          description: Resources found
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Missing media
+                required:
+                  - message
+        "500":
+          description: Other error
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      minLength: 1
-                    slug:
-                      type: string
-                      minLength: 1
-                      example: eventos
-                  required:
-                    - id
-                    - slug
-        "404":
-          description: Topic not found
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message

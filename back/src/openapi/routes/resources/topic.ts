@@ -5,7 +5,7 @@ import { pathRoot } from '../../../routes/routes'
 registry.registerPath({
   method: 'get',
   tags: ['resources'],
-  path: `${pathRoot.v1.resources}/topic/:topicId`,
+  path: `${pathRoot.v1.resources}/topic/{topicId}`,
   summary: 'Returns a list of resources by topic ID',
   description:
     'Takes in a valid topic ID and returns a list of resources by topic',
@@ -29,7 +29,7 @@ registry.registerPath({
 registry.registerPath({
   method: 'get',
   tags: ['resources'],
-  path: `${pathRoot.v1.resources}/topic/slug/:slug`,
+  path: `${pathRoot.v1.resources}/topic/slug/{slug}`,
   summary: 'Returns a list of resources by topic slug',
   description:
     'Takes in a valid topic slug and returns a list of resources associated with that topic slug',

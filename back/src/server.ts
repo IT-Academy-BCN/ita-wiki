@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import fs from 'fs'
 import Koa from 'koa'
 import cors from '@koa/cors'
 import helmet from 'koa-helmet'
@@ -14,6 +15,10 @@ import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
 
 dotenv.config()
 
+fs.mkdir('/static/media', { recursive: true }, (err) => {
+  // eslint-disable-next-line no-console
+  if (err) console.log('Static/media folder was not created')
+})
 const app = new Koa()
 
 app.use(cors())
@@ -35,6 +40,8 @@ app.use(Routes.authRouter.routes())
 app.use(Routes.resourcesRouter.routes())
 app.use(Routes.topicsRouter.routes())
 app.use(Routes.categoriesRouter.routes())
+app.use(Routes.mediaRouter.routes())
+app.use(Routes.voteRouter.routes())
 
 // Swagger UI
 app.use(swaggeruiCSPMiddleware)
