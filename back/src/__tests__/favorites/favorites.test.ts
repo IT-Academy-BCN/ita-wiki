@@ -15,6 +15,7 @@ beforeAll(async () => {
     {
       title: 'test-resource-1-favorites',
       slug: 'test-resource-1-favorites',
+      description: 'random description',
       url: 'https://sample.com',
       userId: testUser.id,
       resourceType: 'BLOG' as RESOURCE_TYPE,
@@ -22,6 +23,7 @@ beforeAll(async () => {
     {
       title: 'test-resource-2-favorites',
       slug: 'test-resource-2-favorites',
+      description: 'random description',
       url: 'https://sample.com',
       userId: testUser.id,
       resourceType: 'VIDEO' as RESOURCE_TYPE,
@@ -54,27 +56,36 @@ afterAll(async () => {
 
 describe('Testing /favorites/ endpoint', () => {
   describe('Testing GET /by-user/:userId', () => {
-    test('Should respond OK status and return favorites as an array.', async () => {
+    test('Should respond OK status', async () => {
+      const userId = testUser.id
+      const response = await supertest(server).get(
+        `/api/v1/favorites/by-user/${userId}`
+      )
+      expect(response.status).toBe(200)
+    })
+
+    test('Should return favorites as an array of objects.', async () => {
       const userId = testUser.id
       const response = await supertest(server).get(
         `/api/v1/favorites/by-user/${userId}`
       )
 
-      expect(response.status).toBe(200)
       expect(response.body).toBeInstanceOf(Array)
       expect(response.body.length).toBeGreaterThan(0)
       expect(response.body).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            id: expect.any(String),
-            title: expect.any(String),
-            slug: expect.any(String),
-            description: expect.any(String),
-            url: expect.any(String),
-            resourceType: expect.any(String),
-            userId: expect.any(String),
-            createdAt: expect.any(String),
-            updatedAt: expect.any(String),
+            resource: expect.objectContaining({
+              id: expect.any(String),
+              title: expect.any(String),
+              slug: expect.any(String),
+              description: expect.any(String),
+              url: expect.any(String),
+              resourceType: expect.any(String),
+              userId: expect.any(String),
+              createdAt: expect.any(String),
+              updatedAt: expect.any(String),
+            }),
           }),
         ])
       )

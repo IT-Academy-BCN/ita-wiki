@@ -4,7 +4,7 @@ import { prisma } from '../prisma/client'
 export const getUserFavoriteResources: Middleware = async (
   ctx: Koa.Context
 ) => {
-  const { userId } = ctx.params
+  const { userId, categorySlug } = ctx.params
   if (!userId) {
     ctx.status = 400
     ctx.body = { error: 'User ID is required' }
@@ -17,15 +17,35 @@ export const getUserFavoriteResources: Middleware = async (
     ctx.body = { error: 'User not found' }
     return
   }
-
-  const favorites = await prisma.favorites.findMany({
-    where: {
-      userId,
-    },
-    select: {
-      resource: true,
-    },
-  })
+  let favorites
+  if (categorySlug) {
+    favorites = await prisma.favorites.findMany({
+      where: {
+        userId,
+        resource: {
+          topics: {
+            some: {
+              topic: {
+                category: { slug: categorySlug },
+              },
+            },
+          },
+        },
+      },
+      select: {
+        resource: true,
+      },
+    })
+  } else {
+    favorites = await prisma.favorites.findMany({
+      where: {
+        userId,
+      },
+      select: {
+        resource: true,
+      },
+    })
+  }
   ctx.status = 200
   ctx.body = favorites
 }
