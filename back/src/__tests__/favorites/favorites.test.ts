@@ -1,10 +1,11 @@
 import supertest from 'supertest'
-import { RESOURCE_TYPE, User } from '@prisma/client'
+import { RESOURCE_TYPE, User, Topic } from '@prisma/client'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 
 let testUser: User
+let testTopic: Topic
 
 beforeAll(async () => {
   testUser = (await prisma.user.findUnique({
@@ -34,17 +35,38 @@ beforeAll(async () => {
     resourceData.map((resource) => prisma.resource.create({ data: resource }))
   )
 
-  const favoritesData = {
-    userId: testUser.id,
-    resourceId: resources[0].id,
-  }
+  const favoritesData = [
+    {
+      userId: testUser.id,
+      resourceId: resources[0].id,
+    },
+  ]
 
   await prisma.favorites.createMany({
-    data: [favoritesData],
+    data: favoritesData,
+  })
+
+  testTopic = (await prisma.topic.findUnique({
+    where: { slug: 'testing' },
+  })) as Topic
+
+  const topicsOnResources = [
+    {
+      topicId: testTopic.id,
+      resourceId: resources[0].id,
+    },
+  ]
+
+  await prisma.topicsOnResources.createMany({
+    data: topicsOnResources,
   })
 })
 
 afterAll(async () => {
+  await prisma.topicsOnResources.deleteMany({
+    where: { topicId: testTopic.id },
+  })
+
   await prisma.favorites.deleteMany({
     where: { userId: testUser.id },
   })
@@ -55,7 +77,7 @@ afterAll(async () => {
 })
 
 describe('Testing /favorites/ endpoint', () => {
-  describe('Testing GET /by-user/:userId', () => {
+  describe('Testing GET /by-user/:userId?/:categorySlug?', () => {
     test('Should respond OK status', async () => {
       const userId = testUser.id
       const response = await supertest(server).get(
@@ -63,11 +85,23 @@ describe('Testing /favorites/ endpoint', () => {
       )
       expect(response.status).toBe(200)
     })
+    test('Should respond 400 status without userId', async () => {
+      const response = await supertest(server).get(`/api/v1/favorites/by-user/`)
+      expect(response.status).toBe(400)
+    })
+    test('Should respond 404 status without valid userId', async () => {
+      const userId = 'invalidUserId'
+      const response = await supertest(server).get(
+        `/api/v1/favorites/by-user/${userId}/testing`
+      )
+      expect(response.status).toBe(404)
+    })
 
     test('Should return favorites as an array of objects.', async () => {
       const userId = testUser.id
+      const categorySlug = 'testing'
       const response = await supertest(server).get(
-        `/api/v1/favorites/by-user/${userId}`
+        `/api/v1/favorites/by-user/${userId}/${categorySlug}`
       )
 
       expect(response.body).toBeInstanceOf(Array)
