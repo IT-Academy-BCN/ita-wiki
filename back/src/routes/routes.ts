@@ -6,5 +6,6 @@ export const pathRoot = {
     topics: '/api/v1/topics',
     favorites: '/api/v1/favorites',
     media: '/api/v1/media',
+    vote: '/api/v1/vote',
   },
 }

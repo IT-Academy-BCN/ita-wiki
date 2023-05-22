@@ -762,10 +762,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
-  /api/v1/resources/vote/:resourceId:
+  "/api/v1/vote/{resourceId}":
     get:
       tags:
-        - resources
         - vote
       description: Get the vote count for a resource, separeted in total votes,
         upvotes and downvotes
@@ -790,10 +789,15 @@ paths:
                     properties:
                       upvote:
                         type: integer
+                        minimum: 0
+                        example: 14
                       downvote:
                         type: integer
+                        minimum: 0
+                        example: 2
                       total:
                         type: integer
+                        example: 12
                     required:
                       - upvote
                       - downvote
@@ -812,34 +816,43 @@ paths:
                     example: Resource not found
                 required:
                   - error
-  /api/v1/resources/vote/:resourceId/:vote:
+  /api/v1/vote:
     put:
       tags:
-        - resources
         - vote
-      description: Allows a user to vote for a resource. Vote can be 1 for an upvote,
-        -1 for a downvote or 0 to cancel a previous vote.
+      description: Allows a user to vote for a resource. Vote can be "up", "down"  or
+        "cancel" to cancel a previous vote.
       summary: Allows a user to vote for a resource.
       security:
         - cookieAuth: []
-      parameters:
-        - in: path
-          name: resourceId
-          schema:
-            type: string
-            description: ID of the resource to vote
-          required: true
-        - in: path
-          name: vote
-          schema:
-            type: integer
-            maximum: 1
-            minimum: -1
-            description: 1 for upvote, -1 for downvote, 0 to cancel previous vote.
-          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resourceId:
+                  type: string
+                  description: ID of the resource to vote
+                vote:
+                  type: string
+                  enum:
+                    - up
+                    - down
+                    - cancel
+                  description: Upvote, downvote or cancel a previous vote.
+              required:
+                - resourceId
+                - vote
       responses:
         "204":
           description: Vote was sent and stored successfully.
+        "400":
+          description: Validation error. Either resourceId or vote are not correct
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
         "401":
           description: Missing token
           content:
@@ -847,17 +860,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/MissingTokenError"
         "404":
-          description: User not found
+          description: User or resource not found
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  error:
+                  message:
                     type: string
-                    example: User not found
+                    examples:
+                      - User not found
+                      - Resource not found
                 required:
-                  - error
+                  - message
         "405":
           description: Invalid token
           content:
