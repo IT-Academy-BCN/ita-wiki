@@ -9,7 +9,8 @@ components:
     Set-Cookie:
       schema:
         type: string
-        example: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM;
+        example:
+          token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM;
           path=/; httponly
         description: Sets the JWT session cookie
   securitySchemes:
@@ -39,7 +40,7 @@ components:
       properties:
         error:
           type: string
-          example: "Unauthorized: Missing token"
+          example: 'Unauthorized: Missing token'
       required:
         - error
     InvalidTokenError:
@@ -116,12 +117,12 @@ paths:
                 - dni
                 - password
       responses:
-        "204":
+        '204':
           description: The user has been authenticated
           headers:
             Set-Cookie:
-              $ref: "#/components/headers/Set-Cookie"
-        "400":
+              $ref: '#/components/headers/Set-Cookie'
+        '400':
           description: Zod validation error
           content:
             application/json:
@@ -129,10 +130,10 @@ paths:
                 type: object
                 properties:
                   message:
-                    $ref: "#/components/schemas/ValidationError"
+                    $ref: '#/components/schemas/ValidationError'
                 required:
                   - message
-        "404":
+        '404':
           description: User not found
           content:
             application/json:
@@ -144,7 +145,7 @@ paths:
                     example: User not found
                 required:
                   - message
-        "422":
+        '422':
           description: Invalid password
           content:
             application/json:
@@ -160,7 +161,8 @@ paths:
     post:
       tags:
         - auth
-      description: Takes a DNI, a password, a name and an email an registers a user to
+      description:
+        Takes a DNI, a password, a name and an email an registers a user to
         the system
       summary: Registers a new user
       requestBody:
@@ -189,18 +191,18 @@ paths:
                 - specialization
                 - password
       responses:
-        "204":
+        '204':
           description: The user has been registered
-        "400":
+        '400':
           description: Invalid input
           content:
             application/json:
               schema:
                 anyOf:
-                  - $ref: "#/components/schemas/ValidationError"
-                  - $ref: "#/components/schemas/DniError"
-                  - $ref: "#/components/schemas/EmailError"
-        "500":
+                  - $ref: '#/components/schemas/ValidationError'
+                  - $ref: '#/components/schemas/DniError'
+                  - $ref: '#/components/schemas/EmailError'
+        '500':
           description: Other error
           content:
             application/json:
@@ -216,13 +218,14 @@ paths:
     get:
       tags:
         - auth
-      description: Returns information of a logged in user. Token recieved in the
+      description:
+        Returns information of a logged in user. Token recieved in the
         login necessary.
       summary: Get user information
       security:
         - cookieAuth: []
       responses:
-        "200":
+        '200':
           description: Token is valid and user information is returned.
           content:
             application/json:
@@ -252,13 +255,13 @@ paths:
                   - email
                   - role
                   - status
-        "401":
+        '401':
           description: Missing token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
-        "404":
+                $ref: '#/components/schemas/MissingTokenError'
+        '404':
           description: User not found
           content:
             application/json:
@@ -270,13 +273,13 @@ paths:
                     example: User not found
                 required:
                   - error
-        "405":
+        '405':
           description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidTokenError"
-        "500":
+                $ref: '#/components/schemas/InvalidTokenError'
+        '500':
           description: Other error
           content:
             application/json:
@@ -295,7 +298,7 @@ paths:
       description: Get all categories saved in the database
       summary: Get all categories
       responses:
-        "200":
+        '200':
           description: Categories fetched
           content:
             application/json:
@@ -320,7 +323,8 @@ paths:
     get:
       tags:
         - topics
-      description: Returns a list of all topics. Filter by category id or category
+      description:
+        Returns a list of all topics. Filter by category id or category
         slug possible. If both filters are sent, will only search by category
         id.
       summary: Returns topics. Filter by category possible.
@@ -337,7 +341,7 @@ paths:
             example: javascript
           required: false
       responses:
-        "200":
+        '200':
           description: Topics retrieved succesfully,
           content:
             application/json:
@@ -363,7 +367,7 @@ paths:
                         - categoryId
                 required:
                   - topics
-        "404":
+        '404':
           description: Category was not found
           content:
             application/json:
@@ -401,7 +405,7 @@ paths:
             example: Listas
           required: false
       responses:
-        "200":
+        '200':
           description: Sucessful operation
           content:
             application/json:
@@ -483,7 +487,7 @@ paths:
                         - topics
                 required:
                   - resources
-        "500":
+        '500':
           description: Internal error
           content:
             application/json:
@@ -533,21 +537,21 @@ paths:
                 - resourceType
                 - topics
       responses:
-        "204":
+        '204':
           description: Resource has been posted
-        "401":
+        '401':
           description: Missing token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
-        "405":
+                $ref: '#/components/schemas/MissingTokenError'
+        '405':
           description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidTokenError"
-  "/api/v1/resources/topic/{topicId}":
+                $ref: '#/components/schemas/InvalidTokenError'
+  '/api/v1/resources/topic/{topicId}':
     get:
       tags:
         - resources
@@ -562,11 +566,11 @@ paths:
             description: ID of topic for which to retrieve resources
           required: true
       responses:
-        "200":
+        '200':
           description: Resources found
-        "404":
+        '404':
           description: Topic not found
-  "/api/v1/resources/topic/slug/{slug}":
+  '/api/v1/resources/topic/slug/{slug}':
     get:
       tags:
         - resources
@@ -582,7 +586,7 @@ paths:
             description: topic slug associated with the resources
           required: true
       responses:
-        "200":
+        '200':
           description: Resources found
           content:
             application/json:
@@ -601,7 +605,7 @@ paths:
                   required:
                     - id
                     - slug
-        "404":
+        '404':
           description: Topic not found
   /api/v1/resources/me:
     get:
@@ -612,7 +616,7 @@ paths:
       security:
         - cookieAuth: []
       responses:
-        "200":
+        '200':
           description: All resources posted by user are returned.
           content:
             application/json:
@@ -651,13 +655,13 @@ paths:
                   - userId
                   - createdAt
                   - updatedAt
-        "401":
+        '401':
           description: Missing token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
-        "404":
+                $ref: '#/components/schemas/MissingTokenError'
+        '404':
           description: User not found
           content:
             application/json:
@@ -669,12 +673,12 @@ paths:
                     example: User not found
                 required:
                   - error
-        "405":
+        '405':
           description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidTokenError"
+                $ref: '#/components/schemas/InvalidTokenError'
   /api/v1/resources/vote/:resourceId:
     get:
       tags:
@@ -691,7 +695,7 @@ paths:
             description: ID of the resource to get the vote count
           required: true
       responses:
-        "200":
+        '200':
           description: Successful operation. Votes are retrieved and summed.
           content:
             application/json:
@@ -713,7 +717,7 @@ paths:
                       - total
                 required:
                   - voteCount
-        "404":
+        '404':
           description: Resource not found
           content:
             application/json:
@@ -730,7 +734,8 @@ paths:
       tags:
         - resources
         - vote
-      description: Allows a user to vote for a resource. Vote can be 1 for an upvote,
+      description:
+        Allows a user to vote for a resource. Vote can be 1 for an upvote,
         -1 for a downvote or 0 to cancel a previous vote.
       summary: Allows a user to vote for a resource.
       security:
@@ -751,15 +756,15 @@ paths:
             description: 1 for upvote, -1 for downvote, 0 to cancel previous vote.
           required: true
       responses:
-        "204":
+        '204':
           description: Vote was sent and stored successfully.
-        "401":
+        '401':
           description: Missing token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
-        "404":
+                $ref: '#/components/schemas/MissingTokenError'
+        '404':
           description: User not found
           content:
             application/json:
@@ -771,17 +776,18 @@ paths:
                     example: User not found
                 required:
                   - error
-        "405":
+        '405':
           description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidTokenError"
+                $ref: '#/components/schemas/InvalidTokenError'
   /api/v1/media:
     post:
       tags:
         - media
-      description: Allows a user to post media. Media must be an image in a field
+      description:
+        Allows a user to post media. Media must be an image in a field
         called "media" and must be <=2MB. Images will be cropped to square and
         with a max size of 1000x1000px.
       summary: Post media
@@ -799,8 +805,9 @@ paths:
                   type: string
                   format: binary
       responses:
-        "201":
-          description: Media was uploaded sucessfully. File path for uploaded image is
+        '201':
+          description:
+            Media was uploaded sucessfully. File path for uploaded image is
             returned.
           content:
             application/json:
@@ -812,13 +819,13 @@ paths:
                     example: static/media/new_media-1684228383338.png
                 required:
                   - filePath
-        "401":
+        '401':
           description: Missing token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
-        "404":
+                $ref: '#/components/schemas/MissingTokenError'
+        '404':
           description: User not found
           content:
             application/json:
@@ -830,13 +837,13 @@ paths:
                     example: User not found
                 required:
                   - error
-        "405":
+        '405':
           description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidTokenError"
-        "415":
+                $ref: '#/components/schemas/InvalidTokenError'
+        '415':
           description: Unsupported media type. File must be an image.
           content:
             application/json:
@@ -848,7 +855,7 @@ paths:
                     example: File must be an image
                 required:
                   - message
-        "422":
+        '422':
           description: Missing media. No image was sent in the request.
           content:
             application/json:
@@ -860,7 +867,7 @@ paths:
                     example: Missing media
                 required:
                   - message
-        "500":
+        '500':
           description: Other error
           content:
             application/json:
