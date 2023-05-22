@@ -24,17 +24,17 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
       user: {
         select: {
           name: true,
-          email: true
-        }
+          email: true,
+        },
       },
       topics: {
         select: {
-          topic: true
-        }
+          topic: true,
+        },
       },
       createdAt: true,
       updatedAt: true,
-    }
+    },
   })
 
   ctx.status = 200

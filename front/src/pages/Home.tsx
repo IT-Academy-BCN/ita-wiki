@@ -13,8 +13,9 @@ import {
   CategoriesList,
   ResourcesList,
 } from '../components/organisms'
+import { useSearch } from '../hooks'
 
-type Tresource = {
+export type TResource = {
   id: string
   title: string
   createdBy: string
@@ -22,9 +23,10 @@ type Tresource = {
   description: string
   img: string
   url: string
+  likes: number
 }
 
-const resources: Tresource[] = [
+export const resources: TResource[] = [
   {
     id: 'resourceId1',
     title: 'JavaScript en 45 segundos!',
@@ -33,6 +35,7 @@ const resources: Tresource[] = [
     description: 'Proyecto práctico',
     img: icons.profileAvatar,
     url: 'https://www.google.com/search?q=link1',
+    likes: 5,
   },
   {
     id: 'resourceId2',
@@ -42,6 +45,7 @@ const resources: Tresource[] = [
     description: 'Teoria con ejemplos',
     img: icons.profileAvatar,
     url: 'https://www.google.com/search?q=link2',
+    likes: 22,
   },
   {
     id: 'resourceId3',
@@ -51,6 +55,7 @@ const resources: Tresource[] = [
     description: 'Teoria con ejemplos',
     img: icons.profileAvatar,
     url: 'https://www.google.com/search?q=link3',
+    likes: 56,
   },
   {
     id: 'resourceId4',
@@ -60,6 +65,7 @@ const resources: Tresource[] = [
     description: 'Teoria con ejemplos',
     img: icons.profileAvatar,
     url: 'https://www.google.com/search?q=link4',
+    likes: 125,
   },
 ]
 const dataSubjects = [
@@ -80,13 +86,13 @@ const dataSubjects = [
 ]
 
 // TODO: mobile first!
-const MobileStyled = styled.div`
+export const MobileStyled = styled.div`
   display: block;
   @media only ${device.Laptop} {
     display: none;
   }
 `
-const DesktopStyled = styled.div`
+export const DesktopStyled = styled.div`
   display: none;
   @media only ${device.Laptop} {
     display: block;
@@ -195,10 +201,16 @@ const LinkStyled = styled.a<TLinkStyled>`
 
 const Home: FC = () => {
   const [activeLink, setActiveLink] = useState('')
+  const [query, setQuery] = useState('')
 
   const handleClick = (link: SetStateAction<string>) => {
     setActiveLink(link)
   }
+
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value)
+  }
+  const { filteredItems } = useSearch(resources, query)
 
   return (
     <>
@@ -226,12 +238,6 @@ const Home: FC = () => {
           <DivStyled>
             {/* ==> COLUMNA BÚSQUEDA */}
             <SideColumnContainer>
-              <InputGroup
-                label="search-resource"
-                name="search-resource"
-                placeholder="Buscar recurso concreto"
-                id="search-resource"
-              />
               <Text fontWeight="bold">Temas de React</Text>
               {dataSubjects.map((sub) => (
                 <LinkStyled
@@ -268,21 +274,33 @@ const Home: FC = () => {
                   <Text color={colors.gray.gray3}>Fecha</Text>
                 </FlexBox>
               </FlexBox>
-              {resources.map((resource) => (
+              {filteredItems.map((resource) => (
                 <CardResource
+                  data-testid="cardResource"
                   key={resource.id}
+                  id={resource.id}
                   title={resource.title}
                   description={resource.description}
                   url={resource.url}
                   img={icons.profileAvatar}
                   createdBy={resource.createdBy}
                   createdOn={resource.createdOn}
+                  likes={resource.likes}
                 />
               ))}
             </MiddleColumnContainer>
             {/* ==> COLUMNA USUARIO */}
             <SideColumnContainer>
               {/* TÍTULO 1 */}
+              <InputGroup
+                data-testid="inputGroupSearch"
+                label="searchResource"
+                name="searchResource"
+                placeholder="Buscar recurso concreto"
+                id="searchResource"
+                icon="search"
+                onChange={handleInput}
+              />
               <ContainerGapStyled>
                 <Icon name="favorite" fill={0} />
                 <Title as="h2" fontWeight="bold">

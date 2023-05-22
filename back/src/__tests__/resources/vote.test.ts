@@ -10,7 +10,7 @@ let resource: Resource
 
 beforeAll(async () => {
   const testUser = await prisma.user.findUnique({
-    where: { dni: testUserData.admin.dni }
+    where: { dni: testUserData.admin.dni },
   })
 
   resource = await prisma.resource.create({
@@ -20,87 +20,97 @@ beforeAll(async () => {
       description: 'This is a new resource',
       url: 'https://example.com/resource',
       resourceType: 'BLOG',
-      userId: testUser!.id
-    }
+      userId: testUser!.id,
+    },
   })
 })
 
 afterAll(async () => {
   await prisma.vote.deleteMany({
-    where: { resourceId: resource.id }
+    where: { resourceId: resource.id },
   })
   await prisma.resource.delete({
     where: { id: resource.id },
   })
 })
 
-describe("Testing VOTE endpoint, GET method", async () => {
-  it("Should succeed with valid params", async () => {
-    const response = await supertest(server).get(`${pathRoot.v1.resources}/vote/${resource.id}`)
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(expect.objectContaining({
-      voteCount: expect.objectContaining({
-        upvote: expect.any(Number),
-        downvote: expect.any(Number),
-        total: expect.any(Number),
+describe('Testing VOTE endpoint, GET method', async () => {
+  it('Should succeed with valid params', async () => {
+    const response = await supertest(server).get(
+      `${pathRoot.v1.resources}/vote/${resource.id}`
+    )
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        voteCount: expect.objectContaining({
+          upvote: expect.any(Number),
+          downvote: expect.any(Number),
+          total: expect.any(Number),
+        }),
       })
-    }))
+    )
   })
 
-  it("Should fail with invalid resourceId", async () => {
-    const response = await supertest(server).get(`${pathRoot.v1.resources}/vote/someInvalidResourceId`)
-    expect(response.status).toBe(400);
+  it('Should fail with invalid resourceId', async () => {
+    const response = await supertest(server).get(
+      `${pathRoot.v1.resources}/vote/someInvalidResourceId`
+    )
+    expect(response.status).toBe(400)
   })
 
-  it("Should fail with valid resourceId but does not belong to one", async () => {
-    const response = await supertest(server).get(`${pathRoot.v1.resources}/vote/cjld2cjxh0000qzrmn831i7rn`)
-    expect(response.status).toBe(404);
+  it('Should fail with valid resourceId but does not belong to one', async () => {
+    const response = await supertest(server).get(
+      `${pathRoot.v1.resources}/vote/cjld2cjxh0000qzrmn831i7rn`
+    )
+    expect(response.status).toBe(404)
     expect(response.body).toStrictEqual({ message: 'Resource not found' })
   })
 })
 
-describe("Testing VOTE endpoint, PUT method", async () => {
-  test("Should return error if no token is provided", async () => {
-    const response = await supertest(server).put(`${pathRoot.v1.resources}/vote/${resource.id}/1`)
-    expect(response.status).toBe(401);
+describe('Testing VOTE endpoint, PUT method', async () => {
+  test('Should return error if no token is provided', async () => {
+    const response = await supertest(server).put(
+      `${pathRoot.v1.resources}/vote/${resource.id}/1`
+    )
+    expect(response.status).toBe(401)
     expect(response.body.error).toBe('Unauthorized: Missing token')
   })
 
-  describe("With valid token", () => {
-    it("Should succeed with valid params", async () => {
+  describe('With valid token', () => {
+    it('Should succeed with valid params', async () => {
       const response = await supertest(server)
         .put(`${pathRoot.v1.resources}/vote/${resource.id}/1`)
         .set('Cookie', authToken.admin)
-      expect(response.status).toBe(204);
+      expect(response.status).toBe(204)
     })
 
-    it("Should fail with invalid resourceId", async () => {
+    it('Should fail with invalid resourceId', async () => {
       const response = await supertest(server)
         .put(`${pathRoot.v1.resources}/vote/someInvalidResourceId/1`)
         .set('Cookie', authToken.admin)
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(400)
     })
 
-    it("Should fail with valid resourceId but does not belong to one", async () => {
+    it('Should fail with valid resourceId but does not belong to one', async () => {
       const response = await supertest(server)
         .put(`${pathRoot.v1.resources}/vote/cjld2cjxh0000qzrmn831i7rn/1`)
         .set('Cookie', authToken.admin)
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(404)
       expect(response.body.message).toBe('Resource not found')
     })
 
-    it("Should fail with invalid vote", async () => {
+    it('Should fail with invalid vote', async () => {
       const response = await supertest(server)
         .put(`${pathRoot.v1.resources}/vote/someInvalidResourceId/5`)
         .set('Cookie', authToken.admin)
-      expect(response.status).toBe(400);
+      expect(response.status).toBe(400)
     })
 
-    it("Should fail with missing vote", async () => {
+    it('Should fail with missing vote', async () => {
       const response = await supertest(server)
         .put(`${pathRoot.v1.resources}/vote/someInvalidResourceId/`)
         .set('Cookie', authToken.admin)
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(404)
     })
   })
 })

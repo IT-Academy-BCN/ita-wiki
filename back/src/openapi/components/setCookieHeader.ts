@@ -12,4 +12,3 @@ export const setCookieHeader = registry.registerComponent(
     },
   }
 )
-

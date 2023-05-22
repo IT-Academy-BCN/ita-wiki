@@ -11,6 +11,21 @@ export const handlers = [
     res(ctx.status(204))
   ),
 
+  rest.get(urls.getMe, (_, res, ctx) =>
+    res(
+      ctx.status(200),
+      ctx.json([
+        {
+          name: 'string',
+          dni: 'string',
+          email: 'user@example.cat',
+          role: 'ADMIN',
+          status: 'ACTIVE',
+        },
+      ])
+    )
+  ),
+
   rest.get(urls.getCategories, (_, res, ctx) =>
     res(
       ctx.status(200),
@@ -22,10 +37,25 @@ export const handlers = [
       ])
     )
   ),
+
+  rest.put(urls.vote, (_, res, ctx) =>
+    res(
+      ctx.status(204),
+      ctx.json([
+        {
+          voteCount: '1',
+        },
+      ])
+    )
+  ),
 ]
 
 export const errorHandlers = [
   rest.get(urls.getCategories, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
+  rest.put(urls.vote, (_, res, ctx) =>
+    res(ctx.status(401), ctx.json({ message: 'User not found' }))
   ),
 ]

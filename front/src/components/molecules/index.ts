@@ -1,12 +1,13 @@
 import { AccessModal } from './AccessModal'
 import { CardResource } from './CardResource'
 import { CategoryBlock } from './CategoryBlock'
+import { CreateAuthor } from './CreateAuthor'
+import InputGroup from './InputGroup'
 import { Modal } from './Modal'
 import { ResourceTitleLink } from './ResourceTitleLink'
-import InputGroup from './InputGroup'
 import SelectGroup from './SelectGroup'
 import TextareaGroup from './TextareaGroup'
-import { CreateAuthor } from './CreateAuthor'
+import { VoteCounter } from './VoteCounter'
 
 export {
   AccessModal,
@@ -18,4 +19,5 @@ export {
   SelectGroup,
   TextareaGroup,
   CreateAuthor,
+  VoteCounter,
 }

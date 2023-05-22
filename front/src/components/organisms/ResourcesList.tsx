@@ -11,6 +11,7 @@ type Tresource = {
   description: string
   img: string
   url: string
+  likes: number
 }
 
 type Tresources = {
@@ -41,12 +42,14 @@ const ResourcesList = ({ title, resources }: Tresources) => (
       {resources.map((resource) => (
         <CardResource
           key={resource.id}
+          id={resource.id}
           title={resource.title}
           description={resource.description}
           url={resource.url}
           img={resource.img}
           createdBy={resource.createdBy}
           createdOn={resource.createdOn}
+          likes={resource.likes}
         />
       ))}
     </FlexBoxStyled>

@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { FlexBox, colors, dimensions, font } from '../../styles'
-import { Icon, Text } from '../atoms'
+import { FlexBox, colors, dimensions } from '../../styles'
+import { Text } from '../atoms'
 import { CreateAuthor } from './CreateAuthor'
 import { ResourceTitleLink } from './ResourceTitleLink'
+import { VoteCounter } from './VoteCounter'
 import icons from '../../assets/icons'
 
 const CardContainerStyled = styled(FlexBox)`
@@ -34,25 +35,9 @@ const CounterContainerStyled = styled(FlexBox)`
   }
 `
 
-const ArrowLessIcon = styled(Icon)`
-  color: ${colors.gray.gray3};
-  cursor: pointer;
-
-  &:hover {
-    color: ${colors.success};
-  }
-`
-const ArrowMoreIcon = styled(Icon)`
-  color: ${colors.gray.gray3};
-  cursor: pointer;
-
-  &:hover {
-    color: ${colors.error};
-  }
-`
-
 const FlexBoxStyled = styled(FlexBox)`
   height: 100%;
+
   ${FlexBox} {
     gap: 2px;
   }
@@ -64,22 +49,26 @@ const FlexBoxStyled = styled(FlexBox)`
 `
 
 type TCardResource = {
-  key: string
-  title: string
-  description: string
-  url: string
-  img: string
   createdBy: string
   createdOn: string
+  description: string
+  img: string
+  id: string
+  likes: number
+  title: string
+  url: string
 }
+
 export const CardResource = ({
-  key,
-  title,
-  url,
-  description,
-  img,
   createdBy,
   createdOn,
+  description,
+  img,
+  likes,
+  id,
+  title,
+  url,
+  ...rest
 }: TCardResource) => {
   const [editable] = useState<boolean>(false)
 
@@ -88,23 +77,17 @@ export const CardResource = ({
       direction="row"
       align="center"
       justify="flex-start"
-      id={key}
+      id={id}
+      {...rest}
     >
       {editable && (
         <StyledSvg>
           <img src={icons.editPen} alt="Editar recurso" />
         </StyledSvg>
       )}
-      {/* TODO: Change this section by Vote molecule */}
-
-      <CounterContainerStyled align="center" justify="flex-start">
-        <ArrowLessIcon name="expand_less" opsz={20} />
-        <Text fontSize={font.xs} fontWeight="bold">
-          11
-        </Text>
-        <ArrowMoreIcon name="expand_more" />
+      <CounterContainerStyled>
+        <VoteCounter voteCount={likes} resourceId={id} />
       </CounterContainerStyled>
-
       <FlexBoxStyled align="start" justify="space-between" gap="4px">
         <ResourceTitleLink description={description} title={title} url={url} />
         <CreateAuthor createdBy={createdBy} createdOn={createdOn} img={img} />

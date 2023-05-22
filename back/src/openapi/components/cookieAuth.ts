@@ -8,6 +8,6 @@ export const cookieAuth = registry.registerComponent(
   {
     type: 'apiKey',
     in: 'cookie',
-    name: 'token'
+    name: 'token',
   }
 )

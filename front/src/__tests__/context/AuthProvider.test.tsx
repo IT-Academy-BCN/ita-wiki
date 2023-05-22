@@ -4,7 +4,7 @@ import { act } from 'react-dom/test-utils'
 import { AuthProvider, useAuth } from '../../context/AuthProvider'
 
 describe('AuthProvider', () => {
-  it('should render children', async () => {
+  it('should render children', () => {
     const wrapper = ({ children }: { children: ReactElement }) => (
       <AuthProvider>{children}</AuthProvider>
     )
@@ -37,5 +37,16 @@ describe('AuthProvider', () => {
         }
       }
     })
+  })
+
+  it('should  allow to set error', async () => {
+    const wrapper = ({ children }: { children: ReactElement }) => (
+      <AuthProvider>{children}</AuthProvider>
+    )
+    const { result } = renderHook(() => useAuth(), { wrapper })
+    act(() => {
+      result.current.setError('ERROR')
+    })
+    expect(result.current.error).toEqual('ERROR')
   })
 })

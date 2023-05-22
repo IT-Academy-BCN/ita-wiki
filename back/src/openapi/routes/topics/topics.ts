@@ -1,4 +1,5 @@
 import { pathRoot } from '../../../routes/routes'
+import { topicSchema } from '../../../schemas'
 import { registry } from '../../registry'
 import { z } from '../../zod'
 
@@ -6,22 +7,45 @@ registry.registerPath({
   method: 'get',
   tags: ['topics'],
   path: `${pathRoot.v1.topics}`,
-  description: 'Returns a list of all topics',
-  summary: 'Returns topics',
+  description:
+    'Returns a list of all topics. Filter by category id or category slug possible. If both filters are sent, will only search by category id.',
+  summary: 'Returns topics. Filter by category possible.',
+  request: {
+    query: z.object({
+      categoryId: z.string().cuid().optional(),
+      slug: z.string().optional().openapi({ example: 'javascript' }),
+    }),
+  },
   responses: {
     200: {
       description: 'Topics retrieved succesfully,',
       content: {
         'application/json': {
-          schema: z.array(
-            z.object({
-              id: z.string(),
-              name: z.string(),
-              slug: z.string(),
-              categoryId: z.string(),
-            }))
+          schema: z.object({
+            topics: z.array(
+              topicSchema.omit({
+                createdAt: true,
+                updatedAt: true,
+              })
+            ),
+          }),
         },
-      }
+      },
+    },
+    404: {
+      description: 'Category was not found',
+      content: {
+        'application/json': {
+          schema: z.object({
+            message: z.string().openapi({
+              examples: [
+                'No category found with this id',
+                'No category found with this slug',
+              ],
+            }),
+          }),
+        },
+      },
     },
   },
 })

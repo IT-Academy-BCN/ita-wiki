@@ -211,11 +211,13 @@ const Resource: FC = () => {
 
       {stackData.map((sd) => (
         <CardResource
+          key={sd.id}
           img={sd?.img}
-          key={sd.createdOn}
-          likes={sd.likes}
+          id={sd.createdOn}
           title={sd.title}
+          url={sd.url}
           description={sd.description}
+          likes={sd.likes}
           createdBy={sd.createdBy}
           createdOn={sd.createdOn}
         />
