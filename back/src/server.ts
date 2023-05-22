@@ -44,7 +44,6 @@ app.use(Routes.mediaRouter.routes())
 app.use(Routes.favoritesRouter.routes())
 app.use(Routes.voteRouter.routes())
 
-
 // Swagger UI
 app.use(swaggeruiCSPMiddleware)
 generateOpenapiFile()

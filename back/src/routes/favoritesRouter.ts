@@ -6,6 +6,9 @@ const favoritesRouter = new Router()
 
 favoritesRouter.prefix(pathRoot.v1.favorites)
 
-favoritesRouter.get('/by-user/:userId?/:categorySlug?', getUserFavoriteResources)
+favoritesRouter.get(
+  '/by-user/:userId?/:categorySlug?',
+  getUserFavoriteResources
+)
 
 export { favoritesRouter }
