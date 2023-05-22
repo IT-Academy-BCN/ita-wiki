@@ -1,9 +1,10 @@
 import { RESOURCE_TYPE, Topic, User } from '@prisma/client'
 import supertest from 'supertest'
-import { expect, test, describe, beforeAll, afterAll } from 'vitest'
+import { expect, test, it, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
+import { resourceGetSchema } from '../../schemas'
 
 let testUser: User
 let testTopic: Topic
@@ -58,19 +59,23 @@ afterAll(async () => {
   await prisma.resource.deleteMany({ where: { userId: testUser.id } })
 })
 
-describe('Testing resources get endpoint', () => {
-  test('should get all resources by resourceType ', async () => {
-    const response = await supertest(server)
-      .get(`${pathRoot.v1.resources}`)
-      .query({ type: 'BLOG' })
-
-    expect(response.status).toBe(200)
-    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-    response.body.resources.map((resource: any) =>
-      expect(resource.resourceType).toBe('BLOG')
-    )
+describe('Testing resources GET endpoint', () => {
+  describe('Testing all resourceType', () => {
+    const resourceType = ['BLOG', 'VIDEO', 'TUTORIAL']
+    resourceType.forEach((type) => {
+      it(`should get all resources by resourceType ${type}`, async () => {
+        const response = await supertest(server)
+          .get(`${pathRoot.v1.resources}`)
+          .query({ type })
+        expect(response.status).toBe(200)
+        expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
+        response.body.resources.forEach((resource: any) => {
+          expect(() => resourceGetSchema.parse(resource)).not.toThrow()
+          expect(resource.resourceType).toBe(`${type}`)
+        })
+      })
+    })
   })
-
   test('should fail with wrong resourceType', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
@@ -78,7 +83,6 @@ describe('Testing resources get endpoint', () => {
 
     expect(response.status).toBe(500)
   })
-
   test('should get all resources by topic ', async () => {
     const topicName = 'Testing'
 
@@ -88,12 +92,11 @@ describe('Testing resources get endpoint', () => {
 
     expect(response.status).toBe(200)
     expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-
     response.body.resources.forEach((resource: any) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       expect(resource.topics.map((t: any) => t.topic.name)).toContain(topicName)
     })
   })
-
   test('should fail without a valid topic', async () => {
     const topicName = 'This topic does not exist'
 
@@ -104,7 +107,6 @@ describe('Testing resources get endpoint', () => {
     expect(response.status).toBe(200)
     expect(response.body.resources.length).toBe(0)
   })
-
   test('should get all resources by type and topic ', async () => {
     const topicName = 'Testing'
 
@@ -115,11 +117,11 @@ describe('Testing resources get endpoint', () => {
     expect(response.status).toBe(200)
     expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
     response.body.resources.forEach((resource: any) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       expect(resource.topics.map((t: any) => t.topic.name)).toContain(topicName)
       expect(['BLOG', 'VIDEO', 'TUTORIAL']).toContain(resource.resourceType)
     })
   })
-
   test('should get all resources', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
@@ -128,6 +130,7 @@ describe('Testing resources get endpoint', () => {
     expect(response.status).toBe(200)
     expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
     response.body.resources.forEach((resource: any) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       expect(['BLOG', 'VIDEO', 'TUTORIAL']).toContain(resource.resourceType)
     })
   })
