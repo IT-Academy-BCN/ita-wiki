@@ -4,10 +4,13 @@ import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 
+
+let testUser: User
+
 beforeAll(async () => {
-  const testUser = await prisma.user.findUnique({
+  testUser = (await prisma.user.findUnique({
     where: { dni: testUserData.admin.dni },
-  }) as User
+  })) as User
 
   const resourceData = [
     {
@@ -15,14 +18,14 @@ beforeAll(async () => {
       slug: 'test-resource-1-favorites',
       url: 'https://sample.com',
       userId: testUser.id,
-      resourceType: 'BLOG' as RESOURCE_TYPE
+      resourceType: 'BLOG' as RESOURCE_TYPE,
     },
     {
       title: 'test-resource-2-favorites',
       slug: 'test-resource-2-favorites',
       url: 'https://sample.com',
       userId: testUser.id,
-      resourceType: 'VIDEO' as RESOURCE_TYPE
+      resourceType: 'VIDEO' as RESOURCE_TYPE,
     },
   ]
 
@@ -41,18 +44,20 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
+
   await prisma.favorites.deleteMany({
-    where: {},
+    where: { userId: testUser.id },
   })
-  await prisma.resource.delete({
-    where: {},
+
+  await prisma.resource.deleteMany({
+    where: { userId: testUser.id },
   })
 })
 
 describe('Testing /favorites/ endpoint', () => {
   describe('Testing GET /by-user/:userId', () => {
     test('Should respond OK status and return favorites as an array.', async () => {
-      const userId = 'placeholder'
+      const userId = testUser.id
       const response = await supertest(server).get(
         `/api/v1/favorites/by-user/${userId}`
       )
