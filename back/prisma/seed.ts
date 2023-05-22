@@ -90,32 +90,13 @@ async function seedDB() {
     {
       topicId: listasTopic?.id || '',
       resourceId: secondResource?.id || '',
-    }
+    },
   ]
 
   await prisma.topicsOnResources.createMany({
     // @ts-ignore
     data: topicsOnResources,
   })
-
-  const favoriteResource = [
-    {
-      userId: userRegistered?.id || '',
-      resourceId: firstResource?.id || '',
-    },
-    {
-      userId: userRegistered?.id || '',
-      resourceId: secondResource?.id || '',
-    },
-  ]
-  
-  
-  await prisma.favorites.createMany({
-    data: favoriteResource,
-  });
-
 }
-
-
 
 seedDB()
