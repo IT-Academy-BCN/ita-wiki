@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../styles'
@@ -10,8 +10,8 @@ import {
   ResourceTitleLink,
 } from '../components/molecules'
 import { CategoriesList } from '../components/organisms'
-import { useSearch } from '../hooks'
 import { Resource } from './Resource'
+import icons from '../assets/icons'
 
 type TResource = {
   id: string
@@ -19,41 +19,51 @@ type TResource = {
   createdBy: string
   createdOn: string
   description: string
+  img: string
   url: string
+  likes: number
 }
 
-const resources: TResource[] = [
+export const resources: TResource[] = [
   {
-    id: 'idResource1',
+    id: 'resourceId1',
     title: 'JavaScript en 45 segundos!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Proyecto práctico',
-    url: 'https://www.youtube.com/shorts/tR0IZnDt_5Q',
+    img: icons.profileAvatar,
+    url: 'https://www.google.com/search?q=link1',
+    likes: 5,
   },
   {
-    id: 'idResource2',
+    id: 'resourceId2',
     title: 'REST API de cero a  ninja!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
-    url: 'https://www.youtube.com/watch?v=SbhzQqP1p70',
+    img: icons.profileAvatar,
+    url: 'https://www.google.com/search?q=link2',
+    likes: 22,
   },
   {
-    id: 'idResource3',
+    id: 'resourceId3',
     title: 'Context en 5 minutos!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
-    url: 'https://www.youtube.com/watch?v=Ae33_gdJgnQ',
+    img: icons.profileAvatar,
+    url: 'https://www.google.com/search?q=link3',
+    likes: 56,
   },
   {
-    id: 'idResource3',
+    id: 'resourceId4',
     title: 'Redux para principiantes!',
     createdBy: 'Ona Costa',
     createdOn: '1995-12-17T03:07:00',
     description: 'Teoria con ejemplos',
-    url: 'https://www.youtube.com/watch?v=j-jzI3wkkVk&t=5s',
+    img: icons.profileAvatar,
+    url: 'https://www.google.com/search?q=link4',
+    likes: 125,
   },
 ]
 
@@ -133,11 +143,6 @@ const MiddleColumnContainer = styled(FlexBox)`
 const Category: FC = () => {
   const { state } = useLocation()
 
-  const [query, setQuery] = useState('')
-  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value)
-  }
-  const { filteredItems } = useSearch(resources, query)
   return (
     <>
       <MobileStyled>
@@ -177,7 +182,7 @@ const Category: FC = () => {
                   <Text color={colors.gray.gray3}>Fecha</Text>
                 </FlexBox>
               </FlexBox>
-              {filteredItems.map((sd) => (
+              {resources.map((sd) => (
                 <CardResource
                   key={sd.id}
                   img={sd?.img}
@@ -201,7 +206,6 @@ const Category: FC = () => {
                 placeholder="Buscar recurso concreto"
                 id="searchResource"
                 icon="search"
-                onChange={handleInput}
               />
               <ContainerGapStyled>
                 <Icon name="favorite" fill={0} />
