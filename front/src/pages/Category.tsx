@@ -1,7 +1,6 @@
 import { FC, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import { Icon, Text, Title } from '../components/atoms'
 
@@ -15,91 +14,46 @@ import { useSearch } from '../hooks'
 import { Resource } from './Resource'
 
 type TResource = {
+  id: string
+  title: string
   createdBy: string
   createdOn: string
   description: string
-  id: string
-  img: string
-  likes: number
-  stack: string
-  title: string
-  topic: string
-  type: {
-    blog: boolean
-    tutorial: boolean
-    video: boolean
-  }
   url: string
 }
 
 const resources: TResource[] = [
   {
+    id: 'idResource1',
+    title: 'JavaScript en 45 segundos!',
     createdBy: 'Ona Costa',
-    createdOn: '2022-08-09T09:42:25.717Z',
-    description: 'Teoría con ejemplos',
-    id: 'react-1',
-    img: icons.profileAvatar,
-    likes: 201,
-    stack: 'react',
-    title: 'Context en 20 minutos',
-    topic: 'Context',
-    type: {
-      blog: false,
-      tutorial: false,
-      video: true,
-    },
-    url: 'https://www.youtube.com/watch?v=gigKP6PPmW0',
+    createdOn: '1995-12-17T03:07:00',
+    description: 'Proyecto práctico',
+    url: 'https://www.youtube.com/shorts/tR0IZnDt_5Q',
   },
   {
-    createdBy: 'Xavier Soler',
-    createdOn: '2022-09-10T08:42:25.717Z',
-    description: 'Teoría con ejemplos',
-    id: 'react-2',
-    img: icons.profileAvatar,
-    likes: 132,
-    stack: 'react',
-    title: 'Redux para principiantes',
-    topic: 'Redux',
-    type: {
-      blog: false,
-      tutorial: false,
-      video: true,
-    },
-    url: 'https://www.youtube.com/watch?v=j-jzI3wkkVk',
+    id: 'idResource2',
+    title: 'REST API de cero a  ninja!',
+    createdBy: 'Ona Costa',
+    createdOn: '1995-12-17T03:07:00',
+    description: 'Teoria con ejemplos',
+    url: 'https://www.youtube.com/watch?v=SbhzQqP1p70',
   },
   {
+    id: 'idResource3',
+    title: 'Context en 5 minutos!',
     createdBy: 'Ona Costa',
-    createdOn: '2022-08-11T09:42:25.717Z',
-    description: 'Teoría con ejemplos',
-    id: 'react-3',
-    img: icons.profileAvatar,
-    likes: 92,
-    stack: 'react',
-    title: 'Context en 20 minutos',
-    topic: 'Context',
-    type: {
-      blog: false,
-      tutorial: false,
-      video: true,
-    },
-    url: 'https://www.youtube.com/watch?v=gigKP6PPmW0',
+    createdOn: '1995-12-17T03:07:00',
+    description: 'Teoria con ejemplos',
+    url: 'https://www.youtube.com/watch?v=Ae33_gdJgnQ',
   },
   {
+    id: 'idResource3',
+    title: 'Redux para principiantes!',
     createdBy: 'Ona Costa',
-    createdOn: '2022-07-25T09:42:25.717Z',
-    description: 'Teoría con ejemplos',
-    id: 'react-4',
-    img: icons.profileAvatar,
-    likes: 75,
-    stack: 'react',
-    title: 'Context en 20 minutos',
-    topic: 'Context',
-    type: {
-      blog: false,
-      tutorial: false,
-      video: true,
-    },
-    url: 'https://www.youtube.com/watch?v=gigKP6PPmW0',
+    createdOn: '1995-12-17T03:07:00',
+    description: 'Teoria con ejemplos',
+    url: 'https://www.youtube.com/watch?v=j-jzI3wkkVk&t=5s',
   },
 ]
 
@@ -259,7 +213,7 @@ const Category: FC = () => {
               {resources.map((fav) => (
                 <UserResourcesContainerStyled key={fav.id}>
                   <ResourceTitleLink
-                    url={fav.img}
+                    url={fav.url}
                     title={fav.title}
                     description={fav.description}
                   />
@@ -277,7 +231,7 @@ const Category: FC = () => {
               {resources.map((res) => (
                 <UserResourcesContainerStyled key={res.id}>
                   <ResourceTitleLink
-                    url={res.img}
+                    url={res.url}
                     title={res.title}
                     description={res.description}
                   />
