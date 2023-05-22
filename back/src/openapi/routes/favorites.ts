@@ -17,6 +17,13 @@ registry.registerPath({
       required: true,
       description: 'ID of the user for which to retrieve favorite resources',
     },
+    {
+      name: 'categorySlug',
+      in: 'path',
+      required: true,
+      description: 'Slug of the category for which to retrieve favorite resources',
+      example: 'node',
+    },
   ],
   responses: {
     200: {
