@@ -44,6 +44,7 @@ type TCheckBox = InputHTMLAttributes<HTMLInputElement> & {
   defaultChecked?: boolean
   required?: boolean
   className?: string
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const CheckBox = forwardRef(
@@ -55,6 +56,9 @@ const CheckBox = forwardRef(
       defaultChecked = false,
       required = false,
       className,
+      onChange,
+      ...rest
+
     }: TCheckBox,
     ref: Ref<HTMLInputElement>
   ) => (
@@ -66,6 +70,8 @@ const CheckBox = forwardRef(
         name={id}
         defaultChecked={defaultChecked}
         required={required}
+        onChange={onChange}
+        {...rest}
       />
       <Label htmlFor={id} text={label} hidden={hiddenLabel} />
     </CheckBoxWrapper>
