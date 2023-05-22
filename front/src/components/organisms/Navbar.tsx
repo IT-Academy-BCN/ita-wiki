@@ -1,7 +1,5 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-// import { Link } from 'react-router-dom';
-// import { paths } from '../../constants';
 import { useAuth } from '../../context/AuthProvider';
 import { FlexBox, colors, dimensions } from '../../styles';
 import { Title, Icon } from '../atoms';
