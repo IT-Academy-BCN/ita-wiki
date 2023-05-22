@@ -6,6 +6,8 @@ import React, {
   useState,
 } from 'react'
 
+import { urls } from '../constants'
+
 type TUser = {
   name: string
   avatar: string
@@ -15,18 +17,15 @@ type TAuthContext = {
   user: TUser
   children: React.ReactNode
   setUser: (user: TUser) => void
+  error: string
+  setError: (error: string) => void
 }
 
-export const authContext = createContext<TAuthContext>({
-  children: null,
-  user: null,
-  setUser: () => {},
-})
+const authContext = createContext<TAuthContext | null>(null)
 
 // hook
 export const useAuth = () => {
   const context = useContext(authContext)
-
   if (!context) {
     throw new Error('useAuth must be used within an AuthProvider')
   }
@@ -34,23 +33,30 @@ export const useAuth = () => {
   return context
 }
 
-export const AuthProvider: React.FC<Omit<TAuthContext, 'user' | 'setUser'>> = ({
-  children,
-}) => {
+export const AuthProvider: React.FC<
+  Omit<TAuthContext, 'user' | 'setUser' | 'error' | 'setError'>
+> = ({ children }) => {
   const [user, setUser] = useState<TUser>(null)
+  const [error, setError] = useState('')
 
-  const url =
-    'https://dev.api.itadirectory.eurecatacademy.org/api/v1/auth/login'
-
-  const value = useMemo(() => ({ children, user, setUser }), [children, user])
+  const value = useMemo(
+    () => ({ children, user, setUser, error, setError }),
+    [children, user, error]
+  )
 
   useEffect(() => {
-    fetch(url)
-      .then((response) => response.json())
+    fetch(urls.getMe)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(res.statusText)
+        }
+        return res.json()
+      })
       .then((data) => {
         setUser(data)
       })
-      .catch(() => {
+      .catch((err) => {
+        setError(err.message)
         setUser(null)
       })
   }, [])

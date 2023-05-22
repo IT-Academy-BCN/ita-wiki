@@ -11,6 +11,21 @@ export const handlers = [
     res(ctx.status(204))
   ),
 
+  rest.get(urls.getMe, (_, res, ctx) =>
+    res(
+      ctx.status(200),
+      ctx.json([
+        {
+          name: 'string',
+          dni: 'string',
+          email: 'user@example.cat',
+          role: 'ADMIN',
+          status: 'ACTIVE',
+        },
+      ])
+    )
+  ),
+
   rest.get(urls.getCategories, (_, res, ctx) =>
     res(
       ctx.status(200),
