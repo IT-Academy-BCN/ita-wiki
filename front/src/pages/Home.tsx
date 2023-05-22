@@ -12,7 +12,6 @@ import {
   HowToHelpCard,
   CategoriesList,
   ResourcesList,
-  Navbar
 } from '../components/organisms'
 
 type Tresource = {
@@ -86,7 +85,7 @@ const dataSubjects = [
 ]
 
 // TODO: mobile first!
-export const MobileStyled = styled.div`
+const MobileStyled = styled.div`
   display: block;
   @media only ${device.Laptop} {
     display: none;
@@ -210,7 +209,6 @@ const Home: FC = () => {
     <>
       <MobileStyled>
         <GrayBackground />
-        <Navbar title="Wiki"/>
         <HeaderContainerStyled>
           <HowToHelpCard />
           <InputGroup
