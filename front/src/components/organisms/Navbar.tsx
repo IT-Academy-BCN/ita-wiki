@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 // import { Link } from 'react-router-dom';
 // import { paths } from '../../constants';
-// import { useAuth } from '../../context/AuthProvider';
+import { useAuth } from '../../context/AuthProvider';
 import { FlexBox, colors, dimensions } from '../../styles';
 import { Title, Icon } from '../atoms';
 import defaultAvatar from '../../assets/icons/profile-avatar.svg';
@@ -98,7 +98,7 @@ const IconWrapper = styled(FlexBox)`
 ` */
 
 export const Navbar: FC<TNavbar> = ({ title }) => {
-  // const { user } = useAuth();
+  const { user } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const avatarRef = useRef<HTMLImageElement>(null);
@@ -131,14 +131,14 @@ export const Navbar: FC<TNavbar> = ({ title }) => {
     <NavbarStyled direction="row" isDropdownOpen={isDropdownOpen}>
       <IconStyled name="arrow_back_ios" />
       <Title as="h2">{title}</Title>
-      
+      {user && (
         <AvatarImage 
-          src={defaultAvatar} 
+          src={user.avatar ? user.avatar : defaultAvatar} 
           alt="Avatar"
           onClick={handleDropdownClick} 
           ref={avatarRef}
         />
-    
+      )}
       {isDropdownOpen && (
           <DropdownMenu ref={dropdownRef}>
             <DropdownItem>
