@@ -14,7 +14,7 @@ import { CategoriesList } from '../components/organisms'
 import { useSearch } from '../hooks'
 import { Resource } from './Resource'
 
-type TStackData = {
+type TResource = {
   createdBy: string
   createdOn: string
   description: string
@@ -32,7 +32,7 @@ type TStackData = {
   url: string
 }
 
-const stackData: TStackData[] = [
+const resources: TResource[] = [
   {
     createdBy: 'Ona Costa',
     createdOn: '2022-08-09T09:42:25.717Z',
@@ -183,7 +183,7 @@ const Category: FC = () => {
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value)
   }
-  const { filteredItems } = useSearch(stackData, query)
+  const { filteredItems } = useSearch(resources, query)
   return (
     <>
       <MobileStyled>
@@ -256,7 +256,7 @@ const Category: FC = () => {
                 </Title>
               </ContainerGapStyled>
               {/* ==> CONTENIDO FAVORITOS */}
-              {stackData.map((fav) => (
+              {resources.map((fav) => (
                 <UserResourcesContainerStyled key={fav.id}>
                   <ResourceTitleLink
                     url={fav.img}
@@ -274,7 +274,7 @@ const Category: FC = () => {
                 </Title>
               </ContainerGapStyled>
               {/* ==> CONTENIDO MIS RECURSOS */}
-              {stackData.map((res) => (
+              {resources.map((res) => (
                 <UserResourcesContainerStyled key={res.id}>
                   <ResourceTitleLink
                     url={res.img}
