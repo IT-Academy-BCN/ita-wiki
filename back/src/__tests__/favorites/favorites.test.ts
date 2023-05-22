@@ -32,13 +32,13 @@ beforeAll(async () => {
     resourceData.map((resource) => prisma.resource.create({ data: resource }))
   )
 
-  const favoritesData = resources.map((resource) => ({
-    userId: resource.userId,
-    resourceId: resource.id,
-  }))
+  const favoritesData = {
+    userId: testUser.id,
+    resourceId: resources[0].id,
+  }
 
   await prisma.favorites.createMany({
-    data: favoritesData,
+    data: [favoritesData],
   })
 })
 
@@ -67,7 +67,14 @@ describe('Testing /favorites/ endpoint', () => {
         expect.arrayContaining([
           expect.objectContaining({
             id: expect.any(String),
-            name: expect.any(String),
+            title: expect.any(String),
+            slug: expect.any(String),
+            description: expect.any(String),
+            url: expect.any(String),
+            resourceType: expect.any(String),
+            userId: expect.any(String),
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
           }),
         ])
       )
