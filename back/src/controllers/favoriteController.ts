@@ -1,22 +1,15 @@
 import Koa, { Middleware } from 'koa'
 import { prisma } from '../prisma/client'
+import { NotFoundError, DefaultError } from '../helpers/errors'
 
 export const getUserFavoriteResources: Middleware = async (
   ctx: Koa.Context
 ) => {
   const { userId, categorySlug } = ctx.params
-  if (!userId) {
-    ctx.status = 400
-    ctx.body = { error: 'User ID is required' }
-    return
-  }
+  if (!userId) throw new DefaultError(400, 'User is needed')
 
   const user = await prisma.user.findUnique({ where: { id: userId } })
-  if (!user) {
-    ctx.status = 404
-    ctx.body = { error: 'User not found' }
-    return
-  }
+  if (!user) throw new NotFoundError('User not found')
   let favorites
   if (categorySlug) {
     favorites = await prisma.favorites.findMany({
