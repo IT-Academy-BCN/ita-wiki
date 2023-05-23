@@ -12,8 +12,9 @@ import vue from './vue.svg'
 import node from './nodejs-logo.svg'
 import php from './php.svg'
 import java from './java.svg'
-import thumbUp from './thumb-up-dynamic-color.svg'
 import puzzleDynamic from './puzzle-dynamic-color.svg'
+import thumbUp from './thumb-up-dynamic-color.svg'
+import itLogo from './it-logo.svg'
 
 const icons = {
   angular,
@@ -30,8 +31,9 @@ const icons = {
   node,
   php,
   java,
+  puzzleDynamic,
   thumbUp,
-  puzzleDynamic
+  itLogo
 }
 
 export default icons

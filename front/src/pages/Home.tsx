@@ -8,7 +8,7 @@ import { Title, Text, Icon } from '../components/atoms'
 
 export const DesktopStyled = styled.div`
   display: none;
-  @media only ${device.Laptop} {
+  @media only ${device.Tablet} {
     display: block;
   }
 `
@@ -31,9 +31,17 @@ const DivStyled = styled(FlexBox)`
   border-radius: ${dimensions.borderRadius.base};
 `
 
+const LateralDiv = styled.div`
+  height: 100%;
+`
+
 const TextContainerStyled = styled(FlexBox)`
   height: 100%;
   gap: ${dimensions.spacing.xxs};
+`
+
+const ImageStyled = styled.img`
+  margin-bottom: ${dimensions.spacing.xl};
 `
 
 const cardHomeContent = [
@@ -63,7 +71,14 @@ const cardHomeContent = [
 const Home: FC = () => (
   <DesktopStyled>
     <MainContainer>
-      <CategoriesList />
+      <LateralDiv>
+        <ImageStyled
+          src={icons.itLogo}
+          alt="logo"
+          style={{ marginBottom: '3rem' }}
+        />
+        <CategoriesList />
+      </LateralDiv>
       <DivStyled>
         <TextContainerStyled>
           <Title as="h1">¡Bienvenid@ a la wiki de la IT Academy!</Title>
