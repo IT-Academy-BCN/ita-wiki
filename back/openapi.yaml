@@ -377,6 +377,96 @@ paths:
                       - No category found with this slug
                 required:
                   - message
+  /api/v1/favorites/by-user/:userId:
+    get:
+      tags:
+        - favorites
+      description: Takes a user Id and returns the list of favorites saved by that user
+      summary: Returns favorite resources by user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: ID of the user for which to retrieve favorite resources
+        - name: categorySlug
+          in: path
+          required: true
+          description: Slug of the category for which to retrieve favorite resources
+          example: node
+      responses:
+        "200":
+          description: Favorite resources retireved  successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    resource:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                          example: My Resource in Javascript
+                        slug:
+                          type: string
+                          example: my-resource-in-javascript
+                        description:
+                          type: string
+                          example: Lorem ipsum javascript
+                        url:
+                          type: string
+                          format: uri
+                          example: https://tutorials.cat/learn/javascript
+                        resourceType:
+                          type: string
+                          enum: &a1
+                            - BLOG
+                            - VIDEO
+                            - TUTORIAL
+                        userId:
+                          type: string
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                      required:
+                        - id
+                        - title
+                        - url
+                        - resourceType
+                        - userId
+                        - createdAt
+                        - updatedAt
+                  required:
+                    - resource
+        "400":
+          description: User ID is required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: UserId is required
+                required:
+                  - error
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+                required:
+                  - error
   /api/v1/resources:
     get:
       tags:
@@ -430,10 +520,7 @@ paths:
                           example: https://tutorials.cat/learn/javascript
                         resourceType:
                           type: string
-                          enum: &a1
-                            - BLOG
-                            - VIDEO
-                            - TUTORIAL
+                          enum: *a1
                         createdAt:
                           type: string
                         updatedAt:
