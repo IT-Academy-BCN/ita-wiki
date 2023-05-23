@@ -1,4 +1,5 @@
 import { FC, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, Text, Title } from '../components/atoms'
 import { FlexBox, colors, dimensions } from '../styles'
@@ -162,12 +163,14 @@ const Resource: FC = () => {
     setIsOpen(true)
   }
 
+  const { state } = useLocation()
+
   return (
     <>
       <HeaderContainerStyled align="stretch">
         <FlexBox direction="row" justify="space-between">
           <Title as="h1" fontWeight="bold">
-            Resource
+            Recursos de {state?.name}
           </Title>
           <Modal
             isOpen={isOpen}

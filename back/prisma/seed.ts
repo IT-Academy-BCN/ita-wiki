@@ -90,7 +90,7 @@ async function seedDB() {
     {
       topicId: listasTopic?.id || '',
       resourceId: secondResource?.id || '',
-    }
+    },
   ]
 
   await prisma.topicsOnResources.createMany({
