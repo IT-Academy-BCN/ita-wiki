@@ -50,6 +50,14 @@ components:
           example: Token is not valid
       required:
         - error
+    MissingUserError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: User not found
+      required:
+        - message
     ValidationError:
       type: array
       items:
@@ -353,8 +361,10 @@ paths:
                           type: string
                         name:
                           type: string
+                          example: React
                         slug:
                           type: string
+                          example: react
                         categoryId:
                           type: string
                       required:
@@ -377,6 +387,96 @@ paths:
                       - No category found with this slug
                 required:
                   - message
+  /api/v1/favorites/by-user/:userId:
+    get:
+      tags:
+        - favorites
+      description: Takes a user Id and returns the list of favorites saved by that user
+      summary: Returns favorite resources by user
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: ID of the user for which to retrieve favorite resources
+        - name: categorySlug
+          in: path
+          required: true
+          description: Slug of the category for which to retrieve favorite resources
+          example: node
+      responses:
+        "200":
+          description: Favorite resources retireved  successfully.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    resource:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                          example: My Resource in Javascript
+                        slug:
+                          type: string
+                          example: my-resource-in-javascript
+                        description:
+                          type: string
+                          example: Lorem ipsum javascript
+                        url:
+                          type: string
+                          format: uri
+                          example: https://tutorials.cat/learn/javascript
+                        resourceType:
+                          type: string
+                          enum: &a1
+                            - BLOG
+                            - VIDEO
+                            - TUTORIAL
+                        userId:
+                          type: string
+                        createdAt:
+                          type: string
+                        updatedAt:
+                          type: string
+                      required:
+                        - id
+                        - title
+                        - url
+                        - resourceType
+                        - userId
+                        - createdAt
+                        - updatedAt
+                  required:
+                    - resource
+        "400":
+          description: User ID is required
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: UserId is required
+                required:
+                  - error
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: User not found
+                required:
+                  - error
   /api/v1/resources:
     get:
       tags:
@@ -423,6 +523,7 @@ paths:
                           example: my-resource-in-javascript
                         description:
                           type: string
+                          nullable: true
                           example: Lorem ipsum javascript
                         url:
                           type: string
@@ -430,14 +531,17 @@ paths:
                           example: https://tutorials.cat/learn/javascript
                         resourceType:
                           type: string
-                          enum: &a1
-                            - BLOG
-                            - VIDEO
-                            - TUTORIAL
+                          enum: *a1
                         createdAt:
-                          type: string
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
                         updatedAt:
-                          type: string
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
                         user:
                           type: object
                           properties:
@@ -454,33 +558,66 @@ paths:
                           items:
                             type: object
                             properties:
-                              id:
-                                type: string
-                              name:
-                                type: string
-                              slug:
-                                type: string
-                              categoryId:
-                                type: string
-                              createdAt:
-                                type: string
-                              updatedAt:
-                                type: string
+                              topic:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  name:
+                                    type: string
+                                    example: React
+                                  slug:
+                                    type: string
+                                    example: react
+                                  categoryId:
+                                    type: string
+                                  createdAt:
+                                    anyOf:
+                                      - type: string
+                                        format: date-time
+                                      - type: string
+                                  updatedAt:
+                                    anyOf:
+                                      - type: string
+                                        format: date-time
+                                      - type: string
+                                required:
+                                  - id
+                                  - name
+                                  - categoryId
+                                  - createdAt
+                                  - updatedAt
                             required:
-                              - id
-                              - name
-                              - categoryId
-                              - createdAt
-                              - updatedAt
+                              - topic
+                        voteCount:
+                          type: object
+                          properties:
+                            upvote:
+                              type: integer
+                              minimum: 0
+                              example: 14
+                            downvote:
+                              type: integer
+                              minimum: 0
+                              example: 2
+                            total:
+                              type: integer
+                              example: 12
+                          required:
+                            - upvote
+                            - downvote
+                            - total
                       required:
                         - id
                         - title
+                        - slug
                         - url
                         - resourceType
                         - createdAt
                         - updatedAt
                         - user
                         - topics
+                        - voteCount
                 required:
                   - resources
         "500":
@@ -515,6 +652,7 @@ paths:
                   example: My Resource in Javascript
                 description:
                   type: string
+                  nullable: true
                   example: Lorem ipsum javascript
                 url:
                   type: string
@@ -619,38 +757,118 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
-                  title:
-                    type: string
-                    example: My Resource in Javascript
-                  slug:
-                    type: string
-                    example: my-resource-in-javascript
-                  description:
-                    type: string
-                    example: Lorem ipsum javascript
-                  url:
-                    type: string
-                    format: uri
-                    example: https://tutorials.cat/learn/javascript
-                  resourceType:
-                    type: string
-                    enum: *a1
-                  userId:
-                    type: string
-                  createdAt:
-                    type: string
-                  updatedAt:
-                    type: string
+                  resources:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        title:
+                          type: string
+                          example: My Resource in Javascript
+                        slug:
+                          type: string
+                          example: my-resource-in-javascript
+                        description:
+                          type: string
+                          nullable: true
+                          example: Lorem ipsum javascript
+                        url:
+                          type: string
+                          format: uri
+                          example: https://tutorials.cat/learn/javascript
+                        resourceType:
+                          type: string
+                          enum: *a1
+                        createdAt:
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
+                        updatedAt:
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
+                        user:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            email:
+                              type: string
+                              format: email
+                              example: user@example.cat
+                          required:
+                            - email
+                        topics:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              topic:
+                                type: object
+                                properties:
+                                  id:
+                                    type: string
+                                  name:
+                                    type: string
+                                    example: React
+                                  slug:
+                                    type: string
+                                    example: react
+                                  categoryId:
+                                    type: string
+                                  createdAt:
+                                    anyOf:
+                                      - type: string
+                                        format: date-time
+                                      - type: string
+                                  updatedAt:
+                                    anyOf:
+                                      - type: string
+                                        format: date-time
+                                      - type: string
+                                required:
+                                  - id
+                                  - name
+                                  - categoryId
+                                  - createdAt
+                                  - updatedAt
+                            required:
+                              - topic
+                        voteCount:
+                          type: object
+                          properties:
+                            upvote:
+                              type: integer
+                              minimum: 0
+                              example: 14
+                            downvote:
+                              type: integer
+                              minimum: 0
+                              example: 2
+                            total:
+                              type: integer
+                              example: 12
+                          required:
+                            - upvote
+                            - downvote
+                            - total
+                      required:
+                        - id
+                        - title
+                        - slug
+                        - url
+                        - resourceType
+                        - createdAt
+                        - updatedAt
+                        - user
+                        - topics
+                        - voteCount
                 required:
-                  - id
-                  - title
-                  - url
-                  - resourceType
-                  - userId
-                  - createdAt
-                  - updatedAt
+                  - resources
         "401":
           description: Missing token
           content:
@@ -662,13 +880,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: User not found
-                required:
-                  - error
+                $ref: "#/components/schemas/InvalidTokenError"
         "405":
           description: Invalid token
           content:

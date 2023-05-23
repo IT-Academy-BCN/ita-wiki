@@ -11,7 +11,7 @@ import { urls } from '../../constants'
 const ImgStyled = styled.img`
   height: 30px;
   margin-right: ${dimensions.spacing.xxxs};
-  margin-top: ${dimensions.spacing.xxl};
+  margin-top: ${dimensions.spacing.lg};
 `
 
 const MobileStyled = styled.div`
@@ -57,7 +57,7 @@ type TLinkStyled = {
 const CategoryStyled = styled.span<TLinkStyled>`
   color: ${({ active }) => (active ? colors.black.black3 : colors.gray.gray3)};
   font-weight: bold;
-  margin-top: ${dimensions.spacing.xxl};
+  margin-top: ${dimensions.spacing.lg};
   cursor: pointer;
 
   &::before {
@@ -70,12 +70,15 @@ const CategoryStyled = styled.span<TLinkStyled>`
 
 // TODO: Remove once we receive img property from the API
 const categoryImg: Record<string, string> = {
-  React: icons.react,
   Angular: icons.angular,
+  'Data Science': icons.dataScience,
+  Java: icons.java, // TODO: Add Java Icon
+  Javascript: icons.javascript, // TODO: Add Javascript Icon
   Node: icons.node, // TODO: Add Node Icon
   PHP: icons.php, // TODO: Add PHP Icon
-  Java: icons.java, // TODO: Add Java Icon
-  'Data Science': icons.dataScience,
+  Python: icons.python, // TODO: Add Python Icon
+  React: icons.react, // TODO: Add React Icon
+  Spring: icons.spring, // TODO: Add Spring Icon
 }
 
 type TCategory = {

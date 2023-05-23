@@ -1,5 +1,7 @@
 import Koa, { Middleware } from 'koa'
 import { prisma } from '../../prisma/client'
+import { addVoteCountToResource } from '../../helpers/addVoteCountToResource'
+import { resourceGetSchema } from '../../schemas'
 
 export const getResources: Middleware = async (ctx: Koa.Context) => {
   const { type, topic } = ctx.query
@@ -14,29 +16,21 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
 
   const resources = await prisma.resource.findMany({
     where,
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      description: true,
-      url: true,
-      resourceType: true,
+    include: {
       user: {
         select: {
           name: true,
           email: true,
         },
       },
-      topics: {
-        select: {
-          topic: true,
-        },
-      },
-      createdAt: true,
-      updatedAt: true,
+      vote: { select: { vote: true } },
+      topics: { select: { topic: true } },
     },
   })
-
+  const resourcesWithVoteCount = addVoteCountToResource(resources)
+  const parsedResources = resourcesWithVoteCount.map((resource) => {
+    return resourceGetSchema.parse(resource)
+  })
   ctx.status = 200
-  ctx.body = { resources }
+  ctx.body = { resources: parsedResources }
 }

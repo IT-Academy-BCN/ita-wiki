@@ -4,6 +4,7 @@ import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
+import { resourceGetSchema } from '../../schemas'
 
 beforeAll(async () => {
   const testUser = await prisma.user.findUnique({
@@ -42,7 +43,8 @@ describe('Testing resources/me endpoint', () => {
       .set('Cookie', authToken.admin)
 
     expect(response.status).toBe(200)
-    expect(response.body).toEqual([])
+    expect(response.body.resources).toBeInstanceOf(Array)
+    expect(response.body.resources.length).toBe(0)
   })
 
   test('Should return resources from user', async () => {
@@ -52,19 +54,10 @@ describe('Testing resources/me endpoint', () => {
       .set('Cookie', authToken.user)
 
     expect(response.status).toBe(200)
-    expect(response.body).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: expect.any(String),
-          title: expect.any(String),
-          url: expect.any(String),
-          description: expect.any(String),
-          resourceType: expect.any(String),
-          userId: expect.any(String),
-          createdAt: expect.any(String),
-          updatedAt: expect.any(String),
-        }),
-      ])
-    )
+    expect(response.body.resources).toBeInstanceOf(Array)
+    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
+    response.body.resources.forEach((resource: any) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
+    })
   })
 })
