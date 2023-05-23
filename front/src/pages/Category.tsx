@@ -1,8 +1,10 @@
 import { FC } from 'react'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
+import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions } from '../styles'
-import { Icon, Text, Title } from '../components/atoms'
+import { Icon, Spinner, Text, Title } from '../components/atoms'
+import { urls } from '../constants'
 
 import {
   CardResource,
@@ -140,8 +142,34 @@ const MiddleColumnContainer = styled(FlexBox)`
 `
 // END style Desktop
 
+const getTopicsByCategory = (slug) =>
+  fetch(urls.getTopicsByCategory, {
+    headers: {
+      Accept: 'application/json',
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error fetching topics: ${res.statusText}`)
+      }
+      console.log(res)
+      return res.json()
+    })
+    .catch((err) => {
+      throw new Error(`Error fetching topics: ${err.message}`)
+    })
+
 const Category: FC = () => {
   const { state } = useLocation()
+
+  // const { isLoading, data, error } = useQuery({
+  //   queryKey: ['getTopicsByCategory', { slug: state?.name }],
+  //   queryFn: getTopicsByCategory,
+  // })
+  const { isLoading, data, error } = useQuery({
+    queryKey: ['getTopicsByCategory', { slug: 'react' }],
+    queryFn: () => getTopicsByCategory(slug),
+  })
 
   return (
     <>

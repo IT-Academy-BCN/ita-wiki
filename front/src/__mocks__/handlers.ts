@@ -39,6 +39,24 @@ export const handlers = [
     )
   ),
 
+  rest.get(urls.getTopicsByCategory, (_, res, ctx) =>
+    res(
+      ctx.status(200),
+      ctx.json([
+        {
+          topics: [
+            {
+              id: 'string',
+              name: 'string',
+              slug: 'string',
+              categoryId: 'string',
+            },
+          ],
+        },
+      ])
+    )
+  ),
+
   rest.put(urls.vote, (_, res, ctx) =>
     res(
       ctx.status(204),
