@@ -19,3 +19,12 @@ export const invalidTokenResponse = {
     },
   },
 }
+
+export const userNotFound = {
+  description: 'User not found',
+  content: {
+    'application/json': {
+      schema: InvalidTokenError,
+    },
+  },
+}
