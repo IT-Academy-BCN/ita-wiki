@@ -1,5 +1,3 @@
-// update the test with updated data structure
-
 import { render, screen } from '../test-utils'
 import { CategoryBlock } from '../../components/molecules'
 
@@ -15,7 +13,7 @@ describe('CategoryBlock component', () => {
 
     render(<CategoryBlock {...defaultProps} />)
     const category = screen.getByTestId('categoryBlock')
-    expect(category).toHaveAttribute('href', '/categories/slug')
+    expect(category).toHaveAttribute('href', '/category/slug')
     const name = screen.getByText(defaultProps.name)
     expect(name).toBeInTheDocument()
   })

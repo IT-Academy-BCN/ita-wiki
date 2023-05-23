@@ -1,4 +1,5 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions } from '../../styles'
@@ -10,7 +11,7 @@ import { urls } from '../../constants'
 const ImgStyled = styled.img`
   height: 30px;
   margin-right: ${dimensions.spacing.xxxs};
-  margin-top: ${dimensions.spacing.xxl};
+  margin-top: ${dimensions.spacing.lg};
 `
 
 const MobileStyled = styled.div`
@@ -36,6 +37,12 @@ const CategoriesListStyled = styled(FlexBox)`
   padding: 0 ${dimensions.spacing.lg};
   margin-bottom: ${dimensions.spacing.lg};
 `
+
+const LinkCategory = styled(Link)`
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+`
 const CategoriesContainerStyled = styled(FlexBox)`
   padding-left: ${dimensions.spacing.xxs};
   padding-right: ${dimensions.spacing.xs};
@@ -47,10 +54,10 @@ const CategoriesContainerStyled = styled(FlexBox)`
 type TLinkStyled = {
   active?: boolean
 }
-const CategoryLinkStyled = styled.a<TLinkStyled>`
+const CategoryStyled = styled.span<TLinkStyled>`
   color: ${({ active }) => (active ? colors.black.black3 : colors.gray.gray3)};
   font-weight: bold;
-  margin-top: ${dimensions.spacing.xxl};
+  margin-top: ${dimensions.spacing.lg};
   cursor: pointer;
 
   &::before {
@@ -63,22 +70,24 @@ const CategoryLinkStyled = styled.a<TLinkStyled>`
 
 // TODO: Remove once we receive img property from the API
 const categoryImg: Record<string, string> = {
-  React: icons.react,
   Angular: icons.angular,
+  'Data Science': icons.dataScience,
+  Java: icons.java, // TODO: Add Java Icon
+  Javascript: icons.javascript, // TODO: Add Javascript Icon
   Node: icons.node, // TODO: Add Node Icon
   PHP: icons.php, // TODO: Add PHP Icon
-  Java: icons.java, // TODO: Add Java Icon
-  'Data Science': icons.dataScience,
+  Python: icons.python, // TODO: Add Python Icon
+  React: icons.react, // TODO: Add React Icon
+  Spring: icons.spring, // TODO: Add Spring Icon
 }
 
-type SetStateAction<S> = S | ((prevState: S) => S)
-
 type TCategory = {
-  id: number
+  id: string
+  img: string
   name: string
   resources: number
+  slug: string
   topics: number
-  img: string
 }
 
 const getCategories = () =>
@@ -94,15 +103,12 @@ const getCategories = () =>
     })
 
 export const CategoriesList: FC = () => {
-  const [activeCategory, setActiveCategory] = useState('')
-  const handleCategoryClick = (cat: SetStateAction<string>) => {
-    setActiveCategory(cat)
-  }
-
   const { isLoading, data, error } = useQuery({
     queryKey: ['getCategories'],
     queryFn: getCategories,
   })
+
+  const { slug } = useParams()
 
   if (isLoading) return <SmallSpinner role="status" />
   if (error) return <p>Ha habido un error...</p>
@@ -117,6 +123,7 @@ export const CategoriesList: FC = () => {
             {data?.map((category: TCategory) => (
               <CategoryBlock
                 key={category.id}
+                slug={category.slug}
                 name={category.name}
                 img={categoryImg[category.name]}
               />
@@ -127,18 +134,22 @@ export const CategoriesList: FC = () => {
       <DesktopStyled>
         <CategoriesContainerStyled>
           {data?.map((category: TCategory) => (
-            <FlexBox direction="row" key={category.id}>
-              <ImgStyled
-                src={categoryImg[category.name]}
-                alt={`${category.name} logo`}
-              />
-              <CategoryLinkStyled
-                active={activeCategory === category.name}
-                onClick={() => handleCategoryClick(category.name)}
-              >
-                {category.name}
-              </CategoryLinkStyled>
-            </FlexBox>
+            <LinkCategory
+              to={`/category/${category.slug}`}
+              state={{ name: category.name }}
+              key={category.id}
+              data-testid={category.name}
+            >
+              <FlexBox direction="row">
+                <ImgStyled
+                  src={categoryImg[category.name]}
+                  alt={`${category.name} logo`}
+                />
+                <CategoryStyled active={slug === category.slug}>
+                  {category.name}
+                </CategoryStyled>
+              </FlexBox>
+            </LinkCategory>
           ))}
         </CategoriesContainerStyled>
       </DesktopStyled>

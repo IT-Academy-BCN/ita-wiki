@@ -33,6 +33,7 @@ export const handlers = [
         {
           id: '1',
           name: 'React',
+          slug: 'react',
         },
       ])
     )

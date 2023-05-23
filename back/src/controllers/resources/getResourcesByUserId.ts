@@ -1,26 +1,28 @@
 import Koa, { Middleware } from 'koa'
-import jwt, { Secret } from 'jsonwebtoken'
 import { prisma } from '../../prisma/client'
+import { addVoteCountToResource } from '../../helpers/addVoteCountToResource'
+import { resourceGetSchema } from '../../schemas'
 
 export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
-  const token = ctx.cookies.get('token') as string
-  const { userId } = jwt.verify(token, process.env.JWT_KEY as Secret) as {
-    userId: string
-  }
+  const { userId } = ctx.params
 
-  const user = await prisma.user.findUnique({
-    where: { id: userId },
+  const resources = await prisma.resource.findMany({
+    where: { userId },
     include: {
-      resources: true,
+      user: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+      vote: { select: { vote: true } },
+      topics: { select: { topic: true } },
     },
   })
-
-  if (user === null) {
-    ctx.status = 404
-    ctx.body = { error: 'User not found' }
-    return
-  }
-
+  const resourcesWithVoteCount = addVoteCountToResource(resources)
+  const parsedResources = resourcesWithVoteCount.map((resource) => {
+    return resourceGetSchema.parse(resource)
+  })
   ctx.status = 200
-  ctx.body = user.resources
+  ctx.body = { resources: parsedResources }
 }
