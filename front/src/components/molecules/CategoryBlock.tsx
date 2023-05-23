@@ -28,7 +28,7 @@ const LinkStyled = styled(Link)`
 `
 
 type TCategoryBlock = {
-  slug?: string // TODO: add slug to the API. Maque required once it is done
+  slug: string
   img: string
   name: string
   resources?: number
@@ -42,7 +42,11 @@ const CategoryBlock = ({
   resources = 0,
   topics = 0,
 }: TCategoryBlock) => (
-  <LinkStyled to={`/categories/${slug}`} data-testid="categoryBlock">
+  <LinkStyled
+    to={`/category/${slug}`}
+    state={{ name }}
+    data-testid="categoryBlock"
+  >
     <CategoryBlockStyled direction="row" justify="space-between">
       <ContentStyled direction="row">
         <ImgStyled src={img} alt={`${name} logo`} />

@@ -1,12 +1,12 @@
-import { fireEvent, screen } from '@testing-library/react'
-import { render } from '../test-utils'
+import { fireEvent } from '@testing-library/react'
+import { render, screen } from '../test-utils'
 import { Resource } from '../../pages'
 
 describe('Resource', () => {
   it('renders correctly', () => {
     render(<Resource />)
 
-    expect(screen.getByText(/resource/i)).toBeInTheDocument()
+    expect(screen.getByText(/temas/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: '+' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Cursos' })).toBeInTheDocument()
   })
