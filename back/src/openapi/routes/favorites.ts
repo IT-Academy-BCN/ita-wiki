@@ -33,9 +33,7 @@ registry.registerPath({
         'application/json': {
           schema: z.array(
             z.object({
-              resource: resourceSchema.omit({
-                topics: true,
-              }),
+              resource: resourceSchema,
             })
           ),
         },
