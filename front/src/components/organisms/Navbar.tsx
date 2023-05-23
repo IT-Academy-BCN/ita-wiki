@@ -1,17 +1,15 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import styled from 'styled-components';
-import { useAuth } from '../../context/AuthProvider';
-import { FlexBox, colors, dimensions } from '../../styles';
-import { Title, Icon } from '../atoms';
-import defaultAvatar from '../../assets/icons/profile-avatar.svg';
-
+import { FC, useEffect, useRef, useState } from 'react'
+import styled from 'styled-components'
+import { useAuth } from '../../context/AuthProvider'
+import { FlexBox, colors, dimensions } from '../../styles'
+import { Title, Icon } from '../atoms'
+import defaultAvatar from '../../assets/icons/profile-avatar.svg'
 
 type TNavbar = {
-  title: string;
-
-};
+  title: string
+}
 type TNavbarStyled = {
-  isDropdownOpen: boolean;
+  isDropdownOpen: boolean
 }
 
 const NavbarStyled = styled(FlexBox)<TNavbarStyled>`
@@ -30,7 +28,7 @@ const NavbarStyled = styled(FlexBox)<TNavbarStyled>`
   left: 0;
   width: 100%;
   z-index: 999;
-  
+
   ${({ isDropdownOpen }) =>
     isDropdownOpen &&
     `
@@ -45,14 +43,14 @@ const NavbarStyled = styled(FlexBox)<TNavbarStyled>`
       z-index: 1;
     }
   `}
-`;
+`
 
 const IconStyled = styled(Icon)`
   padding-left: ${dimensions.spacing.base};
   position: absolute;
   left: 0;
   color: ${colors.white};
-`;
+`
 
 const AvatarImage = styled.img`
   width: 2rem;
@@ -62,8 +60,7 @@ const AvatarImage = styled.img`
   cursor: pointer;
   position: absolute;
   right: ${dimensions.spacing.base};
-  
-`;
+`
 
 const DropdownMenu = styled(FlexBox)`
   position: absolute;
@@ -76,7 +73,7 @@ const DropdownMenu = styled(FlexBox)`
   z-index: 2;
   width: 9rem;
   height: 7rem;
-`;
+`
 
 const DropdownItem = styled(FlexBox)`
   padding: 0.5rem;
@@ -91,22 +88,22 @@ const DropdownItem = styled(FlexBox)`
     border-bottom: 1px solid ${colors.gray.gray4};
     width: 100%;
   }
-`;
+`
 const IconWrapper = styled(FlexBox)`
   margin-left: 2rem;
-`;
+`
 /* const LinkStyled = styled(Link)`
   
 ` */
 
 export const Navbar: FC<TNavbar> = ({ title }) => {
-  const { user } = useAuth();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const avatarRef = useRef<HTMLImageElement>(null);
+  const { user } = useAuth()
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  const avatarRef = useRef<HTMLImageElement>(null)
 
   const handleDropdownClick = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    setIsDropdownOpen(!isDropdownOpen)
   }
   const handleOutsideClick = (event: MouseEvent) => {
     if (
@@ -115,52 +112,53 @@ export const Navbar: FC<TNavbar> = ({ title }) => {
       !avatarRef.current.contains(event.target as Node) &&
       !dropdownRef.current.contains(event.target as Node)
     ) {
-      setIsDropdownOpen(false);
+      setIsDropdownOpen(false)
     }
-  };
+  }
 
   useEffect(() => {
-    document.addEventListener('click', handleOutsideClick);
+    document.addEventListener('click', handleOutsideClick)
     return () => {
-      document.removeEventListener('click', handleOutsideClick);
-    };
-  }, []);
+      document.removeEventListener('click', handleOutsideClick)
+    }
+  }, [])
   const handleLogout = () => {
     // Implement logout functionality
-  };
-  
+  }
+
   return (
     <NavbarStyled direction="row" isDropdownOpen={isDropdownOpen}>
       <IconStyled name="arrow_back_ios" />
       <Title as="h2">{title}</Title>
       {user && (
-        <AvatarImage 
-          src={user.avatar ? user.avatar : defaultAvatar} 
+        <AvatarImage
+          data-testid="avatarImage"
+          src={user.avatar ? user.avatar : defaultAvatar}
           alt="Avatar"
-          onClick={handleDropdownClick} 
+          onClick={handleDropdownClick}
           ref={avatarRef}
         />
       )}
       {isDropdownOpen && (
-          <DropdownMenu ref={dropdownRef}>
-            <DropdownItem>
-              {/* <LinkStyled to={`${paths.profile}`}> */}
-              <span>Perfil</span>
-              <IconWrapper>
-                <Icon name="person" fill={0} />
-              </IconWrapper>
-              {/* </LinkStyled> */}
-            </DropdownItem>
-            <DropdownItem onClick={handleLogout}>
-              <span>Salir</span>
-              <IconWrapper>
-                <Icon name="logout" />
-              </IconWrapper>
-            </DropdownItem>
-          </DropdownMenu>
-            )}
+        <DropdownMenu ref={dropdownRef}>
+          <DropdownItem>
+            {/* <LinkStyled to={`${paths.profile}`}> */}
+            <span>Perfil</span>
+            <IconWrapper>
+              <Icon name="person" fill={0} />
+            </IconWrapper>
+            {/* </LinkStyled> */}
+          </DropdownItem>
+          <DropdownItem onClick={handleLogout}>
+            <span>Salir</span>
+            <IconWrapper>
+              <Icon name="logout" />
+            </IconWrapper>
+          </DropdownItem>
+        </DropdownMenu>
+      )}
     </NavbarStyled>
-  );
-};
+  )
+}
 
-export default styled(Navbar)``;
+export default styled(Navbar)``

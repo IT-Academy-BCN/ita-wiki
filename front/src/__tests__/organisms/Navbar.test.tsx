@@ -1,15 +1,41 @@
-import { render, screen } from '@testing-library/react';
-import { AuthProvider } from '../../context/AuthProvider';
-import { Navbar } from '../../components/organisms/Navbar';
+import { vi } from 'vitest'
+import { Navbar } from '../../components/organisms/Navbar'
+import { render, screen } from '../test-utils'
+import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
-it('renders Navbar component with a title', () => {
-  render(
-    <AuthProvider>
-      <Navbar title="Test Title" />
-    </AuthProvider>
-    );
+vi.mock('../../context/AuthProvider', async () => {
+  const actual = await vi.importActual('../../context/AuthProvider')
+  return {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    ...actual,
+    useAuth: vi.fn(),
+  }
+})
 
-  const titleElement = screen.getByText('Test Title');
+describe('Navbar', () => {
+  it('renders Navbar component', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+    } as TAuthContext)
 
-  expect(titleElement).toBeInTheDocument();
-});
+    render(<Navbar title="Test Title" />)
+
+    const titleElement = screen.getByText('Test Title')
+    expect(titleElement).toBeInTheDocument()
+    expect(screen.queryByTestId('avatarImage')).not.toBeInTheDocument()
+  })
+
+  it('shows avatar image if user is set', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Hola',
+        avatar: 'Adios',
+      },
+    } as TAuthContext)
+
+    render(<Navbar title="Test Title" />)
+
+    expect(screen.getByTestId('avatarImage')).toBeInTheDocument()
+  })
+})
