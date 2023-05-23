@@ -29,6 +29,13 @@ export const InvalidTokenError = registry.register(
   })
 )
 
+export const MissingUserError = registry.register(
+  'MissingUserError',
+  z.object({
+    message: z.string().openapi({ example: 'User not found' }),
+  })
+)
+
 export const ValidationError = registry.register(
   'ValidationError',
   z
