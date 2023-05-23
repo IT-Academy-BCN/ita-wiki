@@ -58,6 +58,7 @@ const CheckBox = forwardRef(
       className,
       onChange,
       ...rest
+
     }: TCheckBox,
     ref: Ref<HTMLInputElement>
   ) => (

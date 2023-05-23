@@ -5,6 +5,7 @@ import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
+import { voteCountSchema } from '../../schemas'
 
 let resource: Resource
 let testUser: User
@@ -41,15 +42,7 @@ describe('Testing VOTE endpoint, GET method', async () => {
       `${pathRoot.v1.vote}/${resource.id}`
     )
     expect(response.status).toBe(200)
-    expect(response.body).toEqual(
-      expect.objectContaining({
-        voteCount: expect.objectContaining({
-          upvote: expect.any(Number),
-          downvote: expect.any(Number),
-          total: expect.any(Number),
-        }),
-      })
-    )
+    expect(() => voteCountSchema.parse(response.body.voteCount)).not.toThrow()
   })
   it('Should fail with invalid resourceId', async () => {
     const response = await supertest(server).get(

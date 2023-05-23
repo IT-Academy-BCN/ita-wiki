@@ -12,7 +12,9 @@ import node from './nodejs-logo.svg'
 import php from './php.svg'
 import profileAvatar from './profile-avatar.svg'
 import puzzleDynamic from './puzzle-dynamic-color.svg'
+import python from './python.svg'
 import react from './react.svg'
+import spring from './spring.svg'
 import thumbUp from './thumb-up-dynamic-color.svg'
 import vue from './vue.svg'
 
@@ -31,9 +33,11 @@ const icons = {
   php,
   profileAvatar,
   puzzleDynamic,
+  python,
   react,
-  thumbUp,
+  spring,
   vue,
+  thumbUp,
 }
 
 export default icons

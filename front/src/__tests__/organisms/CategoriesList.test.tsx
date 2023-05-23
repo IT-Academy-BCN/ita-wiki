@@ -1,3 +1,4 @@
+import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor } from '../test-utils'
 import { CategoriesList } from '../../components/organisms'
 import { mswServer } from '../setup'
@@ -27,6 +28,25 @@ describe('CategoriesList', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Ha habido un error...')).toBeInTheDocument()
+    })
+  })
+  it('changes the url path when clicking a category', async () => {
+    render(<CategoriesList />)
+
+    const spinnerComponent = screen.getByRole('status') as HTMLDivElement
+
+    await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
+
+    await waitFor(() => {
+      expect(screen.getByText('Categorías')).toBeInTheDocument()
+    })
+
+    expect(window.location.pathname).toEqual('/')
+    const reactMenuOption = screen.getByTestId('React')
+
+    userEvent.click(reactMenuOption)
+    await waitFor(() => {
+      expect(window.location.pathname).toEqual('/category/react')
     })
   })
 })

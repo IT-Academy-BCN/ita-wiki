@@ -1,4 +1,4 @@
-import { resourceSchema } from '../../../schemas'
+import { resourceGetSchema } from '../../../schemas'
 import { registry } from '../../registry'
 import { z } from '../../zod'
 import { pathRoot } from '../../../routes/routes'
@@ -6,6 +6,7 @@ import { cookieAuth } from '../../components/cookieAuth'
 import {
   invalidTokenResponse,
   missingTokenResponse,
+  userNotFound,
 } from '../../components/responses/authMiddleware'
 
 registry.registerPath({
@@ -20,23 +21,14 @@ registry.registerPath({
       description: 'All resources posted by user are returned.',
       content: {
         'application/json': {
-          schema: resourceSchema.omit({
-            topics: true,
+          schema: z.object({
+            resources: z.array(resourceGetSchema),
           }),
         },
       },
     },
     401: missingTokenResponse,
     405: invalidTokenResponse,
-    404: {
-      description: 'User not found',
-      content: {
-        'application/json': {
-          schema: z.object({
-            error: z.string().openapi({ example: 'User not found' }),
-          }),
-        },
-      },
-    },
+    404: userNotFound,
   },
 })

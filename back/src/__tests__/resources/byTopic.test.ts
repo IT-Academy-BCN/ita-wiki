@@ -4,6 +4,7 @@ import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
+import { resourceGetSchema } from '../../schemas'
 
 let testUser: User
 let testTopic: Topic
@@ -57,23 +58,21 @@ afterAll(async () => {
   await prisma.resource.deleteMany({ where: { userId: testUser.id } })
 })
 
-describe('GET /v1/resources/topic/:topicId', () => {
+describe('GET /resources/topic/:topicId', () => {
   const baseUrl = `${pathRoot.v1.resources}/topic`
 
   test('should respond with OK status if topic ID exists in database and return an array of resources associated with the topic ID  ', async () => {
     const response = await supertest(server).get(`${baseUrl}/${testTopic.id}`)
 
     expect(response.status).toBe(200)
-    expect(response.body).toBeInstanceOf(Array)
-    expect(response.body.length).toBeGreaterThan(0)
-    expect(response.body).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: expect.any(String),
-          title: expect.any(String),
-        }),
-      ])
-    )
+    expect(response.body.resources).toBeInstanceOf(Array)
+    expect(response.body.resources.length).toBeGreaterThan(0)
+    response.body.resources.forEach((resource: any) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
+      expect(
+        resource.topics.some((topic: any) => topic.topic.id === testTopic.id)
+      ).toBe(true)
+    })
   })
 
   test('should fail if topic ID does not exist in database ', async () => {
@@ -93,16 +92,16 @@ describe('GET /v1/resources/topic/slug/:slug', () => {
     const response = await supertest(server).get(`${baseUrl}/${testTopic.slug}`)
 
     expect(response.status).toBe(200)
-    expect(response.body).toBeInstanceOf(Array)
-    expect(response.body.length).toBeGreaterThan(0)
-    expect(response.body).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: expect.any(String),
-          title: expect.any(String),
-        }),
-      ])
-    )
+    expect(response.body.resources).toBeInstanceOf(Array)
+    expect(response.body.resources.length).toBeGreaterThan(0)
+    response.body.resources.forEach((resource: any) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
+      expect(
+        resource.topics.some(
+          (topic: any) => topic.topic.slug === testTopic.slug
+        )
+      ).toBe(true)
+    })
   })
 
   test('should fail if topic slug does not exist in database ', async () => {

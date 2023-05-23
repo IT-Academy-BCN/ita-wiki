@@ -1,11 +1,12 @@
 import { FC, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { Button, Text, Title } from '../components/atoms'
 import { FlexBox, colors, dimensions } from '../styles'
 import { Modal, SelectGroup } from '../components/molecules'
 import { CardResource } from '../components/molecules/CardResource'
 import icons from '../assets/icons'
-import { ResourceForm } from '../components/organisms'
+import { ResourceForm , Navbar} from '../components/organisms'
 
 type TStackData = {
   createdBy: string
@@ -101,17 +102,16 @@ const options = [
   { value: '1', label: 'Redux Toolkit' },
 ]
 
+
 const HeaderContainerStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
   padding: 5rem ${dimensions.spacing.base} ${dimensions.spacing.xl};
-
   ${SelectGroup} {
     border-radius: ${dimensions.borderRadius.sm};
     color: ${colors.black.black1};
     font-weight: 700;
   }
 `
-
 const ButtonAddStyled = styled(Button)`
   border-radius: 50%;
   font-size: xx-large;
@@ -162,12 +162,15 @@ const Resource: FC = () => {
     setIsOpen(true)
   }
 
+  const { state } = useLocation()
+
   return (
     <>
       <HeaderContainerStyled align="stretch">
+        <Navbar title='Wiki'/>
         <FlexBox direction="row" justify="space-between">
           <Title as="h1" fontWeight="bold">
-            Resource
+            Recursos de {state?.name}
           </Title>
           <Modal
             isOpen={isOpen}
