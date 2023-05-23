@@ -25,8 +25,12 @@ const NavbarStyled = styled(FlexBox)<TNavbarStyled>`
   ${Title} {
     color: ${colors.white};
   }
-  position: relative;
-
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  
   ${({ isDropdownOpen }) =>
     isDropdownOpen &&
     `
