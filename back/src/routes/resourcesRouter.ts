@@ -7,6 +7,7 @@ import {
   getResources,
   getResourcesByTopicId,
   getResourcesByTopicSlug,
+  getFavoriteResources,
 } from '../controllers'
 import { resourceCreateSchema } from '../schemas'
 import { pathRoot } from './routes'
@@ -24,6 +25,7 @@ resourcesRouter.post(
 
 resourcesRouter.get('/', getResources)
 resourcesRouter.get('/me', authMiddleware, getResourcesByUserId)
+resourcesRouter.get('/favorites/:categorySlug?', getFavoriteResources)
 resourcesRouter.get(
   '/topic/:topicId',
   validate(

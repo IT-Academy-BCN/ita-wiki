@@ -1,10 +1,8 @@
 import Koa, { Middleware } from 'koa'
-import { prisma } from '../prisma/client'
-import { NotFoundError, DefaultError } from '../helpers/errors'
+import { prisma } from '../../prisma/client'
+import { NotFoundError, DefaultError } from '../../helpers/errors'
 
-export const getUserFavoriteResources: Middleware = async (
-  ctx: Koa.Context
-) => {
+export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
   const { userId, categorySlug } = ctx.params
   if (!userId) throw new DefaultError(400, 'User is needed')
 
