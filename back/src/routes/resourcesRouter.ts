@@ -3,8 +3,9 @@ import { z } from 'zod'
 import { authMiddleware, validate } from '../middleware'
 import {
   createResource,
-  getResourcesByUserId,
   getResources,
+  getResourcesById,
+  getResourcesByUserId,
   getResourcesByTopicId,
   getResourcesByTopicSlug,
   getFavoriteResources,
@@ -22,10 +23,20 @@ resourcesRouter.post(
   validate(z.object({ body: resourceCreateSchema })),
   createResource
 )
-
 resourcesRouter.get('/', getResources)
 resourcesRouter.get('/me', authMiddleware, getResourcesByUserId)
 resourcesRouter.get('/favorites/:categorySlug?', getFavoriteResources)
+resourcesRouter.get(
+  '/id/:resourceId',
+  validate(
+    z.object({
+      params: z.object({
+        resourceId: z.string().cuid(),
+      }),
+    })
+  ),
+  getResourcesById
+)
 resourcesRouter.get(
   '/topic/:topicId',
   validate(

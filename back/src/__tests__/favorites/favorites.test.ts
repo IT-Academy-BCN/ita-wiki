@@ -1,78 +1,42 @@
 import supertest from 'supertest'
-import { RESOURCE_TYPE, User, Topic } from '@prisma/client'
+import { User } from '@prisma/client'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
+import { resourceTestData } from '../mocks/resources'
 
 let testUser: User
-let testTopic: Topic
 
 beforeAll(async () => {
   testUser = (await prisma.user.findUnique({
     where: { dni: testUserData.admin.dni },
   })) as User
 
-  const resourceData = [
-    {
-      title: 'test-resource-1-favorites',
-      slug: 'test-resource-1-favorites',
-      description: 'random description',
-      url: 'https://sample.com',
-      userId: testUser.id,
-      resourceType: 'BLOG' as RESOURCE_TYPE,
+  const testResources = resourceTestData.map((testResource) => ({
+    ...testResource,
+    user: { connect: { dni: testUserData.user.dni } },
+    topics: {
+      create: [{ topic: { connect: { slug: 'testing' } } }],
     },
-    {
-      title: 'test-resource-2-favorites',
-      slug: 'test-resource-2-favorites',
-      description: 'random description',
-      url: 'https://sample.com',
-      userId: testUser.id,
-      resourceType: 'VIDEO' as RESOURCE_TYPE,
+    favorites: {
+      create: [{ user: { connect: { dni: testUserData.admin.dni } } }],
     },
-  ]
-
-  const resources = await prisma.$transaction(
-    resourceData.map((resource) => prisma.resource.create({ data: resource }))
+  }))
+  // createMany does not allow nested create on many-to-many relationships as per prisma docs. Therefore individual creates are made.
+  await prisma.$transaction(
+    testResources.map((resource) => prisma.resource.create({ data: resource }))
   )
-
-  const favoritesData = [
-    {
-      userId: testUser.id,
-      resourceId: resources[0].id,
-    },
-  ]
-
-  await prisma.favorites.createMany({
-    data: favoritesData,
-  })
-
-  testTopic = (await prisma.topic.findUnique({
-    where: { slug: 'testing' },
-  })) as Topic
-
-  const topicsOnResources = [
-    {
-      topicId: testTopic.id,
-      resourceId: resources[0].id,
-    },
-  ]
-
-  await prisma.topicsOnResources.createMany({
-    data: topicsOnResources,
-  })
 })
 
 afterAll(async () => {
   await prisma.topicsOnResources.deleteMany({
-    where: { topicId: testTopic.id },
+    where: { topic: { slug: 'testing' } },
   })
-
   await prisma.favorites.deleteMany({
-    where: { userId: testUser.id },
+    where: { user: { dni: testUserData.admin.dni } },
   })
-
   await prisma.resource.deleteMany({
-    where: { userId: testUser.id },
+    where: { user: { dni: testUserData.user.dni } },
   })
 })
 

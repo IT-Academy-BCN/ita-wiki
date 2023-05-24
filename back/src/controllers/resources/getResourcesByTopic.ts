@@ -37,9 +37,9 @@ export const getResourcesByTopicId: Middleware = async (ctx: Koa.Context) => {
     },
   })
 
-  const resourcesWithVoteCount = addVoteCountToResource(resourcesList)
-  const parsedResources = resourcesWithVoteCount.map((resource) => {
-    return resourceGetSchema.parse(resource)
+  const parsedResources = resourcesList.map((resource) => {
+    const resourceWithVote = addVoteCountToResource(resource)
+    return resourceGetSchema.parse(resourceWithVote)
   })
 
   ctx.status = 200
@@ -77,9 +77,9 @@ export const getResourcesByTopicSlug: Middleware = async (ctx: Koa.Context) => {
     },
   })
 
-  const resourcesWithVoteCount = addVoteCountToResource(resourcesList)
-  const parsedResources = resourcesWithVoteCount.map((resource) => {
-    return resourceGetSchema.parse(resource)
+  const parsedResources = resourcesList.map((resource) => {
+    const resourceWithVote = addVoteCountToResource(resource)
+    return resourceGetSchema.parse(resourceWithVote)
   })
 
   ctx.status = 200
