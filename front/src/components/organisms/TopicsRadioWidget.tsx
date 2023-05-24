@@ -2,7 +2,7 @@ import { FC } from 'react'
 import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
 import { dimensions } from '../../styles'
-import { Radio } from '../atoms'
+import { Radio, Spinner } from '../atoms'
 import { urls } from '../../constants'
 
 const StyledRadio = styled(Radio)`
@@ -13,6 +13,12 @@ const StyledRadio = styled(Radio)`
 type TTopicsSlug = {
   slug: string
 }
+
+const SmallSpinner = styled(Spinner)`
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+`
 
 export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
   const getTopics = async () => {
@@ -26,10 +32,13 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
     }
   }
 
-  const { data } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['getTopics', slug],
     queryFn: getTopics,
   })
+
+  if (isLoading) return <SmallSpinner role="status" />
+  if (error) return <p>Ha habido un error...</p>
 
   return (
     <StyledRadio

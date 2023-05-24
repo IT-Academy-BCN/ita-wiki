@@ -38,6 +38,23 @@ export const handlers = [
       ])
     )
   ),
+  // eslint-disable-next-line consistent-return
+  rest.get(urls.getTopics, (req, res, ctx) => {
+    const queryParams = new URLSearchParams(req.url.search)
+    const slug = queryParams.get('slug')
+    if (slug === 'react') {
+      return res(
+        ctx.status(200),
+        ctx.json([
+          {
+            id: '1',
+            name: 'Listas',
+            slug: 'listas',
+          },
+        ])
+      )
+    }
+  }),
 
   rest.put(urls.vote, (_, res, ctx) =>
     res(
