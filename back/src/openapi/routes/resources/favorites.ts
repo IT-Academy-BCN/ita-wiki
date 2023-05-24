@@ -8,7 +8,7 @@ registry.registerPath({
   tags: ['resources'],
   path: `${pathRoot.v1.resources}/favorites/:categorySlug?`,
   description: 'Retrieves the users favorite resources when logged in',
-  summary: 'Returns favorite resources by user',
+  summary: 'Returns favorite resources by user and category',
   parameters: [
     {
       name: 'categorySlug',
@@ -32,22 +32,14 @@ registry.registerPath({
         },
       },
     },
-    400: {
-      description: 'User ID is required',
-      content: {
-        'application/json': {
-          schema: z.object({
-            error: z.string().openapi({ example: 'UserId is required' }),
-          }),
-        },
-      },
-    },
     401: {
       description: 'Missing token',
       content: {
         'application/json': {
           schema: z.object({
-            error: z.string().openapi({ example: 'Missing token' }),
+            error: z
+              .string()
+              .openapi({ example: 'Unauthorized: Missing token' }),
           }),
         },
       },
@@ -58,6 +50,16 @@ registry.registerPath({
         'application/json': {
           schema: z.object({
             error: z.string().openapi({ example: 'User not found' }),
+          }),
+        },
+      },
+    },
+    405: {
+      description: 'Invalid token',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Token is not valid' }),
           }),
         },
       },

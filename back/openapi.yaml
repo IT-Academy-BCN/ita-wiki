@@ -392,7 +392,7 @@ paths:
       tags:
         - resources
       description: Retrieves the users favorite resources when logged in
-      summary: Returns favorite resources by user
+      summary: Returns favorite resources by user and category
       parameters:
         - name: categorySlug
           in: path
@@ -457,18 +457,6 @@ paths:
                         - updatedAt
                   required:
                     - resource
-        "400":
-          description: User ID is required
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: UserId is required
-                required:
-                  - error
         "401":
           description: Missing token
           content:
@@ -478,7 +466,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: Missing token
+                    example: "Unauthorized: Missing token"
                 required:
                   - error
         "404":
@@ -491,6 +479,18 @@ paths:
                   error:
                     type: string
                     example: User not found
+                required:
+                  - error
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Token is not valid
                 required:
                   - error
   /api/v1/resources:

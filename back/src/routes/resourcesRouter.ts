@@ -25,7 +25,11 @@ resourcesRouter.post(
 )
 resourcesRouter.get('/', getResources)
 resourcesRouter.get('/me', authMiddleware, getResourcesByUserId)
-resourcesRouter.get('/favorites/:categorySlug?', getFavoriteResources)
+resourcesRouter.get(
+  '/favorites/:categorySlug?',
+  authMiddleware,
+  getFavoriteResources
+)
 resourcesRouter.get(
   '/id/:resourceId',
   validate(
