@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
 import { dimensions } from '../../styles'
@@ -21,6 +21,12 @@ const SmallSpinner = styled(Spinner)`
 `
 
 export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
+  const [topic, setTopic] = useState('')
+  console.log(topic)
+
+  const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setTopic(e.target.value)
+
   const getTopics = async () => {
     try {
       const res = await fetch(`${urls.getTopics}?slug=${slug}`)
@@ -45,6 +51,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
       options={data?.topics}
       inputName="Topics Radio Filter"
       defaultChecked="cli04v2l0000008mq5pwx7w5j"
+      onChange={onTopicChange}
     />
   )
 }
