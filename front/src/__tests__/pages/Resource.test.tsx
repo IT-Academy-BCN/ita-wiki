@@ -15,13 +15,9 @@ describe('Resource', () => {
     render(<Resource />)
 
     fireEvent.click(screen.getByRole('button', { name: /\+/i }))
-
     const modalTitle = screen.getByRole('heading', { name: /nuevo recurso/i })
-
     expect(modalTitle).toBeInTheDocument()
-
     fireEvent.keyDown(document, { key: 'Escape' })
-
     expect(modalTitle).not.toBeInTheDocument()
   })
 })

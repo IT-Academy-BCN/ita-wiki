@@ -3,6 +3,7 @@ import { HowToHelpCard } from './HowToHelpCard'
 import { ResourcesList } from './ResourcesList'
 import { ResourceForm } from './ResourceForm'
 import { TopicsRadioWidget } from './TopicsRadioWidget'
+import { Navbar } from './Navbar'
 
 export {
   ResourcesList,
@@ -10,4 +11,5 @@ export {
   CategoriesList,
   ResourceForm,
   TopicsRadioWidget,
+  Navbar,
 }

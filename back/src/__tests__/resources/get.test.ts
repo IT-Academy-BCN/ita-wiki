@@ -1,76 +1,51 @@
-import { RESOURCE_TYPE, Topic, User } from '@prisma/client'
 import supertest from 'supertest'
-import { expect, test, describe, beforeAll, afterAll } from 'vitest'
+import { expect, test, it, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
-
-let testUser: User
-let testTopic: Topic
+import { resourceGetSchema } from '../../schemas'
+import { resourceTestData } from '../mocks/resources'
 
 beforeAll(async () => {
-  testUser = (await prisma.user.findUnique({
-    where: { dni: testUserData.user.dni },
-  })) as User
-  const resourceData = [
-    {
-      title: 'test-resource-1-blog',
-      slug: 'test-resource-1-blog',
-      url: 'https://sample.com',
-      userId: testUser.id,
-      resourceType: 'BLOG' as RESOURCE_TYPE,
+  const testResources = resourceTestData.map((testResource) => ({
+    ...testResource,
+    user: { connect: { dni: testUserData.user.dni } },
+    topics: {
+      create: [{ topic: { connect: { slug: 'testing' } } }],
     },
-    {
-      title: 'test-resource-2-video',
-      slug: 'test-resource-2-video',
-      url: 'https://sample.com',
-      userId: testUser.id,
-      resourceType: 'VIDEO' as RESOURCE_TYPE,
-    },
-    {
-      title: 'test-resource-3-tutorial',
-      slug: 'test-resource-3-tutorial',
-      url: 'https://sample.com',
-      userId: testUser.id,
-      resourceType: 'TUTORIAL' as RESOURCE_TYPE,
-    },
-  ]
-  // Alternative to create many AND get the created objects as return to use their id
-  const resources = await prisma.$transaction(
-    resourceData.map((resource) => prisma.resource.create({ data: resource }))
-  )
-
-  testTopic = (await prisma.topic.findUnique({
-    where: { slug: 'testing' },
-  })) as Topic
-
-  const topicsOnResourcesData = resources.map((resource) => ({
-    topicId: testTopic.id,
-    resourceId: resource.id,
   }))
-  await prisma.topicsOnResources.createMany({ data: topicsOnResourcesData })
+  // createMany does not allow nested create on many-to-many relationships as per prisma docs. Therefore individual creates are made.
+  await prisma.$transaction(
+    testResources.map((resource) => prisma.resource.create({ data: resource }))
+  )
 })
 
 afterAll(async () => {
   await prisma.topicsOnResources.deleteMany({
-    where: { topicId: testTopic.id },
+    where: { topic: { slug: 'testing' } },
   })
-  await prisma.resource.deleteMany({ where: { userId: testUser.id } })
+  await prisma.resource.deleteMany({
+    where: { user: { dni: testUserData.user.dni } },
+  })
 })
 
-describe('Testing resources get endpoint', () => {
-  test('should get all resources by resourceType ', async () => {
-    const response = await supertest(server)
-      .get(`${pathRoot.v1.resources}`)
-      .query({ type: 'BLOG' })
-
-    expect(response.status).toBe(200)
-    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-    response.body.resources.map((resource: any) =>
-      expect(resource.resourceType).toBe('BLOG')
-    )
+describe('Testing resources GET endpoint', () => {
+  describe('Testing all resourceType', () => {
+    const resourceType = ['BLOG', 'VIDEO', 'TUTORIAL']
+    resourceType.forEach((type) => {
+      it(`should get all resources by resourceType ${type}`, async () => {
+        const response = await supertest(server)
+          .get(`${pathRoot.v1.resources}`)
+          .query({ type })
+        expect(response.status).toBe(200)
+        expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
+        response.body.resources.forEach((resource: any) => {
+          expect(() => resourceGetSchema.parse(resource)).not.toThrow()
+          expect(resource.resourceType).toBe(`${type}`)
+        })
+      })
+    })
   })
-
   test('should fail with wrong resourceType', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
@@ -78,7 +53,6 @@ describe('Testing resources get endpoint', () => {
 
     expect(response.status).toBe(500)
   })
-
   test('should get all resources by topic ', async () => {
     const topicName = 'Testing'
 
@@ -88,12 +62,11 @@ describe('Testing resources get endpoint', () => {
 
     expect(response.status).toBe(200)
     expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-
     response.body.resources.forEach((resource: any) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       expect(resource.topics.map((t: any) => t.topic.name)).toContain(topicName)
     })
   })
-
   test('should fail without a valid topic', async () => {
     const topicName = 'This topic does not exist'
 
@@ -104,7 +77,6 @@ describe('Testing resources get endpoint', () => {
     expect(response.status).toBe(200)
     expect(response.body.resources.length).toBe(0)
   })
-
   test('should get all resources by type and topic ', async () => {
     const topicName = 'Testing'
 
@@ -115,11 +87,11 @@ describe('Testing resources get endpoint', () => {
     expect(response.status).toBe(200)
     expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
     response.body.resources.forEach((resource: any) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       expect(resource.topics.map((t: any) => t.topic.name)).toContain(topicName)
       expect(['BLOG', 'VIDEO', 'TUTORIAL']).toContain(resource.resourceType)
     })
   })
-
   test('should get all resources', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
@@ -128,6 +100,7 @@ describe('Testing resources get endpoint', () => {
     expect(response.status).toBe(200)
     expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
     response.body.resources.forEach((resource: any) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       expect(['BLOG', 'VIDEO', 'TUTORIAL']).toContain(resource.resourceType)
     })
   })

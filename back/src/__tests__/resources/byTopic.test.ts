@@ -1,11 +1,12 @@
-import { RESOURCE_TYPE, Topic, User } from '@prisma/client'
+import { Topic } from '@prisma/client'
 import supertest from 'supertest'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
+import { resourceGetSchema } from '../../schemas'
+import { resourceTestData } from '../mocks/resources'
 
-let testUser: User
 let testTopic: Topic
 
 beforeAll(async () => {
@@ -13,67 +14,43 @@ beforeAll(async () => {
     where: { slug: 'testing' },
   })) as Topic
 
-  testUser = (await prisma.user.findUnique({
-    where: { dni: testUserData.user.dni },
-  })) as User
-
-  const resourceData = [
-    {
-      title: 'test-resource-1',
-      slug: 'test-resource-1',
-      url: 'https://sample.com',
-      userId: testUser.id,
-      resourceType: 'BLOG' as RESOURCE_TYPE,
+  const testResources = resourceTestData.map((testResource) => ({
+    ...testResource,
+    user: { connect: { dni: testUserData.user.dni } },
+    topics: {
+      create: [{ topic: { connect: { id: testTopic.id } } }],
     },
-    {
-      title: 'test-resource-2',
-      slug: 'test-resource-2',
-      url: 'https://sample.com',
-      userId: testUser.id,
-      resourceType: 'BLOG' as RESOURCE_TYPE,
-    },
-  ]
-
-  const resources = await prisma.$transaction(
-    resourceData.map((resource) =>
-      prisma.resource.create({
-        data: resource,
-      })
-    )
-  )
-
-  const topicsOnResourcesData = resources.map((resource) => ({
-    topicId: testTopic.id,
-    resourceId: resource.id,
   }))
-
-  await prisma.topicsOnResources.createMany({ data: topicsOnResourcesData })
+  // createMany does not allow nested create on many-to-many relationships as per prisma docs. Therefore individual creates are made.
+  await prisma.$transaction(
+    testResources.map((resource) => prisma.resource.create({ data: resource }))
+  )
 })
 
 afterAll(async () => {
   await prisma.topicsOnResources.deleteMany({
-    where: { topicId: testTopic.id },
+    where: { topic: { id: testTopic.id } },
   })
-  await prisma.resource.deleteMany({ where: { userId: testUser.id } })
+  await prisma.resource.deleteMany({
+    where: { user: { dni: testUserData.user.dni } },
+  })
 })
 
-describe('GET /v1/resources/topic/:topicId', () => {
+describe('GET /resources/topic/:topicId', () => {
   const baseUrl = `${pathRoot.v1.resources}/topic`
 
   test('should respond with OK status if topic ID exists in database and return an array of resources associated with the topic ID  ', async () => {
     const response = await supertest(server).get(`${baseUrl}/${testTopic.id}`)
 
     expect(response.status).toBe(200)
-    expect(response.body).toBeInstanceOf(Array)
-    expect(response.body.length).toBeGreaterThan(0)
-    expect(response.body).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: expect.any(String),
-          title: expect.any(String),
-        }),
-      ])
-    )
+    expect(response.body.resources).toBeInstanceOf(Array)
+    expect(response.body.resources.length).toBeGreaterThan(0)
+    response.body.resources.forEach((resource: any) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
+      expect(
+        resource.topics.some((topic: any) => topic.topic.id === testTopic.id)
+      ).toBe(true)
+    })
   })
 
   test('should fail if topic ID does not exist in database ', async () => {
@@ -93,16 +70,16 @@ describe('GET /v1/resources/topic/slug/:slug', () => {
     const response = await supertest(server).get(`${baseUrl}/${testTopic.slug}`)
 
     expect(response.status).toBe(200)
-    expect(response.body).toBeInstanceOf(Array)
-    expect(response.body.length).toBeGreaterThan(0)
-    expect(response.body).toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({
-          id: expect.any(String),
-          title: expect.any(String),
-        }),
-      ])
-    )
+    expect(response.body.resources).toBeInstanceOf(Array)
+    expect(response.body.resources.length).toBeGreaterThan(0)
+    response.body.resources.forEach((resource: any) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
+      expect(
+        resource.topics.some(
+          (topic: any) => topic.topic.slug === testTopic.slug
+        )
+      ).toBe(true)
+    })
   })
 
   test('should fail if topic slug does not exist in database ', async () => {
