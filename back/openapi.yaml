@@ -387,20 +387,16 @@ paths:
                       - No category found with this slug
                 required:
                   - message
-  /api/v1/favorites/by-user/:userId:
+  /api/v1/resources/favorites/:categorySlug?:
     get:
       tags:
-        - favorites
-      description: Takes a user Id and returns the list of favorites saved by that user
+        - resources
+      description: Retrieves the users favorite resources when logged in
       summary: Returns favorite resources by user
       parameters:
-        - name: userId
-          in: path
-          required: true
-          description: ID of the user for which to retrieve favorite resources
         - name: categorySlug
           in: path
-          required: true
+          required: false
           description: Slug of the category for which to retrieve favorite resources
           example: node
       responses:
@@ -471,6 +467,18 @@ paths:
                   error:
                     type: string
                     example: UserId is required
+                required:
+                  - error
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Missing token
                 required:
                   - error
         "404":

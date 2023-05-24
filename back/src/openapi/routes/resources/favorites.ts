@@ -1,26 +1,19 @@
-import { pathRoot } from '../../routes/routes'
-import { registry } from '../registry'
-import { resourceSchema } from '../../schemas'
-import { z } from '../zod'
+import { pathRoot } from '../../../routes/routes'
+import { registry } from '../../registry'
+import { resourceSchema } from '../../../schemas'
+import { z } from '../../zod'
 
 registry.registerPath({
   method: 'get',
-  tags: ['favorites'],
-  path: `${pathRoot.v1.favorites}/by-user/:userId`,
-  description:
-    'Takes a user Id and returns the list of favorites saved by that user',
+  tags: ['resources'],
+  path: `${pathRoot.v1.resources}/favorites/:categorySlug?`,
+  description: 'Retrieves the users favorite resources when logged in',
   summary: 'Returns favorite resources by user',
   parameters: [
     {
-      name: 'userId',
-      in: 'path',
-      required: true,
-      description: 'ID of the user for which to retrieve favorite resources',
-    },
-    {
       name: 'categorySlug',
       in: 'path',
-      required: true,
+      required: false,
       description:
         'Slug of the category for which to retrieve favorite resources',
       example: 'node',
@@ -45,6 +38,16 @@ registry.registerPath({
         'application/json': {
           schema: z.object({
             error: z.string().openapi({ example: 'UserId is required' }),
+          }),
+        },
+      },
+    },
+    401: {
+      description: 'Missing token',
+      content: {
+        'application/json': {
+          schema: z.object({
+            error: z.string().openapi({ example: 'Missing token' }),
           }),
         },
       },
