@@ -9,7 +9,7 @@ import {
   InputGroup,
   ResourceTitleLink,
 } from '../components/molecules'
-import { CategoriesList } from '../components/organisms'
+import { CategoriesList, TopicsRadioWidget } from '../components/organisms'
 import { Resource } from './Resource'
 import icons from '../assets/icons'
 
@@ -160,7 +160,7 @@ const Category: FC = () => {
                 Filtros
               </Title>
               <Text fontWeight="bold">Temas</Text>
-              ...
+              <TopicsRadioWidget />
             </SideColumnContainer>
             {/* ==> COLUMNA RECURSOS */}
             <MiddleColumnContainer>

@@ -17,6 +17,8 @@ type TRadio = {
 
 const RadioStyled = styled(FlexBox)`
   flex-direction: row;
+  flex-direction: column;
+  //align-items: start;
   ${FlexBox} {
     margin-right: ${dimensions.spacing.xl};
   }
