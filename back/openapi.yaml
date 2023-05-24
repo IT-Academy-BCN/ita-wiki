@@ -426,6 +426,7 @@ paths:
                           example: my-resource-in-javascript
                         description:
                           type: string
+                          nullable: true
                           example: Lorem ipsum javascript
                         url:
                           type: string
@@ -440,12 +441,19 @@ paths:
                         userId:
                           type: string
                         createdAt:
-                          type: string
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
                         updatedAt:
-                          type: string
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
                       required:
                         - id
                         - title
+                        - slug
                         - url
                         - resourceType
                         - userId
@@ -685,6 +693,151 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
+  "/api/v1/resources/id/{resourceId}":
+    get:
+      tags:
+        - resources
+      summary: Returns a resource by its ID
+      description: Takes in a valid resource ID and returns the resource related to it.
+      parameters:
+        - in: path
+          name: resourceId
+          schema:
+            type: string
+            minLength: 1
+            description: ID of the resource to be retrieved.
+          required: true
+      responses:
+        "200":
+          description: Resource found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                    example: My Resource in Javascript
+                  slug:
+                    type: string
+                    example: my-resource-in-javascript
+                  description:
+                    type: string
+                    nullable: true
+                    example: Lorem ipsum javascript
+                  url:
+                    type: string
+                    format: uri
+                    example: https://tutorials.cat/learn/javascript
+                  resourceType:
+                    type: string
+                    enum: *a1
+                  createdAt:
+                    anyOf:
+                      - type: string
+                        format: date-time
+                      - type: string
+                  updatedAt:
+                    anyOf:
+                      - type: string
+                        format: date-time
+                      - type: string
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                        example: user@example.cat
+                    required:
+                      - email
+                  topics:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        topic:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                              example: React
+                            slug:
+                              type: string
+                              example: react
+                            categoryId:
+                              type: string
+                            createdAt:
+                              anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: string
+                            updatedAt:
+                              anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: string
+                          required:
+                            - id
+                            - name
+                            - categoryId
+                            - createdAt
+                            - updatedAt
+                      required:
+                        - topic
+                  voteCount:
+                    type: object
+                    properties:
+                      upvote:
+                        type: integer
+                        minimum: 0
+                        example: 14
+                      downvote:
+                        type: integer
+                        minimum: 0
+                        example: 2
+                      total:
+                        type: integer
+                        example: 12
+                    required:
+                      - upvote
+                      - downvote
+                      - total
+                required:
+                  - id
+                  - title
+                  - slug
+                  - url
+                  - resourceType
+                  - createdAt
+                  - updatedAt
+                  - user
+                  - topics
+                  - voteCount
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        "404":
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Resource not found
+                required:
+                  - message
   "/api/v1/resources/topic/{topicId}":
     get:
       tags:

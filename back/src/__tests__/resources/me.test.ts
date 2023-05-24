@@ -5,27 +5,21 @@ import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
 import { resourceGetSchema } from '../../schemas'
+import { resourceTestData } from '../mocks/resources'
 
 beforeAll(async () => {
-  const testUser = await prisma.user.findUnique({
-    where: { dni: testUserData.user.dni },
-  })
-
+  const testResource = {
+    ...resourceTestData[0],
+    user: { connect: { dni: testUserData.user.dni } },
+  }
   await prisma.resource.create({
-    data: {
-      title: 'Test Resource',
-      slug: 'test-resource',
-      description: 'This is a new resource',
-      url: 'https://example.com/resource',
-      resourceType: 'BLOG',
-      userId: testUser!.id,
-    },
+    data: testResource,
   })
 })
 
 afterAll(async () => {
-  await prisma.resource.delete({
-    where: { slug: 'test-resource' },
+  await prisma.resource.deleteMany({
+    where: { user: { dni: testUserData.user.dni } },
   })
 })
 
