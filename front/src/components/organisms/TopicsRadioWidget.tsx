@@ -1,27 +1,39 @@
 import { FC } from 'react'
+import styled from 'styled-components'
+import { useQuery } from '@tanstack/react-query'
+import { dimensions } from '../../styles'
 import { Radio } from '../atoms'
+import { urls } from '../../constants'
 
-const dataSubjects = [
-  { id: '1', label: 'Primeros pasos' },
-  { id: '2', label: 'Components' },
-  { id: '3', label: 'useState y useEffect' },
-  { id: '4', label: 'Eventos' },
-  { id: '5', label: 'Renderizado condicional' },
-  { id: '6', label: 'Listas' },
-  { id: '7', label: 'Estilos' },
-  { id: '8', label: 'Debuggin' },
-  { id: '9', label: 'React Router' },
-]
+const StyledRadio = styled(Radio)`
+  flex-direction: column;
+  align-items: start;
+  gap: ${dimensions.spacing.sm};
+`
+type TTopicsSlug = {
+  slug: string
+}
 
-export const TopicsRadioWidget: FC = () => {
-  console.log(dataSubjects)
+export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
+  const getTopics = async () => {
+    try {
+      const res = await fetch(`${urls.getTopics}?slug=${slug}`)
+      if (!res.ok) throw new Error(`Error fetching topics: ${res.statusText}`)
+      const data = await res.json()
+      return data
+    } catch (err) {
+      return err
+    }
+  }
+
+  const { data } = useQuery({
+    queryKey: ['getTopics', slug],
+    queryFn: getTopics,
+  })
 
   return (
     <div>
-      <Radio
-        options={dataSubjects}
-        name="Topics Radio Filter"
-      />
+      <StyledRadio options={data?.topics} inputName="Topics Radio Filter" />
     </div>
   )
 }

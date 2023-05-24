@@ -1,24 +1,21 @@
 import { Ref, forwardRef } from 'react'
 import styled from 'styled-components'
-import { FlexBox, dimensions } from '../../styles'
+import { FlexBox, dimensions, colors } from '../../styles'
 import Label from './Label'
 
 type TRadioOptions = {
   id: string
-  label: string
+  name: string
 }
 
 type TRadio = {
   options: TRadioOptions[]
-  name: string
+  inputName: string
   hiddenLabel?: boolean
   defaultChecked?: string
 }
 
 const RadioStyled = styled(FlexBox)`
-  flex-direction: row;
-  flex-direction: column;
-  //align-items: start;
   ${FlexBox} {
     margin-right: ${dimensions.spacing.xl};
   }
@@ -28,25 +25,32 @@ const RadioStyled = styled(FlexBox)`
     display: inline-block;
     margin-left: ${dimensions.spacing.xxs} !important;
   }
+  accent-color: ${colors.primary};
 `
 
 const Radio = forwardRef(
   (
-    { options, name, hiddenLabel = false, defaultChecked, ...rest }: TRadio,
+    {
+      options,
+      inputName,
+      hiddenLabel = false,
+      defaultChecked,
+      ...rest
+    }: TRadio,
     ref: Ref<HTMLInputElement>
   ) => (
-    <RadioStyled {...rest}>
-      {options.map(({ id, label }) => (
+    <RadioStyled {...rest} direction="row">
+      {options?.map(({ id, name }) => (
         <FlexBox direction="row" key={id}>
           <input
             type="radio"
             id={id}
             value={id}
-            name={name}
+            name={inputName}
             ref={ref}
             defaultChecked={defaultChecked === id}
           />
-          <Label htmlFor={id} text={label} hiddenLabel={hiddenLabel} />
+          <Label htmlFor={id} text={name} hiddenLabel={hiddenLabel} />
         </FlexBox>
       ))}
     </RadioStyled>
