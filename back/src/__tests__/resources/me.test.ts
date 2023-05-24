@@ -19,7 +19,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await prisma.resource.deleteMany({
-    where: { slug: resourceTestData[0].slug },
+    where: { user: { dni: testUserData.user.dni } },
   })
 })
 

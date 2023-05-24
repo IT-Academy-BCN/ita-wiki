@@ -28,13 +28,12 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  const delTopics = prisma.topicsOnResources.deleteMany({
+  await prisma.topicsOnResources.deleteMany({
     where: { topic: { id: testTopic.id } },
   })
-  const delResources = prisma.resource.deleteMany({
+  await prisma.resource.deleteMany({
     where: { user: { dni: testUserData.user.dni } },
   })
-  await prisma.$transaction([delTopics, delResources])
 })
 
 describe('GET /resources/topic/:topicId', () => {

@@ -29,7 +29,7 @@ resourcesRouter.get(
   validate(
     z.object({
       params: z.object({
-        id: z.string().cuid(),
+        resourceId: z.string().cuid(),
       }),
     })
   ),
