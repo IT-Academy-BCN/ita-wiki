@@ -426,6 +426,7 @@ paths:
                           example: my-resource-in-javascript
                         description:
                           type: string
+                          nullable: true
                           example: Lorem ipsum javascript
                         url:
                           type: string
@@ -440,12 +441,19 @@ paths:
                         userId:
                           type: string
                         createdAt:
-                          type: string
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
                         updatedAt:
-                          type: string
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
                       required:
                         - id
                         - title
+                        - slug
                         - url
                         - resourceType
                         - userId

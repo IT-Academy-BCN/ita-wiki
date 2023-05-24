@@ -1,12 +1,12 @@
-import { RESOURCE_TYPE, Topic, User } from '@prisma/client'
+import { Topic } from '@prisma/client'
 import supertest from 'supertest'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
 import { resourceGetSchema } from '../../schemas'
+import { resourceTestData } from '../mocks/resources'
 
-let testUser: User
 let testTopic: Topic
 
 beforeAll(async () => {
@@ -14,48 +14,27 @@ beforeAll(async () => {
     where: { slug: 'testing' },
   })) as Topic
 
-  testUser = (await prisma.user.findUnique({
-    where: { dni: testUserData.user.dni },
-  })) as User
-
-  const resourceData = [
-    {
-      title: 'test-resource-1',
-      slug: 'test-resource-1',
-      url: 'https://sample.com',
-      userId: testUser.id,
-      resourceType: 'BLOG' as RESOURCE_TYPE,
+  const testResources = resourceTestData.map((testResource) => ({
+    ...testResource,
+    user: { connect: { dni: testUserData.user.dni } },
+    topics: {
+      create: [{ topic: { connect: { id: testTopic.id } } }],
     },
-    {
-      title: 'test-resource-2',
-      slug: 'test-resource-2',
-      url: 'https://sample.com',
-      userId: testUser.id,
-      resourceType: 'BLOG' as RESOURCE_TYPE,
-    },
-  ]
-
-  const resources = await prisma.$transaction(
-    resourceData.map((resource) =>
-      prisma.resource.create({
-        data: resource,
-      })
-    )
-  )
-
-  const topicsOnResourcesData = resources.map((resource) => ({
-    topicId: testTopic.id,
-    resourceId: resource.id,
   }))
-
-  await prisma.topicsOnResources.createMany({ data: topicsOnResourcesData })
+  // createMany does not allow nested create on many-to-many relationships as per prisma docs. Therefore individual creates are made.
+  await prisma.$transaction(
+    testResources.map((resource) => prisma.resource.create({ data: resource }))
+  )
 })
 
 afterAll(async () => {
-  await prisma.topicsOnResources.deleteMany({
-    where: { topicId: testTopic.id },
+  const delTopics = prisma.topicsOnResources.deleteMany({
+    where: { topic: { id: testTopic.id } },
   })
-  await prisma.resource.deleteMany({ where: { userId: testUser.id } })
+  const delResources = prisma.resource.deleteMany({
+    where: { user: { dni: testUserData.user.dni } },
+  })
+  await prisma.$transaction([delTopics, delResources])
 })
 
 describe('GET /resources/topic/:topicId', () => {

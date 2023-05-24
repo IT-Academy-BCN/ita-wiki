@@ -3,6 +3,7 @@ export { registerController } from './auth/registerController'
 export { authMeController } from './auth/authMeController'
 export { createResource } from './resources/createResourceController'
 export { getResources } from './resources/getResourcesController'
+export { getResourcesById } from './resources/getResourcesById'
 export {
   getResourcesByTopicId,
   getResourcesByTopicSlug,

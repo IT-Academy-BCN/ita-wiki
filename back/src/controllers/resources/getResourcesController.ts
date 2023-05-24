@@ -27,9 +27,9 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
       topics: { select: { topic: true } },
     },
   })
-  const resourcesWithVoteCount = addVoteCountToResource(resources)
-  const parsedResources = resourcesWithVoteCount.map((resource) => {
-    return resourceGetSchema.parse(resource)
+  const parsedResources = resources.map((resource) => {
+    const resourceWithVote = addVoteCountToResource(resource)
+    return resourceGetSchema.parse(resourceWithVote)
   })
   ctx.status = 200
   ctx.body = { resources: parsedResources }

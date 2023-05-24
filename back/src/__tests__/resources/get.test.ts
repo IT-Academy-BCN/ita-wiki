@@ -1,62 +1,33 @@
-import { RESOURCE_TYPE, Topic, User } from '@prisma/client'
 import supertest from 'supertest'
 import { expect, test, it, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
 import { resourceGetSchema } from '../../schemas'
-
-let testUser: User
-let testTopic: Topic
+import { resourceTestData } from '../mocks/resources'
 
 beforeAll(async () => {
-  testUser = (await prisma.user.findUnique({
-    where: { dni: testUserData.user.dni },
-  })) as User
-  const resourceData = [
-    {
-      title: 'test-resource-1-blog',
-      slug: 'test-resource-1-blog',
-      url: 'https://sample.com',
-      userId: testUser.id,
-      resourceType: 'BLOG' as RESOURCE_TYPE,
+  const testResources = resourceTestData.map((testResource) => ({
+    ...testResource,
+    user: { connect: { dni: testUserData.user.dni } },
+    topics: {
+      create: [{ topic: { connect: { slug: 'testing' } } }],
     },
-    {
-      title: 'test-resource-2-video',
-      slug: 'test-resource-2-video',
-      url: 'https://sample.com',
-      userId: testUser.id,
-      resourceType: 'VIDEO' as RESOURCE_TYPE,
-    },
-    {
-      title: 'test-resource-3-tutorial',
-      slug: 'test-resource-3-tutorial',
-      url: 'https://sample.com',
-      userId: testUser.id,
-      resourceType: 'TUTORIAL' as RESOURCE_TYPE,
-    },
-  ]
-  // Alternative to create many AND get the created objects as return to use their id
-  const resources = await prisma.$transaction(
-    resourceData.map((resource) => prisma.resource.create({ data: resource }))
-  )
-
-  testTopic = (await prisma.topic.findUnique({
-    where: { slug: 'testing' },
-  })) as Topic
-
-  const topicsOnResourcesData = resources.map((resource) => ({
-    topicId: testTopic.id,
-    resourceId: resource.id,
   }))
-  await prisma.topicsOnResources.createMany({ data: topicsOnResourcesData })
+  // createMany does not allow nested create on many-to-many relationships as per prisma docs. Therefore individual creates are made.
+  await prisma.$transaction(
+    testResources.map((resource) => prisma.resource.create({ data: resource }))
+  )
 })
 
 afterAll(async () => {
-  await prisma.topicsOnResources.deleteMany({
-    where: { topicId: testTopic.id },
+  const delTopics = prisma.topicsOnResources.deleteMany({
+    where: { topic: { slug: 'testing' } },
   })
-  await prisma.resource.deleteMany({ where: { userId: testUser.id } })
+  const delResources = prisma.resource.deleteMany({
+    where: { user: { dni: testUserData.user.dni } },
+  })
+  await prisma.$transaction([delTopics, delResources])
 })
 
 describe('Testing resources GET endpoint', () => {
