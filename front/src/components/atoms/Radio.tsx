@@ -1,6 +1,6 @@
 import { Ref, forwardRef } from 'react'
 import styled from 'styled-components'
-import { FlexBox, dimensions, colors } from '../../styles'
+import { FlexBox, dimensions, colors, font } from '../../styles'
 import Label from './Label'
 
 type TRadioOptions = {
@@ -21,7 +21,8 @@ const RadioStyled = styled(FlexBox)`
   }
 
   ${Label} {
-    font-weight: normal;
+    font-weight: ${font.regular};
+    color: ${colors.black.black3};
     display: inline-block;
     margin-left: ${dimensions.spacing.xxs} !important;
   }

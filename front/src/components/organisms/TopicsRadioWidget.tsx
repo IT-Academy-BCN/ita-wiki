@@ -32,8 +32,10 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
   })
 
   return (
-    <div>
-      <StyledRadio options={data?.topics} inputName="Topics Radio Filter" />
-    </div>
+    <StyledRadio
+      options={data?.topics}
+      inputName="Topics Radio Filter"
+      defaultChecked="cli04v2l0000008mq5pwx7w5j"
+    />
   )
 }
