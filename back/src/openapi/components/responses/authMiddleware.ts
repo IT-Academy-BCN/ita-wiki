@@ -1,4 +1,8 @@
-import { InvalidTokenError, MissingTokenError } from '../errorSchemas'
+import {
+  InvalidTokenError,
+  MissingTokenError,
+  NotFoundError,
+} from '../errorSchemas'
 
 // Responses for when the authMiddlware intervenes.
 
@@ -24,7 +28,7 @@ export const userNotFound = {
   description: 'User not found',
   content: {
     'application/json': {
-      schema: InvalidTokenError,
+      schema: NotFoundError.openapi({ example: { message: 'User not found' } }),
     },
   },
 }

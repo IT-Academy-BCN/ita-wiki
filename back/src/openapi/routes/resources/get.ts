@@ -1,16 +1,18 @@
 import { registry } from '../../registry'
 import { z } from '../../zod'
 import { pathRoot } from '../../../routes/routes'
-import { resourceGetSchema, resourcesGetSchemaParams } from '../../../schemas'
+import { resourceGetSchema, resourcesGetParamsSchema } from '../../../schemas'
+import { ValidationError } from '../../components/errorSchemas'
 
 registry.registerPath({
   method: 'get',
   tags: ['resources'],
   path: `${pathRoot.v1.resources}`,
-  description: 'Returns a collection of resources based on type and topic',
+  description:
+    'Returns a collection of resources. Filters by resource type, topic name and category slug are optional. Resources that match all filters are fetched.',
   summary: 'Returns a collection of resources',
   request: {
-    query: resourcesGetSchemaParams,
+    query: resourcesGetParamsSchema,
   },
   responses: {
     200: {
@@ -23,15 +25,23 @@ registry.registerPath({
         },
       },
     },
-    500: {
-      description: 'Internal error',
+    400: {
+      description: 'Validation error',
       content: {
         'application/json': {
-          schema: z.object({
-            message: z.string().openapi({
-              example:
-                '{"message":"\\nInvalid `.findMany()` invocation in\\n/ita-wiki/back/src/controllers/getResourcesController.ts:27:8\\n',
-            }),
+          schema: ValidationError.openapi({
+            example: {
+              message: [
+                {
+                  code: 'invalid_enum_value',
+                  received: 'BLO',
+                  options: ['BLOG', 'VIDEO', 'TUTORIAL'],
+                  path: ['query', 'resourceType'],
+                  message:
+                    "Invalid enum value. Expected 'BLOG' | 'VIDEO' | 'TUTORIAL', received 'BLO'",
+                },
+              ],
+            },
           }),
         },
       },

@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client'
 import Koa, { Middleware } from 'koa'
 import { prisma } from '../prisma/client'
 import { NotFoundError } from '../helpers/errors'
@@ -8,20 +9,18 @@ export const getTopics: Middleware = async (ctx: Koa.Context) => {
     slug?: string
   }
 
-  const where = {}
+  const where: Prisma.TopicWhereInput = {}
   if (categoryId) {
     const exists = await prisma.category.findUnique({
       where: { id: categoryId },
     })
     if (!exists) throw new NotFoundError('No category found with this id')
 
-    // @ts-ignore
     where.categoryId = categoryId
   } else if (slug) {
     const exists = await prisma.category.findUnique({ where: { slug } })
     if (!exists) throw new NotFoundError('No category found with this slug')
 
-    // @ts-ignore
     where.category = { slug }
   }
 
