@@ -1,6 +1,6 @@
 import { registry } from '../../registry'
 import { z } from '../../zod'
-import { ValidationError } from '../../components/errorSchemas'
+import { NotFoundError, ValidationError } from '../../components/errorSchemas'
 import { pathRoot } from '../../../routes/routes'
 import { resourceGetSchema } from '../../../schemas'
 
@@ -31,7 +31,18 @@ registry.registerPath({
       description: 'Validation error',
       content: {
         'application/json': {
-          schema: ValidationError,
+          schema: ValidationError.openapi({
+            example: {
+              message: [
+                {
+                  code: 'invalid_string',
+                  validation: 'cuid',
+                  path: ['params', 'resourceId'],
+                  message: 'Invalid cuid',
+                },
+              ],
+            },
+          }),
         },
       },
     },
@@ -39,8 +50,8 @@ registry.registerPath({
       description: 'Resource not found',
       content: {
         'application/json': {
-          schema: z.object({
-            message: z.string().openapi({ example: 'Resource not found' }),
+          schema: NotFoundError.openapi({
+            example: { message: 'Resource not found' },
           }),
         },
       },

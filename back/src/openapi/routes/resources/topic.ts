@@ -1,6 +1,8 @@
 import { registry } from '../../registry'
 import { z } from '../../zod'
 import { pathRoot } from '../../../routes/routes'
+import { resourceGetSchema } from '../../../schemas'
+import { NotFoundError } from '../../components/errorSchemas'
 
 registry.registerPath({
   method: 'get',
@@ -45,17 +47,19 @@ registry.registerPath({
       description: 'Resources found',
       content: {
         'application/json': {
-          schema: z.array(
-            z.object({
-              id: z.string().trim().min(1),
-              slug: z.string().trim().min(1).openapi({ example: 'eventos' }),
-            })
-          ),
+          schema: resourceGetSchema,
         },
       },
     },
     404: {
       description: 'Topic not found',
+      content: {
+        'application/json': {
+          schema: NotFoundError.openapi({
+            example: { message: 'Topic not found' },
+          }),
+        },
+      },
     },
   },
 })
