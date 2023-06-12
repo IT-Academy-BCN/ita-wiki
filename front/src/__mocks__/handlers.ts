@@ -75,6 +75,17 @@ export const errorHandlers = [
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 
+  // eslint-disable-next-line consistent-return
+  rest.get(urls.getTopics, (req, res, ctx) => {
+    const slug = req.url.searchParams.get('slug')
+    if (slug === 'react') {
+      return res(
+        ctx.status(404),
+        ctx.json({ message: 'No category found with this slug' })
+      )
+    }
+  }),
+
   rest.put(urls.vote, (_, res, ctx) =>
     res(ctx.status(401), ctx.json({ message: 'User not found' }))
   ),

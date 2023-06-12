@@ -21,37 +21,38 @@ const SmallSpinner = styled(Spinner)`
 `
 
 export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
-  const getTopics = async () => {
-    try {
-      const res = await fetch(`${urls.getTopics}?slug=${slug}`)
-      if (!res.ok) throw new Error(`Error fetching topics: ${res.statusText}`)
-      const data = await res.json()
-      return data
-    } catch (err) {
-      return err
-    }
-  }
+  const getTopics = () =>
+    fetch(`${urls.getTopics}?slug=${slug}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Error fetching topics: ${res.statusText}`)
+        }
+        return res.json()
+      })
+      .catch((err) => {
+        throw new Error(`Error fetching topics: ${err.message}`)
+      })
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ['getTopics', slug],
     queryFn: getTopics,
   })
 
-  const [topic, setTopic] = useState('cli04uxud000609k37w9phejw')
+  const [topic, setTopic] = useState('cli04v2l0000008mq5pwx7w5j')
 
   const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value)
   }
 
   if (isLoading) return <SmallSpinner role="status" />
-  if (error) return <p>Ha habido un error...</p>
+  if (isError) return <p>Ha habido un error...</p>
 
-  // add back defaultChecked prop data?.topics[0]?.id
   return (
     <StyledRadio
       options={data?.topics}
       inputName="Topics Radio Filter"
       onChange={onTopicChange}
+      defaultChecked={topic}
     />
   )
 }
