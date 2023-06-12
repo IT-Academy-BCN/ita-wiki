@@ -1,10 +1,12 @@
 import { FC } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import { Icon, Spinner, Text, Title } from '../components/atoms'
+import { ResourceCardList } from '../components/organisms'
 import { urls } from '../constants'
+import { useSearch } from '../hooks'
 
 import {
   CardResource,
@@ -82,6 +84,14 @@ export const DesktopStyled = styled.div`
   }
 `
 
+const ScrollList = styled(FlexBox)`
+  overflow: hidden;
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`
+
 // style Desktop
 const MainContainer = styled.div`
   display: flex;
@@ -118,20 +128,23 @@ const ContainerGapStyled = styled(FlexBox)`
 const SideColumnContainer = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
-  flex-grow: 1;
-  padding: 2rem;
+  flex: 1 2 20rem;
+  padding: 2rem 2rem;
   overflow: scroll;
 
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media ${device.Desktop} {
+    padding: 2rem 3rem;
+  }
 `
 
 const MiddleColumnContainer = styled(FlexBox)`
-  flex-grow: 1.5;
-  padding: 2rem;
-  border-right: solid 1px black;
-  border-left: solid 1px black;
+  flex: 4 1 26rem;
+  padding: 2rem 3rem;
+  border-right: solid 1px ${colors.gray.gray3};
   justify-content: flex-start;
   align-items: flex-start;
   overflow: scroll;
@@ -142,35 +155,38 @@ const MiddleColumnContainer = styled(FlexBox)`
 `
 // END style Desktop
 
-const getTopicsByCategory = (slug) =>
-  fetch(urls.getTopicsByCategory, {
-    headers: {
-      Accept: 'application/json',
-    },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error fetching topics: ${res.statusText}`)
-      }
-      console.log(res)
-      return res.json()
-    })
-    .catch((err) => {
-      throw new Error(`Error fetching topics: ${err.message}`)
-    })
+// const getTopicsByCategory = (categorySlug: string | undefined) =>
+//   fetch(urls.getTopicsByCategory + categorySlug, {
+//     headers: {
+//       Accept: 'application/json',
+//     },
+//   })
+//     .then((res) => {
+//       if (!res.ok) {
+//         throw new Error(`Error fetching topics: ${res.statusText}`)
+//       }
+//       console.log(res)
+//       return res.json()
+//     })
+//     .catch((err) => {
+//       throw new Error(`Error fetching topics: ${err.message}`)
+//     })
 
 const Category: FC = () => {
   const { state } = useLocation()
+  // const { slug } = useParams()
+
+  // const categorySlug: string | undefined = slug
 
   // const { isLoading, data, error } = useQuery({
-  //   queryKey: ['getTopicsByCategory', { slug: state?.name }],
-  //   queryFn: getTopicsByCategory,
+  //   queryKey: ['getTopicsByCategory', categorySlug],
+  //   queryFn: () => getTopicsByCategory(categorySlug),
   // })
-  const { isLoading, data, error } = useQuery({
-    queryKey: ['getTopicsByCategory', { slug: 'react' }],
-    queryFn: () => getTopicsByCategory(slug),
-  })
 
+  // // if (isLoading) return
+  // if (error) return <p>Ha habido un error...</p>
+
+  // console.log('DATA', data)
   return (
     <>
       <MobileStyled>
@@ -202,7 +218,7 @@ const Category: FC = () => {
                 style={{ width: '100%' }}
               >
                 {/* ==> VOTOS Y FECHA */}
-                <FlexBox direction="row">
+                <FlexBox direction="row" gap="15px">
                   <FlexBox direction="row">
                     <Text fontWeight="bold">Votos</Text>
                     <Icon name="arrow_downward" />
@@ -210,6 +226,13 @@ const Category: FC = () => {
                   <Text color={colors.gray.gray3}>Fecha</Text>
                 </FlexBox>
               </FlexBox>
+              <ScrollList>
+                <ResourceCardList />
+                {/* {data && <ResourceCardList resources={data?.topics} />}
+              {isLoading && <StyledSpinner role="status" />} */}
+                {/* {data?.topics.map((item) => (
+                <p key={item.id}>{item.name}</p>
+              ))}
               {resources.map((sd) => (
                 <CardResource
                   key={sd.id}
@@ -222,7 +245,8 @@ const Category: FC = () => {
                   createdBy={sd.createdBy}
                   createdOn={sd.createdOn}
                 />
-              ))}
+              ))} */}
+              </ScrollList>
             </MiddleColumnContainer>
             {/* ==> COLUMNA USUARIO */}
             <SideColumnContainer>
