@@ -21,12 +21,6 @@ const SmallSpinner = styled(Spinner)`
 `
 
 export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
-  const [topic, setTopic] = useState('')
-  console.log(topic)
-
-  const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setTopic(e.target.value)
-
   const getTopics = async () => {
     try {
       const res = await fetch(`${urls.getTopics}?slug=${slug}`)
@@ -43,6 +37,13 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
     queryFn: getTopics,
   })
 
+  const [topic, setTopic] = useState('cli04uxud000609k37w9phejw')
+  console.log(topic)
+
+  const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTopic(e.target.value)
+  }
+
   if (isLoading) return <SmallSpinner role="status" />
   if (error) return <p>Ha habido un error...</p>
 
@@ -50,7 +51,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
     <StyledRadio
       options={data?.topics}
       inputName="Topics Radio Filter"
-      defaultChecked="cli04v2l0000008mq5pwx7w5j"
+      defaultChecked={data?.topics[0]?.id}
       onChange={onTopicChange}
     />
   )
