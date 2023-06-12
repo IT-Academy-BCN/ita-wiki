@@ -6,21 +6,24 @@ import { colors } from '../../styles'
 const options = [
   {
     id: 'idTest1',
+    name: 'idTest1',
     label: 'Test label 1',
   },
   {
     id: 'idTest2',
+    name: 'idTest2',
     label: 'Test label 2',
   },
   {
     id: 'idTest3',
+    name: 'idTest3',
     label: 'Test label 3',
   },
 ]
 
 describe('Radio', () => {
   it('renders correctly', async () => {
-    render(<Radio options={options} name="radioTest" />)
+    render(<Radio options={options} inputName="radioTest" />)
 
     test.each(options)('renders radio %s', ({ label }) => {
       const radioTest = screen.getByLabelText(label)
@@ -38,7 +41,7 @@ describe('Radio', () => {
   })
 
   it('renders radio that checks its radio when is clicked', async () => {
-    render(<Radio options={options} name="radioTest" />)
+    render(<Radio options={options} inputName="radioTest" />)
 
     test.each(options)('renders radio %s', ({ label }) => {
       const radioTest = screen.getByLabelText(label)
@@ -56,7 +59,7 @@ describe('Radio', () => {
     render(
       <Radio
         options={options}
-        name="radioTest"
+        inputName="radioTest"
         defaultChecked={options[1].id}
       />
     )
