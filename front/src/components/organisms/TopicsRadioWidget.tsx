@@ -38,7 +38,6 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
   })
 
   const [topic, setTopic] = useState('cli04uxud000609k37w9phejw')
-  console.log(topic)
 
   const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value)
@@ -47,11 +46,11 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
   if (isLoading) return <SmallSpinner role="status" />
   if (error) return <p>Ha habido un error...</p>
 
+  // add back defaultChecked prop data?.topics[0]?.id
   return (
     <StyledRadio
       options={data?.topics}
       inputName="Topics Radio Filter"
-      defaultChecked={data?.topics[0]?.id}
       onChange={onTopicChange}
     />
   )

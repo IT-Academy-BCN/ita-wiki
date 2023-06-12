@@ -6,7 +6,10 @@ describe('TopicsRadioWidget', () => {
     render(<TopicsRadioWidget slug="react" />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
+    expect(spinnerComponent).toBeInTheDocument()
 
-    await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
+    // const option1 = screen.findByLabelText('Listas')
+    // expect(option1).toBeInTheDocument()
+    await waitFor(() => screen.debug())
   })
 })
