@@ -3,6 +3,7 @@ import arrowDown from './arrow-down.svg'
 import chevronDown from './chevron-down.svg'
 import dataScience from './data-science.svg'
 import editPen from './edit-pen.svg'
+import itLogo from './it-logo.svg'
 import java from './java.svg'
 import javascript from './javascript.svg'
 import lockDynamic from './lock-dynamic-color.svg'
@@ -23,6 +24,7 @@ const icons = {
   chevronDown,
   dataScience,
   editPen,
+  itLogo,
   java,
   javascript,
   lockDynamic,

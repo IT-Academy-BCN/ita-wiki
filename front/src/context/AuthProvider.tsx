@@ -13,7 +13,7 @@ type TUser = {
   avatar: string
 } | null
 
-type TAuthContext = {
+export type TAuthContext = {
   user: TUser
   children: React.ReactNode
   setUser: (user: TUser) => void

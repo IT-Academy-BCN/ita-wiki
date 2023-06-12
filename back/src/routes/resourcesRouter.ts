@@ -3,12 +3,13 @@ import { z } from 'zod'
 import { authMiddleware, validate } from '../middleware'
 import {
   createResource,
-  getResourcesByUserId,
   getResources,
+  getResourcesById,
+  getResourcesByUserId,
   getResourcesByTopicId,
   getResourcesByTopicSlug,
 } from '../controllers'
-import { resourceCreateSchema } from '../schemas'
+import { resourceCreateSchema, resourcesGetParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
 
 const resourcesRouter = new Router()
@@ -21,9 +22,27 @@ resourcesRouter.post(
   validate(z.object({ body: resourceCreateSchema })),
   createResource
 )
-
-resourcesRouter.get('/', getResources)
+resourcesRouter.get(
+  '/',
+  validate(
+    z.object({
+      query: resourcesGetParamsSchema,
+    })
+  ),
+  getResources
+)
 resourcesRouter.get('/me', authMiddleware, getResourcesByUserId)
+resourcesRouter.get(
+  '/id/:resourceId',
+  validate(
+    z.object({
+      params: z.object({
+        resourceId: z.string().cuid(),
+      }),
+    })
+  ),
+  getResourcesById
+)
 resourcesRouter.get(
   '/topic/:topicId',
   validate(

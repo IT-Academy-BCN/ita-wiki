@@ -59,48 +59,47 @@ components:
       required:
         - message
     ValidationError:
-      type: array
-      items:
-        type: object
-        properties:
-          code:
-            type: string
-            example: invalid_string
-          message:
-            type: string
-            example: Invalid
-          path:
-            type: array
-            items:
-              type: string
-              example: dni
-          validation:
-            type: string
-            example: regex
-          expected:
-            type: string
-            example: string
-          received:
-            type: string
-            example: undefined
-        required:
-          - code
-          - message
-          - path
-      example:
-        - validation: regex
-          code: invalid_string
-          message: Invalid
-          path:
-            - body
-            - dni
-        - code: invalid_type
-          expected: string
-          received: undefined
-          path:
-            - body
-            - password
-          message: Required
+      type: object
+      properties:
+        message:
+          type: array
+          items:
+            type: object
+            properties:
+              code:
+                type: string
+                example: invalid_string
+              message:
+                type: string
+                example: Invalid
+              path:
+                type: array
+                items:
+                  type: string
+                  example: dni
+              validation:
+                type: string
+                example: regex
+              expected:
+                type: string
+                example: string
+              received:
+                type: string
+                example: undefined
+              options:
+                type: array
+                items:
+                  type: string
+                example:
+                  - BLOG
+                  - VIDEO
+                  - TUTORIAL
+            required:
+              - code
+              - message
+              - path
+      required:
+        - message
   parameters: {}
 paths:
   /api/v1/auth/login:
@@ -134,12 +133,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    $ref: "#/components/schemas/ValidationError"
-                required:
-                  - message
+                $ref: "#/components/schemas/ValidationError"
         "404":
           description: User not found
           content:
@@ -271,13 +265,10 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: User not found
-                required:
-                  - error
+                allOf:
+                  - $ref: "#/components/schemas/MissingUserError"
+                  - example: &a2
+                      message: User not found
         "405":
           description: Invalid token
           content:
@@ -378,15 +369,11 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    examples:
-                      - No category found with this id
-                      - No category found with this slug
-                required:
-                  - message
+                allOf:
+                  - $ref: "#/components/schemas/MissingUserError"
+                  - examples:
+                      - message: No category found with this id
+                      - message: No category found with this slug
   /api/v1/favorites/by-user/:userId:
     get:
       tags:
@@ -426,6 +413,7 @@ paths:
                           example: my-resource-in-javascript
                         description:
                           type: string
+                          nullable: true
                           example: Lorem ipsum javascript
                         url:
                           type: string
@@ -440,12 +428,19 @@ paths:
                         userId:
                           type: string
                         createdAt:
-                          type: string
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
                         updatedAt:
-                          type: string
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
                       required:
                         - id
                         - title
+                        - slug
                         - url
                         - resourceType
                         - userId
@@ -481,7 +476,9 @@ paths:
     get:
       tags:
         - resources
-      description: Returns a collection of resources based on type and topic
+      description: Returns a collection of resources. Filters by resource type, topic
+        name and category slug are optional. Resources that match all filters
+        are fetched.
       summary: Returns a collection of resources
       parameters:
         - in: query
@@ -499,6 +496,12 @@ paths:
           schema:
             type: string
             example: Listas
+          required: false
+        - in: query
+          name: category
+          schema:
+            type: string
+            example: javascript
           required: false
       responses:
         "200":
@@ -620,19 +623,26 @@ paths:
                         - voteCount
                 required:
                   - resources
-        "500":
-          description: Internal error
+        "400":
+          description: Validation error
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: '{"message":"\nInvalid `.findMany()` invocation
-                      in\n/ita-wiki/back/src/controllers/getResourcesController.ts:27:8\n'
-                required:
-                  - message
+                allOf:
+                  - $ref: "#/components/schemas/ValidationError"
+                  - example:
+                      message:
+                        - code: invalid_enum_value
+                          received: BLO
+                          options:
+                            - BLOG
+                            - VIDEO
+                            - TUTORIAL
+                          path:
+                            - query
+                            - resourceType
+                          message: Invalid enum value. Expected 'BLOG' | 'VIDEO' | 'TUTORIAL', received
+                            'BLO'
   /api/v1/resources/create:
     post:
       tags:
@@ -685,6 +695,157 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
+  "/api/v1/resources/id/{resourceId}":
+    get:
+      tags:
+        - resources
+      summary: Returns a resource by its ID
+      description: Takes in a valid resource ID and returns the resource related to it.
+      parameters:
+        - in: path
+          name: resourceId
+          schema:
+            type: string
+            minLength: 1
+            description: ID of the resource to be retrieved.
+          required: true
+      responses:
+        "200":
+          description: Resource found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                    example: My Resource in Javascript
+                  slug:
+                    type: string
+                    example: my-resource-in-javascript
+                  description:
+                    type: string
+                    nullable: true
+                    example: Lorem ipsum javascript
+                  url:
+                    type: string
+                    format: uri
+                    example: https://tutorials.cat/learn/javascript
+                  resourceType:
+                    type: string
+                    enum: *a1
+                  createdAt:
+                    anyOf:
+                      - type: string
+                        format: date-time
+                      - type: string
+                  updatedAt:
+                    anyOf:
+                      - type: string
+                        format: date-time
+                      - type: string
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                        example: user@example.cat
+                    required:
+                      - email
+                  topics:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        topic:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                              example: React
+                            slug:
+                              type: string
+                              example: react
+                            categoryId:
+                              type: string
+                            createdAt:
+                              anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: string
+                            updatedAt:
+                              anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: string
+                          required:
+                            - id
+                            - name
+                            - categoryId
+                            - createdAt
+                            - updatedAt
+                      required:
+                        - topic
+                  voteCount:
+                    type: object
+                    properties:
+                      upvote:
+                        type: integer
+                        minimum: 0
+                        example: 14
+                      downvote:
+                        type: integer
+                        minimum: 0
+                        example: 2
+                      total:
+                        type: integer
+                        example: 12
+                    required:
+                      - upvote
+                      - downvote
+                      - total
+                required:
+                  - id
+                  - title
+                  - slug
+                  - url
+                  - resourceType
+                  - createdAt
+                  - updatedAt
+                  - user
+                  - topics
+                  - voteCount
+        "400":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ValidationError"
+                  - example:
+                      message:
+                        - code: invalid_string
+                          validation: cuid
+                          path:
+                            - params
+                            - resourceId
+                          message: Invalid cuid
+        "404":
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MissingUserError"
+                  - example:
+                      message: Resource not found
   "/api/v1/resources/topic/{topicId}":
     get:
       tags:
@@ -725,22 +886,122 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      minLength: 1
-                    slug:
-                      type: string
-                      minLength: 1
-                      example: eventos
-                  required:
-                    - id
-                    - slug
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                    example: My Resource in Javascript
+                  slug:
+                    type: string
+                    example: my-resource-in-javascript
+                  description:
+                    type: string
+                    nullable: true
+                    example: Lorem ipsum javascript
+                  url:
+                    type: string
+                    format: uri
+                    example: https://tutorials.cat/learn/javascript
+                  resourceType:
+                    type: string
+                    enum: *a1
+                  createdAt:
+                    anyOf:
+                      - type: string
+                        format: date-time
+                      - type: string
+                  updatedAt:
+                    anyOf:
+                      - type: string
+                        format: date-time
+                      - type: string
+                  user:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      email:
+                        type: string
+                        format: email
+                        example: user@example.cat
+                    required:
+                      - email
+                  topics:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        topic:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                              example: React
+                            slug:
+                              type: string
+                              example: react
+                            categoryId:
+                              type: string
+                            createdAt:
+                              anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: string
+                            updatedAt:
+                              anyOf:
+                                - type: string
+                                  format: date-time
+                                - type: string
+                          required:
+                            - id
+                            - name
+                            - categoryId
+                            - createdAt
+                            - updatedAt
+                      required:
+                        - topic
+                  voteCount:
+                    type: object
+                    properties:
+                      upvote:
+                        type: integer
+                        minimum: 0
+                        example: 14
+                      downvote:
+                        type: integer
+                        minimum: 0
+                        example: 2
+                      total:
+                        type: integer
+                        example: 12
+                    required:
+                      - upvote
+                      - downvote
+                      - total
+                required:
+                  - id
+                  - title
+                  - slug
+                  - url
+                  - resourceType
+                  - createdAt
+                  - updatedAt
+                  - user
+                  - topics
+                  - voteCount
         "404":
           description: Topic not found
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/MissingUserError"
+                  - example:
+                      message: Topic not found
   /api/v1/resources/me:
     get:
       tags:
@@ -880,7 +1141,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidTokenError"
+                allOf:
+                  - $ref: "#/components/schemas/MissingUserError"
+                  - example: *a2
         "405":
           description: Invalid token
           content:
