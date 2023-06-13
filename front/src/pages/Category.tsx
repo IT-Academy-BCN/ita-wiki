@@ -1,24 +1,18 @@
 import { FC } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-import { useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions } from '../styles'
-import { Icon, Spinner, Text, Title } from '../components/atoms'
-import { ResourceCardList } from '../components/organisms'
-import { urls } from '../constants'
-import { useSearch } from '../hooks'
-
+import { Icon, Text, Title } from '../components/atoms'
+import { InputGroup, ResourceTitleLink } from '../components/molecules'
 import {
-  CardResource,
-  InputGroup,
-  ResourceTitleLink,
-} from '../components/molecules'
-import { CategoriesList, TopicsRadioWidget } from '../components/organisms'
+  CategoriesList,
+  ResourceCardList,
+  TopicsRadioWidget,
+} from '../components/organisms'
 import { Resource } from './Resource'
 import icons from '../assets/icons'
 
-type TResource = {
+type TFakeResource = {
   id: string
   title: string
   createdBy: string
@@ -29,7 +23,7 @@ type TResource = {
   likes: number
 }
 
-export const resources: TResource[] = [
+export const resources: TFakeResource[] = [
   {
     id: 'resourceId1',
     title: 'JavaScript en 45 segundos!',
@@ -164,38 +158,10 @@ const MiddleColumnContainer = styled(FlexBox)`
 `
 // END style Desktop
 
-// const getTopicsByCategory = (categorySlug: string | undefined) =>
-//   fetch(urls.getTopicsByCategory + categorySlug, {
-//     headers: {
-//       Accept: 'application/json',
-//     },
-//   })
-//     .then((res) => {
-//       if (!res.ok) {
-//         throw new Error(`Error fetching topics: ${res.statusText}`)
-//       }
-//       console.log(res)
-//       return res.json()
-//     })
-//     .catch((err) => {
-//       throw new Error(`Error fetching topics: ${err.message}`)
-//     })
-
 const Category: FC = () => {
   const { state } = useLocation()
   const { slug } = useParams()
 
-  // const categorySlug: string | undefined = slug
-
-  // const { isLoading, data, error } = useQuery({
-  //   queryKey: ['getTopicsByCategory', categorySlug],
-  //   queryFn: () => getTopicsByCategory(categorySlug),
-  // })
-
-  // // if (isLoading) return
-  // if (error) return <p>Ha habido un error...</p>
-
-  // console.log('DATA', data)
   return (
     <>
       <MobileStyled>
@@ -240,24 +206,6 @@ const Category: FC = () => {
               </FlexBox>
               <ScrollList>
                 <ResourceCardList />
-                {/* {data && <ResourceCardList resources={data?.topics} />}
-              {isLoading && <StyledSpinner role="status" />} */}
-                {/* {data?.topics.map((item) => (
-                <p key={item.id}>{item.name}</p>
-              ))}
-              {resources.map((sd) => (
-                <CardResource
-                  key={sd.id}
-                  img={sd?.img}
-                  id={sd.createdOn}
-                  title={sd.title}
-                  url={sd.url}
-                  description={sd.description}
-                  likes={sd.likes}
-                  createdBy={sd.createdBy}
-                  createdOn={sd.createdOn}
-                />
-              ))} */}
               </ScrollList>
             </MiddleColumnContainer>
             {/* ==> COLUMNA USUARIO */}

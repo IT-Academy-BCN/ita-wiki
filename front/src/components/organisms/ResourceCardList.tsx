@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { urls } from '../../constants'
 import styled from 'styled-components'
+import { urls } from '../../constants'
 import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import { CardResource } from '../molecules'
@@ -17,7 +17,6 @@ type TResource = {
   user: {
     name: string
     email: string
-    imgAvatar: string //BACK AFEGIR:
   }
   voteCount: {
     upvote: number
@@ -49,7 +48,7 @@ const StyledText = styled(Text)`
 `
 
 const getResources = (categorySlug: string | undefined) =>
-  fetch(urls.getResources + `?category=${categorySlug}`, {
+  fetch(`${urls.getResources}?category=${categorySlug}`, {
     headers: {
       Accept: 'application/json',
     },
@@ -58,7 +57,6 @@ const getResources = (categorySlug: string | undefined) =>
       if (!res.ok) {
         throw new Error(`Error fetching resources: ${res.statusText}`)
       }
-      console.log(res)
       return res.json()
     })
     .catch((err) => {
@@ -77,38 +75,35 @@ const ResourceCardList = () => {
 
   if (error) return <p>Ha habido un error...</p>
 
-  console.log(data)
   return (
-    <>
-      <StyledFlexBox direction="column">
-        {isLoading && <StyledSpinner role="status" />}
-        {data?.resources?.length > 0 ? (
-          data.resources.map((resource: TResource) => (
-            <CardResource
-              key={resource.id}
-              id={resource.id}
-              img={resource.user.imgAvatar}
-              title={resource.title}
-              url={resource.url}
-              description={resource.description}
-              likes={resource.voteCount.total}
-              createdBy={resource.user.name}
-              createdOn={resource.createdAt}
-              updatedOn={resource.updatedAt}
-            />
-          ))
-        ) : (
-          <FlexBox>
-            <StyledText data-testid="emptyResource">
-              ¡Vaya! :/
-              <br />
-              <br />
-              Todavía no hay recursos de este tipo.
-            </StyledText>
-          </FlexBox>
-        )}
-      </StyledFlexBox>
-    </>
+    <StyledFlexBox direction="column">
+      {isLoading && <StyledSpinner role="status" />}
+      {data?.resources?.length > 0 ? (
+        data.resources.map((resource: TResource) => (
+          <CardResource
+            key={resource.id}
+            id={resource.id}
+            img=""
+            title={resource.title}
+            url={resource.url}
+            description={resource.description}
+            likes={resource.voteCount.total}
+            createdBy={resource.user.name}
+            createdOn={resource.createdAt}
+            updatedOn={resource.updatedAt}
+          />
+        ))
+      ) : (
+        <FlexBox>
+          <StyledText data-testid="emptyResource">
+            ¡Vaya! :/
+            <br />
+            <br />
+            Todavía no hay recursos de este tipo.
+          </StyledText>
+        </FlexBox>
+      )}
+    </StyledFlexBox>
   )
 }
 

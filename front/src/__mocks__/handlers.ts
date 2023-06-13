@@ -1,6 +1,6 @@
 import { rest } from 'msw'
 import { urls } from '../constants'
-const categorySlug = 'react'
+
 export const handlers = [
   rest.post('http://localhost:8999/api/v1/auth/login', (req, res, ctx) =>
     res(ctx.status(204))
@@ -64,21 +64,8 @@ export const handlers = [
     }
   }),
 
-  rest.get(urls.getResources + `?category=${categorySlug}`, (req, res, ctx) => {
-    const slug = req.url.searchParams.get(categorySlug)
-
-    if (slug === 'emptyResource') {
-      return res(
-        ctx.status(200),
-        ctx.json([
-          {
-            resources: [],
-          },
-        ])
-      )
-    }
-
-    return res(
+  rest.get(`${urls.getResources}?category=resourceTest`, (req, res, ctx) =>
+    res(
       ctx.status(200),
       ctx.json([
         {
@@ -88,6 +75,8 @@ export const handlers = [
               title: 'Resource Test',
               description: 'Resource Test Description',
               url: 'http://www.google.com',
+              createdAt: '2023-02-17T03:07:00',
+              updatedAt: '2023-05-17T03:07:00',
               user: {
                 name: 'Test User Name',
                 email: 'test@mail.com',
@@ -102,7 +91,18 @@ export const handlers = [
         },
       ])
     )
-  }),
+  ),
+
+  rest.get(`${urls.getResources}?category=emptyResource`, (req, res, ctx) =>
+    res(
+      ctx.status(200),
+      ctx.json([
+        {
+          resources: [],
+        },
+      ])
+    )
+  ),
 
   rest.put(urls.vote, (_, res, ctx) =>
     res(
@@ -118,6 +118,10 @@ export const handlers = [
 
 export const errorHandlers = [
   rest.get(urls.getCategories, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
+  rest.get(`${urls.getResources}?category=anyCategory`, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 
