@@ -12,6 +12,7 @@ import {
 import { CategoriesList, TopicsRadioWidget } from '../components/organisms'
 import { Resource } from './Resource'
 import icons from '../assets/icons'
+import { paths } from '../constants'
 
 type TResource = {
   id: string
@@ -163,7 +164,7 @@ const Category: FC = () => {
       <DesktopStyled>
         <MainContainer>
           <LateralDiv>
-            <Link to="/">
+            <Link to={paths.home}>
               <ImageStyled src={icons.itLogo} alt="logo" />
             </Link>
             <CategoriesList />

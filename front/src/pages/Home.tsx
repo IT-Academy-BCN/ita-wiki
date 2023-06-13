@@ -6,6 +6,7 @@ import { FlexBox, colors, device, dimensions, font } from '../styles'
 import { CardHome } from '../components/molecules'
 import { CategoriesList } from '../components/organisms'
 import { Title, Text, Icon } from '../components/atoms'
+import { paths } from '../constants'
 
 export const DesktopStyled = styled.div`
   display: none;
@@ -76,7 +77,7 @@ const Home: FC = () => (
   <DesktopStyled>
     <MainContainer>
       <LateralDiv>
-        <Link to="/">
+        <Link to={paths.home}>
           <ImageStyled src={icons.itLogo} alt="logo" />
         </Link>
         <CategoriesList />
