@@ -15,7 +15,7 @@ const ImgStyled = styled.img`
 `
 
 const MobileStyled = styled.div`
-  display: block;
+  display: block; 
   @media only ${device.Laptop} {
     display: none;
   }

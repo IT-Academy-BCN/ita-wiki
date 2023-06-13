@@ -38,6 +38,31 @@ export const handlers = [
       ])
     )
   ),
+  // eslint-disable-next-line consistent-return
+  rest.get(urls.getTopics, (req, res, ctx) => {
+    const slug = req.url.searchParams.get('slug')
+    if (slug === 'react') {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          topics: [
+            {
+              id: 'cli04v2l0000008mq5pwx7w5j',
+              name: 'Listas',
+              slug: 'listas',
+              categoryId: 'clh78rhsk000008l0ahamgoug',
+            },
+            {
+              id: 'cli04uxud000609k37w9phejw',
+              name: 'Renderizado condicional',
+              slug: 'renderizado-condicional',
+              categoryId: 'clh78rhsk000008l0ahamgoug',
+            },
+          ],
+        })
+      )
+    }
+  }),
 
   rest.put(urls.vote, (_, res, ctx) =>
     res(
@@ -55,6 +80,17 @@ export const errorHandlers = [
   rest.get(urls.getCategories, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
+
+  // eslint-disable-next-line consistent-return
+  rest.get(urls.getTopics, (req, res, ctx) => {
+    const slug = req.url.searchParams.get('slug')
+    if (slug === 'invalid-slug') {
+      return res(
+        ctx.status(404),
+        ctx.json({ message: 'No category found with this slug' })
+      )
+    }
+  }),
 
   rest.put(urls.vote, (_, res, ctx) =>
     res(ctx.status(401), ctx.json({ message: 'User not found' }))

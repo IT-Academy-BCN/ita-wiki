@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import { Icon, Text, Title } from '../components/atoms'
@@ -9,7 +9,7 @@ import {
   InputGroup,
   ResourceTitleLink,
 } from '../components/molecules'
-import { CategoriesList } from '../components/organisms'
+import { CategoriesList, TopicsRadioWidget } from '../components/organisms'
 import { Resource } from './Resource'
 import icons from '../assets/icons'
 
@@ -150,6 +150,7 @@ const MiddleColumnContainer = styled(FlexBox)`
 
 const Category: FC = () => {
   const { state } = useLocation()
+  const { slug } = useParams()
 
   return (
     <>
@@ -171,7 +172,7 @@ const Category: FC = () => {
                 Filtros
               </Title>
               <Text fontWeight="bold">Temas</Text>
-              ...
+              {slug && <TopicsRadioWidget slug={slug} />}
             </SideColumnContainer>
             {/* ==> COLUMNA RECURSOS */}
             <MiddleColumnContainer>

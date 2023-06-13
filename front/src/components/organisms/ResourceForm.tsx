@@ -138,11 +138,11 @@ export const ResourceForm = () => {
       <Radio
         {...register('resourceType')}
         options={[
-          { id: 'video', label: 'Video' },
-          { id: 'curso', label: 'Curso' },
-          { id: 'blog', label: 'Blog' },
+          { id: 'video', name: 'Video' },
+          { id: 'curso', name: 'Curso' },
+          { id: 'blog', name: 'Blog' },
         ]}
-        name="resourceType"
+        inputName="resourceType"
       />
       <FlexErrorStyled align="start">
         {errors?.title || errors?.description || errors?.url ? (
