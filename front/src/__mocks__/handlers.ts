@@ -52,6 +52,12 @@ export const handlers = [
               slug: 'listas',
               categoryId: 'clh78rhsk000008l0ahamgoug',
             },
+            {
+              id: 'cli04uxud000609k37w9phejw',
+              name: 'Renderizado condicional',
+              slug: 'renderizado-condicional',
+              categoryId: 'clh78rhsk000008l0ahamgoug',
+            },
           ],
         })
       )
@@ -78,7 +84,7 @@ export const errorHandlers = [
   // eslint-disable-next-line consistent-return
   rest.get(urls.getTopics, (req, res, ctx) => {
     const slug = req.url.searchParams.get('slug')
-    if (slug === 'react') {
+    if (slug === 'invalid-slug') {
       return res(
         ctx.status(404),
         ctx.json({ message: 'No category found with this slug' })
