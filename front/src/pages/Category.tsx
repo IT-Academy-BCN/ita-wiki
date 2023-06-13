@@ -112,6 +112,9 @@ const UserResourcesContainerStyled = styled(FlexBox)`
 
 const ImageStyled = styled.img`
   margin-bottom: ${dimensions.spacing.xl};
+  margin-left: ${dimensions.spacing.xl};
+  max-width: 79px;
+  height: auto;
 `
 
 const ContainerGapStyled = styled(FlexBox)`
