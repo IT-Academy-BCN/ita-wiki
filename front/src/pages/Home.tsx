@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { FC } from 'react'
+import { Link } from 'react-router-dom'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
 import { CardHome } from '../components/molecules'
@@ -75,7 +76,9 @@ const Home: FC = () => (
   <DesktopStyled>
     <MainContainer>
       <LateralDiv>
-        <ImageStyled src={icons.itLogo} alt="logo" />
+        <Link to="/">
+          <ImageStyled src={icons.itLogo} alt="logo" />
+        </Link>
         <CategoriesList />
       </LateralDiv>
       <DivStyled>

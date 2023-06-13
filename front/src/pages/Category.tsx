@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import { Icon, Text, Title } from '../components/atoms'
@@ -163,7 +163,9 @@ const Category: FC = () => {
       <DesktopStyled>
         <MainContainer>
           <LateralDiv>
-            <ImageStyled src={icons.itLogo} alt="logo" />
+            <Link to="/">
+              <ImageStyled src={icons.itLogo} alt="logo" />
+            </Link>
             <CategoriesList />
           </LateralDiv>
           {/* ==> CONTAINER CON LAS LAS COLUMNAS */}
