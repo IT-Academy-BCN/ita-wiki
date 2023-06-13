@@ -4,7 +4,7 @@ This project uses a set of technologies to facilitate the development of web app
 
 ## Getting Started
 
-Before running the project, make sure you have Docker Desktop installed. Once you have Docker Desktop installed and running, follow the steps below:
+Follow the steps below:
 
 1. cd into the front folder if you haven't already:
 

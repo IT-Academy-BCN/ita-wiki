@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions } from '../styles'
@@ -13,7 +14,7 @@ import {
   InputGroup,
   ResourceTitleLink,
 } from '../components/molecules'
-import { CategoriesList } from '../components/organisms'
+import { CategoriesList, TopicsRadioWidget } from '../components/organisms'
 import { Resource } from './Resource'
 import icons from '../assets/icons'
 
@@ -113,9 +114,17 @@ const DivStyled = styled.div`
   border-radius: ${dimensions.borderRadius.base};
 `
 
+const LateralDiv = styled.div`
+  height: 100%;
+`
+
 const UserResourcesContainerStyled = styled(FlexBox)`
   align-items: flex-start;
   margin-bottom: ${dimensions.spacing.md};
+`
+
+const ImageStyled = styled.img`
+  margin-bottom: ${dimensions.spacing.xl};
 `
 
 const ContainerGapStyled = styled(FlexBox)`
@@ -174,7 +183,7 @@ const MiddleColumnContainer = styled(FlexBox)`
 
 const Category: FC = () => {
   const { state } = useLocation()
-  // const { slug } = useParams()
+  const { slug } = useParams()
 
   // const categorySlug: string | undefined = slug
 
@@ -194,7 +203,10 @@ const Category: FC = () => {
       </MobileStyled>
       <DesktopStyled>
         <MainContainer>
-          <CategoriesList />
+          <LateralDiv>
+            <ImageStyled src={icons.itLogo} alt="logo" />
+            <CategoriesList />
+          </LateralDiv>
           {/* ==> CONTAINER CON LAS LAS COLUMNAS */}
           <DivStyled>
             {/* ==> COLUMNA BÚSQUEDA */}
@@ -204,7 +216,7 @@ const Category: FC = () => {
                 Filtros
               </Title>
               <Text fontWeight="bold">Temas</Text>
-              ...
+              {slug && <TopicsRadioWidget slug={slug} />}
             </SideColumnContainer>
             {/* ==> COLUMNA RECURSOS */}
             <MiddleColumnContainer>
