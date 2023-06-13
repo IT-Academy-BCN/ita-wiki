@@ -9,7 +9,7 @@ import {
   getResourcesByTopicId,
   getResourcesByTopicSlug,
 } from '../controllers'
-import { resourceCreateSchema } from '../schemas'
+import { resourceCreateSchema, resourcesGetParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
 
 const resourcesRouter = new Router()
@@ -22,7 +22,15 @@ resourcesRouter.post(
   validate(z.object({ body: resourceCreateSchema })),
   createResource
 )
-resourcesRouter.get('/', getResources)
+resourcesRouter.get(
+  '/',
+  validate(
+    z.object({
+      query: resourcesGetParamsSchema,
+    })
+  ),
+  getResources
+)
 resourcesRouter.get('/me', authMiddleware, getResourcesByUserId)
 resourcesRouter.get(
   '/id/:resourceId',

@@ -72,11 +72,7 @@ const Home: FC = () => (
   <DesktopStyled>
     <MainContainer>
       <LateralDiv>
-        <ImageStyled
-          src={icons.itLogo}
-          alt="logo"
-          style={{ marginBottom: '3rem' }}
-        />
+        <ImageStyled src={icons.itLogo} alt="logo" />
         <CategoriesList />
       </LateralDiv>
       <DivStyled>

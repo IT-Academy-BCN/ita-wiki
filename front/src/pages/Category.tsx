@@ -101,9 +101,17 @@ const DivStyled = styled.div`
   border-radius: ${dimensions.borderRadius.base};
 `
 
+const LateralDiv = styled.div`
+  height: 100%;
+`
+
 const UserResourcesContainerStyled = styled(FlexBox)`
   align-items: flex-start;
   margin-bottom: ${dimensions.spacing.md};
+`
+
+const ImageStyled = styled.img`
+  margin-bottom: ${dimensions.spacing.xl};
 `
 
 const ContainerGapStyled = styled(FlexBox)`
@@ -151,7 +159,10 @@ const Category: FC = () => {
       </MobileStyled>
       <DesktopStyled>
         <MainContainer>
-          <CategoriesList />
+          <LateralDiv>
+            <ImageStyled src={icons.itLogo} alt="logo" />
+            <CategoriesList />
+          </LateralDiv>
           {/* ==> CONTAINER CON LAS LAS COLUMNAS */}
           <DivStyled>
             {/* ==> COLUMNA BÚSQUEDA */}
