@@ -3,63 +3,27 @@ import { useQuery } from '@tanstack/react-query'
 import { urls } from '../../constants'
 import styled from 'styled-components'
 import { FlexBox, dimensions } from '../../styles'
-import { Spinner, Text, Title } from '../atoms'
+import { Spinner, Text } from '../atoms'
 import { CardResource } from '../molecules'
-
-// {
-//   "resources": [
-//     {
-//       "id": "string",
-//       "title": "My Resource in Javascript",
-//       "slug": "my-resource-in-javascript",
-//       "description": "Lorem ipsum javascript",
-//       "url": "https://tutorials.cat/learn/javascript",
-//       "resourceType": "BLOG",
-//       "createdAt": "string",
-//       "updatedAt": "string",
-//       "user": {
-//         "name": "string",
-//         "email": "user@example.cat"
-//       },
-//       "topics": [
-//         {
-//           "topic": {
-//             "id": "string",
-//             "name": "React",
-//             "slug": "react",
-//             "categoryId": "string",
-//             "createdAt": "string",
-//             "updatedAt": "string"
-//           }
-//         }
-//       ],
-//       "voteCount": {
-//         "upvote": 14,
-//         "downvote": 2,
-//         "total": 12
-//       }
-//     }
-//   ]
-// }
 
 type TResource = {
   id: string
   title: string
-  createdBy: string
-  createdOn: string
+  slug: string
   description: string
-  img: string
   url: string
-  likes: number
-}
-
-// type TResource = {
-//   id: string
-//   name: string
-// }
-
-type TResources = {
-  resources: TResource[]
+  createdAt: string
+  updatedAt: string
+  user: {
+    name: string
+    email: string
+    imgAvatar: string //BACK AFEGIR:
+  }
+  voteCount: {
+    upvote: number
+    downvote: number
+    total: number
+  }
 }
 
 const StyledSpinner = styled(Spinner)`
@@ -84,31 +48,22 @@ const StyledText = styled(Text)`
   margin: 2rem;
 `
 
-const getResourcesByCategory = (categorySlug: string | undefined) =>
-  fetch(urls.getResourcesByCategory + categorySlug, {
+const getResources = (categorySlug: string | undefined) =>
+  fetch(urls.getResources + `?category=${categorySlug}`, {
     headers: {
       Accept: 'application/json',
     },
   })
     .then((res) => {
       if (!res.ok) {
-        throw new Error(`Error fetching topics: ${res.statusText}`)
+        throw new Error(`Error fetching resources: ${res.statusText}`)
       }
       console.log(res)
       return res.json()
     })
     .catch((err) => {
-      throw new Error(`Error fetching topics: ${err.message}`)
+      throw new Error(`Error fetching resources: ${err.message}`)
     })
-
-type TTopic = {
-  id: string
-  name: string
-}
-
-type TTopics = {
-  topics: TTopic[]
-}
 
 const ResourceCardList = () => {
   const { slug } = useParams()
@@ -116,52 +71,42 @@ const ResourceCardList = () => {
   const categorySlug: string | undefined = slug
 
   const { isLoading, data, error } = useQuery({
-    queryKey: ['getResourcesByCategory', categorySlug],
-    queryFn: () => getResourcesByCategory(categorySlug),
+    queryKey: ['getResources', categorySlug],
+    queryFn: () => getResources(categorySlug),
   })
 
   if (error) return <p>Ha habido un error...</p>
 
-  console.log('DATA', data)
-
+  console.log(data)
   return (
     <>
       <StyledFlexBox direction="column">
         {isLoading && <StyledSpinner role="status" />}
-
-        {data?.resources.map((resource: TResource) => (
-          <p key={resource.id}>{resource.title}</p>
-        ))}
-
-        {/* {data?.topics.length > 0 ? (
-          data.topics.map((topic: TTopic) => <p key={topic.id}>{topic.name}</p>)
+        {data?.resources?.length > 0 ? (
+          data.resources.map((resource: TResource) => (
+            <CardResource
+              key={resource.id}
+              id={resource.id}
+              img={resource.user.imgAvatar}
+              title={resource.title}
+              url={resource.url}
+              description={resource.description}
+              likes={resource.voteCount.total}
+              createdBy={resource.user.name}
+              createdOn={resource.createdAt}
+              updatedOn={resource.updatedAt}
+            />
+          ))
         ) : (
           <FlexBox>
-            <StyledText>
+            <StyledText data-testid="emptyResource">
               ¡Vaya! :/
               <br />
-              Todavía no hay recursos de este tipo.
               <br />
-              ¡Añade uno!
+              Todavía no hay recursos de este tipo.
             </StyledText>
           </FlexBox>
-        )} */}
-        {/* {data?.topics.map((item) => (
-                <p key={item.id}>{item.name}</p>
-              ))}
-              {resources.map((sd) => (
-                <CardResource
-                  key={sd.id}
-                  img={sd?.img}
-                  id={sd.createdOn}
-                  title={sd.title}
-                  url={sd.url}
-                  description={sd.description}
-                  likes={sd.likes}
-                  createdBy={sd.createdBy}
-                  createdOn={sd.createdOn}
-                />
-              ))} */}
+        )}
       </StyledFlexBox>
     </>
   )

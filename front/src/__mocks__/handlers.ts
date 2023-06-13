@@ -1,6 +1,6 @@
 import { rest } from 'msw'
 import { urls } from '../constants'
-
+const categorySlug = 'react'
 export const handlers = [
   rest.post('http://localhost:8999/api/v1/auth/login', (req, res, ctx) =>
     res(ctx.status(204))
@@ -39,23 +39,45 @@ export const handlers = [
     )
   ),
 
-  rest.get(urls.getTopicsByCategory, (_, res, ctx) =>
-    res(
+  rest.get(urls.getResources + `?category=${categorySlug}`, (req, res, ctx) => {
+    const slug = req.url.searchParams.get(categorySlug)
+
+    if (slug === 'emptyResource') {
+      return res(
+        ctx.status(200),
+        ctx.json([
+          {
+            resources: [],
+          },
+        ])
+      )
+    }
+
+    return res(
       ctx.status(200),
       ctx.json([
         {
-          topics: [
+          resources: [
             {
-              id: 'string',
-              name: 'string',
-              slug: 'string',
-              categoryId: 'string',
+              id: 'resourceId',
+              title: 'Resource Test',
+              description: 'Resource Test Description',
+              url: 'http://www.google.com',
+              user: {
+                name: 'Test User Name',
+                email: 'test@mail.com',
+              },
+              voteCount: {
+                upvote: 6,
+                downvote: 2,
+                total: 4,
+              },
             },
           ],
         },
       ])
     )
-  ),
+  }),
 
   rest.put(urls.vote, (_, res, ctx) =>
     res(
@@ -71,6 +93,10 @@ export const handlers = [
 
 export const errorHandlers = [
   rest.get(urls.getCategories, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
+  rest.get(urls.getResourcesByCategory, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 
