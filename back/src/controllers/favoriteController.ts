@@ -38,6 +38,7 @@ export const getUserFavoriteResources: Middleware = async (
         resource: true,
       },
     })
+    favorites = favorites.map((f) => f.resource)
   }
   ctx.status = 200
   ctx.body = favorites
