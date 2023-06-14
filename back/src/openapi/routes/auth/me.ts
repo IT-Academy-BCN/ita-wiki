@@ -6,6 +6,7 @@ import { cookieAuth } from '../../components/cookieAuth'
 import {
   invalidTokenResponse,
   missingTokenResponse,
+  userNotFound,
 } from '../../components/responses/authMiddleware'
 
 // const authCookie = z.string().openapi({example: 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhUmFuZG9tVXNlcklkIiwiaWF0IjoxNjgyNTAwNjczLCJleHAiOjE2ODI1ODcwNzN9.fvH3xbno7DQW3IPOekXz5D8H6TUpAq99UCK-_jY_qgI;'})
@@ -35,16 +36,7 @@ registry.registerPath({
     },
     401: missingTokenResponse,
     405: invalidTokenResponse,
-    404: {
-      description: 'User not found',
-      content: {
-        'application/json': {
-          schema: z.object({
-            error: z.string().openapi({ example: 'User not found' }),
-          }),
-        },
-      },
-    },
+    404: userNotFound,
     500: {
       description: 'Other error',
       content: {

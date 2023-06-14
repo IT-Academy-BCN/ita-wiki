@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import { Icon, Text, Title } from '../components/atoms'
@@ -9,9 +9,14 @@ import {
   InputGroup,
   ResourceTitleLink,
 } from '../components/molecules'
+<<<<<<< HEAD
 import { CategoriesList, ResourcesByUser } from '../components/organisms'
+=======
+import { CategoriesList, TopicsRadioWidget } from '../components/organisms'
+>>>>>>> main
 import { Resource } from './Resource'
 import icons from '../assets/icons'
+import { paths } from '../constants'
 
 type TResource = {
   id: string
@@ -101,9 +106,20 @@ const DivStyled = styled.div`
   border-radius: ${dimensions.borderRadius.base};
 `
 
+const LateralDiv = styled.div`
+  height: 100%;
+`
+
 const UserResourcesContainerStyled = styled(FlexBox)`
   align-items: flex-start;
   margin-bottom: ${dimensions.spacing.md};
+`
+
+const ImageStyled = styled.img`
+  margin-bottom: ${dimensions.spacing.xl};
+  margin-left: ${dimensions.spacing.xl};
+  max-width: 79px;
+  height: auto;
 `
 
 const ContainerGapStyled = styled(FlexBox)`
@@ -142,6 +158,7 @@ const MiddleColumnContainer = styled(FlexBox)`
 
 const Category: FC = () => {
   const { state } = useLocation()
+  const { slug } = useParams()
 
   return (
     <>
@@ -150,7 +167,12 @@ const Category: FC = () => {
       </MobileStyled>
       <DesktopStyled>
         <MainContainer>
-          <CategoriesList />
+          <LateralDiv>
+            <Link to={paths.home}>
+              <ImageStyled src={icons.itLogo} alt="logo" />
+            </Link>
+            <CategoriesList />
+          </LateralDiv>
           {/* ==> CONTAINER CON LAS LAS COLUMNAS */}
           <DivStyled>
             {/* ==> COLUMNA BÚSQUEDA */}
@@ -160,7 +182,7 @@ const Category: FC = () => {
                 Filtros
               </Title>
               <Text fontWeight="bold">Temas</Text>
-              ...
+              {slug && <TopicsRadioWidget slug={slug} />}
             </SideColumnContainer>
             {/* ==> COLUMNA RECURSOS */}
             <MiddleColumnContainer>

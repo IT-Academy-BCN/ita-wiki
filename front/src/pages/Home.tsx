@@ -1,10 +1,12 @@
 import styled from 'styled-components'
 import { FC } from 'react'
+import { Link } from 'react-router-dom'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
 import { CardHome } from '../components/molecules'
 import { CategoriesList } from '../components/organisms'
 import { Title, Text, Icon } from '../components/atoms'
+import { paths } from '../constants'
 
 export const DesktopStyled = styled.div`
   display: none;
@@ -42,6 +44,9 @@ const TextContainerStyled = styled(FlexBox)`
 
 const ImageStyled = styled.img`
   margin-bottom: ${dimensions.spacing.xl};
+  margin-left: ${dimensions.spacing.xl};
+  max-width: 79px;
+  height: auto;
 `
 
 const cardHomeContent = [
@@ -72,11 +77,9 @@ const Home: FC = () => (
   <DesktopStyled>
     <MainContainer>
       <LateralDiv>
-        <ImageStyled
-          src={icons.itLogo}
-          alt="logo"
-          style={{ marginBottom: '3rem' }}
-        />
+        <Link to={paths.home}>
+          <ImageStyled src={icons.itLogo} alt="logo" />
+        </Link>
         <CategoriesList />
       </LateralDiv>
       <DivStyled>

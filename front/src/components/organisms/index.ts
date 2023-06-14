@@ -2,7 +2,15 @@ import { CategoriesList } from './CategoriesList'
 import { HowToHelpCard } from './HowToHelpCard'
 import { ResourcesList } from './ResourcesList'
 import { ResourceForm } from './ResourceForm'
+import { TopicsRadioWidget } from './TopicsRadioWidget'
 import { Navbar } from './Navbar'
 import ResourcesByUser from './ResourcesByUser'
 
-export { ResourcesList, HowToHelpCard, CategoriesList, ResourceForm, Navbar, ResourcesByUser}
+export {
+  ResourcesList,
+  HowToHelpCard,
+  CategoriesList,
+  ResourceForm,
+  TopicsRadioWidget,
+  Navbar, ResourcesByUser,
+}
