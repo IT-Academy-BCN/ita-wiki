@@ -69,7 +69,6 @@ describe('Testing /favorites/ endpoint', () => {
       )
       expect(response.body).toBeInstanceOf(Array)
       expect(response.body.length).toBeGreaterThan(0)
-      expect(response.body.length).toBeLessThanOrEqual(4)
       expect(response.body).toEqual(
         expect.arrayContaining([
           expect.objectContaining({

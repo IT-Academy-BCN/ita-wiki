@@ -28,7 +28,6 @@ export const getUserFavoriteResources: Middleware = async (
       select: {
         resource: true,
       },
-      take: 5,
     })
   } else {
     favorites = await prisma.favorites.findMany({
@@ -38,7 +37,6 @@ export const getUserFavoriteResources: Middleware = async (
       select: {
         resource: true,
       },
-      take: 5,
     })
   }
   favorites = favorites.map((f) => f.resource)
