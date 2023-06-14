@@ -5,13 +5,13 @@ import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
 
 describe('ResourceCardList', () => {
-  it.only('renders ResourceCard correctly on success', async () => {
+  it('renders ResourceCard correctly on success', async () => {
     render(
       <Routes>
         <Route path="/category/:slug" element={<ResourceCardList />} />
       </Routes>,
       {
-        initialEntries: ['/category/test'],
+        initialEntries: ['/category/resourceTest'],
       }
     )
 
@@ -21,13 +21,23 @@ describe('ResourceCardList', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Resource Test')).toBeInTheDocument()
-      expect(screen.getByText('http://www.google.com')).toBeInTheDocument()
+      expect(screen.getByRole('link')).toHaveAttribute(
+        'href',
+        'http://www.google.com'
+      )
       expect(screen.queryByTestId('emptyResource')).not.toBeInTheDocument()
     })
   })
 
   it('renders message when Category does not have Resources', async () => {
-    render(<ResourceCardList />)
+    render(
+      <Routes>
+        <Route path="/category/:slug" element={<ResourceCardList />} />
+      </Routes>,
+      {
+        initialEntries: ['/category/emptyResource'],
+      }
+    )
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
 

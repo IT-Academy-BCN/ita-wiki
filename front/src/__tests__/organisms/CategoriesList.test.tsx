@@ -30,7 +30,7 @@ describe('CategoriesList', () => {
       expect(screen.getByText('Ha habido un error...')).toBeInTheDocument()
     })
   })
-  it('changes the url path when clicking a category', async () => {
+  it.only('changes the url path when clicking a category', async () => {
     render(<CategoriesList />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
@@ -48,5 +48,6 @@ describe('CategoriesList', () => {
     await waitFor(() => {
       expect(window.location.pathname).toEqual('/category/react')
     })
+    screen.debug()
   })
 })
