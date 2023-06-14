@@ -64,7 +64,6 @@ export const handlers = [
     }
   }),
 
-  /* eslint-disable-next-line consistent-return */
   rest.get(urls.getResources, (req, res, ctx) => {
     const categorySlug = req.url.searchParams.get('category')
 
@@ -79,32 +78,30 @@ export const handlers = [
       )
     }
 
-    if (categorySlug === 'resourceTest') {
-      return res(
-        ctx.status(200),
-        ctx.json({
-          resources: [
-            {
-              id: 'resourceId',
-              title: 'Resource Test',
-              description: 'Resource Test Description',
-              url: 'http://www.google.com',
-              createdAt: '2023-02-17T03:07:00',
-              updatedAt: '2023-05-17T03:07:00',
-              user: {
-                name: 'Test User Name',
-                email: 'test@mail.com',
-              },
-              voteCount: {
-                upvote: 6,
-                downvote: 2,
-                total: 4,
-              },
+    return res(
+      ctx.status(200),
+      ctx.json({
+        resources: [
+          {
+            id: 'resourceId',
+            title: 'Resource Test',
+            description: 'Resource Test Description',
+            url: 'http://www.google.com',
+            createdAt: '2023-02-17T03:07:00',
+            updatedAt: '2023-05-17T03:07:00',
+            user: {
+              name: 'Test User Name',
+              email: 'test@mail.com',
             },
-          ],
-        })
-      )
-    }
+            voteCount: {
+              upvote: 6,
+              downvote: 2,
+              total: 4,
+            },
+          },
+        ],
+      })
+    )
   }),
 
   rest.put(urls.vote, (_, res, ctx) =>
