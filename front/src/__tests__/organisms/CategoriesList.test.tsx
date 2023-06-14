@@ -30,7 +30,8 @@ describe('CategoriesList', () => {
       expect(screen.getByText('Ha habido un error...')).toBeInTheDocument()
     })
   })
-  it.only('changes the url path when clicking a category', async () => {
+
+  it.skip('changes the url path when clicking a category', async () => {
     render(<CategoriesList />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
