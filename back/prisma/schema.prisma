@@ -51,8 +51,14 @@ model Resource {
   userId       String              @map("user_id")
   createdAt    DateTime            @default(now()) @map("created_at")
   updatedAt    DateTime            @updatedAt @map("updated_at")
+  status       STATUS              @default(NOT_SEEN)
 
   @@map("resource")
+}
+
+enum STATUS {
+  NOT_SEEN
+  SEEN
 }
 
 enum RESOURCE_TYPE {
@@ -64,7 +70,7 @@ enum RESOURCE_TYPE {
 model Category {
   id        String   @id @default(cuid())
   name      String   @unique
-  slug      String?   @unique
+  slug      String?  @unique
   topics    Topic[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
