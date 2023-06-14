@@ -9,7 +9,7 @@ import {
   InputGroup,
   ResourceTitleLink,
 } from '../components/molecules'
-import { CategoriesList } from '../components/organisms'
+import { CategoriesList, ResourcesByUser } from '../components/organisms'
 import { Resource } from './Resource'
 import icons from '../assets/icons'
 
@@ -241,6 +241,7 @@ const Category: FC = () => {
                   />
                 </UserResourcesContainerStyled>
               ))}
+              <ResourcesByUser resources={[]} />
             </SideColumnContainer>
           </DivStyled>
         </MainContainer>
