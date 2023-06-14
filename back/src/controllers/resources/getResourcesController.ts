@@ -1,5 +1,5 @@
 import Koa, { Middleware } from 'koa'
-import { Prisma, RESOURCE_TYPE } from '@prisma/client'
+import { Prisma, RESOURCE_TYPE, STATUS } from '@prisma/client'
 import { prisma } from '../../prisma/client'
 import { addVoteCountToResource } from '../../helpers/addVoteCountToResource'
 import { resourceGetSchema } from '../../schemas'
@@ -9,7 +9,7 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
     resourceType?: RESOURCE_TYPE
     topic?: string
     category?: string
-    status?: string
+    status?: STATUS
   }
 
   const where: Prisma.ResourceWhereInput = {}
