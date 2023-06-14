@@ -392,7 +392,7 @@ paths:
           example: node
       responses:
         "200":
-          description: Favorite resources retireved  successfully.
+          description: Favorite resources retireved successfully.
           content:
             application/json:
               schema:
