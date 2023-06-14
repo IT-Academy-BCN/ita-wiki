@@ -392,7 +392,7 @@ paths:
           example: node
       responses:
         "200":
-          description: Favorite resources retireved successfully.
+          description: Favorite resources retrieved successfully.
           content:
             application/json:
               schema:
@@ -400,54 +400,49 @@ paths:
                 items:
                   type: object
                   properties:
-                    resource:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        title:
-                          type: string
-                          example: My Resource in Javascript
-                        slug:
-                          type: string
-                          example: my-resource-in-javascript
-                        description:
-                          type: string
-                          nullable: true
-                          example: Lorem ipsum javascript
-                        url:
-                          type: string
-                          format: uri
-                          example: https://tutorials.cat/learn/javascript
-                        resourceType:
-                          type: string
-                          enum: &a1
-                            - BLOG
-                            - VIDEO
-                            - TUTORIAL
-                        userId:
-                          type: string
-                        createdAt:
-                          anyOf:
-                            - type: string
-                              format: date-time
-                            - type: string
-                        updatedAt:
-                          anyOf:
-                            - type: string
-                              format: date-time
-                            - type: string
-                      required:
-                        - id
-                        - title
-                        - slug
-                        - url
-                        - resourceType
-                        - userId
-                        - createdAt
-                        - updatedAt
+                    id:
+                      type: string
+                    title:
+                      type: string
+                      example: My Resource in Javascript
+                    slug:
+                      type: string
+                      example: my-resource-in-javascript
+                    description:
+                      type: string
+                      nullable: true
+                      example: Lorem ipsum javascript
+                    url:
+                      type: string
+                      format: uri
+                      example: https://tutorials.cat/learn/javascript
+                    resourceType:
+                      type: string
+                      enum: &a1
+                        - BLOG
+                        - VIDEO
+                        - TUTORIAL
+                    userId:
+                      type: string
+                    createdAt:
+                      anyOf:
+                        - type: string
+                          format: date-time
+                        - type: string
+                    updatedAt:
+                      anyOf:
+                        - type: string
+                          format: date-time
+                        - type: string
                   required:
-                    - resource
+                    - id
+                    - title
+                    - slug
+                    - url
+                    - resourceType
+                    - userId
+                    - createdAt
+                    - updatedAt
         "400":
           description: User ID is required
           content:

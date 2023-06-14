@@ -61,7 +61,7 @@ describe('Testing /favorites/ endpoint', () => {
       expect(response.status).toBe(404)
     })
 
-    test('Should return favorites as an array of max 5 objects.', async () => {
+    test('Should return favorites as an array of unested objects.', async () => {
       const userId = testUser.id
       const categorySlug = 'testing'
       const response = await supertest(server).get(
