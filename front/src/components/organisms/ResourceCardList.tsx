@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { urls } from '../../constants'
@@ -64,9 +64,14 @@ const getResources = (categorySlug: string | undefined) =>
     })
 
 const ResourceCardList = () => {
-  const { slug } = useParams()
+  const params = useParams()
+  const location = useLocation()
 
-  const categorySlug: string | undefined = slug
+  console.log('location', location)
+
+  console.log('params', params)
+
+  const categorySlug: string | undefined = params.slug
 
   const { isLoading, data, error } = useQuery({
     queryKey: ['getResources', categorySlug],

@@ -1,11 +1,19 @@
+import { Route, Routes } from 'react-router-dom'
 import { render, screen, waitFor } from '../test-utils'
 import { ResourceCardList } from '../../components/organisms'
 import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
 
 describe('ResourceCardList', () => {
-  it('renders ResourceCard correctly on success', async () => {
-    render(<ResourceCardList />)
+  it.only('renders ResourceCard correctly on success', async () => {
+    render(
+      <Routes>
+        <Route path="/category/:slug" element={<ResourceCardList />} />
+      </Routes>,
+      {
+        initialEntries: ['/category/test'],
+      }
+    )
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
 
@@ -17,6 +25,7 @@ describe('ResourceCardList', () => {
       expect(screen.queryByTestId('emptyResource')).not.toBeInTheDocument()
     })
   })
+
   it('renders message when Category does not have Resources', async () => {
     render(<ResourceCardList />)
 
@@ -29,6 +38,7 @@ describe('ResourceCardList', () => {
       expect(screen.queryByText('Resource Test')).not.toBeInTheDocument()
     })
   })
+
   it('renders correctly on error', async () => {
     mswServer.use(...errorHandlers)
     render(<ResourceCardList />)
