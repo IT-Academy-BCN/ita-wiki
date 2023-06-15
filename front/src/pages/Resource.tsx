@@ -1,13 +1,12 @@
 import { FC, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import styled from 'styled-components'
 import { useParams } from 'react-router-dom'
-import { Button, Text, Title } from '../components/atoms'
+import styled from 'styled-components'
+import { useAuth } from '../context/AuthProvider'
 import { FlexBox, colors, dimensions } from '../styles'
-import { Modal, SelectGroup } from '../components/molecules'
-import { CardResource } from '../components/molecules/CardResource'
+import { Button, Text, Title } from '../components/atoms/index'
+import { Modal, SelectGroup, CardResource } from '../components/molecules/index'
+import { ResourceForm, Navbar } from '../components/organisms/index'
 import icons from '../assets/icons'
-import { ResourceForm, Navbar } from '../components/organisms'
 
 type TStackData = {
   createdBy: string
@@ -99,8 +98,12 @@ const stackData: TStackData[] = [
 ]
 
 const options = [
-  { value: '0', label: 'Context API' },
-  { value: '1', label: 'Redux Toolkit' },
+  {
+    value: 'cli04v2l0000008mq5pwx7w5j',
+    label: 'Listas',
+    slug: 'listas',
+    categoryId: 'clh78rhsk000008l0ahamgoug',
+  },
 ]
 
 const HeaderContainerStyled = styled(FlexBox)`
@@ -122,6 +125,11 @@ const ButtonAddStyled = styled(Button)`
 `
 
 const ButtonStyled = styled(Button)`
+  font-weight: 500;
+  margin: ${dimensions.spacing.xxxs} ${dimensions.spacing.xl};
+  color: ${colors.white};
+`
+const ButtonOutlineStyled = styled(Button)`
   font-weight: 500;
   margin: ${dimensions.spacing.xxxs} ${dimensions.spacing.xl};
   color: ${colors.gray.gray3};
@@ -155,16 +163,29 @@ const TextContainerStyled = styled(FlexBox)`
   gap: 0.8rem;
 `
 
+const ImgStyled = styled.img`
+  margin-top: ${dimensions.spacing.xxl};
+  height: 100px;
+  width: 100px;
+`
+
+const StyledText = styled(Text)`
+  text-align: center;
+  padding: 0 ${dimensions.spacing.xs};
+  font-weight: 500;
+`
+
 const Resource: FC = () => {
-  const { categoryId } = useParams()
+  const { slug } = useParams()
+  const { user } = useAuth()
 
   const [isOpen, setIsOpen] = useState(false)
-
   const openModal = () => {
     setIsOpen(true)
   }
 
-  const { state } = useLocation()
+  const [signupModal, setSignupModal] = useState(false)
+  const [loginModal, setLoginModal] = useState(false)
 
   return (
     <>
@@ -172,21 +193,69 @@ const Resource: FC = () => {
         <Navbar title="Wiki" />
         <FlexBox direction="row" justify="space-between">
           <Title as="h1" fontWeight="bold">
-            Recursos de {state?.name}
+            Recursos de {slug}
           </Title>
-          <Modal
-            isOpen={isOpen}
-            toggleModal={() => setIsOpen(false)}
-            title="Nuevo Recurso"
-          >
-            <ResourceForm />
-            <ButtonStyled outline onClick={() => setIsOpen(false)}>
-              Cancelar
-            </ButtonStyled>
-          </Modal>
           <ButtonAddStyled onClick={openModal}>+</ButtonAddStyled>
+
+          {/* TODO: MOVE MODALS TO SEPARATE ORGANISMS */}
+          {user ? (
+            // ADD RESOURCE MODAL
+            <Modal
+              isOpen={isOpen}
+              toggleModal={() => setIsOpen(false)}
+              title="Nuevo Recurso"
+            >
+              <ResourceForm slug={slug} />
+              <ButtonOutlineStyled outline onClick={() => setIsOpen(false)}>
+                Cancelar
+              </ButtonOutlineStyled>
+            </Modal>
+          ) : (
+            // ACCESS RESTRICTED MODAL
+            <Modal isOpen={isOpen} toggleModal={() => setIsOpen(false)}>
+              <ImgStyled src={icons.lockDynamic} />
+              <Title as="h1" fontWeight="bold">
+                Acceso restringido
+              </Title>
+              <StyledText>Regístrate para subir o votar contenido</StyledText>
+
+              <ButtonStyled
+                onClick={() => {
+                  setSignupModal(true)
+                  setIsOpen(false)
+                }}
+              >
+                Registrarme
+              </ButtonStyled>
+
+              <ButtonOutlineStyled
+                outline
+                onClick={() => {
+                  setLoginModal(true)
+                  setIsOpen(false)
+                }}
+              >
+                Entrar
+              </ButtonOutlineStyled>
+            </Modal>
+          )}
+
+          {/* TEMPORARY SIGN UP MODAL */}
+          <Modal isOpen={signupModal} toggleModal={() => setSignupModal(false)}>
+            <Title as="h1" fontWeight="bold">
+              I AM SIGN UP MODAL
+            </Title>
+          </Modal>
+          {/* TEMPORARY LOGIN MODAL */}
+          <Modal isOpen={loginModal} toggleModal={() => setLoginModal(false)}>
+            <Title as="h1" fontWeight="bold">
+              I AM LOGIN MODAL
+            </Title>
+          </Modal>
         </FlexBox>
+
         <Text fontWeight="bold">Temas</Text>
+
         <SelectGroup
           label="Context API"
           placeholder="Selecciona tema"
@@ -195,6 +264,7 @@ const Resource: FC = () => {
           options={options}
           color="blue"
         />
+
         <ButtonContainterStyled
           direction="row"
           align="start"
@@ -208,8 +278,10 @@ const Resource: FC = () => {
 
       <SubHeaderContainerStyled direction="row" justify="space-between">
         <Text fontWeight="bold">23 resultados</Text>
+
         <TextContainerStyled direction="row">
           <Text fontWeight="bold">Votos ↓</Text>
+
           <Text color={colors.gray.gray3}>Fecha</Text>
         </TextContainerStyled>
       </SubHeaderContainerStyled>

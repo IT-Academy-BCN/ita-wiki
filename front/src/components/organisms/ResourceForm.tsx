@@ -3,27 +3,12 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import axios from 'axios'
+import { useQuery } from '@tanstack/react-query'
+import { FC } from 'react'
 import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio } from '../atoms'
 import { FlexBox, dimensions } from '../../styles'
-
-const options = [
-  { value: '1', label: 'Primeros pasos' },
-  { value: '2', label: 'Components' },
-  { value: '3', label: 'UseState & useEffect' },
-  { value: '4', label: 'Eventos' },
-  { value: '5', label: 'Renderizado condicional' },
-  { value: '6', label: 'Listas' },
-  { value: '7', label: 'Estilos' },
-  { value: '8', label: 'Debugging' },
-  { value: '9', label: 'React router' },
-  { value: '10', label: 'Hooks' },
-  { value: '11', label: 'Context API' },
-  { value: '12', label: 'Redux' },
-  { value: '13', label: 'Proyectos' },
-  { value: '14', label: 'Testing' },
-]
+import { urls } from '../../constants'
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -48,17 +33,21 @@ const ResourceFormSchema = z.object({
   url: z
     .string({ required_error: 'Este campo es obligatorio' })
     .url({ message: 'La URL proporcionada no es válida' }),
-  topics: z.array(
-    z.string().refine((val) => options.map((o) => o.value).includes(val), {
-      message: 'El tema seleccionado no es válido',
-    })
-  ),
+  topics: z.string(),
+  // .refine(
+  //   (val) =>
+  //     val.every((topic) => options.map((o) => o.value).includes(topic)),
+  //   {
+  //     message: 'Algunos de los temas seleccionados no son válidos',
+  //   }
+  // ),
   resourceType: z.string(),
   userEmail: z.string().optional(),
 })
 
 type TResourceForm = z.infer<typeof ResourceFormSchema> & {
   topics: string[]
+  status: string
 }
 
 const ResourceFormStyled = styled.form`
@@ -67,7 +56,38 @@ const ResourceFormStyled = styled.form`
   }
 `
 
-export const ResourceForm = () => {
+type TTopicsSlug = {
+  slug?: string
+}
+
+export const ResourceForm: FC<TTopicsSlug> = ({ slug }) => {
+  const getTopics = () =>
+    fetch(`${urls.getTopics}?slug=${slug}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Error fetching topics: ${res.statusText}`)
+        }
+        return res.json()
+      })
+      .catch((err) => {
+        throw new Error(`Error fetching topics: ${err.message}`)
+      })
+
+  const { data: fetchedTopics } = useQuery({
+    queryKey: ['getTopics', slug],
+    queryFn: getTopics,
+  })
+
+  console.log(fetchedTopics?.topics)
+
+  const mappedTopics = fetchedTopics?.topics.map(
+    (topic: { id: string; name: string }) => {
+      const options = { value: topic.id, label: topic.name }
+      return options
+    }
+  )
+  console.log(mappedTopics)
+
   const {
     register,
     handleSubmit,
@@ -79,20 +99,22 @@ export const ResourceForm = () => {
 
   const navigate = useNavigate()
 
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM'
-  const URL = 'http://localhost:8999/api/v1/resources/create'
-
   const registerNewResource = async (resource: object) => {
+    console.log(resource)
+    const config = {
+      method: 'POST',
+      body: JSON.stringify(resource),
+      headers: {
+        'Content-type': 'application/json',
+      },
+    }
     try {
-      const config = {
-        headers: {
-          Cookie: `token=${token}`,
-        },
-      }
+      const res = await fetch(urls.createResource, config)
 
-      const response = await axios.post(URL, resource, config)
-      if (response.status === 204) {
+      const resData = await res.json()
+      console.log(resData)
+
+      if (res.status === 204) {
         navigate('/')
       }
     } catch (error) {
@@ -114,10 +136,8 @@ export const ResourceForm = () => {
         title,
         description,
         url,
-        topics: Array.isArray(topics) ? topics : [topics],
-        resourceType: Array.isArray(resourceType)
-          ? resourceType
-          : [resourceType],
+        topics: [topics],
+        resourceType,
         userEmail,
       })
       reset()
@@ -158,16 +178,17 @@ export const ResourceForm = () => {
         validationMessage={errors.url?.message}
         validationType="error"
       />
-      <SelectGroup
-        id="topics"
-        label="Tema"
-        options={options}
-        {...register('topics')}
-        multiple
-        name="topics"
-        error={!!errors.topics}
-        validationMessage={errors.topics?.message}
-      />
+      {fetchedTopics && (
+        <SelectGroup
+          id="topics"
+          label="Tema"
+          options={mappedTopics}
+          {...register('topics')}
+          name="topics"
+          error={!!errors.topics}
+          validationMessage={errors.topics?.message}
+        />
+      )}
       <Radio
         {...register('resourceType')}
         options={[
@@ -183,7 +204,7 @@ export const ResourceForm = () => {
         ) : null}
       </FlexErrorStyled>
       <ButtonContainerStyled align="stretch">
-        <Button type="submit">Guardar</Button>
+        <Button type="submit">Crear</Button>
       </ButtonContainerStyled>
     </ResourceFormStyled>
   )
