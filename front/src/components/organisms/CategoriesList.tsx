@@ -56,7 +56,8 @@ type TLinkStyled = {
 }
 const CategoryStyled = styled.span<TLinkStyled>`
   color: ${({ active }) => (active ? colors.black.black3 : colors.gray.gray3)};
-  font-weight: bold;
+  font-size: ${font.xs};
+  font-weight: 600;
   font-family: ${font.fontFamily};
   margin-top: ${dimensions.spacing.lg};
   cursor: pointer;
