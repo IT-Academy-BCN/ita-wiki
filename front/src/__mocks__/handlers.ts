@@ -74,6 +74,47 @@ export const handlers = [
       ])
     )
   ),
+  rest.get(urls.getMyResources, (req, res, ctx) => {
+    const categorySlug = req.url.searchParams.get('category')
+    if (categorySlug === 'emptyResource') {
+      return res(
+        ctx.status(200),
+        ctx.json([
+          {
+          resources: [],
+          },
+        ])
+      )
+    }
+    return res(
+      ctx.status(200),
+      ctx.json({
+        resources: [
+          {
+            id: 'resourceId',
+            title: 'Resource title',
+            slug: 'react',
+            description: 'Resource description',
+            url: 'https://reactjs.org/',
+            user:{
+              
+              name: 'string',
+              email: 'user@example.cat',
+              
+              
+            },
+            category: {
+              id: '1',
+              name: 'React',
+              slug: 'react',
+            },
+          }
+        ],
+      }
+        
+      )
+    )
+  })
 ]
 
 export const errorHandlers = [

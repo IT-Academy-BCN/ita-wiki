@@ -9,14 +9,15 @@ import {
   InputGroup,
   ResourceTitleLink,
 } from '../components/molecules'
-<<<<<<< HEAD
-import { CategoriesList, ResourcesByUser } from '../components/organisms'
-=======
-import { CategoriesList, TopicsRadioWidget } from '../components/organisms'
->>>>>>> main
-import { Resource } from './Resource'
+// eslint-disable-next-line import/no-cycle
+import {
+  CategoriesList,
+  MyResources,
+  TopicsRadioWidget,
+} from '../components/organisms'
 import icons from '../assets/icons'
 import { paths } from '../constants'
+import { Resource } from './Resource'
 
 type TResource = {
   id: string
@@ -247,14 +248,14 @@ const Category: FC = () => {
               ))}
 
               {/* TÍTULO 2 */}
-              <ContainerGapStyled>
+              {/* <ContainerGapStyled>
                 <Icon name="menu_book" fill={0} />
                 <Title as="h2" fontWeight="bold">
                   Mis recursos
                 </Title>
-              </ContainerGapStyled>
+              </ContainerGapStyled> */}
               {/* ==> CONTENIDO MIS RECURSOS */}
-              {resources.map((res) => (
+              {/* {resources.map((res) => (
                 <UserResourcesContainerStyled key={res.id}>
                   <ResourceTitleLink
                     url={res.url}
@@ -262,8 +263,10 @@ const Category: FC = () => {
                     description={res.description}
                   />
                 </UserResourcesContainerStyled>
-              ))}
-              <ResourcesByUser resources={[]} />
+              ))} */}
+              <UserResourcesContainerStyled>
+                <MyResources />
+              </UserResourcesContainerStyled>
             </SideColumnContainer>
           </DivStyled>
         </MainContainer>

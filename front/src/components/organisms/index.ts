@@ -4,7 +4,7 @@ import { ResourcesList } from './ResourcesList'
 import { ResourceForm } from './ResourceForm'
 import { TopicsRadioWidget } from './TopicsRadioWidget'
 import { Navbar } from './Navbar'
-import ResourcesByUser from './ResourcesByUser'
+import { MyResources } from './MyResources'	
 
 export {
   ResourcesList,
@@ -12,5 +12,5 @@ export {
   CategoriesList,
   ResourceForm,
   TopicsRadioWidget,
-  Navbar, ResourcesByUser,
+  Navbar, MyResources,
 }

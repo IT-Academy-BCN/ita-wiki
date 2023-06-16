@@ -1,5 +1,5 @@
 import { AddResource } from './AddResource'
-import { Category } from './Category'
+import { Category  } from './Category'
 import { Home } from './Home'
 import { Information } from './Information'
 import { Resource } from './Resource'
@@ -15,5 +15,7 @@ export {
   ErrorPage,
   Information,
   AddResource,
-  Resource,
+  Resource
 }
+
+
