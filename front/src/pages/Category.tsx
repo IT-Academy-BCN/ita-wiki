@@ -248,22 +248,6 @@ const Category: FC = () => {
               ))}
 
               {/* TÍTULO 2 */}
-              {/* <ContainerGapStyled>
-                <Icon name="menu_book" fill={0} />
-                <Title as="h2" fontWeight="bold">
-                  Mis recursos
-                </Title>
-              </ContainerGapStyled> */}
-              {/* ==> CONTENIDO MIS RECURSOS */}
-              {/* {resources.map((res) => (
-                <UserResourcesContainerStyled key={res.id}>
-                  <ResourceTitleLink
-                    url={res.url}
-                    title={res.title}
-                    description={res.description}
-                  />
-                </UserResourcesContainerStyled>
-              ))} */}
               <UserResourcesContainerStyled>
                 <MyResources />
               </UserResourcesContainerStyled>
