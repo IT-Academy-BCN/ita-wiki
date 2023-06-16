@@ -75,7 +75,7 @@ export const handlers = [
       ])
     )
   ),
-  rest.get(urls.getMyResources, (req, res, ctx) => {
+  rest.get(urls.getResourcesByUser, (req, res, ctx) => {
     const categorySlug = req.url.searchParams.get('category')
     if (categorySlug === 'emptyResource') {
       return res(
@@ -122,7 +122,7 @@ export const handlers = [
         
       )
     )
-  })
+  }) 
 ]
 
 export const errorHandlers = [
@@ -145,7 +145,7 @@ export const errorHandlers = [
     res(ctx.status(401), ctx.json({ message: 'User not found' }))
   ),
   
-  rest.get(urls.getMyResources, (req, res, ctx) => {
+  rest.get(urls.getResourcesByUser, (req, res, ctx) => {
     const categorySlug = req.url.searchParams.get('category');
 
     if (categorySlug === 'errorCase') {
@@ -155,5 +155,5 @@ export const errorHandlers = [
       );
     }
     return res(ctx.status(401), ctx.json({ message: 'User not found' }))
-  }),
+  }), 
 ]

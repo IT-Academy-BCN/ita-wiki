@@ -91,7 +91,7 @@ const MyResources = () => {
     <>
       <TitleContainer>
         <Icon name="menu_book" fill={0} />
-        <Title as="h2" fontWeight="bold">
+        <Title as="h2" fontWeight="bold" data-testid="title">
           Mis recursos
         </Title>
       </TitleContainer>
