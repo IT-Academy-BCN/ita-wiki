@@ -57,7 +57,7 @@ const Styledtext = styled(Text)`
   flex-wrap: wrap;
   align-items: center;
 `
-/* const getResourcesByUser = async (categorySlug: string | undefined) => {
+const getResourcesByUser = async (categorySlug: string | undefined) => {
   const response = await fetch(
     `${urls.getResources}?category=${categorySlug}`,
     {
@@ -73,58 +73,6 @@ const Styledtext = styled(Text)`
 
   const data = await response.json()
   return data.resources
-} */
-// ---------SIMULACION LLAMADA BACKEND-------------------------------
-// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-const mockFetch = async (url: string) => {
-  // Simulamos una pequeña demora para simular una solicitud asíncrona
-  await new Promise<void>((resolve) => {
-    setTimeout(() => {
-      resolve() // Resuelve la promesa después del tiempo especificado
-    }, 1000)
-  })
-  // Mock de la respuesta del backend
-  /* const response = {
-    resources: [
-      {
-        id: '1',
-        title: 'My Resource in Javascript',
-        slug: 'my-resource-in-javascript',
-        description: 'Lorem ipsum javascript',
-        url: 'https://tutorials.cat/learn/javascript',
-        resourceType: 'BLOG',
-        createdAt: '2022-01-01',
-        updatedAt: '2022-01-02',
-        user: {
-          name: 'Usuario Ejemplo',
-          email: 'usuario@example.com',
-        },
-        topics: [
-          {
-            topic: {
-              id: '1',
-              name: 'React',
-              slug: 'react',
-              categoryId: '1',
-              createdAt: '2022-01-01',
-              updatedAt: '2022-01-02',
-            },
-          },
-        ],
-        voteCount: {
-          upvote: 14,
-          downvote: 2,
-          total: 12,
-        },
-      },
-    ],
-  } */
-  const response = { resources: [] }
-  return {
-    ok: true,
-    statusText: 'OK',
-    json: async () => response,
-  }
 }
 
 const MyResources = () => {
@@ -133,35 +81,11 @@ const MyResources = () => {
   const params = useParams<{ slug: string }>()
   const categorySlug: string | undefined = params.slug
 
-  const getResourcesByUser = async () => {
-    // Simulamos una llamada a fetch utilizando mockFetch
-    const response = await mockFetch(
-      `${urls.getResourcesByUser}?category=${categorySlug}`
-    )
-
-    if (!response.ok) {
-      throw new Error(`Error fetching resources: ${response.statusText}`)
-    }
-
-    const data = await response.json()
-    return data.resources
-  }
-  /* const { isLoading, data, error } = useQuery({
+  const { isLoading, data, error } = useQuery({
     queryKey: ['getResourcesByUser', categorySlug],
     queryFn: () => getResourcesByUser(categorySlug),
     enabled: !!user, // Enable the query only if there is a logged-in user
-  }) */
-  const { isLoading, data, error } = useQuery<TResource[], Error>({
-    queryKey: ['getResourcesByUser', categorySlug],
-    queryFn: getResourcesByUser,
-    enabled: true, // Mantenemos la query siempre habilitada
   })
-
-  // Simulamos un usuario logueado
-  /* const user = {
-    name: 'Usuario Ejemplo',
-    email: 'usuario@example.com',
-  } */
 
   return (
     <>
