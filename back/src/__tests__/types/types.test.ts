@@ -12,10 +12,8 @@ describe('Testing types endpoint', () => {
     expect(response.body).toEqual(
       expect.arrayContaining(['BLOG', 'VIDEO', 'TUTORIAL'])
     )
-
     const responseTypes = response.body
     const expectedTypes = ['BLOG', 'VIDEO', 'TUTORIAL']
-
     expect(responseTypes).toEqual(expect.arrayContaining(expectedTypes))
   })
 })

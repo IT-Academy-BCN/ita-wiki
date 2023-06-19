@@ -1,6 +1,9 @@
+import { RESOURCE_TYPE } from '@prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { registry } from '../registry'
 import { z } from '../zod'
+
+const resourceTypes = Object.keys(RESOURCE_TYPE) as [string, ...string[]]
 
 registry.registerPath({
   method: 'get',
@@ -13,7 +16,7 @@ registry.registerPath({
       description: 'types fetched',
       content: {
         'application/json': {
-          schema: z.array(z.enum(['BLOG', 'VIDEO', 'TUTORIAL'])),
+          schema: z.array(z.enum([...resourceTypes])),
         },
       },
     },
