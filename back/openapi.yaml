@@ -1357,3 +1357,22 @@ paths:
                     example: Database error
                 required:
                   - message
+  /api/v1/types:
+    get:
+      tags:
+        - types
+      description: Returns an array of all the resource types
+      summary: Returns resource types
+      responses:
+        "200":
+          description: types fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  enum:
+                    - BLOG
+                    - VIDEO
+                    - TUTORIAL
