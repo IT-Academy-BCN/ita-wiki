@@ -1,12 +1,12 @@
 import { CategoriesList } from './CategoriesList'
 import { HowToHelpCard } from './HowToHelpCard'
-import { ResourcesList } from './ResourcesList'
+import { ResourceCardList } from './ResourceCardList'
 import { ResourceForm } from './ResourceForm'
 import { TopicsRadioWidget } from './TopicsRadioWidget'
 import { Navbar } from './Navbar'
 
 export {
-  ResourcesList,
+  ResourceCardList,
   HowToHelpCard,
   CategoriesList,
   ResourceForm,

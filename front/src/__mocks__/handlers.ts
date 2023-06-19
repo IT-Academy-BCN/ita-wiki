@@ -64,6 +64,46 @@ export const handlers = [
     }
   }),
 
+  rest.get(urls.getResources, (req, res, ctx) => {
+    const categorySlug = req.url.searchParams.get('category')
+
+    if (categorySlug === 'emptyResource') {
+      return res(
+        ctx.status(200),
+        ctx.json([
+          {
+            resources: [],
+          },
+        ])
+      )
+    }
+
+    return res(
+      ctx.status(200),
+      ctx.json({
+        resources: [
+          {
+            id: 'resourceId',
+            title: 'Resource Test',
+            description: 'Resource Test Description',
+            url: 'http://www.google.com',
+            createdAt: '2023-02-17T03:07:00',
+            updatedAt: '2023-05-17T03:07:00',
+            user: {
+              name: 'Test User Name',
+              email: 'test@mail.com',
+            },
+            voteCount: {
+              upvote: 6,
+              downvote: 2,
+              total: 4,
+            },
+          },
+        ],
+      })
+    )
+  }),
+
   rest.put(urls.vote, (_, res, ctx) =>
     res(
       ctx.status(204),
@@ -78,6 +118,10 @@ export const handlers = [
 
 export const errorHandlers = [
   rest.get(urls.getCategories, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
+  rest.get(urls.getResources, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 
