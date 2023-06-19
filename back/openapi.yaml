@@ -267,7 +267,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/MissingUserError"
-                  - example: &a2
+                  - example: &a3
                       message: User not found
         "405":
           description: Invalid token
@@ -434,6 +434,12 @@ paths:
                         - type: string
                           format: date-time
                         - type: string
+                    status:
+                      type: string
+                      enum: &a2
+                        - SEEN
+                        - NOT_SEEN
+                      example: NOT_SEEN
                   required:
                     - id
                     - title
@@ -443,6 +449,7 @@ paths:
                     - userId
                     - createdAt
                     - updatedAt
+                    - status
         "400":
           description: User ID is required
           content:
@@ -498,6 +505,15 @@ paths:
             type: string
             example: javascript
           required: false
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum:
+              - SEEN
+              - NOT_SEEN
+            example: NOT_SEEN
+          required: true
       responses:
         "200":
           description: Sucessful operation
@@ -540,6 +556,10 @@ paths:
                             - type: string
                               format: date-time
                             - type: string
+                        status:
+                          type: string
+                          enum: *a2
+                          example: NOT_SEEN
                         user:
                           type: object
                           properties:
@@ -613,6 +633,7 @@ paths:
                         - resourceType
                         - createdAt
                         - updatedAt
+                        - status
                         - user
                         - topics
                         - voteCount
@@ -666,6 +687,10 @@ paths:
                 resourceType:
                   type: string
                   enum: *a1
+                status:
+                  type: string
+                  enum: *a2
+                  example: NOT_SEEN
                 topics:
                   type: array
                   items:
@@ -674,6 +699,7 @@ paths:
                 - title
                 - url
                 - resourceType
+                - status
                 - topics
       responses:
         "204":
@@ -741,6 +767,10 @@ paths:
                       - type: string
                         format: date-time
                       - type: string
+                  status:
+                    type: string
+                    enum: *a2
+                    example: NOT_SEEN
                   user:
                     type: object
                     properties:
@@ -814,6 +844,7 @@ paths:
                   - resourceType
                   - createdAt
                   - updatedAt
+                  - status
                   - user
                   - topics
                   - voteCount
@@ -912,6 +943,10 @@ paths:
                       - type: string
                         format: date-time
                       - type: string
+                  status:
+                    type: string
+                    enum: *a2
+                    example: NOT_SEEN
                   user:
                     type: object
                     properties:
@@ -985,6 +1020,7 @@ paths:
                   - resourceType
                   - createdAt
                   - updatedAt
+                  - status
                   - user
                   - topics
                   - voteCount
@@ -1047,6 +1083,10 @@ paths:
                             - type: string
                               format: date-time
                             - type: string
+                        status:
+                          type: string
+                          enum: *a2
+                          example: NOT_SEEN
                         user:
                           type: object
                           properties:
@@ -1120,6 +1160,7 @@ paths:
                         - resourceType
                         - createdAt
                         - updatedAt
+                        - status
                         - user
                         - topics
                         - voteCount
@@ -1138,7 +1179,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/MissingUserError"
-                  - example: *a2
+                  - example: *a3
         "405":
           description: Invalid token
           content:
