@@ -1372,3 +1372,7 @@ paths:
                 type: array
                 items:
                   type: string
+                  enum:
+                    - BLOG
+                    - VIDEO
+                    - TUTORIAL

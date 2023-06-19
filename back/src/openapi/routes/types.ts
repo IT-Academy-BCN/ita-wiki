@@ -13,7 +13,7 @@ registry.registerPath({
       description: 'types fetched',
       content: {
         'application/json': {
-          schema: z.array(z.string()),
+          schema: z.array(z.enum(['BLOG', 'VIDEO', 'TUTORIAL'])),
         },
       },
     },
