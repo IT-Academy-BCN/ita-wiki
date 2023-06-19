@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
-import { FlexBox, colors, device, dimensions } from '../../styles'
+import { FlexBox, colors, device, dimensions, font } from '../../styles'
 import { CategoryBlock } from '../molecules'
 import { Spinner, Title } from '../atoms'
 import icons from '../../assets/icons'
@@ -15,7 +15,7 @@ const ImgStyled = styled.img`
 `
 
 const MobileStyled = styled.div`
-  display: block; 
+  display: block;
   @media only ${device.Laptop} {
     display: none;
   }
@@ -56,7 +56,9 @@ type TLinkStyled = {
 }
 const CategoryStyled = styled.span<TLinkStyled>`
   color: ${({ active }) => (active ? colors.black.black3 : colors.gray.gray3)};
-  font-weight: bold;
+  font-size: ${font.xs};
+  font-weight: 600;
+  font-family: ${font.fontFamily};
   margin-top: ${dimensions.spacing.lg};
   cursor: pointer;
 
