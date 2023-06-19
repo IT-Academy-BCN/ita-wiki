@@ -9,7 +9,7 @@ import {
 import styled from 'styled-components'
 import Icon from './Icon'
 import Button from './Button'
-import { colors, dimensions } from '../../styles'
+import { colors, dimensions, font } from '../../styles'
 
 const StyledDropdown = styled.div<TDropdown>`
   cursor: pointer;
@@ -25,6 +25,7 @@ const DropdownHeader = styled(Button)`
   border-radius: ${dimensions.borderRadius.base};
   border: 1px solid ${colors.gray.gray4};
   color: ${colors.black.black3};
+  font-family: ${font.fontFamily};
 `
 
 const StyledIcon = styled(Icon)`

@@ -4,8 +4,9 @@ import { colors, font } from '../../styles'
 
 const LabelStyled = styled.label`
   color: ${colors.gray.gray2};
-  font-size: ${font.base};
+  font-size: ${font.xs};
   font-weight: 700;
+  font-family: ${font.fontFamily};
 `
 
 export type TLabel = Omit<LabelHTMLAttributes<HTMLLabelElement>, 'htmlFor'> & {

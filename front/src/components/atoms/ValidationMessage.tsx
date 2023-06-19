@@ -10,6 +10,7 @@ const ValidationMessageStyled = styled.p<TValidationMessageStyled>`
   ${({ color }) => color === 'error' && `color: ${colors.error};`};
   ${({ color }) => color === 'warning' && `color: ${colors.warning};`};
   font-size: ${font.xs};
+  font-family: ${font.fontFamily};
 `
 
 export type TValidationMessage = {

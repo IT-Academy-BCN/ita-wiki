@@ -3,23 +3,18 @@ import { Link, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import { Icon, Text, Title } from '../components/atoms'
-
-import {
-  CardResource,
-  InputGroup,
-  ResourceTitleLink,
-} from '../components/molecules'
-// eslint-disable-next-line import/no-cycle
+import { InputGroup, ResourceTitleLink } from '../components/molecules'
 import {
   CategoriesList,
-  MyResources,
+  ResourceCardList,
   TopicsRadioWidget,
+  MyResources,
 } from '../components/organisms'
+import { Resource } from './Resource'
 import icons from '../assets/icons'
 import { paths } from '../constants'
-import { Resource } from './Resource'
 
-type TResource = {
+type TFakeResource = {
   id: string
   title: string
   createdBy: string
@@ -30,7 +25,7 @@ type TResource = {
   likes: number
 }
 
-export const resources: TResource[] = [
+export const resources: TFakeResource[] = [
   {
     id: 'resourceId1',
     title: 'JavaScript en 45 segundos!',
@@ -86,6 +81,14 @@ export const DesktopStyled = styled.div`
   }
 `
 
+const ScrollList = styled(FlexBox)`
+  overflow: hidden;
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`
+
 // style Desktop
 const MainContainer = styled.div`
   display: flex;
@@ -133,20 +136,23 @@ const ContainerGapStyled = styled(FlexBox)`
 const SideColumnContainer = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
-  flex-grow: 1;
-  padding: 2rem;
+  flex: 1 2 20rem;
+  padding: 2rem 2rem;
   overflow: scroll;
 
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media ${device.Desktop} {
+    padding: 2rem 3rem;
+  }
 `
 
 const MiddleColumnContainer = styled(FlexBox)`
-  flex-grow: 1.5;
-  padding: 2rem;
-  border-right: solid 1px black;
-  border-left: solid 1px black;
+  flex: 4 1 26rem;
+  padding: 2rem 3rem;
+  border-right: solid 1px ${colors.gray.gray3};
   justify-content: flex-start;
   align-items: flex-start;
   overflow: scroll;
@@ -197,7 +203,7 @@ const Category: FC = () => {
                 style={{ width: '100%' }}
               >
                 {/* ==> VOTOS Y FECHA */}
-                <FlexBox direction="row">
+                <FlexBox direction="row" gap="15px">
                   <FlexBox direction="row">
                     <Text fontWeight="bold">Votos</Text>
                     <Icon name="arrow_downward" />
@@ -205,19 +211,9 @@ const Category: FC = () => {
                   <Text color={colors.gray.gray3}>Fecha</Text>
                 </FlexBox>
               </FlexBox>
-              {resources.map((sd) => (
-                <CardResource
-                  key={sd.id}
-                  img={sd?.img}
-                  id={sd.createdOn}
-                  title={sd.title}
-                  url={sd.url}
-                  description={sd.description}
-                  likes={sd.likes}
-                  createdBy={sd.createdBy}
-                  createdOn={sd.createdOn}
-                />
-              ))}
+              <ScrollList>
+                <ResourceCardList />
+              </ScrollList>
             </MiddleColumnContainer>
             {/* ==> COLUMNA USUARIO */}
             <SideColumnContainer>
