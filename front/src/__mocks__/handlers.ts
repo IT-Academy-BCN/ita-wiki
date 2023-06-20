@@ -104,6 +104,13 @@ export const handlers = [
     )
   }),
 
+  rest.get(urls.getTypes, (_, res, ctx) =>
+    res(
+      ctx.status(200),
+      ctx.json(['Test type 1', 'Test type 2', 'Test type 3'])
+    )
+  ),
+
   rest.put(urls.vote, (_, res, ctx) =>
     res(
       ctx.status(204),
@@ -122,6 +129,10 @@ export const errorHandlers = [
   ),
 
   rest.get(urls.getResources, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
+  rest.get(urls.getTypes, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 

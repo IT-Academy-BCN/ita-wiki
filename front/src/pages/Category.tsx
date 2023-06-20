@@ -12,6 +12,7 @@ import {
 import { Resource } from './Resource'
 import icons from '../assets/icons'
 import { paths } from '../constants'
+import { TypesFilterWidget } from '../components/molecules/TypesFilterWidget'
 
 type TFakeResource = {
   id: string
@@ -189,6 +190,7 @@ const Category: FC = () => {
               </Title>
               <Text fontWeight="bold">Temas</Text>
               {slug && <TopicsRadioWidget slug={slug} />}
+              <TypesFilterWidget />
             </SideColumnContainer>
             {/* ==> COLUMNA RECURSOS */}
             <MiddleColumnContainer>
