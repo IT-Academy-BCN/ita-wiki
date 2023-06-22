@@ -1,4 +1,3 @@
-import { FC } from 'react'
 import styled from 'styled-components'
 import { CheckBox, Label, Text } from '../atoms'
 import { colors, dimensions, FlexBox, font } from '../../styles'
@@ -20,13 +19,23 @@ const CheckBoxStyled = styled(CheckBox)`
   }
 `
 
-const statusData: string[] = ['Por ver', 'Vistos']
+const statusData: string[] = ['NOT_SEEN', 'SEEN']
 
-const StatusFilterWidget: FC = () => (
+type Props = {
+  handleStatusFilter: (item: string, isChecked: boolean) => void
+}
+
+const StatusFilterWidget = ({ handleStatusFilter }: Props) => (
   <StyledFlexbox direction="column" align="start">
     <StyledText fontWeight="bold">Estado</StyledText>
     {statusData.map((item: string) => (
-      <CheckBoxStyled key={item} id={item} label={item} defaultChecked />
+      <CheckBoxStyled
+        key={item}
+        id={item}
+        label={item === 'SEEN' ? 'Vistos' : 'Por ver'}
+        defaultChecked
+        onChange={(e) => handleStatusFilter(item, e.target.checked)}
+      />
     ))}
   </StyledFlexbox>
 )

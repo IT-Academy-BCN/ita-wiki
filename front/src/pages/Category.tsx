@@ -171,6 +171,11 @@ const Category: FC = () => {
   const { state } = useLocation()
   const { slug } = useParams()
 
+  const handleStatusFilter = (item: string, isChecked: boolean) => {
+    // eslint-disable-next-line no-console
+    console.log('Parent', item, isChecked)
+  }
+
   return (
     <>
       <MobileStyled>
@@ -194,7 +199,7 @@ const Category: FC = () => {
               </Title>
               <Text fontWeight="bold">Temas</Text>
               {slug && <TopicsRadioWidget slug={slug} />}
-              <StatusFilterWidget />
+              <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
             </SideColumnContainer>
             {/* ==> COLUMNA RECURSOS */}
             <MiddleColumnContainer>
