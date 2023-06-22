@@ -23,7 +23,7 @@
     "class-methods-use-this": ["off", { "enforceForClassFields": false }],
     "no-await-in-loop": "off",
     "import/prefer-default-export": "off",
-    "prettier/prettier": "error",
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "arrow-body-style": "off",
     "prefer-arrow-callback": "off"
   }

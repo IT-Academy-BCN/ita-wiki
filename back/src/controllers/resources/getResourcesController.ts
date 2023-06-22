@@ -1,14 +1,15 @@
 import Koa, { Middleware } from 'koa'
-import { Prisma, RESOURCE_TYPE } from '@prisma/client'
+import { Prisma, RESOURCE_TYPE, RESOURCE_STATUS } from '@prisma/client'
 import { prisma } from '../../prisma/client'
 import { addVoteCountToResource } from '../../helpers/addVoteCountToResource'
 import { resourceGetSchema } from '../../schemas'
 
 export const getResources: Middleware = async (ctx: Koa.Context) => {
-  const { resourceType, topic, category } = ctx.query as {
+  const { resourceType, topic, category, status } = ctx.query as {
     resourceType?: RESOURCE_TYPE
     topic?: string
     category?: string
+    status?: RESOURCE_STATUS
   }
 
   const where: Prisma.ResourceWhereInput = {}
@@ -26,6 +27,10 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
     where.topics = { some: { topic: { name: topic } } }
   } else if (category) {
     where.topics = { some: { topic: { category: { slug: category } } } }
+  }
+
+  if (status) {
+    where.status = { equals: status }
   }
 
   const resources = await prisma.resource.findMany({
