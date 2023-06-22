@@ -192,11 +192,11 @@ export const ResourceForm: FC<TTopicsSlug> = ({ slug }) => {
       <Radio
         {...register('resourceType')}
         options={[
-          { id: 'VIDEO', label: 'Video' },
-          { id: 'TUTORIAL', label: 'Curso' },
-          { id: 'BLOG', label: 'Blog' },
+          { id: 'VIDEO', name: 'Video' },
+          { id: 'TUTORIAL', name: 'Curso' },
+          { id: 'BLOG', name: 'Blog' },
         ]}
-        name="resourceType"
+        inputName="resourceType"
       />
       <FlexErrorStyled align="start">
         {errors?.title || errors?.description || errors?.url ? (

@@ -8,7 +8,7 @@ import { UserLoginSchema } from '@itacademy/schemas'
 import InputGroup from '../components/molecules/InputGroup'
 import { Button, Text, Title, ValidationMessage } from '../components/atoms'
 import { paths, urls } from '../constants'
-import { dimensions, colors, FlexBox } from '../styles'
+import { dimensions, colors, FlexBox, font } from '../styles'
 
 const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.xxxs};
@@ -39,6 +39,7 @@ const FormStyled = styled.form`
 const LinkStyled = styled(Link)`
   color: ${colors.black.black1};
   font-weight: 500;
+  font-family: ${font.fontFamily};
   margin: ${dimensions.spacing.sm} ${dimensions.spacing.xxxs};
 `
 

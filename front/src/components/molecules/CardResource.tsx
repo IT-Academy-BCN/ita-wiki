@@ -52,10 +52,11 @@ type TCardResource = {
   createdBy: string
   createdOn: string
   description: string
-  img: string
+  img: string | undefined
   id: string
   likes: number
   title: string
+  updatedOn?: string
   url: string
 }
 
@@ -67,6 +68,7 @@ export const CardResource = ({
   likes,
   id,
   title,
+  updatedOn,
   url,
   ...rest
 }: TCardResource) => {

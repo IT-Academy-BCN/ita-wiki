@@ -267,7 +267,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/MissingUserError"
-                  - example: &a2
+                  - example: &a3
                       message: User not found
         "405":
           description: Invalid token
@@ -392,7 +392,7 @@ paths:
           example: node
       responses:
         "200":
-          description: Favorite resources retireved  successfully.
+          description: Favorite resources retrieved successfully.
           content:
             application/json:
               schema:
@@ -400,54 +400,55 @@ paths:
                 items:
                   type: object
                   properties:
-                    resource:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        title:
-                          type: string
-                          example: My Resource in Javascript
-                        slug:
-                          type: string
-                          example: my-resource-in-javascript
-                        description:
-                          type: string
-                          nullable: true
-                          example: Lorem ipsum javascript
-                        url:
-                          type: string
-                          format: uri
-                          example: https://tutorials.cat/learn/javascript
-                        resourceType:
-                          type: string
-                          enum: &a1
-                            - BLOG
-                            - VIDEO
-                            - TUTORIAL
-                        userId:
-                          type: string
-                        createdAt:
-                          anyOf:
-                            - type: string
-                              format: date-time
-                            - type: string
-                        updatedAt:
-                          anyOf:
-                            - type: string
-                              format: date-time
-                            - type: string
-                      required:
-                        - id
-                        - title
-                        - slug
-                        - url
-                        - resourceType
-                        - userId
-                        - createdAt
-                        - updatedAt
+                    id:
+                      type: string
+                    title:
+                      type: string
+                      example: My Resource in Javascript
+                    slug:
+                      type: string
+                      example: my-resource-in-javascript
+                    description:
+                      type: string
+                      nullable: true
+                      example: Lorem ipsum javascript
+                    url:
+                      type: string
+                      format: uri
+                      example: https://tutorials.cat/learn/javascript
+                    resourceType:
+                      type: string
+                      enum: &a1
+                        - BLOG
+                        - VIDEO
+                        - TUTORIAL
+                    userId:
+                      type: string
+                    createdAt:
+                      anyOf:
+                        - type: string
+                          format: date-time
+                        - type: string
+                    updatedAt:
+                      anyOf:
+                        - type: string
+                          format: date-time
+                        - type: string
+                    status:
+                      type: string
+                      enum: &a2
+                        - SEEN
+                        - NOT_SEEN
+                      example: NOT_SEEN
                   required:
-                    - resource
+                    - id
+                    - title
+                    - slug
+                    - url
+                    - resourceType
+                    - userId
+                    - createdAt
+                    - updatedAt
         "400":
           description: User ID is required
           content:
@@ -503,6 +504,15 @@ paths:
             type: string
             example: javascript
           required: false
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum:
+              - SEEN
+              - NOT_SEEN
+            example: NOT_SEEN
+          required: false
       responses:
         "200":
           description: Sucessful operation
@@ -545,6 +555,10 @@ paths:
                             - type: string
                               format: date-time
                             - type: string
+                        status:
+                          type: string
+                          enum: *a2
+                          example: NOT_SEEN
                         user:
                           type: object
                           properties:
@@ -671,6 +685,10 @@ paths:
                 resourceType:
                   type: string
                   enum: *a1
+                status:
+                  type: string
+                  enum: *a2
+                  example: NOT_SEEN
                 topics:
                   type: array
                   items:
@@ -746,6 +764,10 @@ paths:
                       - type: string
                         format: date-time
                       - type: string
+                  status:
+                    type: string
+                    enum: *a2
+                    example: NOT_SEEN
                   user:
                     type: object
                     properties:
@@ -917,6 +939,10 @@ paths:
                       - type: string
                         format: date-time
                       - type: string
+                  status:
+                    type: string
+                    enum: *a2
+                    example: NOT_SEEN
                   user:
                     type: object
                     properties:
@@ -1052,6 +1078,10 @@ paths:
                             - type: string
                               format: date-time
                             - type: string
+                        status:
+                          type: string
+                          enum: *a2
+                          example: NOT_SEEN
                         user:
                           type: object
                           properties:
@@ -1143,7 +1173,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/MissingUserError"
-                  - example: *a2
+                  - example: *a3
         "405":
           description: Invalid token
           content:
@@ -1362,3 +1392,22 @@ paths:
                     example: Database error
                 required:
                   - message
+  /api/v1/types:
+    get:
+      tags:
+        - types
+      description: Returns an array of all the resource types
+      summary: Returns resource types
+      responses:
+        "200":
+          description: types fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                  enum:
+                    - BLOG
+                    - VIDEO
+                    - TUTORIAL
