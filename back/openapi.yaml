@@ -513,7 +513,7 @@ paths:
               - SEEN
               - NOT_SEEN
             example: NOT_SEEN
-          required: true
+          required: false
       responses:
         "200":
           description: Sucessful operation
