@@ -3,7 +3,6 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import { useQuery } from '@tanstack/react-query'
 import { FC } from 'react'
 import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio } from '../atoms'
@@ -49,38 +48,16 @@ const ResourceFormStyled = styled.form`
   }
 `
 
-type TTopicsSlug = {
-  slug?: string
+type TSelectOption = {
+  value: string
+  label: string
 }
 
-type TTopics = {
-  id: string
-  name: string
+type TSelectOptions = {
+  selectOptions: TSelectOption[]
 }
 
-export const ResourceForm: FC<TTopicsSlug> = ({ slug }) => {
-  const getTopics = () =>
-    fetch(`${urls.getTopics}?slug=${slug}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Error fetching topics: ${res.statusText}`)
-        }
-        return res.json()
-      })
-      .catch((err) => {
-        throw new Error(`Error fetching topics: ${err.message}`)
-      })
-
-  const { data: fetchedTopics } = useQuery({
-    queryKey: ['getTopics', slug],
-    queryFn: getTopics,
-  })
-
-  const mappedTopics = fetchedTopics?.topics.map((topic: TTopics) => {
-    const options = { value: topic.id, label: topic.name }
-    return options
-  })
-
+export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
   const {
     register,
     handleSubmit,
@@ -159,11 +136,11 @@ export const ResourceForm: FC<TTopicsSlug> = ({ slug }) => {
         validationMessage={errors.url?.message}
         validationType="error"
       />
-      {fetchedTopics && (
+      {selectOptions && (
         <SelectGroup
           id="topics"
           label="Tema"
-          options={mappedTopics}
+          options={selectOptions}
           {...register('topics')}
           name="topics"
           error={!!errors.topics}

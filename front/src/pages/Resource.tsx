@@ -1,12 +1,14 @@
 import { FC, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '../context/AuthProvider'
 import { FlexBox, colors, dimensions } from '../styles'
 import { Button, Text, Title } from '../components/atoms/index'
 import { Modal, SelectGroup, CardResource } from '../components/molecules/index'
 import { ResourceForm, Navbar } from '../components/organisms/index'
 import icons from '../assets/icons'
+import { paths, urls } from '../constants'
 
 type TStackData = {
   createdBy: string
@@ -97,15 +99,6 @@ const stackData: TStackData[] = [
   },
 ]
 
-const options = [
-  {
-    value: 'cli04v2l0000008mq5pwx7w5j',
-    label: 'Listas',
-    slug: 'listas',
-    categoryId: 'clh78rhsk000008l0ahamgoug',
-  },
-]
-
 const HeaderContainerStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
   padding: 5rem ${dimensions.spacing.base} ${dimensions.spacing.xl};
@@ -120,21 +113,18 @@ const ButtonAddStyled = styled(Button)`
   font-size: xx-large;
   font-weight: 400;
   height: 52px;
-  padding-top: 0.6rem;
   width: 52px;
 `
-
 const ButtonStyled = styled(Button)`
   font-weight: 500;
   margin: ${dimensions.spacing.xxxs} ${dimensions.spacing.xl};
-  color: ${colors.white};
-`
-const ButtonOutlineStyled = styled(Button)`
-  font-weight: 500;
-  margin: ${dimensions.spacing.xxxs} ${dimensions.spacing.xl};
-  color: ${colors.gray.gray3};
+  color: ${({ outline }) =>
+    outline ? `${colors.gray.gray3}` : `${colors.white}`};
 `
 
+const StyledLink = styled.a`
+  text-decoration: none;
+`
 const ButtonContainterStyled = styled(FlexBox)`
   margin-top: 0.8rem;
 
@@ -173,19 +163,43 @@ const StyledText = styled(Text)`
   text-align: center;
   padding: 0 ${dimensions.spacing.xs};
   font-weight: 500;
+  margin-bottom: 6rem;
 `
+type TMappedTopics = {
+  id: string
+  name: string
+}
 
 const Resource: FC = () => {
   const { slug } = useParams()
   const { user } = useAuth()
 
+  const getTopics = () =>
+    fetch(`${urls.getTopics}?slug=${slug}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Error fetching topics: ${res.statusText}`)
+        }
+        return res.json()
+      })
+      .catch((err) => {
+        throw new Error(`Error fetching topics: ${err.message}`)
+      })
+
+  const { data: fetchedTopics } = useQuery({
+    queryKey: ['getTopics', slug],
+    queryFn: getTopics,
+  })
+
+  const mappedTopics = fetchedTopics?.topics.map((topic: TMappedTopics) => {
+    const selectOptions = { value: topic.id, label: topic.name }
+    return selectOptions
+  })
+
   const [isOpen, setIsOpen] = useState(false)
   const openModal = () => {
     setIsOpen(true)
   }
-
-  const [signupModal, setSignupModal] = useState(false)
-  const [loginModal, setLoginModal] = useState(false)
 
   return (
     <>
@@ -205,13 +219,13 @@ const Resource: FC = () => {
               toggleModal={() => setIsOpen(false)}
               title="Nuevo Recurso"
             >
-              <ResourceForm slug={slug} />
-              <ButtonOutlineStyled outline onClick={() => setIsOpen(false)}>
+              <ResourceForm selectOptions={mappedTopics} />
+              <ButtonStyled outline onClick={() => setIsOpen(false)}>
                 Cancelar
-              </ButtonOutlineStyled>
+              </ButtonStyled>
             </Modal>
           ) : (
-            // ACCESS RESTRICTED MODAL
+            // RESTRICTED ACCESS MODAL
             <Modal isOpen={isOpen} toggleModal={() => setIsOpen(false)}>
               <ImgStyled src={icons.lockDynamic} />
               <Title as="h1" fontWeight="bold">
@@ -219,39 +233,19 @@ const Resource: FC = () => {
               </Title>
               <StyledText>Regístrate para subir o votar contenido</StyledText>
 
-              <ButtonStyled
-                onClick={() => {
-                  setSignupModal(true)
-                  setIsOpen(false)
-                }}
-              >
-                Registrarme
+              <ButtonStyled>
+                {/* TEMPORARY LINK, THIS BUTTON WILL OPEN SIGNUP MODAL  */}
+                <StyledLink href={paths.register}>Registrarme</StyledLink>
               </ButtonStyled>
 
-              <ButtonOutlineStyled
-                outline
-                onClick={() => {
-                  setLoginModal(true)
-                  setIsOpen(false)
-                }}
-              >
-                Entrar
-              </ButtonOutlineStyled>
+              <ButtonStyled outline>
+                {/* TEMPORARY LINK, THIS BUTTON WILL OPEN LOGIN MODAL  */}
+                <StyledLink href={paths.login}>Entrar</StyledLink>
+              </ButtonStyled>
             </Modal>
           )}
-
-          {/* TEMPORARY SIGN UP MODAL */}
-          <Modal isOpen={signupModal} toggleModal={() => setSignupModal(false)}>
-            <Title as="h1" fontWeight="bold">
-              I AM SIGN UP MODAL
-            </Title>
-          </Modal>
-          {/* TEMPORARY LOGIN MODAL */}
-          <Modal isOpen={loginModal} toggleModal={() => setLoginModal(false)}>
-            <Title as="h1" fontWeight="bold">
-              I AM LOGIN MODAL
-            </Title>
-          </Modal>
+          {/* TODO: ADD SIGN UP MODAL */}
+          {/* TODO: ADD LOGIN MODAL */}
         </FlexBox>
 
         <Text fontWeight="bold">Temas</Text>
@@ -261,7 +255,7 @@ const Resource: FC = () => {
           placeholder="Selecciona tema"
           id="theme"
           name="theme"
-          options={options}
+          options={mappedTopics}
           color="blue"
         />
 

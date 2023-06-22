@@ -1,4 +1,5 @@
 import { fireEvent } from '@testing-library/react'
+import { vi } from 'vitest'
 import { render, screen } from '../test-utils'
 import { Resource } from '../../pages'
 
@@ -25,7 +26,9 @@ describe('Resource', () => {
     render(<Resource />)
 
     fireEvent.click(screen.getByRole('button', { name: /\+/i }))
-    const modalTitle = screen.getByRole('heading', { name: /nuevo recurso/i })
+    const modalTitle = screen.getByRole('heading', {
+      name: /acceso restringido/i,
+    })
     expect(modalTitle).toBeInTheDocument()
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(modalTitle).not.toBeInTheDocument()
