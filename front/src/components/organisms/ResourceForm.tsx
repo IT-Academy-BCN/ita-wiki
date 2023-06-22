@@ -33,14 +33,7 @@ const ResourceFormSchema = z.object({
   url: z
     .string({ required_error: 'Este campo es obligatorio' })
     .url({ message: 'La URL proporcionada no es válida' }),
-  topics: z.string(),
-  // .refine(
-  //   (val) =>
-  //     val.every((topic) => options.map((o) => o.value).includes(topic)),
-  //   {
-  //     message: 'Algunos de los temas seleccionados no son válidos',
-  //   }
-  // ),
+  topics: z.string({ required_error: 'Este campo es obligatorio' }),
   resourceType: z.string(),
   userEmail: z.string().optional(),
 })
@@ -58,6 +51,11 @@ const ResourceFormStyled = styled.form`
 
 type TTopicsSlug = {
   slug?: string
+}
+
+type TTopics = {
+  id: string
+  name: string
 }
 
 export const ResourceForm: FC<TTopicsSlug> = ({ slug }) => {
@@ -78,15 +76,10 @@ export const ResourceForm: FC<TTopicsSlug> = ({ slug }) => {
     queryFn: getTopics,
   })
 
-  console.log(fetchedTopics?.topics)
-
-  const mappedTopics = fetchedTopics?.topics.map(
-    (topic: { id: string; name: string }) => {
-      const options = { value: topic.id, label: topic.name }
-      return options
-    }
-  )
-  console.log(mappedTopics)
+  const mappedTopics = fetchedTopics?.topics.map((topic: TTopics) => {
+    const options = { value: topic.id, label: topic.name }
+    return options
+  })
 
   const {
     register,
@@ -100,7 +93,6 @@ export const ResourceForm: FC<TTopicsSlug> = ({ slug }) => {
   const navigate = useNavigate()
 
   const registerNewResource = async (resource: object) => {
-    console.log(resource)
     const config = {
       method: 'POST',
       body: JSON.stringify(resource),
@@ -111,9 +103,6 @@ export const ResourceForm: FC<TTopicsSlug> = ({ slug }) => {
     try {
       const res = await fetch(urls.createResource, config)
 
-      const resData = await res.json()
-      console.log(resData)
-
       if (res.status === 204) {
         navigate('/')
       }
@@ -123,14 +112,7 @@ export const ResourceForm: FC<TTopicsSlug> = ({ slug }) => {
   }
 
   const onSubmit = handleSubmit(async (data) => {
-    const {
-      title,
-      description,
-      url,
-      topics,
-      resourceType,
-      userEmail = 'admin@admin.com',
-    } = data
+    const { title, description, url, topics, resourceType } = data
     try {
       await registerNewResource({
         title,
@@ -138,7 +120,6 @@ export const ResourceForm: FC<TTopicsSlug> = ({ slug }) => {
         url,
         topics: [topics],
         resourceType,
-        userEmail,
       })
       reset()
     } catch (error) {
