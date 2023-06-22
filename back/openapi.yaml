@@ -449,7 +449,6 @@ paths:
                     - userId
                     - createdAt
                     - updatedAt
-                    - status
         "400":
           description: User ID is required
           content:
@@ -633,7 +632,6 @@ paths:
                         - resourceType
                         - createdAt
                         - updatedAt
-                        - status
                         - user
                         - topics
                         - voteCount
@@ -699,7 +697,6 @@ paths:
                 - title
                 - url
                 - resourceType
-                - status
                 - topics
       responses:
         "204":
@@ -844,7 +841,6 @@ paths:
                   - resourceType
                   - createdAt
                   - updatedAt
-                  - status
                   - user
                   - topics
                   - voteCount
@@ -1020,7 +1016,6 @@ paths:
                   - resourceType
                   - createdAt
                   - updatedAt
-                  - status
                   - user
                   - topics
                   - voteCount
@@ -1160,7 +1155,6 @@ paths:
                         - resourceType
                         - createdAt
                         - updatedAt
-                        - status
                         - user
                         - topics
                         - voteCount
