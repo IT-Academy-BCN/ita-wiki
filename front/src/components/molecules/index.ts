@@ -4,7 +4,7 @@ import { CategoryBlock } from './CategoryBlock'
 import { CreateAuthor } from './CreateAuthor'
 import InputGroup from './InputGroup'
 import { Modal } from './Modal'
-import { ResourceTitleLink } from './ResourceTitleLink'
+import { ResourceTitleLink , TResourceTitleLink} from './ResourceTitleLink'
 import SelectGroup from './SelectGroup'
 import TextareaGroup from './TextareaGroup'
 import { VoteCounter } from './VoteCounter'
@@ -23,3 +23,5 @@ export {
   VoteCounter,
   CardHome
 }
+export type { TResourceTitleLink }
+

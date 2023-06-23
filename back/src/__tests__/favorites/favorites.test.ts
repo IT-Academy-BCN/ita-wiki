@@ -61,29 +61,26 @@ describe('Testing /favorites/ endpoint', () => {
       expect(response.status).toBe(404)
     })
 
-    test('Should return favorites as an array of objects.', async () => {
+    test('Should return favorites as an array of unested objects.', async () => {
       const userId = testUser.id
       const categorySlug = 'testing'
       const response = await supertest(server).get(
         `/api/v1/favorites/by-user/${userId}/${categorySlug}`
       )
-
       expect(response.body).toBeInstanceOf(Array)
       expect(response.body.length).toBeGreaterThan(0)
       expect(response.body).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
-            resource: expect.objectContaining({
-              id: expect.any(String),
-              title: expect.any(String),
-              slug: expect.any(String),
-              description: expect.any(String),
-              url: expect.any(String),
-              resourceType: expect.any(String),
-              userId: expect.any(String),
-              createdAt: expect.any(String),
-              updatedAt: expect.any(String),
-            }),
+            id: expect.any(String),
+            title: expect.any(String),
+            slug: expect.any(String),
+            description: expect.any(String),
+            url: expect.any(String),
+            resourceType: expect.any(String),
+            userId: expect.any(String),
+            createdAt: expect.any(String),
+            updatedAt: expect.any(String),
           }),
         ])
       )

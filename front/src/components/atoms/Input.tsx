@@ -1,12 +1,13 @@
 import React, { InputHTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { colors, dimensions } from '../../styles'
+import { colors, dimensions, font } from '../../styles'
 
 const InputStyled = styled.input<TInput>`
   width: 100%;
   padding: ${dimensions.spacing.sm};
   border-radius: ${dimensions.borderRadius.base};
   border: 1px solid ${colors.gray.gray4};
+  font-family: ${font.fontFamily};
 
   ${({ success }) => success && `border: 1px solid ${colors.success};`}
   ${({ warning }) => warning && `border: 1px solid ${colors.warning};`}
