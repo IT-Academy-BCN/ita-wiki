@@ -1,19 +1,21 @@
 import { FC } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import { Icon, Text, Title } from '../components/atoms'
-
+import { InputGroup } from '../components/molecules'
 import {
-  CardResource,
-  InputGroup,
-  ResourceTitleLink,
-} from '../components/molecules'
-import { CategoriesList, FavoritesList } from '../components/organisms'
+  CategoriesList,
+  FavoritesList,
+  MyResources,
+  ResourceCardList,
+  TopicsRadioWidget,
+} from '../components/organisms'
 import { Resource } from './Resource'
 import icons from '../assets/icons'
+import { paths } from '../constants'
 
-type TResource = {
+type TFakeResource = {
   id: string
   title: string
   createdBy: string
@@ -24,7 +26,7 @@ type TResource = {
   likes: number
 }
 
-export const resources: TResource[] = [
+export const resources: TFakeResource[] = [
   {
     id: 'resourceId1',
     title: 'JavaScript en 45 segundos!',
@@ -80,6 +82,14 @@ export const DesktopStyled = styled.div`
   }
 `
 
+const ScrollList = styled(FlexBox)`
+  overflow: hidden;
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`
+
 // style Desktop
 const MainContainer = styled.div`
   display: flex;
@@ -112,6 +122,9 @@ const UserResourcesContainerStyled = styled(FlexBox)`
 
 const ImageStyled = styled.img`
   margin-bottom: ${dimensions.spacing.xl};
+  margin-left: ${dimensions.spacing.xl};
+  max-width: 79px;
+  height: auto;
 `
 
 const ContainerGapStyled = styled(FlexBox)`
@@ -124,20 +137,23 @@ const ContainerGapStyled = styled(FlexBox)`
 const SideColumnContainer = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
-  flex-grow: 1;
-  padding: 2rem;
+  flex: 1 2 20rem;
+  padding: 2rem 2rem;
   overflow: scroll;
 
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media ${device.Desktop} {
+    padding: 2rem 3rem;
+  }
 `
 
 const MiddleColumnContainer = styled(FlexBox)`
-  flex-grow: 1.5;
-  padding: 2rem;
-  border-right: solid 1px black;
-  border-left: solid 1px black;
+  flex: 4 1 26rem;
+  padding: 2rem 3rem;
+  border-right: solid 1px ${colors.gray.gray3};
   justify-content: flex-start;
   align-items: flex-start;
   overflow: scroll;
@@ -150,6 +166,7 @@ const MiddleColumnContainer = styled(FlexBox)`
 
 const Category: FC = () => {
   const { state } = useLocation()
+  const { slug } = useParams()
 
   return (
     <>
@@ -159,7 +176,9 @@ const Category: FC = () => {
       <DesktopStyled>
         <MainContainer>
           <LateralDiv>
-            <ImageStyled src={icons.itLogo} alt="logo" />
+            <Link to={paths.home}>
+              <ImageStyled src={icons.itLogo} alt="logo" />
+            </Link>
             <CategoriesList />
           </LateralDiv>
           {/* ==> CONTAINER CON LAS LAS COLUMNAS */}
@@ -171,7 +190,7 @@ const Category: FC = () => {
                 Filtros
               </Title>
               <Text fontWeight="bold">Temas</Text>
-              ...
+              {slug && <TopicsRadioWidget slug={slug} />}
             </SideColumnContainer>
             {/* ==> COLUMNA RECURSOS */}
             <MiddleColumnContainer>
@@ -185,7 +204,7 @@ const Category: FC = () => {
                 style={{ width: '100%' }}
               >
                 {/* ==> VOTOS Y FECHA */}
-                <FlexBox direction="row">
+                <FlexBox direction="row" gap="15px">
                   <FlexBox direction="row">
                     <Text fontWeight="bold">Votos</Text>
                     <Icon name="arrow_downward" />
@@ -193,19 +212,9 @@ const Category: FC = () => {
                   <Text color={colors.gray.gray3}>Fecha</Text>
                 </FlexBox>
               </FlexBox>
-              {resources.map((sd) => (
-                <CardResource
-                  key={sd.id}
-                  img={sd?.img}
-                  id={sd.createdOn}
-                  title={sd.title}
-                  url={sd.url}
-                  description={sd.description}
-                  likes={sd.likes}
-                  createdBy={sd.createdBy}
-                  createdOn={sd.createdOn}
-                />
-              ))}
+              <ScrollList>
+                <ResourceCardList />
+              </ScrollList>
             </MiddleColumnContainer>
             {/* ==> COLUMNA USUARIO */}
             <SideColumnContainer>
@@ -236,22 +245,9 @@ const Category: FC = () => {
               ))} */}
               <FavoritesList />
               {/* TÍTULO 2 */}
-              <ContainerGapStyled>
-                <Icon name="menu_book" fill={0} />
-                <Title as="h2" fontWeight="bold">
-                  Mis recursos
-                </Title>
-              </ContainerGapStyled>
-              {/* ==> CONTENIDO MIS RECURSOS */}
-              {resources.map((res) => (
-                <UserResourcesContainerStyled key={res.id}>
-                  <ResourceTitleLink
-                    url={res.url}
-                    title={res.title}
-                    description={res.description}
-                  />
-                </UserResourcesContainerStyled>
-              ))}
+              <UserResourcesContainerStyled>
+                <MyResources />
+              </UserResourcesContainerStyled>
             </SideColumnContainer>
           </DivStyled>
         </MainContainer>

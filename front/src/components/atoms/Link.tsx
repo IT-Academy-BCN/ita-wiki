@@ -12,6 +12,7 @@ const StyledLink = styled.a<TLink>`
   color: ${colors.black};
   font-weight: ${({ weight }: { weight?: 'bold' | 'regular' | string }) =>
     weight === 'bold' ? font.bold : font.regular};
+  font-family: ${font.fontFamily};
 `
 
 type TLink = HTMLAttributes<HTMLAnchorElement> & {
