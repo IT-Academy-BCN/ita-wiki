@@ -9,7 +9,7 @@ import {
   InputGroup,
   ResourceTitleLink,
 } from '../components/molecules'
-import { CategoriesList } from '../components/organisms'
+import { CategoriesList, FavoritesList } from '../components/organisms'
 import { Resource } from './Resource'
 import icons from '../assets/icons'
 
@@ -218,14 +218,14 @@ const Category: FC = () => {
                 id="searchResource"
                 icon="search"
               />
-              <ContainerGapStyled>
+              {/* <ContainerGapStyled>
                 <Icon name="favorite" fill={0} />
                 <Title as="h2" fontWeight="bold">
                   Recursos favoritos
                 </Title>
-              </ContainerGapStyled>
+              </ContainerGapStyled> */}
               {/* ==> CONTENIDO FAVORITOS */}
-              {resources.map((fav) => (
+              {/* {resources.map((fav) => (
                 <UserResourcesContainerStyled key={fav.id}>
                   <ResourceTitleLink
                     url={fav.url}
@@ -233,8 +233,8 @@ const Category: FC = () => {
                     description={fav.description}
                   />
                 </UserResourcesContainerStyled>
-              ))}
-
+              ))} */}
+              <FavoritesList />
               {/* TÍTULO 2 */}
               <ContainerGapStyled>
                 <Icon name="menu_book" fill={0} />

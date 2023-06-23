@@ -49,6 +49,41 @@ export const handlers = [
       ])
     )
   ),
+
+  rest.get(
+    'http://localhost:8999/api/v1/favorites/by-user/:userId',
+    (req, res, ctx) => {
+      const favoriteSlug = req.url.searchParams.get('favorite')
+      if (favoriteSlug === 'emptyFavoriteResource') {
+        return res(
+          ctx.status(200),
+          ctx.json([
+            {
+              favorites: [],
+            },
+          ])
+        )
+      }
+      return res(
+        ctx.status(200),
+        ctx.json({
+          favorites: [
+            {
+              id: '1',
+              title: 'Favorite title',
+              slug: 'react',
+              description: 'favorite resource',
+              url: 'https://reactjs.org/',
+              resourceType: 'documentation',
+              userId: 'userIdTest',
+              createdAt: '11/11/2011',
+              updatedAt: '11/11/2011',
+            },
+          ],
+        })
+      )
+    }
+  ),
 ]
 
 export const errorHandlers = [
