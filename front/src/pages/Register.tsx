@@ -17,17 +17,14 @@ import { paths, urls } from '../constants'
 import { colors, dimensions, FlexBox } from '../styles'
 
 const RegisterStyled = styled(FlexBox)`
-  background-color: ${colors.gray.gray5};
-  padding: ${dimensions.spacing.lg};
   gap: ${dimensions.spacing.sm};
-  height: 100vh;
+  padding: ${dimensions.spacing.lg};
 `
 
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: ${dimensions.spacing.base};
   width: 100%;
 `
 
@@ -67,6 +64,10 @@ const SelectStyled = styled.select`
 
 const ButtonStyled = styled(Button)`
   margin: ${dimensions.spacing.none};
+`
+
+const TitleStyled = styled(Title)`
+  width: 100%;
 `
 
 type TForm = {
@@ -121,9 +122,9 @@ const Register: FC = () => {
 
   return (
     <RegisterStyled>
-      <Title as="h1" fontWeight="bold">
+      <TitleStyled as="h1" fontWeight="bold">
         Register
-      </Title>
+      </TitleStyled>
       <StyledForm onSubmit={onSubmit}>
         <InputGroup
           required

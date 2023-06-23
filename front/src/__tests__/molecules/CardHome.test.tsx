@@ -12,7 +12,7 @@ describe('CardHome', () => {
         indicator="/test"
       />
     )
-    expect(screen.getByText('Test title')).toBeInTheDocument()
+    expect(screen.getAllByText('Test title')[0]).toBeInTheDocument()
     expect(screen.getByText('Test subtitle')).toBeInTheDocument()
     expect(screen.getByText('/test')).toBeInTheDocument()
     expect(screen.getByTestId('testIcon')).toBeInTheDocument()

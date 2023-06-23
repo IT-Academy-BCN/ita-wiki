@@ -16,30 +16,25 @@ const FlexErrorStyled = styled(FlexBox)`
 `
 
 const LoginStyled = styled(FlexBox)`
-  background-color: ${colors.gray.gray5};
   gap: ${dimensions.spacing.sm};
-  height: 100vh;
   padding: ${dimensions.spacing.lg};
 `
 
 const TitleStyled = styled(Title)`
   width: 100%;
-  margin: 4rem 0rem 0rem 0.2rem;
 `
 
 const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: ${dimensions.spacing.base};
   width: 100%;
-  margin-top: -4rem;
 `
 
 const LinkStyled = styled(Link)`
   color: ${colors.black.black1};
   font-weight: 500;
-  margin: ${dimensions.spacing.sm} ${dimensions.spacing.xxxs};
+  margin-bottom: ${dimensions.spacing.xxl};
 `
 
 const LinkRegisterStyled = styled(Link)`

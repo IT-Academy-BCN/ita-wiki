@@ -1,49 +1,77 @@
 import { useEffect } from 'react'
 import styled from 'styled-components'
-import { FlexBox, colors, dimensions } from '../../styles'
+import { FlexBox, colors, device, dimensions } from '../../styles'
 import { Icon, Title } from '../atoms'
 
-const ModalBackgroundStyled = styled(FlexBox)`
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-  display: flex;
-  opacity: 1;
-  overflow: hidden;
-  padding: 0.2rem;
-  position: fixed;
-  z-index: 1000;
-`
-const ModalWrapper = styled(FlexBox)`
-  background-color: rgba(0, 0, 0, 0.68);
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-  cursor: default;
+export const MobileStyled = styled.div`
   display: block;
-  height: 100%;
-  position: absolute;
-  width: 100%;
+  @media only ${device.Tablet} {
+    display: none;
+  }
 `
 
-const ModalContainerSyled = styled(FlexBox)`
-  background-color: ${colors.white};
-  border-radius: ${dimensions.borderRadius.sm};
-  height: 700px;
-  margin: 6rem auto ${dimensions.spacing.xl};
-  padding: ${dimensions.spacing.xl} ${dimensions.spacing.base};
-  position: relative;
+export const DesktopStyled = styled.div`
+  display: none;
+  @media only ${device.Tablet} {
+    display: block;
+  }
+`
+
+const ModalMobileContainer = styled.div`
   width: 100%;
-  max-width: 355px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 4rem;
+  overflow: auto;
   z-index: 1;
+`
+
+const ModalMobileContent = styled(FlexBox)`
+  background-color: ${colors.white};
+  width: 95%;
+  height: auto;
+  margin: ${dimensions.spacing.base} auto;
+  padding: ${dimensions.spacing.base};
+  border-radius: ${dimensions.borderRadius.sm};
 
   ${Icon} {
     cursor: pointer;
-    position: absolute;
-    right: ${dimensions.spacing.xxxs};
-    top: ${dimensions.spacing.base};
+  }
+`
+const ModalWrapper = styled(FlexBox)`
+  background-color: rgba(0, 0, 0, 0.68); 
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 4rem;
+  z-index: -1;
+`
+
+const ModalContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: ${dimensions.spacing.xl};
+  overflow: auto;
+  z-index: 1;
+`
+
+const ModalContent = styled(FlexBox)`
+  background-color: ${colors.white};
+  width: 50%;
+  height: auto;
+  margin: ${dimensions.spacing.base} auto;
+  padding: ${dimensions.spacing.base};
+  border-radius: ${dimensions.borderRadius.sm};
+
+  ${Icon} {
+    cursor: pointer;
   }
 `
 
@@ -67,26 +95,54 @@ const Modal = ({ children, isOpen, toggleModal, title }: TModal) => {
       document.removeEventListener('keydown', handleKeyDown)
     }
   })
-
+  
   return isOpen ? (
-    <ModalBackgroundStyled>
-      <ModalWrapper onClick={toggleModal} data-testid="modal-wrapper" />
-      <ModalContainerSyled justify="flex-start">
-        <Icon
-          name="close"
-          onClick={toggleModal}
-          role="img"
-          aria-label="Close icon"
-          wght={700}
-        />
-        <FlexBox>
-          <Title as="h1" fontWeight="bold" color={colors.black.black3}>
-            {title}
-          </Title>
+    <>
+    <MobileStyled>
+      <ModalMobileContainer>
+        <ModalWrapper onClick={toggleModal} data-testid="modal-wrapper"/>
+        <ModalMobileContent align='stretch'>
+          <FlexBox align='end'>
+          <Icon 
+            name="close"
+            onClick={toggleModal}
+            role="img"
+            aria-label="Close icon"
+            wght={700}
+          />
+          </FlexBox>
+          { title && 
+            <Title as="h1" fontWeight="bold" color={colors.black.black3}>
+              {title}
+            </Title>
+          }
           {children}
-        </FlexBox>
-      </ModalContainerSyled>
-    </ModalBackgroundStyled>
+        </ModalMobileContent>
+      </ModalMobileContainer>
+    </MobileStyled>
+    <DesktopStyled>
+      <ModalContainer>
+        <ModalWrapper onClick={toggleModal} data-testid="modal-wrapper"/>
+        <ModalContent align='stretch'>
+          <FlexBox align='end'>
+          <Icon 
+            name="close"
+            onClick={toggleModal}
+            role="img"
+            aria-label="Close icon"
+            wght={700}
+          />
+          </FlexBox>
+          { title && 
+            <Title as="h1" fontWeight="bold" color={colors.black.black3}>
+              {title}
+            </Title>
+          }
+          {children}
+        </ModalContent>
+      </ModalContainer>
+    </DesktopStyled>
+    </>
   ) : null
 }
 

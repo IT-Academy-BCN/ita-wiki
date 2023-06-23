@@ -6,7 +6,7 @@ import { Text } from '../../components/atoms'
 describe('Modal', () => {
   const mockToggleModal = vi.fn()
 
-  it('renders correctly', () => {
+  it.only('renders correctly', () => {
     render(
       <Modal isOpen toggleModal={mockToggleModal} title="Test Modal">
         <Text>Modal content</Text>

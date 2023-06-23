@@ -1,6 +1,20 @@
 import styled from 'styled-components'
-import { FlexBox, colors, dimensions, font } from '../../styles'
-import { Text } from '../atoms'
+import { FlexBox, colors, device, dimensions, font } from '../../styles'
+import { Icon, Text, Title } from '../atoms'
+
+export const MobileStyled = styled.div`
+  display: block;
+  @media only ${device.Tablet} {
+    display: none;
+  }
+`
+
+export const DesktopStyled = styled.div`
+  display: none;
+  @media only ${device.Tablet} {
+    display: block;
+  }
+`
 
 const MainContainer = styled(FlexBox)`
   align-items: flex-end;
@@ -50,6 +64,33 @@ const SubtitleStyled = styled(Text)`
   font-size: ${font.xss};
 `
 
+const ContentMobileStyled = styled(FlexBox)`
+  margin: 0.9rem;
+  gap: ${dimensions.spacing.base};
+`
+
+const MainMobileStyled = styled(FlexBox)`
+  background-color: ${colors.white};
+  border-radius: ${dimensions.borderRadius.sm};
+  margin-bottom: ${dimensions.spacing.lg};
+`
+
+const IconStyled = styled(Icon)`
+  margin-right: ${dimensions.spacing.xs};
+`
+
+const TitleMobileStyled = styled(Title)`
+  margin: ${dimensions.spacing.none};
+`
+
+const FlexBoxStyled = styled(FlexBox)`
+  gap: ${dimensions.spacing.xxs};
+`
+
+const ImgMobileStyled = styled.img`
+  height: 5rem;
+`
+
 type TCardHome = {
   cardTitle: string
   cardSubtitle: string
@@ -63,13 +104,28 @@ export const CardHome = ({
   indicator,
   icon,
 }: TCardHome) => (
-  <MainContainer>
-    <TopContainter />
-    <ContentContainer>
-      <IndicatorStyled>{indicator}</IndicatorStyled>
-      <ImgStyled alt="icon" src={icon} data-testid="testIcon" />
-      <TitleStyled>{cardTitle}</TitleStyled>
-      <SubtitleStyled>{cardSubtitle}</SubtitleStyled>
-    </ContentContainer>
-  </MainContainer>
+  <>
+    <MobileStyled>
+      <MainMobileStyled direction="row" justify="space-between">
+        <ContentMobileStyled direction='row'>
+          <ImgMobileStyled src={icon} alt={`${icon} logo`} />
+          <FlexBoxStyled align="start">
+            <TitleMobileStyled as="h3" fontWeight="bold">{cardTitle}</TitleMobileStyled>
+          </FlexBoxStyled>
+        </ContentMobileStyled>
+        <IconStyled name="arrow_forward_ios" color={colors.gray.gray3} />
+      </MainMobileStyled>
+    </MobileStyled>
+    <DesktopStyled>
+      <MainContainer>
+        <TopContainter />
+        <ContentContainer>
+          <IndicatorStyled>{indicator}</IndicatorStyled>
+          <ImgStyled alt="icon" src={icon} data-testid="testIcon" />
+          <TitleStyled>{cardTitle}</TitleStyled>
+          <SubtitleStyled>{cardSubtitle}</SubtitleStyled>
+        </ContentContainer>
+      </MainContainer>
+    </DesktopStyled>
+  </>
 )
