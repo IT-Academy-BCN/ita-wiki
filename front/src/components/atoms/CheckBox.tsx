@@ -29,10 +29,13 @@ export const CheckBoxWrapper = styled(FlexBox)`
     }
 
     &:checked::before {
-      content: '\\2713';
+      font-family: 'Material Symbols Outlined';
+      content: '\\e5ca';
+      font-size: 24px;
       color: white;
-      display: inline-block;
-      padding-left: 0.3rem;
+      position: relative;
+      top: -3px;
+      left: -2px;
     }
   }
 `
@@ -58,7 +61,6 @@ const CheckBox = forwardRef(
       className,
       onChange,
       ...rest
-
     }: TCheckBox,
     ref: Ref<HTMLInputElement>
   ) => (

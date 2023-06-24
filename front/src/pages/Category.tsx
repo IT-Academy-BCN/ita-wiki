@@ -1,9 +1,13 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import { Icon, Text, Title } from '../components/atoms'
-import { InputGroup, ResourceTitleLink } from '../components/molecules'
+import {
+  InputGroup,
+  ResourceTitleLink,
+  TypesFilterWidget,
+} from '../components/molecules'
 import {
   CategoriesList,
   ResourceCardList,
@@ -167,6 +171,8 @@ const Category: FC = () => {
   const { state } = useLocation()
   const { slug } = useParams()
 
+  const [selectedTypes, setSelectedTypes] = useState<string[]>([])
+
   return (
     <>
       <MobileStyled>
@@ -190,6 +196,10 @@ const Category: FC = () => {
               </Title>
               <Text fontWeight="bold">Temas</Text>
               {slug && <TopicsRadioWidget slug={slug} />}
+              <TypesFilterWidget
+                selectedTypes={selectedTypes}
+                setSelectedTypes={setSelectedTypes}
+              />
             </SideColumnContainer>
             {/* ==> COLUMNA RECURSOS */}
             <MiddleColumnContainer>

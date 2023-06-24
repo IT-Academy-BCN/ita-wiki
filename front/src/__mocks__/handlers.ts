@@ -1,7 +1,6 @@
 import { rest } from 'msw'
 import { urls } from '../constants'
 
-
 export const handlers = [
   rest.post('http://localhost:8999/api/v1/auth/login', (req, res, ctx) =>
     res(ctx.status(204))
@@ -105,6 +104,13 @@ export const handlers = [
     )
   }),
 
+  rest.get(urls.getTypes, (_, res, ctx) =>
+    res(
+      ctx.status(200),
+      ctx.json(['Test type 1', 'Test type 2', 'Test type 3'])
+    )
+  ),
+
   rest.put(urls.vote, (_, res, ctx) =>
     res(
       ctx.status(204),
@@ -122,7 +128,7 @@ export const handlers = [
         ctx.status(200),
         ctx.json([
           {
-          resources: [],
+            resources: [],
           },
         ])
       )
@@ -137,7 +143,7 @@ export const handlers = [
             slug: 'react',
             description: 'Resource description',
             url: 'https://reactjs.org/',
-            user:{
+            user: {
               name: 'string',
               email: 'user@example.cat',
             },
@@ -147,22 +153,20 @@ export const handlers = [
                   id: 'topicId1',
                   name: 'Topic 1',
                   slug: 'topic-1',
-                  categoryId: 'categoryId1'
-                }
-              }
+                  categoryId: 'categoryId1',
+                },
+              },
             ],
             voteCount: {
               upvote: 10,
               downvote: 2,
-              total: 8
-            }
-          }
+              total: 8,
+            },
+          },
         ],
-      }
-        
-      )
+      })
     )
-  }) 
+  }),
 ]
 
 export const errorHandlers = [
@@ -185,19 +189,23 @@ export const errorHandlers = [
     }
   }),
 
+  rest.get(urls.getTypes, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
   rest.put(urls.vote, (_, res, ctx) =>
     res(ctx.status(401), ctx.json({ message: 'User not found' }))
   ),
-  
+
   rest.get(urls.getResourcesByUser, (req, res, ctx) => {
-    const categorySlug = req.url.searchParams.get('category');
+    const categorySlug = req.url.searchParams.get('category')
 
     if (categorySlug === 'errorCase') {
       return res(
         ctx.status(500),
         ctx.json({ message: 'Internal server error' })
-      );
+      )
     }
     return res(ctx.status(401), ctx.json({ message: 'User not found' }))
-  }), 
+  }),
 ]

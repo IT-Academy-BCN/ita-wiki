@@ -4,11 +4,12 @@ import { CategoryBlock } from './CategoryBlock'
 import { CreateAuthor } from './CreateAuthor'
 import InputGroup from './InputGroup'
 import { Modal } from './Modal'
-import { ResourceTitleLink , TResourceTitleLink} from './ResourceTitleLink'
+import { ResourceTitleLink, TResourceTitleLink } from './ResourceTitleLink'
 import SelectGroup from './SelectGroup'
 import TextareaGroup from './TextareaGroup'
+import { TypesFilterWidget } from './TypesFilterWidget'
 import { VoteCounter } from './VoteCounter'
-import {CardHome} from './CardHome'
+import { CardHome } from './CardHome'
 
 export {
   AccessModal,
@@ -19,9 +20,9 @@ export {
   ResourceTitleLink,
   SelectGroup,
   TextareaGroup,
+  TypesFilterWidget,
   CreateAuthor,
   VoteCounter,
-  CardHome
+  CardHome,
 }
 export type { TResourceTitleLink }
-
