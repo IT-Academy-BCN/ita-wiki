@@ -35,9 +35,10 @@ type TFavorites = {
   updatedAt: string
 }
 
-export const FavoritesList: FC = () => {
+export const MyFavoritesList: FC = () => {
   const { user } = useAuth()
-  const { userId } = useParams()
+  const params = useParams<{ userId: string }>()
+  const favoritesUser: string | undefined = params.userId
 
   const getFavorites = async (userIdParams: string) => {
     if (!user) {
@@ -59,26 +60,33 @@ export const FavoritesList: FC = () => {
   }
 
   const { isLoading, data, error } = useQuery({
-    queryKey: ['getFavorites', userId],
-    queryFn: () => getFavorites(userId || ''),
+    queryKey: ['getFavorites', favoritesUser],
+    queryFn: () => getFavorites(favoritesUser || ''),
   })
 
   if (isLoading) return <Spinner />
   if (error) return <p>Algo ha ido mal...</p>
 
-  // TODO: adjust columns in Category so the last column doesn't have too much width?
-
   return (
     <>
       <TitleContainer>
         <Icon name="favorite" fill={0} />
-        <Title as="h2" fontWeight="bold">
+        <Title as="h2" fontWeight="bold" data-testid="title">
           Recursos favoritos
         </Title>
       </TitleContainer>
-      {user ? (
+      {!user && (
+        <Text color={colors.gray.gray4}>
+          <StyledLink href={paths.register}>Regístrate</StyledLink> o{' '}
+          <StyledLink href={paths.login}>inicia sesión</StyledLink> para añadir
+          recursos favoritos
+        </Text>
+      )}
+      {isLoading && user && <Spinner />}
+
+      {data && data.length > 0 ? (
         <div>
-          {data?.map((fav: TFavorites) => (
+          {data.map((fav: TFavorites) => (
             <FavoritesContainer key={fav.id}>
               <ResourceTitleLink
                 url={fav.url}
@@ -90,9 +98,7 @@ export const FavoritesList: FC = () => {
         </div>
       ) : (
         <Text color={colors.gray.gray4}>
-          <StyledLink href={paths.register}>Regístrate</StyledLink> o{' '}
-          <StyledLink href={paths.login}>inicia sesión</StyledLink> para añadir
-          recursos favoritos
+          No has añadido ningún recurso favorito
         </Text>
       )}
     </>

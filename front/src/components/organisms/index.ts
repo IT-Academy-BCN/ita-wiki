@@ -4,7 +4,7 @@ import { ResourceCardList } from './ResourceCardList'
 import { ResourceForm } from './ResourceForm'
 import { TopicsRadioWidget } from './TopicsRadioWidget'
 import { Navbar } from './Navbar'
-import { FavoritesList } from './FavoritesList'
+import { MyFavoritesList } from './MyFavoritesList'
 import { MyResources } from './MyResources'
 
 export {
@@ -15,5 +15,5 @@ export {
   CategoriesList,
   ResourceForm,
   Navbar,
-  FavoritesList,
+  MyFavoritesList,
 }
