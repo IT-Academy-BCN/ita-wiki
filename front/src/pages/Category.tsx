@@ -171,9 +171,9 @@ const Category: FC = () => {
   const { state } = useLocation()
   const { slug } = useParams()
 
-  const handleStatusFilter = (item: string, isChecked: boolean) => {
+  const handleStatusFilter = (selectedStatus: string[]) => {
     // eslint-disable-next-line no-console
-    console.log('Parent', item, isChecked)
+    console.log('Parent', selectedStatus)
   }
 
   return (

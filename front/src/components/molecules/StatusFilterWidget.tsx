@@ -1,3 +1,4 @@
+import { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { CheckBox, Label, Text } from '../atoms'
 import { colors, dimensions, FlexBox, font } from '../../styles'
@@ -22,22 +23,44 @@ const CheckBoxStyled = styled(CheckBox)`
 const statusData: string[] = ['NOT_SEEN', 'SEEN']
 
 type Props = {
-  handleStatusFilter: (item: string, isChecked: boolean) => void
+  handleStatusFilter: (selectedStatus: string[]) => void
 }
 
-const StatusFilterWidget = ({ handleStatusFilter }: Props) => (
-  <StyledFlexbox direction="column" align="start">
-    <StyledText fontWeight="bold">Estado</StyledText>
-    {statusData.map((item: string) => (
-      <CheckBoxStyled
-        key={item}
-        id={item}
-        label={item === 'SEEN' ? 'Vistos' : 'Por ver'}
-        defaultChecked
-        onChange={(e) => handleStatusFilter(item, e.target.checked)}
-      />
-    ))}
-  </StyledFlexbox>
-)
+const StatusFilterWidget = ({ handleStatusFilter }: Props) => {
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(statusData)
+
+  useEffect(() => {
+    handleStatusFilter(statusData)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const changeSelection = (e: ChangeEvent<HTMLInputElement>, item: string) => {
+    if (e.target.checked) {
+      const addStatus = [...selectedTypes]
+      addStatus.push(item)
+      setSelectedTypes(addStatus)
+      return addStatus
+    }
+
+    const removeStatus = selectedTypes.filter((el) => el !== item)
+    setSelectedTypes(removeStatus)
+    return removeStatus
+  }
+
+  return (
+    <StyledFlexbox direction="column" align="start">
+      <StyledText fontWeight="bold">Estado</StyledText>
+      {statusData.map((item: string) => (
+        <CheckBoxStyled
+          key={item}
+          id={item}
+          label={item === 'SEEN' ? 'Vistos' : 'Por ver'}
+          defaultChecked
+          onChange={(e) => handleStatusFilter(changeSelection(e, item))}
+        />
+      ))}
+    </StyledFlexbox>
+  )
+}
 
 export { StatusFilterWidget }
