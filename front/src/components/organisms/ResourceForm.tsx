@@ -32,7 +32,9 @@ const ResourceFormSchema = z.object({
   url: z
     .string({ required_error: 'Este campo es obligatorio' })
     .url({ message: 'La URL proporcionada no es válida' }),
-  topics: z.string({ required_error: 'Este campo es obligatorio' }),
+  topics: z.string().refine((val) => val !== 'Options', {
+    message: 'Debe seleccionar un tema válido',
+  }),
   resourceType: z.string(),
   userEmail: z.string().optional(),
 })
@@ -136,17 +138,17 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
         validationMessage={errors.url?.message}
         validationType="error"
       />
-      {selectOptions && (
-        <SelectGroup
-          id="topics"
-          label="Tema"
-          options={selectOptions}
-          {...register('topics')}
-          name="topics"
-          error={!!errors.topics}
-          validationMessage={errors.topics?.message}
-        />
-      )}
+
+      <SelectGroup
+        id="topics"
+        label="Tema"
+        options={selectOptions}
+        {...register('topics')}
+        name="topics"
+        error={!!errors.topics}
+        validationMessage={errors.topics?.message}
+      />
+
       <Radio
         {...register('resourceType')}
         options={[
