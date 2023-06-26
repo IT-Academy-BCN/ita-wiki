@@ -3,7 +3,7 @@ import { Link, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import { Icon, Text, Title } from '../components/atoms'
-import { InputGroup } from '../components/molecules'
+import { InputGroup, StatusFilterWidget } from '../components/molecules'
 import {
   CategoriesList,
   MyFavoritesList,
@@ -161,6 +161,11 @@ const Category: FC = () => {
   const { state } = useLocation()
   const { slug } = useParams()
 
+  const handleStatusFilter = (selectedStatus: string[]) => {
+    // eslint-disable-next-line no-console
+    console.log('Parent', selectedStatus)
+  }
+
   return (
     <>
       <MobileStyled>
@@ -184,6 +189,7 @@ const Category: FC = () => {
               </Title>
               <Text fontWeight="bold">Temas</Text>
               {slug && <TopicsRadioWidget slug={slug} />}
+              <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
             </SideColumnContainer>
             {/* ==> COLUMNA RECURSOS */}
             <MiddleColumnContainer>
