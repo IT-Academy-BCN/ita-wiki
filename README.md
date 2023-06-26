@@ -28,6 +28,8 @@ IMPORTANT: If you cannot dedicate enough time, nor be on the meetings, please re
 
 Our project is divided into two main areas: frontend and backend development. Depending on your itinerary specialization you will be working on one or the other. Fullstack profiles are also welcome.
 
+Use **Node 18**.
+
 ### Frontend Development
 
 Frontend developers are responsible for creating and maintaining the user interface, ensuring that the website is visually appealing, user-friendly, and responsive. Our frontend is built with React, Vite, and Vitest. We also use an atomic design system and a CI/CD pipeline to lint, test, build, and deploy the project on the development environment.
