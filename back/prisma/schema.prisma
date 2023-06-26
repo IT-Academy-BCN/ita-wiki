@@ -20,6 +20,7 @@ model User {
   favorite  Favorites[]
   viewed    ViewedResource[]
   vote      Vote[]
+  avatarId  String?          @map("avatar_id") 
   createdAt DateTime         @default(now()) @map("created_at")
   updatedAt DateTime         @updatedAt @map("updated_at")
 
@@ -91,6 +92,7 @@ model Media {
   filePath  String   @map("file_path")
   user      User     @relation(fields: [userId], references: [id])
   userId    String   @map("user_id")
+  isAvatar  Boolean  @default(false)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 

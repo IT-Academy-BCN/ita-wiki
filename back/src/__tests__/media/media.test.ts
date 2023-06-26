@@ -20,17 +20,19 @@ afterAll(async () => {
 })
 
 describe('Testing POST media endpoint', () => {
-  test('A user can upload an image, the image exists and the record is created on the DB', async () => {
+  test('A user can upload an image (isAvatar=false), the image exists, and the DB record is created ', async () => {
     const testImage =
       'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO3gAAAABJRU5ErkJggg=='
     const bufferData = Buffer.from(testImage, 'base64')
     await fs.mkdir('./static/media', { recursive: true })
     await fs.writeFile(`${pathUploadMedia}/testImage.png`, bufferData)
 
+    // Upload image, case where isAvatar is false
     const response = await supertest(server)
       .post(`${pathRoot.v1.media}`)
       .set('Cookie', authToken.user)
       .attach('media', `${pathUploadMedia}/testImage.png`)
+      .field('isAvatar', false)
 
     // Success uploading
     expect(response.status).toBe(201)
@@ -46,15 +48,41 @@ describe('Testing POST media endpoint', () => {
     const imageMetadata = await sharp(response.body.filePath).metadata()
     expect(imageMetadata.height).toEqual(imageMetadata.width)
 
-    // Record is created on the DB
+    // Record is created in the DB
     const existsInDB = await prisma.media.findFirst({
       where: { filePath: response.body.filePath },
     })
     expect(existsInDB).not.toBe(null)
+  })
 
-    // Delete generated files for this test
-    await fs.rm(response.body.filePath)
-    await fs.rm(`${pathUploadMedia}/testImage.png`)
+  test('Should create an avatar(isAvatar=true)', async () => {
+    const testImage =
+      'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO3gAAAABJRU5ErkJggg=='
+    const bufferData = Buffer.from(testImage, 'base64')
+
+    // Upload image with isAvatar=true
+    const response = await supertest(server)
+      .post(`${pathRoot.v1.media}`)
+      .set('Cookie', authToken.user)
+      .attach('media', bufferData, { filename: 'avatar.png' })
+      .field('userId', 'validUserId')
+      .field('isAvatar', true)
+
+    // Success uploading
+    expect(response.status).toBe(201)
+    expect(response.body).toMatchObject({
+      filePath: expect.any(String),
+    })
+    expect(response.body.filePath).toContain('static/media/')
+
+    // Get the user from the DB
+    const user = await prisma.user.findUnique({
+      where: { id: 'validUserId' },
+      include: { media: true },
+    })
+
+    // Expect avatarId to be updated with the created media's ID
+    expect(user?.avatarId).toBe(user?.media?.id)
   })
 
   describe('Testing fail cases', () => {

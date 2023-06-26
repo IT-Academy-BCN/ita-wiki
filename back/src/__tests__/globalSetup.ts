@@ -51,6 +51,7 @@ export const setup = async () => {
 }
 
 export const teardown = async () => {
+  await prisma.media.deleteMany()
   await prisma.user.deleteMany({
     where: { dni: { in: [testUserData.admin.dni, testUserData.user.dni] } },
   })
