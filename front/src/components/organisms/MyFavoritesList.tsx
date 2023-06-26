@@ -37,8 +37,7 @@ type TFavorites = {
 
 export const MyFavoritesList: FC = () => {
   const { user } = useAuth()
-  const params = useParams<{ userId: string }>()
-  const favoritesUser: string | undefined = params.userId
+  const { userId } = useParams()
 
   const getFavorites = async (userIdParams: string) => {
     if (!user) {
@@ -60,18 +59,17 @@ export const MyFavoritesList: FC = () => {
   }
 
   const { isLoading, data, error } = useQuery({
-    queryKey: ['getFavorites', favoritesUser],
-    queryFn: () => getFavorites(favoritesUser || ''),
+    queryKey: ['getFavorites', userId],
+    queryFn: () => getFavorites(userId || ''),
   })
 
-  if (isLoading) return <Spinner />
   if (error) return <p>Algo ha ido mal...</p>
 
   return (
     <>
-      <TitleContainer>
+      <TitleContainer data-testid="title">
         <Icon name="favorite" fill={0} />
-        <Title as="h2" fontWeight="bold" data-testid="title">
+        <Title as="h2" fontWeight="bold">
           Recursos favoritos
         </Title>
       </TitleContainer>
@@ -83,8 +81,7 @@ export const MyFavoritesList: FC = () => {
         </Text>
       )}
       {isLoading && user && <Spinner />}
-
-      {data && data.length > 0 ? (
+      {user && data && (
         <div>
           {data.map((fav: TFavorites) => (
             <FavoritesContainer key={fav.id}>
@@ -96,7 +93,8 @@ export const MyFavoritesList: FC = () => {
             </FavoritesContainer>
           ))}
         </div>
-      ) : (
+      )}
+      {user && !data && (
         <Text color={colors.gray.gray4}>
           No has añadido ningún recurso favorito
         </Text>
