@@ -52,28 +52,28 @@ describe('ResourceForm', () => {
     render(<ResourceForm selectOptions={options} />)
 
     const titleInput = screen.getByLabelText(/título/i) as HTMLInputElement
-    fireEvent.change(titleInput, { target: { value: 'TEST TITLE' }, })
+    fireEvent.change(titleInput, { target: { value: 'TEST TITLE' } })
     expect(titleInput.value).toBe('TEST TITLE')
 
-    // fireEvent.change(screen.getByLabelText(/descripción/i), {
-    //   target: { value: 'TESTING DESCRIPTION' },
-    // })
-    // fireEvent.change(screen.getByLabelText(/url/i), {
-    //   target: { value: 'https://dev.itadirectory.eurecatacademy.org/' },
-    // })
+    fireEvent.change(screen.getByLabelText(/descripción/i), {
+      target: { value: 'TESTING DESCRIPTION' },
+    })
+    fireEvent.change(screen.getByLabelText(/url/i), {
+      target: { value: 'https://dev.itadirectory.eurecatacademy.org/' },
+    })
 
-    // fireEvent.change(screen.getByLabelText(/tema/i), {
-    //   target: { value: 'cli04uxud000609k37w9phejw' },
-    // })
-    // expect(
-    //   screen.getByDisplayValue('Renderizado condicional')
-    // ).toBeInTheDocument()
+    fireEvent.change(screen.getByLabelText(/tema/i), {
+      target: { value: 'cli04uxud000609k37w9phejw' },
+    })
+    expect(
+      screen.getByDisplayValue('Renderizado condicional')
+    ).toBeInTheDocument()
 
-    // fireEvent.change(screen.getByLabelText(/video/i), {
-    //   target: { value: 'VIDEO' },
-    // })
+    fireEvent.change(screen.getByLabelText(/video/i), {
+      target: { value: 'VIDEO' },
+    })
 
-    // fireEvent.click(screen.getByText(/crear/i))
+    fireEvent.click(screen.getByText(/crear/i))
   })
 
   it('should show an error if the POST request fails', async () => {

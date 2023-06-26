@@ -10,10 +10,7 @@ export const handlers = [
   rest.post('http://localhost:8999/api/v1/auth/register', (req, res, ctx) =>
     res(ctx.status(204))
   ),
-  rest.post(urls.createResource, (req, res, ctx) => {
-    console.log('I DUNNO')
-    return res(ctx.status(204))
-  }),
+  rest.post(urls.createResource, (req, res, ctx) => res(ctx.status(204))),
 
   rest.get(urls.getMe, (_, res, ctx) =>
     res(
