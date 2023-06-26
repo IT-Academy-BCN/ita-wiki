@@ -83,16 +83,15 @@ const TypesFilterWidget = ({ handleTypesFilter }: Props) => {
     <StyledFlexbox direction="column" align="start">
       <StyledText fontWeight="bold">Tipo</StyledText>
       {isLoading && <StyledSpinner role="status" />}
-      {data &&
-        data.map((item: string) => (
-          <CheckBoxStyled
-            key={item}
-            id={item}
-            label={`${item.slice(0, 1)}${item.slice(1).toLowerCase()}`}
-            defaultChecked
-            onChange={(e) => handleTypesFilter(changeSelection(e, item))}
-          />
-        ))}
+      {data?.map((item: string) => (
+        <CheckBoxStyled
+          key={item}
+          id={item}
+          label={`${item.slice(0, 1)}${item.slice(1).toLowerCase()}`}
+          defaultChecked
+          onChange={(e) => handleTypesFilter(changeSelection(e, item))}
+        />
+      ))}
     </StyledFlexbox>
   )
 }
