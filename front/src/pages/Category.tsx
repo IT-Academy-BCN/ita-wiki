@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../styles'
@@ -6,6 +6,7 @@ import { Icon, Text, Title } from '../components/atoms'
 import {
   InputGroup,
   ResourceTitleLink,
+  StatusFilterWidget,
   TypesFilterWidget,
 } from '../components/molecules'
 import {
@@ -171,7 +172,17 @@ const Category: FC = () => {
   const { state } = useLocation()
   const { slug } = useParams()
 
-  const [selectedTypes, setSelectedTypes] = useState<string[]>([])
+  const handleStatusFilter = (selectedStatus: string[]) => {
+    // eslint-disable-next-line no-console
+    console.log('Parent', selectedStatus)
+  }
+
+  const handleTypesFilter = (selectedTypes: string[]) => {
+    if (selectedTypes !== undefined) {
+      // eslint-disable-next-line no-console
+      console.log('Parent', selectedTypes)
+    }
+  }
 
   return (
     <>
@@ -196,10 +207,8 @@ const Category: FC = () => {
               </Title>
               <Text fontWeight="bold">Temas</Text>
               {slug && <TopicsRadioWidget slug={slug} />}
-              <TypesFilterWidget
-                selectedTypes={selectedTypes}
-                setSelectedTypes={setSelectedTypes}
-              />
+              <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
+              <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
             </SideColumnContainer>
             {/* ==> COLUMNA RECURSOS */}
             <MiddleColumnContainer>

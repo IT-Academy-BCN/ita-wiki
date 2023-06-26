@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, Dispatch, SetStateAction } from 'react'
+import { useState, useEffect, ChangeEvent } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { CheckBox, Label, Spinner, Text } from '../atoms'
@@ -23,7 +23,7 @@ const StyledSpinner = styled(Spinner)`
 
 const CheckBoxStyled = styled(CheckBox)`
   ${Label} {
-    font-weight: ${font.regular};
+    font-weight: ${font.medium};
     color: ${colors.black.black3};
     cursor: pointer;
   }
@@ -47,49 +47,52 @@ const getTypes = () =>
     })
 
 type Props = {
-  selectedTypes: string[]
-  setSelectedTypes: Dispatch<SetStateAction<string[]>>
+  handleTypesFilter: (selectedTypes: string[]) => void
 }
 
-const TypesFilterWidget = ({ selectedTypes, setSelectedTypes }: Props) => {
+const TypesFilterWidget = ({ handleTypesFilter }: Props) => {
   const { isLoading, data, error } = useQuery({
     queryKey: ['getTypes'],
     queryFn: () => getTypes(),
   })
 
+  const [selectedTypes, setSelectedTypes] = useState<string[]>(data)
+
   useEffect(() => {
     setSelectedTypes(data)
+    handleTypesFilter(data)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
-  if (error) return <p>Ha habido un error...</p>
-
-  const handleChange = (checkedType: string) => {
-    if (selectedTypes?.includes(checkedType)) {
-      const newSelectedTypes = selectedTypes.filter(
-        (item) => item !== checkedType
-      )
-      setSelectedTypes(newSelectedTypes)
-    } else {
-      setSelectedTypes((prevSelectedTypes) => [
-        ...prevSelectedTypes,
-        checkedType,
-      ])
+  const changeSelection = (e: ChangeEvent<HTMLInputElement>, item: string) => {
+    if (e.target.checked) {
+      const addTypes = [...selectedTypes]
+      addTypes.push(item)
+      setSelectedTypes(addTypes)
+      return addTypes
     }
+
+    const removeTypes = selectedTypes.filter((el) => el !== item)
+    setSelectedTypes(removeTypes)
+    return removeTypes
   }
+
+  if (error) return <p>Ha habido un error...</p>
 
   return (
     <StyledFlexbox direction="column" align="start">
       <StyledText fontWeight="bold">Tipo</StyledText>
       {isLoading && <StyledSpinner role="status" />}
-      {data?.map((item: string) => (
-        <CheckBoxStyled
-          key={item}
-          id={item}
-          label={`${item.slice(0, 1)}${item.slice(1).toLowerCase()}`}
-          defaultChecked
-          onChange={() => handleChange(item)}
-        />
-      ))}
+      {data &&
+        data.map((item: string) => (
+          <CheckBoxStyled
+            key={item}
+            id={item}
+            label={`${item.slice(0, 1)}${item.slice(1).toLowerCase()}`}
+            defaultChecked
+            onChange={(e) => handleTypesFilter(changeSelection(e, item))}
+          />
+        ))}
     </StyledFlexbox>
   )
 }

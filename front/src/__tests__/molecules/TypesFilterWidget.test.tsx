@@ -1,22 +1,16 @@
 import { vi } from 'vitest'
 import { render, screen, waitFor, fireEvent } from '../test-utils'
-import userEvent from '@testing-library/user-event'
 import { TypesFilterWidget } from '../../components/molecules/TypesFilterWidget'
 import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
 
-const setSelectedTypes = vi.fn()
-const handleChange = vi.fn()
-const onChangeCheckbox = vi.fn()
-
 describe('TypesFilterWidget', () => {
-  it('renders TypesFilterWidget correctly on success', async () => {
-    render(
-      <TypesFilterWidget
-        selectedTypes={[]}
-        setSelectedTypes={setSelectedTypes}
-      />
-    )
+  const onChangeTypesFilter = vi.fn()
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+  it('renders component correctly with all filters selected', async () => {
+    render(<TypesFilterWidget handleTypesFilter={onChangeTypesFilter} />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
 
@@ -28,15 +22,17 @@ describe('TypesFilterWidget', () => {
       expect(screen.getByLabelText('Test type 2')).toBeInTheDocument()
       expect(screen.getByLabelText('Test type 3')).toBeInTheDocument()
     })
+
+    expect(onChangeTypesFilter).toHaveBeenCalledTimes(2)
+    expect(onChangeTypesFilter).toHaveBeenCalledWith([
+      'Test type 1',
+      'Test type 2',
+      'Test type 3',
+    ])
   })
 
-  it.only('should raise an onChange event when user clicks one checkbox', async () => {
-    render(
-      <TypesFilterWidget
-        selectedTypes={[]}
-        setSelectedTypes={setSelectedTypes}
-      />
-    )
+  it('should raise an onChange event when user clicks one checkbox', async () => {
+    render(<TypesFilterWidget handleTypesFilter={onChangeTypesFilter} />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
 
@@ -46,36 +42,60 @@ describe('TypesFilterWidget', () => {
 
     const checkBoxA = screen.getByLabelText('Test type 1')
     const checkBoxB = screen.getByLabelText('Test type 2')
-    // const checkBoxC = screen.getByLabelText('Test type 3')
+    const checkBoxC = screen.getByLabelText('Test type 3')
 
     expect(checkBoxA).toBeChecked()
-    // expect(checkBoxB).toBeChecked()
-    // expect(checkBoxC).toBeChecked()
+    expect(checkBoxB).toBeChecked()
+    expect(checkBoxC).toBeChecked()
 
-    // fireEvent.click(checkBoxA)
+    fireEvent.click(checkBoxA)
 
-    // await waitFor(
-    //   () => expect(handleChange).toHaveBeenCalledTimes(1)
-    //   //      expect(handleChange).toHaveBeenCalledWith('Test type 1')
-    // )
-    screen.debug()
-    userEvent.click(checkBoxB)
+    await waitFor(() =>
+      expect(onChangeTypesFilter).toHaveBeenCalledWith([
+        'Test type 2',
+        'Test type 3',
+      ])
+    )
 
-    await waitFor(() => expect(handleChange).toHaveBeenCalled())
-    //await waitFor(() => expect(checkBoxB).not.toBeChecked())
-    //expect(onChangeCheckbox).toHaveBeenCalled()
-    // fireEvent.click(checkBoxC)
-    // await waitFor(() => expect(checkBoxC).not.toBeChecked())
+    fireEvent.click(checkBoxB)
+
+    await waitFor(() =>
+      expect(onChangeTypesFilter).toHaveBeenCalledWith(['Test type 3'])
+    )
+
+    fireEvent.click(checkBoxC)
+
+    await waitFor(() => expect(onChangeTypesFilter).toHaveBeenCalledWith([]))
+
+    fireEvent.click(checkBoxA)
+
+    await waitFor(() =>
+      expect(onChangeTypesFilter).toHaveBeenCalledWith(['Test type 1'])
+    )
+    fireEvent.click(checkBoxB)
+
+    await waitFor(() =>
+      expect(onChangeTypesFilter).toHaveBeenCalledWith([
+        'Test type 1',
+        'Test type 2',
+      ])
+    )
+
+    fireEvent.click(checkBoxC)
+
+    await waitFor(() =>
+      expect(onChangeTypesFilter).toHaveBeenCalledWith([
+        'Test type 1',
+        'Test type 2',
+        'Test type 3',
+      ])
+    )
+    expect(onChangeTypesFilter).toHaveBeenCalledTimes(8)
   })
 
   it('renders correctly on error', async () => {
     mswServer.use(...errorHandlers)
-    render(
-      <TypesFilterWidget
-        selectedTypes={[]}
-        setSelectedTypes={setSelectedTypes}
-      />
-    )
+    render(<TypesFilterWidget handleTypesFilter={onChangeTypesFilter} />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
 
