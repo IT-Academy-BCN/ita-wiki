@@ -48,7 +48,7 @@ describe('ResourceForm', () => {
     )
   })
 
-  it.only('should correctly submit the form when all fields requested are complete', async () => {
+  it('should correctly submit the form when all fields requested are complete', async () => {
     render(<ResourceForm selectOptions={options} />)
 
     const titleInput = screen.getByLabelText(/título/i) as HTMLInputElement
