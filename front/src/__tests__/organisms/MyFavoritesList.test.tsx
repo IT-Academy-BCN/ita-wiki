@@ -1,6 +1,6 @@
 import { setupServer } from 'msw/node'
-import { vi } from 'vitest'
-import { render, screen } from '../test-utils'
+import { expect, vi } from 'vitest'
+import { render, screen, waitFor } from '../test-utils'
 import { MyFavoritesList } from '../../components/organisms'
 import { errorHandlers, handlers } from '../../__mocks__/handlers'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
@@ -20,6 +20,8 @@ afterEach(() => {
   server.resetHandlers()
   vi.resetAllMocks()
 })
+
+afterAll(() => server.close())
 
 describe('MyFavoritesList', () => {
   beforeEach(() => {
@@ -49,8 +51,15 @@ describe('MyFavoritesList', () => {
       user: null,
     } as TAuthContext)
 
-    server.use(...errorHandlers)
-
     render(<MyFavoritesList />)
+  })
+
+  it('receives data when API call returns 200 and the user has no favorite resources', async () => {
+    render(<MyFavoritesList />)
+    await waitFor(() => {
+      expect(
+        screen.getByText(/No has añadido ningún recurso favorito/)
+      ).toBeInTheDocument()
+    })
   })
 })

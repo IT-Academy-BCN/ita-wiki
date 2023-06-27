@@ -209,6 +209,14 @@ export const errorHandlers = [
     }
   }),
 
+  // eslint-disable-next-line consistent-return
+  rest.get(urls.getFavorites, (req, res, ctx) => {
+    const favoriteUserId = req.url.searchParams.get('userId')
+    if (favoriteUserId === 'invalid-userId') {
+      return res(ctx.status(404), ctx.json({ message: 'Invalid userId' }))
+    }
+  }),
+
   rest.put(urls.vote, (_, res, ctx) =>
     res(ctx.status(401), ctx.json({ message: 'User not found' }))
   ),
