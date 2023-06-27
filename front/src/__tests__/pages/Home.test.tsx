@@ -26,7 +26,7 @@ describe('Home page', () => {
     expect(screen.getByText(/entrar/i)).toBeInTheDocument()
   })
 
-  it.only('shows signup modal when user clicked', () => {
+  it('shows signup modal when user clicked', () => {
     render(<Home />)
 
     fireEvent.click(screen.getByText(/registrarme/i))
