@@ -11,10 +11,19 @@ import {
 } from '../controllers'
 import { resourceCreateSchema, resourcesGetParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
+import { modifyResource } from '../controllers/resources/modifyResource'
+import { resourceModifySchema } from '../schemas/resource/resourceModifySchema'
 
 const resourcesRouter = new Router()
 
 resourcesRouter.prefix(pathRoot.v1.resources)
+
+resourcesRouter.put(
+  '/',
+  //authMiddleware,
+  validate(z.object({ body: resourceModifySchema })),
+  modifyResource
+)
 
 resourcesRouter.post(
   '/create',
