@@ -6,12 +6,6 @@ import { resourceGetSchema } from '../../schemas'
 export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
   const { userId } = ctx.params
   const categorySlug = ctx.query.categorySlug?.toString()
-  const user = await prisma.user.findFirst({
-    where: {
-      id: userId,
-    },
-  })
-  console.log('user: ', user)
 
   let resources
 
@@ -37,7 +31,6 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
         },
       },
     })
-    console.log('topics found: ', topicsInCategory)
     resources = await prisma.resource.findMany({
       where: {
         // userId,
@@ -60,7 +53,6 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
         topics: { select: { topic: true } },
       },
     })
-    console.log('resources_found:', resources)
   }
 
   const parsedResources = resources.map((resource) => {

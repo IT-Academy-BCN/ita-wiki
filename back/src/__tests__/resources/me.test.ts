@@ -67,7 +67,6 @@ describe('Testing resources/me endpoint', () => {
       .set('Cookie', authToken.user)
       .query({ categorySlug })
     expect(response.status).toBe(200)
-    console.log(response.body)
     expect(response.body.resources).toBeInstanceOf(Array)
     expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
     response.body.resources.forEach((resource: any) => {
