@@ -62,9 +62,13 @@ const Login: FC = () => {
 
   const navigate = useNavigate()
 
+  // TEMPORARY CHANGE
+
+  // const urls = 'http://localhost:8999/api/v1/auth/login'
+
   const loginUser = async (user: object) => {
     try {
-      const response = await axios.post(urls.login, user)
+      const response = await axios.post(urls.logIn, user)
 
       if (response.status === 204) {
         navigate('/')

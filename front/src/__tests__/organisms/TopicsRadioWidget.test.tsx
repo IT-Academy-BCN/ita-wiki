@@ -13,7 +13,6 @@ describe('TopicsRadioWidget', () => {
     await waitFor(() => {
       const option1 = screen.getByText('Listas')
       expect(option1).toBeInTheDocument()
-      screen.debug()
     })
   })
 
@@ -41,8 +40,6 @@ describe('TopicsRadioWidget', () => {
       fireEvent.click(option2)
       expect(option1).not.toBeChecked()
       expect(option2).toBeChecked()
-
-      screen.debug()
     })
   })
 })
