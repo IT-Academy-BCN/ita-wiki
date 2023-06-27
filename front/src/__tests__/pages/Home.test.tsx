@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { render } from '../test-utils'
 import { Home } from '../../pages'
 
@@ -18,5 +18,19 @@ describe('Home page', () => {
         /Para comenzar a visualizar recursos, selecciona una categoría/i
       )
     ).toBeInTheDocument()
+  })
+
+  it('shows signup button if user is not logged', () => {
+    render(<Home />)
+
+    expect(screen.getByText(/entrar/i)).toBeInTheDocument()
+  })
+
+  it.only('shows signup modal when user clicked', () => {
+    render(<Home />)
+
+    fireEvent.click(screen.getByText(/registrarme/i))
+    const modalTitle = screen.getByText(/registro/i)
+    expect(modalTitle).toBeInTheDocument()
   })
 })
