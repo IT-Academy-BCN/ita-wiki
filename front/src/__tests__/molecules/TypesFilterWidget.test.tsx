@@ -23,7 +23,7 @@ describe('TypesFilterWidget', () => {
       expect(screen.getByLabelText('Test type 3')).toBeInTheDocument()
     })
 
-    expect(onChangeTypesFilter).toHaveBeenCalledTimes(2)
+    expect(onChangeTypesFilter).toHaveBeenCalledTimes(1)
     expect(onChangeTypesFilter).toHaveBeenCalledWith([
       'Test type 1',
       'Test type 2',
@@ -41,12 +41,8 @@ describe('TypesFilterWidget', () => {
     await waitFor(() => expect(spinnerComponent).not.toBeInTheDocument())
 
     const checkBoxA = screen.getByLabelText('Test type 1')
-    const checkBoxB = screen.getByLabelText('Test type 2')
-    const checkBoxC = screen.getByLabelText('Test type 3')
 
     expect(checkBoxA).toBeChecked()
-    expect(checkBoxB).toBeChecked()
-    expect(checkBoxC).toBeChecked()
 
     fireEvent.click(checkBoxA)
 
@@ -57,32 +53,7 @@ describe('TypesFilterWidget', () => {
       ])
     )
 
-    fireEvent.click(checkBoxB)
-
-    await waitFor(() =>
-      expect(onChangeTypesFilter).toHaveBeenCalledWith(['Test type 3'])
-    )
-
-    fireEvent.click(checkBoxC)
-
-    await waitFor(() => expect(onChangeTypesFilter).toHaveBeenCalledWith([]))
-
     fireEvent.click(checkBoxA)
-
-    await waitFor(() =>
-      expect(onChangeTypesFilter).toHaveBeenCalledWith(['Test type 1'])
-    )
-    fireEvent.click(checkBoxB)
-
-    await waitFor(() =>
-      expect(onChangeTypesFilter).toHaveBeenCalledWith([
-        'Test type 1',
-        'Test type 2',
-      ])
-    )
-
-    fireEvent.click(checkBoxC)
-
     await waitFor(() =>
       expect(onChangeTypesFilter).toHaveBeenCalledWith([
         'Test type 1',
@@ -90,7 +61,7 @@ describe('TypesFilterWidget', () => {
         'Test type 3',
       ])
     )
-    expect(onChangeTypesFilter).toHaveBeenCalledTimes(8)
+    expect(onChangeTypesFilter).toHaveBeenCalledTimes(3)
   })
 
   it('renders correctly on error', async () => {

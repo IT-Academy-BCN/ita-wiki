@@ -17,6 +17,7 @@ const StyledText = styled(Text)`
 const StyledSpinner = styled(Spinner)`
   width: 50px;
   height: 50px;
+  border-width: 10px;
   align-self: center;
   justify-content: center;
 `
@@ -40,27 +41,35 @@ const getTypes = () =>
         throw new Error(`Error fetching resources: ${res.statusText}`)
       }
 
-      return res.json()
+      return res.json() as Promise<TData>
     })
     .catch((err) => {
       throw new Error(`Error fetching resources: ${err.message}`)
     })
 
 type Props = {
-  handleTypesFilter: (selectedTypes: string[]) => void
+  handleTypesFilter: (selectedTypes: TData) => void
+}
+
+type TData = string[]
+
+type TError = {
+  message: string
 }
 
 const TypesFilterWidget = ({ handleTypesFilter }: Props) => {
-  const { isLoading, data, error } = useQuery({
+  const { isLoading, data, error } = useQuery<TData, TError>({
     queryKey: ['getTypes'],
     queryFn: () => getTypes(),
   })
 
-  const [selectedTypes, setSelectedTypes] = useState<string[]>(data)
+  const [selectedTypes, setSelectedTypes] = useState<TData>([])
 
   useEffect(() => {
-    setSelectedTypes(data)
-    handleTypesFilter(data)
+    if (data !== undefined) {
+      setSelectedTypes(data)
+      handleTypesFilter(data)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
@@ -72,7 +81,7 @@ const TypesFilterWidget = ({ handleTypesFilter }: Props) => {
       return addTypes
     }
 
-    const removeTypes = selectedTypes.filter((el) => el !== item)
+    const removeTypes = selectedTypes.filter((el: string) => el !== item)
     setSelectedTypes(removeTypes)
     return removeTypes
   }

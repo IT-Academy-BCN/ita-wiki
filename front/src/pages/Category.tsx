@@ -172,16 +172,16 @@ const Category: FC = () => {
   const { state } = useLocation()
   const { slug } = useParams()
 
-  const handleStatusFilter = (selectedStatus: string[]) => {
+  const handleTypesFilter = (selectedTypes: string[]) => {
+    // TODO: Use this info to filter resources by type
     // eslint-disable-next-line no-console
-    console.log('Parent', selectedStatus)
+    console.log('Parent', selectedTypes)
   }
 
-  const handleTypesFilter = (selectedTypes: string[]) => {
-    if (selectedTypes !== undefined) {
-      // eslint-disable-next-line no-console
-      console.log('Parent', selectedTypes)
-    }
+  const handleStatusFilter = (selectedStatus: string[]) => {
+    // TODO: Use this info to filter resources by status
+    // eslint-disable-next-line no-console
+    console.log('Parent', selectedStatus)
   }
 
   return (
