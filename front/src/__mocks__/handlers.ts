@@ -11,6 +11,8 @@ export const handlers = [
     res(ctx.status(204))
   ),
 
+  rest.post(urls.createResource, (req, res, ctx) => res(ctx.status(204))),
+
   rest.get(urls.getMe, (_, res, ctx) =>
     res(
       ctx.status(200),
