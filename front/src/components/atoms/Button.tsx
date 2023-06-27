@@ -43,7 +43,7 @@ const StyledButton = styled.button<TButton>`
     outline &&
     `
         background-color: ${colors.white};
-        color: ${colors.gray.gray1};
+        color: ${colors.gray.gray3};
         border: 2px solid ${colors.gray.gray4};
         &:hover {
             background-color: ${colors.outlineHover};

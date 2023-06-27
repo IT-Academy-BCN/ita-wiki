@@ -124,6 +124,7 @@ const ImageStyled = styled.img`
 
 const ButtonStyled = styled(Button)`
   min-width: 50%;
+  margin: ${dimensions.spacing.xxs};
   padding: ${dimensions.spacing.xs} ${dimensions.spacing.xxl};
 `
 
@@ -298,7 +299,7 @@ const Home: FC = () => {
                 Regístrate o inicia sesión para añadir recursos favoritos
               </Text>
               <ButtonContainerStyled direction='row'>
-                <ButtonStyled secondary outline onClick={openLoginModal}>Entrar</ButtonStyled>
+                <ButtonStyled outline onClick={openLoginModal}>Entrar</ButtonStyled>
                 <ButtonStyled onClick={openRegisterModal}>Registrarme</ButtonStyled>
               </ButtonContainerStyled>
             </>
