@@ -657,7 +657,6 @@ paths:
                             - resourceType
                           message: Invalid enum value. Expected 'BLOG' | 'VIDEO' | 'TUTORIAL', received
                             'BLO'
-  /api/v1/resources/create:
     post:
       tags:
         - resources
