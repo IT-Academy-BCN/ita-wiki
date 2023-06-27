@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { UserLoginSchema } from '@itacademy/schemas'
 import InputGroup from '../components/molecules/InputGroup'
 import { Button, Text, Title, ValidationMessage } from '../components/atoms'
-import { paths } from '../constants'
+import { paths, urls } from '../constants'
 import { dimensions, colors, FlexBox, font } from '../styles'
 
 const FlexErrorStyled = styled(FlexBox)`
@@ -68,11 +68,13 @@ const Login: FC = () => {
 
   const navigate = useNavigate()
 
-  const urls = 'http://localhost:8999/api/v1/auth/login'
+  // TEMPORARY CHANGE
+
+  // const urls = 'http://localhost:8999/api/v1/auth/login'
 
   const loginUser = async (user: object) => {
     try {
-      const response = await axios.post(urls, user)
+      const response = await axios.post(urls.logIn, user)
 
       if (response.status === 204) {
         navigate('/')

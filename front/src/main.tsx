@@ -6,7 +6,6 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { paths } from './constants'
 import { Home, Category, Login, Register, ErrorPage } from './pages'
 import { Information } from './pages/Information'
-import { AddResource } from './pages/AddResource'
 import { AuthProvider } from './context/AuthProvider'
 
 const router = createBrowserRouter([
@@ -30,10 +29,6 @@ const router = createBrowserRouter([
   {
     path: paths.information,
     element: <Information />,
-  },
-  {
-    path: 'add-resource',
-    element: <AddResource />,
   },
 ])
 
