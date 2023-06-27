@@ -8,12 +8,17 @@ import { resourceGetSchema } from '../../schemas'
 import { resourceTestData } from '../mocks/resources'
 
 beforeAll(async () => {
-  const testResource = {
+  const user = await prisma.user.findUnique({
+    where: { email: 'testingUser@user.cat' },
+  })
+
+  const testResourceWithUser = {
     ...resourceTestData[0],
-    user: { connect: { dni: testUserData.user.dni } },
+    userId: user!.id,
   }
   await prisma.resource.create({
-    data: testResource,
+    // @ts-ignore
+    data: testResourceWithUser,
   })
 })
 
@@ -48,6 +53,21 @@ describe('Testing resources/me endpoint', () => {
       .set('Cookie', authToken.user)
 
     expect(response.status).toBe(200)
+    expect(response.body.resources).toBeInstanceOf(Array)
+    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
+    response.body.resources.forEach((resource: any) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
+    })
+  })
+
+  test('Given a valid category slug, should return resources related to that category', async () => {
+    const categorySlug = 'react'
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.resources}/me`)
+      .set('Cookie', authToken.user)
+      .query({ categorySlug })
+    expect(response.status).toBe(200)
+    console.log(response.body)
     expect(response.body.resources).toBeInstanceOf(Array)
     expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
     response.body.resources.forEach((resource: any) => {
