@@ -1,12 +1,14 @@
 import { FC, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { Button, Text, Title } from '../components/atoms'
+import { useQuery } from '@tanstack/react-query'
+import { useAuth } from '../context/AuthProvider'
 import { FlexBox, colors, dimensions } from '../styles'
-import { Modal, SelectGroup } from '../components/molecules'
-import { CardResource } from '../components/molecules/CardResource'
+import { Button, Text, Title } from '../components/atoms/index'
+import { Modal, SelectGroup, CardResource } from '../components/molecules/index'
+import { ResourceForm, Navbar } from '../components/organisms/index'
 import icons from '../assets/icons'
-import { ResourceForm , Navbar} from '../components/organisms'
+import { paths, urls } from '../constants'
 
 type TStackData = {
   createdBy: string
@@ -97,12 +99,6 @@ const stackData: TStackData[] = [
   },
 ]
 
-const options = [
-  { value: '0', label: 'Context API' },
-  { value: '1', label: 'Redux Toolkit' },
-]
-
-
 const HeaderContainerStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
   padding: 5rem ${dimensions.spacing.base} ${dimensions.spacing.xl};
@@ -117,16 +113,18 @@ const ButtonAddStyled = styled(Button)`
   font-size: xx-large;
   font-weight: 400;
   height: 52px;
-  padding-top: 0.6rem;
   width: 52px;
 `
-
 const ButtonStyled = styled(Button)`
   font-weight: 500;
   margin: ${dimensions.spacing.xxxs} ${dimensions.spacing.xl};
-  color: ${colors.gray.gray3};
+  color: ${({ outline }) =>
+    outline ? `${colors.gray.gray3}` : `${colors.white}`};
 `
 
+const StyledLink = styled.a`
+  text-decoration: none;
+`
 const ButtonContainterStyled = styled(FlexBox)`
   margin-top: 0.8rem;
 
@@ -155,44 +153,112 @@ const TextContainerStyled = styled(FlexBox)`
   gap: 0.8rem;
 `
 
-const Resource: FC = () => {
-  const [isOpen, setIsOpen] = useState(false)
+const ImgStyled = styled.img`
+  margin-top: ${dimensions.spacing.xxl};
+  height: 100px;
+  width: 100px;
+`
 
+const StyledText = styled(Text)`
+  text-align: center;
+  padding: 0 ${dimensions.spacing.xs};
+  font-weight: 500;
+  margin-bottom: 6rem;
+`
+type TMappedTopics = {
+  id: string
+  name: string
+}
+
+const Resource: FC = () => {
+  const { slug } = useParams()
+  const { user } = useAuth()
+
+  const getTopics = () =>
+    fetch(`${urls.getTopics}?slug=${slug}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Error fetching topics: ${res.statusText}`)
+        }
+        return res.json()
+      })
+      .catch((err) => {
+        throw new Error(`Error fetching topics: ${err.message}`)
+      })
+
+  const { data: fetchedTopics } = useQuery({
+    queryKey: ['getTopics', slug],
+    queryFn: getTopics,
+  })
+
+  const mappedTopics = fetchedTopics?.topics.map((topic: TMappedTopics) => {
+    const selectOptions = { value: topic.id, label: topic.name }
+    return selectOptions
+  })
+
+  const [isOpen, setIsOpen] = useState(false)
   const openModal = () => {
     setIsOpen(true)
   }
 
-  const { state } = useLocation()
-
   return (
     <>
       <HeaderContainerStyled align="stretch">
-        <Navbar title='Wiki'/>
+        <Navbar title="Wiki" />
         <FlexBox direction="row" justify="space-between">
           <Title as="h1" fontWeight="bold">
-            Recursos de {state?.name}
+            Recursos de {slug}
           </Title>
-          <Modal
-            isOpen={isOpen}
-            toggleModal={() => setIsOpen(false)}
-            title="Nuevo Recurso"
-          >
-            <ResourceForm />
-            <ButtonStyled outline onClick={() => setIsOpen(false)}>
-              Cancelar
-            </ButtonStyled>
-          </Modal>
           <ButtonAddStyled onClick={openModal}>+</ButtonAddStyled>
+
+          {/* TODO: MOVE MODALS TO SEPARATE ORGANISMS */}
+          {user ? (
+            // ADD RESOURCE MODAL
+            <Modal
+              isOpen={isOpen}
+              toggleModal={() => setIsOpen(false)}
+              title="Nuevo Recurso"
+            >
+              <ResourceForm selectOptions={mappedTopics} />
+              <ButtonStyled outline onClick={() => setIsOpen(false)}>
+                Cancelar
+              </ButtonStyled>
+            </Modal>
+          ) : (
+            // RESTRICTED ACCESS MODAL
+            <Modal isOpen={isOpen} toggleModal={() => setIsOpen(false)}>
+              <ImgStyled src={icons.lockDynamic} />
+              <Title as="h1" fontWeight="bold">
+                Acceso restringido
+              </Title>
+              <StyledText>Regístrate para subir o votar contenido</StyledText>
+
+              <ButtonStyled>
+                {/* TEMPORARY LINK, THIS BUTTON WILL OPEN SIGNUP MODAL  */}
+                <StyledLink href={paths.register}>Registrarme</StyledLink>
+              </ButtonStyled>
+
+              <ButtonStyled outline>
+                {/* TEMPORARY LINK, THIS BUTTON WILL OPEN LOGIN MODAL  */}
+                <StyledLink href={paths.login}>Entrar</StyledLink>
+              </ButtonStyled>
+            </Modal>
+          )}
+          {/* TODO: ADD SIGN UP MODAL */}
+          {/* TODO: ADD LOGIN MODAL */}
         </FlexBox>
+
         <Text fontWeight="bold">Temas</Text>
+
         <SelectGroup
           label="Context API"
           placeholder="Selecciona tema"
           id="theme"
           name="theme"
-          options={options}
+          options={mappedTopics}
           color="blue"
         />
+
         <ButtonContainterStyled
           direction="row"
           align="start"
@@ -206,8 +272,10 @@ const Resource: FC = () => {
 
       <SubHeaderContainerStyled direction="row" justify="space-between">
         <Text fontWeight="bold">23 resultados</Text>
+
         <TextContainerStyled direction="row">
           <Text fontWeight="bold">Votos ↓</Text>
+
           <Text color={colors.gray.gray3}>Fecha</Text>
         </TextContainerStyled>
       </SubHeaderContainerStyled>

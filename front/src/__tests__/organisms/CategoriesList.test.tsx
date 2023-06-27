@@ -49,6 +49,5 @@ describe('CategoriesList', () => {
     await waitFor(() => {
       expect(window.location.pathname).toEqual('/category/react')
     })
-    screen.debug()
   })
 })
