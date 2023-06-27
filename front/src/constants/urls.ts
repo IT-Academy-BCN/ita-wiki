@@ -1,4 +1,4 @@
-export const urls: Record<string, string> = {
+export const urls = {
   register: '/api/v1/auth/register',
   logIn: '/api/v1/auth/login',
   createResource: '/api/v1/resources/create',

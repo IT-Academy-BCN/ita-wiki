@@ -2,12 +2,13 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { FC } from 'react'
 import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio } from '../atoms'
 import { FlexBox, dimensions } from '../../styles'
-import { urls } from '../../constants'
+import { paths, urls } from '../../constants'
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -59,6 +60,23 @@ type TSelectOptions = {
   selectOptions: TSelectOption[]
 }
 
+const createResourceFetcher = (resource: object) =>
+  fetch(urls.createResource, {
+    method: 'POST',
+    body: JSON.stringify(resource),
+    headers: {
+      'Content-type': 'application/json',
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error('Error al crear el recurso')
+      }
+      return res.status === 204 ? {} : res.json()
+    })
+    // eslint-disable-next-line no-console
+    .catch((error) => console.error(error))
+
 export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
   const {
     register,
@@ -68,42 +86,24 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
   } = useForm<TResourceForm>({
     resolver: zodResolver(ResourceFormSchema),
   })
-
   const navigate = useNavigate()
 
-  const registerNewResource = async (resource: object) => {
-    const config = {
-      method: 'POST',
-      body: JSON.stringify(resource),
-      headers: {
-        'Content-type': 'application/json',
-      },
-    }
-    try {
-      const res = await fetch(urls.createResource, config)
-
-      if (res.status === 204) {
-        navigate('/')
-      }
-    } catch (error) {
-      throw new Error('Error registering new resource')
-    }
-  }
+  const createResource = useMutation(createResourceFetcher, {
+    onSuccess: () => {
+      reset()
+      navigate(paths.home)
+    },
+  })
 
   const onSubmit = handleSubmit(async (data) => {
     const { title, description, url, topics, resourceType } = data
-    try {
-      await registerNewResource({
-        title,
-        description,
-        url,
-        topics: [topics],
-        resourceType,
-      })
-      reset()
-    } catch (error) {
-      throw new Error('Error sending new resource data')
-    }
+    await createResource.mutateAsync({
+      title,
+      description,
+      url,
+      topics,
+      resourceType,
+    })
   })
 
   return (
@@ -114,7 +114,7 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
         label="Título"
         placeholder="Título"
         {...register('title')}
-        name="title"
+        data-testid="resourceTitle"
         error={errors.title && true}
         validationMessage={errors.title?.message}
         validationType="error"
@@ -125,7 +125,6 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
         label="Descripción"
         placeholder="Descripción"
         {...register('description')}
-        name="description"
       />
       <InputGroup
         hiddenLabel
@@ -133,7 +132,6 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
         label="URL"
         placeholder="URL"
         {...register('url')}
-        name="url"
         error={errors.url && true}
         validationMessage={errors.url?.message}
         validationType="error"
@@ -144,7 +142,6 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
         label="Tema"
         options={selectOptions}
         {...register('topics')}
-        name="topics"
         error={!!errors.topics}
         validationMessage={errors.topics?.message}
       />
