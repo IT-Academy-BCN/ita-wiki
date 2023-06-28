@@ -1,3 +1,4 @@
+import { HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions, font } from '../../styles'
 import { Icon, Text } from '../atoms'
@@ -8,6 +9,7 @@ const MainContainer = styled(FlexBox)`
   background-color: ${colors.white};
   border-radius: ${dimensions.borderRadius.sm};
   margin-bottom: ${dimensions.spacing.lg};
+  position: relative;
 
   @media only ${device.Tablet} {
     flex-direction: column;
@@ -63,12 +65,50 @@ const IndicatorStyled = styled(FlexBox)`
     color: ${colors.gray.gray3};
   }
 `
+const CircleContainer = styled.div`
+  position: absolute;
+  border-radius: ${dimensions.borderRadius.sm};
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+`
+type TCircle = HTMLAttributes<HTMLParagraphElement> & {
+  backgroundColor?: string
+  top?: string
+  left?: string
+  zIndex: number
+}
+
+const CircleStyled = styled.div<TCircle>`
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background-color: ${(props) => props.backgroundColor};
+  position: absolute;
+  top: ${(props) => props.top};
+  left: ${(props) => props.left};
+  transform: translateX(-50%);
+  z-index: ${(props) => props.zIndex};
+
+  @media only ${device.Tablet} {
+    display: none;
+  }
+`
+
 const ImgStyled = styled.img`
   height: 5rem;
+  z-index: 99;
+  position: relative;
+  margin: auto ${dimensions.spacing.xxl} auto ${dimensions.spacing.base};
 
   @media only ${device.Tablet} {
     height: 100px;
     width: 100px;
+    z-index: 0;
+    margin: ${dimensions.spacing.none};
   }
 `
 const TitleStyled = styled(Text)`
@@ -78,7 +118,7 @@ const TitleStyled = styled(Text)`
   @media only ${device.Tablet} {
     font-weight: normal;
     text-align: center;
-    margin: auto;
+    margin: ${dimensions.spacing.xxs} auto;
   }
 `
 const SubtitleStyled = styled(Text)`
@@ -127,6 +167,20 @@ export const CardHome = ({
     <ContentContainer>
       <IndicatorStyled>{indicator}</IndicatorStyled>
       <ImgStyled alt="icon" src={icon} data-testid="testIcon" />
+      <CircleContainer>
+        <CircleStyled
+          backgroundColor={colors.primary}
+          left="10px"
+          top="-70px"
+          zIndex={2}
+        />
+        <CircleStyled
+          backgroundColor={`${colors.primary}7D`}
+          left="40px"
+          top="-55px"
+          zIndex={1}
+        />
+      </CircleContainer>
       <FlexBoxStyled>
         <TitleStyled>{cardTitle}</TitleStyled>
         <SubtitleStyled>{cardSubtitle}</SubtitleStyled>

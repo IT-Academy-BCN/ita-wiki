@@ -34,7 +34,6 @@ export const SmallSpinner = styled(Spinner)`
 `
 
 const CategoriesListStyled = styled(FlexBox)`
-  padding: 0 ${dimensions.spacing.lg};
   margin-bottom: ${dimensions.spacing.lg};
 `
 

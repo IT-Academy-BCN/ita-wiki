@@ -11,8 +11,8 @@ import {
 } from '../components/organisms'
 import { Title, Text, Icon, Button } from '../components/atoms'
 import { paths } from '../constants'
-import Register from './Register'
-import Login from './Login'
+import Register from '../components/organisms/Register'
+import Login from '../components/organisms/Login'
 import { useAuth } from '../context/AuthProvider'
 
 export const MobileStyled = styled.div`
@@ -130,12 +130,12 @@ const Home: FC = () => {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
 
-  const openRegisterModal = () => {
-    setIsRegisterOpen(true)
+  const handleRegisterModal = () => {
+    setIsRegisterOpen(!isRegisterOpen)
   }
 
-  const openLoginModal = () => {
-    setIsLoginOpen(true)
+  const handleLoginModal = () => {
+    setIsLoginOpen(!isLoginOpen)
   }
 
   return (
@@ -177,11 +177,11 @@ const Home: FC = () => {
             </SliderContainer>
           ) : (
             <Text fontWeight="bold" color={colors.gray.gray3}>
-              <TextDecorationStyled onClick={openRegisterModal}>
+              <TextDecorationStyled onClick={handleRegisterModal}>
                 Regístrate
               </TextDecorationStyled>
               {` o `}
-              <TextDecorationStyled onClick={openLoginModal}>
+              <TextDecorationStyled onClick={handleLoginModal}>
                 inicia sesión
               </TextDecorationStyled>
               {` para añadir recursos favoritos`}
@@ -223,10 +223,10 @@ const Home: FC = () => {
                   Regístrate o inicia sesión para añadir recursos favoritos
                 </Text>
                 <ButtonContainerStyled direction="row">
-                  <ButtonStyled outline onClick={openLoginModal}>
+                  <ButtonStyled outline onClick={handleLoginModal}>
                     Entrar
                   </ButtonStyled>
-                  <ButtonStyled onClick={openRegisterModal}>
+                  <ButtonStyled onClick={handleRegisterModal}>
                     Registrarme
                   </ButtonStyled>
                 </ButtonContainerStyled>
@@ -263,8 +263,18 @@ const Home: FC = () => {
           isLoginOpen ? setIsLoginOpen(false) : setIsRegisterOpen(false)
         }
       >
-        {isLoginOpen && <Login />}
-        {isRegisterOpen && <Register />}
+        {isLoginOpen && (
+          <Login
+            handleLoginModal={handleLoginModal}
+            handleRegisterModal={handleRegisterModal}
+          />
+        )}
+        {isRegisterOpen && (
+          <Register
+            handleLoginModal={handleLoginModal}
+            handleRegisterModal={handleRegisterModal}
+          />
+        )}
       </Modal>
     </>
   )
