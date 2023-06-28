@@ -5,7 +5,6 @@ import { FlexBox, colors, device, dimensions } from '../styles'
 import { Icon, Text, Title } from '../components/atoms'
 import {
   InputGroup,
-  ResourceTitleLink,
   StatusFilterWidget,
   TypesFilterWidget,
 } from '../components/molecules'

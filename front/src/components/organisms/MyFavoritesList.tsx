@@ -75,8 +75,9 @@ export const MyFavoritesList: FC = () => {
       </TitleContainer>
       {!user && (
         <Text color={colors.gray.gray4}>
-          <StyledLink href={paths.register}>Regístrate</StyledLink> o{' '}
-          <StyledLink href={paths.login}>inicia sesión</StyledLink> para añadir
+          {/* TODO: Call modals instead */}
+          {/* <StyledLink href={paths.register}>Regístrate</StyledLink> o{' '}
+          <StyledLink href={paths.login}>inicia sesión</StyledLink> para añadir */}
           recursos favoritos
         </Text>
       )}
