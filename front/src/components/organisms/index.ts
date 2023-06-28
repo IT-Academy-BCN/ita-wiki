@@ -6,6 +6,8 @@ import { TopicsRadioWidget } from './TopicsRadioWidget'
 import { Navbar } from './Navbar'
 import { MyFavoritesList } from './MyFavoritesList'
 import { MyResources } from './MyResources'
+import Login from './Login'
+import Register from './Register'
 
 export {
   ResourceCardList,
@@ -16,4 +18,6 @@ export {
   ResourceForm,
   Navbar,
   MyFavoritesList,
+  Login,
+  Register,
 }
