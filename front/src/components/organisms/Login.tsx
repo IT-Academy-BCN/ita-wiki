@@ -1,7 +1,6 @@
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components'
 import { UserLoginSchema } from '@itacademy/schemas'
@@ -61,14 +60,12 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
     resolver: zodResolver(UserLoginSchema),
   })
 
-  const navigate = useNavigate()
-
   const loginUser = async (user: object) => {
     try {
       const response = await axios.post(urls.logIn, user)
 
       if (response.status === 204) {
-        navigate('/')
+        window.location.reload()
       }
     } catch (error) {
       throw new Error('Error logging in user')
