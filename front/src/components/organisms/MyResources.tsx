@@ -1,11 +1,14 @@
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { useAuth } from '../../context/AuthProvider'
-import { paths, urls } from '../../constants'
-import { ResourceTitleLink } from '../molecules'
-import { Title, Spinner, Icon, Link, Text } from '../atoms'
+import { urls } from '../../constants'
+import { Modal, ResourceTitleLink } from '../molecules'
+import { Title, Spinner, Icon, Text } from '../atoms'
 import { FlexBox, colors, dimensions } from '../../styles'
+import Login from './Login'
+import Register from './Register'
 
 type TResource = {
   id: string
@@ -42,21 +45,17 @@ const TitleContainer = styled(FlexBox)`
   gap: ${dimensions.spacing.xxxs};
   margin-top: ${dimensions.spacing.xl};
 `
+
 const ResourcesUserStyled = styled(FlexBox)`
   align-items: flex-start;
   margin-bottom: ${dimensions.spacing.md};
 `
-const StyledLink = styled(Link)`
-  color: ${colors.gray.gray4};
-  font-weight: 'regular';
+
+const TextDecorationStyled = styled.span`
+  text-decoration: underline;
+  cursor: pointer;
 `
-const Styledtext = styled(Text)`
-  color: ${colors.gray.gray4};
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-`
+
 const getResourcesByUser = async (categorySlug: string | undefined) => {
   const response = await fetch(
     `${urls.getResources}?category=${categorySlug}`,
@@ -77,6 +76,8 @@ const getResourcesByUser = async (categorySlug: string | undefined) => {
 
 const MyResources = () => {
   const { user } = useAuth()
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false)
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
 
   const params = useParams<{ slug: string }>()
   const categorySlug: string | undefined = params.slug
@@ -86,6 +87,14 @@ const MyResources = () => {
     queryFn: () => getResourcesByUser(categorySlug),
     enabled: !!user, // Enable the query only if there is a logged-in user
   })
+
+  const handleRegisterModal = () => {
+    setIsRegisterOpen(!isRegisterOpen)
+  }
+
+  const handleLoginModal = () => {
+    setIsLoginOpen(!isLoginOpen)
+  }
 
   return (
     <>
@@ -97,17 +106,16 @@ const MyResources = () => {
       </TitleContainer>
 
       {!user && (
-        <>
-          <Styledtext style={{ marginBottom: 0 }}>
-            <StyledLink href={paths.register} style={{ marginLeft: 0 }}>
-              Regístrate
-            </StyledLink>{' '}
-            o<StyledLink href={paths.login}>inicia sesión</StyledLink>para
-          </Styledtext>
-          <Styledtext style={{ marginTop: 0 }}>
-            añadir recursos favoritos
-          </Styledtext>
-        </>
+        <Text fontWeight="bold" color={colors.gray.gray3}>
+          <TextDecorationStyled onClick={handleRegisterModal}>
+            Regístrate
+          </TextDecorationStyled>
+          {` o `}
+          <TextDecorationStyled onClick={handleLoginModal}>
+            inicia sesión
+          </TextDecorationStyled>
+          {` para añadir recursos favoritos`}
+        </Text>
       )}
 
       {isLoading && user && <Spinner />}
@@ -127,6 +135,26 @@ const MyResources = () => {
         ) : (
           <Text color={colors.gray.gray4}>No has subido ningún recurso</Text>
         ))}
+
+      <Modal
+        isOpen={isLoginOpen || isRegisterOpen}
+        toggleModal={() =>
+          isLoginOpen ? setIsLoginOpen(false) : setIsRegisterOpen(false)
+        }
+      >
+        {isLoginOpen && (
+          <Login
+            handleLoginModal={handleLoginModal}
+            handleRegisterModal={handleRegisterModal}
+          />
+        )}
+        {isRegisterOpen && (
+          <Register
+            handleLoginModal={handleLoginModal}
+            handleRegisterModal={handleRegisterModal}
+          />
+        )}
+      </Modal>
     </>
   )
 }

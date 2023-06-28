@@ -32,7 +32,7 @@ describe('Testing resource creation endpoint', () => {
     }
 
     const response = await supertest(server)
-      .post(`${pathRoot.v1.resources}/create`)
+      .post(`${pathRoot.v1.resources}`)
       .set('Cookie', authToken.admin)
       .send(newResource)
 
@@ -50,7 +50,7 @@ describe('Testing resource creation endpoint', () => {
     }
 
     const response = await supertest(server)
-      .post(`${pathRoot.v1.resources}/create`)
+      .post(`${pathRoot.v1.resources}`)
       .set('Cookie', authToken.admin)
       .send(newResource)
 
@@ -68,7 +68,7 @@ describe('Testing resource creation endpoint', () => {
     }
 
     const response = await supertest(server)
-      .post(`${pathRoot.v1.resources}/create`)
+      .post(`${pathRoot.v1.resources}`)
       .set('Cookie', authToken.admin)
       .send(invalidResource)
 

@@ -8,7 +8,9 @@ import { Button, Text, Title } from '../components/atoms/index'
 import { Modal, SelectGroup, CardResource } from '../components/molecules/index'
 import { ResourceForm, Navbar } from '../components/organisms/index'
 import icons from '../assets/icons'
-import { paths, urls } from '../constants'
+import { urls } from '../constants'
+import Login from '../components/organisms/Login'
+import Register from '../components/organisms/Register'
 
 type TStackData = {
   createdBy: string
@@ -115,16 +117,11 @@ const ButtonAddStyled = styled(Button)`
   height: 52px;
   width: 52px;
 `
+
 const ButtonStyled = styled(Button)`
-  font-weight: 500;
-  margin: ${dimensions.spacing.xxxs} ${dimensions.spacing.xl};
-  color: ${({ outline }) =>
-    outline ? `${colors.gray.gray3}` : `${colors.white}`};
+  margin: ${dimensions.spacing.none};
 `
 
-const StyledLink = styled.a`
-  text-decoration: none;
-`
 const ButtonContainterStyled = styled(FlexBox)`
   margin-top: 0.8rem;
 
@@ -154,17 +151,26 @@ const TextContainerStyled = styled(FlexBox)`
 `
 
 const ImgStyled = styled.img`
-  margin-top: ${dimensions.spacing.xxl};
   height: 100px;
   width: 100px;
 `
 
-const StyledText = styled(Text)`
+const TextStyled = styled(Text)`
   text-align: center;
-  padding: 0 ${dimensions.spacing.xs};
   font-weight: 500;
-  margin-bottom: 6rem;
+  margin: 0 auto ${dimensions.spacing.xxl} auto;
 `
+
+const RestrictedStyled = styled(FlexBox)`
+  gap: ${dimensions.spacing.sm};
+  padding: ${dimensions.spacing.lg};
+`
+
+const TitleStyled = styled(Title)`
+  width: 100%;
+  text-align: center;
+`
+
 type TMappedTopics = {
   id: string
   name: string
@@ -173,6 +179,16 @@ type TMappedTopics = {
 const Resource: FC = () => {
   const { slug } = useParams()
   const { user } = useAuth()
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false)
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
+
+  const handleRegisterModal = () => {
+    setIsRegisterOpen(!isRegisterOpen)
+  }
+
+  const handleLoginModal = () => {
+    setIsLoginOpen(!isLoginOpen)
+  }
 
   const getTopics = () =>
     fetch(`${urls.getTopics}?slug=${slug}`)
@@ -198,7 +214,7 @@ const Resource: FC = () => {
 
   const [isOpen, setIsOpen] = useState(false)
   const openModal = () => {
-    setIsOpen(true)
+    setIsOpen(!isOpen)
   }
 
   return (
@@ -226,26 +242,56 @@ const Resource: FC = () => {
             </Modal>
           ) : (
             // RESTRICTED ACCESS MODAL
-            <Modal isOpen={isOpen} toggleModal={() => setIsOpen(false)}>
-              <ImgStyled src={icons.lockDynamic} />
-              <Title as="h1" fontWeight="bold">
-                Acceso restringido
-              </Title>
-              <StyledText>Regístrate para subir o votar contenido</StyledText>
-
-              <ButtonStyled>
-                {/* TEMPORARY LINK, THIS BUTTON WILL OPEN SIGNUP MODAL  */}
-                <StyledLink href={paths.register}>Registrarme</StyledLink>
-              </ButtonStyled>
-
-              <ButtonStyled outline>
-                {/* TEMPORARY LINK, THIS BUTTON WILL OPEN LOGIN MODAL  */}
-                <StyledLink href={paths.login}>Entrar</StyledLink>
-              </ButtonStyled>
-            </Modal>
+            <>
+              <Modal isOpen={isOpen} toggleModal={() => setIsOpen(false)}>
+                <RestrictedStyled justify="space-between">
+                  <ImgStyled src={icons.lockDynamic} />
+                  <TitleStyled as="h2" fontWeight="bold">
+                    Acceso restringido
+                  </TitleStyled>
+                  <TextStyled>
+                    Regístrate para subir o votar contenido
+                  </TextStyled>
+                  <ButtonStyled
+                    onClick={() => {
+                      setIsOpen(false)
+                      handleRegisterModal()
+                    }}
+                  >
+                    Registrarme
+                  </ButtonStyled>
+                  <ButtonStyled
+                    outline
+                    onClick={() => {
+                      setIsOpen(false)
+                      handleLoginModal()
+                    }}
+                  >
+                    Entrar
+                  </ButtonStyled>
+                </RestrictedStyled>
+              </Modal>
+              <Modal
+                isOpen={isLoginOpen || isRegisterOpen}
+                toggleModal={() =>
+                  isLoginOpen ? setIsLoginOpen(false) : setIsRegisterOpen(false)
+                }
+              >
+                {isLoginOpen && (
+                  <Login
+                    handleLoginModal={handleLoginModal}
+                    handleRegisterModal={handleRegisterModal}
+                  />
+                )}
+                {isRegisterOpen && (
+                  <Register
+                    handleLoginModal={handleLoginModal}
+                    handleRegisterModal={handleRegisterModal}
+                  />
+                )}
+              </Modal>
+            </>
           )}
-          {/* TODO: ADD SIGN UP MODAL */}
-          {/* TODO: ADD LOGIN MODAL */}
         </FlexBox>
 
         <Text fontWeight="bold">Temas</Text>
