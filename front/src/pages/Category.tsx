@@ -3,16 +3,13 @@ import { Link, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import { Icon, Text, Title } from '../components/atoms'
-import {
-  InputGroup,
-  ResourceTitleLink,
-  StatusFilterWidget,
-} from '../components/molecules'
+import { InputGroup, StatusFilterWidget } from '../components/molecules'
 import {
   CategoriesList,
+  MyFavoritesList,
+  MyResources,
   ResourceCardList,
   TopicsRadioWidget,
-  MyResources,
 } from '../components/organisms'
 import { Resource } from './Resource'
 import icons from '../assets/icons'
@@ -130,13 +127,6 @@ const ImageStyled = styled.img`
   height: auto;
 `
 
-const ContainerGapStyled = styled(FlexBox)`
-  flex-direction: row;
-  gap: ${dimensions.spacing.xxxs};
-  margin-top: ${dimensions.spacing.xl};
-  margin-bottom: ${dimensions.spacing.xl};
-`
-
 const SideColumnContainer = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
@@ -236,23 +226,7 @@ const Category: FC = () => {
                 id="searchResource"
                 icon="search"
               />
-              <ContainerGapStyled>
-                <Icon name="favorite" fill={0} />
-                <Title as="h2" fontWeight="bold">
-                  Recursos favoritos
-                </Title>
-              </ContainerGapStyled>
-              {/* ==> CONTENIDO FAVORITOS */}
-              {resources.map((fav) => (
-                <UserResourcesContainerStyled key={fav.id}>
-                  <ResourceTitleLink
-                    url={fav.url}
-                    title={fav.title}
-                    description={fav.description}
-                  />
-                </UserResourcesContainerStyled>
-              ))}
-
+              <MyFavoritesList />
               {/* TÍTULO 2 */}
               <UserResourcesContainerStyled>
                 <MyResources />

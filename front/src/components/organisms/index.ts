@@ -4,13 +4,16 @@ import { ResourceCardList } from './ResourceCardList'
 import { ResourceForm } from './ResourceForm'
 import { TopicsRadioWidget } from './TopicsRadioWidget'
 import { Navbar } from './Navbar'
-import { MyResources } from './MyResources'	
+import { MyFavoritesList } from './MyFavoritesList'
+import { MyResources } from './MyResources'
 
 export {
   ResourceCardList,
+  TopicsRadioWidget,
+  MyResources,
   HowToHelpCard,
   CategoriesList,
   ResourceForm,
-  TopicsRadioWidget,
-  Navbar, MyResources,
+  Navbar,
+  MyFavoritesList,
 }

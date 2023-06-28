@@ -3,10 +3,11 @@ import styled from 'styled-components'
 import { colors, dimensions, font } from '../../styles'
 
 const StyledLink = styled.a<TLink>`
-  display: flex;
+  /* display: flex;
   align-items: center;
-  justify-content: center;
-  margin: ${dimensions.spacing.xxs};
+  justify-content: center; */
+  /* margin: ${dimensions.spacing.xxs}; */
+  gap: ${dimensions.spacing.xxs};
   cursor: pointer;
   color: ${colors.black};
   font-weight: ${({ weight }: { weight?: 'bold' | 'regular' | string }) =>

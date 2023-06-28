@@ -116,6 +116,31 @@ export const handlers = [
       ])
     )
   ),
+
+  rest.get(urls.getFavorites, (req, res, ctx) => {
+    const favoritesUserId = req.url.searchParams.get('userId')
+    if (favoritesUserId === 'emptyResource') {
+      return res(ctx.status(200), ctx.json([]))
+    }
+
+    return res(
+      ctx.status(200),
+      ctx.json([
+        {
+          id: 'favoriteId',
+          title: 'My favorite title',
+          slug: 'my-favorite',
+          description: 'Favorite description',
+          url: 'https://tutorials.cat/learn/javascript',
+          resourceType: 'VIDEO',
+          userId: 'userId',
+          createdAt: '11/11/2011',
+          updatedAt: '12/12/2012',
+        },
+      ])
+    )
+  }),
+
   rest.get(urls.getResourcesByUser, (req, res, ctx) => {
     const categorySlug = req.url.searchParams.get('category')
     if (categorySlug === 'emptyResource') {
@@ -181,6 +206,14 @@ export const errorHandlers = [
         ctx.status(404),
         ctx.json({ message: 'No category found with this slug' })
       )
+    }
+  }),
+
+  // eslint-disable-next-line consistent-return
+  rest.get(urls.getFavorites, (req, res, ctx) => {
+    const favoriteUserId = req.url.searchParams.get('userId')
+    if (favoriteUserId === 'invalid-userId') {
+      return res(ctx.status(404), ctx.json({ message: 'Invalid userId' }))
     }
   }),
 
