@@ -27,7 +27,7 @@ type Props = {
 }
 
 const StatusFilterWidget = ({ handleStatusFilter }: Props) => {
-  const [selectedTypes, setSelectedTypes] = useState<string[]>(statusData)
+  const [selectedStatus, setSelectedStatus] = useState<string[]>(statusData)
 
   useEffect(() => {
     handleStatusFilter(statusData)
@@ -36,14 +36,14 @@ const StatusFilterWidget = ({ handleStatusFilter }: Props) => {
 
   const changeSelection = (e: ChangeEvent<HTMLInputElement>, item: string) => {
     if (e.target.checked) {
-      const addStatus = [...selectedTypes]
+      const addStatus = [...selectedStatus]
       addStatus.push(item)
-      setSelectedTypes(addStatus)
+      setSelectedStatus(addStatus)
       return addStatus
     }
 
-    const removeStatus = selectedTypes.filter((el) => el !== item)
-    setSelectedTypes(removeStatus)
+    const removeStatus = selectedStatus.filter((el) => el !== item)
+    setSelectedStatus(removeStatus)
     return removeStatus
   }
 

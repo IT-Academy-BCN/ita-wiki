@@ -3,7 +3,11 @@ import { Link, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import { Icon, Text, Title } from '../components/atoms'
-import { InputGroup, StatusFilterWidget } from '../components/molecules'
+import {
+  InputGroup,
+  StatusFilterWidget,
+  TypesFilterWidget,
+} from '../components/molecules'
 import {
   CategoriesList,
   MyFavoritesList,
@@ -161,7 +165,14 @@ const Category: FC = () => {
   const { state } = useLocation()
   const { slug } = useParams()
 
+  const handleTypesFilter = (selectedTypes: string[]) => {
+    // TODO: Use this info to filter resources by type
+    // eslint-disable-next-line no-console
+    console.log('Parent', selectedTypes)
+  }
+
   const handleStatusFilter = (selectedStatus: string[]) => {
+    // TODO: Use this info to filter resources by status
     // eslint-disable-next-line no-console
     console.log('Parent', selectedStatus)
   }
@@ -189,6 +200,7 @@ const Category: FC = () => {
               </Title>
               <Text fontWeight="bold">Temas</Text>
               {slug && <TopicsRadioWidget slug={slug} />}
+              <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
               <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
             </SideColumnContainer>
             {/* ==> COLUMNA RECURSOS */}

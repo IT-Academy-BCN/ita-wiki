@@ -2,16 +2,12 @@ import { FC } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { paths, urls } from '../../constants'
-import { Icon, Title, Link, Spinner, Text } from '../atoms'
+import { urls } from '../../constants'
+import { Icon, Title, Spinner, Text } from '../atoms'
 import { useAuth } from '../../context/AuthProvider'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { ResourceTitleLink } from '../molecules'
 
-const StyledLink = styled(Link)`
-  color: ${colors.gray.gray4};
-  font-weight: 'regular';
-`
 const TitleContainer = styled(FlexBox)`
   flex-direction: row;
   gap: ${dimensions.spacing.xxxs};
@@ -75,8 +71,9 @@ export const MyFavoritesList: FC = () => {
       </TitleContainer>
       {!user && (
         <Text color={colors.gray.gray4}>
-          <StyledLink href={paths.register}>Regístrate</StyledLink> o{' '}
-          <StyledLink href={paths.login}>inicia sesión</StyledLink> para añadir
+          {/* TODO: Call modals instead */}
+          {/* <StyledLink href={paths.register}>Regístrate</StyledLink> o{' '}
+          <StyledLink href={paths.login}>inicia sesión</StyledLink> para añadir */}
           recursos favoritos
         </Text>
       )}

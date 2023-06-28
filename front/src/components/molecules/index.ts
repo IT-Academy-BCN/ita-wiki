@@ -8,6 +8,7 @@ import { ResourceTitleLink, TResourceTitleLink } from './ResourceTitleLink'
 import { StatusFilterWidget } from './StatusFilterWidget'
 import SelectGroup from './SelectGroup'
 import TextareaGroup from './TextareaGroup'
+import { TypesFilterWidget } from './TypesFilterWidget'
 import { VoteCounter } from './VoteCounter'
 import { CardHome } from './CardHome'
 
@@ -21,6 +22,7 @@ export {
   SelectGroup,
   StatusFilterWidget,
   TextareaGroup,
+  TypesFilterWidget,
   CreateAuthor,
   VoteCounter,
   CardHome,
