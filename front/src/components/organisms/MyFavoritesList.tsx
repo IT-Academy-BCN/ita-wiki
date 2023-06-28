@@ -1,12 +1,14 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { urls } from '../../constants'
 import { Icon, Title, Spinner, Text } from '../atoms'
 import { useAuth } from '../../context/AuthProvider'
-import { FlexBox, colors, dimensions } from '../../styles'
-import { ResourceTitleLink } from '../molecules'
+import { FlexBox, colors, dimensions, font } from '../../styles'
+import { Modal, ResourceTitleLink } from '../molecules'
+import Login from './Login'
+import Register from './Register'
 
 const TitleContainer = styled(FlexBox)`
   flex-direction: row;
@@ -31,9 +33,21 @@ type TFavorites = {
   updatedAt: string
 }
 
+const StyledText = styled(Text)`
+  font-weight: ${font.regular};
+  line-height: 1.3;
+`
+
+const TextDecorationStyled = styled.span`
+  text-decoration: underline;
+  cursor: pointer;
+`
+
 export const MyFavoritesList: FC = () => {
   const { user } = useAuth()
   const { userId } = useParams()
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false)
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
 
   const getFavorites = async (userIdParams: string) => {
     if (!user) {
@@ -61,6 +75,14 @@ export const MyFavoritesList: FC = () => {
 
   if (error) return <p>Algo ha ido mal...</p>
 
+  const handleRegisterModal = () => {
+    setIsRegisterOpen(!isRegisterOpen)
+  }
+
+  const handleLoginModal = () => {
+    setIsLoginOpen(!isLoginOpen)
+  }
+
   return (
     <>
       <TitleContainer data-testid="title">
@@ -70,12 +92,16 @@ export const MyFavoritesList: FC = () => {
         </Title>
       </TitleContainer>
       {!user && (
-        <Text color={colors.gray.gray4}>
-          {/* TODO: Call modals instead */}
-          {/* <StyledLink href={paths.register}>Regístrate</StyledLink> o{' '}
-          <StyledLink href={paths.login}>inicia sesión</StyledLink> para añadir */}
-          recursos favoritos
-        </Text>
+        <StyledText color={colors.gray.gray4}>
+          <TextDecorationStyled onClick={handleRegisterModal}>
+            Regístrate
+          </TextDecorationStyled>
+          {` o `}
+          <TextDecorationStyled onClick={handleLoginModal}>
+            inicia sesión
+          </TextDecorationStyled>
+          {` para añadir recursos favoritos`}
+        </StyledText>
       )}
       {isLoading && user && <Spinner />}
       {user && data && (
@@ -96,6 +122,25 @@ export const MyFavoritesList: FC = () => {
           No has añadido ningún recurso favorito
         </Text>
       )}
+      <Modal
+        isOpen={isLoginOpen || isRegisterOpen}
+        toggleModal={() =>
+          isLoginOpen ? setIsLoginOpen(false) : setIsRegisterOpen(false)
+        }
+      >
+        {isLoginOpen && (
+          <Login
+            handleLoginModal={handleLoginModal}
+            handleRegisterModal={handleRegisterModal}
+          />
+        )}
+        {isRegisterOpen && (
+          <Register
+            handleLoginModal={handleLoginModal}
+            handleRegisterModal={handleRegisterModal}
+          />
+        )}
+      </Modal>
     </>
   )
 }
