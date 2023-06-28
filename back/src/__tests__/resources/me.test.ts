@@ -12,13 +12,14 @@ beforeAll(async () => {
     where: { email: 'testingUser@user.cat' },
   })
 
-  const testResourceWithUser = {
-    ...resourceTestData[0],
-    userId: user!.id,
-  }
-  await prisma.resource.create({
-    // @ts-ignore
-    data: testResourceWithUser,
+  const testResourcesWithUser = resourceTestData.map((resource) => {
+    return {
+      ...resource,
+      userId: user!.id,
+    }
+  })
+  await prisma.resource.createMany({
+    data: testResourcesWithUser,
   })
 })
 
