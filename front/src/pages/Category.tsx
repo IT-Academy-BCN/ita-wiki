@@ -249,7 +249,7 @@ const Category: FC = () => {
         <HeaderContainerStyled align="stretch">
           <Navbar title="Wiki" />
           <FlexBox direction="row" justify="space-between">
-            <Title as="h1" fontWeight="bold">
+            <Title as="h1" fontWeight="bold" data-testid="category-title">
               Recursos de {slug}
             </Title>
             <ButtonAddStyled onClick={openModal}>+</ButtonAddStyled>
