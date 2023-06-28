@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthProvider'
 import { urls } from '../../constants'
 import { Modal, ResourceTitleLink } from '../molecules'
 import { Title, Spinner, Icon, Text } from '../atoms'
-import { FlexBox, colors, dimensions } from '../../styles'
+import { FlexBox, colors, dimensions, font } from '../../styles'
 import Login from './Login'
 import Register from './Register'
 
@@ -49,6 +49,11 @@ const TitleContainer = styled(FlexBox)`
 const ResourcesUserStyled = styled(FlexBox)`
   align-items: flex-start;
   margin-bottom: ${dimensions.spacing.md};
+`
+
+const StyledText = styled(Text)`
+  font-weight: ${font.regular};
+  line-height: 1.3;
 `
 
 const TextDecorationStyled = styled.span`
@@ -106,7 +111,7 @@ const MyResources = () => {
       </TitleContainer>
 
       {!user && (
-        <Text fontWeight="bold" color={colors.gray.gray3}>
+        <StyledText color={colors.gray.gray4}>
           <TextDecorationStyled onClick={handleRegisterModal}>
             Regístrate
           </TextDecorationStyled>
@@ -115,7 +120,7 @@ const MyResources = () => {
             inicia sesión
           </TextDecorationStyled>
           {` para añadir recursos favoritos`}
-        </Text>
+        </StyledText>
       )}
 
       {isLoading && user && <Spinner />}
