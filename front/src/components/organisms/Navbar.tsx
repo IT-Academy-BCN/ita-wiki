@@ -1,9 +1,11 @@
 import { FC, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
+import { Link } from 'react-router-dom'
 import { useAuth } from '../../context/AuthProvider'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { Title, Icon } from '../atoms'
 import defaultAvatar from '../../assets/icons/profile-avatar.svg'
+import { paths } from '../../constants'
 
 type TNavbar = {
   title: string
@@ -49,6 +51,8 @@ const IconStyled = styled(Icon)`
   padding-left: ${dimensions.spacing.base};
   position: absolute;
   left: 0;
+  top: 50%;
+  transform: translateY(-50%);
   color: ${colors.white};
 `
 
@@ -92,9 +96,6 @@ const DropdownItem = styled(FlexBox)`
 const IconWrapper = styled(FlexBox)`
   margin-left: 2rem;
 `
-/* const LinkStyled = styled(Link)`
-  
-` */
 
 export const Navbar: FC<TNavbar> = ({ title }) => {
   const { user } = useAuth()
@@ -128,7 +129,9 @@ export const Navbar: FC<TNavbar> = ({ title }) => {
 
   return (
     <NavbarStyled direction="row" isDropdownOpen={isDropdownOpen}>
-      <IconStyled name="arrow_back_ios" />
+      <Link to={paths.home}>
+        <IconStyled name="arrow_back_ios" />
+      </Link>
       <Title as="h2">{title}</Title>
       {user && (
         <AvatarImage
@@ -142,12 +145,12 @@ export const Navbar: FC<TNavbar> = ({ title }) => {
       {isDropdownOpen && (
         <DropdownMenu ref={dropdownRef}>
           <DropdownItem>
-            {/* <LinkStyled to={`${paths.profile}`}> */}
+            {/* <Link to={`${paths.profile}`}> */}
             <span>Perfil</span>
             <IconWrapper>
               <Icon name="person" fill={0} />
             </IconWrapper>
-            {/* </LinkStyled> */}
+            {/* </Link> */}
           </DropdownItem>
           <DropdownItem onClick={handleLogout}>
             <span>Salir</span>
