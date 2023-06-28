@@ -12,7 +12,7 @@ import { paths, urls } from '../../constants'
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
-  margin-top: ${dimensions.spacing.xl};
+  margin: ${dimensions.spacing.xs} 0;
 
   ${Button} {
     font-weight: 500;
@@ -101,7 +101,7 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
       title,
       description,
       url,
-      topics,
+      topics: [topics],
       resourceType,
     })
   })
@@ -156,7 +156,10 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
         inputName="resourceType"
       />
       <FlexErrorStyled align="start">
-        {errors?.title || errors?.description || errors?.url ? (
+        {errors?.title ||
+        errors?.description ||
+        errors?.url ||
+        errors?.topics ? (
           <ValidationMessage />
         ) : null}
       </FlexErrorStyled>
