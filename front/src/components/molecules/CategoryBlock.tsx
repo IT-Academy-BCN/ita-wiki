@@ -4,6 +4,7 @@ import { FlexBox, colors, dimensions, font } from '../../styles'
 import { Icon, Text, Title } from '../atoms'
 
 const CategoryBlockStyled = styled(FlexBox)`
+  background-color: ${colors.white};
   border: 1px solid ${colors.gray.gray4};
   border-radius: ${dimensions.borderRadius.sm};
 `

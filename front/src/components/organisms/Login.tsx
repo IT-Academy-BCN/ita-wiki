@@ -1,14 +1,14 @@
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components'
 import { UserLoginSchema } from '@itacademy/schemas'
-import InputGroup from '../components/molecules/InputGroup'
-import { Button, Text, Title, ValidationMessage } from '../components/atoms'
-import { paths, urls } from '../constants'
-import { dimensions, colors, FlexBox, font } from '../styles'
+import InputGroup from '../molecules/InputGroup'
+import { Button, Text, Title, ValidationMessage } from '../atoms'
+import { urls } from '../../constants'
+import { dimensions, colors, FlexBox } from '../../styles'
 
 const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.xxxs};
@@ -16,39 +16,29 @@ const FlexErrorStyled = styled(FlexBox)`
 `
 
 const LoginStyled = styled(FlexBox)`
-  background-color: ${colors.gray.gray5};
   gap: ${dimensions.spacing.sm};
-  height: 100vh;
   padding: ${dimensions.spacing.lg};
 `
 
 const TitleStyled = styled(Title)`
   width: 100%;
-  margin: 4rem 0rem 0rem 0.2rem;
 `
 
 const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: ${dimensions.spacing.base};
   width: 100%;
-  margin-top: -4rem;
-`
-
-const LinkStyled = styled(Link)`
-  color: ${colors.black.black1};
-  font-weight: 500;
-  font-family: ${font.fontFamily};
-  margin: ${dimensions.spacing.sm} ${dimensions.spacing.xxxs};
-`
-
-const LinkRegisterStyled = styled(Link)`
-  color: ${colors.black.black1};
 `
 
 const ButtonStyled = styled(Button)`
   margin: ${dimensions.spacing.none};
+`
+
+const TextDecorationStyled = styled.span`
+  text-decoration: underline;
+  cursor: pointer;
+  margin-bottom: ${dimensions.spacing.base};
 `
 
 type TForm = {
@@ -56,7 +46,12 @@ type TForm = {
   password: string
 }
 
-const Login: FC = () => {
+type TLogin = {
+  handleLoginModal: () => void
+  handleRegisterModal: () => void
+}
+
+const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
   const [isVisibility, setIsVisibility] = useState(false)
   const {
     register,
@@ -67,10 +62,6 @@ const Login: FC = () => {
   })
 
   const navigate = useNavigate()
-
-  // TEMPORARY CHANGE
-
-  // const urls = 'http://localhost:8999/api/v1/auth/login'
 
   const loginUser = async (user: object) => {
     try {
@@ -125,16 +116,27 @@ const Login: FC = () => {
           ) : null}
         </FlexErrorStyled>
         <FlexBox align="end">
-          <LinkStyled to={`${paths.register}`}>
+          <TextDecorationStyled
+            onClick={() => {
+              handleRegisterModal()
+              handleLoginModal()
+            }}
+          >
             Recordar/cambiar contraseña
-          </LinkStyled>
+          </TextDecorationStyled>
         </FlexBox>
         <ButtonStyled type="submit">Login</ButtonStyled>
       </FormStyled>
-
-      <LinkRegisterStyled to={`${paths.register}`}>
-        <Text fontWeight="bold">¿No tienes cuenta?, crear una</Text>
-      </LinkRegisterStyled>
+      <Text fontWeight="bold">
+        <TextDecorationStyled
+          onClick={() => {
+            handleRegisterModal()
+            handleLoginModal()
+          }}
+        >
+          ¿No tienes cuenta?, crear una
+        </TextDecorationStyled>
+      </Text>
     </LoginStyled>
   )
 }

@@ -16,13 +16,13 @@ const ImgStyled = styled.img`
 
 const MobileStyled = styled.div`
   display: block;
-  @media only ${device.Laptop} {
+  @media only ${device.Tablet} {
     display: none;
   }
 `
 const DesktopStyled = styled.div`
   display: none;
-  @media only ${device.Laptop} {
+  @media only ${device.Tablet} {
     display: block;
   }
 `
@@ -34,7 +34,6 @@ export const SmallSpinner = styled(Spinner)`
 `
 
 const CategoriesListStyled = styled(FlexBox)`
-  padding: 0 ${dimensions.spacing.lg};
   margin-bottom: ${dimensions.spacing.lg};
 `
 

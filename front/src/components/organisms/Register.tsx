@@ -5,35 +5,21 @@ import axios from 'axios'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-import {
-  Title,
-  Text,
-  Button,
-  CheckBox,
-  ValidationMessage,
-} from '../components/atoms'
-import InputGroup from '../components/molecules/InputGroup'
-import { paths, urls } from '../constants'
-import { colors, dimensions, FlexBox } from '../styles'
+import { Title, Text, Button, CheckBox, ValidationMessage } from '../atoms'
+import InputGroup from '../molecules/InputGroup'
+import { urls } from '../../constants'
+import { colors, dimensions, FlexBox } from '../../styles'
 
 const RegisterStyled = styled(FlexBox)`
-  background-color: ${colors.gray.gray5};
-  padding: ${dimensions.spacing.lg};
   gap: ${dimensions.spacing.sm};
-  height: 100vh;
+  padding: ${dimensions.spacing.lg};
 `
 
 const StyledForm = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: ${dimensions.spacing.base};
   width: 100%;
-`
-
-const LinkLoginStyled = styled(Link)`
-  color: ${colors.black.black1};
-  margin-left: ${dimensions.spacing.xxxs};
 `
 
 const CheckBoxStyled = styled(CheckBox)`
@@ -69,6 +55,15 @@ const ButtonStyled = styled(Button)`
   margin: ${dimensions.spacing.none};
 `
 
+const TitleStyled = styled(Title)`
+  width: 100%;
+`
+
+const TextDecorationStyled = styled.span`
+  text-decoration: underline;
+  cursor: pointer;
+`
+
 type TForm = {
   dni: string
   email: string
@@ -80,7 +75,12 @@ type TForm = {
   required: boolean
 }
 
-const Register: FC = () => {
+type TRegister = {
+  handleLoginModal: () => void
+  handleRegisterModal: () => void
+}
+
+const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
   const [visibility, setVisibility] = useState(false)
   const {
     register,
@@ -121,9 +121,9 @@ const Register: FC = () => {
 
   return (
     <RegisterStyled>
-      <Title as="h1" fontWeight="bold">
+      <TitleStyled as="h1" fontWeight="bold">
         Register
-      </Title>
+      </TitleStyled>
       <StyledForm onSubmit={onSubmit}>
         <InputGroup
           required
@@ -242,8 +242,14 @@ const Register: FC = () => {
         <ButtonStyled type="submit">Registrarme</ButtonStyled>
       </StyledForm>
       <Text fontWeight="bold">
-        ¿Tienes una cuenta?
-        <LinkLoginStyled to={paths.login}>Entrar</LinkLoginStyled>
+        <TextDecorationStyled
+          onClick={() => {
+            handleLoginModal()
+            handleRegisterModal()
+          }}
+        >
+          ¿Tienes una cuenta?, entrar
+        </TextDecorationStyled>
       </Text>
     </RegisterStyled>
   )

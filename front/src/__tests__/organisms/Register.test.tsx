@@ -2,13 +2,18 @@ import { render, screen, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import userEvent from '@testing-library/user-event'
 import { BrowserRouter } from 'react-router-dom'
-import { Register } from '../../pages'
+import Register from '../../components/organisms/Register'
+
+const handleRegister = () => {}
 
 describe('Register', () => {
   it('Register renders correctly', () => {
     render(
       <BrowserRouter>
-        <Register />
+        <Register
+          handleLoginModal={handleRegister}
+          handleRegisterModal={handleRegister}
+        />
       </BrowserRouter>
     )
     expect(screen.getByText(/Registrarme/i)).toBeInTheDocument()
@@ -17,7 +22,10 @@ describe('Register', () => {
   it('registers new users', async () => {
     render(
       <BrowserRouter>
-        <Register />
+        <Register
+          handleLoginModal={handleRegister}
+          handleRegisterModal={handleRegister}
+        />
       </BrowserRouter>
     )
     userEvent.type(screen.getByTestId('DNI'), '123456')
