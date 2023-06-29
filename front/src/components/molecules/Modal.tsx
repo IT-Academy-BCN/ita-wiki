@@ -81,7 +81,12 @@ const Modal = ({ children, isOpen, toggleModal, title }: TModal) => {
           />
         </FlexBox>
         {title && (
-          <Title as="h1" fontWeight="bold" color={colors.black.black3}>
+          <Title
+            as="h1"
+            fontWeight="bold"
+            color={colors.black.black3}
+            style={{ textAlign: 'center' }}
+          >
             {title}
           </Title>
         )}

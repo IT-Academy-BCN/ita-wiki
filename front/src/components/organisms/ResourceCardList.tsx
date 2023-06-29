@@ -4,7 +4,9 @@ import styled from 'styled-components'
 import { urls } from '../../constants'
 import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
+// eslint-disable-next-line import/no-cycle
 import { CardResource } from '../molecules'
+import { useAuth } from '../../context/AuthProvider'
 
 type TResource = {
   id: string
@@ -64,6 +66,8 @@ const getResources = (categorySlug: string | undefined) =>
     })
 
 const ResourceCardList = () => {
+  const { user } = useAuth()
+  console.log('user', user)
   const params = useParams()
 
   const categorySlug: string | undefined = params.slug
@@ -91,6 +95,7 @@ const ResourceCardList = () => {
             createdBy={resource.user.name}
             createdOn={resource.createdAt}
             updatedOn={resource.updatedAt}
+            editable={user?.name === resource.user.name}
           />
         ))
       ) : (

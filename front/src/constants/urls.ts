@@ -10,4 +10,5 @@ export const urls = {
   vote: '/api/v1/resources/vote/:resourceId/:vote',
   getFavorites: '/api/v1/favorites/by-user/:userId',
   getResourcesByUser: '/api/v1/resources/me',
+  updateResource: '/api/v1/resources',
 }

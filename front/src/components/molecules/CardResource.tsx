@@ -1,11 +1,14 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '../../styles'
-import { Text } from '../atoms'
+import { Button, Text } from '../atoms'
 import { CreateAuthor } from './CreateAuthor'
 import { ResourceTitleLink } from './ResourceTitleLink'
 import { VoteCounter } from './VoteCounter'
 import icons from '../../assets/icons'
+// eslint-disable-next-line import/no-cycle
+import { ResourceForm } from '../organisms'
+import { Modal } from './Modal'
 
 const CardContainerStyled = styled(FlexBox)`
   border-radius: ${dimensions.borderRadius.sm};
@@ -47,7 +50,16 @@ const FlexBoxStyled = styled(FlexBox)`
     margin-top: 2px;
   }
 `
-
+const ButtonContainerStyled = styled(FlexBox)`
+  gap: ${dimensions.spacing.xs};
+  margin: ${dimensions.spacing.xs} 0;
+`
+const ButtonStyled = styled(Button)`
+  font-weight: 500;
+  margin: ${dimensions.spacing.xxxs} ${dimensions.spacing.xl};
+  color: ${({ outline }) =>
+    outline ? `${colors.gray.gray3}` : `${colors.white}`};
+`
 type TCardResource = {
   createdBy: string
   createdOn: string
@@ -58,8 +70,12 @@ type TCardResource = {
   title: string
   updatedOn?: string
   url: string
+  editable: boolean
 }
-
+type TMappedTopics = {
+  id: string
+  name: string
+}
 export const CardResource = ({
   createdBy,
   createdOn,
@@ -70,10 +86,29 @@ export const CardResource = ({
   title,
   updatedOn,
   url,
+  editable,
   ...rest
 }: TCardResource) => {
-  const [editable] = useState<boolean>(false)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
+  const openModal = () => {
+    setIsModalOpen(true)
+  }
+  // // Declaración e inicialización de la variable fetchedTopics
+  const fetchedTopics = {
+    topics: [
+      { id: '1', name: 'Topic 1' },
+      { id: '2', name: 'Topic 2' },
+      { id: '3', name: 'Topic 3' },
+    ],
+  }
+
+  // Código adicional utilizando fetchedTopics
+  const mappedTopics =
+    fetchedTopics?.topics?.map((topic: TMappedTopics) => {
+      const selectOptions = { value: topic.id, label: topic.name }
+      return selectOptions
+    }) ?? []
   return (
     <CardContainerStyled
       direction="row"
@@ -83,9 +118,23 @@ export const CardResource = ({
       {...rest}
     >
       {editable && (
-        <StyledSvg>
-          <img src={icons.editPen} alt="Editar recurso" />
-        </StyledSvg>
+        <>
+          <StyledSvg onClick={openModal}>
+            <img src={icons.editPen} alt="Editar recurso" />
+          </StyledSvg>
+          <Modal
+            isOpen={isModalOpen}
+            toggleModal={() => setIsModalOpen(false)}
+            title="Editar Recurso"
+          >
+            <ResourceForm selectOptions={mappedTopics} />
+            <ButtonContainerStyled>
+              <ButtonStyled outline onClick={() => setIsModalOpen(false)}>
+                Eliminar
+              </ButtonStyled>
+            </ButtonContainerStyled>
+          </Modal>
+        </>
       )}
       <CounterContainerStyled>
         <VoteCounter voteCount={likes} resourceId={id} />
