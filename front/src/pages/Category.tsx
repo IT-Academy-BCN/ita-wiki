@@ -28,13 +28,13 @@ import { useAuth } from '../context/AuthProvider'
 
 export const MobileStyled = styled.div`
   display: block;
-  @media only ${device.Laptop} {
+  @media only ${device.Tablet} {
     display: none;
   }
 `
 export const DesktopStyled = styled.div`
   display: none;
-  @media only ${device.Laptop} {
+  @media only ${device.Tablet} {
     display: block;
   }
 `
@@ -253,74 +253,6 @@ const Category: FC = () => {
               Recursos de {slug}
             </Title>
             <ButtonAddStyled onClick={openModal}>+</ButtonAddStyled>
-
-            {/* TODO: MOVE MODALS TO SEPARATE ORGANISMS */}
-            {user ? (
-              // ADD RESOURCE MODAL
-              <Modal
-                isOpen={isOpen}
-                toggleModal={() => setIsOpen(false)}
-                title="Nuevo Recurso"
-              >
-                <ResourceForm selectOptions={mappedTopics} />
-                <ButtonStyled outline onClick={() => setIsOpen(false)}>
-                  Cancelar
-                </ButtonStyled>
-              </Modal>
-            ) : (
-              // RESTRICTED ACCESS MODAL
-              <>
-                <Modal isOpen={isOpen} toggleModal={() => setIsOpen(false)}>
-                  <RestrictedStyled justify="space-between">
-                    <ImgStyled src={icons.lockDynamic} />
-                    <TitleStyled as="h2" fontWeight="bold">
-                      Acceso restringido
-                    </TitleStyled>
-                    <TextStyled>
-                      Regístrate para subir o votar contenido
-                    </TextStyled>
-                    <ButtonStyled
-                      onClick={() => {
-                        setIsOpen(false)
-                        handleRegisterModal()
-                      }}
-                    >
-                      Registrarme
-                    </ButtonStyled>
-                    <ButtonStyled
-                      outline
-                      onClick={() => {
-                        setIsOpen(false)
-                        handleLoginModal()
-                      }}
-                    >
-                      Entrar
-                    </ButtonStyled>
-                  </RestrictedStyled>
-                </Modal>
-                <Modal
-                  isOpen={isLoginOpen || isRegisterOpen}
-                  toggleModal={() =>
-                    isLoginOpen
-                      ? setIsLoginOpen(false)
-                      : setIsRegisterOpen(false)
-                  }
-                >
-                  {isLoginOpen && (
-                    <Login
-                      handleLoginModal={handleLoginModal}
-                      handleRegisterModal={handleRegisterModal}
-                    />
-                  )}
-                  {isRegisterOpen && (
-                    <Register
-                      handleLoginModal={handleLoginModal}
-                      handleRegisterModal={handleRegisterModal}
-                    />
-                  )}
-                </Modal>
-              </>
-            )}
           </FlexBox>
 
           <Text fontWeight="bold">Temas</Text>
@@ -350,7 +282,6 @@ const Category: FC = () => {
 
           <TextContainerStyled direction="row">
             <Text fontWeight="bold">Votos ↓</Text>
-
             <Text color={colors.gray.gray3}>Fecha</Text>
           </TextContainerStyled>
         </SubHeaderContainerStyled>
@@ -421,6 +352,69 @@ const Category: FC = () => {
           </DivStyled>
         </MainContainer>
       </DesktopStyled>
+      {/* TODO: MOVE MODALS TO SEPARATE ORGANISMS */}
+      {user ? (
+        // ADD RESOURCE MODAL
+        <Modal
+          isOpen={isOpen}
+          toggleModal={() => setIsOpen(false)}
+          title="Nuevo Recurso"
+        >
+          <ResourceForm selectOptions={mappedTopics} />
+          <ButtonStyled outline onClick={() => setIsOpen(false)}>
+            Cancelar
+          </ButtonStyled>
+        </Modal>
+      ) : (
+        // RESTRICTED ACCESS MODAL
+        <>
+          <Modal isOpen={isOpen} toggleModal={() => setIsOpen(false)}>
+            <RestrictedStyled justify="space-between">
+              <ImgStyled src={icons.lockDynamic} />
+              <TitleStyled as="h2" fontWeight="bold">
+                Acceso restringido
+              </TitleStyled>
+              <TextStyled>Regístrate para subir o votar contenido</TextStyled>
+              <ButtonStyled
+                onClick={() => {
+                  setIsOpen(false)
+                  handleRegisterModal()
+                }}
+              >
+                Registrarme
+              </ButtonStyled>
+              <ButtonStyled
+                outline
+                onClick={() => {
+                  setIsOpen(false)
+                  handleLoginModal()
+                }}
+              >
+                Entrar
+              </ButtonStyled>
+            </RestrictedStyled>
+          </Modal>
+          <Modal
+            isOpen={isLoginOpen || isRegisterOpen}
+            toggleModal={() =>
+              isLoginOpen ? setIsLoginOpen(false) : setIsRegisterOpen(false)
+            }
+          >
+            {isLoginOpen && (
+              <Login
+                handleLoginModal={handleLoginModal}
+                handleRegisterModal={handleRegisterModal}
+              />
+            )}
+            {isRegisterOpen && (
+              <Register
+                handleLoginModal={handleLoginModal}
+                handleRegisterModal={handleRegisterModal}
+              />
+            )}
+          </Modal>
+        </>
+      )}
     </>
   )
 }
