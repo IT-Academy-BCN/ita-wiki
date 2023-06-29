@@ -63,7 +63,7 @@ const TextDecorationStyled = styled.span`
 
 const getResourcesByUser = async (categorySlug: string | undefined) => {
   const response = await fetch(
-    `${urls.getResources}?category=${categorySlug}`,
+    `${urls.getResourcesByUser}?category=${categorySlug}`,
     {
       headers: {
         Accept: 'application/json',
