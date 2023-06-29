@@ -43,6 +43,24 @@ const TextDecorationStyled = styled.span`
   cursor: pointer;
 `
 
+const StyledSpinner = styled(Spinner)`
+  width: 70px;
+  height: 70px;
+  border-width: 15px;
+`
+const favs = [
+  {
+    id: 'favoriteId',
+    title: 'My favorite title',
+    slug: 'my-favorite',
+    description: 'Favorite description',
+    url: 'https://tutorials.cat/learn/javascript',
+    resourceType: 'VIDEO',
+    userId: 'userId',
+    createdAt: '11/11/2011',
+    updatedAt: '12/12/2012',
+  },
+]
 export const MyFavoritesList: FC = () => {
   const { user } = useAuth()
   const { userId } = useParams()
@@ -73,8 +91,6 @@ export const MyFavoritesList: FC = () => {
     queryFn: () => getFavorites(userId || ''),
   })
 
-  if (error) return <p>Algo ha ido mal...</p>
-
   const handleRegisterModal = () => {
     setIsRegisterOpen(!isRegisterOpen)
   }
@@ -103,10 +119,13 @@ export const MyFavoritesList: FC = () => {
           {` para añadir recursos favoritos`}
         </StyledText>
       )}
-      {isLoading && user && <Spinner />}
-      {user && data && (
-        <div>
-          {data.map((fav: TFavorites) => (
+      {isLoading && user && <StyledSpinner role="status" />}
+
+      {user &&
+        !isLoading &&
+        !error &&
+        (data && data.length < 0 ? (
+          favs.map((fav: TFavorites) => (
             <FavoritesContainer key={fav.id}>
               <ResourceTitleLink
                 url={fav.url}
@@ -114,14 +133,13 @@ export const MyFavoritesList: FC = () => {
                 description={fav.description}
               />
             </FavoritesContainer>
-          ))}
-        </div>
-      )}
-      {user && !data && (
-        <Text color={colors.gray.gray4}>
-          No has añadido ningún recurso favorito
-        </Text>
-      )}
+          ))
+        ) : (
+          <Text color={colors.gray.gray4}>No tienes recursos favoritos</Text>
+        ))}
+
+      {error && user && !isLoading && <p>Algo ha ido mal...</p>}
+
       <Modal
         isOpen={isLoginOpen || isRegisterOpen}
         toggleModal={() =>

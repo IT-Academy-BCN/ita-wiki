@@ -38,12 +38,12 @@ describe('MyFavoritesList', () => {
 
   it('renders correctly', async () => {
     render(<MyFavoritesList />)
-    expect(screen.getByTestId('title')).toBeInTheDocument()
-  })
 
-  it('shows error message if favorite resources fails', async () => {
-    server.use(...errorHandlers)
-    render(<MyFavoritesList />)
+    const spinnerComponent = screen.getByRole('status') as HTMLDivElement
+
+    expect(screen.getByTestId('title')).toBeInTheDocument()
+
+    await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
   })
 
   it('shows message if user is not logged', async () => {
@@ -56,10 +56,17 @@ describe('MyFavoritesList', () => {
 
   it('receives data when API call returns 200 and the user has no favorite resources', async () => {
     render(<MyFavoritesList />)
+  })
+
+  it('renders correctly on error', async () => {
+    server.use(...errorHandlers)
+    render(<MyFavoritesList />)
+    const spinnerComponent = screen.getByRole('status') as HTMLDivElement
+
+    await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
+
     await waitFor(() => {
-      expect(
-        screen.getByText(/No has añadido ningún recurso favorito/)
-      ).toBeInTheDocument()
+      expect(screen.getByText('Algo ha ido mal...')).toBeInTheDocument()
     })
   })
 })
