@@ -49,9 +49,7 @@ registry.registerPath({
       description: 'Zod validation error',
       content: {
         'application/json': {
-          schema: z.object({
-            message: ValidationError,
-          }),
+          schema: ValidationError,
         },
       },
     },

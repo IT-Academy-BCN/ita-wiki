@@ -9,8 +9,9 @@ export {
   getResourcesByTopicSlug,
 } from './resources/getResourcesByTopic'
 export { getResourcesByUserId } from './resources/getResourcesByUserId'
+export { getFavoriteResources } from './resources/getFavoriteResources'
 export { getVote, putVote } from './vote/voteController'
 export { getTopics } from './topicController'
 export { getCategories } from './categoryController'
 export { postMedia } from './media/postMediaController'
-export { getFavoriteResources } from './resources/getFavoriteResources'
+export { getTypes } from './type/typeController'

@@ -10,7 +10,7 @@ import {
   getResourcesByTopicSlug,
   getFavoriteResources,
 } from '../controllers'
-import { resourceCreateSchema } from '../schemas'
+import { resourceCreateSchema, resourcesGetParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
 
 const resourcesRouter = new Router()
@@ -18,12 +18,20 @@ const resourcesRouter = new Router()
 resourcesRouter.prefix(pathRoot.v1.resources)
 
 resourcesRouter.post(
-  '/create',
+  '/',
   authMiddleware,
   validate(z.object({ body: resourceCreateSchema })),
   createResource
 )
-resourcesRouter.get('/', getResources)
+resourcesRouter.get(
+  '/',
+  validate(
+    z.object({
+      query: resourcesGetParamsSchema,
+    })
+  ),
+  getResources
+)
 resourcesRouter.get('/me', authMiddleware, getResourcesByUserId)
 resourcesRouter.get(
   '/favorites/:categorySlug?',

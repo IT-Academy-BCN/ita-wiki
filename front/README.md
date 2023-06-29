@@ -4,7 +4,7 @@ This project uses a set of technologies to facilitate the development of web app
 
 ## Getting Started
 
-Before running the project, make sure you have Docker Desktop installed. Once you have Docker Desktop installed and running, follow the steps below:
+Follow the steps below:
 
 1. cd into the front folder if you haven't already:
 
@@ -60,3 +60,5 @@ Here are some useful links to official documentation for the technologies used i
 - [Typescript](https://www.typescriptlang.org/docs/handbook/react.html) - Typescript documentation.
 - [vitest](https://vitest.dev/guide/) - Vitest testing framework documentation.
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - React Testing Library documentation.
+
+For the students of IT Academy there is a course on YouTube that will teach you the why's behind the structure of the project and can be a good introduction to Atomic Design, testing, etc...: [Curso React Avanzado - YouTube](https://www.youtube.com/watch?v=0Fg_Rgcgvj0&list=PLr1rMfNwtgewBlEmzdqx88_i1ddKZA9n7&ab_channel=KevinMamaqiKapllani)

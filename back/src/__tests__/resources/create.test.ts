@@ -28,10 +28,11 @@ describe('Testing resource creation endpoint', () => {
       url: 'https://example.com/resource',
       resourceType: 'BLOG',
       topics: topicIds,
+      status: 'NOT_SEEN',
     }
 
     const response = await supertest(server)
-      .post(`${pathRoot.v1.resources}/create`)
+      .post(`${pathRoot.v1.resources}`)
       .set('Cookie', authToken.admin)
       .send(newResource)
 
@@ -45,10 +46,11 @@ describe('Testing resource creation endpoint', () => {
       url: 'https://example.com/resource',
       resourceType: 'BLOG',
       topics: [],
+      status: 'NOT_SEEN',
     }
 
     const response = await supertest(server)
-      .post(`${pathRoot.v1.resources}/create`)
+      .post(`${pathRoot.v1.resources}`)
       .set('Cookie', authToken.admin)
       .send(newResource)
 
@@ -62,10 +64,11 @@ describe('Testing resource creation endpoint', () => {
       url: 'https://example.com/resource',
       resourceType: 'INVALIDE-RESOURCE',
       topicId: topicIds,
+      status: 'NOT_SEEN',
     }
 
     const response = await supertest(server)
-      .post(`${pathRoot.v1.resources}/create`)
+      .post(`${pathRoot.v1.resources}`)
       .set('Cookie', authToken.admin)
       .send(invalidResource)
 

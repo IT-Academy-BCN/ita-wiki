@@ -21,14 +21,10 @@ registry.registerPath({
   ],
   responses: {
     200: {
-      description: 'Favorite resources retireved  successfully.',
+      description: 'Favorite resources retrieved successfully.',
       content: {
         'application/json': {
-          schema: z.array(
-            z.object({
-              resource: resourceSchema,
-            })
-          ),
+          schema: z.array(resourceSchema),
         },
       },
     },

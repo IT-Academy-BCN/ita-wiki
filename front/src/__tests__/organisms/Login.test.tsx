@@ -3,17 +3,22 @@ import { BrowserRouter } from 'react-router-dom'
 import userEvent from '@testing-library/user-event'
 import { rest } from 'msw'
 import { server } from '../../__mocks__/server'
-import { Login } from '../../pages'
+import Login from '../../components/organisms/Login'
 
 beforeAll(() => server.listen())
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
+const handleLogin = () => {}
+
 describe('Login', () => {
   it('renders correctly', async () => {
     render(
       <BrowserRouter>
-        <Login />
+        <Login
+          handleLoginModal={handleLogin}
+          handleRegisterModal={handleLogin}
+        />
       </BrowserRouter>
     )
   })
@@ -21,7 +26,10 @@ describe('Login', () => {
   it('logs in the user', async () => {
     render(
       <BrowserRouter>
-        <Login />
+        <Login
+          handleLoginModal={handleLogin}
+          handleRegisterModal={handleLogin}
+        />
       </BrowserRouter>
     )
     userEvent.type(screen.getByLabelText(/dni/i), '45632452a')
@@ -44,7 +52,10 @@ describe('Login', () => {
     )
     render(
       <BrowserRouter>
-        <Login />
+        <Login
+          handleLoginModal={handleLogin}
+          handleRegisterModal={handleLogin}
+        />
       </BrowserRouter>
     )
 
