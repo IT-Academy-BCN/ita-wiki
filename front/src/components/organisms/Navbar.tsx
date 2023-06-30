@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthProvider'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { Title, Icon } from '../atoms'
@@ -98,7 +98,7 @@ const IconWrapper = styled(FlexBox)`
 `
 
 export const Navbar: FC<TNavbar> = ({ title }) => {
-  const { user } = useAuth()
+  const { user, setUser } = useAuth()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const avatarRef = useRef<HTMLImageElement>(null)
@@ -123,8 +123,12 @@ export const Navbar: FC<TNavbar> = ({ title }) => {
       document.removeEventListener('click', handleOutsideClick)
     }
   }, [])
+
+  const navigate = useNavigate()
   const handleLogout = () => {
-    // Implement logout functionality
+    setUser(null)
+    setIsDropdownOpen(false)
+    navigate(paths.home)
   }
 
   return (
