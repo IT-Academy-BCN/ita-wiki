@@ -62,11 +62,11 @@ describe('Testing resources/me endpoint', () => {
   })
 
   test('Given a valid category slug, should return resources related to that category', async () => {
-    const categorySlug = 'react'
+    const testCategorySlug = 'my-resource-in-react'
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}/me`)
       .set('Cookie', authToken.user)
-      .query({ categorySlug })
+      .query({ testCategorySlug })
     expect(response.status).toBe(200)
     expect(response.body.resources).toBeInstanceOf(Array)
     expect(response.body.resources.length).toBeGreaterThanOrEqual(1)

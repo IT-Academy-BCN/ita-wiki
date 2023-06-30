@@ -9,19 +9,21 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
 
   let resources
 
+  const include = {
+    user: {
+      select: {
+        name: true,
+        email: true,
+      },
+    },
+    vote: { select: { vote: true } },
+    topics: { select: { topic: true } },
+  }
+
   if (!categorySlug) {
     resources = await prisma.resource.findMany({
       where: { userId },
-      include: {
-        user: {
-          select: {
-            name: true,
-            email: true,
-          },
-        },
-        vote: { select: { vote: true } },
-        topics: { select: { topic: true } },
-      },
+      include,
     })
   } else {
     const topicsInCategory = await prisma.topic.findMany({
@@ -33,7 +35,7 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
     })
     resources = await prisma.resource.findMany({
       where: {
-        // userId,
+        userId,
         topics: {
           some: {
             topicId: {
@@ -42,16 +44,7 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
           },
         },
       },
-      include: {
-        user: {
-          select: {
-            name: true,
-            email: true,
-          },
-        },
-        vote: { select: { vote: true } },
-        topics: { select: { topic: true } },
-      },
+      include,
     })
   }
 
