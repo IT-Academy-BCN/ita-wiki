@@ -1,3 +1,4 @@
+import { vi } from 'vitest'
 import { Route, Routes } from 'react-router-dom'
 import { render, screen, waitFor } from '../test-utils'
 import { ResourceCardList } from '../../components/organisms'
@@ -5,10 +6,17 @@ import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
 
 describe('ResourceCardList', () => {
+  const handleAccessModal = vi.fn()
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
   it('renders ResourceCard correctly on success', async () => {
     render(
       <Routes>
-        <Route path="/category/:slug" element={<ResourceCardList />} />
+        <Route
+          path="/category/:slug"
+          element={<ResourceCardList handleAccessModal={handleAccessModal} />}
+        />
       </Routes>,
       {
         initialEntries: ['/category/resourceTest'],
@@ -32,7 +40,10 @@ describe('ResourceCardList', () => {
   it('renders message when Category does not have Resources', async () => {
     render(
       <Routes>
-        <Route path="/category/:slug" element={<ResourceCardList />} />
+        <Route
+          path="/category/:slug"
+          element={<ResourceCardList handleAccessModal={handleAccessModal} />}
+        />
       </Routes>,
       {
         initialEntries: ['/category/emptyResource'],
@@ -51,7 +62,7 @@ describe('ResourceCardList', () => {
 
   it('renders correctly on error', async () => {
     mswServer.use(...errorHandlers)
-    render(<ResourceCardList />)
+    render(<ResourceCardList handleAccessModal={handleAccessModal} />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
 

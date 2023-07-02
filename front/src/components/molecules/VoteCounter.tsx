@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
 import { urls } from '../../constants'
+import { useAuth } from '../../context/AuthProvider'
 
 const StyledIcon = styled(Icon)`
   color: ${colors.gray.gray3};
@@ -17,6 +18,7 @@ const StyledIcon = styled(Icon)`
 type TVoteCounter = {
   voteCount: number
   resourceId: string
+  handleAccessModal: () => void
 }
 
 export const voteMutation = async (resourceId: string, voteValue: string) => {
@@ -44,7 +46,13 @@ export const voteMutation = async (resourceId: string, voteValue: string) => {
     })
 }
 
-export const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId }) => {
+export const VoteCounter: FC<TVoteCounter> = ({
+  voteCount,
+  resourceId,
+  handleAccessModal,
+}) => {
+  const { user } = useAuth()
+
   const newVotation = useMutation({
     mutationKey: ['vote', resourceId],
     mutationFn: (voteValue: string) => voteMutation(resourceId, voteValue),
@@ -63,7 +71,7 @@ export const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId }) => {
       <StyledIcon
         name="expand_less"
         data-testid="increase"
-        onClick={() => handleClick(1)}
+        onClick={user ? () => handleClick(1) : () => handleAccessModal()}
       />
       <Text
         fontWeight="bold"
@@ -76,7 +84,7 @@ export const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId }) => {
         name="expand_more"
         id="decrease"
         data-testid="decrease"
-        onClick={() => handleClick(-1)}
+        onClick={user ? () => handleClick(-1) : () => handleAccessModal()}
       />
     </FlexBox>
   )
