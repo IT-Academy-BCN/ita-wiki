@@ -6,8 +6,9 @@ import { FlexBox, colors, device, dimensions, font } from '../styles'
 import { CardHome, Modal, InputGroup } from '../components/molecules'
 import {
   CategoriesList,
+  MyFavoritesList,
+  MyResources,
   Navbar,
-  ResourceCardList,
 } from '../components/organisms'
 import { Title, Text, Icon, Button } from '../components/atoms'
 import { paths } from '../constants'
@@ -168,11 +169,7 @@ const Home: FC = () => {
           {user ? (
             <SliderContainer>
               <FlexBox direction="row" gap="1rem" justify="flex-start">
-                <ResourceCardList />: (
-                <Text fontWeight="bold" color={colors.gray.gray3}>
-                  No tienes recursos favoritos
-                </Text>
-                )
+                <MyFavoritesList />
               </FlexBox>
             </SliderContainer>
           ) : (
@@ -187,22 +184,26 @@ const Home: FC = () => {
               {` para añadir recursos favoritos`}
             </Text>
           )}
+
           <Title as="h3" fontWeight="bold">
             Tus recursos
           </Title>
           {user ? (
             <SliderContainer>
               <FlexBox direction="row" gap="1rem" justify="flex-start">
-                <ResourceCardList />: (
-                <Text fontWeight="bold" color={colors.gray.gray3}>
-                  No has subido ningún recurso
-                </Text>
-                )
+                <MyResources />
               </FlexBox>
             </SliderContainer>
           ) : (
             <Text fontWeight="bold" color={colors.gray.gray3}>
-              No has subido ningún recurso
+              <TextDecorationStyled onClick={handleRegisterModal}>
+                Regístrate
+              </TextDecorationStyled>
+              {` o `}
+              <TextDecorationStyled onClick={handleLoginModal}>
+                inicia sesión
+              </TextDecorationStyled>
+              {` para añadir recursos favoritos`}
             </Text>
           )}
         </MobileContainerStyled>
