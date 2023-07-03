@@ -20,7 +20,7 @@ afterAll(async () => {
 })
 
 describe('Testing POST media endpoint', () => {
-  test.only('A user can upload an image, the image exists and the record is created on the DB', async () => {
+  test('A user can upload an image, the image exists and the record is created on the DB', async () => {
     const testImage =
       'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO3gAAAABJRU5ErkJggg=='
     const bufferData = Buffer.from(testImage, 'base64')
