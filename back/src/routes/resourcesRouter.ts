@@ -8,6 +8,7 @@ import {
   getResourcesByUserId,
   getResourcesByTopicId,
   getResourcesByTopicSlug,
+  getFavoriteResources,
 } from '../controllers'
 import { resourceCreateSchema, resourcesGetParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
@@ -35,7 +36,7 @@ resourcesRouter.delete(
 )
 
 resourcesRouter.post(
-  '/create',
+  '/',
   authMiddleware,
   validate(z.object({ body: resourceCreateSchema })),
   createResource
@@ -49,7 +50,24 @@ resourcesRouter.get(
   ),
   getResources
 )
-resourcesRouter.get('/me', authMiddleware, getResourcesByUserId)
+resourcesRouter.get(
+  '/me',
+  authMiddleware,
+  validate(
+    z.object({
+      query: z.object({
+        categorySlug: z.string().trim().min(1).optional(),
+      }),
+    })
+  ),
+  getResourcesByUserId
+)
+
+resourcesRouter.get(
+  '/favorites/:categorySlug?',
+  authMiddleware,
+  getFavoriteResources
+)
 resourcesRouter.get(
   '/id/:resourceId',
   validate(

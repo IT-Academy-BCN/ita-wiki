@@ -1,12 +1,13 @@
 import React, { TextareaHTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { colors, dimensions } from '../../styles'
+import { colors, dimensions, font } from '../../styles'
 
 const TextareaStyled = styled.textarea<TTextarea>`
   width: 100%;
   border: 1px solid ${colors.gray.gray4};
   padding: ${dimensions.spacing.sm};
   border-radius: ${dimensions.borderRadius.base};
+  font-family: ${font.fontFamily};
 
   ${({ success }) => success && `border: 1px solid ${colors.success};`}
   ${({ warning }) => warning && `border: 1px solid ${colors.warning};`}

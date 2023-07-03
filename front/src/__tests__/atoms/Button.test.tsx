@@ -18,7 +18,6 @@ describe('Button', () => {
     expect(screen.getByText('Test text')).toBeInTheDocument()
     expect(button).toHaveStyle(`border-radius: ${dimensions.borderRadius.base}`)
     expect(button).toHaveStyle(`padding: ${dimensions.spacing.base}`)
-    expect(button).toHaveStyle(`margin: ${dimensions.spacing.xxs}`)
     expect(button).toHaveStyle(`background-color: ${colors.primary}`)
     expect(button).toHaveStyle(`color: ${colors.white}`)
     expect(button).toHaveStyle('cursor: pointer')
@@ -50,6 +49,6 @@ describe('Button', () => {
 
     expect(button).toHaveStyle(`background-color: ${colors.white}`)
     expect(button).toHaveStyle(`border: 2px solid ${colors.gray.gray4}`)
-    expect(button).toHaveStyle(`color: ${colors.gray.gray1}`)
+    expect(button).toHaveStyle(`color: ${colors.gray.gray2}`)
   })
 })

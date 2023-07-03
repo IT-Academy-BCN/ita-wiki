@@ -18,7 +18,7 @@ const Description = styled(Text)`
   color: ${colors.gray.gray3};
 `
 
-type TResourceTitleLink = {
+export type TResourceTitleLink = {
   description: string
   title: string
   url: string

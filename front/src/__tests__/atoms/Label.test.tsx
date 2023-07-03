@@ -14,7 +14,7 @@ describe('Label', () => {
     expect(label).toBeInTheDocument()
     expect(label).toHaveProperty('htmlFor', 'label')
     expect(label).toHaveStyle(`color: ${colors.gray.gray2}`)
-    expect(label).toHaveStyle(`font-size: ${font.base}`)
+    expect(label).toHaveStyle(`font-size: ${font.xs}`)
     expect(label).toHaveStyle('font-weight: 700')
   })
 })

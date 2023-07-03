@@ -20,7 +20,7 @@ describe('Testing ME endpoint', () => {
         name: testUserData.admin.name,
         dni: testUserData.admin.dni,
         email: testUserData.admin.email,
-        status: 'INACTIVE',
+        status: 'ACTIVE',
         role: testUserData.admin.role,
       })
     )

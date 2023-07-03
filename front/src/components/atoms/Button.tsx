@@ -1,13 +1,13 @@
 import { ButtonHTMLAttributes, FC } from 'react'
 import styled from 'styled-components'
-import { colors, dimensions } from '../../styles'
+import { colors, dimensions, font } from '../../styles'
 
 const StyledButton = styled.button<TButton>`
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: ${dimensions.borderRadius.base};
-  margin: ${dimensions.spacing.xxs};
+  // margin: ${dimensions.spacing.xxs};
   padding: ${({ size }) =>
     (size === 'small' && dimensions.spacing.xxs) ||
     (size === 'large' && dimensions.spacing.md) ||
@@ -17,6 +17,21 @@ const StyledButton = styled.button<TButton>`
   color: ${colors.white};
   border: 2px solid ${colors.primary};
   background-color: ${colors.primary};
+  font-family: ${font.fontFamily};
+  font-weight: ${font.medium};
+
+  &:hover {
+    background-color: ${colors.primaryDark};
+    border: 2px solid ${colors.primaryDark};
+  }
+  &:active {
+    background-color: ${colors.primaryLight};
+    border: 2px solid ${colors.primaryLight};
+  }
+  &:disabled {
+    background-color: ${colors.white};
+    border: 2px solid ${colors.gray.gray5};
+  }
 
   ${({ secondary }) =>
     secondary &&
@@ -40,8 +55,9 @@ const StyledButton = styled.button<TButton>`
   ${({ outline }) =>
     outline &&
     `
+        font-weight: ${font.bold};
         background-color: ${colors.white};
-        color: ${colors.gray.gray1};
+        color: ${colors.gray.gray2};
         border: 2px solid ${colors.gray.gray4};
         &:hover {
             background-color: ${colors.outlineHover};

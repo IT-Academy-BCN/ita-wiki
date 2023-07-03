@@ -1,4 +1,5 @@
 import { IncomingMessage, Server, ServerResponse } from 'http'
+import { USER_STATUS } from '@prisma/client'
 import { prisma } from '../prisma/client'
 import { app } from '../server'
 
@@ -13,6 +14,7 @@ export const testUserData = {
     name: 'testingUser',
     dni: '11111111A',
     password: 'testingPswd1',
+    status: USER_STATUS.ACTIVE,
   },
   admin: {
     email: 'testingAdmin@user.cat',
@@ -20,6 +22,14 @@ export const testUserData = {
     dni: '22222222B',
     password: 'testingPswd2',
     role: 'ADMIN',
+    status: USER_STATUS.ACTIVE,
+  },
+  inactiveUser: {
+    email: 'testingInactiveUser@user.cat',
+    name: 'testingInactiveUser',
+    dni: '33333333A',
+    password: 'testingPswd3',
+    status: USER_STATUS.INACTIVE,
   },
 }
 
@@ -32,7 +42,7 @@ export const setup = async () => {
   await prisma.category.deleteMany({ where: { slug: 'testing' } })
 
   await prisma.user.createMany({
-    data: [testUserData.admin, testUserData.user],
+    data: [testUserData.admin, testUserData.user, testUserData.inactiveUser],
   })
   const testCategory = await prisma.category.create({
     data: {

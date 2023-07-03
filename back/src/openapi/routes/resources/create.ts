@@ -10,7 +10,7 @@ import { registry } from '../../registry'
 registry.registerPath({
   method: 'post',
   tags: ['resources'],
-  path: `${pathRoot.v1.resources}/create`,
+  path: `${pathRoot.v1.resources}`,
   description: 'Allows a logged in user to post a resource.',
   summary: 'Post a resource',
   security: [{ [cookieAuth.name]: [] }],

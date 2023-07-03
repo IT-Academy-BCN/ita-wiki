@@ -17,6 +17,17 @@ describe('Testing authentication endpoint', () => {
     expect(cookie[0]).toMatch(/token/)
   })
 
+  test('should fail if user not active', async () => {
+    const response = await supertest(server)
+      .post(`${pathRoot.v1.auth}/login`)
+      .send({
+        dni: testUserData.inactiveUser.dni,
+        password: testUserData.inactiveUser.password,
+      })
+    expect(response.status).toBe(403)
+    expect(response.body.error).toBe('Only active users can login')
+  })
+
   test('should fail with incorrect password', async () => {
     const response = await supertest(server)
       .post(`${pathRoot.v1.auth}/login`)

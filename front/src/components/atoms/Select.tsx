@@ -1,12 +1,13 @@
 import { SelectHTMLAttributes, forwardRef } from 'react'
 import styled from 'styled-components'
-import { colors, dimensions } from '../../styles'
+import { colors, dimensions, font } from '../../styles'
 
 const SelectStyled = styled.select<TSelect>`
   border-radius: ${dimensions.borderRadius.base};
   border: 1px solid ${colors.gray.gray4};
   color: ${colors.gray.gray3};
   font-weight: 500;
+  font-family: ${font.fontFamily};
   padding: ${dimensions.spacing.sm};
   width: 100%;
 

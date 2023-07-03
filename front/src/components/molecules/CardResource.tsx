@@ -52,11 +52,13 @@ type TCardResource = {
   createdBy: string
   createdOn: string
   description: string
-  img: string
+  img: string | undefined
   id: string
   likes: number
   title: string
+  updatedOn?: string
   url: string
+  handleAccessModal: () => void
 }
 
 export const CardResource = ({
@@ -67,7 +69,9 @@ export const CardResource = ({
   likes,
   id,
   title,
+  updatedOn,
   url,
+  handleAccessModal,
   ...rest
 }: TCardResource) => {
   const [editable] = useState<boolean>(false)
@@ -86,7 +90,11 @@ export const CardResource = ({
         </StyledSvg>
       )}
       <CounterContainerStyled>
-        <VoteCounter voteCount={likes} resourceId={id} />
+        <VoteCounter
+          voteCount={likes}
+          resourceId={id}
+          handleAccessModal={handleAccessModal}
+        />
       </CounterContainerStyled>
       <FlexBoxStyled align="start" justify="space-between" gap="4px">
         <ResourceTitleLink description={description} title={title} url={url} />

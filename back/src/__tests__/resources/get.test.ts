@@ -135,6 +135,17 @@ describe('Testing resources GET endpoint', () => {
       })
     }
   )
+  it('should get all resources with status SEEN', async () => {
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.resources}`)
+      .query({ status: 'SEEN' })
+    expect(response.status).toBe(200)
+    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
+    response.body.resources.forEach((resource: ResourceWithTopics) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
+      expect(resource.status).toBe('SEEN')
+    })
+  })
   it('should get all resources when no filters applied', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)

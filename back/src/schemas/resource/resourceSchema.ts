@@ -17,4 +17,8 @@ export const resourceSchema = z.object({
   userId: z.string().cuid(),
   createdAt: z.union([z.string().datetime(), z.date()]),
   updatedAt: z.union([z.string().datetime(), z.date()]),
+  status: z
+    .enum(['SEEN', 'NOT_SEEN'])
+    .optional()
+    .openapi({ example: 'NOT_SEEN' }),
 })
