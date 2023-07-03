@@ -14,6 +14,8 @@ import { resourceCreateSchema, resourcesGetParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
 import { modifyResource } from '../controllers/resources/modifyResource'
 import { resourceModifySchema } from '../schemas/resource/resourceModifySchema'
+import { deleteResource } from '../controllers/resources/deleteResource'
+import { resourceDeleteSchema } from '../schemas/resource/resourceDeleteSchema'
 
 const resourcesRouter = new Router()
 
@@ -21,9 +23,16 @@ resourcesRouter.prefix(pathRoot.v1.resources)
 
 resourcesRouter.put(
   '/',
-  //authMiddleware,
+  authMiddleware,
   validate(z.object({ body: resourceModifySchema })),
   modifyResource
+)
+
+resourcesRouter.delete(
+  '/',
+  authMiddleware,
+  validate(z.object({ body: resourceDeleteSchema })),
+  deleteResource
 )
 
 resourcesRouter.post(

@@ -1,10 +1,18 @@
 import Koa, { Middleware } from 'koa'
 import { prisma } from '../../prisma/client'
+import { DefaultError } from '../../helpers/errors'
 
 export const modifyResource: Middleware = async (ctx: Koa.Context) => {
     const newData = ctx.request.body
-    // {id, title, description, url, topic, resourceType, userId }
-    console.log(newData)
+    //newData = {id, title, description, url, topic, resourceType, userId }    
+
+    const resource = await prisma.resource.findFirst({
+        where: { id: newData.id }
+    })
+
+    if (!resource || resource!.userId !== newData.userId) {
+        throw new DefaultError(401, 'Only resource owner can modify resource')
+    }
 
     if (newData.title) {
         await prisma.resource.update({
@@ -30,14 +38,17 @@ export const modifyResource: Middleware = async (ctx: Koa.Context) => {
             }
         })
     }
-    // if (newData.topic) {
-    //     await prisma.topicsOnResources.update({
-    //         where: { topicId_resourceId: newData.id },
-    //         connect: {
-    //             data: { topic: newData.topic }
-    //         }
-    //     })
-    // }
+    if (newData.topic) {
+        await prisma.topicsOnResources.deleteMany({
+            where: { resourceId: newData.resourceId }
+        })
+        await prisma.topicsOnResources.create({
+            data: {
+                resourceId: newData.resourceId,
+                topicId: newData.topicId
+            }
+        })
+    }
     if (newData.resourceType) {
         await prisma.resource.update({
             where: { id: newData.id },
@@ -45,8 +56,8 @@ export const modifyResource: Middleware = async (ctx: Koa.Context) => {
                 resourceType: newData.resourceType
             }
         })
+
     }
 
     ctx.status = 204
-
 }
