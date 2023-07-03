@@ -63,7 +63,11 @@ const getResources = (categorySlug: string | undefined) =>
       throw new Error(`Error fetching resources: ${err.message}`)
     })
 
-const ResourceCardList = () => {
+type TResourceCardList = {
+  handleAccessModal: () => void
+}
+
+const ResourceCardList = ({ handleAccessModal }: TResourceCardList) => {
   const params = useParams()
 
   const categorySlug: string | undefined = params.slug
@@ -91,6 +95,7 @@ const ResourceCardList = () => {
             createdBy={resource.user.name}
             createdOn={resource.createdAt}
             updatedOn={resource.updatedAt}
+            handleAccessModal={handleAccessModal}
           />
         ))
       ) : (

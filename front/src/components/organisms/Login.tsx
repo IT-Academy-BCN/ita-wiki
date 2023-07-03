@@ -119,7 +119,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
               handleLoginModal()
             }}
           >
-            Recordar/cambiar contraseña
+            <Text>Recordar/cambiar contraseña</Text>
           </TextDecorationStyled>
         </FlexBox>
         <ButtonStyled type="submit">Login</ButtonStyled>

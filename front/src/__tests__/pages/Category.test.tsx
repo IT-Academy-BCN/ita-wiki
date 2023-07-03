@@ -29,6 +29,7 @@ describe('Resource', () => {
     const modalTitle = screen.getByRole('heading', {
       name: /acceso restringido/i,
     })
+    // const modalTitle = screen.getByText(/acceso restringido/i)
     expect(modalTitle).toBeInTheDocument()
     fireEvent.keyDown(document, { key: 'Escape' })
     expect(modalTitle).not.toBeInTheDocument()
