@@ -1,7 +1,7 @@
 import { z } from '../../openapi/zod'
 
 export const resourceModifySchema = z.object({
-    // id: z.string().cuid(),
+    id: z.string(),
     title: z.string()
         .nullish(),
     description: z
@@ -13,5 +13,5 @@ export const resourceModifySchema = z.object({
         .nullish(),
     resourceType: z.enum(['BLOG', 'VIDEO', 'TUTORIAL'])
         .nullish(),
-    // userId: z.string().cuid(),
+    userId: z.string(),
 })
