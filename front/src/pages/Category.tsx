@@ -1,7 +1,8 @@
 import { FC, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
+import qs from 'qs'
 import styled from 'styled-components'
-import { useQuery } from '@tanstack/react-query'
+import { QueryFunctionContext, useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import { Button, Icon, Text, Title } from '../components/atoms'
 import {
@@ -169,6 +170,34 @@ type TMappedTopics = {
   name: string
 }
 
+const getTopics = (query?: QueryFunctionContext<string[], any>) => {
+  const filters = query?.queryKey[1] as string
+
+  return fetch(`${urls.getTopics}?${filters}`)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error fetching topics: ${res.statusText}`)
+      }
+      return res.json()
+    })
+    .catch((err) => {
+      throw new Error(`Error fetching topics: ${err.message}`)
+    })
+}
+
+const buildQueryString = ({ slug, resourceTypes, status }: TFilters) =>
+  qs.stringify({
+    slug,
+    resourceTypes,
+    status,
+  })
+
+type TFilters = {
+  slug?: string
+  resourceTypes?: string[]
+  status?: string[]
+}
+
 const Category: FC = () => {
   const { state } = useLocation()
   const { slug } = useParams()
@@ -179,6 +208,12 @@ const Category: FC = () => {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false)
+
+  const [filters, setFilters] = useState<TFilters>({
+    slug,
+    resourceTypes: [],
+    status: [],
+  })
 
   const handleRegisterModal = () => {
     setIsRegisterOpen(!isRegisterOpen)
@@ -192,22 +227,10 @@ const Category: FC = () => {
     setIsAccessModalOpen(!isAccessModalOpen)
   }
 
-  const getTopics = () =>
-    fetch(`${urls.getTopics}?slug=${slug}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Error fetching topics: ${res.statusText}`)
-        }
-        return res.json()
-      })
-      .catch((err) => {
-        throw new Error(`Error fetching topics: ${err.message}`)
-      })
-
-  const { data: fetchedTopics } = useQuery({
-    queryKey: ['getTopics', slug],
-    queryFn: getTopics,
-  })
+  const { data: fetchedTopics } = useQuery(
+    ['getTopics', buildQueryString(filters) || ''],
+    getTopics
+  )
 
   const mappedTopics = fetchedTopics?.topics.map((topic: TMappedTopics) => {
     const selectOptions = { value: topic.id, label: topic.name }
@@ -215,15 +238,11 @@ const Category: FC = () => {
   })
 
   const handleTypesFilter = (selectedTypes: string[]) => {
-    // TODO: Use this info to filter resources by type
-    // eslint-disable-next-line no-console
-    console.log('Parent', selectedTypes)
+    setFilters({ ...filters, resourceTypes: selectedTypes })
   }
 
   const handleStatusFilter = (selectedStatus: string[]) => {
-    // TODO: Use this info to filter resources by status
-    // eslint-disable-next-line no-console
-    console.log('Parent', selectedStatus)
+    setFilters({ ...filters, status: selectedStatus })
   }
 
   return (

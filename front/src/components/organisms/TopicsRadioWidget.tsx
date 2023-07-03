@@ -38,8 +38,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
     queryFn: getTopics,
   })
 
-  const [topic, setTopic] = useState('cli04v2l0000008mq5pwx7w5j')
-
+  const [topic, setTopic] = useState('todos')
   const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value)
   }
@@ -49,7 +48,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
 
   return (
     <StyledRadio
-      options={data?.topics}
+      options={[{ id: 'todos', name: 'Todos' }].concat(data?.topics)}
       inputName="Topics Radio Filter"
       onChange={onTopicChange}
       defaultChecked={topic}
