@@ -29,6 +29,11 @@ const ModalContainer = styled.div`
   }
 `
 
+const StyledIcon = styled(Icon)`
+  cursor: pointer;
+  scale: 1.5;
+`
+
 const ModalContent = styled(FlexBox)`
   background-color: ${colors.white};
   width: 95%;
@@ -36,10 +41,6 @@ const ModalContent = styled(FlexBox)`
   margin: ${dimensions.spacing.base} auto;
   padding: ${dimensions.spacing.base};
   border-radius: ${dimensions.borderRadius.sm};
-
-  ${Icon} {
-    cursor: pointer;
-  }
 
   @media only ${device.Tablet} {
     width: 50%;
@@ -72,7 +73,7 @@ const Modal = ({ children, isOpen, toggleModal, title }: TModal) => {
       <ModalWrapper onClick={toggleModal} data-testid="modal-wrapper" />
       <ModalContent align="stretch">
         <FlexBox align="end">
-          <Icon
+          <StyledIcon
             name="close"
             onClick={toggleModal}
             role="img"

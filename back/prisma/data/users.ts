@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from '@prisma/client'
 
 export const users: Prisma.UserCreateArgs['data'][] = [
   {
@@ -7,7 +7,7 @@ export const users: Prisma.UserCreateArgs['data'][] = [
     name: 'Kevin Mamaqi',
     dni: '12345678A',
     status: 'ACTIVE',
-    role: "ADMIN"
+    role: 'ADMIN',
   },
   {
     email: 'registered@registered.com',
@@ -15,5 +15,5 @@ export const users: Prisma.UserCreateArgs['data'][] = [
     name: 'Django Unchained',
     dni: '23456789B',
     status: 'ACTIVE',
-  }
+  },
 ]

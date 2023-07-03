@@ -20,7 +20,7 @@ export const authMiddleware = async (ctx: Koa.Context, next: Koa.Next) => {
 
     if (!user) throw new NotFoundError('User not found')
 
-    ctx.params.userId = userId
+    ctx.user = user
     await next()
   } catch (error) {
     if (error instanceof jwt.JsonWebTokenError) {

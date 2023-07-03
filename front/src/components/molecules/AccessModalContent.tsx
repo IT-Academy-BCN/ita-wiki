@@ -1,6 +1,4 @@
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Modal } from './Modal'
 import { Button, Text, Title } from '../atoms'
 import { FlexBox, colors, dimensions, font } from '../../styles'
 import img from '../../assets/icons/lock-dynamic-color.svg'
@@ -17,12 +15,7 @@ const FlexBoxStyled = styled(FlexBox)`
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
-  padding: 5.5rem 0.4rem 0rem;
-  width: 100%;
-`
-
-const LinkStyled = styled(Link)`
-  text-decoration: none;
+  padding: 3.5rem 0.4rem 5.5rem 0.4rem;
   width: 100%;
 `
 
@@ -31,13 +24,22 @@ const ButtonStyled = styled(Button)`
   margin: 0rem;
 `
 
+const StyledText = styled(Text)`
+  font-weight: ${font.medium};
+`
+
 type TAccessModal = {
-  isOpen: boolean
-  toggleModal: () => void
+  handleAccessModal: () => void
+  handleLoginModal: () => void
+  handleRegisterModal: () => void
 }
 
-const AccessModal = ({ isOpen, toggleModal }: TAccessModal) => (
-  <Modal isOpen={isOpen} toggleModal={toggleModal}>
+const AccessModalContent = ({
+  handleAccessModal,
+  handleLoginModal,
+  handleRegisterModal,
+}: TAccessModal) => (
+  <FlexBox>
     <ImageStyled>
       <img src={img} alt="Lock Dynamic Icon" />
     </ImageStyled>
@@ -45,19 +47,28 @@ const AccessModal = ({ isOpen, toggleModal }: TAccessModal) => (
       <Title as="h1" fontWeight="bold" color={colors.black.black3}>
         Acceso restringido
       </Title>
-      <Text fontSize={font.xs} fontWeight="bold">
-        Regístrate para subir o votar contenido
-      </Text>
+      <StyledText>Regístrate para subir o votar contenido</StyledText>
     </FlexBoxStyled>
     <ButtonContainerStyled>
-      <LinkStyled to="/register">
-        <ButtonStyled>Registrarme</ButtonStyled>
-      </LinkStyled>
-      <LinkStyled to="/login">
-        <ButtonStyled outline>Entrar</ButtonStyled>
-      </LinkStyled>
+      <ButtonStyled
+        onClick={() => {
+          handleRegisterModal()
+          handleAccessModal()
+        }}
+      >
+        Registrarme
+      </ButtonStyled>
+      <ButtonStyled
+        outline
+        onClick={() => {
+          handleLoginModal()
+          handleAccessModal()
+        }}
+      >
+        Entrar
+      </ButtonStyled>
     </ButtonContainerStyled>
-  </Modal>
+  </FlexBox>
 )
 
-export { AccessModal }
+export { AccessModalContent }

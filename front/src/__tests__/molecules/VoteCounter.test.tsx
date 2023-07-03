@@ -4,6 +4,7 @@ import { VoteCounter } from '../../components/molecules'
 import { voteMutation } from '../../components/molecules/VoteCounter'
 import { fireEvent, screen, waitFor, render } from '../test-utils'
 import { urls } from '../../constants'
+import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
 vi.mock('@tanstack/react-query', async () => {
   const actual = await vi.importActual('@tanstack/react-query')
@@ -12,6 +13,16 @@ vi.mock('@tanstack/react-query', async () => {
     // @ts-ignore
     ...actual,
     useMutation: vi.fn(),
+  }
+})
+
+vi.mock('../../context/AuthProvider', async () => {
+  const actual = await vi.importActual('../../context/AuthProvider')
+  return {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    ...actual,
+    useAuth: vi.fn(),
   }
 })
 
@@ -25,15 +36,68 @@ describe('Vote counter molecule', () => {
   )
 
   it('renders correctly', () => {
-    render(<VoteCounter voteCount={0} resourceId="test" />)
+    const handleAccessModal = vi.fn()
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Hola',
+        avatar: 'Adios',
+      },
+    } as TAuthContext)
+
+    render(
+      <VoteCounter
+        voteCount={0}
+        resourceId="test"
+        handleAccessModal={handleAccessModal}
+      />
+    )
     expect(screen.getByTestId('increase')).toBeInTheDocument()
     expect(screen.getByTestId('decrease')).toBeInTheDocument()
     expect(screen.getByTestId('voteCounter')).toBeInTheDocument()
     expect(screen.getByText('0')).toBeInTheDocument()
   })
 
+  it('user not logged in can not vote', async () => {
+    const handleAccessModal = vi.fn()
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+    } as TAuthContext)
+    render(
+      <VoteCounter
+        voteCount={0}
+        resourceId="test"
+        handleAccessModal={handleAccessModal}
+      />
+    )
+
+    const increase = screen.getByTestId('increase')
+    const decrease = screen.getByTestId('decrease')
+
+    expect(increase).toBeInTheDocument()
+    expect(decrease).toBeInTheDocument()
+
+    fireEvent.click(increase)
+    await waitFor(() => {
+      expect(handleAccessModal).toHaveBeenCalled()
+    })
+  })
+
   it('makes the correct request', async () => {
-    render(<VoteCounter voteCount={0} resourceId="test" />)
+    const handleAccessModal = vi.fn()
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Hola',
+        avatar: 'Adios',
+      },
+    } as TAuthContext)
+
+    render(
+      <VoteCounter
+        voteCount={0}
+        resourceId="test"
+        handleAccessModal={handleAccessModal}
+      />
+    )
 
     const increase = screen.getByTestId('increase')
     const decrease = screen.getByTestId('decrease')
@@ -50,6 +114,8 @@ describe('Vote counter molecule', () => {
     await waitFor(() => {
       expect(mockMutation).toHaveBeenCalledWith('-1')
     })
+
+    expect(handleAccessModal).not.toHaveBeenCalled()
   })
 
   // NOTE: Needed for coverage

@@ -47,7 +47,7 @@ const getTypes = () =>
       throw new Error(`Error fetching resources: ${err.message}`)
     })
 
-type Props = {
+type TTypesFilterWidget = {
   handleTypesFilter: (selectedTypes: TData) => void
 }
 
@@ -57,7 +57,7 @@ type TError = {
   message: string
 }
 
-const TypesFilterWidget = ({ handleTypesFilter }: Props) => {
+const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
   const { isLoading, data, error } = useQuery<TData, TError>({
     queryKey: ['getTypes'],
     queryFn: () => getTypes(),

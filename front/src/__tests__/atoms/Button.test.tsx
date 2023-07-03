@@ -49,6 +49,6 @@ describe('Button', () => {
 
     expect(button).toHaveStyle(`background-color: ${colors.white}`)
     expect(button).toHaveStyle(`border: 2px solid ${colors.gray.gray4}`)
-    expect(button).toHaveStyle(`color: ${colors.gray.gray1}`)
+    expect(button).toHaveStyle(`color: ${colors.gray.gray2}`)
   })
 })
