@@ -40,7 +40,7 @@ describe('Testing resource modify endpoint', () => {
         })
     })
 
-    test('resource should be deleted', async () => {
+    test('resource and its topics should be deleted', async () => {
         let resource = await prisma.resource.findUnique({
             where: { slug: 'test-resource-1-blog' },
             include: { topics: true }
@@ -49,7 +49,6 @@ describe('Testing resource modify endpoint', () => {
             id: resource!.id,
             userId: resource!.userId,
         }
-
         const response = await supertest(server)
             .delete(`${pathRoot.v1.resources}/`)
             .set('Cookie', authToken.admin)
@@ -58,13 +57,29 @@ describe('Testing resource modify endpoint', () => {
             where: { slug: 'test-resource-1-blog' },
             include: { topics: true }
         })
+        const topicsAnswer = await prisma.topicsOnResources.findFirst({
+            where: { resourceId: newResource.id }
+        })
 
         expect(answer).toBe(null)
+        expect(topicsAnswer).toBe(null)
         expect(response.status).toBe(204)
     })
 
-    test('if resource does not exists should return 404 not found', async () => {
+    test('should accept string only', async () => {
+        const newResource = {
+            id: 'cljfiayg80000ungsabdmxsaf',
+            userId: 23,
+        }
 
+        const response = await supertest(server)
+            .put(`${pathRoot.v1.resources}/`)
+            .set('Cookie', authToken.admin)
+            .send(newResource)
+        expect(response.status).toBe(400)
+    })
+
+    test('if resource does not exists should return 404 not found', async () => {
         const newResource = {
             id: 'c!.id',
             userid: 'c!.userId'
