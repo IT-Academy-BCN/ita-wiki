@@ -1,10 +1,12 @@
 import { FC, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
+import qs from 'qs'
 import styled from 'styled-components'
-import { useQuery } from '@tanstack/react-query'
+import { QueryFunctionContext, useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions } from '../styles'
 import { Button, Icon, Text, Title } from '../components/atoms'
 import {
+  AccessModalContent,
   InputGroup,
   Modal,
   SelectGroup,
@@ -162,30 +164,38 @@ const SubHeaderContainerStyled = styled(FlexBox)`
 const TextContainerStyled = styled(FlexBox)`
   gap: 0.8rem;
 `
-const ImgStyled = styled.img`
-  height: 100px;
-  width: 100px;
-`
-
-const TextStyled = styled(Text)`
-  text-align: center;
-  font-weight: 500;
-  margin: 0 auto ${dimensions.spacing.xxl} auto;
-`
-
-const RestrictedStyled = styled(FlexBox)`
-  gap: ${dimensions.spacing.sm};
-  padding: ${dimensions.spacing.lg};
-`
-
-const TitleStyled = styled(Title)`
-  width: 100%;
-  text-align: center;
-`
 
 type TMappedTopics = {
   id: string
   name: string
+}
+
+const getTopics = (query?: QueryFunctionContext<string[], any>) => {
+  const filters = query?.queryKey[1] as string
+
+  return fetch(`${urls.getTopics}?${filters}`)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error fetching topics: ${res.statusText}`)
+      }
+      return res.json()
+    })
+    .catch((err) => {
+      throw new Error(`Error fetching topics: ${err.message}`)
+    })
+}
+
+const buildQueryString = ({ slug, resourceTypes, status }: TFilters) =>
+  qs.stringify({
+    slug,
+    resourceTypes,
+    status,
+  })
+
+type TFilters = {
+  slug?: string
+  resourceTypes?: string[]
+  status?: string[]
 }
 
 const Category: FC = () => {
@@ -193,8 +203,17 @@ const Category: FC = () => {
   const { slug } = useParams()
 
   const { user } = useAuth()
+
+  const [isOpen, setIsOpen] = useState(false)
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
+  const [isAccessModalOpen, setIsAccessModalOpen] = useState(false)
+
+  const [filters, setFilters] = useState<TFilters>({
+    slug,
+    resourceTypes: [],
+    status: [],
+  })
 
   const handleRegisterModal = () => {
     setIsRegisterOpen(!isRegisterOpen)
@@ -204,43 +223,26 @@ const Category: FC = () => {
     setIsLoginOpen(!isLoginOpen)
   }
 
-  const getTopics = () =>
-    fetch(`${urls.getTopics}?slug=${slug}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Error fetching topics: ${res.statusText}`)
-        }
-        return res.json()
-      })
-      .catch((err) => {
-        throw new Error(`Error fetching topics: ${err.message}`)
-      })
+  const handleAccessModal = () => {
+    setIsAccessModalOpen(!isAccessModalOpen)
+  }
 
-  const { data: fetchedTopics } = useQuery({
-    queryKey: ['getTopics', slug],
-    queryFn: getTopics,
-  })
+  const { data: fetchedTopics } = useQuery(
+    ['getTopics', buildQueryString(filters) || ''],
+    getTopics
+  )
 
   const mappedTopics = fetchedTopics?.topics.map((topic: TMappedTopics) => {
     const selectOptions = { value: topic.id, label: topic.name }
     return selectOptions
   })
 
-  const [isOpen, setIsOpen] = useState(false)
-  const openModal = () => {
-    setIsOpen(!isOpen)
-  }
-
   const handleTypesFilter = (selectedTypes: string[]) => {
-    // TODO: Use this info to filter resources by type
-    // eslint-disable-next-line no-console
-    console.log('Parent', selectedTypes)
+    setFilters({ ...filters, resourceTypes: selectedTypes })
   }
 
   const handleStatusFilter = (selectedStatus: string[]) => {
-    // TODO: Use this info to filter resources by status
-    // eslint-disable-next-line no-console
-    console.log('Parent', selectedStatus)
+    setFilters({ ...filters, status: selectedStatus })
   }
 
   return (
@@ -250,77 +252,15 @@ const Category: FC = () => {
           <Navbar title="Wiki" />
           <FlexBox direction="row" justify="space-between">
             <Title as="h1" fontWeight="bold" data-testid="category-title">
-              Recursos de {slug}
+              Recursos de {state?.name}
             </Title>
-            <ButtonAddStyled onClick={openModal}>+</ButtonAddStyled>
-
-            {/* TODO: MOVE MODALS TO SEPARATE ORGANISMS */}
-            {user ? (
-              // ADD RESOURCE MODAL
-              <Modal
-                isOpen={isOpen}
-                toggleModal={() => setIsOpen(false)}
-                title="Nuevo Recurso"
-              >
-                <ResourceForm selectOptions={mappedTopics} />
-                <ButtonStyled outline onClick={() => setIsOpen(false)}>
-                  Cancelar
-                </ButtonStyled>
-              </Modal>
-            ) : (
-              // RESTRICTED ACCESS MODAL
-              <>
-                <Modal isOpen={isOpen} toggleModal={() => setIsOpen(false)}>
-                  <RestrictedStyled justify="space-between">
-                    <ImgStyled src={icons.lockDynamic} />
-                    <TitleStyled as="h2" fontWeight="bold">
-                      Acceso restringido
-                    </TitleStyled>
-                    <TextStyled>
-                      Regístrate para subir o votar contenido
-                    </TextStyled>
-                    <ButtonStyled
-                      onClick={() => {
-                        setIsOpen(false)
-                        handleRegisterModal()
-                      }}
-                    >
-                      Registrarme
-                    </ButtonStyled>
-                    <ButtonStyled
-                      outline
-                      onClick={() => {
-                        setIsOpen(false)
-                        handleLoginModal()
-                      }}
-                    >
-                      Entrar
-                    </ButtonStyled>
-                  </RestrictedStyled>
-                </Modal>
-                <Modal
-                  isOpen={isLoginOpen || isRegisterOpen}
-                  toggleModal={() =>
-                    isLoginOpen
-                      ? setIsLoginOpen(false)
-                      : setIsRegisterOpen(false)
-                  }
-                >
-                  {isLoginOpen && (
-                    <Login
-                      handleLoginModal={handleLoginModal}
-                      handleRegisterModal={handleRegisterModal}
-                    />
-                  )}
-                  {isRegisterOpen && (
-                    <Register
-                      handleLoginModal={handleLoginModal}
-                      handleRegisterModal={handleRegisterModal}
-                    />
-                  )}
-                </Modal>
-              </>
-            )}
+            <ButtonAddStyled
+              onClick={
+                user ? () => setIsOpen(!isOpen) : () => handleAccessModal()
+              }
+            >
+              +
+            </ButtonAddStyled>
           </FlexBox>
 
           <Text fontWeight="bold">Temas</Text>
@@ -354,7 +294,7 @@ const Category: FC = () => {
             <Text color={colors.gray.gray3}>Fecha</Text>
           </TextContainerStyled>
         </SubHeaderContainerStyled>
-        <ResourceCardList />
+        <ResourceCardList handleAccessModal={handleAccessModal} />
       </MobileStyled>
       <DesktopStyled>
         <MainContainer>
@@ -398,7 +338,7 @@ const Category: FC = () => {
                 </FlexBox>
               </FlexBox>
               <ScrollList>
-                <ResourceCardList />
+                <ResourceCardList handleAccessModal={handleAccessModal} />
               </ScrollList>
             </MiddleColumnContainer>
             {/* ==> COLUMNA USUARIO */}
@@ -421,6 +361,51 @@ const Category: FC = () => {
           </DivStyled>
         </MainContainer>
       </DesktopStyled>
+      {/* TODO: MOVE MODALS TO SEPARATE ORGANISMS */}
+
+      {/* // ADD RESOURCE MODAL */}
+      <Modal
+        isOpen={isOpen}
+        toggleModal={() => setIsOpen(false)}
+        title="Nuevo Recurso"
+      >
+        <ResourceForm selectOptions={mappedTopics} />
+        <ButtonStyled outline onClick={() => setIsOpen(false)}>
+          Cancelar
+        </ButtonStyled>
+      </Modal>
+      {/* // RESTRICTED ACCESS MODAL */}
+      <>
+        <Modal
+          isOpen={isAccessModalOpen}
+          toggleModal={() => setIsAccessModalOpen(false)}
+        >
+          <AccessModalContent
+            handleLoginModal={handleLoginModal}
+            handleRegisterModal={handleRegisterModal}
+            handleAccessModal={handleAccessModal}
+          />
+        </Modal>
+        <Modal
+          isOpen={isLoginOpen || isRegisterOpen}
+          toggleModal={() =>
+            isLoginOpen ? setIsLoginOpen(false) : setIsRegisterOpen(false)
+          }
+        >
+          {isLoginOpen && (
+            <Login
+              handleLoginModal={handleLoginModal}
+              handleRegisterModal={handleRegisterModal}
+            />
+          )}
+          {isRegisterOpen && (
+            <Register
+              handleLoginModal={handleLoginModal}
+              handleRegisterModal={handleRegisterModal}
+            />
+          )}
+        </Modal>
+      </>
     </>
   )
 }

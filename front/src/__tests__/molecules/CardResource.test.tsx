@@ -1,9 +1,13 @@
-import { screen } from '@testing-library/react'
-import { render } from '../test-utils'
+import { vi } from 'vitest'
+import { render, screen } from '../test-utils'
 import { CardResource } from '../../components/molecules'
 import icons from '../../assets/icons'
 
 describe('CardResource component', () => {
+  const handleAccessModal = vi.fn()
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
   it('renders correctly', () => {
     render(
       <CardResource
@@ -15,6 +19,7 @@ describe('CardResource component', () => {
         createdBy="Test author name"
         createdOn="2022-08-09T09:42:25.717Z"
         likes={124}
+        handleAccessModal={handleAccessModal}
       />
     )
     expect(screen.queryByAltText('Editar recurso')).not.toBeInTheDocument()

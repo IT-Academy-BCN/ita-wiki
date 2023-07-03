@@ -137,7 +137,11 @@ export const CardResource = ({
         </>
       )}
       <CounterContainerStyled>
-        <VoteCounter voteCount={likes} resourceId={id} />
+        <VoteCounter
+          voteCount={likes}
+          resourceId={id}
+          handleAccessModal={handleAccessModal}
+        />
       </CounterContainerStyled>
       <FlexBoxStyled align="start" justify="space-between" gap="4px">
         <ResourceTitleLink description={description} title={title} url={url} />

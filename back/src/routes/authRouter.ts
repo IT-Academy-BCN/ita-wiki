@@ -3,6 +3,7 @@ import { z } from 'zod'
 import {
   authMeController,
   loginController,
+  logoutController,
   registerController,
 } from '../controllers'
 import { validate, authMiddleware } from '../middleware'
@@ -18,6 +19,8 @@ authRouter.post(
   validate(z.object({ body: userLoginSchema })),
   loginController
 )
+
+authRouter.get('/logout', logoutController)
 
 authRouter.post(
   '/register',

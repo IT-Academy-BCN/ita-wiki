@@ -9,12 +9,18 @@ export const loginController = async (ctx: Koa.Context) => {
 
   const user = await prisma.user.findUnique({
     where: { dni: dniUpperCase as string },
-    select: { id: true, password: true },
+    select: { id: true, password: true, status: true },
   })
 
   if (!user) {
     ctx.status = 404
     ctx.body = { error: 'User not found' }
+    return
+  }
+
+  if (user.status !== 'ACTIVE') {
+    ctx.status = 403
+    ctx.body = { error: 'Only active users can login' }
     return
   }
 
