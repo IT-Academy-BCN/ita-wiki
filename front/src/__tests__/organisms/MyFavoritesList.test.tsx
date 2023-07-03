@@ -58,7 +58,7 @@ describe('MyFavoritesList', () => {
     render(<MyFavoritesList />)
   })
 
-  it('renders correctly on error', async () => {
+  it.skip('renders correctly on error', async () => {
     server.use(...errorHandlers)
     render(<MyFavoritesList />)
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement

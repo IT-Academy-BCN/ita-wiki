@@ -1,10 +1,11 @@
+import { User } from '@prisma/client'
 import Koa, { Middleware } from 'koa'
 import { prisma } from '../../prisma/client'
 import { addVoteCountToResource } from '../../helpers/addVoteCountToResource'
 import { resourceGetSchema } from '../../schemas'
 
 export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
-  const { userId } = ctx.params
+  const user = ctx.user as User
   const categorySlug = ctx.query.categorySlug?.toString()
 
   let resources
@@ -22,7 +23,7 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
 
   if (!categorySlug) {
     resources = await prisma.resource.findMany({
-      where: { userId },
+      where: { userId: user.id },
       include,
     })
   } else {
@@ -35,7 +36,7 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
     })
     resources = await prisma.resource.findMany({
       where: {
-        userId,
+        userId: user.id,
         topics: {
           some: {
             topicId: {

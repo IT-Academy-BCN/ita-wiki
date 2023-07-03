@@ -374,7 +374,7 @@ paths:
                   - examples:
                       - message: No category found with this id
                       - message: No category found with this slug
-  /api/v1/resources/favorites/:categorySlug?:
+  /api/v1/resources/favorites:
     get:
       tags:
         - resources

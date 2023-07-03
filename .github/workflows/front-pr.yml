@@ -15,12 +15,21 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
           cache: "npm"
           cache-dependency-path: front/package-lock.json
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/front/node_modules
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
 
       - name: install dependencies
         run: |

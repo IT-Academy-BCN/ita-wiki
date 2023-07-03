@@ -26,7 +26,6 @@ describe('Testing POST media endpoint', () => {
     const bufferData = Buffer.from(testImage, 'base64')
     await fs.mkdir('./static/media', { recursive: true })
     await fs.writeFile(`${pathUploadMedia}/testImage.png`, bufferData)
-
     const response = await supertest(server)
       .post(`${pathRoot.v1.media}`)
       .set('Cookie', authToken.user)
