@@ -41,7 +41,6 @@ app.use(Routes.resourcesRouter.routes())
 app.use(Routes.topicsRouter.routes())
 app.use(Routes.categoriesRouter.routes())
 app.use(Routes.mediaRouter.routes())
-app.use(Routes.favoritesRouter.routes())
 app.use(Routes.voteRouter.routes())
 app.use(Routes.typesRouter.routes())
 

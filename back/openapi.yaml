@@ -374,20 +374,16 @@ paths:
                   - examples:
                       - message: No category found with this id
                       - message: No category found with this slug
-  /api/v1/favorites/by-user/:userId:
+  /api/v1/resources/favorites/:categorySlug?:
     get:
       tags:
-        - favorites
-      description: Takes a user Id and returns the list of favorites saved by that user
-      summary: Returns favorite resources by user
+        - resources
+      description: Retrieves the users favorite resources when logged in
+      summary: Returns favorite resources by user and category
       parameters:
-        - name: userId
-          in: path
-          required: true
-          description: ID of the user for which to retrieve favorite resources
         - name: categorySlug
           in: path
-          required: true
+          required: false
           description: Slug of the category for which to retrieve favorite resources
           example: node
       responses:
@@ -449,8 +445,8 @@ paths:
                     - userId
                     - createdAt
                     - updatedAt
-        "400":
-          description: User ID is required
+        "401":
+          description: Missing token
           content:
             application/json:
               schema:
@@ -458,7 +454,7 @@ paths:
                 properties:
                   error:
                     type: string
-                    example: UserId is required
+                    example: "Unauthorized: Missing token"
                 required:
                   - error
         "404":
@@ -471,6 +467,18 @@ paths:
                   error:
                     type: string
                     example: User not found
+                required:
+                  - error
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Token is not valid
                 required:
                   - error
   /api/v1/resources:
