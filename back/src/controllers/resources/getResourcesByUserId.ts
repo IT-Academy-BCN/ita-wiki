@@ -5,20 +5,49 @@ import { resourceGetSchema } from '../../schemas'
 
 export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
   const { userId } = ctx.params
+  const categorySlug = ctx.query.categorySlug?.toString()
 
-  const resources = await prisma.resource.findMany({
-    where: { userId },
-    include: {
-      user: {
-        select: {
-          name: true,
-          email: true,
+  let resources
+
+  const include = {
+    user: {
+      select: {
+        name: true,
+        email: true,
+      },
+    },
+    vote: { select: { vote: true } },
+    topics: { select: { topic: true } },
+  }
+
+  if (!categorySlug) {
+    resources = await prisma.resource.findMany({
+      where: { userId },
+      include,
+    })
+  } else {
+    const topicsInCategory = await prisma.topic.findMany({
+      where: {
+        category: {
+          slug: categorySlug,
         },
       },
-      vote: { select: { vote: true } },
-      topics: { select: { topic: true } },
-    },
-  })
+    })
+    resources = await prisma.resource.findMany({
+      where: {
+        userId,
+        topics: {
+          some: {
+            topicId: {
+              in: topicsInCategory.map(({ id }) => id),
+            },
+          },
+        },
+      },
+      include,
+    })
+  }
+
   const parsedResources = resources.map((resource) => {
     const resourceWithVote = addVoteCountToResource(resource)
     return resourceGetSchema.parse(resourceWithVote)
