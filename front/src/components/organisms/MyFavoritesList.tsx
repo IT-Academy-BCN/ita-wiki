@@ -1,6 +1,5 @@
 import { FC, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { urls } from '../../constants'
 import { Icon, Title, Spinner, Text } from '../atoms'
@@ -48,47 +47,27 @@ const StyledSpinner = styled(Spinner)`
   height: 70px;
   border-width: 15px;
 `
-const favs = [
-  {
-    id: 'favoriteId',
-    title: 'My favorite title',
-    slug: 'my-favorite',
-    description: 'Favorite description',
-    url: 'https://tutorials.cat/learn/javascript',
-    resourceType: 'VIDEO',
-    userId: 'userId',
-    createdAt: '11/11/2011',
-    updatedAt: '12/12/2012',
-  },
-]
+
+const getFavorites = async () =>
+  fetch(urls.getFavorites)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error fetching favorite resources: ${res.statusText}`)
+      }
+      return res.json()
+    })
+    .catch((err) => {
+      throw new Error(`Error fetching favorite resources: ${err.message}`)
+    })
+
 export const MyFavoritesList: FC = () => {
   const { user } = useAuth()
-  const { userId } = useParams()
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
 
-  const getFavorites = async (userIdParams: string) => {
-    if (!user) {
-      return []
-    }
-    const url = urls.getFavorites.replace(':userId', userIdParams)
-    return fetch(url)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(
-            `Error fetching favorite resources: ${res.statusText}`
-          )
-        }
-        return res.json()
-      })
-      .catch((err) => {
-        throw new Error(`Error fetching favorite resources: ${err.message}`)
-      })
-  }
-
   const { isLoading, data, error } = useQuery({
-    queryKey: ['getFavorites', userId],
-    queryFn: () => getFavorites(userId || ''),
+    queryKey: ['getFavorites'],
+    queryFn: () => getFavorites(),
   })
 
   const handleRegisterModal = () => {
@@ -119,13 +98,11 @@ export const MyFavoritesList: FC = () => {
           {` para añadir recursos favoritos`}
         </StyledText>
       )}
+
       {isLoading && user && <StyledSpinner role="status" />}
 
-      {user &&
-        !isLoading &&
-        !error &&
-        (data && data.length < 0 ? (
-          favs.map((fav: TFavorites) => (
+      {data && data?.length
+        ? data.map((fav: TFavorites) => (
             <FavoritesContainer key={fav.id}>
               <ResourceTitleLink
                 url={fav.url}
@@ -134,11 +111,13 @@ export const MyFavoritesList: FC = () => {
               />
             </FavoritesContainer>
           ))
-        ) : (
-          <Text color={colors.gray.gray4}>No tienes recursos favoritos</Text>
-        ))}
+        : null}
 
-      {error && user && !isLoading && <p>Algo ha ido mal...</p>}
+      {data?.length === 0 ? (
+        <Text color={colors.gray.gray4}>No tienes recursos favoritos</Text>
+      ) : null}
+
+      {error && user && !isLoading ? <p>Algo ha ido mal...</p> : null}
 
       <Modal
         isOpen={isLoginOpen || isRegisterOpen}

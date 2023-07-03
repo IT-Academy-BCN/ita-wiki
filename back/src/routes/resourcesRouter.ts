@@ -23,6 +23,7 @@ resourcesRouter.post(
   validate(z.object({ body: resourceCreateSchema })),
   createResource
 )
+
 resourcesRouter.get(
   '/',
   validate(
@@ -32,6 +33,7 @@ resourcesRouter.get(
   ),
   getResources
 )
+
 resourcesRouter.get(
   '/me',
   authMiddleware,
@@ -45,11 +47,8 @@ resourcesRouter.get(
   getResourcesByUserId
 )
 
-resourcesRouter.get(
-  '/favorites/:categorySlug?',
-  authMiddleware,
-  getFavoriteResources
-)
+resourcesRouter.get('/favorites', authMiddleware, getFavoriteResources)
+
 resourcesRouter.get(
   '/id/:resourceId',
   validate(
@@ -61,6 +60,7 @@ resourcesRouter.get(
   ),
   getResourcesById
 )
+
 resourcesRouter.get(
   '/topic/:topicId',
   validate(
@@ -72,6 +72,7 @@ resourcesRouter.get(
   ),
   getResourcesByTopicId
 )
+
 resourcesRouter.get(
   '/topic/slug/:slug',
   validate(

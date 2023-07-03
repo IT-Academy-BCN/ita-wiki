@@ -1,3 +1,4 @@
+import { User } from '@prisma/client'
 import Koa, { Middleware } from 'koa'
 import { prisma } from '../../prisma/client'
 import { NotFoundError } from '../../helpers/errors'
@@ -33,7 +34,7 @@ export const getVote: Middleware = async (ctx: Koa.Context) => {
 }
 
 export const putVote: Middleware = async (ctx: Koa.Context) => {
-  const { userId } = ctx.params
+  const user = ctx.user as User
   const { resourceId, vote } = ctx.request.body
 
   let voteInt: number
@@ -52,13 +53,13 @@ export const putVote: Middleware = async (ctx: Koa.Context) => {
 
   await prisma.vote.upsert({
     where: {
-      userId_resourceId: { userId, resourceId },
+      userId_resourceId: { userId: user.id, resourceId },
     },
     update: {
       vote: voteInt,
     },
     create: {
-      userId,
+      userId: user.id,
       resourceId,
       vote: voteInt,
     },

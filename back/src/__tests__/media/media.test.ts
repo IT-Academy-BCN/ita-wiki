@@ -20,13 +20,12 @@ afterAll(async () => {
 })
 
 describe('Testing POST media endpoint', () => {
-  test('A user can upload an image, the image exists and the record is created on the DB', async () => {
+  test.only('A user can upload an image, the image exists and the record is created on the DB', async () => {
     const testImage =
       'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO3gAAAABJRU5ErkJggg=='
     const bufferData = Buffer.from(testImage, 'base64')
     await fs.mkdir('./static/media', { recursive: true })
     await fs.writeFile(`${pathUploadMedia}/testImage.png`, bufferData)
-
     const response = await supertest(server)
       .post(`${pathRoot.v1.media}`)
       .set('Cookie', authToken.user)
