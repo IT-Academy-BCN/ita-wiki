@@ -8,42 +8,42 @@ import { patchResourceSchema } from '../../schemas/resource/resourcePatchSchema'
 type ResourcePatch = z.infer<typeof patchResourceSchema>
 
 export const patchResource: Middleware = async (ctx: Koa.Context) => {
-    const { topicId, ...newData } = ctx.request.body as ResourcePatch
-    const user = ctx.user as User
+  const { topicId, ...newData } = ctx.request.body as ResourcePatch
+  const user = ctx.user as User
 
-    const resource = await prisma.resource.findFirst({
-        where: { id: newData.id },
+  const resource = await prisma.resource.findFirst({
+    where: { id: newData.id },
+  })
+
+  if (!resource) {
+    throw new NotFoundError('Resource not found')
+  }
+
+  if (resource.userId !== user.id) {
+    throw new UnauthorizedError('You are not allowed to update this resource')
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.resource.update({
+      where: { id: newData.id },
+      data: {
+        ...newData,
+      },
     })
 
-    if (!resource) {
-        throw new NotFoundError('Resource not found')
+    if (topicId) {
+      await tx.topicsOnResources.deleteMany({
+        where: { resourceId: newData.id },
+      })
+
+      await tx.topicsOnResources.create({
+        data: {
+          resourceId: newData.id,
+          topicId,
+        },
+      })
     }
+  })
 
-    if (resource.userId !== user.id) {
-        throw new UnauthorizedError('You are not allowed to update this resource')
-    }
-
-    await prisma.$transaction(async (tx) => {
-        await tx.resource.update({
-            where: { id: newData.id },
-            data: {
-                ...newData,
-            },
-        })
-
-        if (topicId) {
-            await tx.topicsOnResources.deleteMany({
-                where: { resourceId: newData.id },
-            })
-
-            await tx.topicsOnResources.create({
-                data: {
-                    resourceId: newData.id,
-                    topicId,
-                },
-            })
-        }
-    })
-
-    ctx.status = 204
+  ctx.status = 204
 }

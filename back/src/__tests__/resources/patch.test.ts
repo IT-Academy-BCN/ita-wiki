@@ -18,7 +18,7 @@ describe('Testing resource modify endpoint', () => {
       where: { email: 'testingUser@user.cat' },
     })) as User
 
-    const resource = await prisma.resource.create({
+    await prisma.resource.create({
       data: {
         title: 'test-patch-resource',
         slug: 'test-patch-resource',
@@ -27,13 +27,6 @@ describe('Testing resource modify endpoint', () => {
         resourceType: 'BLOG',
         status: 'SEEN',
         userId: user.id,
-      },
-    })
-
-    await prisma.topicsOnResources.createMany({
-      data: {
-        resourceId: resource.id,
-        topicId: testTopic.id,
       },
     })
   })
@@ -47,7 +40,7 @@ describe('Testing resource modify endpoint', () => {
     })
   })
 
-  test.only('resource owner should be the same as userId sending the modify petition', async () => {
+  test('resource owner should be the same as userId sending the modify petition', async () => {
     const resource = await prisma.resource.findUnique({
       where: { slug: 'test-patch-resource' },
     })
@@ -73,66 +66,55 @@ describe('Testing resource modify endpoint', () => {
       resourceType: 'BLOG',
     }
     const response = await supertest(server)
-      .put(`${pathRoot.v1.resources}/`)
+      .patch(`${pathRoot.v1.resources}/`)
       .set('Cookie', authToken.user)
       .send(newResource)
     expect(response.status).toBe(400)
   })
 
-  // test('should modify topics', async () => {
-  //     let newResource = await prisma.resource.findUnique({
-  //         where: { slug: 'test-resource-1-blog' },
-  //         include: { topics: true }
-  //     })
+  test('should modify topics', async () => {
+    const newTopic = await prisma.topic.findUnique({
+      where: { slug: 'testing' },
+    })
+    const newResource = await prisma.resource.findUnique({
+      where: { slug: 'test-patch-resource' },
+      include: { topics: true },
+    })
+    const lastRes = {
+      id: newResource!.id,
+      topicId: newTopic!.id,
+    }
+    const response = await supertest(server)
+      .patch(`${pathRoot.v1.resources}/`)
+      .set('Cookie', authToken.user)
+      .send(lastRes!)
 
-  //     let newTopic = await prisma.topic.findFirst({
-  //         where: { slug: 'listas' }
-  //     })
-  //     let lastRes = {
-  //         id: newResource!.id,
-  //         title: null,
-  //         description: null,
-  //         url: null,
-  //         topics: newTopic!.id,
-  //         resourceType: null,
-  //     }
-  //     console.log('NEW RESOURCE topic::::::', newResource?.topics)
-  //     console.log('NEW TOPIC:::', newTopic!)
-  //     console.log('LAST RES TOPICS', lastRes.topics)
-  //     const response = await supertest(server)
-  //         .put(`${pathRoot.v1.resources}/`)
-  //         .set('Cookie', authToken.user)
-  //         .send(lastRes!)
+    const compare = await prisma.resource.findUnique({
+      where: { slug: 'test-patch-resource' },
+      include: { topics: true },
+    })
 
-  //     const compare = await prisma.resource.findUnique({
-  //         where: { slug: 'test-resource-1-blog' },
-  //         include: { topics: true }
-  //     })
-  //     const topicOnResource = await prisma.topicsOnResources.findFirst({
-  //         where: { resourceId: newResource!.id }
-  //     })
+    const topicOnResource = await prisma.topicsOnResources.findFirst({
+      where: { resourceId: newResource!.id },
+    })
 
-  //     expect(compare!.topics[0].topicId).toBe(topicOnResource!.topicId)
-  //     expect(response.status).toBe(204)
-  // })
+    expect(compare!.topics[0].topicId).toBe(topicOnResource!.topicId)
+    expect(response.status).toBe(204)
+  })
 
   test('should modify a resource with new Title', async () => {
     const newTitle = 'test tres'
     const resource = await prisma.resource.findUnique({
-      where: { slug: 'test-resource-1-blog' },
+      where: { slug: 'test-patch-resource' },
       include: { topics: true },
     })
 
     const newResource = {
       id: resource!.id,
       title: newTitle,
-      slug: null,
-      description: null,
-      url: null,
-      resourceType: null,
     }
     const response = await supertest(server)
-      .put(`${pathRoot.v1.resources}/`)
+      .patch(`${pathRoot.v1.resources}/`)
       .set('Cookie', authToken.user)
       .send(newResource!)
     const lastResource = await prisma.resource.findUnique({
