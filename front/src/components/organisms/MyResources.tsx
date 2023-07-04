@@ -167,7 +167,7 @@ const MyResources = () => {
         )}
       </TitleContainer>
       {!user && (
-        <StyledText color={colors.gray.gray4}>
+        <StyledText color={colors.gray.gray3}>
           <TextDecorationStyled onClick={handleRegisterModal}>
             Regístrate
           </TextDecorationStyled>
@@ -181,38 +181,36 @@ const MyResources = () => {
 
       {isLoading && user && <Spinner />}
 
-      {data && data?.length ? (
-        <ResourcesUserStyled>
-          {data.map((resource: TResource) => (
-            <MyResourcesCardList key={resource.id}>
-              {isMobile ? (
-                <CardResource
-                  createdBy={resource.user.name}
-                  createdOn={resource.createdAt}
-                  description={resource.description}
-                  img=""
-                  id={resource.id}
-                  title={resource.title}
-                  url={resource.url}
-                  handleAccessModal={() => {}}
-                />
-              ) : (
-                <ResourceTitleLink
-                  url={resource.url}
-                  title={resource.title}
-                  description={resource.description}
-                />
-              )}
-            </MyResourcesCardList>
-          ))}
-        </ResourcesUserStyled>
-      ) : null}
-
-      {data?.length === 0 ? (
-        <StyledText>No has subido ningún recurso</StyledText>
-      ) : null}
-
-      {error && user && !isLoading ? <p>Algo ha ido mal...</p> : null}
+      {!isLoading &&
+        !error &&
+        (data && data.length > 0 ? (
+          <ResourcesUserStyled>
+            {data.map((resource: TResource) => (
+              <MyResourcesCardList key={resource.id}>
+                {isMobile ? (
+                  <CardResource
+                    createdBy={resource.user.name}
+                    createdOn={resource.createdAt}
+                    description={resource.description}
+                    img=""
+                    id={resource.id}
+                    title={resource.title}
+                    url={resource.url}
+                    handleAccessModal={() => {}}
+                  />
+                ) : (
+                  <ResourceTitleLink
+                    url={resource.url}
+                    title={resource.title}
+                    description={resource.description}
+                  />
+                )}
+              </MyResourcesCardList>
+            ))}
+          </ResourcesUserStyled>
+        ) : (
+          <Text color={colors.gray.gray4}>No has subido ningún recurso</Text>
+        ))}
 
       <Modal
         isOpen={isLoginOpen || isRegisterOpen}
