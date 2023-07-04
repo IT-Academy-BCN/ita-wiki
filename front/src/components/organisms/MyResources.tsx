@@ -184,7 +184,7 @@ const MyResources = () => {
       {!isLoading &&
         !error &&
         (data && data.length > 0 ? (
-          <ResourcesUserStyled>
+          <ResourcesUserStyled data-testid="mobile-card">
             {data.map((resource: TResource) => (
               <MyResourcesCardList key={resource.id}>
                 {isMobile ? (

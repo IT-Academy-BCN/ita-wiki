@@ -63,6 +63,17 @@ describe('MyResources', () => {
     render(<MyResources />)
   })
 
+  it('receives data when API call returns 200 and the user has no resources', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Hola',
+        avatar: 'Adios',
+      },
+    } as TAuthContext)
+
+    render(<MyResources />)
+  })
+
   it('shows correct title when resize to mobile', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
