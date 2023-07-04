@@ -119,4 +119,20 @@ describe('MyResources', () => {
       expect(screen.queryByTestId('resource-card')).toBeInTheDocument()
     })
   })
+
+  it('shows ResourceTitleLink when resizes to laptop', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Hola',
+        avatar: 'Adios',
+      },
+    } as TAuthContext)
+
+    global.innerWidth = 1024
+    render(<MyResources />)
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('resource-title')).toBeInTheDocument()
+    })
+  })
 })
