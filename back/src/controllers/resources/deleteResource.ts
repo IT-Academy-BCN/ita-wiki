@@ -4,8 +4,7 @@ import { NotFoundError } from '../../helpers/errors'
 
 export const deleteResource: Middleware = async (ctx: Koa.Context) => {
     const newData = ctx.request.body
-    // {resourceId,  userId }
-
+    //const userId = ctx.params
     const resourceToDelete = await prisma.resource.findFirst({
         where: {
             id: newData.id,

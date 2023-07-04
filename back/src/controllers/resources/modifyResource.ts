@@ -4,13 +4,13 @@ import { DefaultError } from '../../helpers/errors'
 
 export const modifyResource: Middleware = async (ctx: Koa.Context) => {
     const newData = ctx.request.body
-    //newData = {id, title, description, url, topic, resourceType, userId }    
+    const userId = ctx.params
 
     const resource = await prisma.resource.findFirst({
         where: { id: newData.id }
     })
 
-    if (!resource || resource!.userId !== newData.userId) {
+    if (!resource || resource!.userId !== userId) {
         throw new DefaultError(401, 'Only resource owner can modify resource')
     }
 
@@ -42,6 +42,7 @@ export const modifyResource: Middleware = async (ctx: Koa.Context) => {
         await prisma.topicsOnResources.deleteMany({
             where: { resourceId: newData.resourceId }
         })
+
         await prisma.topicsOnResources.create({
             data: {
                 resourceId: newData.resourceId,
@@ -56,7 +57,6 @@ export const modifyResource: Middleware = async (ctx: Koa.Context) => {
                 resourceType: newData.resourceType
             }
         })
-
     }
 
     ctx.status = 204
