@@ -26,7 +26,12 @@ export type TResourceTitleLink = {
 }
 
 const ResourceTitleLink = ({ description, title, url }: TResourceTitleLink) => (
-  <LinkStyled to={url} target="_blank" rel="noopener noreferrer">
+  <LinkStyled
+    to={url}
+    target="_blank"
+    rel="noopener noreferrer"
+    data-testid="resource-title"
+  >
     <Text fontWeight="bold">{title}</Text>
     <Description>{description}</Description>
   </LinkStyled>

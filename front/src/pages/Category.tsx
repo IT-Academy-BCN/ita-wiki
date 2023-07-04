@@ -192,6 +192,12 @@ const TextContainerStyled = styled(FlexBox)`
   gap: 0.8rem;
 `
 
+const TitleContainer = styled(FlexBox)`
+  flex-direction: row;
+  gap: ${dimensions.spacing.xxxs};
+  margin-top: ${dimensions.spacing.xl};
+`
+
 type TMappedTopics = {
   id: string
   name: string

@@ -78,12 +78,9 @@ const ButtonContainerStyled = styled(FlexBox)`
   margin-bottom: ${dimensions.spacing.xs};
 `
 
+
 const StyledText = styled(Text)`
   margin-top: ${dimensions.spacing.xxl};
-`
-
-const CardsFlexBox = styled(FlexBox)`
-  width: 100%;
 `
 
 const cardHomeMobileContent = [
@@ -191,7 +188,7 @@ const Home: FC = () => {
             <StyledText color={`${colors.gray.gray3}`} fontSize={`${font.xs}`}>
               Funcionalidades básicas que te ofrece esta plataforma:
             </StyledText>
-            <CardsFlexBox direction="row">
+            <FlexBox direction="row">
               {cardHomeContent.map((content) => (
                 <CardHome
                   key={content.id}
@@ -202,7 +199,7 @@ const Home: FC = () => {
                   data-testid="cardHome"
                 />
               ))}
-            </CardsFlexBox>
+            </FlexBox>
           </DivStyled>
         </MainContainer>
       </DesktopStyled>
