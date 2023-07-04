@@ -58,6 +58,20 @@ describe('MyFavoritesList', () => {
     render(<MyFavoritesList />)
   })
 
+  it('shows correct title when resize to mobile', async () => {
+    global.innerWidth = 600
+    render(<MyFavoritesList />)
+    const titleElement = screen.getByTestId('title')
+    expect(titleElement).toHaveTextContent('Recursos que te gustan')
+  })
+
+  it('shows correct title when resize to desktop', async () => {
+    global.innerWidth = 1024
+    render(<MyFavoritesList />)
+    const titleElement = screen.getByTestId('title')
+    expect(titleElement).toHaveTextContent('Recursos favoritos')
+  })
+
   it.skip('renders correctly on error', async () => {
     server.use(...errorHandlers)
     render(<MyFavoritesList />)

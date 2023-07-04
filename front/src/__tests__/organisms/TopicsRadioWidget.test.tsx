@@ -29,7 +29,7 @@ describe('TopicsRadioWidget', () => {
     })
   })
 
-  it.only('The user can select another radio option', async () => {
+  it('The user can select another radio option', async () => {
     render(<TopicsRadioWidget slug="react" />)
 
     await waitFor(() => {
