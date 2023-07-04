@@ -1,7 +1,6 @@
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import axios from 'axios'
 import styled from 'styled-components'
 import { UserLoginSchema } from '@itacademy/schemas'
 import InputGroup from '../molecules/InputGroup'
@@ -12,6 +11,7 @@ import { dimensions, colors, FlexBox } from '../../styles'
 const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.xxxs};
   margin-left: 0.2rem;
+  margin-bottom: ${dimensions.spacing.xxxs};
 `
 
 const LoginStyled = styled(FlexBox)`
@@ -50,8 +50,13 @@ type TLogin = {
   handleRegisterModal: () => void
 }
 
+type TErrorResponse = {
+  message: string
+}
+
 const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
   const [isVisibility, setIsVisibility] = useState(false)
+  const [responseError, setResponseError] = useState('')
   const {
     register,
     handleSubmit,
@@ -61,14 +66,26 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
   })
 
   const loginUser = async (user: object) => {
+    const config = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    }
+
     try {
-      const response = await axios.post(urls.logIn, user)
+      const response = await fetch(urls.logIn, config)
 
       if (response.status === 204) {
+        setResponseError('')
         window.location.reload()
       }
+
+      if (response.status === 404) throw new Error('Usuario no encontrado')
+      if (response.status === 422) throw new Error('Contraseña incorrecta')
     } catch (error) {
-      throw new Error('Error logging in user')
+      setResponseError((error as TErrorResponse).message)
     }
   }
 
@@ -92,6 +109,11 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
           name="dni"
           error={errors.dni && true}
         />
+        <FlexErrorStyled align="start">
+          {errors?.dni ? (
+            <ValidationMessage color="error" text="Identificador incorrecto" />
+          ) : null}
+        </FlexErrorStyled>
         <InputGroup
           type={isVisibility ? 'text' : 'password'}
           id="password"
@@ -105,11 +127,8 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
           error={errors.password && true}
         />
         <FlexErrorStyled align="start">
-          {errors?.dni || errors?.password ? (
-            <ValidationMessage
-              color="error"
-              text="Identificador o contraseña incorrecto"
-            />
+          {responseError ? (
+            <ValidationMessage color="error" text={responseError} />
           ) : null}
         </FlexErrorStyled>
         <FlexBox align="end">
