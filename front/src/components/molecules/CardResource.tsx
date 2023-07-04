@@ -79,6 +79,7 @@ export const CardResource = ({
 
   return (
     <CardContainerStyled
+      data-testid="resource-card"
       direction="row"
       align="center"
       justify="flex-start"

@@ -165,6 +165,12 @@ const TextContainerStyled = styled(FlexBox)`
   gap: 0.8rem;
 `
 
+const TitleContainer = styled(FlexBox)`
+  flex-direction: row;
+  gap: ${dimensions.spacing.xxxs};
+  margin-top: ${dimensions.spacing.xl};
+`
+
 type TMappedTopics = {
   id: string
   name: string
@@ -355,6 +361,12 @@ const Category: FC = () => {
               <MyFavoritesList />
               {/* TÍTULO 2 */}
               <UserResourcesContainerStyled>
+                <TitleContainer>
+                  <Icon name="menu_book" fill={0} />
+                  <Title as="h2" fontWeight="bold" data-testid="title">
+                    Mis recursos
+                  </Title>
+                </TitleContainer>
                 <MyResources />
               </UserResourcesContainerStyled>
             </SideColumnContainer>
