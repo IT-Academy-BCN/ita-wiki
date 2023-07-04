@@ -163,27 +163,7 @@ const Home: FC = () => {
             icon="search"
           />
           <CategoriesList />
-          <Title as="h3" fontWeight="bold">
-            Recursos que te gustan
-          </Title>
-          {user ? (
-            <SliderContainer>
-              <FlexBox direction="row" gap="1rem" justify="flex-start">
-                <MyFavoritesList />
-              </FlexBox>
-            </SliderContainer>
-          ) : (
-            <Text fontWeight="bold" color={colors.gray.gray3}>
-              <TextDecorationStyled onClick={handleRegisterModal}>
-                Regístrate
-              </TextDecorationStyled>
-              {` o `}
-              <TextDecorationStyled onClick={handleLoginModal}>
-                inicia sesión
-              </TextDecorationStyled>
-              {` para añadir recursos favoritos`}
-            </Text>
-          )}
+          <MyFavoritesList />
 
           <Title as="h3" fontWeight="bold">
             Tus recursos
