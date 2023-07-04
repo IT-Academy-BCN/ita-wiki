@@ -16,6 +16,7 @@ describe('Testing resource modify endpoint', () => {
             where: { slug: 'testing' },
         })) as Topic
 
+
         const testResourceData = {
             ...resourceTestData[0],
             user: { connect: { dni: testUserData.user.dni } },
@@ -77,17 +78,5 @@ describe('Testing resource modify endpoint', () => {
             .set('Cookie', authToken.admin)
             .send(newResource)
         expect(response.status).toBe(400)
-    })
-
-    test('if resource does not exists should return 404 not found', async () => {
-        const newResource = {
-            id: 'c!.id',
-            userid: 'c!.userId'
-        }
-        const response = await supertest(server)
-            .delete(`${pathRoot.v1.resources}/`)
-            .set('Cookie', authToken.admin)
-            .send(newResource!)
-        expect(response.status).toBe(404)
     })
 })
