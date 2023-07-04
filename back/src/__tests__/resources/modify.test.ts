@@ -8,7 +8,7 @@ import { resourceTestData } from '../mocks/resources'
 import { Resource, Topic } from '@prisma/client'
 
 describe('Testing resource modify endpoint', () => {
-    let testResource: Resource
+    //let testResource: Resource
     let testTopic: Topic
 
     beforeAll(async () => {
