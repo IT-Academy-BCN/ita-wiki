@@ -1,23 +1,57 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { urls } from '../../constants'
 import { Icon, Title, Spinner, Text } from '../atoms'
 import { useAuth } from '../../context/AuthProvider'
-import { FlexBox, colors, dimensions, font } from '../../styles'
-import { Modal, ResourceTitleLink } from '../molecules'
+import {
+  FlexBox,
+  colors,
+  device,
+  dimensions,
+  font,
+  responsiveSizes,
+} from '../../styles'
+import { CardResource, Modal, ResourceTitleLink } from '../molecules'
 import Login from './Login'
 import Register from './Register'
 
 const TitleContainer = styled(FlexBox)`
-  flex-direction: row;
-  gap: ${dimensions.spacing.xxxs};
-  margin-top: ${dimensions.spacing.xl};
+  align-items: stretch;
+
+  @media only ${device.Tablet} {
+    flex-direction: row;
+    align-items: center;
+    gap: ${dimensions.spacing.xxxs};
+    margin-top: ${dimensions.spacing.xl};
+  }
 `
 
 const FavoritesContainer = styled(FlexBox)`
-  align-items: flex-start;
-  margin-bottom: ${dimensions.spacing.md};
+  flex-direction: row;
+  overflow: hidden;
+  overflow-x: auto;
+  justify-content: flex-start;
+  margin-bottom: ${dimensions.spacing.base};
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media only ${device.Tablet} {
+    flex-direction: column;
+    align-items: flex-start;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+`
+
+const FavoritesCardList = styled(FlexBox)`
+  margin-right: ${dimensions.spacing.xxs};
+
+  @media only ${device.Tablet} {
+    margin-right: ${dimensions.spacing.none};
+  }
 `
 
 type TFavorites = {
@@ -33,8 +67,12 @@ type TFavorites = {
 }
 
 const StyledText = styled(Text)`
+  color: ${colors.gray.gray3};
   font-weight: ${font.regular};
-  line-height: 1.3;
+
+  @media only ${device.Tablet} {
+    color: ${colors.gray.gray4};
+  }
 `
 
 const TextDecorationStyled = styled.span`
@@ -47,6 +85,9 @@ const StyledSpinner = styled(Spinner)`
   height: 70px;
   border-width: 15px;
 `
+
+const getWindowIsMobile = () =>
+  window.innerWidth <= parseInt(responsiveSizes.tablet, 10)
 
 const getFavorites = async () =>
   fetch(urls.getFavorites)
@@ -64,6 +105,14 @@ export const MyFavoritesList: FC = () => {
   const { user } = useAuth()
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
+  const [isMobile, setIsMobile] = useState(getWindowIsMobile())
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(getWindowIsMobile())
+    }
+    window.addEventListener('resize', handleResize)
+  }, [isMobile])
 
   const { isLoading, data, error } = useQuery({
     queryKey: ['getFavorites'],
@@ -81,13 +130,21 @@ export const MyFavoritesList: FC = () => {
   return (
     <>
       <TitleContainer data-testid="title">
-        <Icon name="favorite" fill={0} />
-        <Title as="h2" fontWeight="bold">
-          Recursos favoritos
-        </Title>
+        {isMobile ? (
+          <Title as="h3" fontWeight="bold">
+            Recursos que te gustan
+          </Title>
+        ) : (
+          <>
+            <Icon name="favorite" fill={0} />
+            <Title as="h2" fontWeight="bold">
+              Recursos favoritos
+            </Title>
+          </>
+        )}
       </TitleContainer>
       {!user && (
-        <StyledText color={colors.gray.gray4}>
+        <StyledText>
           <TextDecorationStyled onClick={handleRegisterModal}>
             Regístrate
           </TextDecorationStyled>
@@ -101,20 +158,35 @@ export const MyFavoritesList: FC = () => {
 
       {isLoading && user && <StyledSpinner role="status" />}
 
-      {data && data?.length
-        ? data.map((fav: TFavorites) => (
-            <FavoritesContainer key={fav.id}>
-              <ResourceTitleLink
-                url={fav.url}
-                title={fav.title}
-                description={fav.description}
-              />
-            </FavoritesContainer>
-          ))
-        : null}
+      {data && data?.length ? (
+        <FavoritesContainer>
+          {data.map((fav: TFavorites) => (
+            <FavoritesCardList key={fav.id}>
+              {isMobile ? (
+                <CardResource
+                  createdBy={fav.userId}
+                  createdOn={fav.createdAt}
+                  description={fav.description}
+                  img=""
+                  id={fav.id}
+                  title={fav.title}
+                  url={fav.url}
+                  handleAccessModal={() => {}}
+                />
+              ) : (
+                <ResourceTitleLink
+                  url={fav.url}
+                  title={fav.title}
+                  description={fav.description}
+                />
+              )}
+            </FavoritesCardList>
+          ))}
+        </FavoritesContainer>
+      ) : null}
 
       {data?.length === 0 ? (
-        <Text color={colors.gray.gray4}>No tienes recursos favoritos</Text>
+        <StyledText>No tienes recursos favoritos</StyledText>
       ) : null}
 
       {error && user && !isLoading ? <p>Algo ha ido mal...</p> : null}

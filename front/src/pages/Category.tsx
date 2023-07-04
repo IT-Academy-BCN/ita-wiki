@@ -30,13 +30,13 @@ import { useAuth } from '../context/AuthProvider'
 
 export const MobileStyled = styled.div`
   display: block;
-  @media only ${device.Laptop} {
+  @media only ${device.Tablet} {
     display: none;
   }
 `
 export const DesktopStyled = styled.div`
   display: none;
-  @media only ${device.Laptop} {
+  @media only ${device.Tablet} {
     display: block;
   }
 `
@@ -176,6 +176,7 @@ type TMappedTopics = {
   name: string
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getTopics = (query?: QueryFunctionContext<string[], any>) => {
   const filters = query?.queryKey[1] as string
 
@@ -296,7 +297,6 @@ const Category: FC = () => {
 
           <TextContainerStyled direction="row">
             <Text fontWeight="bold">Votos ↓</Text>
-
             <Text color={colors.gray.gray3}>Fecha</Text>
           </TextContainerStyled>
         </SubHeaderContainerStyled>

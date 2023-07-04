@@ -1,6 +1,7 @@
 import './auth/login'
 import './auth/register'
 import './auth/me'
+import './auth/logout'
 import './categories'
 import './topics/topics'
 import './resources/favorites'
