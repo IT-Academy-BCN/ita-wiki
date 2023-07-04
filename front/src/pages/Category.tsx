@@ -170,6 +170,7 @@ type TMappedTopics = {
   name: string
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getTopics = (query?: QueryFunctionContext<string[], any>) => {
   const filters = query?.queryKey[1] as string
 
