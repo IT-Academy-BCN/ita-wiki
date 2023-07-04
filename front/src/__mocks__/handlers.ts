@@ -118,8 +118,9 @@ export const handlers = [
       ctx.status(204),
       ctx.json([
         {
-          voteCount: '1',
-        },
+          "resourceId": "string",
+          "vote": "up"
+        }
       ])
     )
   ),
