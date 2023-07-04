@@ -41,8 +41,8 @@ describe('Testing resources GET endpoint', () => {
         .get(`${pathRoot.v1.resources}`)
         .query({ resourceType })
       expect(response.status).toBe(200)
-      expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-      response.body.resources.forEach((resource: ResourceWithTopics) => {
+      expect(response.body.length).toBeGreaterThanOrEqual(1)
+      response.body.forEach((resource: ResourceWithTopics) => {
         expect(() => resourceGetSchema.parse(resource)).not.toThrow()
         expect(resource.resourceType).toBe(`${resourceType}`)
       })
@@ -62,8 +62,8 @@ describe('Testing resources GET endpoint', () => {
       .query({ topic: topicName })
 
     expect(response.status).toBe(200)
-    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-    response.body.resources.forEach((resource: ResourceWithTopics) => {
+    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    response.body.forEach((resource: ResourceWithTopics) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       expect(
         resource.topics.map((t: { topic: Topic }) => t.topic.name)
@@ -77,7 +77,7 @@ describe('Testing resources GET endpoint', () => {
       .query({ topic: topicName })
 
     expect(response.status).toBe(200)
-    expect(response.body.resources.length).toBe(0)
+    expect(response.body.length).toBe(0)
   })
   it('should get all resources by category slug', async () => {
     const categorySlug = 'testing'
@@ -86,8 +86,8 @@ describe('Testing resources GET endpoint', () => {
       .query({ category: categorySlug })
 
     expect(response.status).toBe(200)
-    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-    response.body.resources.forEach((resource: ResourceWithTopics) => {
+    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    response.body.forEach((resource: ResourceWithTopics) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       // The returned resource has at least a topic related to the queried category
       expect(
@@ -115,8 +115,8 @@ describe('Testing resources GET endpoint', () => {
         })
 
       expect(response.status).toBe(200)
-      expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-      response.body.resources.forEach((resource: ResourceWithTopics) => {
+      expect(response.body.length).toBeGreaterThanOrEqual(1)
+      response.body.forEach((resource: ResourceWithTopics) => {
         expect(() => resourceGetSchema.parse(resource)).not.toThrow()
         expect(
           resource.topics.map((t: { topic: Topic }) => t.topic.name)
@@ -140,8 +140,8 @@ describe('Testing resources GET endpoint', () => {
       .get(`${pathRoot.v1.resources}`)
       .query({ status: 'SEEN' })
     expect(response.status).toBe(200)
-    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-    response.body.resources.forEach((resource: ResourceWithTopics) => {
+    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    response.body.forEach((resource: ResourceWithTopics) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       expect(resource.status).toBe('SEEN')
     })
@@ -152,12 +152,12 @@ describe('Testing resources GET endpoint', () => {
       .query({})
 
     expect(response.status).toBe(200)
-    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-    response.body.resources.forEach((resource: ResourceWithTopics) => {
+    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    response.body.forEach((resource: ResourceWithTopics) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })
     // All existing resources are fetched
     const countResources = await prisma.resource.count()
-    expect(response.body.resources.length).toBe(countResources)
+    expect(response.body.length).toBe(countResources)
   })
 })
