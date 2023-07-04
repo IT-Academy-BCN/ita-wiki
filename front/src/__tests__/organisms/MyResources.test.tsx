@@ -52,6 +52,7 @@ describe('MyResources', () => {
 
     render(<MyResources />)
   })
+
   it('shows error message if user is not logged', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: null,
@@ -60,5 +61,35 @@ describe('MyResources', () => {
     server.use(...errorHandlers)
 
     render(<MyResources />)
+  })
+
+  it('shows correct title when resize to mobile', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Hola',
+        avatar: 'Adios',
+      },
+    } as TAuthContext)
+
+    global.innerWidth = 600
+    render(<MyResources />)
+
+    const title = screen.getByTestId('main-title')
+    expect(title).toHaveTextContent('Tus recursos')
+  })
+
+  it('shows correct title when resize to laptop', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Hola',
+        avatar: 'Adios',
+      },
+    } as TAuthContext)
+
+    global.innerWidth = 1024
+    render(<MyResources />)
+
+    const title = screen.getByTestId('main-title')
+    expect(title).toHaveTextContent('Mis recursos')
   })
 })
