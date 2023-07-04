@@ -10,7 +10,7 @@ import {
   MyResources,
   Navbar,
 } from '../components/organisms'
-import { Title, Text, Icon, Button } from '../components/atoms'
+import { Title, Text, Button } from '../components/atoms'
 import { paths } from '../constants'
 import Register from '../components/organisms/Register'
 import Login from '../components/organisms/Login'
