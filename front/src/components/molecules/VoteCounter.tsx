@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
@@ -21,57 +21,61 @@ type TVoteCounter = {
   handleAccessModal: () => void
 }
 
-export const voteMutation = async (resourceId: string, voteValue: string) => {
-  const url = urls.vote
-    .replace(':resourceId', resourceId)
-    .replace(':vote', voteValue)
-  const data = {
-    voteCount: voteValue,
-    resourceId,
-  }
-  const requestOptions = {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  }
-  return fetch(url, requestOptions)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('error fetching votes')
-      }
-      return res.json()
-    })
-    .catch((err) => {
-      throw new Error(`${err}`)
-    })
+type TVoteMutationData = {
+  resourceId: string
+  vote: 'up' | 'down' | 'cancel'
 }
 
 export const VoteCounter: FC<TVoteCounter> = ({
-  voteCount,
+  voteCount: initialVoteCount,
   resourceId,
   handleAccessModal,
 }) => {
   const { user } = useAuth()
+  const [voteCount, setVoteCount] = useState(initialVoteCount)
 
-  const newVotation = useMutation({
-    mutationKey: ['vote', resourceId],
-    mutationFn: (voteValue: string) => voteMutation(resourceId, voteValue),
-  })
-
-  const handleClick = (voteValue: number) => {
-    newVotation.mutate(voteValue.toString())
+  const fetchVotes = async () => {
+    try {
+      const response = await fetch(`${urls.vote}/${resourceId}`)
+      if (!response.ok) {
+        throw new Error('Error fetching votes')
+      }
+      const data = await response.json()
+      setVoteCount(data.voteCount.total)
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error)
+    }
   }
 
-  if (newVotation.error) {
-    return <p data-testid="voteError">{`${newVotation.error}`}</p>
+  // eslint-disable-next-line @typescript-eslint/no-shadow
+  const voteMutation = async ({ resourceId, vote }: TVoteMutationData) => {
+    const url = urls.vote
+    const requestOptions = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ resourceId, vote }),
+    }
+
+    const response = await fetch(url, requestOptions)
+    if (!response.ok) {
+      throw new Error('Error fetching votes')
+    }
+
+    fetchVotes()
   }
 
+  const newVotation = useMutation(voteMutation)
+
+  const handleClick = (vote: 'up' | 'down' | 'cancel') => {
+    newVotation.mutate({ resourceId, vote })
+  }
   return (
     <FlexBox data-testid="voteCounter">
       <StyledIcon
         name="expand_less"
         data-testid="increase"
-        onClick={user ? () => handleClick(1) : () => handleAccessModal()}
+        onClick={user ? () => handleClick('up') : () => handleAccessModal()}
       />
       <Text
         fontWeight="bold"
@@ -84,7 +88,7 @@ export const VoteCounter: FC<TVoteCounter> = ({
         name="expand_more"
         id="decrease"
         data-testid="decrease"
-        onClick={user ? () => handleClick(-1) : () => handleAccessModal()}
+        onClick={user ? () => handleClick('down') : () => handleAccessModal()}
       />
     </FlexBox>
   )
