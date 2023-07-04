@@ -71,7 +71,7 @@ type TResourceCardList = {
 
 const ResourceCardList = ({ handleAccessModal }: TResourceCardList) => {
   const params = useParams()
-
+  const { user } = useAuth()
   const categorySlug: string | undefined = params.slug
 
   const { isLoading, data, error } = useQuery({
@@ -97,6 +97,8 @@ const ResourceCardList = ({ handleAccessModal }: TResourceCardList) => {
             createdBy={resource.user.name}
             createdOn={resource.createdAt}
             updatedOn={resource.updatedAt}
+            editable={user?.name === resource.user.name}
+            handleAccessModal={handleAccessModal}
           />
         ))
       ) : (

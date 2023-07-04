@@ -71,10 +71,27 @@ type TCardResource = {
   updatedOn?: string
   url: string
   editable: boolean
+  handleAccessModal: () => void
 }
 type TMappedTopics = {
   id: string
   name: string
+}
+type TResourceForm = {
+  title: string
+  description: string
+  url: string
+  topics: string[]
+  resourceType: string
+  userEmail?: string
+}
+const initialValues = {
+  title: '',
+  url: '',
+  topics: [], // Valor por defecto para 'topics' como un arreglo vacío
+  resourceType: '',
+  description: '',
+  userEmail: '',
 }
 export const CardResource = ({
   createdBy,
@@ -87,11 +104,13 @@ export const CardResource = ({
   updatedOn,
   url,
   editable,
+  handleAccessModal,
   ...rest
 }: TCardResource) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-
+  const [currentResource, setCurrentResource] = useState<TResourceForm>()
   const openModal = () => {
+    setCurrentResource(currentResource ?? initialValues)
     setIsModalOpen(true)
   }
   // // Declaración e inicialización de la variable fetchedTopics
@@ -119,7 +138,7 @@ export const CardResource = ({
     >
       {editable && (
         <>
-          <StyledSvg onClick={openModal}>
+          <StyledSvg onClick={openModal} style={{ cursor: 'pointer' }}>
             <img src={icons.editPen} alt="Editar recurso" />
           </StyledSvg>
           <Modal
@@ -127,7 +146,10 @@ export const CardResource = ({
             toggleModal={() => setIsModalOpen(false)}
             title="Editar Recurso"
           >
-            <ResourceForm selectOptions={mappedTopics} />
+            <ResourceForm
+              selectOptions={mappedTopics}
+              initialValues={currentResource || initialValues}
+            />
             <ButtonContainerStyled>
               <ButtonStyled outline onClick={() => setIsModalOpen(false)}>
                 Eliminar

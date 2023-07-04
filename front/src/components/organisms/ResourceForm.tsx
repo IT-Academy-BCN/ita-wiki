@@ -76,8 +76,29 @@ const createResourceFetcher = (resource: object) =>
     })
     // eslint-disable-next-line no-console
     .catch((error) => console.error(error))
-
-export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
+const updateResourceFetcher = (resource: object) =>
+  fetch(urls.updateResource, {
+    method: 'PUT',
+    body: JSON.stringify(resource),
+    headers: {
+      'Content-type': 'application/json',
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error('Error al actualizar el recurso')
+      }
+      return res.status === 204 ? {} : res.json()
+    })
+    // eslint-disable-next-line no-console
+    .catch((error) => console.error(error))
+type TResourceFormProps = TSelectOptions & {
+  initialValues?: TResourceForm & { id?: string }
+}
+export const ResourceForm: FC<TResourceFormProps> = ({
+  selectOptions,
+  initialValues,
+}) => {
   const {
     register,
     handleSubmit,
@@ -85,6 +106,7 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
     reset,
   } = useForm<TResourceForm>({
     resolver: zodResolver(ResourceFormSchema),
+    defaultValues: initialValues,
   })
   const navigate = useNavigate()
 
@@ -95,17 +117,32 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
     },
   })
 
+  // const onSubmit = handleSubmit(async (data) => {
+  //   const { title, description, url, topics, resourceType } = data
+  //   await createResource.mutateAsync({
+  //     title,
+  //     description,
+  //     url,
+  //     topics: [topics],
+  //     resourceType,
+  //   })
+  // })
   const onSubmit = handleSubmit(async (data) => {
     const { title, description, url, topics, resourceType } = data
-    await createResource.mutateAsync({
+    const resource = {
       title,
       description,
       url,
       topics: [topics],
       resourceType,
-    })
+    }
+    if (initialValues) {
+      resource.id = initialValues.id
+      await updateResource.mutateAsync(resource)
+    } else {
+      await createResource.mutateAsync(resource)
+    }
   })
-
   return (
     <ResourceFormStyled onSubmit={onSubmit}>
       <InputGroup
@@ -164,7 +201,7 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
         ) : null}
       </FlexErrorStyled>
       <ButtonContainerStyled align="stretch">
-        <Button type="submit">Crear</Button>
+        <Button type="submit">{initialValues ? 'Actualizar' : 'Crear'}</Button>
       </ButtonContainerStyled>
     </ResourceFormStyled>
   )
