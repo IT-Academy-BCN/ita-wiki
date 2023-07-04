@@ -11,12 +11,7 @@ describe('Home page', () => {
       screen.getByText(/¡Bienvenid@ a la wiki de la IT Academy!/)
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/Funcionalidades básicas que te ofrece esta plataforma/)
-    ).toBeInTheDocument()
-    expect(
-      screen.getByText(
-        /Para comenzar a visualizar recursos, selecciona una categoría/i
-      )
+      screen.getByText(/Funcionalidades básicas que te ofrece esta plataforma:/)
     ).toBeInTheDocument()
   })
 

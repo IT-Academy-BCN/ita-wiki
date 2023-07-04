@@ -34,11 +34,6 @@ const MobileContainerStyled = styled(FlexBox)`
   padding: 5rem ${dimensions.spacing.base} ${dimensions.spacing.xl};
 `
 
-const TextDecorationStyled = styled.span`
-  text-decoration: underline;
-  cursor: pointer;
-`
-
 const MainContainer = styled.div`
   display: flex;
   justify-content: flex-start;
@@ -85,15 +80,6 @@ const ButtonContainerStyled = styled(FlexBox)`
 
 const StyledText = styled(Text)`
   margin-top: ${dimensions.spacing.xxl};
-`
-
-const SliderContainer = styled.div`
-  width: 100%;
-  overflow: auto;
-
-  ::-webkit-scrollbar {
-    display: none;
-  }
 `
 
 const CardsFlexBox = styled(FlexBox)`
@@ -172,28 +158,7 @@ const Home: FC = () => {
           />
           <CategoriesList />
           <MyFavoritesList />
-
-          <Title as="h3" fontWeight="bold">
-            Tus recursos
-          </Title>
-          {user ? (
-            <SliderContainer>
-              <FlexBox direction="row" gap="1rem" justify="flex-start">
-                <MyResources />
-              </FlexBox>
-            </SliderContainer>
-          ) : (
-            <Text fontWeight="bold" color={colors.gray.gray3}>
-              <TextDecorationStyled onClick={handleRegisterModal}>
-                Regístrate
-              </TextDecorationStyled>
-              {` o `}
-              <TextDecorationStyled onClick={handleLoginModal}>
-                inicia sesión
-              </TextDecorationStyled>
-              {` para añadir recursos favoritos`}
-            </Text>
-          )}
+          <MyResources />
         </MobileContainerStyled>
       </MobileStyled>
       <DesktopStyled>

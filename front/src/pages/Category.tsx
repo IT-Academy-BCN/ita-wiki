@@ -45,12 +45,10 @@ const ScrollList = styled(FlexBox)`
   overflow: hidden;
   overflow-x: auto;
   width: 100%;
-
   &::-webkit-scrollbar {
     display: none;
   }
 `
-
 const ScrollDiv = styled(FlexBox)`
   overflow: scroll;
 
@@ -120,10 +118,6 @@ const MiddleColumnContainer = styled(FlexBox)`
   }
 `
 
-const StyledFlexBox = styled(FlexBox)`
-  width: 100%;
-`
-
 const SearchBar = styled(InputGroup)`
   color: ${colors.gray.gray4};
   margin-top: 1rem;
@@ -147,7 +141,6 @@ const SearchBar = styled(InputGroup)`
     color: ${colors.gray.gray3};
   }
 `
-
 // END style Desktop
 
 const HeaderContainerStyled = styled(FlexBox)`
@@ -357,7 +350,11 @@ const Category: FC = () => {
                 Recursos de {state?.name}
               </Title>
               {/* ==> LÍNEA DE VÍDEOS, VOTOS Y FECHA */}
-              <StyledFlexBox justify="flex-end" direction="row">
+              <FlexBox
+                justify="flex-end"
+                direction="row"
+                style={{ width: '100%' }}
+              >
                 {/* ==> VOTOS Y FECHA */}
                 <FlexBox direction="row" gap="15px">
                   <FlexBox direction="row">
@@ -366,13 +363,13 @@ const Category: FC = () => {
                   </FlexBox>
                   <Text color={colors.gray.gray3}>Fecha</Text>
                 </FlexBox>
-              </StyledFlexBox>
+              </FlexBox>
               <ScrollList>
                 <ResourceCardList handleAccessModal={handleAccessModal} />
               </ScrollList>
             </MiddleColumnContainer>
             {/* ==> COLUMNA USUARIO */}
-            <SideColumnContainer as="aside">
+            <SideColumnContainer>
               {/* TÍTULO 1 */}
               <SearchBar
                 data-testid="inputGroupSearch"
@@ -384,8 +381,8 @@ const Category: FC = () => {
               />
               <ScrollDiv>
                 <MyFavoritesList />
-                {/* TÍTULO 2 */}
               </ScrollDiv>
+              {/* TÍTULO 2 */}
               <ScrollDiv>
                 <UserResourcesContainerStyled>
                   <MyResources />

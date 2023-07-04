@@ -14,7 +14,7 @@ const CardContainerStyled = styled(FlexBox)`
   height: 7rem;
   padding: ${dimensions.spacing.xxs} ${dimensions.spacing.xs};
   width: 100%;
-  // min-width: 15rem;
+  min-width: 15rem;
   position: relative;
 `
 
@@ -78,6 +78,7 @@ export const CardResource = ({
 
   return (
     <CardContainerStyled
+      data-testid="resource-card"
       direction="row"
       align="center"
       justify="flex-start"
