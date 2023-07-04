@@ -12,10 +12,9 @@ const CardContainerStyled = styled(FlexBox)`
   border-radius: ${dimensions.borderRadius.sm};
   border: 1px solid ${colors.gray.gray4};
   height: 7rem;
-  margin: ${dimensions.spacing.xxxs} auto;
   padding: ${dimensions.spacing.xxs} ${dimensions.spacing.xs};
   width: 100%;
-  min-width: 15rem;
+  // min-width: 15rem;
   position: relative;
 `
 
