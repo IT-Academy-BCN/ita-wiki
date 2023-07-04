@@ -12,21 +12,14 @@ import {
 } from '../controllers'
 import { resourceCreateSchema, resourcesGetParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
-import { modifyResource } from '../controllers/resources/modifyResource'
-import { resourceModifySchema } from '../schemas/resource/resourceModifySchema'
+import { patchResource } from '../controllers/resources/modifyResource'
+import { patchResourceSchema } from '../schemas/resource/resourcePatchSchema'
 import { deleteResource } from '../controllers/resources/deleteResource'
 import { resourceDeleteSchema } from '../schemas/resource/resourceDeleteSchema'
 
 const resourcesRouter = new Router()
 
 resourcesRouter.prefix(pathRoot.v1.resources)
-
-resourcesRouter.put(
-  '/',
-  authMiddleware,
-  validate(z.object({ body: resourceModifySchema })),
-  modifyResource
-)
 
 resourcesRouter.delete(
   '/',
@@ -101,6 +94,13 @@ resourcesRouter.get(
     })
   ),
   getResourcesByTopicSlug
+)
+
+resourcesRouter.patch(
+  '/',
+  authMiddleware,
+  validate(z.object({ body: patchResourceSchema })),
+  patchResource
 )
 
 export { resourcesRouter }

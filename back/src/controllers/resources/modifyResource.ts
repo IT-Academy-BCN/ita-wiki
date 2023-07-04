@@ -1,63 +1,49 @@
 import Koa, { Middleware } from 'koa'
+import { User } from '@prisma/client'
+import { z } from 'zod'
 import { prisma } from '../../prisma/client'
-import { DefaultError } from '../../helpers/errors'
+import { NotFoundError, UnauthorizedError } from '../../helpers/errors'
+import { patchResourceSchema } from '../../schemas/resource/resourcePatchSchema'
 
-export const modifyResource: Middleware = async (ctx: Koa.Context) => {
-    const newData = ctx.request.body
-    const userId = ctx.params
+type ResourcePatch = z.infer<typeof patchResourceSchema>
 
-    const resource = await prisma.resource.findFirst({
-        where: { id: newData.id }
+export const patchResource: Middleware = async (ctx: Koa.Context) => {
+  const { topicId, ...newData } = ctx.request.body as ResourcePatch
+  const user = ctx.user as User
+
+  const resource = await prisma.resource.findFirst({
+    where: { id: newData.id },
+  })
+
+  if (!resource) {
+    throw new NotFoundError('Resource not found')
+  }
+
+  if (resource.userId !== user.id) {
+    throw new UnauthorizedError('You are not allowed to update this resource')
+  }
+
+  await prisma.$transaction(async (tx) => {
+    await tx.resource.update({
+      where: { id: newData.id },
+      data: {
+        ...newData,
+      },
     })
 
-    if (!resource || resource!.userId !== userId) {
-        throw new DefaultError(401, 'Only resource owner can modify resource')
-    }
+    if (topicId) {
+      await tx.topicsOnResources.deleteMany({
+        where: { resourceId: newData.id },
+      })
 
-    if (newData.title) {
-        await prisma.resource.update({
-            where: { id: newData.id },
-            data: {
-                title: newData.title
-            }
-        })
+      await tx.topicsOnResources.create({
+        data: {
+          resourceId: newData.id,
+          topicId,
+        },
+      })
     }
-    if (newData.description) {
-        await prisma.resource.update({
-            where: { id: newData.id },
-            data: {
-                description: newData.description
-            }
-        })
-    }
-    if (newData.url) {
-        await prisma.resource.update({
-            where: { id: newData.id },
-            data: {
-                url: newData.url
-            }
-        })
-    }
-    if (newData.topic) {
-        await prisma.topicsOnResources.deleteMany({
-            where: { resourceId: newData.resourceId }
-        })
+  })
 
-        await prisma.topicsOnResources.create({
-            data: {
-                resourceId: newData.resourceId,
-                topicId: newData.topicId
-            }
-        })
-    }
-    if (newData.resourceType) {
-        await prisma.resource.update({
-            where: { id: newData.id },
-            data: {
-                resourceType: newData.resourceType
-            }
-        })
-    }
-
-    ctx.status = 204
+  ctx.status = 204
 }
