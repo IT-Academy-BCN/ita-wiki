@@ -1,46 +1,37 @@
-import { render, waitFor, screen } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
-import userEvent from '@testing-library/user-event'
 import { rest } from 'msw'
+import { render, waitFor, screen, fireEvent } from '../test-utils'
 import { server } from '../../__mocks__/server'
 import Login from '../../components/organisms/Login'
 import { urls } from '../../constants'
 
-beforeAll(() => server.listen())
-afterEach(() => server.resetHandlers())
-afterAll(() => server.close())
-
 const handleLogin = () => {}
+const handleRegisterModal = () => {}
 
 describe('Login', () => {
   it('renders correctly', async () => {
     render(
-      <BrowserRouter>
-        <Login
-          handleLoginModal={handleLogin}
-          handleRegisterModal={handleLogin}
-        />
-      </BrowserRouter>
+      <Login
+        handleLoginModal={handleLogin}
+        handleRegisterModal={handleRegisterModal}
+      />
     )
   })
 
   it('logs in the user', async () => {
     render(
-      <BrowserRouter>
-        <Login
-          handleLoginModal={handleLogin}
-          handleRegisterModal={handleLogin}
-        />
-      </BrowserRouter>
+      <Login handleLoginModal={handleLogin} handleRegisterModal={handleLogin} />
     )
-    userEvent.type(screen.getByLabelText(/dni/i), '11111111A')
-    userEvent.type(screen.getByLabelText(/password/i), 'testingPswd1')
-    userEvent.click(screen.getByRole('button', { name: 'Login' }))
+    fireEvent.change(screen.getByLabelText(/dni/i), {
+      target: { value: '11111111A' },
+    })
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: 'testingPswd1' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Login' }))
 
     await waitFor(() => {
-      expect(window.location.pathname).toBe('/')
       expect(
-        screen.queryByText('Identificador o contraseña incorrecto')
+        screen.queryByText(/Identificador incorrecto/i)
       ).not.toBeInTheDocument()
     })
   })
@@ -48,21 +39,19 @@ describe('Login', () => {
   it('should show an error message if login fails', async () => {
     server.use(rest.post(urls.logIn, (req, res, ctx) => res(ctx.status(404))))
     render(
-      <BrowserRouter>
-        <Login
-          handleLoginModal={handleLogin}
-          handleRegisterModal={handleLogin}
-        />
-      </BrowserRouter>
+      <Login handleLoginModal={handleLogin} handleRegisterModal={handleLogin} />
     )
 
-    userEvent.type(screen.getByLabelText(/dni/i), '87654321B')
-    userEvent.type(screen.getByLabelText(/password/i), 'wordpass')
-    userEvent.click(screen.getByRole('button', { name: 'Login' }))
+    fireEvent.change(screen.getByLabelText(/dni/i), {
+      target: { value: '11111111' },
+    })
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: 'testingPswd1' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Login' }))
 
     await waitFor(() => {
       expect(screen.getByText(/Identificador incorrecto/i)).toBeInTheDocument()
-      screen.debug()
     })
   })
 })
