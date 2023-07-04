@@ -287,6 +287,15 @@ paths:
                     example: Database error
                 required:
                   - message
+  /api/v1/auth/logout:
+    get:
+      tags:
+        - auth
+      description: Deletes cookie and logouts user
+      summary: Logs out user
+      responses:
+        "204":
+          description: User has been logged out successfully
   /api/v1/categories:
     get:
       tags:
@@ -374,7 +383,7 @@ paths:
                   - examples:
                       - message: No category found with this id
                       - message: No category found with this slug
-  /api/v1/resources/favorites/:categorySlug?:
+  /api/v1/resources/favorites:
     get:
       tags:
         - resources

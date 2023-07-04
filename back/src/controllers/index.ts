@@ -1,4 +1,5 @@
 export { loginController } from './auth/loginController'
+export { logoutController } from './auth/logoutController'
 export { registerController } from './auth/registerController'
 export { authMeController } from './auth/authMeController'
 export { createResource } from './resources/createResourceController'

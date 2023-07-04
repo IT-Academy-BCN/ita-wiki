@@ -1,18 +1,13 @@
 import Koa, { Middleware } from 'koa'
-import jwt, { Secret } from 'jsonwebtoken'
+import { User } from '@prisma/client'
 import { prisma } from '../../prisma/client'
 
 export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
-  const token = ctx.cookies.get('token') as string
-  const { userId } = jwt.verify(token, process.env.JWT_KEY as Secret) as {
-    userId: string
-  }
-
+  const user = ctx.user as User
   const { categorySlug } = ctx.params
-
   const favorites = await prisma.favorites.findMany({
     where: {
-      userId,
+      userId: user.id,
       resource: {
         ...(categorySlug && {
           topics: {

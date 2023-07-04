@@ -12,8 +12,8 @@ import {
 } from '../controllers'
 import { resourceCreateSchema, resourcesGetParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
-import { modifyResource } from '../controllers/resources/modifyResource'
-import { resourceModifySchema } from '../schemas/resource/resourceModifySchema'
+import { patchResource } from '../controllers/resources/patchResource'
+import { patchResourceSchema } from '../schemas/resource/resourcePatchSchema'
 import { deleteResource } from '../controllers/resources/deleteResource'
 import { resourceDeleteSchema } from '../schemas/resource/resourceDeleteSchema'
 
@@ -21,26 +21,13 @@ const resourcesRouter = new Router()
 
 resourcesRouter.prefix(pathRoot.v1.resources)
 
-resourcesRouter.put(
-  '/',
-  authMiddleware,
-  validate(z.object({ body: resourceModifySchema })),
-  modifyResource
-)
-
-resourcesRouter.delete(
-  '/',
-  authMiddleware,
-  validate(z.object({ body: resourceDeleteSchema })),
-  deleteResource
-)
-
 resourcesRouter.post(
   '/',
   authMiddleware,
   validate(z.object({ body: resourceCreateSchema })),
   createResource
 )
+
 resourcesRouter.get(
   '/',
   validate(
@@ -50,6 +37,7 @@ resourcesRouter.get(
   ),
   getResources
 )
+
 resourcesRouter.get(
   '/me',
   authMiddleware,
@@ -63,11 +51,8 @@ resourcesRouter.get(
   getResourcesByUserId
 )
 
-resourcesRouter.get(
-  '/favorites/:categorySlug?',
-  authMiddleware,
-  getFavoriteResources
-)
+resourcesRouter.get('/favorites', authMiddleware, getFavoriteResources)
+
 resourcesRouter.get(
   '/id/:resourceId',
   validate(
@@ -79,6 +64,7 @@ resourcesRouter.get(
   ),
   getResourcesById
 )
+
 resourcesRouter.get(
   '/topic/:topicId',
   validate(
@@ -90,6 +76,7 @@ resourcesRouter.get(
   ),
   getResourcesByTopicId
 )
+
 resourcesRouter.get(
   '/topic/slug/:slug',
   validate(
@@ -100,6 +87,20 @@ resourcesRouter.get(
     })
   ),
   getResourcesByTopicSlug
+)
+
+resourcesRouter.patch(
+  '/',
+  authMiddleware,
+  validate(z.object({ body: patchResourceSchema })),
+  patchResource
+)
+
+resourcesRouter.delete(
+  '/',
+  authMiddleware,
+  validate(z.object({ body: resourceDeleteSchema })),
+  deleteResource
 )
 
 export { resourcesRouter }

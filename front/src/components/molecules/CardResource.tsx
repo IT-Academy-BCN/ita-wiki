@@ -8,11 +8,12 @@ import { VoteCounter } from './VoteCounter'
 import icons from '../../assets/icons'
 
 const CardContainerStyled = styled(FlexBox)`
+  background-color: ${colors.white};
   border-radius: ${dimensions.borderRadius.sm};
-  border: 1px solid ${colors.gray.gray3};
+  border: 1px solid ${colors.gray.gray4};
   height: 7rem;
   margin: ${dimensions.spacing.xxxs} auto;
-  padding: 0.8rem 0.6rem 0.6rem 0.2rem;
+  padding: ${dimensions.spacing.xxs} ${dimensions.spacing.xs};
   width: 100%;
   min-width: 15rem;
   position: relative;
@@ -54,7 +55,7 @@ type TCardResource = {
   description: string
   img: string | undefined
   id: string
-  likes: number
+  likes?: number
   title: string
   updatedOn?: string
   url: string
@@ -89,13 +90,15 @@ export const CardResource = ({
           <img src={icons.editPen} alt="Editar recurso" />
         </StyledSvg>
       )}
-      <CounterContainerStyled>
-        <VoteCounter
-          voteCount={likes}
-          resourceId={id}
-          handleAccessModal={handleAccessModal}
-        />
-      </CounterContainerStyled>
+      {Number.isInteger(likes) && (
+        <CounterContainerStyled>
+          <VoteCounter
+            voteCount={likes || 0}
+            resourceId={id}
+            handleAccessModal={handleAccessModal || undefined}
+          />
+        </CounterContainerStyled>
+      )}
       <FlexBoxStyled align="start" justify="space-between" gap="4px">
         <ResourceTitleLink description={description} title={title} url={url} />
         <CreateAuthor createdBy={createdBy} createdOn={createdOn} img={img} />

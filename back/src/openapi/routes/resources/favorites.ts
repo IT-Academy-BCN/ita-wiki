@@ -6,7 +6,7 @@ import { z } from '../../zod'
 registry.registerPath({
   method: 'get',
   tags: ['resources'],
-  path: `${pathRoot.v1.resources}/favorites/:categorySlug?`,
+  path: `${pathRoot.v1.resources}/favorites`,
   description: 'Retrieves the users favorite resources when logged in',
   summary: 'Returns favorite resources by user and category',
   parameters: [

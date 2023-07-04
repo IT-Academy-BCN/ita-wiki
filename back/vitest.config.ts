@@ -8,6 +8,6 @@ export default defineConfig({
       reporter: ['lcov', 'text'],
     },
     setupFiles: ['./src/__tests__/setup.ts'],
-    globalSetup: ['./src/__tests__/globalSetup.ts']
+    globalSetup: ['./src/__tests__/globalSetup.ts'],
   },
 })

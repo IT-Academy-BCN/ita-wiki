@@ -1,11 +1,12 @@
 import Koa, { Middleware } from 'koa'
 import sharp from 'sharp'
+import { User } from '@prisma/client'
 import slugify from 'slugify'
 import { prisma } from '../../prisma/client'
 import { MissingParamError } from '../../helpers/errors'
 
 export const postMedia: Middleware = async (ctx: Koa.Context) => {
-  const { userId } = ctx.params
+  const user = ctx.user as User
   const media = ctx.file
 
   if (!media) throw new MissingParamError('media')
@@ -32,7 +33,7 @@ export const postMedia: Middleware = async (ctx: Koa.Context) => {
     data: {
       mimeType: media.mimetype,
       filePath,
-      userId,
+      userId: user.id,
     },
   })
 

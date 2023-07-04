@@ -22,7 +22,6 @@ jobs:
           - 10911:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
-
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js
@@ -31,6 +30,14 @@ jobs:
           node-version: "18"
           cache: "npm"
           cache-dependency-path: back/package-lock.json
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/front/node_modules
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
 
       - name: install dependencies
         run: |

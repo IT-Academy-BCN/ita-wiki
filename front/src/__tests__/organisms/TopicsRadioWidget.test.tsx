@@ -33,13 +33,14 @@ describe('TopicsRadioWidget', () => {
     render(<TopicsRadioWidget slug="react" />)
 
     await waitFor(() => {
-      const option1 = screen.getByLabelText(/listas/i)
-      const option2 = screen.getByLabelText(/renderizado condicional/i)
+      const option1 = screen.getByLabelText(/todos/i)
+      const option2 = screen.getByLabelText(/listas/i)
+      const option3 = screen.getByLabelText(/renderizado condicional/i)
 
       expect(option1).toBeChecked()
-      fireEvent.click(option2)
-      expect(option1).not.toBeChecked()
-      expect(option2).toBeChecked()
+      fireEvent.click(option3)
+      expect(option2).not.toBeChecked()
+      expect(option3).toBeChecked()
     })
   })
 })
