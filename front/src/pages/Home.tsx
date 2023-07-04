@@ -10,7 +10,7 @@ import {
   MyResources,
   Navbar,
 } from '../components/organisms'
-import { Title, Text, Icon, Button } from '../components/atoms'
+import { Title, Text, Button } from '../components/atoms'
 import { paths } from '../constants'
 import Register from '../components/organisms/Register'
 import Login from '../components/organisms/Login'
@@ -42,7 +42,7 @@ const MainContainer = styled.div`
   background-color: ${colors.gray.gray5};
   height: 100vh;
   width: 100%;
-  padding: ${dimensions.spacing.sm};
+  padding: ${dimensions.spacing.xl};
 `
 
 const DivStyled = styled(FlexBox)`
@@ -50,15 +50,15 @@ const DivStyled = styled(FlexBox)`
   width: 100%;
   height: 100%;
   border-radius: ${dimensions.borderRadius.base};
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `
 
 const LateralDiv = styled.div`
   height: 100%;
-`
-
-const TextContainerStyled = styled(FlexBox)`
-  height: 100%;
-  gap: ${dimensions.spacing.xxs};
 `
 
 const ImageStyled = styled.img`
@@ -76,6 +76,11 @@ const ButtonStyled = styled(Button)`
 
 const ButtonContainerStyled = styled(FlexBox)`
   margin-bottom: ${dimensions.spacing.xs};
+`
+
+
+const StyledText = styled(Text)`
+  margin-top: ${dimensions.spacing.xxl};
 `
 
 const cardHomeMobileContent = [
@@ -107,7 +112,7 @@ const cardHomeContent = [
     id: 3,
     indicator: '/ 03',
     icon: `${icons.thumbUp}`,
-    title: 'Vota los recursos',
+    title: `Vota los\nrecursos`,
     subtitle: 'La comunidad decide cuáles son más relevantes',
   },
 ]
@@ -162,11 +167,13 @@ const Home: FC = () => {
             <CategoriesList />
           </LateralDiv>
           <DivStyled>
-            <Title as="h1">¡Bienvenid@ a la wiki de la IT Academy!</Title>
+            <Title as="h1" fontWeight="bold">
+              ¡Bienvenid@ a la wiki de la IT Academy!
+            </Title>
             {!user && (
               <>
                 <Text color={`${colors.gray.gray3}`} fontSize={`${font.xs}`}>
-                  Regístrate o inicia sesión para añadir recursos favoritos
+                  Regístrate o inicia sesión para poder subir y votar recursos
                 </Text>
                 <ButtonContainerStyled direction="row">
                   <ButtonStyled outline onClick={handleLoginModal}>
@@ -178,9 +185,9 @@ const Home: FC = () => {
                 </ButtonContainerStyled>
               </>
             )}
-            <Text color={`${colors.gray.gray3}`} fontSize={`${font.xs}`}>
-              Funcionalidades básicas que te ofrece esta plataforma
-            </Text>
+            <StyledText color={`${colors.gray.gray3}`} fontSize={`${font.xs}`}>
+              Funcionalidades básicas que te ofrece esta plataforma:
+            </StyledText>
             <FlexBox direction="row">
               {cardHomeContent.map((content) => (
                 <CardHome
@@ -193,13 +200,6 @@ const Home: FC = () => {
                 />
               ))}
             </FlexBox>
-            <TextContainerStyled direction="row">
-              <Icon name="info" fill={0} color={`${colors.gray.gray3}`} />
-              <Text color={`${colors.gray.gray3}`} fontSize={`${font.xss}`}>
-                Para comenzar a visualizar recursos, selecciona una categoría.
-                Registro necesario para subir y votar recursos
-              </Text>
-            </TextContainerStyled>
           </DivStyled>
         </MainContainer>
       </DesktopStyled>

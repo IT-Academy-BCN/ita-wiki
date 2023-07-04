@@ -6,6 +6,8 @@ import { TInput } from '../atoms/Input'
 import { TValidationMessage } from '../atoms/ValidationMessage'
 
 const InputGroupStyled = styled.div`
+  width: 100%;
+
   ${ValidationMessage} {
     margin-top: ${dimensions.spacing.xxxs};
     margin-bottom: ${dimensions.spacing.none};
@@ -41,6 +43,7 @@ type TInputGroup = {
   validationType?: TValidationMessage['color']
   validationMessage?: TValidationMessage['text']
   icon?: string
+  className?: string
   iconClick?: () => void
   hiddenLabel?: boolean
 } & TInput
@@ -55,12 +58,13 @@ const InputGroup = forwardRef(
       validationType,
       hiddenLabel,
       icon,
+      className,
       iconClick,
       ...rest
     }: TInputGroup,
     ref: Ref<HTMLInputElement>
   ) => (
-    <InputGroupStyled>
+    <InputGroupStyled className={className}>
       <Label text={label} htmlFor={id} hiddenLabel={hiddenLabel} />
       <FlexBox direction="row" justify="flex-end">
         <Input id={id} name={name} {...rest} ref={ref} />
