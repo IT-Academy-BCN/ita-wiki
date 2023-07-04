@@ -6,7 +6,7 @@ import { useAuth } from '../../context/AuthProvider'
 import { urls } from '../../constants'
 import { Modal, ResourceTitleLink } from '../molecules'
 import { Title, Spinner, Icon, Text } from '../atoms'
-import { FlexBox, colors, dimensions, font } from '../../styles'
+import { FlexBox, colors, device, dimensions, font } from '../../styles'
 import Login from './Login'
 import Register from './Register'
 
@@ -40,15 +40,29 @@ type TResource = {
   }
 }
 
-const TitleContainer = styled(FlexBox)`
-  flex-direction: row;
-  gap: ${dimensions.spacing.xxxs};
-  margin-top: ${dimensions.spacing.xl};
-`
+// const TitleContainer = styled(FlexBox)`
+//   flex-direction: row;
+//   gap: ${dimensions.spacing.xxxs};
+//   margin-top: ${dimensions.spacing.xl};
+// `
 
 const ResourcesUserStyled = styled(FlexBox)`
   align-items: flex-start;
   margin-bottom: ${dimensions.spacing.md};
+  border-radius: ${dimensions.borderRadius.sm};
+  border: 1px solid ${colors.gray.gray3};
+  height: 7rem;
+  margin: ${dimensions.spacing.xxxs} auto;
+  padding: ${dimensions.spacing.xxxs};
+  width: 100%;
+  min-width: 15rem;
+  position: relative;
+  background-color: ${colors.white};
+  @media only ${device.Tablet} {
+    border: none;
+    padding: none;
+    height: auto;
+  }
 `
 
 const StyledText = styled(Text)`
@@ -103,13 +117,12 @@ const MyResources = () => {
 
   return (
     <>
-      <TitleContainer>
+      {/* <TitleContainer>
         <Icon name="menu_book" fill={0} />
         <Title as="h2" fontWeight="bold" data-testid="title">
           Mis recursos
         </Title>
-      </TitleContainer>
-
+      </TitleContainer> */}
       {!user && (
         <StyledText color={colors.gray.gray4}>
           <TextDecorationStyled onClick={handleRegisterModal}>
@@ -134,6 +147,8 @@ const MyResources = () => {
                 url={resource.url}
                 title={resource.title}
                 description={resource.description}
+                createdAt={resource.createdAt}
+                user={resource.user.name}
               />
             </ResourcesUserStyled>
           ))
