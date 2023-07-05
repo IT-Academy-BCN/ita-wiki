@@ -30,8 +30,8 @@ const ContentContainer = styled(FlexBox)`
     background-color: ${colors.gray.gray5};
     padding: ${dimensions.spacing.md};
     height: fit-content;
-    width: 200px;
-    height: 268px;
+    width: 280px;
+    height: 330px;
     border-bottom-left-radius: ${dimensions.borderRadius.base};
     border-bottom-right-radius: ${dimensions.borderRadius.base};
     border-top-left-radius: ${dimensions.borderRadius.base};
@@ -42,8 +42,8 @@ const ContentContainer = styled(FlexBox)`
 const TopContainter = styled.div`
   @media only ${device.Tablet} {
     background-color: ${colors.gray.gray5};
-    height: 30px;
-    width: 163px;
+    height: 38px;
+    width: 238px;
     border-top-right-radius: ${dimensions.borderRadius.base};
     border-top-left-radius: ${dimensions.borderRadius.base};
   }
@@ -56,11 +56,10 @@ const IndicatorStyled = styled(FlexBox)`
     position: absolute;
     min-width: ${dimensions.spacing.xl};
     background-color: ${colors.white};
-    padding: ${dimensions.spacing.xxs};
-    border-bottom-left-radius: ${dimensions.borderRadius.base};
+    padding: ${dimensions.spacing.xs};
     border-bottom-right-radius: ${dimensions.borderRadius.base};
-    left: -0.1rem;
-    top: -1.9rem;
+    left: 0.5px;
+    top: -36px;
     font-size: ${font.xss};
     color: ${colors.gray.gray3};
   }
@@ -116,9 +115,10 @@ const TitleStyled = styled(Text)`
   font-weight: bold;
 
   @media only ${device.Tablet} {
-    font-weight: normal;
+    white-space: pre-wrap;
+    font-weight: ${font.medium};
     text-align: center;
-    margin: ${dimensions.spacing.xxs} auto;
+    margin: ${dimensions.spacing.md} auto 0 auto;
   }
 `
 const SubtitleStyled = styled(Text)`
@@ -128,7 +128,7 @@ const SubtitleStyled = styled(Text)`
     display: block;
     text-align: center;
     color: ${colors.gray.gray3};
-    font-size: ${font.xss};
+    font-size: ${font.base};
   }
 `
 
@@ -175,14 +175,16 @@ export const CardHome = ({
           zIndex={2}
         />
         <CircleStyled
-          backgroundColor={`${colors.primary}7D`}
+          backgroundColor={`${colors.primary}`}
           left="40px"
           top="-55px"
           zIndex={1}
         />
       </CircleContainer>
       <FlexBoxStyled>
-        <TitleStyled>{cardTitle}</TitleStyled>
+        <TitleStyled as="h2" fontSize="18px">
+          {cardTitle}
+        </TitleStyled>
         <SubtitleStyled>{cardSubtitle}</SubtitleStyled>
       </FlexBoxStyled>
     </ContentContainer>
