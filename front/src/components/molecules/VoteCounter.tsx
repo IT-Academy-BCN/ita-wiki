@@ -34,20 +34,6 @@ export const VoteCounter: FC<TVoteCounter> = ({
   const { user } = useAuth()
   const [voteCount, setVoteCount] = useState(initialVoteCount)
 
-  const fetchVotes = async () => {
-    try {
-      const response = await fetch(`${urls.vote}/${resourceId}`)
-      if (!response.ok) {
-        throw new Error('Error fetching votes')
-      }
-      const data = await response.json()
-      setVoteCount(data.voteCount.total)
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error)
-    }
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-shadow
   const voteMutation = async ({ resourceId, vote }: TVoteMutationData) => {
     const url = urls.vote
@@ -62,7 +48,14 @@ export const VoteCounter: FC<TVoteCounter> = ({
       throw new Error('Error fetching votes')
     }
 
-    fetchVotes()
+    setVoteCount((prevVoteCount) => {
+      if (vote === 'up') {
+        return prevVoteCount + 1
+      } else if (vote === 'down') {
+        return prevVoteCount - 1
+      }
+      return prevVoteCount
+    })
   }
 
   const newVotation = useMutation(voteMutation)
