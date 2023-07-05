@@ -8,7 +8,7 @@ import { Spinner, Text } from '../atoms'
 import { CardResource } from '../molecules'
 import { useAuth } from '../../context/AuthProvider'
 
-type TResource = {
+export type TResource = {
   id: string
   title: string
   slug: string
@@ -25,6 +25,17 @@ type TResource = {
     downvote: number
     total: number
   }
+  topics: {
+    topic: {
+      id: string
+      name: string
+      slug: string
+      categoryId: string
+      createdAt: string
+      updatedAt: string
+    }[]
+  }
+  resourceType: string
 }
 
 const StyledSpinner = styled(Spinner)`
@@ -99,6 +110,7 @@ const ResourceCardList = ({ handleAccessModal }: TResourceCardList) => {
             updatedOn={resource.updatedAt}
             editable={user?.name === resource.user.name}
             handleAccessModal={handleAccessModal}
+            resourceType={resource.resourceType}
           />
         ))
       ) : (

@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import styled from 'styled-components'
-import { FC } from 'react'
+// eslint-disable-next-line import/no-cycle
 import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio } from '../atoms'
 import { FlexBox, dimensions } from '../../styles'
@@ -40,11 +40,15 @@ const ResourceFormSchema = z.object({
   userEmail: z.string().optional(),
 })
 
-type TResourceForm = z.infer<typeof ResourceFormSchema> & {
+export type TResourceForm = z.infer<typeof ResourceFormSchema> & {
   topics: string[]
   status: string
+  id?: string
 }
-
+type ResourceFormProps = {
+  initialValues?: TResourceForm
+  selectOptions: TSelectOption[]
+}
 const ResourceFormStyled = styled.form`
   ${Radio} {
     margin-top: ${dimensions.spacing.xl};
@@ -56,9 +60,9 @@ type TSelectOption = {
   label: string
 }
 
-type TSelectOptions = {
-  selectOptions: TSelectOption[]
-}
+// type TSelectOptions = {
+//   selectOptions: TSelectOption[]
+// }
 
 const createResourceFetcher = (resource: object) =>
   fetch(urls.createResource, {
@@ -78,7 +82,7 @@ const createResourceFetcher = (resource: object) =>
     .catch((error) => console.error(error))
 const updateResourceFetcher = (resource: object) =>
   fetch(urls.updateResource, {
-    method: 'PUT',
+    method: 'PATCH',
     body: JSON.stringify(resource),
     headers: {
       'Content-type': 'application/json',
@@ -92,13 +96,12 @@ const updateResourceFetcher = (resource: object) =>
     })
     // eslint-disable-next-line no-console
     .catch((error) => console.error(error))
-type TResourceFormProps = TSelectOptions & {
-  initialValues?: TResourceForm & { id?: string }
-}
-export const ResourceForm: FC<TResourceFormProps> = ({
+
+export const ResourceForm = ({
   selectOptions,
   initialValues,
-}) => {
+}: ResourceFormProps) => {
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -106,7 +109,7 @@ export const ResourceForm: FC<TResourceFormProps> = ({
     reset,
   } = useForm<TResourceForm>({
     resolver: zodResolver(ResourceFormSchema),
-    defaultValues: initialValues,
+    defaultValues: initialValues || undefined,
   })
   const navigate = useNavigate()
 
@@ -116,33 +119,26 @@ export const ResourceForm: FC<TResourceFormProps> = ({
       navigate(paths.home)
     },
   })
-
-  // const onSubmit = handleSubmit(async (data) => {
-  //   const { title, description, url, topics, resourceType } = data
-  //   await createResource.mutateAsync({
-  //     title,
-  //     description,
-  //     url,
-  //     topics: [topics],
-  //     resourceType,
-  //   })
-  // })
+  const updateResource = useMutation(updateResourceFetcher, {
+    onSuccess: () => {
+      reset()
+      navigate(paths.home)
+    },
+  })
   const onSubmit = handleSubmit(async (data) => {
     const { title, description, url, topics, resourceType } = data
-    const resource = {
-      title,
-      description,
-      url,
-      topics: [topics],
-      resourceType,
-    }
     if (initialValues) {
-      resource.id = initialValues.id
-      await updateResource.mutateAsync(resource)
-    } else {
-      await createResource.mutateAsync(resource)
-    }
+      await updateResource.mutateAsync(data)
+    } else
+      await createResource.mutateAsync({
+        title,
+        description,
+        url,
+        topics: [topics],
+        resourceType,
+      })
   })
+
   return (
     <ResourceFormStyled onSubmit={onSubmit}>
       <InputGroup
