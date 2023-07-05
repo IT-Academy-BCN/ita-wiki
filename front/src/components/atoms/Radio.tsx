@@ -22,6 +22,8 @@ const RadioStyled = styled(FlexBox)`
     > input {
       width: 1.5rem;
       height: 1.5rem;
+      min-width: 1.5rem;
+      min-height: 1.5rem;
     }
   }
 
@@ -30,6 +32,7 @@ const RadioStyled = styled(FlexBox)`
     color: ${colors.black.black3};
     display: inline-block;
     margin-left: ${dimensions.spacing.xxs} !important;
+    cursor: pointer;
   }
   accent-color: ${colors.primary};
 `

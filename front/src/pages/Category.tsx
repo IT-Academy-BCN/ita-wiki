@@ -57,6 +57,15 @@ const ScrollDiv = styled(FlexBox)`
   }
 `
 
+const ScrollTopics = styled(FlexBox)`
+  overflow-y: scroll;
+  justify-content: flex-start;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`
+
 // style Desktop
 const MainContainer = styled.div`
   display: flex;
@@ -98,16 +107,16 @@ const SideColumnContainer = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
   flex: 1 2 20rem;
-  padding: 2rem 2rem;
+  padding: 1.2rem 3rem;
 
-  @media ${device.Tablet} {
+  @media ${device.Desktop} {
     padding: 1.2rem 3rem;
   }
 `
 
 const MiddleColumnContainer = styled(FlexBox)`
   flex: 4 1 26rem;
-  padding: 1.2rem 3rem;
+  padding: 1.2rem 1.5rem;
   border-right: solid 1px ${colors.gray.gray3};
   justify-content: flex-start;
   align-items: flex-start;
@@ -115,6 +124,10 @@ const MiddleColumnContainer = styled(FlexBox)`
 
   &::-webkit-scrollbar {
     display: none;
+  }
+
+  @media ${device.Desktop} {
+    padding: 1.2rem 3rem;
   }
 `
 
@@ -340,7 +353,9 @@ const Category: FC = () => {
                 Filtros
               </Title>
               <Text fontWeight="bold">Temas</Text>
-              <ScrollDiv>{slug && <TopicsRadioWidget slug={slug} />}</ScrollDiv>
+              <ScrollTopics>
+                {slug && <TopicsRadioWidget slug={slug} />}
+              </ScrollTopics>
               <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
               <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
             </SideColumnContainer>
