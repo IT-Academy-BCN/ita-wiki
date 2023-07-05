@@ -57,9 +57,7 @@ export const VoteCounter: FC<TVoteCounter> = ({
       return prevVoteCount
     })
   }
-
   const newVotation = useMutation(voteMutation)
-
   const handleClick = (vote: 'up' | 'down' | 'cancel') => {
     newVotation.mutate({ resourceId, vote })
   }
