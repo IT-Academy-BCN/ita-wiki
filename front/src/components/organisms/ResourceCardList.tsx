@@ -83,21 +83,29 @@ const ResourceCardList = ({ handleAccessModal }: TResourceCardList) => {
     <StyledFlexBox direction="column">
       {isLoading && <StyledSpinner role="status" />}
       {data?.resources?.length > 0 ? (
-        data.resources.map((resource: TResource) => (
-          <CardResource
-            key={resource.id}
-            id={resource.id}
-            img=""
-            title={resource.title}
-            url={resource.url}
-            description={resource.description}
-            likes={resource.voteCount.total}
-            createdBy={resource.user.name}
-            createdOn={resource.createdAt}
-            updatedOn={resource.updatedAt}
-            handleAccessModal={handleAccessModal}
-          />
-        ))
+        data.resources
+          .sort(
+            (
+              a: { createdAt: string | number | Date },
+              b: { createdAt: string | number | Date }
+            ) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+          .map((resource: TResource) => (
+            <CardResource
+              key={resource.id}
+              id={resource.id}
+              img=""
+              title={resource.title}
+              url={resource.url}
+              description={resource.description}
+              likes={resource.voteCount.total}
+              createdBy={resource.user.name}
+              createdOn={resource.createdAt}
+              updatedOn={resource.updatedAt}
+              handleAccessModal={handleAccessModal}
+            />
+          ))
       ) : (
         <FlexBox>
           <StyledText data-testid="emptyResource">
