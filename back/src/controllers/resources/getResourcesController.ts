@@ -1,32 +1,33 @@
 import Koa, { Middleware } from 'koa'
+import qs from 'qs'
 import { Prisma, RESOURCE_TYPE, RESOURCE_STATUS } from '@prisma/client'
 import { prisma } from '../../prisma/client'
 import { addVoteCountToResource } from '../../helpers/addVoteCountToResource'
 import { resourceGetSchema } from '../../schemas'
 
 export const getResources: Middleware = async (ctx: Koa.Context) => {
-  const { resourceType, topic, category, status } = ctx.query as {
+  const parsedQuery = qs.parse(ctx.querystring, { ignoreQueryPrefix: true })
+  const { resourceType, topic, category, status } = parsedQuery as {
     resourceType?: RESOURCE_TYPE
     topic?: string
     category?: string
     status?: RESOURCE_STATUS
   }
 
-  const where: Prisma.ResourceWhereInput = {}
+  const where: Prisma.ResourceWhereInput = {
+    topics: {
+      some: {
+        topic: { category: { slug: category } },
+      },
+    },
+  }
+
   if (resourceType) {
     where.resourceType = { equals: resourceType }
   }
 
-  if (topic && category) {
-    where.topics = {
-      some: {
-        topic: { AND: { name: topic, category: { slug: category } } },
-      },
-    }
-  } else if (topic) {
+  if (topic) {
     where.topics = { some: { topic: { name: topic } } }
-  } else if (category) {
-    where.topics = { some: { topic: { category: { slug: category } } } }
   }
 
   if (status) {
@@ -46,11 +47,14 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
       topics: { select: { topic: true } },
     },
   })
+
   const parsedResources = resources.map((resource) => {
     const resourceWithVote = addVoteCountToResource(resource)
     // return parsed values to: 1. make sure it returns what we say it returns 2. delete private fields like userId
     return resourceGetSchema.parse(resourceWithVote)
   })
+
   ctx.status = 200
-  ctx.body = { resources: parsedResources }
+  // eslint-disable-next-line prettier/prettier
+  ctx.body = {resources: parsedResources}
 }
