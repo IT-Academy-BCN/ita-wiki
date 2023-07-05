@@ -1,5 +1,6 @@
 import { rest } from 'msw'
 import { urls } from '../constants'
+import { voteErrorHandlers, voteHandlers } from './handlers/vote'
 
 export const handlers = [
   rest.post(urls.logIn, (req, res, ctx) => res(ctx.status(204))),
@@ -111,18 +112,6 @@ export const handlers = [
     )
   ),
 
-  rest.put(urls.vote, (_, res, ctx) =>
-    res(
-      ctx.status(204),
-      ctx.json([
-        {
-          "resourceId": "string",
-          "vote": "up"
-        }
-      ])
-    )
-  ),
-
   rest.get(urls.getFavorites, (req, res, ctx) => {
     const favoritesUserId = req.url.searchParams.get('userId')
     if (favoritesUserId === 'emptyResource') {
@@ -193,6 +182,7 @@ export const handlers = [
       })
     )
   }),
+  ...voteHandlers,
 ]
 
 export const errorHandlers = [
@@ -242,4 +232,5 @@ export const errorHandlers = [
     }
     return res(ctx.status(401), ctx.json({ message: 'User not found' }))
   }),
+  ...voteErrorHandlers,
 ]

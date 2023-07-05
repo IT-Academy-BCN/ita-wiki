@@ -1,55 +1,27 @@
 import { vi } from 'vitest'
-import { UseMutationResult, useMutation } from '@tanstack/react-query'
 import { VoteCounter } from '../../components/molecules'
 import { fireEvent, screen, waitFor, render } from '../test-utils'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
-import { urls } from '../../constants'
 
-vi.mock('@tanstack/react-query', async () => {
-  const actual = await vi.importActual('@tanstack/react-query')
-  return {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    ...actual,
-    useMutation: vi.fn(),
-  }
-})
-
+const user = {
+  name: 'Hola',
+  avatar: 'Adios',
+}
 vi.mock('../../context/AuthProvider', async () => {
-  const actual = await vi.importActual('../../context/AuthProvider')
+  const actual = (await vi.importActual(
+    '../../context/AuthProvider'
+  )) as typeof import('../../context/AuthProvider')
   return {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     ...actual,
-    useAuth: vi.fn(),
+    useAuth: vi.fn(() => ({
+      user: null,
+    })),
   }
 })
 
 describe('Vote counter molecule', () => {
-  const mockMutation = vi.fn()
-  beforeEach(() =>
-    vi.mocked(useMutation).mockReturnValue({
-      mutate: mockMutation,
-    } as unknown as UseMutationResult<unknown, unknown, unknown, unknown>)
-  )
-  vi.mock('../../context/AuthProvider', async () => {
-    const actual = await vi.importActual('../../context/AuthProvider')
-    return {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      ...actual,
-      useAuth: vi.fn(),
-    }
-  })
   it('renders correctly', () => {
     const handleAccessModal = vi.fn()
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Hola',
-        avatar: 'Adios',
-      },
-    } as TAuthContext)
-
     render(
       <VoteCounter
         voteCount={0}
@@ -57,7 +29,6 @@ describe('Vote counter molecule', () => {
         handleAccessModal={handleAccessModal}
       />
     )
-
     expect(screen.getByTestId('increase')).toBeInTheDocument()
     expect(screen.getByTestId('decrease')).toBeInTheDocument()
     expect(screen.getByTestId('voteCounter')).toBeInTheDocument()
@@ -66,10 +37,6 @@ describe('Vote counter molecule', () => {
 
   it('user not logged in can not vote', async () => {
     const handleAccessModal = vi.fn()
-    vi.mocked(useAuth).mockReturnValue({
-      user: null,
-    } as TAuthContext)
-
     render(
       <VoteCounter
         voteCount={0}
@@ -79,25 +46,16 @@ describe('Vote counter molecule', () => {
     )
 
     const increase = screen.getByTestId('increase')
-    const decrease = screen.getByTestId('decrease')
-
-    expect(increase).toBeInTheDocument()
-    expect(decrease).toBeInTheDocument()
-
     fireEvent.click(increase)
-
     await waitFor(() => {
       expect(handleAccessModal).toHaveBeenCalled()
     })
   })
 
-  it('makes the correct request', async () => {
+  it('can vote when the user is logged in', async () => {
     const handleAccessModal = vi.fn()
     vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Hola',
-        avatar: 'Adios',
-      },
+      user,
     } as TAuthContext)
 
     render(
@@ -108,64 +66,15 @@ describe('Vote counter molecule', () => {
       />
     )
 
+    expect(screen.getByText('0')).toBeInTheDocument()
+    expect(screen.queryByText('1')).not.toBeInTheDocument()
+
     const increase = screen.getByTestId('increase')
-    const decrease = screen.getByTestId('decrease')
-
     expect(increase).toBeInTheDocument()
-    expect(decrease).toBeInTheDocument()
-
     fireEvent.click(increase)
 
     await waitFor(() => {
-      expect(mockMutation).toHaveBeenCalledWith({
-        resourceId: 'test',
-        vote: 'up',
-      })
+      expect(screen.getByText('1')).toBeInTheDocument()
     })
-
-    expect(handleAccessModal).not.toHaveBeenCalled()
-  })
-  // NOTE: Needed for coverage
-  it.skip('calls fetch with the correct url and options', async () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    global.fetch = vi.fn(() =>
-      Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({}),
-      })
-    )
-    const resourceId = 'resourceId'
-    const voteValue = '1'
-    const url = urls.vote
-      .replace(':resourceId', resourceId)
-      .replace(':vote', voteValue)
-
-    const requestOptions = {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        voteCount: voteValue,
-        resourceId,
-      }),
-    }
-    // await voteMutation(resourceId, voteValue)
-
-    expect(global.fetch).toHaveBeenCalledWith(url, requestOptions)
-  })
-
-  // NOTE: Needed for coverage
-  it.skip('throws an error when the fetch response is not ok', async () => {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    global.fetch = vi.fn(() =>
-      Promise.resolve({
-        ok: false,
-      })
-    )
-
-    // await expect(voteMutation('resourceId', '1')).rejects.toThrow(
-    //   'error fetching votes'
-    // )
   })
 })
