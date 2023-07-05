@@ -14,8 +14,6 @@ import { resourceCreateSchema, resourcesGetParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
 import { patchResource } from '../controllers/resources/patchResource'
 import { resourcePatchSchema } from '../schemas/resource/resourcePatchSchema'
-import { deleteResource } from '../controllers/resources/deleteResource'
-import { resourceDeleteSchema } from '../schemas/resource/resourceDeleteSchema'
 
 const resourcesRouter = new Router()
 
