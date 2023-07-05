@@ -34,7 +34,6 @@ export const VoteCounter: FC<TVoteCounter> = ({
   const { user } = useAuth()
   const [voteCount, setVoteCount] = useState(initialVoteCount)
 
-  // eslint-disable-next-line @typescript-eslint/no-shadow
   const voteMutation = async ({ resourceId, vote }: TVoteMutationData) => {
     const url = urls.vote
     const requestOptions = {
