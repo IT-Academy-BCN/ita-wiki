@@ -35,11 +35,11 @@ const StyledSpinner = styled(Spinner)`
 `
 
 const StyledFlexBox = styled(FlexBox)`
-  padding-left: ${dimensions.spacing.lg};
-  margin-top: ${dimensions.spacing.lg};
   justify-content: flex-start;
   gap: ${dimensions.spacing.base};
   overflow: scroll;
+  width: 100%;
+
   &::-webkit-scrollbar {
     display: none;
   }

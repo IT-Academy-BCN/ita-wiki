@@ -12,6 +12,8 @@ import {
 } from '../controllers'
 import { resourceCreateSchema, resourcesGetParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
+import { patchResource } from '../controllers/resources/patchResource'
+import { resourcePatchSchema } from '../schemas/resource/resourcePatchSchema'
 
 const resourcesRouter = new Router()
 
@@ -83,6 +85,13 @@ resourcesRouter.get(
     })
   ),
   getResourcesByTopicSlug
+)
+
+resourcesRouter.patch(
+  '/',
+  authMiddleware,
+  validate(z.object({ body: resourcePatchSchema })),
+  patchResource
 )
 
 export { resourcesRouter }

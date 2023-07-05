@@ -287,6 +287,15 @@ paths:
                     example: Database error
                 required:
                   - message
+  /api/v1/auth/logout:
+    get:
+      tags:
+        - auth
+      description: Deletes cookie and logouts user
+      summary: Logs out user
+      responses:
+        "204":
+          description: User has been logged out successfully
   /api/v1/categories:
     get:
       tags:

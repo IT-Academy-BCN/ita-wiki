@@ -1,6 +1,6 @@
 import { setupServer } from 'msw/node'
 import { vi } from 'vitest'
-import { render, screen } from '../test-utils'
+import { render, screen, waitFor } from '../test-utils'
 import { MyResources } from '../../components/organisms'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { handlers, errorHandlers } from '../../__mocks__/handlers'
@@ -52,6 +52,7 @@ describe('MyResources', () => {
 
     render(<MyResources />)
   })
+
   it('shows error message if user is not logged', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: null,
@@ -60,5 +61,78 @@ describe('MyResources', () => {
     server.use(...errorHandlers)
 
     render(<MyResources />)
+  })
+
+  it('receives data when API call returns 200 and the user has no resources', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Hola',
+        avatar: 'Adios',
+      },
+    } as TAuthContext)
+
+    render(<MyResources />)
+  })
+
+  it('shows correct title when resizes to mobile', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Hola',
+        avatar: 'Adios',
+      },
+    } as TAuthContext)
+
+    global.innerWidth = 600
+    render(<MyResources />)
+
+    const title = screen.getByTestId('main-title')
+    expect(title).toHaveTextContent('Tus recursos')
+  })
+
+  it('shows correct title when resizes to laptop', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Hola',
+        avatar: 'Adios',
+      },
+    } as TAuthContext)
+
+    global.innerWidth = 1024
+    render(<MyResources />)
+
+    const title = screen.getByTestId('main-title')
+    expect(title).toHaveTextContent('Mis recursos')
+  })
+
+  it('shows cards when resizes to mobile', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Hola',
+        avatar: 'Adios',
+      },
+    } as TAuthContext)
+
+    global.innerWidth = 600
+    render(<MyResources />)
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('resource-card')).toBeInTheDocument()
+    })
+  })
+
+  it('shows ResourceTitleLink when resizes to laptop', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Hola',
+        avatar: 'Adios',
+      },
+    } as TAuthContext)
+
+    global.innerWidth = 1024
+    render(<MyResources />)
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('resource-title')).toBeInTheDocument()
+    })
   })
 })

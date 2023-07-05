@@ -8,7 +8,7 @@ import { urls } from '../../constants'
 const StyledRadio = styled(Radio)`
   flex-direction: column;
   align-items: start;
-  gap: ${dimensions.spacing.sm};
+  gap: ${dimensions.spacing.xs};
 `
 type TTopicsSlug = {
   slug: string

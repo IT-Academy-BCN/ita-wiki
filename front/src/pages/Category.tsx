@@ -3,8 +3,8 @@ import { Link, useLocation, useParams } from 'react-router-dom'
 import qs from 'qs'
 import styled from 'styled-components'
 import { QueryFunctionContext, useQuery } from '@tanstack/react-query'
-import { FlexBox, colors, device, dimensions } from '../styles'
-import { Button, Icon, Text, Title } from '../components/atoms'
+import { FlexBox, colors, device, dimensions, font } from '../styles'
+import { Button, Icon, Input, Text, Title } from '../components/atoms'
 import {
   AccessModalContent,
   InputGroup,
@@ -30,13 +30,13 @@ import { useAuth } from '../context/AuthProvider'
 
 export const MobileStyled = styled.div`
   display: block;
-  @media only ${device.Laptop} {
+  @media only ${device.Tablet} {
     display: none;
   }
 `
 export const DesktopStyled = styled.div`
   display: none;
-  @media only ${device.Laptop} {
+  @media only ${device.Tablet} {
     display: block;
   }
 `
@@ -44,6 +44,14 @@ export const DesktopStyled = styled.div`
 const ScrollList = styled(FlexBox)`
   overflow: hidden;
   overflow-x: auto;
+  width: 100%;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`
+const ScrollDiv = styled(FlexBox)`
+  overflow: scroll;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -91,20 +99,15 @@ const SideColumnContainer = styled(FlexBox)`
   align-items: flex-start;
   flex: 1 2 20rem;
   padding: 2rem 2rem;
-  overflow: scroll;
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  @media ${device.Desktop} {
-    padding: 2rem 3rem;
+  @media ${device.Tablet} {
+    padding: 1.2rem 3rem;
   }
 `
 
 const MiddleColumnContainer = styled(FlexBox)`
   flex: 4 1 26rem;
-  padding: 2rem 3rem;
+  padding: 1.2rem 3rem;
   border-right: solid 1px ${colors.gray.gray3};
   justify-content: flex-start;
   align-items: flex-start;
@@ -112,6 +115,30 @@ const MiddleColumnContainer = styled(FlexBox)`
 
   &::-webkit-scrollbar {
     display: none;
+  }
+`
+
+const SearchBar = styled(InputGroup)`
+  color: ${colors.gray.gray4};
+  margin-top: 1rem;
+
+  ${FlexBox} {
+    justify-content: flex-start;
+  }
+
+  ${Input} {
+    padding: ${dimensions.spacing.base};
+    padding-left: 2.8rem;
+    font-size: ${font.xs};
+    font-weight: ${font.regular};
+    border-color: ${colors.gray.gray3};
+  }
+
+  ${Icon} {
+    padding-left: 0.8rem;
+    font-size: ${font.base};
+    scale: 1.8;
+    color: ${colors.gray.gray3};
   }
 `
 // END style Desktop
@@ -170,6 +197,7 @@ type TMappedTopics = {
   name: string
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getTopics = (query?: QueryFunctionContext<string[], any>) => {
   const filters = query?.queryKey[1] as string
 
@@ -290,7 +318,6 @@ const Category: FC = () => {
 
           <TextContainerStyled direction="row">
             <Text fontWeight="bold">Votos ↓</Text>
-
             <Text color={colors.gray.gray3}>Fecha</Text>
           </TextContainerStyled>
         </SubHeaderContainerStyled>
@@ -313,7 +340,7 @@ const Category: FC = () => {
                 Filtros
               </Title>
               <Text fontWeight="bold">Temas</Text>
-              {slug && <TopicsRadioWidget slug={slug} />}
+              <ScrollDiv>{slug && <TopicsRadioWidget slug={slug} />}</ScrollDiv>
               <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
               <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
             </SideColumnContainer>
@@ -344,19 +371,23 @@ const Category: FC = () => {
             {/* ==> COLUMNA USUARIO */}
             <SideColumnContainer>
               {/* TÍTULO 1 */}
-              <InputGroup
+              <SearchBar
                 data-testid="inputGroupSearch"
                 label="searchResource"
                 name="searchResource"
-                placeholder="Buscar recurso concreto"
+                placeholder="Buscar recurso"
                 id="searchResource"
                 icon="search"
               />
-              <MyFavoritesList />
+              <ScrollDiv>
+                <MyFavoritesList />
+              </ScrollDiv>
               {/* TÍTULO 2 */}
-              <UserResourcesContainerStyled>
-                <MyResources />
-              </UserResourcesContainerStyled>
+              <ScrollDiv>
+                <UserResourcesContainerStyled>
+                  <MyResources />
+                </UserResourcesContainerStyled>
+              </ScrollDiv>
             </SideColumnContainer>
           </DivStyled>
         </MainContainer>
