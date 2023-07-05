@@ -34,6 +34,7 @@ export const VoteCounter: FC<TVoteCounter> = ({
   const { user } = useAuth()
   const [voteCount, setVoteCount] = useState(initialVoteCount)
 
+  // eslint-disable-next-line @typescript-eslint/no-shadow
   const voteMutation = async ({ resourceId, vote }: TVoteMutationData) => {
     const url = urls.vote
     const requestOptions = {
@@ -50,7 +51,8 @@ export const VoteCounter: FC<TVoteCounter> = ({
     setVoteCount((prevVoteCount) => {
       if (vote === 'up') {
         return prevVoteCount + 1
-      } else if (vote === 'down') {
+      }
+      if (vote === 'down') {
         return prevVoteCount - 1
       }
       return prevVoteCount
