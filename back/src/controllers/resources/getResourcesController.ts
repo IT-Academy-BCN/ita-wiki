@@ -6,11 +6,11 @@ import { addVoteCountToResource } from '../../helpers/addVoteCountToResource'
 import { resourceGetSchema } from '../../schemas'
 
 export const getResources: Middleware = async (ctx: Koa.Context) => {
-  const { category } = ctx.params
   const parsedQuery = qs.parse(ctx.querystring, { ignoreQueryPrefix: true })
-  const { resourceType, topic, status } = parsedQuery as {
+  const { resourceType, topic, category, status } = parsedQuery as {
     resourceType?: RESOURCE_TYPE
     topic?: string
+    category?: string
     status?: RESOURCE_STATUS
   }
 
@@ -50,15 +50,11 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
 
   const parsedResources = resources.map((resource) => {
     const resourceWithVote = addVoteCountToResource(resource)
-    // Remove the topic key, return directly the array of topics in the topic property
-    const sanitizedResource = {
-      ...resourceWithVote,
-      topics: resource.topics,
-    }
     // return parsed values to: 1. make sure it returns what we say it returns 2. delete private fields like userId
-    return resourceGetSchema.parse(sanitizedResource)
+    return resourceGetSchema.parse(resourceWithVote)
   })
 
   ctx.status = 200
-  ctx.body = parsedResources
+  // eslint-disable-next-line prettier/prettier
+  ctx.body = {resources: parsedResources}
 }
