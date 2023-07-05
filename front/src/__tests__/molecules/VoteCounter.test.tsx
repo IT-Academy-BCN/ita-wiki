@@ -2,8 +2,8 @@ import { vi } from 'vitest'
 import { UseMutationResult, useMutation } from '@tanstack/react-query'
 import { VoteCounter } from '../../components/molecules'
 import { fireEvent, screen, waitFor, render } from '../test-utils'
-// import { urls } from '../../constants'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
+import { urls } from '../../constants'
 
 vi.mock('@tanstack/react-query', async () => {
   const actual = await vi.importActual('@tanstack/react-query')
@@ -124,5 +124,48 @@ describe('Vote counter molecule', () => {
     })
 
     expect(handleAccessModal).not.toHaveBeenCalled()
+  })
+  // NOTE: Needed for coverage
+  it.skip('calls fetch with the correct url and options', async () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({}),
+      })
+    )
+    const resourceId = 'resourceId'
+    const voteValue = '1'
+    const url = urls.vote
+      .replace(':resourceId', resourceId)
+      .replace(':vote', voteValue)
+
+    const requestOptions = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        voteCount: voteValue,
+        resourceId,
+      }),
+    }
+    // await voteMutation(resourceId, voteValue)
+
+    expect(global.fetch).toHaveBeenCalledWith(url, requestOptions)
+  })
+
+  // NOTE: Needed for coverage
+  it.skip('throws an error when the fetch response is not ok', async () => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: false,
+      })
+    )
+
+    // await expect(voteMutation('resourceId', '1')).rejects.toThrow(
+    //   'error fetching votes'
+    // )
   })
 })
