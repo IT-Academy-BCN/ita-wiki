@@ -3,9 +3,9 @@ import { User } from '@prisma/client'
 import { z } from 'zod'
 import { prisma } from '../../prisma/client'
 import { NotFoundError, UnauthorizedError } from '../../helpers/errors'
-import { patchResourceSchema } from '../../schemas/resource/resourcePatchSchema'
+import { resourcePatchSchema } from '../../schemas/resource/resourcePatchSchema'
 
-type ResourcePatch = z.infer<typeof patchResourceSchema>
+type ResourcePatch = z.infer<typeof resourcePatchSchema>
 
 export const patchResource: Middleware = async (ctx: Koa.Context) => {
   const { topicId, ...newData } = ctx.request.body as ResourcePatch
