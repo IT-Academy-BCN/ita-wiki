@@ -51,10 +51,10 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
   const parsedResources = resources.map((resource) => {
     const resourceWithVote = addVoteCountToResource(resource)
     // return parsed values to: 1. make sure it returns what we say it returns 2. delete private fields like userId
+
     return resourceGetSchema.parse(resourceWithVote)
   })
 
   ctx.status = 200
-  // eslint-disable-next-line prettier/prettier
-  ctx.body = {resources: parsedResources}
+  ctx.body = parsedResources
 }
