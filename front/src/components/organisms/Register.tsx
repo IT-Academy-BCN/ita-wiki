@@ -122,7 +122,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
   return (
     <RegisterStyled>
       <TitleStyled as="h1" fontWeight="bold">
-        Register
+        Registro
       </TitleStyled>
       <StyledForm onSubmit={onSubmit}>
         <InputGroup

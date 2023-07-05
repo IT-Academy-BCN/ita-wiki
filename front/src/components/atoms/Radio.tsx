@@ -19,6 +19,10 @@ type TRadio = {
 const RadioStyled = styled(FlexBox)`
   ${FlexBox} {
     margin-right: ${dimensions.spacing.xl};
+    > input {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
   }
 
   ${Label} {

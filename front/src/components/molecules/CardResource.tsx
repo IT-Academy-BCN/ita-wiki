@@ -12,7 +12,6 @@ const CardContainerStyled = styled(FlexBox)`
   border-radius: ${dimensions.borderRadius.sm};
   border: 1px solid ${colors.gray.gray4};
   height: 7rem;
-  margin: ${dimensions.spacing.xxxs} auto;
   padding: ${dimensions.spacing.xxs} ${dimensions.spacing.xs};
   width: 100%;
   min-width: 15rem;
@@ -79,6 +78,7 @@ export const CardResource = ({
 
   return (
     <CardContainerStyled
+      data-testid="resource-card"
       direction="row"
       align="center"
       justify="flex-start"
