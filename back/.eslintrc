@@ -10,9 +10,9 @@
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module",
-    "project": "./back/tsconfig.json"
+    "project": "./tsconfig.json"
   },
-  "plugins": ["@typescript-eslint", "prettier", "import"],
+  "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
     "@typescript-eslint/no-unused-vars": 2,
     "@typescript-eslint/ban-ts-comment": "off",

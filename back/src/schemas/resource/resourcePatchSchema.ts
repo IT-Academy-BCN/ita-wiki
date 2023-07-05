@@ -1,6 +1,6 @@
 import { z } from '../../openapi/zod'
 
-export const patchResourceSchema = z
+export const resourcePatchSchema = z
   .object({
     id: z.string(),
     title: z.string().optional(),

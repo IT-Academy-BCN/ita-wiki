@@ -1,11 +1,9 @@
+import { resourcePatchSchema } from './resourcePatchSchema'
 
-import { patchResourceSchema } from './resourcePatchSchema'
-
-export const resourceDeleteSchema = patchResourceSchema.omit({
+export const resourceDeleteSchema = resourcePatchSchema.omit({
   title: true,
   description: true,
   url: true,
   topicId: true,
   resourceType: true,
 })
-

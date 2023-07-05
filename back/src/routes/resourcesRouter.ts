@@ -13,7 +13,7 @@ import {
 import { resourceCreateSchema, resourcesGetParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
 import { patchResource } from '../controllers/resources/patchResource'
-import { patchResourceSchema } from '../schemas/resource/resourcePatchSchema'
+import { resourcePatchSchema } from '../schemas/resource/resourcePatchSchema'
 import { deleteResource } from '../controllers/resources/deleteResource'
 import { resourceDeleteSchema } from '../schemas/resource/resourceDeleteSchema'
 
@@ -92,15 +92,8 @@ resourcesRouter.get(
 resourcesRouter.patch(
   '/',
   authMiddleware,
-  validate(z.object({ body: patchResourceSchema })),
+  validate(z.object({ body: resourcePatchSchema })),
   patchResource
-)
-
-resourcesRouter.delete(
-  '/',
-  authMiddleware,
-  validate(z.object({ body: resourceDeleteSchema })),
-  deleteResource
 )
 
 export { resourcesRouter }
