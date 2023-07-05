@@ -54,6 +54,14 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
     return resourceGetSchema.parse(resourceWithVote)
   })
 
+  const sanitizedResources = parsedResources.map((resource) => {
+    // Remove the topic key, return directly the array of topics in the topic property
+    return {
+      ...resource,
+      topics: resource.topics,
+    }
+  })
+
   ctx.status = 200
-  ctx.body = parsedResources
+  ctx.body = sanitizedResources
 }
