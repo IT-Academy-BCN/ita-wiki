@@ -14,6 +14,7 @@ export const resourceGetSchema = resourceSchema
       name: true,
       email: true,
     }),
-    topics: z.array(z.object({ topic: topicSchema })),
+    topics: z.array(topicSchema),
+    // topics: z.array(z.object({ topic: topicSchema })),
     voteCount: voteCountSchema,
   })

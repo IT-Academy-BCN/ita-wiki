@@ -589,37 +589,32 @@ paths:
                       items:
                         type: object
                         properties:
-                          topic:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                              name:
-                                type: string
-                                example: React
-                              slug:
-                                type: string
-                                example: react
-                              categoryId:
-                                type: string
-                              createdAt:
-                                anyOf:
-                                  - type: string
-                                    format: date-time
-                                  - type: string
-                              updatedAt:
-                                anyOf:
-                                  - type: string
-                                    format: date-time
-                                  - type: string
-                            required:
-                              - id
-                              - name
-                              - categoryId
-                              - createdAt
-                              - updatedAt
+                          id:
+                            type: string
+                          name:
+                            type: string
+                            example: React
+                          slug:
+                            type: string
+                            example: react
+                          categoryId:
+                            type: string
+                          createdAt:
+                            anyOf:
+                              - type: string
+                                format: date-time
+                              - type: string
+                          updatedAt:
+                            anyOf:
+                              - type: string
+                                format: date-time
+                              - type: string
                         required:
-                          - topic
+                          - id
+                          - name
+                          - categoryId
+                          - createdAt
+                          - updatedAt
                     voteCount:
                       type: object
                       properties:
@@ -795,37 +790,32 @@ paths:
                     items:
                       type: object
                       properties:
-                        topic:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                            name:
-                              type: string
-                              example: React
-                            slug:
-                              type: string
-                              example: react
-                            categoryId:
-                              type: string
-                            createdAt:
-                              anyOf:
-                                - type: string
-                                  format: date-time
-                                - type: string
-                            updatedAt:
-                              anyOf:
-                                - type: string
-                                  format: date-time
-                                - type: string
-                          required:
-                            - id
-                            - name
-                            - categoryId
-                            - createdAt
-                            - updatedAt
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: React
+                        slug:
+                          type: string
+                          example: react
+                        categoryId:
+                          type: string
+                        createdAt:
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
+                        updatedAt:
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
                       required:
-                        - topic
+                        - id
+                        - name
+                        - categoryId
+                        - createdAt
+                        - updatedAt
                   voteCount:
                     type: object
                     properties:
@@ -970,37 +960,32 @@ paths:
                     items:
                       type: object
                       properties:
-                        topic:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                            name:
-                              type: string
-                              example: React
-                            slug:
-                              type: string
-                              example: react
-                            categoryId:
-                              type: string
-                            createdAt:
-                              anyOf:
-                                - type: string
-                                  format: date-time
-                                - type: string
-                            updatedAt:
-                              anyOf:
-                                - type: string
-                                  format: date-time
-                                - type: string
-                          required:
-                            - id
-                            - name
-                            - categoryId
-                            - createdAt
-                            - updatedAt
+                        id:
+                          type: string
+                        name:
+                          type: string
+                          example: React
+                        slug:
+                          type: string
+                          example: react
+                        categoryId:
+                          type: string
+                        createdAt:
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
+                        updatedAt:
+                          anyOf:
+                            - type: string
+                              format: date-time
+                            - type: string
                       required:
-                        - topic
+                        - id
+                        - name
+                        - categoryId
+                        - createdAt
+                        - updatedAt
                   voteCount:
                     type: object
                     properties:
@@ -1109,37 +1094,32 @@ paths:
                           items:
                             type: object
                             properties:
-                              topic:
-                                type: object
-                                properties:
-                                  id:
-                                    type: string
-                                  name:
-                                    type: string
-                                    example: React
-                                  slug:
-                                    type: string
-                                    example: react
-                                  categoryId:
-                                    type: string
-                                  createdAt:
-                                    anyOf:
-                                      - type: string
-                                        format: date-time
-                                      - type: string
-                                  updatedAt:
-                                    anyOf:
-                                      - type: string
-                                        format: date-time
-                                      - type: string
-                                required:
-                                  - id
-                                  - name
-                                  - categoryId
-                                  - createdAt
-                                  - updatedAt
+                              id:
+                                type: string
+                              name:
+                                type: string
+                                example: React
+                              slug:
+                                type: string
+                                example: react
+                              categoryId:
+                                type: string
+                              createdAt:
+                                anyOf:
+                                  - type: string
+                                    format: date-time
+                                  - type: string
+                              updatedAt:
+                                anyOf:
+                                  - type: string
+                                    format: date-time
+                                  - type: string
                             required:
-                              - topic
+                              - id
+                              - name
+                              - categoryId
+                              - createdAt
+                              - updatedAt
                         voteCount:
                           type: object
                           properties:

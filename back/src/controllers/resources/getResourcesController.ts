@@ -50,18 +50,15 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
 
   const parsedResources = resources.map((resource) => {
     const resourceWithVote = addVoteCountToResource(resource)
-    // return parsed values to: 1. make sure it returns what we say it returns 2. delete private fields like userId
-    return resourceGetSchema.parse(resourceWithVote)
-  })
-
-  const sanitizedResources = parsedResources.map((resource) => {
     // Remove the topic key, return directly the array of topics in the topic property
-    return {
-      ...resource,
+    const sanitizedResource = {
+      ...resourceWithVote,
       topics: resource.topics,
     }
+    // return parsed values to: 1. make sure it returns what we say it returns 2. delete private fields like userId
+    return resourceGetSchema.parse(sanitizedResource)
   })
 
   ctx.status = 200
-  ctx.body = sanitizedResources
+  ctx.body = parsedResources
 }
