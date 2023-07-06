@@ -117,6 +117,7 @@ export const MyFavoritesList: FC = () => {
   const { isLoading, data, error } = useQuery({
     queryKey: ['getFavorites'],
     queryFn: () => getFavorites(),
+     enabled: !!user, // Enable the query only if there is a logged-in user
   })
 
   const handleRegisterModal = () => {
