@@ -7,31 +7,21 @@ import { resourceGetSchema } from '../../schemas'
 
 export const getResources: Middleware = async (ctx: Koa.Context) => {
   const parsedQuery = qs.parse(ctx.querystring, { ignoreQueryPrefix: true })
-  const { resourceType, topic, category, status } = parsedQuery as {
-    resourceType?: RESOURCE_TYPE
+  const { resourceTypes, topic, slug, status } = parsedQuery as {
+    resourceTypes?: (keyof typeof RESOURCE_TYPE)[]
     topic?: string
-    category?: string
-    status?: RESOURCE_STATUS
+    slug?: string
+    status?: (keyof typeof RESOURCE_STATUS)[]
   }
 
   const where: Prisma.ResourceWhereInput = {
     topics: {
       some: {
-        topic: { category: { slug: category } },
+        topic: { category: { slug }, slug: topic },
       },
     },
-  }
-
-  if (resourceType) {
-    where.resourceType = { equals: resourceType }
-  }
-
-  if (topic) {
-    where.topics = { some: { topic: { name: topic } } }
-  }
-
-  if (status) {
-    where.status = { equals: status }
+    resourceType: { in: resourceTypes },
+    status: { in: status },
   }
 
   const resources = await prisma.resource.findMany({
@@ -50,8 +40,6 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
 
   const parsedResources = resources.map((resource) => {
     const resourceWithVote = addVoteCountToResource(resource)
-    // return parsed values to: 1. make sure it returns what we say it returns 2. delete private fields like userId
-
     return resourceGetSchema.parse(resourceWithVote)
   })
 

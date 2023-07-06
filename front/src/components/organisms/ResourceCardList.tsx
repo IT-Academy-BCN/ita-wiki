@@ -1,10 +1,11 @@
-import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
+import { FC } from 'react'
 import { urls } from '../../constants'
 import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import { CardResource } from '../molecules'
+import { TFilters, buildQueryString } from '../../helpers'
 
 type TResource = {
   id: string
@@ -47,8 +48,8 @@ const StyledText = styled(Text)`
   margin: 2rem;
 `
 
-const getResources = (categorySlug: string | undefined) =>
-  fetch(`${urls.getResources}?category=${categorySlug}`, {
+const getResources = async (filters: string) =>
+  fetch(`${urls.getResources}?${filters}`, {
     headers: {
       Accept: 'application/json',
     },
@@ -64,26 +65,28 @@ const getResources = (categorySlug: string | undefined) =>
     })
 
 type TResourceCardList = {
+  filters: TFilters
   handleAccessModal: () => void
 }
 
-const ResourceCardList = ({ handleAccessModal }: TResourceCardList) => {
-  const params = useParams()
+type TResources = TResource[]
 
-  const categorySlug: string | undefined = params.slug
-
-  const { isLoading, data, error } = useQuery({
-    queryKey: ['getResources', categorySlug],
-    queryFn: () => getResources(categorySlug),
-  })
+const ResourceCardList: FC<TResourceCardList> = ({
+  handleAccessModal,
+  filters,
+}) => {
+  const { isLoading, data, error } = useQuery<TResources>(
+    ['getResources', buildQueryString(filters) || ''],
+    () => getResources(buildQueryString(filters) || '')
+  )
 
   if (error) return <p>Ha habido un error...</p>
 
   return (
     <StyledFlexBox direction="column">
       {isLoading && <StyledSpinner role="status" />}
-      {data?.resources?.length > 0 ? (
-        data.resources
+      {data && data?.length > 0 ? (
+        data
           .sort(
             (
               a: { createdAt: string | number | Date },

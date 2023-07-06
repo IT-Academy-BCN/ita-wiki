@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
 import { dimensions } from '../../styles'
@@ -10,8 +10,18 @@ const StyledRadio = styled(Radio)`
   align-items: start;
   gap: ${dimensions.spacing.xs};
 `
+
+type TTopic = {
+  id: string
+  name: string
+  slug: string
+  categoryId: string
+}
+
 type TTopicsSlug = {
   slug: string
+  topic: string
+  setTopic: (topic: string) => void
 }
 
 const SmallSpinner = styled(Spinner)`
@@ -20,7 +30,11 @@ const SmallSpinner = styled(Spinner)`
   margin: 0 auto;
 `
 
-export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
+export const TopicsRadioWidget: FC<TTopicsSlug> = ({
+  slug,
+  topic,
+  setTopic,
+}) => {
   const getTopics = () =>
     fetch(`${urls.getTopics}?slug=${slug}`)
       .then((res) => {
@@ -33,12 +47,11 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
         throw new Error(`Error fetching topics: ${err.message}`)
       })
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError } = useQuery<{ topics: TTopic[] }>({
     queryKey: ['getTopics', slug],
     queryFn: getTopics,
   })
 
-  const [topic, setTopic] = useState('todos')
   const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value)
   }
@@ -48,7 +61,9 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
 
   return (
     <StyledRadio
-      options={[{ id: 'todos', name: 'Todos' }].concat(data?.topics)}
+      options={[{ id: 'todos', name: 'Todos' }].concat(
+        data?.topics.map((t) => ({ id: t.slug, name: t.name }))
+      )}
       inputName="Topics Radio Filter"
       onChange={onTopicChange}
       defaultChecked={topic}
