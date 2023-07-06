@@ -69,39 +69,30 @@ export const handlers = [
     const categorySlug = req.url.searchParams.get('category')
 
     if (categorySlug === 'emptyResource') {
-      return res(
-        ctx.status(200),
-        ctx.json([
-          {
-            resources: [],
-          },
-        ])
-      )
+      return res(ctx.status(200), ctx.json([]))
     }
 
     return res(
       ctx.status(200),
-      ctx.json({
-        resources: [
-          {
-            id: 'resourceId',
-            title: 'Resource Test',
-            description: 'Resource Test Description',
-            url: 'http://www.google.com',
-            createdAt: '2023-02-17T03:07:00',
-            updatedAt: '2023-05-17T03:07:00',
-            user: {
-              name: 'Test User Name',
-              email: 'test@mail.com',
-            },
-            voteCount: {
-              upvote: 6,
-              downvote: 2,
-              total: 4,
-            },
+      ctx.json([
+        {
+          id: 'resourceId',
+          title: 'Resource Test',
+          description: 'Resource Test Description',
+          url: 'http://www.google.com',
+          createdAt: '2023-02-17T03:07:00',
+          updatedAt: '2023-05-17T03:07:00',
+          user: {
+            name: 'Test User Name',
+            email: 'test@mail.com',
           },
-        ],
-      })
+          voteCount: {
+            upvote: 6,
+            downvote: 2,
+            total: 4,
+          },
+        },
+      ])
     )
   }),
 

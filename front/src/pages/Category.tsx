@@ -1,6 +1,5 @@
-import { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
-import qs from 'qs'
 import styled from 'styled-components'
 import { QueryFunctionContext, useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
@@ -9,7 +8,6 @@ import {
   AccessModalContent,
   InputGroup,
   Modal,
-  SelectGroup,
   StatusFilterWidget,
   TypesFilterWidget,
 } from '../components/molecules'
@@ -17,7 +15,6 @@ import {
   CategoriesList,
   MyFavoritesList,
   MyResources,
-  Navbar,
   ResourceCardList,
   ResourceForm,
   TopicsRadioWidget,
@@ -26,7 +23,7 @@ import {
 } from '../components/organisms'
 import icons from '../assets/icons'
 import { paths, urls } from '../constants'
-import { useAuth } from '../context/AuthProvider'
+import { TFilters } from '../helpers'
 
 export const MobileStyled = styled.div`
   display: block;
@@ -153,57 +150,56 @@ const SearchBar = styled(InputGroup)`
     scale: 1.8;
     color: ${colors.gray.gray3};
   }
-`
-// END style Desktop
+` // END style Desktop
 
-const HeaderContainerStyled = styled(FlexBox)`
-  background-color: ${colors.gray.gray5};
-  padding: 5rem ${dimensions.spacing.base} ${dimensions.spacing.xl};
-  ${SelectGroup} {
-    border-radius: ${dimensions.borderRadius.sm};
-    color: ${colors.black.black1};
-    font-weight: 700;
-  }
-`
-const ButtonAddStyled = styled(Button)`
-  border-radius: 50%;
-  font-size: xx-large;
-  font-weight: 400;
-  height: 52px;
-  width: 52px;
-`
+// const HeaderContainerStyled = styled(FlexBox)`
+//   background-color: ${colors.gray.gray5};
+//   padding: 5rem ${dimensions.spacing.base} ${dimensions.spacing.xl};
+//   ${SelectGroup} {
+//     border-radius: ${dimensions.borderRadius.sm};
+//     color: ${colors.black.black1};
+//     font-weight: 700;
+//   }
+// `
+// const ButtonAddStyled = styled(Button)`
+//   border-radius: 50%;
+//   font-size: xx-large;
+//   font-weight: 400;
+//   height: 52px;
+//   width: 52px;
+// `
 
 const ButtonStyled = styled(Button)`
   margin: ${dimensions.spacing.none};
 `
 
-const ButtonContainterStyled = styled(FlexBox)`
-  margin-top: 0.8rem;
+// const ButtonContainterStyled = styled(FlexBox)`
+//   margin-top: 0.8rem;
 
-  ${Button} {
-    background-color: ${colors.white};
-    border-radius: ${dimensions.borderRadius.sm};
-    border: none;
-    color: ${colors.gray.gray3};
-    font-weight: 500;
-    padding: ${dimensions.spacing.xs} ${dimensions.spacing.base};
-    width: fit-content;
+//   ${Button} {
+//     background-color: ${colors.white};
+//     border-radius: ${dimensions.borderRadius.sm};
+//     border: none;
+//     color: ${colors.gray.gray3};
+//     font-weight: 500;
+//     padding: ${dimensions.spacing.xs} ${dimensions.spacing.base};
+//     width: fit-content;
 
-    &:hover {
-      background-color: ${colors.primary};
-      border: none;
-      color: ${colors.white};
-    }
-  }
-`
+//     &:hover {
+//       background-color: ${colors.primary};
+//       border: none;
+//       color: ${colors.white};
+//     }
+//   }
+// `
 
-const SubHeaderContainerStyled = styled(FlexBox)`
-  padding: ${dimensions.spacing.base};
-`
+// const SubHeaderContainerStyled = styled(FlexBox)`
+//   padding: ${dimensions.spacing.base};
+// `
 
-const TextContainerStyled = styled(FlexBox)`
-  gap: 0.8rem;
-`
+// const TextContainerStyled = styled(FlexBox)`
+//   gap: 0.8rem;
+// `
 
 type TMappedTopics = {
   id: string
@@ -211,10 +207,9 @@ type TMappedTopics = {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getTopics = (query?: QueryFunctionContext<string[], any>) => {
-  const filters = query?.queryKey[1] as string
-
-  return fetch(`${urls.getTopics}?${filters}`)
+const getTopics = async (query?: QueryFunctionContext<string[], any>) => {
+  const slug = query?.queryKey[1] as string
+  return fetch(`${urls.getTopics}?category=${slug}`)
     .then((res) => {
       if (!res.ok) {
         throw new Error(`Error fetching topics: ${res.statusText}`)
@@ -226,35 +221,28 @@ const getTopics = (query?: QueryFunctionContext<string[], any>) => {
     })
 }
 
-const buildQueryString = ({ slug, resourceTypes, status }: TFilters) =>
-  qs.stringify({
-    slug,
-    resourceTypes,
-    status,
-  })
-
-type TFilters = {
-  slug?: string
-  resourceTypes?: string[]
-  status?: string[]
-}
-
 const Category: FC = () => {
   const { state } = useLocation()
   const { slug } = useParams()
-
-  const { user } = useAuth()
-
   const [isOpen, setIsOpen] = useState(false)
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false)
+  const [topic, setTopic] = useState('todos')
 
   const [filters, setFilters] = useState<TFilters>({
     slug,
     resourceTypes: [],
     status: [],
+    topic: topic === 'todos' ? undefined : topic,
   })
+
+  useEffect(() => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      slug,
+    }))
+  }, [slug])
 
   const handleRegisterModal = () => {
     setIsRegisterOpen(!isRegisterOpen)
@@ -268,13 +256,10 @@ const Category: FC = () => {
     setIsAccessModalOpen(!isAccessModalOpen)
   }
 
-  const { data: fetchedTopics } = useQuery(
-    ['getTopics', buildQueryString(filters) || ''],
-    getTopics
-  )
+  const { data: fetchedTopics } = useQuery(['getTopics', slug || ''], getTopics)
 
-  const mappedTopics = fetchedTopics?.topics.map((topic: TMappedTopics) => {
-    const selectOptions = { value: topic.id, label: topic.name }
+  const mappedTopics = fetchedTopics?.topics.map((t: TMappedTopics) => {
+    const selectOptions = { value: t.id, label: t.name }
     return selectOptions
   })
 
@@ -286,9 +271,15 @@ const Category: FC = () => {
     setFilters({ ...filters, status: selectedStatus })
   }
 
+  const handleTopicFilter = (selectedTopic: string) => {
+    const filterTopic = selectedTopic === 'todos' ? undefined : selectedTopic
+    setFilters({ ...filters, topic: filterTopic })
+    setTopic(selectedTopic)
+  }
+
   return (
     <>
-      <MobileStyled>
+      {/* <MobileStyled>
         <HeaderContainerStyled align="stretch">
           <Navbar title="Wiki" />
           <FlexBox direction="row" justify="space-between">
@@ -303,9 +294,7 @@ const Category: FC = () => {
               +
             </ButtonAddStyled>
           </FlexBox>
-
           <Text fontWeight="bold">Temas</Text>
-
           <SelectGroup
             label="Context API"
             placeholder="Selecciona tema"
@@ -314,7 +303,6 @@ const Category: FC = () => {
             options={mappedTopics}
             color="blue"
           />
-
           <ButtonContainterStyled
             direction="row"
             align="start"
@@ -328,14 +316,16 @@ const Category: FC = () => {
 
         <SubHeaderContainerStyled direction="row" justify="space-between">
           <Text fontWeight="bold">23 resultados</Text>
-
           <TextContainerStyled direction="row">
             <Text fontWeight="bold">Votos ↓</Text>
             <Text color={colors.gray.gray3}>Fecha</Text>
           </TextContainerStyled>
         </SubHeaderContainerStyled>
-        <ResourceCardList handleAccessModal={handleAccessModal} />
-      </MobileStyled>
+        <ResourceCardList
+          handleAccessModal={handleAccessModal}
+          filters={filters}
+        />
+      </MobileStyled> */}
       <DesktopStyled>
         <MainContainer>
           <LateralDiv>
@@ -354,7 +344,13 @@ const Category: FC = () => {
               </Title>
               <Text fontWeight="bold">Temas</Text>
               <ScrollTopics>
-                {slug && <TopicsRadioWidget slug={slug} />}
+                {slug && (
+                  <TopicsRadioWidget
+                    slug={slug}
+                    topic={topic}
+                    setTopic={handleTopicFilter}
+                  />
+                )}
               </ScrollTopics>
               <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
               <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
@@ -380,7 +376,10 @@ const Category: FC = () => {
                 </FlexBox>
               </FlexBox>
               <ScrollList>
-                <ResourceCardList handleAccessModal={handleAccessModal} />
+                <ResourceCardList
+                  handleAccessModal={handleAccessModal}
+                  filters={filters}
+                />
               </ScrollList>
             </MiddleColumnContainer>
             {/* ==> COLUMNA USUARIO */}
