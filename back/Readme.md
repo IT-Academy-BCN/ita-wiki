@@ -38,7 +38,7 @@ Before running the project, make sure you have Docker Desktop installed. Once yo
 
    `npm run up`
 
-5. Reset prisma:
+5. Reset your database and apply all migrations:
 
    `npm run prisma:migrate:reset`
 
