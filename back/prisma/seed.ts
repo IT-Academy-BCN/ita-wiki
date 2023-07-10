@@ -17,6 +17,14 @@ async function seedDB() {
     where: { email: 'admin@admin.com' },
   })
 
+  const userMentor = await prisma.user.findUnique({
+    where: { email: 'mentor@mentor.com' },
+  })
+
+  const userRegistered = await prisma.user.findUnique({
+    where: { email: 'registered@registered.com' },
+  })
+
   const categoryReact = await prisma.category.findUnique({
     where: { name: 'React' },
   })
@@ -41,11 +49,14 @@ async function seedDB() {
     data: mapedTopics,
   })
 
-  const userRegistered = await prisma.user.findUnique({
-    where: { email: 'registered@registered.com' },
-  })
-
-  const resourceUsers = [userAdmin, userAdmin, userRegistered, userRegistered]
+  const resourceUsers = [
+    userAdmin,
+    userAdmin,
+    userRegistered,
+    userRegistered,
+    userMentor,
+    userMentor,
+  ]
 
   const resourcesWithUser = resources.map((resource, index) => ({
     ...resource,

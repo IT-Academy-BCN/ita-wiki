@@ -24,6 +24,14 @@ export const testUserData = {
     role: 'ADMIN',
     status: USER_STATUS.ACTIVE,
   },
+  mentor: {
+    email: 'testingMentor@user.cat',
+    name: 'testingMentor',
+    dni: '44444444B',
+    password: 'testingPswd4',
+    role: 'MENTOR',
+    status: USER_STATUS.ACTIVE,
+  },
   inactiveUser: {
     email: 'testingInactiveUser@user.cat',
     name: 'testingInactiveUser',
@@ -43,7 +51,12 @@ export async function setup() {
 
   // Create required test data
   await prisma.user.createMany({
-    data: [testUserData.admin, testUserData.user, testUserData.inactiveUser],
+    data: [
+      testUserData.admin,
+      testUserData.user,
+      testUserData.mentor,
+      testUserData.inactiveUser,
+    ],
   })
   const testCategory = await prisma.category.create({
     data: {
