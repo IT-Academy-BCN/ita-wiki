@@ -123,7 +123,7 @@ export const ResourceForm: FC<TSelectOptions> = ({
     setValue,
   } = useForm<TResourceForm>({
     resolver: zodResolver(ResourceFormSchema),
-    defaultValues: initialValues || undefined,
+    defaultValues: initialValues ?? undefined,
   })
   const navigate = useNavigate()
   const createResource = useMutation(createResourceFetcher, {
@@ -157,7 +157,7 @@ export const ResourceForm: FC<TSelectOptions> = ({
       title,
       description,
       url,
-      topicId: topicId || initialValues?.topicId || '',
+      topicId: topicId ?? initialValues?.topicId ?? '',
       resourceType,
     }
     // console.log(updatedData, 'updatedData')
