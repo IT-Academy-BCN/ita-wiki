@@ -1,6 +1,7 @@
 export const urls = {
   register: '/api/v1/auth/register',
   logIn: '/api/v1/auth/login',
+  logOut: '/api/v1/auth/logout',
   createResource: '/api/v1/resources',
   getMe: '/api/v1/auth/me',
   getTopics: '/api/v1/topics',

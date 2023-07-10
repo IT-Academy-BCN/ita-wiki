@@ -1,11 +1,11 @@
 import { FC, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthProvider'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { Title, Icon } from '../atoms'
 import defaultAvatar from '../../assets/icons/profile-avatar.svg'
-import { paths } from '../../constants'
+import { paths, urls } from '../../constants'
 
 type TNavbar = {
   title: string
@@ -102,6 +102,7 @@ export const Navbar: FC<TNavbar> = ({ title }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
   const avatarRef = useRef<HTMLImageElement>(null)
+  const navigate = useNavigate()
 
   const handleDropdownClick = () => {
     setIsDropdownOpen(!isDropdownOpen)
@@ -123,8 +124,20 @@ export const Navbar: FC<TNavbar> = ({ title }) => {
       document.removeEventListener('click', handleOutsideClick)
     }
   }, [])
-  const handleLogout = () => {
-    // Implement logout functionality
+  const handleLogout = async () => {
+    try {
+      const res = await fetch(urls.logOut)
+
+      if (res.status === 204) {
+        setIsDropdownOpen(false)
+        navigate(paths.home)
+        window.location.reload()
+      } else {
+        throw new Error("Couldn't log out =|")
+      }
+    } catch (error) {
+      throw new Error("Couldn't log out =|")
+    }
   }
 
   return (
