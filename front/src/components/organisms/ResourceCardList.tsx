@@ -1,13 +1,24 @@
-import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
+import { FC } from 'react'
 import { urls } from '../../constants'
 import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
 // eslint-disable-next-line import/no-cycle
 import { CardResource } from '../molecules'
+import { TFilters, buildQueryString } from '../../helpers'
 import { useAuth } from '../../context/AuthProvider'
 
+type TTopic = {
+  topic: {
+    id: string
+    name: string
+    slug: string
+    categoryId: string
+    createdAt: string
+    updatedAt: string
+  }
+}
 export type TResource = {
   id: string
   title: string
@@ -25,17 +36,8 @@ export type TResource = {
     downvote: number
     total: number
   }
-  topics: {
-    topic: {
-      id: string
-      name: string
-      slug: string
-      categoryId: string
-      createdAt: string
-      updatedAt: string
-    }[]
-  }
   resourceType: string
+  topics: TTopic[]
 }
 
 const StyledSpinner = styled(Spinner)`
@@ -60,8 +62,8 @@ const StyledText = styled(Text)`
   margin: 2rem;
 `
 
-const getResources = (categorySlug: string | undefined) =>
-  fetch(`${urls.getResources}?category=${categorySlug}`, {
+const getResources = async (filters: string) =>
+  fetch(`${urls.getResources}?${filters}`, {
     headers: {
       Accept: 'application/json',
     },
@@ -77,42 +79,54 @@ const getResources = (categorySlug: string | undefined) =>
     })
 
 type TResourceCardList = {
+  filters: TFilters
   handleAccessModal: () => void
 }
 
-const ResourceCardList = ({ handleAccessModal }: TResourceCardList) => {
-  const params = useParams()
-  const { user } = useAuth()
-  const categorySlug: string | undefined = params.slug
+type TResources = TResource[]
 
-  const { isLoading, data, error } = useQuery({
-    queryKey: ['getResources', categorySlug],
-    queryFn: () => getResources(categorySlug),
-  })
+const ResourceCardList: FC<TResourceCardList> = ({
+  handleAccessModal,
+  filters,
+}) => {
+  const { user } = useAuth()
+  const { isLoading, data, error } = useQuery<TResources>(
+    ['getResources', buildQueryString(filters) || ''],
+    () => getResources(buildQueryString(filters) || '')
+  )
 
   if (error) return <p>Ha habido un error...</p>
 
   return (
     <StyledFlexBox direction="column">
       {isLoading && <StyledSpinner role="status" />}
-      {data?.resources?.length > 0 ? (
-        data.resources.map((resource: TResource) => (
-          <CardResource
-            key={resource.id}
-            id={resource.id}
-            img=""
-            title={resource.title}
-            url={resource.url}
-            description={resource.description}
-            likes={resource.voteCount.total}
-            createdBy={resource.user.name}
-            createdOn={resource.createdAt}
-            updatedOn={resource.updatedAt}
-            editable={user?.name === resource.user.name}
-            handleAccessModal={handleAccessModal}
-            resourceType={resource.resourceType}
-          />
-        ))
+      {data && data?.length > 0 ? (
+        data
+          .sort(
+            (
+              a: { createdAt: string | number | Date },
+              b: { createdAt: string | number | Date }
+            ) =>
+              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          )
+          .map((resource: TResource) => (
+            <CardResource
+              key={resource.id}
+              id={resource.id}
+              img=""
+              title={resource.title}
+              url={resource.url}
+              description={resource.description}
+              likes={resource.voteCount.total}
+              createdBy={resource.user.name}
+              createdOn={resource.createdAt}
+              updatedOn={resource.updatedAt}
+              handleAccessModal={handleAccessModal}
+              editable={user?.name === resource.user.name}
+              resourceType={resource.resourceType}
+              topics={resource.topics}
+            />
+          ))
       ) : (
         <FlexBox>
           <StyledText data-testid="emptyResource">

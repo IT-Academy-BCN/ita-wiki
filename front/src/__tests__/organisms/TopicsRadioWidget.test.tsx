@@ -1,3 +1,4 @@
+import { vi } from 'vitest'
 import { TopicsRadioWidget } from '../../components/organisms'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { mswServer } from '../setup'
@@ -5,7 +6,10 @@ import { errorHandlers } from '../../__mocks__/handlers'
 
 describe('TopicsRadioWidget', () => {
   it('renders correctly on succesfull API call', async () => {
-    render(<TopicsRadioWidget slug="react" />)
+    const setTopic = vi.fn()
+    render(
+      <TopicsRadioWidget slug="react" topic="listas" setTopic={setTopic} />
+    )
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
     expect(spinnerComponent).toBeInTheDocument()
@@ -18,7 +22,14 @@ describe('TopicsRadioWidget', () => {
 
   it('renders correctly when there is an error during the fetch', async () => {
     mswServer.use(...errorHandlers)
-    render(<TopicsRadioWidget slug="invalid-slug" />)
+    const setTopic = vi.fn()
+    render(
+      <TopicsRadioWidget
+        slug="invalid-slug"
+        topic="invalid"
+        setTopic={setTopic}
+      />
+    )
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
     expect(spinnerComponent).toBeInTheDocument()
@@ -30,7 +41,9 @@ describe('TopicsRadioWidget', () => {
   })
 
   it('The user can select another radio option', async () => {
-    render(<TopicsRadioWidget slug="react" />)
+    const setTopic = vi.fn()
+
+    render(<TopicsRadioWidget slug="react" topic="todos" setTopic={setTopic} />)
 
     await waitFor(() => {
       const option1 = screen.getByLabelText(/todos/i)
@@ -41,6 +54,7 @@ describe('TopicsRadioWidget', () => {
       fireEvent.click(option3)
       expect(option2).not.toBeChecked()
       expect(option3).toBeChecked()
+      expect(setTopic).toHaveBeenCalledWith('renderizado-condicional')
     })
   })
 })

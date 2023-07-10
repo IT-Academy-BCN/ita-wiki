@@ -1,5 +1,6 @@
 import { AccessModalContent } from './AccessModalContent'
-import { CardResource } from './CardResource'
+// eslint-disable-next-line import/no-cycle
+import { CardResource, TCardResource } from './CardResource'
 import { CategoryBlock } from './CategoryBlock'
 import { CreateAuthor } from './CreateAuthor'
 import InputGroup from './InputGroup'
@@ -27,4 +28,4 @@ export {
   VoteCounter,
   CardHome,
 }
-export type { TResourceTitleLink }
+export type { TResourceTitleLink, TCardResource }

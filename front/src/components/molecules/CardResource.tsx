@@ -8,7 +8,7 @@ import { ResourceTitleLink } from './ResourceTitleLink'
 import { VoteCounter } from './VoteCounter'
 import icons from '../../assets/icons'
 // eslint-disable-next-line import/no-cycle
-import { ResourceForm, TResourceForm } from '../organisms'
+import { ResourceForm } from '../organisms'
 import { Modal } from './Modal'
 import { urls } from '../../constants'
 
@@ -62,7 +62,17 @@ const ButtonStyled = styled(Button)`
   color: ${({ outline }) =>
     outline ? `${colors.gray.gray3}` : `${colors.white}`};
 `
-type TCardResource = {
+type TTopic = {
+  topic: {
+    id: string
+    name: string
+    slug: string
+    categoryId: string
+    createdAt: string
+    updatedAt: string
+  }
+}
+export type TCardResource = {
   createdBy: string
   createdOn: string
   description: string
@@ -73,10 +83,11 @@ type TCardResource = {
   updatedOn?: string
   url: string
   resourceType: string
-
+  topics: TTopic[]
   editable: boolean
   handleAccessModal: () => void
 }
+
 type TMappedTopics = {
   id: string
   name: string
@@ -94,23 +105,17 @@ export const CardResource = ({
   url,
   editable,
   resourceType,
+  topics,
   handleAccessModal,
   ...rest
 }: TCardResource) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [currentResource, setCurrentResource] = useState<TResourceForm>()
+
   const openModal = () => {
-    setCurrentResource({
-      title,
-      description,
-      url,
-      resourceType,
-      topics: [' '],
-    })
     setIsModalOpen(true)
   }
+
   const getTopics = async () => {
-    // Realiza la llamada a la API para obtener los temas utilizando los filtros proporcionados
     const response = await fetch(urls.getTopics)
     const data = await response.json()
     return data
@@ -122,7 +127,7 @@ export const CardResource = ({
       value: topic.id,
       label: topic.name,
     })) ?? []
-
+  const initialTopicId = topics && topics.length > 0 ? topics[0].topic.id : ''
   return (
     <CardContainerStyled
       data-testid="resource-card"
@@ -136,10 +141,19 @@ export const CardResource = ({
         isOpen={isModalOpen}
         toggleModal={() => setIsModalOpen(false)}
         title="Editar Recurso"
+        data-testid="modal"
       >
         <ResourceForm
           selectOptions={mappedTopics}
-          initialValues={currentResource}
+          initialValues={{
+            id,
+            title,
+            description,
+            url,
+            resourceType,
+            topicId: initialTopicId,
+          }}
+          resourceId={id}
         />
         <ButtonContainerStyled>
           <ButtonStyled outline onClick={() => setIsModalOpen(false)}>
@@ -149,7 +163,11 @@ export const CardResource = ({
       </Modal>
       {editable && (
         <StyledSvg onClick={openModal} style={{ cursor: 'pointer' }}>
-          <img src={icons.editPen} alt="Editar recurso" />
+          <img
+            src={icons.editPen}
+            alt="Editar recurso"
+            data-testid="edit-icon"
+          />
         </StyledSvg>
       )}
       {Number.isInteger(likes) && (

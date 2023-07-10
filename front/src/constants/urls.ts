@@ -7,8 +7,8 @@ export const urls = {
   getCategories: '/api/v1/categories',
   getResources: '/api/v1/resources',
   getTypes: '/api/v1/types',
-  vote: '/api/v1/resources/vote/:resourceId/:vote',
   getFavorites: '/api/v1/resources/favorites',
   getResourcesByUser: '/api/v1/resources/me',
   updateResource: '/api/v1/resources',
+  vote: '/api/v1/vote/',
 }

@@ -1,5 +1,6 @@
 import { rest } from 'msw'
 import { urls } from '../constants'
+import { voteErrorHandlers, voteHandlers } from './handlers/vote'
 
 export const handlers = [
   rest.post(urls.logIn, (req, res, ctx) => res(ctx.status(204))),
@@ -68,39 +69,30 @@ export const handlers = [
     const categorySlug = req.url.searchParams.get('category')
 
     if (categorySlug === 'emptyResource') {
-      return res(
-        ctx.status(200),
-        ctx.json([
-          {
-            resources: [],
-          },
-        ])
-      )
+      return res(ctx.status(200), ctx.json([]))
     }
 
     return res(
       ctx.status(200),
-      ctx.json({
-        resources: [
-          {
-            id: 'resourceId',
-            title: 'Resource Test',
-            description: 'Resource Test Description',
-            url: 'http://www.google.com',
-            createdAt: '2023-02-17T03:07:00',
-            updatedAt: '2023-05-17T03:07:00',
-            user: {
-              name: 'Test User Name',
-              email: 'test@mail.com',
-            },
-            voteCount: {
-              upvote: 6,
-              downvote: 2,
-              total: 4,
-            },
+      ctx.json([
+        {
+          id: 'resourceId',
+          title: 'Resource Test',
+          description: 'Resource Test Description',
+          url: 'http://www.google.com',
+          createdAt: '2023-02-17T03:07:00',
+          updatedAt: '2023-05-17T03:07:00',
+          user: {
+            name: 'Test User Name',
+            email: 'test@mail.com',
           },
-        ],
-      })
+          voteCount: {
+            upvote: 6,
+            downvote: 2,
+            total: 4,
+          },
+        },
+      ])
     )
   }),
 
@@ -108,17 +100,6 @@ export const handlers = [
     res(
       ctx.status(200),
       ctx.json(['Test type 1', 'Test type 2', 'Test type 3'])
-    )
-  ),
-
-  rest.put(urls.vote, (_, res, ctx) =>
-    res(
-      ctx.status(204),
-      ctx.json([
-        {
-          voteCount: '1',
-        },
-      ])
     )
   ),
 
@@ -192,6 +173,7 @@ export const handlers = [
       })
     )
   }),
+  ...voteHandlers,
 ]
 
 export const errorHandlers = [
@@ -226,6 +208,9 @@ export const errorHandlers = [
   rest.put(urls.vote, (_, res, ctx) =>
     res(ctx.status(401), ctx.json({ message: 'User not found' }))
   ),
+  rest.put(urls.vote, (_, res, ctx) =>
+    res(ctx.status(404), ctx.json({ message: 'User or resource not found' }))
+  ),
 
   rest.get(urls.getResourcesByUser, (req, res, ctx) => {
     const categorySlug = req.url.searchParams.get('category')
@@ -238,4 +223,5 @@ export const errorHandlers = [
     }
     return res(ctx.status(401), ctx.json({ message: 'User not found' }))
   }),
+  ...voteErrorHandlers,
 ]

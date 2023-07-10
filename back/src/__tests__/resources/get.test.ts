@@ -1,6 +1,7 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { RESOURCE_TYPE, Resource, Topic } from '@prisma/client'
+import qs from 'qs'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
@@ -34,20 +35,6 @@ const resourceTypes = Object.keys(RESOURCE_TYPE)
 type ResourceWithTopics = Resource & { topics: { topic: Topic }[] }
 
 describe('Testing resources GET endpoint', () => {
-  it.each(resourceTypes)(
-    `should get all resources by resourceType %s`,
-    async (resourceType) => {
-      const response = await supertest(server)
-        .get(`${pathRoot.v1.resources}`)
-        .query({ resourceType })
-      expect(response.status).toBe(200)
-      expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-      response.body.resources.forEach((resource: ResourceWithTopics) => {
-        expect(() => resourceGetSchema.parse(resource)).not.toThrow()
-        expect(resource.resourceType).toBe(`${resourceType}`)
-      })
-    }
-  )
   it('should fail with wrong resourceType', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
@@ -55,21 +42,23 @@ describe('Testing resources GET endpoint', () => {
 
     expect(response.status).toBe(400)
   })
-  it('should get all resources by topic name', async () => {
-    const topicName = 'Testing'
+
+  it('should get all resources by topic slug', async () => {
+    const topicSlug = 'testing'
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .query({ topic: topicName })
+      .query({ topic: topicSlug })
 
     expect(response.status).toBe(200)
-    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-    response.body.resources.forEach((resource: ResourceWithTopics) => {
+    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    response.body.forEach((resource: ResourceWithTopics) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       expect(
-        resource.topics.map((t: { topic: Topic }) => t.topic.name)
-      ).toContain(topicName)
+        resource.topics.map((t: { topic: Topic }) => t.topic.slug)
+      ).toContain(topicSlug)
     })
   })
+
   it('should fail without a valid topic name', async () => {
     const topicName = 'This topic does not exist'
     const response = await supertest(server)
@@ -77,8 +66,9 @@ describe('Testing resources GET endpoint', () => {
       .query({ topic: topicName })
 
     expect(response.status).toBe(200)
-    expect(response.body.resources.length).toBe(0)
+    expect(response.body.length).toBe(0)
   })
+
   it('should get all resources by category slug', async () => {
     const categorySlug = 'testing'
     const response = await supertest(server)
@@ -86,8 +76,8 @@ describe('Testing resources GET endpoint', () => {
       .query({ category: categorySlug })
 
     expect(response.status).toBe(200)
-    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-    response.body.resources.forEach((resource: ResourceWithTopics) => {
+    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    response.body.forEach((resource: ResourceWithTopics) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       // The returned resource has at least a topic related to the queried category
       expect(
@@ -101,26 +91,29 @@ describe('Testing resources GET endpoint', () => {
       ).toBe(true)
     })
   })
+
   it.each(resourceTypes)(
     "should get all resources by type '%s', topic 'Testing' and category slug 'Testing'.",
     async (resourceType) => {
-      const topicName = 'Testing'
+      const topicSlug = 'testing'
       const categorySlug = 'testing'
       const response = await supertest(server)
         .get(`${pathRoot.v1.resources}`)
-        .query({
-          topic: topicName,
-          resourceType,
-          category: categorySlug,
-        })
+        .query(
+          qs.stringify({
+            topic: topicSlug,
+            resourceTypes: [resourceType],
+            category: categorySlug,
+          })
+        )
 
       expect(response.status).toBe(200)
-      expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-      response.body.resources.forEach((resource: ResourceWithTopics) => {
+      expect(response.body.length).toBeGreaterThanOrEqual(1)
+      response.body.forEach((resource: ResourceWithTopics) => {
         expect(() => resourceGetSchema.parse(resource)).not.toThrow()
         expect(
-          resource.topics.map((t: { topic: Topic }) => t.topic.name)
-        ).toContain(topicName)
+          resource.topics.map((t: { topic: Topic }) => t.topic.slug)
+        ).toContain(topicSlug)
         expect(resource.resourceType).toBe(resourceType)
         // The returned resource has at least a topic related to the queried category
         expect(
@@ -140,8 +133,8 @@ describe('Testing resources GET endpoint', () => {
       .get(`${pathRoot.v1.resources}`)
       .query({ status: 'SEEN' })
     expect(response.status).toBe(200)
-    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-    response.body.resources.forEach((resource: ResourceWithTopics) => {
+    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    response.body.forEach((resource: ResourceWithTopics) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       expect(resource.status).toBe('SEEN')
     })
@@ -152,12 +145,12 @@ describe('Testing resources GET endpoint', () => {
       .query({})
 
     expect(response.status).toBe(200)
-    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-    response.body.resources.forEach((resource: ResourceWithTopics) => {
+    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    response.body.forEach((resource: ResourceWithTopics) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })
     // All existing resources are fetched
     const countResources = await prisma.resource.count()
-    expect(response.body.resources.length).toBe(countResources)
+    expect(response.body.length).toBe(countResources)
   })
 })
