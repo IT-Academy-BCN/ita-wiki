@@ -244,6 +244,7 @@ paths:
                     enum:
                       - ADMIN
                       - REGISTERED
+                      - MENTOR
                   status:
                     type: string
                     enum:
@@ -718,6 +719,55 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MissingTokenError"
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+    patch:
+      tags:
+        - resources
+      description: Allows a logged in user to modify his resources.
+      summary: Patch a resource
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                title:
+                  type: string
+                description:
+                  type: string
+                url:
+                  type: string
+                topicId:
+                  type: string
+                resourceType:
+                  type: string
+                  enum:
+                    - BLOG
+                    - VIDEO
+                    - TUTORIAL
+              required:
+                - id
+              additionalProperties: false
+      responses:
+        "204":
+          description: Resource has been modified
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: Not found
         "405":
           description: Invalid token
           content:
