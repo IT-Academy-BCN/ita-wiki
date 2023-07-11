@@ -32,27 +32,25 @@ export type TResource = {
 }
 
 export const useSortByDate = (
-  items: TResource[],
+  items: TResource[] | undefined,
   sortOrder: 'ascending' | 'descending' = 'descending'
 ) => {
-  const [sortedItems, setSortedItems] = useState<TResource[]>(items)
+  const [sortedItems, setSortedItems] = useState<TResource[]>([])
 
   useEffect(() => {
-    if (sortOrder === 'ascending')
-      setSortedItems(
-        [...items].sort(
-          (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        )
-      )
+    if (items) {
+      const sorted = [...items].sort((a, b) => {
+        const dateA = new Date(a.createdAt).getTime()
+        const dateB = new Date(b.createdAt).getTime()
 
-    if (sortOrder === 'descending')
-      setSortedItems(
-        [...items].sort(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        )
-      )
+        if (sortOrder === 'ascending') {
+          return dateA - dateB
+        }
+        return dateB - dateA
+      })
+
+      setSortedItems(sorted)
+    }
   }, [items, sortOrder])
 
   return { sortedItems }

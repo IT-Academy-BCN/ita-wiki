@@ -99,7 +99,7 @@ const ResourceCardList: FC<TResourceCardList> = ({
     () => getResources(buildQueryString(filters) || '')
   )
 
-  const { sortedItems } = useSortByDate(data || [], sortOrder)
+  const { sortedItems } = useSortByDate(data, sortOrder)
 
   if (error) return <p>Ha habido un error...</p>
 
