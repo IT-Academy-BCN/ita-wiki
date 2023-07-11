@@ -1,6 +1,16 @@
 import { useEffect, useState } from 'react'
 
-type TResource = {
+type TTopic = {
+  topic: {
+    id: string
+    name: string
+    slug: string
+    categoryId: string
+    createdAt: string
+    updatedAt: string
+  }
+}
+export type TResource = {
   id: string
   title: string
   slug: string
@@ -17,6 +27,8 @@ type TResource = {
     downvote: number
     total: number
   }
+  resourceType: string
+  topics: TTopic[]
 }
 
 export const useSortByDate = (
