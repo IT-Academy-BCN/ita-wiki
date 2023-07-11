@@ -6,6 +6,7 @@ import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import { CardResource } from '../molecules'
 import { TFilters, buildQueryString } from '../../helpers'
+import { useSortByDate } from '../../hooks/useSortByDate'
 
 type TResource = {
   id: string
@@ -66,6 +67,7 @@ const getResources = async (filters: string) =>
 
 type TResourceCardList = {
   filters: TFilters
+  sortOrder: 'ascending' | 'descending'
   handleAccessModal: () => void
 }
 
@@ -73,6 +75,7 @@ type TResources = TResource[]
 
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
+  sortOrder,
   filters,
 }) => {
   const { isLoading, data, error } = useQuery<TResources>(
@@ -80,35 +83,29 @@ const ResourceCardList: FC<TResourceCardList> = ({
     () => getResources(buildQueryString(filters) || '')
   )
 
+  const { sortedItems } = useSortByDate(data || [], sortOrder)
+
   if (error) return <p>Ha habido un error...</p>
 
   return (
     <StyledFlexBox direction="column">
       {isLoading && <StyledSpinner role="status" />}
       {data && data?.length > 0 ? (
-        data
-          .sort(
-            (
-              a: { createdAt: string | number | Date },
-              b: { createdAt: string | number | Date }
-            ) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          )
-          .map((resource: TResource) => (
-            <CardResource
-              key={resource.id}
-              id={resource.id}
-              img=""
-              title={resource.title}
-              url={resource.url}
-              description={resource.description}
-              likes={resource.voteCount.total}
-              createdBy={resource.user.name}
-              createdOn={resource.createdAt}
-              updatedOn={resource.updatedAt}
-              handleAccessModal={handleAccessModal}
-            />
-          ))
+        sortedItems?.map((resource: TResource) => (
+          <CardResource
+            key={resource.id}
+            id={resource.id}
+            img=""
+            title={resource.title}
+            url={resource.url}
+            description={resource.description}
+            likes={resource.voteCount.total}
+            createdBy={resource.user.name}
+            createdOn={resource.createdAt}
+            updatedOn={resource.updatedAt}
+            handleAccessModal={handleAccessModal}
+          />
+        ))
       ) : (
         <FlexBox>
           <StyledText data-testid="emptyResource">
