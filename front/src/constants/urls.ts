@@ -10,5 +10,6 @@ export const urls = {
   getTypes: '/api/v1/types',
   getFavorites: '/api/v1/resources/favorites',
   getResourcesByUser: '/api/v1/resources/me',
+  updateResource: '/api/v1/resources',
   vote: '/api/v1/vote/',
 }
