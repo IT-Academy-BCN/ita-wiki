@@ -66,8 +66,7 @@ export const handlers = [
   }),
 
   rest.get(urls.getResources, (req, res, ctx) => {
-    const categorySlug = req.url.searchParams.get('category')
-
+    const categorySlug = req.url.searchParams.get('slug')
     if (categorySlug === 'emptyResource') {
       return res(ctx.status(200), ctx.json([]))
     }

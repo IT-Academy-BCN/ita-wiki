@@ -90,6 +90,7 @@ const ResourceCardList: FC<TResourceCardList> = ({
   filters,
 }) => {
   const { user } = useAuth()
+
   const { isLoading, data, error } = useQuery<TResources>(
     ['getResources', buildQueryString(filters) || ''],
     () => getResources(buildQueryString(filters) || '')

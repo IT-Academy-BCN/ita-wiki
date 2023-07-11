@@ -10,6 +10,7 @@ describe('ResourceCardList', () => {
   afterEach(() => {
     vi.restoreAllMocks()
   })
+
   it('renders ResourceCard correctly on success', async () => {
     render(
       <Routes>
@@ -42,14 +43,14 @@ describe('ResourceCardList', () => {
     })
   })
 
-  it.skip('renders message when Category does not have Resources', async () => {
+  it('renders message when Category does not have Resources', async () => {
     render(
       <Routes>
         <Route
           path="/category/:slug"
           element={
             <ResourceCardList
-              filters={{ slug: 'resourceTest' }}
+              filters={{ slug: 'emptyResource' }}
               handleAccessModal={handleAccessModal}
             />
           }
@@ -74,7 +75,7 @@ describe('ResourceCardList', () => {
     mswServer.use(...errorHandlers)
     render(
       <ResourceCardList
-        filters={{ slug: 'resourceTest' }}
+        filters={{ slug: 'emptyResource' }}
         handleAccessModal={handleAccessModal}
       />
     )
