@@ -12,6 +12,7 @@ import {
   font,
   responsiveSizes,
 } from '../../styles'
+// eslint-disable-next-line import/no-cycle
 import { CardResource, Modal, ResourceTitleLink } from '../molecules'
 import Login from './Login'
 import Register from './Register'
@@ -117,7 +118,7 @@ export const MyFavoritesList: FC = () => {
   const { isLoading, data, error } = useQuery({
     queryKey: ['getFavorites'],
     queryFn: () => getFavorites(),
-     enabled: !!user, // Enable the query only if there is a logged-in user
+    enabled: !!user, // Enable the query only if there is a logged-in user
   })
 
   const handleRegisterModal = () => {
@@ -173,6 +174,9 @@ export const MyFavoritesList: FC = () => {
                   title={fav.title}
                   url={fav.url}
                   handleAccessModal={() => {}}
+                  resourceType=""
+                  topics={[]}
+                  editable={false}
                 />
               ) : (
                 <ResourceTitleLink

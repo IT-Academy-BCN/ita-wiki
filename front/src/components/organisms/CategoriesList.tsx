@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions, font } from '../../styles'
+// eslint-disable-next-line import/no-cycle
 import { CategoryBlock } from '../molecules'
 import { Spinner, Title } from '../atoms'
 import icons from '../../assets/icons'
