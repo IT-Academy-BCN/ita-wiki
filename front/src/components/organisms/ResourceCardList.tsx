@@ -4,11 +4,23 @@ import { FC } from 'react'
 import { urls } from '../../constants'
 import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
+// eslint-disable-next-line import/no-cycle
 import { CardResource } from '../molecules'
 import { TFilters, buildQueryString } from '../../helpers'
 import { useSortByDate } from '../../hooks/useSortByDate'
+import { useAuth } from '../../context/AuthProvider'
 
-type TResource = {
+type TTopic = {
+  topic: {
+    id: string
+    name: string
+    slug: string
+    categoryId: string
+    createdAt: string
+    updatedAt: string
+  }
+}
+export type TResource = {
   id: string
   title: string
   slug: string
@@ -25,6 +37,8 @@ type TResource = {
     downvote: number
     total: number
   }
+  resourceType: string
+  topics: TTopic[]
 }
 
 const StyledSpinner = styled(Spinner)`
@@ -78,6 +92,8 @@ const ResourceCardList: FC<TResourceCardList> = ({
   sortOrder,
   filters,
 }) => {
+  const { user } = useAuth()
+
   const { isLoading, data, error } = useQuery<TResources>(
     ['getResources', buildQueryString(filters) || ''],
     () => getResources(buildQueryString(filters) || '')
@@ -104,6 +120,9 @@ const ResourceCardList: FC<TResourceCardList> = ({
             createdOn={resource.createdAt}
             updatedOn={resource.updatedAt}
             handleAccessModal={handleAccessModal}
+            editable={user?.name === resource.user.name}
+            resourceType={resource.resourceType}
+            topics={resource.topics}
           />
         ))
       ) : (

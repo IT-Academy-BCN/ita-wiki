@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { expect, afterEach, vi } from 'vitest'
 import { cleanup } from '@testing-library/react'
 import { QueryClient } from '@tanstack/react-query'
@@ -5,6 +6,11 @@ import matchers from '@testing-library/jest-dom/matchers'
 import { server } from '../__mocks__/server'
 
 export const queryClient = new QueryClient({
+  logger: {
+    log: console.log,
+    warn: console.warn,
+    error: process.env.NODE_ENV === 'test' ? () => {} : console.error,
+  },
   defaultOptions: {
     queries: {
       retry: false,
