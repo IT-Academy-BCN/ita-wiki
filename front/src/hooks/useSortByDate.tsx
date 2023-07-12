@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 
 type SortOrder = 'asc' | 'desc'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useSortByDate = <T extends Record<string, any>>(
+export const useSortByDate = <T extends Record<string, unknown>>(
   items: T[] | undefined,
   sortBy: keyof T,
   sortOrder: SortOrder = 'desc'
