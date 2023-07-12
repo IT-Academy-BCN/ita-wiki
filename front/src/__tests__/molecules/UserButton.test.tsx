@@ -2,6 +2,7 @@ import { vi } from 'vitest'
 import { render, screen, fireEvent } from '../test-utils'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import UserButton from '../../components/molecules/UserButton'
+import userEvent from '@testing-library/user-event'
 
 vi.mock('../../context/AuthProvider', async () => {
   const actual = await vi.importActual('../../context/AuthProvider')
@@ -31,9 +32,4 @@ describe('UserButton', () => {
     render(<UserButton />)
     expect(screen.getByTestId('avatarImage')).toBeInTheDocument()
   })
-
-  it('should open dropdownMenu', () => {
-    
-  })
-
 })
