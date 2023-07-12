@@ -20,7 +20,7 @@ describe('ResourceCardList', () => {
             <ResourceCardList
               filters={{ slug: 'resourceTest' }}
               handleAccessModal={handleAccessModal}
-              sortOrder="descending"
+              sortOrder="desc"
             />
           }
         />
@@ -53,7 +53,7 @@ describe('ResourceCardList', () => {
             <ResourceCardList
               filters={{ slug: 'emptyResource' }}
               handleAccessModal={handleAccessModal}
-              sortOrder="descending"
+              sortOrder="desc"
             />
           }
         />
@@ -79,7 +79,7 @@ describe('ResourceCardList', () => {
       <ResourceCardList
         filters={{ slug: 'emptyResource' }}
         handleAccessModal={handleAccessModal}
-        sortOrder="descending"
+        sortOrder="desc"
       />
     )
 

@@ -1,49 +1,22 @@
 import { useEffect, useState } from 'react'
 
-type TTopic = {
-  topic: {
-    id: string
-    name: string
-    slug: string
-    categoryId: string
-    createdAt: string
-    updatedAt: string
-  }
-}
-export type TResource = {
-  id: string
-  title: string
-  slug: string
-  description: string
-  url: string
-  createdAt: string
-  updatedAt: string
-  user: {
-    name: string
-    email: string
-  }
-  voteCount: {
-    upvote: number
-    downvote: number
-    total: number
-  }
-  resourceType: string
-  topics: TTopic[]
-}
+type SortOrder = 'asc' | 'desc'
 
-export const useSortByDate = (
-  items: TResource[] | undefined,
-  sortOrder: 'ascending' | 'descending' = 'descending'
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useSortByDate = <T extends Record<string, any>>(
+  items: T[] | undefined,
+  sortBy: keyof T,
+  sortOrder: SortOrder = 'desc'
 ) => {
-  const [sortedItems, setSortedItems] = useState<TResource[]>([])
+  const [sortedItems, setSortedItems] = useState<T[]>([])
 
   useEffect(() => {
     if (items) {
       const sorted = [...items].sort((a, b) => {
-        const dateA = new Date(a.createdAt).getTime()
-        const dateB = new Date(b.createdAt).getTime()
+        const dateA = new Date(a[sortBy] as string).getTime()
+        const dateB = new Date(b[sortBy] as string).getTime()
 
-        if (sortOrder === 'ascending') {
+        if (sortOrder === 'asc') {
           return dateA - dateB
         }
         return dateB - dateA
@@ -51,7 +24,7 @@ export const useSortByDate = (
 
       setSortedItems(sorted)
     }
-  }, [items, sortOrder])
+  }, [items, sortOrder, sortBy])
 
   return { sortedItems }
 }

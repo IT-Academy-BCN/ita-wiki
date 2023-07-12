@@ -232,6 +232,8 @@ const getTopics = async (query?: QueryFunctionContext<string[], any>) => {
     })
 }
 
+type SortOrder = 'asc' | 'desc'
+
 const Category: FC = () => {
   const { state } = useLocation()
   const { slug } = useParams()
@@ -240,9 +242,7 @@ const Category: FC = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false)
   const [topic, setTopic] = useState('todos')
-  const [sortOrder, setSortOrder] = useState<'ascending' | 'descending'>(
-    'descending'
-  )
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
 
   const [filters, setFilters] = useState<TFilters>({
     slug,
@@ -271,9 +271,7 @@ const Category: FC = () => {
   }
 
   const handleSortOrder = () => {
-    setSortOrder((prevOrder) =>
-      prevOrder === 'descending' ? 'ascending' : 'descending'
-    )
+    setSortOrder((prevOrder) => (prevOrder === 'desc' ? 'asc' : 'desc'))
   }
 
   const { data: fetchedTopics } = useQuery(['getTopics', slug || ''], getTopics)

@@ -70,14 +70,14 @@ const mockedResources = [
 
 it('should sort resources in ascending order', () => {
   const { result } = renderHook(() =>
-    useSortByDate(mockedResources, 'ascending')
+    useSortByDate(mockedResources, 'createdAt', 'asc')
   )
 
   expect(result.current.sortedItems[0].title).toBe('Resource Test')
 })
 it('should sort resources in descending order', () => {
   const { result } = renderHook(() =>
-    useSortByDate(mockedResources, 'descending')
+    useSortByDate(mockedResources, 'createdAt', 'desc')
   )
 
   expect(result.current.sortedItems[0].title).toBe('Resource')

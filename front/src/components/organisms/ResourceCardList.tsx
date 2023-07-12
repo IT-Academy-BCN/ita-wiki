@@ -79,9 +79,11 @@ const getResources = async (filters: string) =>
       throw new Error(`Error fetching resources: ${err.message}`)
     })
 
+type SortOrder = 'asc' | 'desc'
+
 type TResourceCardList = {
   filters: TFilters
-  sortOrder: 'ascending' | 'descending'
+  sortOrder: SortOrder
   handleAccessModal: () => void
 }
 
@@ -99,8 +101,7 @@ const ResourceCardList: FC<TResourceCardList> = ({
     () => getResources(buildQueryString(filters) || '')
   )
 
-  const { sortedItems } = useSortByDate(data, sortOrder)
-
+  const { sortedItems } = useSortByDate<TResource>(data, 'createdAt', sortOrder)
   if (error) return <p>Ha habido un error...</p>
 
   return (
