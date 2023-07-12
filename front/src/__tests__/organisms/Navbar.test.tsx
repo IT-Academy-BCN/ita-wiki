@@ -1,41 +1,22 @@
-import { vi } from 'vitest'
 import { Navbar } from '../../components/organisms/Navbar'
-import { render, screen } from '../test-utils'
-import { TAuthContext, useAuth } from '../../context/AuthProvider'
-
-vi.mock('../../context/AuthProvider', async () => {
-  const actual = await vi.importActual('../../context/AuthProvider')
-  return {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    ...actual,
-    useAuth: vi.fn(),
-  }
-})
+import { render, screen, fireEvent } from '../test-utils'
 
 describe('Navbar', () => {
   it('renders Navbar component', () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: null,
-    } as TAuthContext)
+    render(<Navbar />)
 
-    render(<Navbar title="Test Title" />)
+    const menuButton = screen.getByAltText('menu')
+    expect(menuButton).toBeInTheDocument()
 
-    const titleElement = screen.getByText('Test Title')
-    expect(titleElement).toBeInTheDocument()
-    expect(screen.queryByTestId('avatarImage')).not.toBeInTheDocument()
-  })
+    fireEvent.click(menuButton)
 
-  it('shows avatar image if user is set', () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Hola',
-        avatar: 'Adios',
-      },
-    } as TAuthContext)
+    const newPostButton = screen.getByTestId('newPostImage1')
+    expect(newPostButton).toBeInTheDocument()
 
-    render(<Navbar title="Test Title" />)
+    fireEvent.click(newPostButton)
 
-    expect(screen.getByTestId('avatarImage')).toBeInTheDocument()
+
+    const settingsButton = screen.getByTestId('settingsImage1')
+    fireEvent.click(settingsButton)
   })
 })

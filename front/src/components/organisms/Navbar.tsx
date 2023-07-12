@@ -1,164 +1,146 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { useAuth } from '../../context/AuthProvider'
 import { FlexBox, colors, dimensions } from '../../styles'
-import { Title, Icon } from '../atoms'
-import defaultAvatar from '../../assets/icons/profile-avatar.svg'
-import { paths } from '../../constants'
+import { Title } from '../atoms'
+import LanguageSelector from '../molecules/SelectLanguage'
+import UserButton from '../molecules/UserButton'
+import SettingsImg from '../../assets/icons/settings.svg'
+import PlusImg from '../../assets/icons/plus.svg'
+import MenuHamburger from '../../assets/icons/menu-left.svg'
 
-type TNavbar = {
-  title: string
-}
-type TNavbarStyled = {
-  isDropdownOpen: boolean
-}
 
-const NavbarStyled = styled(FlexBox)<TNavbarStyled>`
-  background-color: ${colors.black.black3};
-  border-bottom-left-radius: ${dimensions.borderRadius.sm};
-  border-bottom-right-radius: ${dimensions.borderRadius.sm};
-  justify-content: center;
+
+const NavbarStyled = styled(FlexBox)`
+  background-color: ${colors.gray.gray5};
+  justify-content: end;
   align-items: center;
-  padding: 0 1rem;
+  padding-top: 20px;
+  padding-right: 2rem;
   min-height: 55px;
+
   ${Title} {
     color: ${colors.white};
   }
-  position: fixed;
-  top: 0;
-  left: 0;
+
   width: 100%;
-  z-index: 999;
 
-  ${({ isDropdownOpen }) =>
-    isDropdownOpen &&
-    `
-    &::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 1;
-    }
-  `}
+  @media (max-width: 768px) {
+    justify-content: space-between;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0px;
+    position:relative;
+    top:-30px;
+  }
 `
 
-const IconStyled = styled(Icon)`
-  padding-left: ${dimensions.spacing.base};
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  color: ${colors.white};
+const LangDesktop = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
 `
-
-const AvatarImage = styled.img`
+const HamburgerMenu = styled.img`
+  margin-right: 1.5rem;
   width: 2rem;
   height: 2rem;
-  border-radius: 50%;
-  background-color: ${colors.gray.gray5};
   cursor: pointer;
-  position: absolute;
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+`;
+
+const ButtonImg = styled.img`
+  margin: 0px 15px 0px 15px;
+  padding: 6px;
+  width: 3rem;
+  height: 2.5rem;
+  border-radius: 20%;
+  background-color: ${colors.white};
+  cursor: pointer;
+  right: ${dimensions.spacing.base};
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+`
+const ButtonImgTablet = styled.img`
+  margin-bottom:15px;
+  padding: 6px;
+  width: 3rem;
+  height: 2.5rem;
+  border-radius: 20%;
+  background-color: ${colors.white};
+  cursor: pointer;
   right: ${dimensions.spacing.base};
 `
 
-const DropdownMenu = styled(FlexBox)`
+const MenuItems = styled(FlexBox)`
+flex-direction: column;
   position: absolute;
-  top: 3.2rem;
-  right: ${dimensions.spacing.xs};
-  background-color: ${colors.white};
-  padding: 0.5rem;
-  border-radius: ${dimensions.borderRadius.sm};
-  box-shadow: 0 2px 5px ${colors.gray.gray4};
-  z-index: 2;
-  width: 9rem;
-  height: 7rem;
-`
+  top: 55px;
+  left: 0;
+  right: 0;
+  padding:15px;
+  border-radius:12px;
+  border: 1px solid ${colors.gray.gray4};
+  background-color: ${colors.gray.gray5};
+  z-index: 999;
+  max-width: 100px;
+  
+  @media (min-width: 769px) {
+    display: none;
+  }
+`;
 
-const DropdownItem = styled(FlexBox)`
+const MenuItem = styled(FlexBox)`
   padding: 0.5rem;
-  flex-direction: row;
-  font-weight: 500;
-  margin: 0.5rem;
   cursor: pointer;
-  &:hover {
-    background-color: ${colors.gray.gray5};
-  }
-  &:not(:last-child) {
-    border-bottom: 1px solid ${colors.gray.gray4};
-    width: 100%;
-  }
-`
-const IconWrapper = styled(FlexBox)`
-  margin-left: 2rem;
-`
+`;
 
-export const Navbar: FC<TNavbar> = ({ title }) => {
-  const { user } = useAuth()
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
-  const avatarRef = useRef<HTMLImageElement>(null)
+export const Navbar: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleDropdownClick = () => {
-    setIsDropdownOpen(!isDropdownOpen)
-  }
-  const handleOutsideClick = (event: MouseEvent) => {
-    if (
-      avatarRef.current &&
-      dropdownRef.current &&
-      !avatarRef.current.contains(event.target as Node) &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      setIsDropdownOpen(false)
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('click', handleOutsideClick)
-    return () => {
-      document.removeEventListener('click', handleOutsideClick)
-    }
-  }, [])
-  const handleLogout = () => {
-    // Implement logout functionality
-  }
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   return (
-    <NavbarStyled direction="row" isDropdownOpen={isDropdownOpen}>
-      <Link to={paths.home}>
-        <IconStyled name="arrow_back_ios" />
-      </Link>
-      <Title as="h2">{title}</Title>
-      {user && (
-        <AvatarImage
-          data-testid="avatarImage"
-          src={user.avatar ? user.avatar : defaultAvatar}
-          alt="Avatar"
-          onClick={handleDropdownClick}
-          ref={avatarRef}
-        />
-      )}
-      {isDropdownOpen && (
-        <DropdownMenu ref={dropdownRef}>
-          <DropdownItem>
-            {/* <Link to={`${paths.profile}`}> */}
-            <span>Perfil</span>
-            <IconWrapper>
-              <Icon name="person" fill={0} />
-            </IconWrapper>
-            {/* </Link> */}
-          </DropdownItem>
-          <DropdownItem onClick={handleLogout}>
-            <span>Salir</span>
-            <IconWrapper>
-              <Icon name="logout" />
-            </IconWrapper>
-          </DropdownItem>
-        </DropdownMenu>
+    <NavbarStyled direction="row">
+      <HamburgerMenu src={MenuHamburger} alt="menu" onClick={toggleMenu} />
+      <ButtonImg
+        data-testid="newPostImage1"
+        src={PlusImg}
+        alt="newPost"
+        onClick={() => console.log('new post')}
+      />
+      <LangDesktop>
+        <LanguageSelector/>
+      </LangDesktop>
+      <ButtonImg
+        data-testid="settingsImage1"
+        src={SettingsImg}
+        alt="settings"
+        onClick={() => console.log('open settings')}
+      />
+      <UserButton />
+      {isMenuOpen  && (
+        <MenuItems>
+          <ButtonImgTablet
+            data-testid="newPostImage2"
+            src={PlusImg}
+            alt="newPost"
+            onClick={() => console.log('new post')}
+          />
+          <ButtonImgTablet
+            data-testid="settingsImage2"
+            src={SettingsImg}
+            alt="settings"
+            onClick={() => console.log('open settings')}
+          />
+          <LanguageSelector/>
+        </MenuItems>
       )}
     </NavbarStyled>
   )

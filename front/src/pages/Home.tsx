@@ -134,7 +134,7 @@ const Home: FC = () => {
     <>
       <MobileStyled>
         <MobileContainerStyled align="stretch">
-          <Navbar title="Wiki" />
+          <Navbar />
           {cardHomeMobileContent.map((content) => (
             <CardHome
               key={content.id}
@@ -159,6 +159,7 @@ const Home: FC = () => {
         </MobileContainerStyled>
       </MobileStyled>
       <DesktopStyled>
+     <Navbar />
         <MainContainer>
           <LateralDiv>
             <Link to={paths.home}>
