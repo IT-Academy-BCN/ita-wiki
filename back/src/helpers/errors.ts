@@ -25,8 +25,8 @@ class UnauthorizedError extends DefaultError {
 }
 
 class ForbiddenError extends DefaultError {
-  constructor() {
-    super(403, 'Forbidden')
+  constructor(message: string = 'Forbidden') {
+    super(403, `${message}`)
   }
 }
 

@@ -28,6 +28,6 @@ authRouter.post(
   registerController
 )
 
-authRouter.get('/me', authMiddleware, authMeController)
+authRouter.get('/me', authMiddleware(), authMeController)
 
 export { authRouter }

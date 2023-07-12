@@ -21,7 +21,7 @@ resourcesRouter.prefix(pathRoot.v1.resources)
 
 resourcesRouter.post(
   '/',
-  authMiddleware,
+  authMiddleware(),
   validate(z.object({ body: resourceCreateSchema })),
   createResource
 )
@@ -38,7 +38,7 @@ resourcesRouter.get(
 
 resourcesRouter.get(
   '/me',
-  authMiddleware,
+  authMiddleware(),
   validate(
     z.object({
       query: z.object({
@@ -49,7 +49,7 @@ resourcesRouter.get(
   getResourcesByUserId
 )
 
-resourcesRouter.get('/favorites', authMiddleware, getFavoriteResources)
+resourcesRouter.get('/favorites', authMiddleware(), getFavoriteResources)
 
 resourcesRouter.get(
   '/id/:resourceId',
@@ -89,7 +89,7 @@ resourcesRouter.get(
 
 resourcesRouter.patch(
   '/',
-  authMiddleware,
+  authMiddleware(),
   validate(z.object({ body: resourcePatchSchema })),
   patchResource
 )

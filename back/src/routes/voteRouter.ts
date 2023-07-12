@@ -22,7 +22,7 @@ voteRouter.get(
 
 voteRouter.put(
   '/',
-  authMiddleware,
+  authMiddleware(),
   validate(
     z.object({
       body: z.object({
