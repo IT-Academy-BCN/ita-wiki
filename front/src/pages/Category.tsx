@@ -328,16 +328,17 @@ const Category: FC = () => {
       </MobileStyled> */}
       <DesktopStyled>
         <MainContainer>
+          {/* ==> LOGO Y CATEGORIESLIST */}
           <LateralDiv>
             <Link to={paths.home}>
               <ImageStyled src={icons.itLogo} alt="logo" />
             </Link>
             <CategoriesList />
           </LateralDiv>
+
           {/* ==> CONTAINER CON LAS LAS COLUMNAS */}
           <DivStyled>
-            {/* ==> COLUMNA BÚSQUEDA */}
-
+            {/* ==> FILTROS */}
             <SideColumnContainer>
               <Title as="h2" fontWeight="bold">
                 Filtros
@@ -355,6 +356,7 @@ const Category: FC = () => {
               <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
               <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
             </SideColumnContainer>
+
             {/* ==> COLUMNA RECURSOS */}
             <MiddleColumnContainer>
               <Title as="h2" fontWeight="bold">
@@ -385,6 +387,7 @@ const Category: FC = () => {
             {/* ==> COLUMNA USUARIO */}
             <SideColumnContainer>
               {/* TÍTULO 1 */}
+              {/* ==> TODO: MOVER AL LADO DEL TÍTULO RECURSOS */}
               <SearchBar
                 data-testid="inputGroupSearch"
                 label="searchResource"
@@ -393,10 +396,12 @@ const Category: FC = () => {
                 id="searchResource"
                 icon="search"
               />
+              {/* ==> TODO: HACER UN CONTAINER */}
               <ScrollDiv>
                 <MyFavoritesList />
               </ScrollDiv>
               {/* TÍTULO 2 */}
+              {/* ==> TODO: HACER UN CONTAINER */}
               <ScrollDiv>
                 <UserResourcesContainerStyled>
                   <MyResources />

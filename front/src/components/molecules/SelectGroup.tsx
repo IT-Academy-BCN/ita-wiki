@@ -10,6 +10,7 @@ const SelectGroupStyled = styled.div`
     margin-top: ${dimensions.spacing.xxxs};
     margin-bottom: ${dimensions.spacing.none};
   }
+  width: 100%;
 `
 type TSelectGroup = {
   id: string

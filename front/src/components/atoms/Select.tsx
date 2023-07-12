@@ -27,6 +27,7 @@ type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
   options?: TOption[]
   error?: boolean | string
   placeholder?: string
+  defaultValue?: string
 }
 
 const Select = forwardRef<HTMLSelectElement, TSelect>(
