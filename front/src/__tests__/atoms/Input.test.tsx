@@ -52,6 +52,6 @@ describe('Input', () => {
     render(<Input placeholder="text input" error="false" />)
     const inputText = screen.getByPlaceholderText('text input')
     expect(inputText).toHaveStyle('width: 100%')
-    expect(inputText).toHaveStyle(`padding: ${dimensions.spacing.sm};`)
+    expect(inputText).toHaveStyle(`padding: ${dimensions.spacing.base};`)
   })
 })

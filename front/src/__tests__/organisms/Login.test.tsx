@@ -51,7 +51,9 @@ describe('Login', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Login' }))
 
     await waitFor(() => {
-      expect(screen.getByText(/Identificador incorrecto/i)).toBeInTheDocument()
+      expect(
+        screen.getByText(/Identificador o contraseña incorrectos/i)
+      ).toBeInTheDocument()
     })
   })
 })

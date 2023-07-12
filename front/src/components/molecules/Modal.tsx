@@ -43,7 +43,7 @@ const ModalContent = styled(FlexBox)`
   border-radius: ${dimensions.borderRadius.sm};
 
   @media only ${device.Tablet} {
-    width: 50%;
+    width: 60%;
   }
 `
 

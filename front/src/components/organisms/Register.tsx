@@ -1,25 +1,54 @@
-import { FC, useState } from 'react'
+import { FC, HTMLAttributes, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { UserRegisterSchema } from '@itacademy/schemas'
 import axios from 'axios'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Title, Text, Button, CheckBox, ValidationMessage } from '../atoms'
-import InputGroup from '../molecules/InputGroup'
+import {
+  Title,
+  Text,
+  Button,
+  CheckBox,
+  ValidationMessage,
+  Spinner,
+  Icon,
+} from '../atoms'
+import { SelectGroup, InputGroup } from '../molecules'
 import { urls } from '../../constants'
-import { colors, dimensions, FlexBox } from '../../styles'
+import { colors, device, dimensions, FlexBox } from '../../styles'
 
 const RegisterStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.sm};
   padding: ${dimensions.spacing.lg};
 `
 
-const StyledForm = styled.form`
+const FlexErrorStyled = styled(FlexBox)`
+  height: ${dimensions.spacing.none};
+`
+
+const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   width: 100%;
+  @media ${device.Tablet} {
+    display: grid;
+    grid-template-areas:
+      'dni email'
+      'name specialization'
+      'password confirmPassword'
+      'accept button';
+    grid-template-columns: 1fr 1fr;
+    gap: ${dimensions.spacing.xxxs};
+  }
+`
+
+type TGridArea = HTMLAttributes<HTMLParagraphElement> & {
+  gridArea: string
+}
+
+const GridAreaStyled = styled.div<TGridArea>`
+  grid-area: ${(props) => props.gridArea};
 `
 
 const CheckBoxStyled = styled(CheckBox)`
@@ -42,26 +71,45 @@ const TextStyled = styled(Text)`
 const LegalTermsLinkStyled = styled(Link)`
   color: inherit;
 `
+type TButton = HTMLAttributes<HTMLParagraphElement> & {
+  backgroundColor?: string
+  padding?: string
+}
 
-const SelectStyled = styled.select`
-  padding: 1rem;
-  border-radius: ${dimensions.borderRadius.base};
-  width: 100%;
-  border: 1px solid ${colors.gray.gray4};
-  color: ${colors.gray.gray3};
-`
-
-const ButtonStyled = styled(Button)`
+const ButtonStyled = styled(Button)<TButton>`
   margin: ${dimensions.spacing.none};
+  background-color: ${(props) => props.backgroundColor};
+  border: 2px solid ${(props) => props.backgroundColor};
+  padding: ${(props) => props.padding};
+  &:hover {
+    background-color: ${(props) => props.backgroundColor};
+    border: 2px solid ${(props) => props.backgroundColor};
+  }
 `
 
 const TitleStyled = styled(Title)`
   width: 100%;
+  text-align: center;
 `
 
 const TextDecorationStyled = styled.span`
   text-decoration: underline;
   cursor: pointer;
+`
+
+const ValidationMessageStyled = styled(FlexBox)`
+  ${ValidationMessage} {
+    margin-top: ${dimensions.spacing.xxxs};
+    margin-bottom: ${dimensions.spacing.none};
+  }
+`
+
+const StyledSpinner = styled(Spinner)`
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 3px solid ${colors.outlineHover};
+  border-top-color: ${colors.primary};
+  border-right-color: ${colors.primary};
 `
 
 type TForm = {
@@ -86,37 +134,47 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    trigger,
   } = useForm<TForm>({ resolver: zodResolver(UserRegisterSchema) })
-
-  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
+  const [onSuccess, setOnSuccess] = useState(false)
+  const [responseError, setResponseError] = useState('')
 
   const registerNewUser = async (user: object) => {
-    try {
-      const response = await axios.post(urls.register, user)
-      if (response.status === 204) {
-        navigate('/')
-      }
-    } catch (error) {
-      throw new Error('Error registering new user')
-    }
+    await axios
+      .post(urls.register, user)
+      .then((response) => {
+        if (response.status === 204) {
+          setResponseError('')
+          setIsLoading(false)
+          setOnSuccess(true)
+          setTimeout(() => {
+            handleRegisterModal()
+          }, 2000)
+        }
+      })
+      .catch((error) => {
+        setIsLoading(false)
+        setResponseError(error.response.data.error)
+      })
   }
 
-  const onSubmit = handleSubmit((data) => {
-    const { email, password, name, dni, specialization } = data
-    registerNewUser({ email, password, name, dni, specialization })
-    reset()
+  const onSubmit = handleSubmit((userData) => {
+    const { email, password, name, dni, specialization } = userData
+    setIsLoading(true)
+    setTimeout(() => {
+      registerNewUser({ email, password, name, dni, specialization })
+    }, 500)
   })
 
-  const options = [
-    { id: 0, value: '', specialization: 'Especialidad' },
-    { id: 1, value: 'react', specialization: 'React' },
-    { id: 2, value: 'angular', specialization: 'Angular' },
-    { id: 3, value: 'vue', specialization: 'Vue' },
-    { id: 4, value: 'node', specialization: 'Node' },
-    { id: 5, value: 'java', specialization: 'Java' },
-    { id: 6, value: 'fullstack', specialization: 'Fullstack' },
-    { id: 7, value: 'dataScience', specialization: 'Data Science' },
+  const categories = [
+    { value: 'react', label: 'React' },
+    { value: 'angular', label: 'Angular' },
+    { value: 'vue', label: 'Vue' },
+    { value: 'node', label: 'Node' },
+    { value: 'java', label: 'Java' },
+    { value: 'fullstack', label: 'Fullstack' },
+    { value: 'dataScience', label: 'Data Science' },
   ]
 
   return (
@@ -124,123 +182,149 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
       <TitleStyled as="h1" fontWeight="bold">
         Registro
       </TitleStyled>
-      <StyledForm onSubmit={onSubmit}>
-        <InputGroup
-          required
-          data-testid="DNI"
-          id="dni"
-          label="dni"
-          type="text"
-          placeholder="DNI"
-          error={errors.dni && true}
-          validationMessage={errors.dni?.message}
-          validationType="error"
-          {...register('dni')}
-        />
-
-        <InputGroup
-          required
-          data-testid="email"
-          id="email"
-          label="email"
-          type="email"
-          placeholder="Email"
-          error={errors.email && true}
-          validationMessage={errors.email?.message}
-          validationType="error"
-          {...register('email')}
-        />
-
-        <InputGroup
-          required
-          data-testid="name"
-          id="name"
-          label="name"
-          type="text"
-          placeholder="Username"
-          error={errors.name && true}
-          validationMessage={errors.name?.message}
-          validationType="error"
-          {...register('name')}
-        />
-
-        <InputGroup
-          required
-          data-testid="password"
-          id="password"
-          label="password"
-          type={visibility ? 'text' : 'password'}
-          placeholder="password"
-          error={errors.password && true}
-          validationMessage={errors.password?.message}
-          validationType="error"
-          color={colors.gray.gray4}
-          icon={visibility ? 'visibility' : 'visibility_off'}
-          iconClick={() => setVisibility(!visibility)}
-          {...register('password')}
-        />
-
-        <InputGroup
-          required
-          data-testid="confirmPassword"
-          id="confirmPassword"
-          label="confirmPassword"
-          type={visibility ? 'text' : 'password'}
-          placeholder="Confirmar password"
-          icon={visibility ? 'visibility' : 'visibility_off'}
-          iconClick={() => setVisibility(!visibility)}
-          color={colors.gray.gray4}
-          error={errors.confirmPassword && true}
-          validationMessage={errors.confirmPassword?.message}
-          validationType="error"
-          {...register('confirmPassword')}
-        />
-
-        {/*  TODO create select component */}
-        <SelectStyled
-          required
-          data-testid="specialization"
-          {...register('specialization')}
-        >
-          {options.map((opt) => (
-            <option key={opt.id} value={opt.value}>
-              {opt.specialization}
-            </option>
-          ))}
-        </SelectStyled>
-        {errors.specialization?.type === 'required' && (
-          <ValidationMessage
-            color="error"
-            text={errors.specialization?.message}
+      {responseError && (
+        <FlexErrorStyled align="start">
+          <ValidationMessage color="error" text={responseError} />
+        </FlexErrorStyled>
+      )}
+      <FormStyled onSubmit={onSubmit}>
+        <GridAreaStyled gridArea="dni">
+          <InputGroup
+            data-testid="DNI"
+            id="dni"
+            label="dni"
+            type="text"
+            placeholder="DNI o NIE"
+            error={errors.dni && true}
+            validationMessage={errors.dni?.message}
+            validationType="error"
+            {...register('dni')}
+            onBlur={() => {
+              trigger('dni')
+            }}
           />
-        )}
-
-        {errors.specialization?.type === 'required' && (
-          <ValidationMessage
-            color="error"
-            text={errors.specialization?.message}
+        </GridAreaStyled>
+        <GridAreaStyled gridArea="email">
+          <InputGroup
+            data-testid="email"
+            id="email"
+            label="email"
+            type="email"
+            placeholder="Email"
+            error={errors.email && true}
+            validationMessage={errors.email?.message}
+            validationType="error"
+            {...register('email')}
+            onBlur={() => {
+              trigger('email')
+            }}
           />
-        )}
-        <FlexBox justify="flex-start" direction="row">
-          <CheckBoxStyled
-            required
-            id="accept"
-            label=""
-            hiddenLabel
-            {...register('accept')}
+        </GridAreaStyled>
+        <GridAreaStyled gridArea="name">
+          <InputGroup
+            data-testid="name"
+            id="name"
+            label="name"
+            type="text"
+            placeholder="Username"
+            error={errors.name && true}
+            validationMessage={errors.name?.message}
+            validationType="error"
+            {...register('name')}
+            onBlur={() => {
+              trigger('name')
+            }}
           />
-          <TextStyled as="label" htmlFor="accept">
-            Acepto{' '}
-            <LegalTermsLinkStyled to="#">términos legales</LegalTermsLinkStyled>
-          </TextStyled>
-        </FlexBox>
-        <FlexBox>
+        </GridAreaStyled>
+        <GridAreaStyled gridArea="password">
+          <InputGroup
+            data-testid="password"
+            id="password"
+            label="password"
+            type={visibility ? 'text' : 'password'}
+            placeholder="Contraseña"
+            error={errors.password && true}
+            validationMessage={errors.password?.message}
+            validationType="error"
+            color={colors.gray.gray4}
+            icon={visibility ? 'visibility' : 'visibility_off'}
+            iconClick={() => setVisibility(!visibility)}
+            {...register('password')}
+            onBlur={() => {
+              trigger('password')
+            }}
+          />
+        </GridAreaStyled>
+        <GridAreaStyled gridArea="confirmPassword">
+          <InputGroup
+            data-testid="confirmPassword"
+            id="confirmPassword"
+            label="confirmPassword"
+            type={visibility ? 'text' : 'password'}
+            placeholder="Repetir contraseña"
+            icon={visibility ? 'visibility' : 'visibility_off'}
+            iconClick={() => setVisibility(!visibility)}
+            color={colors.gray.gray4}
+            error={errors.confirmPassword && true}
+            validationMessage={errors.confirmPassword?.message}
+            validationType="error"
+            {...register('confirmPassword')}
+            onBlur={() => {
+              trigger('confirmPassword')
+            }}
+          />
+        </GridAreaStyled>
+        <GridAreaStyled gridArea="specialization">
+          <SelectGroup
+            data-testid="specialization"
+            id="specialization"
+            label="EspecializaciónTest"
+            placeholder="Especialidad"
+            error={errors.specialization && true}
+            options={categories}
+            validationMessage={errors.specialization?.message}
+            {...register('specialization')}
+            onBlur={() => {
+              trigger('specialization')
+            }}
+          />
+        </GridAreaStyled>
+        <GridAreaStyled gridArea="accept">
+          <FlexBox justify="flex-start" direction="row">
+            <CheckBoxStyled
+              id="accept"
+              label=""
+              hiddenLabel
+              {...register('accept')}
+            />
+            <TextStyled as="label" htmlFor="accept">
+              Acepto{' '}
+              <LegalTermsLinkStyled to="#">
+                términos legales
+              </LegalTermsLinkStyled>
+            </TextStyled>
+          </FlexBox>
           {errors.accept && (
-            <ValidationMessage color="error" text={errors.accept?.message} />
+            <ValidationMessageStyled>
+              <ValidationMessage color="error" text={errors.accept?.message} />
+            </ValidationMessageStyled>
           )}
-        </FlexBox>
-        <ButtonStyled type="submit">Registrarme</ButtonStyled>
-      </StyledForm>
+        </GridAreaStyled>
+        <GridAreaStyled gridArea="button">
+          {onSuccess ? (
+            <ButtonStyled
+              backgroundColor={colors.success}
+              padding={dimensions.spacing.xs}
+            >
+              <Icon name="done" />
+            </ButtonStyled>
+          ) : (
+            <ButtonStyled type="submit">
+              {isLoading ? <StyledSpinner /> : 'Registrarme'}
+            </ButtonStyled>
+          )}
+        </GridAreaStyled>
+      </FormStyled>
       <Text fontWeight="bold">
         <TextDecorationStyled
           onClick={() => {
