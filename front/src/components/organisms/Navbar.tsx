@@ -7,8 +7,8 @@ import UserButton from '../molecules/UserButton'
 import SettingsImg from '../../assets/icons/settings.svg'
 import PlusImg from '../../assets/icons/plus.svg'
 import MenuHamburger from '../../assets/icons/menu-left.svg'
-
-
+import { CategoriesList } from './CategoriesList'
+import closeButton from '../../assets/icons/x.svg'
 
 const NavbarStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
@@ -29,8 +29,8 @@ const NavbarStyled = styled(FlexBox)`
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     padding-top: 0px;
-    position:relative;
-    top:-30px;
+    position: relative;
+    top: -30px;
   }
 `
 
@@ -49,7 +49,7 @@ const HamburgerMenu = styled.img`
   @media (max-width: 768px) {
     display: block;
   }
-`;
+`
 
 const ButtonImg = styled.img`
   margin: 0px 15px 0px 15px;
@@ -65,46 +65,49 @@ const ButtonImg = styled.img`
     display: none;
   }
 `
-const ButtonImgTablet = styled.img`
-  margin-bottom:15px;
-  padding: 6px;
+
+const CloseButton = styled.img`
   width: 3rem;
   height: 2.5rem;
-  border-radius: 20%;
-  background-color: ${colors.white};
   cursor: pointer;
-  right: ${dimensions.spacing.base};
+  position: fixed;
+  top: 20px;
+  left: 20px;
 `
-
-const MenuItems = styled(FlexBox)`
-flex-direction: column;
+const BgWhite = styled(FlexBox)`
   position: absolute;
-  top: 55px;
-  left: 0;
-  right: 0;
-  padding:15px;
-  border-radius:12px;
-  border: 1px solid ${colors.gray.gray4};
-  background-color: ${colors.gray.gray5};
+  top: -70px;
+  right: -20px;
+  background-color: ${colors.white};
   z-index: 999;
-  max-width: 100px;
-  
+  width: 100vh;
+  height: 100vh;
   @media (min-width: 769px) {
     display: none;
   }
-`;
+`
 
-const MenuItem = styled(FlexBox)`
-  padding: 0.5rem;
-  cursor: pointer;
-`;
+const MenuItems = styled(FlexBox)`
+  flex-direction: column;
+  position: absolute;
+  top: -40px;
+  right: 0;
+  padding: 15px;
+  background-color: ${colors.white};
+  z-index: 999;
+  width: 100%;
+  height: 100vh;
+  @media (min-width: 769px) {
+    display: none;
+  }
+`
 
 export const Navbar: React.FC = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+    setIsMenuOpen(!isMenuOpen)
+  }
 
   return (
     <NavbarStyled direction="row">
@@ -116,7 +119,7 @@ export const Navbar: React.FC = () => {
         onClick={() => console.log('new post')}
       />
       <LangDesktop>
-        <LanguageSelector/>
+        <LanguageSelector />
       </LangDesktop>
       <ButtonImg
         data-testid="settingsImage1"
@@ -125,22 +128,19 @@ export const Navbar: React.FC = () => {
         onClick={() => console.log('open settings')}
       />
       <UserButton />
-      {isMenuOpen  && (
-        <MenuItems>
-          <ButtonImgTablet
-            data-testid="newPostImage2"
-            src={PlusImg}
-            alt="newPost"
-            onClick={() => console.log('new post')}
-          />
-          <ButtonImgTablet
-            data-testid="settingsImage2"
-            src={SettingsImg}
-            alt="settings"
-            onClick={() => console.log('open settings')}
-          />
-          <LanguageSelector/>
-        </MenuItems>
+      {isMenuOpen && (
+        <>
+          <BgWhite />
+          <MenuItems>
+            <CloseButton
+              data-testid="closeButton"
+              src={closeButton}
+              alt="close"
+              onClick={() => setIsMenuOpen(false)}
+            />
+            <CategoriesList />
+          </MenuItems>
+        </>
       )}
     </NavbarStyled>
   )

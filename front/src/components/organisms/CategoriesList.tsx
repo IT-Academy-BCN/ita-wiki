@@ -116,11 +116,31 @@ export const CategoriesList: FC = () => {
   return (
     <>
       <MobileStyled>
-        <CategoriesListStyled align="stretch">
+        <CategoriesContainerStyled>
+          {data?.map((category: TCategory) => (
+            <LinkCategory
+              to={`/category/${category.slug}`}
+              state={{ name: category.name }}
+              key={category.id}
+              data-testid={category.name}
+            >
+              <FlexBox direction="row">
+                <ImgStyled
+                  src={categoryImg[category.name]}
+                  alt={`${category.name} logo`}
+                />
+                <CategoryStyled active={slug === category.slug}>
+                  {category.name}
+                </CategoryStyled>
+              </FlexBox>
+            </LinkCategory>
+          ))}
+        </CategoriesContainerStyled>
+        {/* <CategoriesListStyled align="stretch">
           <Title as="h3" fontWeight="bold">
             Categorías
           </Title>
-          <FlexBox gap="1rem" align="stretch">
+          <FlexBox>
             {data?.map((category: TCategory) => (
               <CategoryBlock
                 key={category.id}
@@ -130,7 +150,7 @@ export const CategoriesList: FC = () => {
               />
             ))}
           </FlexBox>
-        </CategoriesListStyled>
+        </CategoriesListStyled> */}
       </MobileStyled>
       <DesktopStyled>
         <CategoriesContainerStyled>

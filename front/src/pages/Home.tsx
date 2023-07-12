@@ -78,7 +78,6 @@ const ButtonContainerStyled = styled(FlexBox)`
   margin-bottom: ${dimensions.spacing.xs};
 `
 
-
 const StyledText = styled(Text)`
   margin-top: ${dimensions.spacing.xxl};
 `
@@ -153,13 +152,13 @@ const Home: FC = () => {
             id="searchHome"
             icon="search"
           />
-          <CategoriesList />
+          {/* <CategoriesList /> */}
           <MyFavoritesList />
           <MyResources />
         </MobileContainerStyled>
       </MobileStyled>
       <DesktopStyled>
-     <Navbar />
+        <Navbar />
         <MainContainer>
           <LateralDiv>
             <Link to={paths.home}>
