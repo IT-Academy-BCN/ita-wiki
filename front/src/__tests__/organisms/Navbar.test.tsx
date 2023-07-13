@@ -10,13 +10,12 @@ describe('Navbar', () => {
 
     fireEvent.click(menuButton)
 
-    const newPostButton = screen.getByTestId('newPostImage1')
+    const newPostButton = screen.getByTestId('new-post-button')
     expect(newPostButton).toBeInTheDocument()
-
     fireEvent.click(newPostButton)
 
 
-    const settingsButton = screen.getByTestId('settingsImage1')
+    const settingsButton = screen.getByTestId('settings-button')
     fireEvent.click(settingsButton)
   })
 })

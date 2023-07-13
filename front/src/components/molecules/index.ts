@@ -11,6 +11,8 @@ import TextareaGroup from './TextareaGroup'
 import { TypesFilterWidget } from './TypesFilterWidget'
 import { VoteCounter } from './VoteCounter'
 import { CardHome } from './CardHome'
+import UserButton from './UserButton'
+import LanguageSelector from './SelectLanguage'
 
 export {
   AccessModalContent,
@@ -26,5 +28,7 @@ export {
   CreateAuthor,
   VoteCounter,
   CardHome,
+  LanguageSelector,
+  UserButton
 }
 export type { TResourceTitleLink }

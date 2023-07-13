@@ -3,8 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions, font } from '../../styles'
-import { CategoryBlock } from '../molecules'
-import { Spinner, Title } from '../atoms'
+import { Spinner } from '../atoms'
 import icons from '../../assets/icons'
 import { urls } from '../../constants'
 
@@ -31,10 +30,6 @@ export const SmallSpinner = styled(Spinner)`
   width: 70px;
   height: 70px;
   margin: 0 auto;
-`
-
-const CategoriesListStyled = styled(FlexBox)`
-  margin-bottom: ${dimensions.spacing.lg};
 `
 
 const LinkCategory = styled(Link)`
@@ -136,21 +131,6 @@ export const CategoriesList: FC = () => {
             </LinkCategory>
           ))}
         </CategoriesContainerStyled>
-        {/* <CategoriesListStyled align="stretch">
-          <Title as="h3" fontWeight="bold">
-            Categorías
-          </Title>
-          <FlexBox>
-            {data?.map((category: TCategory) => (
-              <CategoryBlock
-                key={category.id}
-                slug={category.slug}
-                name={category.name}
-                img={categoryImg[category.name]}
-              />
-            ))}
-          </FlexBox>
-        </CategoriesListStyled> */}
       </MobileStyled>
       <DesktopStyled>
         <CategoriesContainerStyled>

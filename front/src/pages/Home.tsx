@@ -152,7 +152,6 @@ const Home: FC = () => {
             id="searchHome"
             icon="search"
           />
-          {/* <CategoriesList /> */}
           <MyFavoritesList />
           <MyResources />
         </MobileContainerStyled>

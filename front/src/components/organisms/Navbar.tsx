@@ -2,13 +2,12 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { Title } from '../atoms'
-import LanguageSelector from '../molecules/SelectLanguage'
-import UserButton from '../molecules/UserButton'
-import SettingsImg from '../../assets/icons/settings.svg'
-import PlusImg from '../../assets/icons/plus.svg'
-import MenuHamburger from '../../assets/icons/menu-left.svg'
+import { LanguageSelector, UserButton } from '../molecules'
 import { CategoriesList } from './CategoriesList'
 import closeButton from '../../assets/icons/x.svg'
+import PlusImg from '../../assets/icons/plus.svg'
+import MenuHamburger from '../../assets/icons/menu-left.svg'
+import SettingsImg from '../../assets/icons/settings.svg'
 
 const NavbarStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
@@ -113,7 +112,7 @@ export const Navbar: React.FC = () => {
     <NavbarStyled direction="row">
       <HamburgerMenu src={MenuHamburger} alt="menu" onClick={toggleMenu} />
       <ButtonImg
-        data-testid="newPostImage1"
+        data-testid="new-post-button"
         src={PlusImg}
         alt="newPost"
         onClick={() => console.log('new post')}
@@ -122,7 +121,7 @@ export const Navbar: React.FC = () => {
         <LanguageSelector />
       </LangDesktop>
       <ButtonImg
-        data-testid="settingsImage1"
+        data-testid="settings-button"
         src={SettingsImg}
         alt="settings"
         onClick={() => console.log('open settings')}
@@ -133,7 +132,7 @@ export const Navbar: React.FC = () => {
           <BgWhite />
           <MenuItems>
             <CloseButton
-              data-testid="closeButton"
+              data-testid="close-button"
               src={closeButton}
               alt="close"
               onClick={() => setIsMenuOpen(false)}
