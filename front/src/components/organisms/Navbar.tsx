@@ -101,6 +101,7 @@ const MenuItems = styled(FlexBox)`
   }
 `
 
+
 export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 

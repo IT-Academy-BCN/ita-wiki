@@ -4,10 +4,23 @@ import { FC } from 'react'
 import { urls } from '../../constants'
 import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
+// eslint-disable-next-line import/no-cycle
 import { CardResource } from '../molecules'
 import { TFilters, buildQueryString } from '../../helpers'
+import { useSortByDate } from '../../hooks/useSortByDate'
+import { useAuth } from '../../context/AuthProvider'
 
-type TResource = {
+type TTopic = {
+  topic: {
+    id: string
+    name: string
+    slug: string
+    categoryId: string
+    createdAt: string
+    updatedAt: string
+  }
+}
+export type TResource = {
   id: string
   title: string
   slug: string
@@ -24,6 +37,8 @@ type TResource = {
     downvote: number
     total: number
   }
+  resourceType: string
+  topics: TTopic[]
 }
 
 const StyledSpinner = styled(Spinner)`
@@ -64,8 +79,11 @@ const getResources = async (filters: string) =>
       throw new Error(`Error fetching resources: ${err.message}`)
     })
 
+type SortOrder = 'asc' | 'desc'
+
 type TResourceCardList = {
   filters: TFilters
+  sortOrder: SortOrder
   handleAccessModal: () => void
 }
 
@@ -73,42 +91,41 @@ type TResources = TResource[]
 
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
+  sortOrder,
   filters,
 }) => {
+  const { user } = useAuth()
+
   const { isLoading, data, error } = useQuery<TResources>(
     ['getResources', buildQueryString(filters) || ''],
     () => getResources(buildQueryString(filters) || '')
   )
 
+  const { sortedItems } = useSortByDate<TResource>(data, 'createdAt', sortOrder)
   if (error) return <p>Ha habido un error...</p>
 
   return (
     <StyledFlexBox direction="column">
       {isLoading && <StyledSpinner role="status" />}
       {data && data?.length > 0 ? (
-        data
-          .sort(
-            (
-              a: { createdAt: string | number | Date },
-              b: { createdAt: string | number | Date }
-            ) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          )
-          .map((resource: TResource) => (
-            <CardResource
-              key={resource.id}
-              id={resource.id}
-              img=""
-              title={resource.title}
-              url={resource.url}
-              description={resource.description}
-              likes={resource.voteCount.total}
-              createdBy={resource.user.name}
-              createdOn={resource.createdAt}
-              updatedOn={resource.updatedAt}
-              handleAccessModal={handleAccessModal}
-            />
-          ))
+        sortedItems?.map((resource: TResource) => (
+          <CardResource
+            key={resource.id}
+            id={resource.id}
+            img=""
+            title={resource.title}
+            url={resource.url}
+            description={resource.description}
+            likes={resource.voteCount.total}
+            createdBy={resource.user.name}
+            createdOn={resource.createdAt}
+            updatedOn={resource.updatedAt}
+            handleAccessModal={handleAccessModal}
+            editable={user?.name === resource.user.name}
+            resourceType={resource.resourceType}
+            topics={resource.topics}
+          />
+        ))
       ) : (
         <FlexBox>
           <StyledText data-testid="emptyResource">

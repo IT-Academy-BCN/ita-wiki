@@ -8,7 +8,7 @@ export const userSchema = z.object({
   password: z.string().min(8),
   name: z.string().optional(),
   status: z.enum(['ACTIVE', 'INACTIVE']),
-  role: z.enum(['ADMIN', 'REGISTERED']),
+  role: z.enum(['ADMIN', 'REGISTERED', 'MENTOR']),
   createdAt: z.date(),
   updatedAt: z.date(),
 })
