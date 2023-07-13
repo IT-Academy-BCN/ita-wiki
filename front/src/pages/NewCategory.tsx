@@ -353,20 +353,18 @@ const NewCategory: FC = () => {
     const filterTopic = selectedTopic === 'todos' ? undefined : selectedTopic
     setFilters({ ...filters, topic: filterTopic })
     setTopic(selectedTopic)
-    console.log('filter', filters)
   }
 
-  const handleSelectTopicFilter = (event: {
-    target: { label: string; value: string }
-  }) => {
-    const selectedTopic = event.target.value
-
-    const filterTopic = selectedTopic
-    setFilters({ ...filters, topic: filterTopic })
-    setTopic(selectedTopic)
-    console.log('filter', filters)
-    console.log('selected', selectedTopic)
-  }
+  // const handleSelectTopicFilter = (event: {
+  //   target: { label: string; value: string }
+  // }) => {
+  //   const selectedTopic = event.target.value
+  //   const filterTopic = selectedTopic
+  //   setFilters({ ...filters, topic: filterTopic })
+  //   setTopic(selectedTopic)
+  //   console.log('filter', filters)
+  //   console.log('selected', selectedTopic)
+  // }
 
   const { data: fetchedTopics } = useQuery(['getTopics', slug || ''], getTopics)
 
@@ -395,12 +393,11 @@ const NewCategory: FC = () => {
             id="topics"
             label="Temas"
             name="topics"
-            onChange={handleSelectTopicFilter}
           />
         </MobileTopicsContainer>
 
         <WhiteContainer>
-          <FiltersContainer>
+          <FiltersContainer data-testid="filters-container">
             <Title as="h2" fontWeight="bold">
               Filtros
             </Title>

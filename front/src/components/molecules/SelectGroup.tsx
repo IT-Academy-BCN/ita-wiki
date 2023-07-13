@@ -22,10 +22,13 @@ type TSelectGroup = {
 } & TSelect
 
 const SelectGroup = forwardRef<HTMLSelectElement, TSelectGroup>(
-  ({ label, id, name, hiddenLabel, icon, validationMessage, ...rest }, ref) => (
+  (
+    { label, id, name, hiddenLabel, icon, validationMessage, options, ...rest },
+    ref
+  ) => (
     <SelectGroupStyled>
       <Label text={label} htmlFor={id} hiddenLabel={hiddenLabel} />
-      <Select id={id} name={name} ref={ref} {...rest} />
+      <Select id={id} name={name} ref={ref} {...rest} options={options} />
       <ValidationMessage text={validationMessage} color="error" />
     </SelectGroupStyled>
   )
