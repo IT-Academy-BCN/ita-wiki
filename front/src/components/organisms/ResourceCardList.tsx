@@ -118,8 +118,8 @@ const ResourceCardList: FC<TResourceCardList> = ({
             description={resource.description}
             likes={resource.voteCount.total}
             createdBy={resource.user.name}
-            createdOn={resource.createdAt}
-            updatedOn={resource.updatedAt}
+            createdAt={resource.createdAt}
+            updatedAt={resource.updatedAt}
             handleAccessModal={handleAccessModal}
             editable={user?.name === resource.user.name}
             resourceType={resource.resourceType}

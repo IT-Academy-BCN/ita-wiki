@@ -11,16 +11,16 @@ const dateFormatOption: Intl.DateTimeFormatOptions = {
 describe('CreateAuthor', () => {
   it('renders correctly', () => {
     const createdBy = 'Author'
-    const updatedOn = '2022-08-09T09:42:25.717Z'
+    const updatedAt = '2022-08-09T09:42:25.717Z'
     render(
       <CreateAuthor
         img={icons.profileAvatar}
         createdBy={createdBy}
-        updatedOn={updatedOn}
+        updatedAt={updatedAt}
       />
     )
 
-    const metaInfo = `${createdBy}, ${new Date(updatedOn).toLocaleDateString(
+    const metaInfo = `${createdBy}, ${new Date(updatedAt).toLocaleDateString(
       'es-ES',
       dateFormatOption
     )}`
@@ -32,12 +32,12 @@ describe('CreateAuthor', () => {
 
   it('Renders a user image if the prop img is not undefined', () => {
     const createdBy = 'Author'
-    const updatedOn = '2022-08-09T09:42:25.717Z'
+    const updatedAt = '2022-08-09T09:42:25.717Z'
     render(
       <CreateAuthor
         img={icons.profileAvatar}
         createdBy={createdBy}
-        updatedOn={updatedOn}
+        updatedAt={updatedAt}
       />
     )
 
@@ -46,12 +46,12 @@ describe('CreateAuthor', () => {
 
   it("Renders a '😺' emoji if the image prop is undefined", () => {
     const createdBy = 'Author'
-    const updatedOn = '2022-08-09T09:42:25.717Z'
+    const updatedAt = '2022-08-09T09:42:25.717Z'
     render(
       <CreateAuthor
         img={undefined}
         createdBy={createdBy}
-        updatedOn={updatedOn}
+        updatedAt={updatedAt}
       />
     )
 
