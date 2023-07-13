@@ -1,6 +1,6 @@
 import { setupServer } from 'msw/node'
-import { fireEvent, getByTitle } from '@testing-library/react'
-import { vi } from 'vitest'
+import { fireEvent } from '@testing-library/react'
+import { expect, vi } from 'vitest'
 import { render, screen } from '../test-utils'
 import { NewCategory } from '../../pages'
 import { handlers } from '../../__mocks__/handlers'
@@ -18,14 +18,14 @@ vi.mock('react-router-dom', async () => {
 
 const server = setupServer(...handlers)
 
-beforeEach(() => {
-  vi.mocked(useAuth).mockReturnValue({
-    user: {
-      name: 'Name',
-      avatar: 'Avatar',
-    },
-  } as TAuthContext)
-})
+// beforeEach(() => {
+//   vi.mocked(useAuth).mockReturnValue({
+//     user: {
+//       name: 'Name',
+//       avatar: 'Avatar',
+//     },
+//   } as TAuthContext)
+// })
 
 afterEach(() => {
   server.resetHandlers()

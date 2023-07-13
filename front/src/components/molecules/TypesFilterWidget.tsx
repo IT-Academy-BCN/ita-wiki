@@ -89,7 +89,7 @@ const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
   if (error) return <p>Ha habido un error...</p>
 
   return (
-    <StyledFlexbox direction="column" align="start">
+    <StyledFlexbox direction="column" align="start" data-testid="types-filter">
       <StyledText fontWeight="bold">Tipo</StyledText>
       {isLoading && <StyledSpinner role="status" />}
       {data?.map((item: string) => (

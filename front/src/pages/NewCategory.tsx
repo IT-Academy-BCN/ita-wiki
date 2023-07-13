@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { FC, useEffect, useState } from 'react'
 import { QueryFunctionContext, useQuery } from '@tanstack/react-query'
@@ -256,6 +256,25 @@ const FilterButton = styled(Button)`
   }
 `
 
+const slideInAnimation = keyframes`
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+`
+
+const slideOutAnimation = keyframes`
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translate(100%);
+  }
+`
+
 const MobileFiltersContainer = styled.div`
   display: block;
   align-items: flex-start;
@@ -270,6 +289,17 @@ const MobileFiltersContainer = styled.div`
   border-top-left-radius: ${dimensions.borderRadius.sm};
   border-top-right-radius: ${dimensions.borderRadius.sm};
   box-shadow: ${dimensions.spacing.none} -0.2rem ${dimensions.spacing.base} ${colors.gray.gray3};
+
+  &.open {
+    transform: translateY(100%);
+    animation: ${slideInAnimation} 1s forwards;
+  }
+
+  &.close {
+    transform: translateY(0);
+    animation: ${slideOutAnimation} 1s forwards;
+  }
+
   @media ${device.Tablet} {
     display: none;
   }
@@ -329,6 +359,12 @@ const NewCategory: FC = () => {
   const handleFiltersOpen = () => {
     setIsFiltersOpen(true)
   }
+
+  const handleFiltersClose = () => {
+    setIsFiltersOpen(false)
+  }
+
+  const filtersContainerClassName = isFiltersOpen ? 'open' : 'close'
 
   useEffect(() => {
     setFilters((prevFilters) => ({
@@ -456,10 +492,10 @@ const NewCategory: FC = () => {
         </WhiteContainer>
 
         {isFiltersOpen && (
-          <MobileFiltersContainer>
+          <MobileFiltersContainer className={filtersContainerClassName}>
             <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
             <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
-            <CloseFilterButton onClick={() => setIsFiltersOpen(false)}>
+            <CloseFilterButton onClick={handleFiltersClose}>
               Cerrar
             </CloseFilterButton>
           </MobileFiltersContainer>
