@@ -45,11 +45,10 @@ const LinkCategory = styled(Link)`
 `
 const CategoriesContainerStyled = styled(FlexBox)`
   padding-left: ${dimensions.spacing.xxs};
-  padding-right: ${dimensions.spacing.xs};
   margin-right: ${dimensions.spacing.sm};
   align-items: flex-start;
   color: ${colors.gray.gray3};
-  min-width: 11.5rem;
+  min-width: 10rem;
 `
 type TLinkStyled = {
   active?: boolean
