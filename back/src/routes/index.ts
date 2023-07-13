@@ -1,6 +1,6 @@
 export { authRouter } from './authRouter'
 export { resourcesRouter } from './resourcesRouter'
-export { topicsRouter } from './topicsRouter'
+export { topicsRouter } from './topics'
 export { categoriesRouter } from './categoriesRouter'
 export { mediaRouter } from './mediaRouter'
 export { voteRouter } from './voteRouter'

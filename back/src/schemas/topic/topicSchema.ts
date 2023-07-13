@@ -1,4 +1,4 @@
-import { z } from '../openapi/zod'
+import { z } from '../../openapi/zod'
 
 export const topicSchema = z.object({
   id: z.string().cuid(),
