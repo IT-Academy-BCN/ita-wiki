@@ -97,13 +97,6 @@ const TextDecorationStyled = styled.span`
   cursor: pointer;
 `
 
-const ValidationMessageStyled = styled(FlexBox)`
-  ${ValidationMessage} {
-    margin-top: ${dimensions.spacing.xxxs};
-    margin-bottom: ${dimensions.spacing.none};
-  }
-`
-
 const StyledSpinner = styled(Spinner)`
   width: 1.15rem;
   height: 1.15rem;
@@ -305,9 +298,9 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             </TextStyled>
           </FlexBox>
           {errors.accept && (
-            <ValidationMessageStyled>
+            <FlexBox align="start">
               <ValidationMessage color="error" text={errors.accept?.message} />
-            </ValidationMessageStyled>
+            </FlexBox>
           )}
         </GridAreaStyled>
         <GridAreaStyled gridArea="button">
