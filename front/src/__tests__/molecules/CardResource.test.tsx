@@ -16,6 +16,7 @@ describe('CardResource component', () => {
     img: icons.profileAvatar,
     createdBy: 'Test author name',
     createdOn: '2022-08-09T09:42:25.717Z',
+    updatedOn: '2023-07-09T09:42:25.717Z',
     likes: 124,
     resourceType: 'video',
     topics: [],

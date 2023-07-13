@@ -80,7 +80,7 @@ export type TCardResource = {
   id: string
   likes?: number
   title: string
-  updatedOn?: string
+  updatedOn: string
   url: string
   resourceType: string
   topics: TTopic[]
@@ -181,7 +181,7 @@ export const CardResource = ({
       )}
       <FlexBoxStyled align="start" justify="space-between" gap="4px">
         <ResourceTitleLink description={description} title={title} url={url} />
-        <CreateAuthor createdBy={createdBy} createdOn={createdOn} img={img} />
+        <CreateAuthor createdBy={createdBy} updatedOn={updatedOn} img={img} />
       </FlexBoxStyled>
     </CardContainerStyled>
   )

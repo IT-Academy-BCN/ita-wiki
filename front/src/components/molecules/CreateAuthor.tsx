@@ -14,7 +14,7 @@ const MetaInfo = styled(Text)`
 
 type TCreateAuthor = {
   createdBy: string
-  createdOn: string
+  updatedOn: string
   img?: string
 }
 
@@ -24,12 +24,12 @@ const dateFormatOption: Intl.DateTimeFormatOptions = {
   day: 'numeric',
 }
 
-export const CreateAuthor = ({ createdBy, createdOn, img }: TCreateAuthor) => (
+export const CreateAuthor = ({ createdBy, updatedOn, img }: TCreateAuthor) => (
   <FlexBox direction="row">
     <StyledDiv>{img ? <img src={img} alt="Author icon" /> : '😺'}</StyledDiv>
     <MetaInfo>
       {createdBy},{' '}
-      {new Date(createdOn).toLocaleDateString('es-ES', dateFormatOption)}
+      {new Date(updatedOn).toLocaleDateString('es-ES', dateFormatOption)}
     </MetaInfo>
   </FlexBox>
 )
