@@ -272,7 +272,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
           <SelectGroup
             data-testid="specialization"
             id="specialization"
-            label="EspecializaciónTest"
+            label="specialization"
             placeholder="Especialidad"
             error={errors.specialization && true}
             options={categories}

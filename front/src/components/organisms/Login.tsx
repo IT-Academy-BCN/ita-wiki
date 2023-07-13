@@ -201,7 +201,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
             backgroundColor={colors.success}
             padding={dimensions.spacing.xs}
           >
-            <Icon name="done" />
+            <Icon data-testid="done-icon" name="done" />
           </ButtonStyled>
         ) : (
           <ButtonStyled type="submit">
