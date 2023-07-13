@@ -49,7 +49,6 @@ export const UserButton: React.FC = () => {
             data-testid="avatarImage"
             src={user.avatar ? user.avatar : userAvatar}
             alt="Avatar"
-            onClick={()=>console.log('toProfile')}
             ref={avatarRef}
           />
       )}

@@ -115,7 +115,6 @@ export const Navbar: React.FC = () => {
         data-testid="new-post-button"
         src={PlusImg}
         alt="newPost"
-        onClick={() => console.log('new post')}
       />
       <LangDesktop>
         <LanguageSelector />
@@ -124,7 +123,6 @@ export const Navbar: React.FC = () => {
         data-testid="settings-button"
         src={SettingsImg}
         alt="settings"
-        onClick={() => console.log('open settings')}
       />
       <UserButton />
       {isMenuOpen && (
@@ -135,7 +133,6 @@ export const Navbar: React.FC = () => {
               data-testid="close-button"
               src={closeButton}
               alt="close"
-              onClick={() => setIsMenuOpen(false)}
             />
             <CategoriesList />
           </MenuItems>

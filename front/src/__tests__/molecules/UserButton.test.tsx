@@ -1,8 +1,7 @@
 import { vi } from 'vitest'
-import { render, screen, fireEvent } from '../test-utils'
+import { render, screen } from '../test-utils'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
-import UserButton from '../../components/molecules/UserButton'
-import userEvent from '@testing-library/user-event'
+import { UserButton } from '../../components/molecules'
 
 vi.mock('../../context/AuthProvider', async () => {
   const actual = await vi.importActual('../../context/AuthProvider')

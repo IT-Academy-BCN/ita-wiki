@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '../test-utils'
-import LanguageSelector from '../../components/molecules/SelectLanguage'
+import {LanguageSelector} from '../../components/molecules'
 
 describe('LanguageSelector', () => {
     test('should render the component and handle language change', () => {
