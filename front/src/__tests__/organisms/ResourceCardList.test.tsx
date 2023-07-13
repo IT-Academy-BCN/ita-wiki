@@ -10,6 +10,7 @@ describe('ResourceCardList', () => {
   afterEach(() => {
     vi.restoreAllMocks()
   })
+
   it('renders ResourceCard correctly on success', async () => {
     render(
       <Routes>
@@ -19,6 +20,7 @@ describe('ResourceCardList', () => {
             <ResourceCardList
               filters={{ slug: 'resourceTest' }}
               handleAccessModal={handleAccessModal}
+              sortOrder="desc"
             />
           }
         />
@@ -29,7 +31,7 @@ describe('ResourceCardList', () => {
     )
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
-
+    expect(spinnerComponent).toBeInTheDocument()
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
@@ -49,8 +51,9 @@ describe('ResourceCardList', () => {
           path="/category/:slug"
           element={
             <ResourceCardList
-              filters={{ slug: 'resourceTest' }}
+              filters={{ slug: 'emptyResource' }}
               handleAccessModal={handleAccessModal}
+              sortOrder="desc"
             />
           }
         />
@@ -74,8 +77,9 @@ describe('ResourceCardList', () => {
     mswServer.use(...errorHandlers)
     render(
       <ResourceCardList
-        filters={{ slug: 'resourceTest' }}
+        filters={{ slug: 'emptyResource' }}
         handleAccessModal={handleAccessModal}
+        sortOrder="desc"
       />
     )
 

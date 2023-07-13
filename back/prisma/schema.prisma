@@ -34,6 +34,7 @@ enum USER_STATUS {
 enum USER_ROLE {
   ADMIN
   REGISTERED
+  MENTOR
 }
 
 model Resource {

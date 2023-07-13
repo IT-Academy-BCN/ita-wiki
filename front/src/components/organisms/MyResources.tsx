@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { useAuth } from '../../context/AuthProvider'
 import { urls } from '../../constants'
+// eslint-disable-next-line import/no-cycle
 import { CardResource, Modal, ResourceTitleLink } from '../molecules'
 import { Title, Spinner, Icon, Text } from '../atoms'
 import {
@@ -197,6 +198,9 @@ const MyResources = () => {
                     title={resource.title}
                     url={resource.url}
                     handleAccessModal={() => {}}
+                    resourceType=""
+                    topics={[]}
+                    editable={false}
                   />
                 ) : (
                   <ResourceTitleLink
