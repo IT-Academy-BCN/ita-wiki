@@ -14,7 +14,8 @@ import {
   Spinner,
   Icon,
 } from '../atoms'
-import { SelectGroup, InputGroup } from '../molecules'
+import InputGroup from '../molecules/InputGroup'
+import SelectGroup from '../molecules/SelectGroup'
 import { urls } from '../../constants'
 import { colors, device, dimensions, FlexBox } from '../../styles'
 
