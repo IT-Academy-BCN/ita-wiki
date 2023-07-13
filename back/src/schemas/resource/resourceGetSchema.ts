@@ -1,5 +1,5 @@
 import { z } from '../../openapi/zod'
-import { topicSchema } from '../topicSchema'
+import { topicSchema } from '../topic/topicSchema'
 import { userSchema } from '../userSchema'
 import { voteCountSchema } from '../voteCountSchema'
 import { resourceSchema } from './resourceSchema'
