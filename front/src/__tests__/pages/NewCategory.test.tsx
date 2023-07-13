@@ -18,14 +18,14 @@ vi.mock('react-router-dom', async () => {
 
 const server = setupServer(...handlers)
 
-// beforeEach(() => {
-//   vi.mocked(useAuth).mockReturnValue({
-//     user: {
-//       name: 'Name',
-//       avatar: 'Avatar',
-//     },
-//   } as TAuthContext)
-// })
+beforeEach(() => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'Name',
+      avatar: 'Avatar',
+    },
+  } as TAuthContext)
+})
 
 afterEach(() => {
   server.resetHandlers()
