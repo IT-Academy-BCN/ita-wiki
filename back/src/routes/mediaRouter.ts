@@ -6,6 +6,6 @@ import { postMedia } from '../controllers'
 const mediaRouter = new Router()
 mediaRouter.prefix(pathRoot.v1.media)
 
-mediaRouter.post('/', authMiddleware, uploadImage.single('media'), postMedia)
+mediaRouter.post('/', authMiddleware(), uploadImage.single('media'), postMedia)
 
 export { mediaRouter }

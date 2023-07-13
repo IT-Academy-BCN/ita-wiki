@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import { expect, test, it, describe, beforeAll } from 'vitest'
+import { expect, it, describe, beforeAll } from 'vitest'
 import { Category } from '@prisma/client'
 import { server } from '../globalSetup'
 import { prisma } from '../../prisma/client'
@@ -7,7 +7,7 @@ import { pathRoot } from '../../routes/routes'
 
 describe('Testing topics endpoint', () => {
   describe('With no query parameteres', () => {
-    test('Should respond OK status and return topics as an array.', async () => {
+    it('Should respond OK status and return topics as an array.', async () => {
       // At least a testing topic has been created for this test on globalSetup.
       const response = await supertest(server).get(`${pathRoot.v1.topics}`)
 
@@ -37,7 +37,7 @@ describe('Testing topics endpoint', () => {
       })) as Category
     })
 
-    test('Should respond OK status and return topics as an array. when categoryId given', async () => {
+    it('Should respond OK status and return topics as an array. when categoryId given', async () => {
       const response = await supertest(server)
         .get(`${pathRoot.v1.topics}`)
         .query({ categoryId: category.id })
@@ -58,7 +58,7 @@ describe('Testing topics endpoint', () => {
         })
       )
     })
-    test('Should respond OK status and return topics as an array. when category slug given', async () => {
+    it('Should respond OK status and return topics as an array. when category slug given', async () => {
       const response = await supertest(server)
         .get(`${pathRoot.v1.topics}`)
         .query({ slug: category.slug })
@@ -80,7 +80,7 @@ describe('Testing topics endpoint', () => {
       )
     })
 
-    test('If both categoryId and slug is given, should search by categoryId', async () => {
+    it('If both categoryId and slug is given, should search by categoryId', async () => {
       // since this slug does not exist, result will be an array greaten than 0
       const response = await supertest(server)
         .get(`${pathRoot.v1.topics}`)
