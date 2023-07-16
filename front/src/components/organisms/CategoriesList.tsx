@@ -13,19 +13,6 @@ const ImgStyled = styled.img`
   margin-top: ${dimensions.spacing.lg};
 `
 
-const MobileStyled = styled.div`
-  display: block;
-  @media only ${device.Tablet} {
-    display: none;
-  }
-`
-const DesktopStyled = styled.div`
-  display: none;
-  @media only ${device.Tablet} {
-    display: block;
-  }
-`
-
 export const SmallSpinner = styled(Spinner)`
   width: 70px;
   height: 70px;
@@ -110,7 +97,7 @@ export const CategoriesList: FC = () => {
   if (error) return <p>Ha habido un error...</p>
   return (
     <>
-      <MobileStyled>
+      <div>
         <CategoriesContainerStyled>
           {data?.map((category: TCategory) => (
             <LinkCategory
@@ -131,29 +118,7 @@ export const CategoriesList: FC = () => {
             </LinkCategory>
           ))}
         </CategoriesContainerStyled>
-      </MobileStyled>
-      <DesktopStyled>
-        <CategoriesContainerStyled>
-          {data?.map((category: TCategory) => (
-            <LinkCategory
-              to={`/category/${category.slug}`}
-              state={{ name: category.name }}
-              key={category.id}
-              data-testid={category.name}
-            >
-              <FlexBox direction="row">
-                <ImgStyled
-                  src={categoryImg[category.name]}
-                  alt={`${category.name} logo`}
-                />
-                <CategoryStyled active={slug === category.slug}>
-                  {category.name}
-                </CategoryStyled>
-              </FlexBox>
-            </LinkCategory>
-          ))}
-        </CategoriesContainerStyled>
-      </DesktopStyled>
+      </div>
     </>
   )
 }
