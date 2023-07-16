@@ -2,6 +2,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { Title } from '../atoms'
+// eslint-disable-next-line import/no-cycle
 import { LanguageSelector, UserButton } from '../molecules'
 import { CategoriesList } from './CategoriesList'
 import closeButton from '../../assets/icons/x.svg'

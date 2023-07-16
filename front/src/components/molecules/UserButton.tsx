@@ -4,6 +4,7 @@ import { useAuth } from '../../context/AuthProvider'
 import { FlexBox, colors, dimensions } from '../../styles'
 import userAvatar from '../../assets/icons/profile-avatar.svg'
 import defaultAvatar from '../../assets/icons/user.svg'
+// eslint-disable-next-line import/no-cycle
 import { Login } from '../organisms'
 import { Modal } from './Modal'
 
