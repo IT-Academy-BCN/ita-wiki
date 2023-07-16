@@ -96,7 +96,6 @@ export const CategoriesList: FC = () => {
   if (isLoading) return <SmallSpinner role="status" />
   if (error) return <p>Ha habido un error...</p>
   return (
-    <>
       <div>
         <CategoriesContainerStyled>
           {data?.map((category: TCategory) => (
@@ -119,6 +118,5 @@ export const CategoriesList: FC = () => {
           ))}
         </CategoriesContainerStyled>
       </div>
-    </>
   )
 }
