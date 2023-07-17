@@ -45,6 +45,9 @@ describe('Testing GET endpoint', () => {
           dni: testUserData.admin.dni,
           role: testUserData.admin.role,
           status: testUserData.admin.status,
+          createdAt: expect.any(String),
+          id: expect.any(String),
+          updatedAt: expect.any(String),
         },
         {
           email: testUserData.inactiveUser.email,
@@ -52,6 +55,9 @@ describe('Testing GET endpoint', () => {
           dni: testUserData.inactiveUser.dni,
           role: testUserData.inactiveUser.role,
           status: testUserData.inactiveUser.status,
+          createdAt: expect.any(String),
+          id: expect.any(String),
+          updatedAt: expect.any(String),
         },
         {
           email: testUserData.mentor.email,
@@ -59,6 +65,9 @@ describe('Testing GET endpoint', () => {
           dni: testUserData.mentor.dni,
           role: testUserData.mentor.role,
           status: testUserData.mentor.status,
+          createdAt: expect.any(String),
+          id: expect.any(String),
+          updatedAt: expect.any(String),
         },
         {
           email: testUserData.user.email,
@@ -66,6 +75,9 @@ describe('Testing GET endpoint', () => {
           dni: testUserData.user.dni,
           role: testUserData.user.role,
           status: testUserData.user.status,
+          createdAt: expect.any(String),
+          id: expect.any(String),
+          updatedAt: expect.any(String),
         },
       ])
     )

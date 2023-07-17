@@ -23,12 +23,8 @@ registry.registerPath({
       content: {
         'application/json': {
           schema: z.array(
-            userSchema.pick({
-              name: true,
-              dni: true,
-              email: true,
-              role: true,
-              status: true,
+            userSchema.omit({
+              password: true,
             })
           ),
         },

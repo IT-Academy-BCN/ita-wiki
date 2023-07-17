@@ -249,13 +249,13 @@ paths:
                     example: user@example.cat
                   role:
                     type: string
-                    enum: &a4
+                    enum: &a5
                       - ADMIN
                       - REGISTERED
                       - MENTOR
                   status:
                     type: string
-                    enum: &a5
+                    enum: &a4
                       - ACTIVE
                       - INACTIVE
                 required:
@@ -1498,25 +1498,34 @@ paths:
                 items:
                   type: object
                   properties:
-                    name:
-                      type: string
-                    dni:
+                    id:
                       type: string
                     email:
                       type: string
                       format: email
                       example: user@example.cat
-                    role:
+                    dni:
                       type: string
-                      enum: *a4
+                    name:
+                      type: string
                     status:
                       type: string
+                      enum: *a4
+                    role:
+                      type: string
                       enum: *a5
+                    createdAt:
+                      type: string
+                    updatedAt:
+                      type: string
                   required:
-                    - dni
+                    - id
                     - email
-                    - role
+                    - dni
                     - status
+                    - role
+                    - createdAt
+                    - updatedAt
         "401":
           description: Missing token
           content:
