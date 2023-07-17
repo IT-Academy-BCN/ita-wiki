@@ -2,8 +2,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { Title } from '../atoms'
-// eslint-disable-next-line import/no-cycle
-import { LanguageSelector, UserButton } from '../molecules'
+import { SelectLanguage, UserButton } from '../molecules'
 import { CategoriesList } from './CategoriesList'
 import closeButton from '../../assets/icons/x.svg'
 import PlusImg from '../../assets/icons/plus.svg'
@@ -119,7 +118,7 @@ export const Navbar: React.FC = () => {
         alt="newPost"
       />
       <LangDesktop>
-        <LanguageSelector />
+        <SelectLanguage />
       </LangDesktop>
       <ButtonImg
         data-testid="settings-button"
@@ -135,6 +134,7 @@ export const Navbar: React.FC = () => {
               data-testid="close-button"
               src={closeButton}
               alt="close"
+              onClick={toggleMenu}
             />
             <CategoriesList />
           </MenuItems>

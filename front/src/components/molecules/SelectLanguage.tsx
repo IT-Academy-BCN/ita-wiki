@@ -20,7 +20,7 @@ const DropdownLang = styled.select`
   }
 `
 
-const LanguageSelector: React.FC = () => {
+export const SelectLanguage: React.FC = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<Language>('esp')
 
   const handleLanguageChange = (
@@ -39,4 +39,3 @@ const LanguageSelector: React.FC = () => {
   )
 }
 
-export default LanguageSelector
