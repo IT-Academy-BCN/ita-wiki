@@ -101,7 +101,7 @@ const ResourceCardList: FC<TResourceCardList> = ({
     () => getResources(buildQueryString(filters) || '')
   )
 
-  const { sortedItems } = useSortByDate<TResource>(data, 'createdAt', sortOrder)
+  const { sortedItems } = useSortByDate<TResource>(data, 'updatedAt', sortOrder)
   if (error) return <p>Ha habido un error...</p>
 
   return (
@@ -118,8 +118,8 @@ const ResourceCardList: FC<TResourceCardList> = ({
             description={resource.description}
             likes={resource.voteCount.total}
             createdBy={resource.user.name}
-            createdOn={resource.createdAt}
-            updatedOn={resource.updatedAt}
+            createdAt={resource.createdAt}
+            updatedAt={resource.updatedAt}
             handleAccessModal={handleAccessModal}
             editable={user?.name === resource.user.name}
             resourceType={resource.resourceType}
