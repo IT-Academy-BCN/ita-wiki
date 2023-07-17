@@ -32,7 +32,7 @@ export {
   VoteCounter,
   CardHome,
   SelectLanguage,
-  UserButton
+  UserButton,
   Tooltip,
 }
 export type { TResourceTitleLink, TCardResource }
