@@ -7,5 +7,6 @@ export const pathRoot = {
     media: '/api/v1/media',
     vote: '/api/v1/vote',
     types: '/api/v1/types',
+    users: '/api/v1/users',
   },
 }

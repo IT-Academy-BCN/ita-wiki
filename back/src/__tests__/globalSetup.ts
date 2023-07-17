@@ -1,5 +1,5 @@
 import { IncomingMessage, Server, ServerResponse } from 'http'
-import { USER_STATUS } from '@prisma/client'
+import { USER_STATUS, USER_ROLE } from '@prisma/client'
 import { prisma } from '../prisma/client'
 import { app } from '../server'
 
@@ -14,6 +14,7 @@ export const testUserData = {
     name: 'testingUser',
     dni: '11111111A',
     password: 'testingPswd1',
+    role: USER_ROLE.REGISTERED,
     status: USER_STATUS.ACTIVE,
   },
   admin: {
@@ -21,7 +22,7 @@ export const testUserData = {
     name: 'testingAdmin',
     dni: '22222222B',
     password: 'testingPswd2',
-    role: 'ADMIN',
+    role: USER_ROLE.ADMIN,
     status: USER_STATUS.ACTIVE,
   },
   mentor: {
@@ -29,7 +30,7 @@ export const testUserData = {
     name: 'testingMentor',
     dni: '44444444B',
     password: 'testingPswd4',
-    role: 'MENTOR',
+    role: USER_ROLE.MENTOR,
     status: USER_STATUS.ACTIVE,
   },
   inactiveUser: {
@@ -37,6 +38,7 @@ export const testUserData = {
     name: 'testingInactiveUser',
     dni: '33333333A',
     password: 'testingPswd3',
+    role: USER_ROLE.REGISTERED,
     status: USER_STATUS.INACTIVE,
   },
 }
