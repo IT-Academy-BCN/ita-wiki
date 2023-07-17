@@ -1,9 +1,9 @@
 import { render, screen, fireEvent } from '../test-utils'
-import {LanguageSelector} from '../../components/molecules'
+import {SelectLanguage} from '../../components/molecules'
 
 describe('LanguageSelector', () => {
     test('should render the component and handle language change', () => {
-      render(<LanguageSelector />);
+      render(<SelectLanguage />);
   
       const dropdown = screen.getByRole('combobox');
       expect(dropdown).toBeInTheDocument();
