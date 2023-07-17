@@ -26,6 +26,6 @@ export {
   TypesFilterWidget,
   CreateAuthor,
   VoteCounter,
-  CardHome,
+  CardHome
 }
 export type { TResourceTitleLink, TCardResource }

@@ -46,11 +46,6 @@ const ResourceFormSchema = z.object({
   userEmail: z.string().optional(),
 })
 
-// export type TResourceForm = z.infer<typeof ResourceFormSchema> & {
-//   topics: string[]
-//   topicId?: string
-//   id?: string
-// }
 export type TResourceForm = Omit<
   z.infer<typeof ResourceFormSchema>,
   'topics'
@@ -167,6 +162,7 @@ export const ResourceForm: FC<TSelectOptions> = ({
     const selectedTopicId = event.target.value
     setValue('topicId', selectedTopicId)
   }
+  // console.log(initialValues, 'initialValues')
   return (
     <ResourceFormStyled onSubmit={initialValues ? onSubmitUpdate : onSubmit}>
       <InputGroup
@@ -227,7 +223,7 @@ export const ResourceForm: FC<TSelectOptions> = ({
         ) : null}
       </FlexErrorStyled>
       <ButtonContainerStyled align="stretch">
-        <Button type="submit">{initialValues ? 'Actualizar' : 'Crear'}</Button>
+        <Button type="submit">{initialValues ? 'Editar' : 'Crear'}</Button>
       </ButtonContainerStyled>
     </ResourceFormStyled>
   )

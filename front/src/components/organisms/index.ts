@@ -9,6 +9,8 @@ import { MyFavoritesList } from './MyFavoritesList'
 import { MyResources } from './MyResources'
 import Login from './Login'
 import Register from './Register'
+import { EditResource } from './EditResource'
+import { CardResourceLink } from './CardResourceLink'
 
 export {
   ResourceCardList,
@@ -21,5 +23,7 @@ export {
   MyFavoritesList,
   Login,
   Register,
+  EditResource,
+  CardResourceLink
 }
 export type { TResourceForm, TResource }
