@@ -6,6 +6,7 @@ import helmet from 'koa-helmet'
 import { HttpMethodEnum, koaBody } from 'koa-body'
 import yamljs from 'yamljs'
 import { koaSwagger } from 'koa2-swagger-ui'
+import path from 'path'
 import * as Routes from './routes'
 import { appConfig } from './config/config'
 import { errorMiddleware } from './middleware'
@@ -15,7 +16,7 @@ import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
 
 dotenv.config()
 
-fs.mkdir('/static/media', { recursive: true }, (err) => {
+fs.mkdir(path.join(__dirname, '/static/media'), { recursive: true }, (err) => {
   // eslint-disable-next-line no-console
   if (err) console.log('Static/media folder was not created')
 })
