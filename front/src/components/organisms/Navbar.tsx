@@ -14,21 +14,23 @@ const NavbarStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
   justify-content: end;
   align-items: center;
-  padding-top: 20px;
   padding-right: 2rem;
-  min-height: 55px;
+  height: 80px;
 
   ${Title} {
     color: ${colors.white};
   }
 
   width: 100%;
-
+  @media (max-height: 870px) {
+    padding-top: 50px;
+    min-height: 120px;
+  }
   @media (max-width: 768px) {
     justify-content: space-between;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    padding-top: 0px;
+    padding-top: 30px;
     position: relative;
     top: -30px;
   }
@@ -96,7 +98,7 @@ const MenuItems = styled(FlexBox)`
   background-color: ${colors.white};
   z-index: 999;
   width: 100%;
-  height: 100vh;
+  height: 115vh;
   @media (min-width: 769px) {
     display: none;
   }
