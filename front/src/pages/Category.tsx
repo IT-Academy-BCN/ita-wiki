@@ -150,7 +150,18 @@ const SearchBar = styled(InputGroup)`
     scale: 1.8;
     color: ${colors.gray.gray3};
   }
-` // END style Desktop
+`
+
+const StyledDateToggle = styled(Text)`
+  color: ${colors.gray.gray3};
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.96);
+  }
+`
+
+// END style Desktop
 
 // const HeaderContainerStyled = styled(FlexBox)`
 //   background-color: ${colors.gray.gray5};
@@ -221,6 +232,8 @@ const getTopics = async (query?: QueryFunctionContext<string[], any>) => {
     })
 }
 
+type SortOrder = 'asc' | 'desc'
+
 const Category: FC = () => {
   const { state } = useLocation()
   const { slug } = useParams()
@@ -229,6 +242,7 @@ const Category: FC = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false)
   const [topic, setTopic] = useState('todos')
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
 
   const [filters, setFilters] = useState<TFilters>({
     slug,
@@ -254,6 +268,10 @@ const Category: FC = () => {
 
   const handleAccessModal = () => {
     setIsAccessModalOpen(!isAccessModalOpen)
+  }
+
+  const handleSortOrder = () => {
+    setSortOrder((prevOrder) => (prevOrder === 'desc' ? 'asc' : 'desc'))
   }
 
   const { data: fetchedTopics } = useQuery(['getTopics', slug || ''], getTopics)
@@ -372,13 +390,19 @@ const Category: FC = () => {
                     <Text fontWeight="bold">Votos</Text>
                     <Icon name="arrow_downward" />
                   </FlexBox>
-                  <Text color={colors.gray.gray3}>Fecha</Text>
+                  <StyledDateToggle
+                    color={colors.gray.gray3}
+                    onClick={handleSortOrder}
+                  >
+                    Fecha
+                  </StyledDateToggle>
                 </FlexBox>
               </FlexBox>
               <ScrollList>
                 <ResourceCardList
                   handleAccessModal={handleAccessModal}
                   filters={filters}
+                  sortOrder={sortOrder}
                 />
               </ScrollList>
             </MiddleColumnContainer>

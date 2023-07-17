@@ -51,13 +51,13 @@ type TTopic = {
 }
 export type TCardResource = {
   createdBy: string
-  createdOn: string
+  createdAt: string
   description: string
   img: string | undefined
   id: string
   likes?: number
   title: string
-  updatedOn?: string
+  updatedAt: string
   url: string
   resourceType: string
   topics: TTopic[]
@@ -67,13 +67,13 @@ export type TCardResource = {
 
 export const CardResource = ({
   createdBy,
-  createdOn,
+  createdAt,
   description,
   img,
   likes,
   id,
   title,
-  updatedOn,
+  updatedAt,
   url,
   editable,
   resourceType,

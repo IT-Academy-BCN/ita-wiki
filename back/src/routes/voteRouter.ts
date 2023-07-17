@@ -1,6 +1,6 @@
 import Router from '@koa/router'
 import { z } from 'zod'
-import { authMiddleware, validate } from '../middleware'
+import { authenticate, validate } from '../middleware'
 import { getVote, putVote } from '../controllers'
 import { pathRoot } from './routes'
 
@@ -22,7 +22,7 @@ voteRouter.get(
 
 voteRouter.put(
   '/',
-  authMiddleware,
+  authenticate,
   validate(
     z.object({
       body: z.object({
