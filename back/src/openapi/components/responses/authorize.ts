@@ -6,7 +6,7 @@ export const deniedAccessResponse = {
     'application/json': {
       schema: ForbiddenError.openapi({
         example: {
-          message: 'Access denied. At least admin access level required.',
+          message: `Access denied. You don't have permissions`,
         },
       }),
     },

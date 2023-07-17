@@ -15,8 +15,6 @@ export const checkRoleAccess = (
   const userRolePoints = rolePoints[userRole]
 
   if (requiredRolePoints > userRolePoints) {
-    throw new ForbiddenError(
-      `Access denied. At least ${requiredRole} access level required.`
-    )
+    throw new ForbiddenError(`Access denied. You don't have permissions`)
   }
 }

@@ -1531,7 +1531,7 @@ paths:
                 allOf:
                   - $ref: "#/components/schemas/ForbiddenError"
                   - example:
-                      message: Access denied. At least admin access level required.
+                      message: Access denied. You don't have permissions
         "405":
           description: Invalid token
           content:

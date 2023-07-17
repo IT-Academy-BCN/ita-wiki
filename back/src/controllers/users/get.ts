@@ -10,9 +10,6 @@ export const getUsers: Middleware = async (ctx: Context) => {
       status: true,
       role: true,
     },
-    orderBy: {
-      name: 'asc',
-    },
   })
 
   ctx.status = 200
