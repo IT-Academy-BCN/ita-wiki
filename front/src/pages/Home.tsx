@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
 import { CardHome, Modal } from '../components/molecules'
-import { CategoriesList } from '../components/organisms'
+import { CategoriesList, Navbar } from '../components/organisms'
 import { Title, Text, Button } from '../components/atoms'
 import { paths } from '../constants'
 import Register from '../components/organisms/Register'
@@ -41,16 +41,6 @@ const LateralMenu = styled(FlexBox)`
 const ContainerMain = styled(FlexBox)`
   width: 100%;
   height: 100%;
-`
-
-const MenuOptions = styled(FlexBox)`
-  height: 41px;
-
-  @media only ${device.Tablet} {
-    margin: ${dimensions.spacing.xxs};
-    align-self: flex-end;
-    justify-content: center;
-  }
 `
 
 const MainDiv = styled(FlexBox)`
@@ -177,7 +167,7 @@ const Home: FC = () => {
           <div style={{ height: '79px' }} />
         </LateralMenu>
         <ContainerMain>
-          <MenuOptions> MENU HERE </MenuOptions>
+          <Navbar />
           <MainDiv
             as="main"
             justify="flex-start"
