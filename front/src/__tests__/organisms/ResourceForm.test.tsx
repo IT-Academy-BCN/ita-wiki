@@ -140,7 +140,7 @@ describe('ResourceForm', () => {
       screen.getByDisplayValue('Renderizado condicional')
     ).toBeInTheDocument()
 
-    const button = screen.getByText(/actualizar/i)
+    const button = screen.getByText(/editar/i)
     fireEvent.click(button)
     await waitFor(() => {
       expect(navigate).toHaveBeenCalledWith(paths.home)
@@ -169,7 +169,7 @@ describe('ResourceForm', () => {
     fireEvent.change(screen.getByLabelText(/título/i), {
       target: { value: '' },
     })
-    fireEvent.click(screen.getByText(/actualizar/i))
+    fireEvent.click(screen.getByText(/editar/i))
     await waitFor(() =>
       expect(screen.getByText('Este campo es obligatorio')).toBeInTheDocument()
     )

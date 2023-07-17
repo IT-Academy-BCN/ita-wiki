@@ -111,7 +111,7 @@ export const CardResource = ({
     )}
     <FlexBoxStyled align="start" justify="space-between" gap="4px">
       <ResourceTitleLink description={description} title={title} url={url} />
-      <CreateAuthor createdBy={createdBy} createdOn={createdOn} img={img} />
+      <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
     </FlexBoxStyled>
   </CardContainerStyled>
 )

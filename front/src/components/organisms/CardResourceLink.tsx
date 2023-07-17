@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
@@ -8,7 +7,6 @@ import { TCardResource } from '../molecules'
 
 const CardContainerStyled = styled(FlexBox)`
   background-color: ${colors.white};
-
   width: 100%;
   min-width: 17rem;
   position: relative;

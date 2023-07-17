@@ -75,6 +75,7 @@ export const EditResource = ({
       label: topic.name,
     })) ?? []
   const initialTopicId = topics && topics.length > 0 ? topics[0].topic.id : ''
+
   return (
     <>
       <Modal

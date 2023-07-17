@@ -214,7 +214,8 @@ const MyResources = () => {
                 ) : (
                   <CardResourceLink
                     createdBy={resource.user.name}
-                    createdOn={resource.createdAt}
+                    createdAt={resource.createdAt}
+                    updatedAt={resource.updatedAt}
                     description={resource.description}
                     img=""
                     id={resource.id}

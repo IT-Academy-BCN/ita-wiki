@@ -164,7 +164,10 @@ export const ResourceForm: FC<TSelectOptions> = ({
   }
   // console.log(initialValues, 'initialValues')
   return (
-    <ResourceFormStyled onSubmit={initialValues ? onSubmitUpdate : onSubmit}>
+    <ResourceFormStyled
+      onSubmit={initialValues ? onSubmitUpdate : onSubmit}
+      data-testid="resource-form"
+    >
       <InputGroup
         hiddenLabel
         id="title"
