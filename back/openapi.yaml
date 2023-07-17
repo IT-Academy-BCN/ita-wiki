@@ -50,6 +50,14 @@ components:
           example: Token is not valid
       required:
         - error
+    ForbiddenError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Forbidden
+      required:
+        - message
     MissingUserError:
       type: object
       properties:
@@ -241,13 +249,13 @@ paths:
                     example: user@example.cat
                   role:
                     type: string
-                    enum:
+                    enum: &a4
                       - ADMIN
                       - REGISTERED
                       - MENTOR
                   status:
                     type: string
-                    enum:
+                    enum: &a5
                       - ACTIVE
                       - INACTIVE
                 required:
@@ -1472,3 +1480,73 @@ paths:
                     - BLOG
                     - VIDEO
                     - TUTORIAL
+  /api/v1/users:
+    get:
+      tags:
+        - users
+      description: Returns information of all users. User must be ADMIN and logged in.
+      summary: Get all users
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Token is valid and info of all users is returned.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    dni:
+                      type: string
+                    email:
+                      type: string
+                      format: email
+                      example: user@example.cat
+                    role:
+                      type: string
+                      enum: *a4
+                    status:
+                      type: string
+                      enum: *a5
+                  required:
+                    - dni
+                    - email
+                    - role
+                    - status
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "403":
+          description: Forbidden. Acces denied.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ForbiddenError"
+                  - example:
+                      message: Access denied. At least admin access level required.
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message

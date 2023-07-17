@@ -43,6 +43,7 @@ app.use(Routes.categoriesRouter.routes())
 app.use(Routes.mediaRouter.routes())
 app.use(Routes.voteRouter.routes())
 app.use(Routes.typesRouter.routes())
+app.use(Routes.usersRouter.routes())
 
 // Swagger UI
 app.use(swaggeruiCSPMiddleware)

@@ -28,6 +28,12 @@ export const InvalidTokenError = registry.register(
     error: z.string().openapi({ example: 'Token is not valid' }),
   })
 )
+export const ForbiddenError = registry.register(
+  'ForbiddenError',
+  z.object({
+    message: z.string().openapi({ example: 'Forbidden' }),
+  })
+)
 
 export const NotFoundError = registry.register(
   'MissingUserError',
