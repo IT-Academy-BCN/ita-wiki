@@ -1,152 +1,57 @@
-import { HTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { FlexBox, colors, device, dimensions, font } from '../../styles'
-import { Icon, Text } from '../atoms'
+import { FlexBox, colors, dimensions, font } from '../../styles'
+import { Text } from '../atoms'
+import bgHomeCardCorner from '../../assets/icons/bg-home-card-corner.svg'
 
-const MainContainer = styled(FlexBox)`
-  flex-direction: row;
-  justify-content: space-between;
-  background-color: ${colors.white};
-  border-radius: ${dimensions.borderRadius.sm};
-  margin-bottom: ${dimensions.spacing.lg};
+const CardContainer = styled(FlexBox)`
+  flex-direction: column;
+  flex: 1 1 9rem;
+  justify-content: flex-start;
   position: relative;
-
-  @media only ${device.Tablet} {
-    flex-direction: column;
-    justify-content: justify;
-    align-items: flex-end;
-    margin: ${dimensions.spacing.base};
-  }
-`
-
-const ContentContainer = styled(FlexBox)`
-  flex-direction: row;
-  margin: 0.9rem auto 0.9rem 0;
-  gap: ${dimensions.spacing.base};
-
-  @media only ${device.Tablet} {
-    flex-direction: column;
-    position: relative;
-    background-color: ${colors.gray.gray5};
-    padding: ${dimensions.spacing.md};
-    height: fit-content;
-    width: 280px;
-    height: 330px;
-    border-bottom-left-radius: ${dimensions.borderRadius.base};
-    border-bottom-right-radius: ${dimensions.borderRadius.base};
-    border-top-left-radius: ${dimensions.borderRadius.base};
-    margin: auto;
-    gap: ${dimensions.spacing.none};
-  }
-`
-const TopContainter = styled.div`
-  @media only ${device.Tablet} {
-    background-color: ${colors.gray.gray5};
-    height: 38px;
-    width: 238px;
-    border-top-right-radius: ${dimensions.borderRadius.base};
-    border-top-left-radius: ${dimensions.borderRadius.base};
-  }
-`
-const IndicatorStyled = styled(FlexBox)`
-  display: none;
-
-  @media only ${device.Tablet} {
-    display: block;
-    position: absolute;
-    min-width: ${dimensions.spacing.xl};
-    background-color: ${colors.white};
-    padding: ${dimensions.spacing.xs};
-    border-bottom-right-radius: ${dimensions.borderRadius.base};
-    left: 0.5px;
-    top: -36px;
-    font-size: ${font.xss};
-    color: ${colors.gray.gray3};
-  }
-`
-const CircleContainer = styled.div`
-  position: absolute;
-  border-radius: ${dimensions.borderRadius.sm};
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
+  max-width: 17.5rem;
+  min-width: 9rem;
   height: 100%;
+  min-height: 20rem;
+  background-color: ${colors.gray.gray5};
+  border-radius: ${dimensions.borderRadius.base};
   overflow: hidden;
+  padding: ${dimensions.spacing.md};
 `
-type TCircle = HTMLAttributes<HTMLParagraphElement> & {
-  backgroundColor?: string
-  top?: string
-  left?: string
-  zIndex: number
-}
 
-const CircleStyled = styled.div<TCircle>`
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background-color: ${(props) => props.backgroundColor};
+const IndicatorStyled = styled(FlexBox)`
   position: absolute;
-  top: ${(props) => props.top};
-  left: ${(props) => props.left};
-  transform: translateX(-50%);
-  z-index: ${(props) => props.zIndex};
-
-  @media only ${device.Tablet} {
-    display: none;
-  }
+  left: 0px;
+  top: 0px;
+  width: 59px;
+  height: 59px;
+  padding-right: ${dimensions.spacing.xxs};
+  padding-bottom: ${dimensions.spacing.xxs};
+  font-size: ${font.xss};
+  font-weight: ${font.regular};
+  color: ${colors.gray.gray3};
+  font-family: ${font.fontFamily};
+  background: url(${bgHomeCardCorner}) no-repeat;
 `
 
 const ImgStyled = styled.img`
-  height: 5rem;
-  z-index: 99;
-  position: relative;
-  margin: auto ${dimensions.spacing.xxl} auto ${dimensions.spacing.base};
-
-  @media only ${device.Tablet} {
-    height: 100px;
-    width: 100px;
-    z-index: 0;
-    margin: ${dimensions.spacing.none};
-  }
+  height: 6rem;
+  margin: ${dimensions.spacing.md} ${dimensions.spacing.xs}
+    ${dimensions.spacing.sm} ${dimensions.spacing.xs};
 `
+
 const TitleStyled = styled(Text)`
   margin: ${dimensions.spacing.none};
-  font-weight: bold;
-
-  @media only ${device.Tablet} {
-    white-space: pre-wrap;
-    font-weight: ${font.medium};
-    text-align: center;
-    margin: ${dimensions.spacing.md} auto 0 auto;
-  }
+  line-height: 1.5rem;
+  text-align: center;
+  white-space: pre-wrap;
+  font-weight: ${font.medium};
+  margin: ${dimensions.spacing.xxs} auto 0 auto;
 `
+
 const SubtitleStyled = styled(Text)`
-  display: none;
-
-  @media only ${device.Tablet} {
-    display: block;
-    text-align: center;
-    color: ${colors.gray.gray3};
-    font-size: ${font.base};
-  }
-`
-
-const IconStyled = styled(Icon)`
-  margin-right: ${dimensions.spacing.xs};
-
-  @media only ${device.Tablet} {
-    display: none;
-  }
-`
-
-const FlexBoxStyled = styled(FlexBox)`
-  gap: ${dimensions.spacing.xxs};
-  align-items: start;
-
-  @media only ${device.Tablet} {
-    align-items: center;
-  }
+  text-align: center;
+  font-weight: ${font.regular};
+  line-height: 1.3rem;
 `
 
 type TCardHome = {
@@ -162,32 +67,16 @@ export const CardHome = ({
   indicator,
   icon,
 }: TCardHome) => (
-  <MainContainer>
-    <TopContainter />
-    <ContentContainer>
-      <IndicatorStyled>{indicator}</IndicatorStyled>
-      <ImgStyled alt="icon" src={icon} data-testid="testIcon" />
-      <CircleContainer>
-        <CircleStyled
-          backgroundColor={colors.primary}
-          left="10px"
-          top="-70px"
-          zIndex={2}
-        />
-        <CircleStyled
-          backgroundColor={`${colors.primary}`}
-          left="40px"
-          top="-55px"
-          zIndex={1}
-        />
-      </CircleContainer>
-      <FlexBoxStyled>
-        <TitleStyled as="h2" fontSize="18px">
-          {cardTitle}
-        </TitleStyled>
-        <SubtitleStyled>{cardSubtitle}</SubtitleStyled>
-      </FlexBoxStyled>
-    </ContentContainer>
-    <IconStyled name="arrow_forward_ios" color={colors.gray.gray3} />
-  </MainContainer>
+  <CardContainer>
+    <IndicatorStyled direction="row">{indicator}</IndicatorStyled>
+    <ImgStyled alt="" src={icon} data-testid="testIcon" />
+    <FlexBox justify="flex-start">
+      <TitleStyled as="h2" fontSize="18px">
+        {cardTitle}
+      </TitleStyled>
+      <SubtitleStyled color={`${colors.gray.gray3}`} fontSize={`${font.base}`}>
+        {cardSubtitle}
+      </SubtitleStyled>
+    </FlexBox>
+  </CardContainer>
 )
