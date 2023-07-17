@@ -43,16 +43,6 @@ const ContainerMain = styled(FlexBox)`
   height: 100%;
 `
 
-const MenuOptions = styled(FlexBox)`
-  height: 41px;
-
-  @media only ${device.Tablet} {
-    margin: ${dimensions.spacing.xxs};
-    align-self: flex-end;
-    justify-content: center;
-  }
-`
-
 const MainDiv = styled(FlexBox)`
   background-color: ${colors.white};
   width: 100%;
