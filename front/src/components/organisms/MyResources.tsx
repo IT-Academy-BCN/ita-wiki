@@ -86,6 +86,8 @@ const StyledText = styled(Text)`
     color: ${colors.gray.gray4};
   }
 `
+const SpinnerStyled = styled(Spinner)`
+`
 
 const TextDecorationStyled = styled.span`
   text-decoration: underline;
@@ -180,7 +182,7 @@ const MyResources = () => {
         </StyledText>
       )}
 
-      {isLoading && user && <Spinner />}
+      {isLoading && user && <SpinnerStyled size="medium" />}
 
       {!isLoading &&
         !error &&

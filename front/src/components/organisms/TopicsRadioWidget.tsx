@@ -24,9 +24,7 @@ type TTopicsSlug = {
   setTopic: (topic: string) => void
 }
 
-const SmallSpinner = styled(Spinner)`
-  width: 70px;
-  height: 70px;
+const SpinnerStyled = styled(Spinner)`
   margin: 0 auto;
 `
 
@@ -56,7 +54,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
     setTopic(e.target.value)
   }
 
-  if (isLoading) return <SmallSpinner role="status" />
+  if (isLoading) return <SpinnerStyled size="small" role="status" />
   if (isError) return <p>Ha habido un error...</p>
 
   return (
