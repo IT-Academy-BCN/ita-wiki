@@ -4,6 +4,7 @@ import { FlexBox, colors, dimensions } from '../../styles'
 import { Title } from '../atoms'
 import { SelectLanguage } from '../molecules/SelectLanguage'
 import { UserButton } from '../molecules/UserButton'
+// eslint-disable-next-line import/no-cycle
 import { CategoriesList } from './CategoriesList'
 import closeButton from '../../assets/icons/x.svg'
 import PlusImg from '../../assets/icons/plus.svg'
