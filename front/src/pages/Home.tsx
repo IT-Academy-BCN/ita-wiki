@@ -160,7 +160,7 @@ const Home: FC = () => {
     <>
       <Container direction="row" justify="flex-start" align="start">
         <LateralMenu>
-          <Link to={paths.home}>
+          <Link to={paths.accountAdmin}>
             <LogoImage src={icons.itLogo} alt="logo" />
           </Link>
           <CategoriesList />
