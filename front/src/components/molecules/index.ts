@@ -12,6 +12,10 @@ import TextareaGroup from './TextareaGroup'
 import { TypesFilterWidget } from './TypesFilterWidget'
 import { VoteCounter } from './VoteCounter'
 import { CardHome } from './CardHome'
+import { UserButton } from './UserButton'
+import { SelectLanguage } from './SelectLanguage'
+import { Tooltip } from './Tooltip'
+
 
 export {
   AccessModalContent,
@@ -27,5 +31,8 @@ export {
   CreateAuthor,
   VoteCounter,
   CardHome,
+  SelectLanguage,
+  UserButton,
+  Tooltip,
 }
 export type { TResourceTitleLink, TCardResource }

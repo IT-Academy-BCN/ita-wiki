@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { USER_ROLE } from '@prisma/client'
 import { createTopic, getTopics, patchTopic } from '../controllers'
 import { pathRoot } from './routes'
-import { authMiddleware, validate } from '../middleware'
+import { authenticate, authorize, validate } from '../middleware'
 import { topicCreateSchema, topicPatchSchema } from '../schemas'
 
 const topicsRouter = new Router()
@@ -27,14 +27,16 @@ topicsRouter.get(
 
 topicsRouter.post(
   '/',
-  authMiddleware(USER_ROLE.MENTOR),
+  authenticate,
+  authorize(USER_ROLE.MENTOR),
   validate(z.object({ body: topicCreateSchema })),
   createTopic
 )
 
 topicsRouter.patch(
   '/',
-  authMiddleware(USER_ROLE.MENTOR),
+  authenticate,
+  authorize(USER_ROLE.MENTOR),
   validate(z.object({ body: topicPatchSchema })),
   patchTopic
 )

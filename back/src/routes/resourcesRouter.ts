@@ -1,6 +1,6 @@
 import Router from '@koa/router'
 import { z } from 'zod'
-import { authMiddleware, validate } from '../middleware'
+import { authenticate, validate } from '../middleware'
 import {
   createResource,
   getResources,
@@ -21,7 +21,7 @@ resourcesRouter.prefix(pathRoot.v1.resources)
 
 resourcesRouter.post(
   '/',
-  authMiddleware(),
+  authenticate,
   validate(z.object({ body: resourceCreateSchema })),
   createResource
 )
@@ -38,7 +38,7 @@ resourcesRouter.get(
 
 resourcesRouter.get(
   '/me',
-  authMiddleware(),
+  authenticate,
   validate(
     z.object({
       query: z.object({
@@ -49,7 +49,7 @@ resourcesRouter.get(
   getResourcesByUserId
 )
 
-resourcesRouter.get('/favorites', authMiddleware(), getFavoriteResources)
+resourcesRouter.get('/favorites', authenticate, getFavoriteResources)
 
 resourcesRouter.get(
   '/id/:resourceId',
@@ -89,7 +89,7 @@ resourcesRouter.get(
 
 resourcesRouter.patch(
   '/',
-  authMiddleware(),
+  authenticate,
   validate(z.object({ body: resourcePatchSchema })),
   patchResource
 )

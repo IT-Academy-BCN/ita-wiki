@@ -167,7 +167,8 @@ export const MyFavoritesList: FC = () => {
               {isMobile ? (
                 <CardResource
                   createdBy={fav.userId}
-                  createdOn={fav.createdAt}
+                  createdAt={fav.createdAt}
+                  updatedAt={fav.updatedAt}
                   description={fav.description}
                   img=""
                   id={fav.id}

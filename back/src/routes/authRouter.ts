@@ -6,7 +6,7 @@ import {
   logoutController,
   registerController,
 } from '../controllers'
-import { validate, authMiddleware } from '../middleware'
+import { validate, authenticate } from '../middleware'
 import { userLoginSchema, userRegisterSchema } from '../schemas'
 import { pathRoot } from './routes'
 
@@ -28,6 +28,6 @@ authRouter.post(
   registerController
 )
 
-authRouter.get('/me', authMiddleware(), authMeController)
+authRouter.get('/me', authenticate, authMeController)
 
 export { authRouter }
