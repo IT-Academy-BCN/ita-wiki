@@ -1,6 +1,6 @@
 import { userSchema } from './userSchema'
-import { z } from '../openapi/zod'
-import { passwordRegex } from './regex/passwordRegex'
+import { z } from '../../openapi/zod'
+import { passwordRegex } from '../regex/passwordRegex'
 
 export const userRegisterSchema = userSchema
   .pick({
