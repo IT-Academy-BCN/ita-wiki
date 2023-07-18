@@ -3,5 +3,5 @@ export const paths = {
   categories: '/category/:slug',
   resource: '/category/:categoryId',
   information: '/info',
-  accountAdmin: '/accountAdmin',
+  accountAdmin: '/useradmin',
 }
