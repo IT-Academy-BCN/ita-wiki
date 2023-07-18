@@ -1,14 +1,12 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
-// eslint-disable-next-line import/no-cycle
 import { useQuery } from '@tanstack/react-query'
-// eslint-disable-next-line import/no-cycle
-import { Modal } from '../molecules'
-import { ResourceForm } from './ResourceForm'
 import { FlexBox, colors, dimensions } from '../../styles'
+import ResourceForm from './ResourceForm'
 import { Button } from '../atoms'
 import icons from '../../assets/icons'
 import { urls } from '../../constants'
+import { Modal } from '../molecules/Modal'
 
 type TTopic = {
   topic: {
@@ -49,7 +47,7 @@ const StyledSvg = styled.div`
   padding: 2px;
   background-color: rgba(255, 255, 255, 0.5);
 `
-export const EditResource = ({
+const EditResource = ({
   description,
   id,
   title,
@@ -106,3 +104,4 @@ export const EditResource = ({
     </>
   )
 }
+export default EditResource

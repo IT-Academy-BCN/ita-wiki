@@ -1,11 +1,10 @@
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { Text } from '../atoms'
-import { CreateAuthor } from './CreateAuthor'
-import { ResourceTitleLink } from './ResourceTitleLink'
-import { VoteCounter } from './VoteCounter'
-// eslint-disable-next-line import/no-cycle
-import { EditResource } from '../organisms'
+import { CreateAuthor } from '../molecules/CreateAuthor'
+import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
+import { VoteCounter } from '../molecules/VoteCounter'
+import EditResource from './EditResource'
 
 const CardContainerStyled = styled(FlexBox)`
   background-color: ${colors.white};
@@ -65,7 +64,7 @@ export type TCardResource = {
   handleAccessModal: () => void
 }
 
-export const CardResource = ({
+const CardResource = ({
   createdBy,
   createdAt,
   description,
@@ -115,3 +114,4 @@ export const CardResource = ({
     </FlexBoxStyled>
   </CardContainerStyled>
 )
+export default CardResource

@@ -1,9 +1,8 @@
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
-// eslint-disable-next-line import/no-cycle
-import { EditResource } from './EditResource'
-import { TCardResource } from '../molecules'
+import EditResource from './EditResource'
+import { TCardResource } from './CardResource'
 
 const CardContainerStyled = styled(FlexBox)`
   background-color: ${colors.white};

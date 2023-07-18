@@ -1,7 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { BrowserRouter } from 'react-router-dom'
-import { EditResource } from '../../components/organisms/EditResource'
+import { render, screen, fireEvent } from '../test-utils'
+import EditResource from '../../components/organisms/EditResource'
 
 test('Renders EditResource when resource is editable', () => {
   const props = {
@@ -13,15 +11,8 @@ test('Renders EditResource when resource is editable', () => {
     topics: [],
     editable: true,
   }
-  const queryClient = new QueryClient()
 
-  render(
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <EditResource {...props} />
-      </QueryClientProvider>
-    </BrowserRouter>
-  )
+  render(<EditResource {...props} />)
 
   expect(screen.getByTestId('edit-icon')).toBeInTheDocument()
   const editIcon = screen.getByTestId('edit-icon')

@@ -4,9 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import styled from 'styled-components'
-// eslint-disable-next-line import/no-cycle
 import { ChangeEvent, FC } from 'react'
-// eslint-disable-next-line import/no-cycle
 import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio } from '../atoms'
 import { FlexBox, dimensions } from '../../styles'
@@ -105,7 +103,7 @@ const updateResourceFetcher = (resource: object) =>
     // eslint-disable-next-line no-console
     .catch((error) => console.error(error))
 
-export const ResourceForm: FC<TSelectOptions> = ({
+const ResourceForm: FC<TSelectOptions> = ({
   selectOptions,
   initialValues,
   resourceId,
@@ -133,7 +131,7 @@ export const ResourceForm: FC<TSelectOptions> = ({
       navigate(paths.home)
     },
   })
-  const onSubmit = handleSubmit(async (data) => {
+  const create = handleSubmit(async (data) => {
     const { title, description, url, topics, resourceType } = data
 
     await createResource.mutateAsync({
@@ -144,7 +142,7 @@ export const ResourceForm: FC<TSelectOptions> = ({
       resourceType,
     })
   })
-  const onSubmitUpdate = handleSubmit(async (data) => {
+  const update = handleSubmit(async (data) => {
     const { title, description, url, topicId, resourceType } = data
 
     const updatedData = {
@@ -165,7 +163,7 @@ export const ResourceForm: FC<TSelectOptions> = ({
   // console.log(initialValues, 'initialValues')
   return (
     <ResourceFormStyled
-      onSubmit={initialValues ? onSubmitUpdate : onSubmit}
+      onSubmit={initialValues ? update : create}
       data-testid="resource-form"
     >
       <InputGroup
@@ -231,3 +229,4 @@ export const ResourceForm: FC<TSelectOptions> = ({
     </ResourceFormStyled>
   )
 }
+export default ResourceForm

@@ -1,6 +1,6 @@
 import { vi } from 'vitest'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
-import { ResourceForm } from '../../components/organisms'
+import ResourceForm from '../../components/organisms/ResourceForm'
 import { paths } from '../../constants'
 
 const navigate = vi.fn()
