@@ -5,6 +5,7 @@ import axios from 'axios'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { useMutation } from '@tanstack/react-query'
 import {
   Title,
   Text,
@@ -111,65 +112,69 @@ type TForm = {
   email: string
   name: string
   password: string
-  confirmPassword: string
+  confirmPassword?: string
   specialization: string
-  accept: string
-  required: boolean
+  accept?: string
+}
+
+type TCategory = {
+  name: string
+  slug: string
 }
 
 type TRegister = {
   handleLoginModal: () => void
   handleRegisterModal: () => void
+  categories: TCategory[]
 }
 
-const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
+const Register: FC<TRegister> = ({
+  handleLoginModal,
+  handleRegisterModal,
+  categories,
+}) => {
   const [visibility, setVisibility] = useState(false)
+  const [responseError, setResponseError] = useState('')
   const {
     register,
     handleSubmit,
     formState: { errors },
     trigger,
   } = useForm<TForm>({ resolver: zodResolver(UserRegisterSchema) })
-  const [isLoading, setIsLoading] = useState(false)
-  const [onSuccess, setOnSuccess] = useState(false)
-  const [responseError, setResponseError] = useState('')
 
-  const registerNewUser = async (user: object) => {
-    await axios
-      .post(urls.register, user)
-      .then((response) => {
-        if (response.status === 204) {
-          setResponseError('')
-          setIsLoading(false)
-          setOnSuccess(true)
-          setTimeout(() => {
-            handleRegisterModal()
-          }, 2000)
-        }
+  const categoriesMap = categories.map((category) => ({
+    value: category.slug,
+    label: category.name,
+  }))
+
+  const registerMutation = useMutation(
+    (userData: TForm) =>
+      new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(axios.post(urls.register, userData))
+        }, 500)
       })
-      .catch((error) => {
-        setIsLoading(false)
-        setResponseError(error.response.data.error)
-      })
+  )
+
+  const { isLoading, isSuccess } = registerMutation
+
+  const registerNewUser = async (useData: TForm) => {
+    try {
+      await registerMutation.mutateAsync(useData)
+      setTimeout(() => {
+        handleRegisterModal()
+      }, 2000)
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (e: any) {
+      setResponseError(e.response.data.error)
+    }
   }
 
   const onSubmit = handleSubmit((userData) => {
     const { email, password, name, dni, specialization } = userData
-    setIsLoading(true)
-    setTimeout(() => {
-      registerNewUser({ email, password, name, dni, specialization })
-    }, 500)
+    registerNewUser({ email, password, name, dni, specialization })
   })
-
-  const categories = [
-    { value: 'react', label: 'React' },
-    { value: 'angular', label: 'Angular' },
-    { value: 'vue', label: 'Vue' },
-    { value: 'node', label: 'Node' },
-    { value: 'java', label: 'Java' },
-    { value: 'fullstack', label: 'Fullstack' },
-    { value: 'dataScience', label: 'Data Science' },
-  ]
 
   return (
     <RegisterStyled>
@@ -275,7 +280,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             label="specialization"
             placeholder="Especialidad"
             error={errors.specialization && true}
-            options={categories}
+            options={categoriesMap}
             validationMessage={errors.specialization?.message}
             {...register('specialization')}
             onBlur={() => {
@@ -305,7 +310,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
           )}
         </GridAreaStyled>
         <GridAreaStyled gridArea="button">
-          {onSuccess ? (
+          {isSuccess ? (
             <ButtonStyled
               backgroundColor={colors.success}
               padding={dimensions.spacing.xs}
@@ -313,7 +318,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
               <Icon name="done" />
             </ButtonStyled>
           ) : (
-            <ButtonStyled type="submit">
+            <ButtonStyled type="submit" disabled={isLoading}>
               {isLoading ? <StyledSpinner /> : 'Registrarme'}
             </ButtonStyled>
           )}

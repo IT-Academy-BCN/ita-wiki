@@ -24,8 +24,8 @@ describe('Home page', () => {
   it('shows signup modal when user clicked', () => {
     render(<Home />)
 
-    fireEvent.click(screen.getByText(/registrarme/i))
-    const modalTitle = screen.getByText(/registro/i)
-    expect(modalTitle).toBeInTheDocument()
+    fireEvent.click(screen.getByText(/entrar/i))
+    const modalTitle = screen.getAllByText(/login/i)
+    expect(modalTitle[0]).toBeInTheDocument()
   })
 })

@@ -13,6 +13,7 @@ describe('Register', () => {
         <Register
           handleLoginModal={handleRegister}
           handleRegisterModal={handleRegister}
+          categories={[]}
         />
       </BrowserRouter>
     )
@@ -25,6 +26,7 @@ describe('Register', () => {
         <Register
           handleLoginModal={handleRegister}
           handleRegisterModal={handleRegister}
+          categories={[]}
         />
       </BrowserRouter>
     )

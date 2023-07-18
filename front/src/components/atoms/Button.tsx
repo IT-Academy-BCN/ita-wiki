@@ -29,8 +29,8 @@ const StyledButton = styled.button<TButton>`
     border: 2px solid ${colors.primaryLight};
   }
   &:disabled {
-    background-color: ${colors.white};
-    border: 2px solid ${colors.gray.gray5};
+    opacity: 0.8;
+    cursor: not-allowed;
   }
 
   ${({ secondary }) =>
@@ -47,8 +47,8 @@ const StyledButton = styled.button<TButton>`
             border: 2px solid ${colors.secondaryLight};
         }
         &:disabled {
-            background-color: ${colors.white};
-            border: 2px solid ${colors.gray.gray5};
+            opacity: 0.8;
+            cursor: not-allowed;
         }
     `}
 
