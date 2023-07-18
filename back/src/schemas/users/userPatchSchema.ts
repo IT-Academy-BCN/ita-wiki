@@ -12,7 +12,7 @@ export const userPatchSchema = z
       .optional(),
     dni: dniSchema.optional(),
     password: z.string().min(8).regex(passwordRegex).optional(),
-    name: z.string().optional().optional(),
+    name: z.string().optional(),
     status: z.enum(['ACTIVE', 'INACTIVE']).optional(),
     role: z.enum(['ADMIN', 'REGISTERED', 'MENTOR']).optional(),
     specialization: z.string().optional(),
