@@ -37,7 +37,7 @@ describe('MyFavoritesList', () => {
   })
 
   it('renders correctly', async () => {
-    render(<MyFavoritesList />)
+    render(<MyFavoritesList categories={[]} />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
 
@@ -51,30 +51,30 @@ describe('MyFavoritesList', () => {
       user: null,
     } as TAuthContext)
 
-    render(<MyFavoritesList />)
+    render(<MyFavoritesList categories={[]} />)
   })
 
   it('receives data when API call returns 200 and the user has no favorite resources', async () => {
-    render(<MyFavoritesList />)
+    render(<MyFavoritesList categories={[]} />)
   })
 
   it('shows correct title when resize to mobile', async () => {
     global.innerWidth = 600
-    render(<MyFavoritesList />)
+    render(<MyFavoritesList categories={[]} />)
     const titleElement = screen.getByTestId('title')
     expect(titleElement).toHaveTextContent('Recursos que te gustan')
   })
 
   it('shows correct title when resize to desktop', async () => {
     global.innerWidth = 1024
-    render(<MyFavoritesList />)
+    render(<MyFavoritesList categories={[]} />)
     const titleElement = screen.getByTestId('title')
     expect(titleElement).toHaveTextContent('Recursos favoritos')
   })
 
   it.skip('renders correctly on error', async () => {
     server.use(...errorHandlers)
-    render(<MyFavoritesList />)
+    render(<MyFavoritesList categories={[]} />)
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
 
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())

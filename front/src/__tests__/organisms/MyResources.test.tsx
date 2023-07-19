@@ -35,7 +35,7 @@ describe('MyResources', () => {
       },
     } as TAuthContext)
 
-    render(<MyResources />)
+    render(<MyResources categories={[]} />)
 
     expect(screen.queryByTestId('title')).toBeInTheDocument()
   })
@@ -50,7 +50,7 @@ describe('MyResources', () => {
 
     server.use(...errorHandlers)
 
-    render(<MyResources />)
+    render(<MyResources categories={[]} />)
   })
 
   it('shows error message if user is not logged', async () => {
@@ -60,7 +60,7 @@ describe('MyResources', () => {
 
     server.use(...errorHandlers)
 
-    render(<MyResources />)
+    render(<MyResources categories={[]} />)
   })
 
   it('receives data when API call returns 200 and the user has no resources', async () => {
@@ -71,7 +71,7 @@ describe('MyResources', () => {
       },
     } as TAuthContext)
 
-    render(<MyResources />)
+    render(<MyResources categories={[]} />)
   })
 
   it('shows correct title when resizes to mobile', async () => {
@@ -83,7 +83,7 @@ describe('MyResources', () => {
     } as TAuthContext)
 
     global.innerWidth = 600
-    render(<MyResources />)
+    render(<MyResources categories={[]} />)
 
     const title = screen.getByTestId('main-title')
     expect(title).toHaveTextContent('Tus recursos')
@@ -98,7 +98,7 @@ describe('MyResources', () => {
     } as TAuthContext)
 
     global.innerWidth = 1024
-    render(<MyResources />)
+    render(<MyResources categories={[]} />)
 
     const title = screen.getByTestId('main-title')
     expect(title).toHaveTextContent('Mis recursos')
@@ -113,7 +113,7 @@ describe('MyResources', () => {
     } as TAuthContext)
 
     global.innerWidth = 600
-    render(<MyResources />)
+    render(<MyResources categories={[]} />)
 
     await waitFor(() => {
       expect(screen.queryByTestId('resource-card')).toBeInTheDocument()
@@ -129,7 +129,7 @@ describe('MyResources', () => {
     } as TAuthContext)
 
     global.innerWidth = 1024
-    render(<MyResources />)
+    render(<MyResources categories={[]} />)
 
     await waitFor(() => {
       expect(screen.queryByTestId('resource-title')).toBeInTheDocument()

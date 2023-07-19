@@ -204,7 +204,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
             <Icon data-testid="done-icon" name="done" />
           </ButtonStyled>
         ) : (
-          <ButtonStyled type="submit">
+          <ButtonStyled type="submit" disabled={isLoading}>
             {isLoading ? <StyledSpinner /> : 'Login'}
           </ButtonStyled>
         )}

@@ -67,6 +67,11 @@ type TFavorites = {
   updatedAt: string
 }
 
+type TCategory = {
+  name: string
+  slug: string
+}
+
 const StyledText = styled(Text)`
   color: ${colors.gray.gray3};
   font-weight: ${font.regular};
@@ -102,7 +107,9 @@ const getFavorites = async () =>
       throw new Error(`Error fetching favorite resources: ${err.message}`)
     })
 
-export const MyFavoritesList: FC = () => {
+export const MyFavoritesList: FC<{ categories: TCategory[] }> = ({
+  categories,
+}) => {
   const { user } = useAuth()
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
@@ -213,6 +220,7 @@ export const MyFavoritesList: FC = () => {
           <Register
             handleLoginModal={handleLoginModal}
             handleRegisterModal={handleRegisterModal}
+            categories={categories as TCategory[]}
           />
         )}
       </Modal>
