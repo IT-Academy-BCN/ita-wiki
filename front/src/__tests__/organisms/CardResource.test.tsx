@@ -1,6 +1,7 @@
 import { vi } from 'vitest'
 import { render, screen } from '../test-utils'
-import { CardResource, TCardResource } from '../../components/molecules'
+import type { TCardResource } from '../../components/organisms'
+import CardResource from '../../components/organisms/CardResource'
 import icons from '../../assets/icons'
 
 describe('CardResource component', () => {
