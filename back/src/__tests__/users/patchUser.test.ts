@@ -79,7 +79,7 @@ describe('Testing user patch endpoint', () => {
 
     expect(response.status).toBe(204)
   })
-  it.only('User patch should fail if attempted with duplicate data', async () => {
+  it('User patch should fail if attempted with duplicate data', async () => {
     sampleUser = await prisma.user.findUnique({
       where: { email: 'sampleUser1@sampleUser.com' },
     })
