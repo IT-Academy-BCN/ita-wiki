@@ -1,11 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import {
-  QueryFunctionContext,
-  useQuery,
-  useQueryClient,
-} from '@tanstack/react-query'
+import { QueryFunctionContext, useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
 import { Button, Icon, Input, Text, Title } from '../components/atoms'
 import {
@@ -238,11 +234,6 @@ const getTopics = async (query?: QueryFunctionContext<string[], any>) => {
 
 type SortOrder = 'asc' | 'desc'
 
-type TCategory = {
-  name: string
-  slug: string
-}
-
 const Category: FC = () => {
   const { state } = useLocation()
   const { slug } = useParams()
@@ -252,9 +243,6 @@ const Category: FC = () => {
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false)
   const [topic, setTopic] = useState('todos')
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
-
-  const queryClient = useQueryClient()
-  const categories = queryClient.getQueryData(['getCategories'])
 
   const [filters, setFilters] = useState<TFilters>({
     slug,
@@ -430,12 +418,12 @@ const Category: FC = () => {
                 icon="search"
               />
               <ScrollDiv>
-                <MyFavoritesList categories={categories as TCategory[]} />
+                <MyFavoritesList />
               </ScrollDiv>
               {/* TÍTULO 2 */}
               <ScrollDiv>
                 <UserResourcesContainerStyled>
-                  <MyResources categories={categories as TCategory[]} />
+                  <MyResources />
                 </UserResourcesContainerStyled>
               </ScrollDiv>
             </SideColumnContainer>
@@ -483,7 +471,6 @@ const Category: FC = () => {
             <Register
               handleLoginModal={handleLoginModal}
               handleRegisterModal={handleRegisterModal}
-              categories={categories as TCategory[]}
             />
           )}
         </Modal>

@@ -11,7 +11,6 @@ describe('Register', () => {
       <Register
         handleLoginModal={handleRegister}
         handleRegisterModal={handleRegister}
-        categories={[]}
       />
     )
     expect(screen.getByText(/Registrarme/i)).toBeInTheDocument()
@@ -22,7 +21,6 @@ describe('Register', () => {
       <Register
         handleLoginModal={handleRegister}
         handleRegisterModal={handleRegister}
-        categories={[]}
       />
     )
     userEvent.type(screen.getByTestId('DNI'), '123456')

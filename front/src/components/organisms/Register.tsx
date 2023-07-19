@@ -5,7 +5,7 @@ import axios from 'axios'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import {
   Title,
   Text,
@@ -125,14 +125,21 @@ type TCategory = {
 type TRegister = {
   handleLoginModal: () => void
   handleRegisterModal: () => void
-  categories: TCategory[]
 }
 
-const Register: FC<TRegister> = ({
-  handleLoginModal,
-  handleRegisterModal,
-  categories,
-}) => {
+const getCategories = () =>
+  fetch(urls.getCategories)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error fetching categories: ${res.statusText}`)
+      }
+      return res.json()
+    })
+    .catch((err) => {
+      throw new Error(`Error fetching categories: ${err.message}`)
+    })
+
+const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
   const [visibility, setVisibility] = useState(false)
   const [responseError, setResponseError] = useState('')
   const {
@@ -142,7 +149,12 @@ const Register: FC<TRegister> = ({
     trigger,
   } = useForm<TForm>({ resolver: zodResolver(UserRegisterSchema) })
 
-  const categoriesMap = categories.map((category) => ({
+  const { data } = useQuery({
+    queryKey: ['getCategories'],
+    queryFn: getCategories,
+  })
+
+  const categoriesMap = data?.map((category: TCategory) => ({
     value: category.slug,
     label: category.name,
   }))

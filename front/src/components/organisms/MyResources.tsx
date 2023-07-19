@@ -48,11 +48,6 @@ type TResource = {
   }
 }
 
-type TCategory = {
-  name: string
-  slug: string
-}
-
 const TitleContainer = styled(FlexBox)`
   align-items: stretch;
 
@@ -126,7 +121,7 @@ const getResourcesByUser = async (categorySlug: string | undefined) => {
   return data.resources
 }
 
-const MyResources = ({ categories }: { categories: TCategory[] }) => {
+const MyResources = () => {
   const { user } = useAuth()
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
@@ -238,7 +233,6 @@ const MyResources = ({ categories }: { categories: TCategory[] }) => {
           <Register
             handleLoginModal={handleLoginModal}
             handleRegisterModal={handleRegisterModal}
-            categories={categories as TCategory[]}
           />
         )}
       </Modal>

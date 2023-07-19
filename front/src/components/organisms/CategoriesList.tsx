@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, dimensions, font } from '../../styles'
 import { Spinner } from '../atoms'
 import icons from '../../assets/icons'
@@ -85,12 +85,9 @@ const getCategories = () =>
     })
 
 export const CategoriesList: FC = () => {
-  const queryClient = useQueryClient()
   const { isLoading, data, error } = useQuery({
     queryKey: ['getCategories'],
     queryFn: getCategories,
-    onSuccess: (categories) =>
-      queryClient.setQueryData(['getCategories'], categories),
   })
 
   const { slug } = useParams()

@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { FC, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useQueryClient } from '@tanstack/react-query'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
 import { CardHome, Modal } from '../components/molecules'
@@ -144,18 +143,10 @@ const cardHomeContent = [
   },
 ]
 
-type TCategory = {
-  name: string
-  slug: string
-}
-
 const Home: FC = () => {
   const { user } = useAuth()
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
-
-  const queryClient = useQueryClient()
-  const categories = queryClient.getQueryData(['getCategories'])
 
   const handleRegisterModal = () => {
     setIsRegisterOpen(!isRegisterOpen)
@@ -245,7 +236,6 @@ const Home: FC = () => {
           <Register
             handleLoginModal={handleLoginModal}
             handleRegisterModal={handleRegisterModal}
-            categories={categories as TCategory[]}
           />
         )}
       </Modal>
