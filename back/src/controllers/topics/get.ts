@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client'
 import Koa, { Middleware } from 'koa'
-import { prisma } from '../prisma/client'
-import { NotFoundError } from '../helpers/errors'
+import { prisma } from '../../prisma/client'
+import { NotFoundError } from '../../helpers/errors'
 
 export const getTopics: Middleware = async (ctx: Koa.Context) => {
   const { categoryId, slug } = ctx.query as {

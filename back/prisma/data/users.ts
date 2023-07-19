@@ -16,4 +16,12 @@ export const users: Prisma.UserCreateArgs['data'][] = [
     dni: '23456789B',
     status: 'ACTIVE',
   },
+  {
+    email: 'mentor@mentor.com',
+    password: 'password3',
+    name: 'Linux Mint',
+    dni: '34567890C',
+    status: 'ACTIVE',
+    role: 'MENTOR',
+  },
 ]

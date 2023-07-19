@@ -1,164 +1,147 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-import { useAuth } from '../../context/AuthProvider'
 import { FlexBox, colors, dimensions } from '../../styles'
-import { Title, Icon } from '../atoms'
-import defaultAvatar from '../../assets/icons/profile-avatar.svg'
-import { paths } from '../../constants'
+import { Title } from '../atoms'
+import { SelectLanguage } from '../molecules/SelectLanguage'
+import { UserButton } from '../molecules/UserButton'
+import { CategoriesList } from './CategoriesList'
+import closeButton from '../../assets/icons/x.svg'
+import PlusImg from '../../assets/icons/plus.svg'
+import MenuHamburger from '../../assets/icons/menu-left.svg'
+import SettingsImg from '../../assets/icons/settings.svg'
 
-type TNavbar = {
-  title: string
-}
-type TNavbarStyled = {
-  isDropdownOpen: boolean
-}
-
-const NavbarStyled = styled(FlexBox)<TNavbarStyled>`
-  background-color: ${colors.black.black3};
-  border-bottom-left-radius: ${dimensions.borderRadius.sm};
-  border-bottom-right-radius: ${dimensions.borderRadius.sm};
-  justify-content: center;
+const NavbarStyled = styled(FlexBox)`
+  background-color: ${colors.gray.gray5};
+  justify-content: end;
   align-items: center;
-  padding: 0 1rem;
-  min-height: 55px;
+  padding-right: 2rem;
+  height: 80px;
+
   ${Title} {
     color: ${colors.white};
   }
-  position: fixed;
-  top: 0;
-  left: 0;
+
   width: 100%;
-  z-index: 999;
-
-  ${({ isDropdownOpen }) =>
-    isDropdownOpen &&
-    `
-    &::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 1;
-    }
-  `}
+  @media (max-height: 870px) {
+    padding-top: 50px;
+    min-height: 120px;
+  }
+  @media (max-width: 768px) {
+    justify-content: space-between;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 30px;
+    position: relative;
+    top: -30px;
+  }
 `
 
-const IconStyled = styled(Icon)`
-  padding-left: ${dimensions.spacing.base};
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  color: ${colors.white};
+const LangDesktop = styled.div`
+  @media (max-width: 768px) {
+    display: none;
+  }
 `
-
-const AvatarImage = styled.img`
+const HamburgerMenu = styled.img`
+  margin-right: 1.5rem;
   width: 2rem;
   height: 2rem;
-  border-radius: 50%;
-  background-color: ${colors.gray.gray5};
   cursor: pointer;
-  position: absolute;
-  right: ${dimensions.spacing.base};
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 `
 
-const DropdownMenu = styled(FlexBox)`
-  position: absolute;
-  top: 3.2rem;
-  right: ${dimensions.spacing.xs};
+const ButtonImg = styled.img`
+  margin: 0px 15px 0px 15px;
+  padding: 6px;
+  width: 3rem;
+  height: 2.5rem;
+  border-radius: 20%;
   background-color: ${colors.white};
-  padding: 0.5rem;
-  border-radius: ${dimensions.borderRadius.sm};
-  box-shadow: 0 2px 5px ${colors.gray.gray4};
-  z-index: 2;
-  width: 9rem;
-  height: 7rem;
-`
-
-const DropdownItem = styled(FlexBox)`
-  padding: 0.5rem;
-  flex-direction: row;
-  font-weight: 500;
-  margin: 0.5rem;
   cursor: pointer;
-  &:hover {
-    background-color: ${colors.gray.gray5};
-  }
-  &:not(:last-child) {
-    border-bottom: 1px solid ${colors.gray.gray4};
-    width: 100%;
+  right: ${dimensions.spacing.base};
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `
-const IconWrapper = styled(FlexBox)`
-  margin-left: 2rem;
+
+const CloseButton = styled.img`
+  width: 3rem;
+  height: 2.5rem;
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+`
+const BgWhite = styled(FlexBox)`
+  position: absolute;
+  top: -70px;
+  right: -20px;
+  background-color: ${colors.white};
+  z-index: 999;
+  width: 100vh;
+  height: 100vh;
+  @media (min-width: 769px) {
+    display: none;
+  }
 `
 
-export const Navbar: FC<TNavbar> = ({ title }) => {
-  const { user } = useAuth()
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const dropdownRef = useRef<HTMLDivElement>(null)
-  const avatarRef = useRef<HTMLImageElement>(null)
-
-  const handleDropdownClick = () => {
-    setIsDropdownOpen(!isDropdownOpen)
+const MenuItems = styled(FlexBox)`
+  flex-direction: column;
+  position: absolute;
+  top: -40px;
+  right: 0;
+  padding: 15px;
+  background-color: ${colors.white};
+  z-index: 999;
+  width: 100%;
+  height: 115vh;
+  @media (min-width: 769px) {
+    display: none;
   }
-  const handleOutsideClick = (event: MouseEvent) => {
-    if (
-      avatarRef.current &&
-      dropdownRef.current &&
-      !avatarRef.current.contains(event.target as Node) &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      setIsDropdownOpen(false)
-    }
-  }
+`
 
-  useEffect(() => {
-    document.addEventListener('click', handleOutsideClick)
-    return () => {
-      document.removeEventListener('click', handleOutsideClick)
-    }
-  }, [])
-  const handleLogout = () => {
-    // Implement logout functionality
+
+export const Navbar: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen)
   }
 
   return (
-    <NavbarStyled direction="row" isDropdownOpen={isDropdownOpen}>
-      <Link to={paths.home}>
-        <IconStyled name="arrow_back_ios" />
-      </Link>
-      <Title as="h2">{title}</Title>
-      {user && (
-        <AvatarImage
-          data-testid="avatarImage"
-          src={user.avatar ? user.avatar : defaultAvatar}
-          alt="Avatar"
-          onClick={handleDropdownClick}
-          ref={avatarRef}
-        />
-      )}
-      {isDropdownOpen && (
-        <DropdownMenu ref={dropdownRef}>
-          <DropdownItem>
-            {/* <Link to={`${paths.profile}`}> */}
-            <span>Perfil</span>
-            <IconWrapper>
-              <Icon name="person" fill={0} />
-            </IconWrapper>
-            {/* </Link> */}
-          </DropdownItem>
-          <DropdownItem onClick={handleLogout}>
-            <span>Salir</span>
-            <IconWrapper>
-              <Icon name="logout" />
-            </IconWrapper>
-          </DropdownItem>
-        </DropdownMenu>
+    <NavbarStyled direction="row">
+      <HamburgerMenu src={MenuHamburger} alt="menu" onClick={toggleMenu} />
+      <ButtonImg
+        data-testid="new-post-button"
+        src={PlusImg}
+        alt="newPost"
+      />
+      <LangDesktop>
+        <SelectLanguage />
+      </LangDesktop>
+      <ButtonImg
+        data-testid="settings-button"
+        src={SettingsImg}
+        alt="settings"
+      />
+      <UserButton />
+      {isMenuOpen && (
+        <>
+          <BgWhite />
+          <MenuItems>
+            <CloseButton
+              data-testid="close-button"
+              src={closeButton}
+              alt="close"
+              onClick={toggleMenu}
+            />
+            <CategoriesList />
+          </MenuItems>
+        </>
       )}
     </NavbarStyled>
   )

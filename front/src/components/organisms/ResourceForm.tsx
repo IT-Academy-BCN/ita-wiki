@@ -4,7 +4,9 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import styled from 'styled-components'
-import { FC } from 'react'
+// eslint-disable-next-line import/no-cycle
+import { ChangeEvent, FC } from 'react'
+// eslint-disable-next-line import/no-cycle
 import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio } from '../atoms'
 import { FlexBox, dimensions } from '../../styles'
@@ -34,15 +36,28 @@ const ResourceFormSchema = z.object({
     .string({ required_error: 'Este campo es obligatorio' })
     .url({ message: 'La URL proporcionada no es válida' }),
   topics: z.string().refine((val) => val !== 'Options', {
-    message: 'Debe seleccionar un tema válido',
+    message: 'Debe seleccionar al menos un tema',
   }),
+  topicId: z
+    .string()
+    .optional()
+    .refine((val) => val !== '', 'Debe seleccionar un tema válido'),
   resourceType: z.string(),
   userEmail: z.string().optional(),
 })
 
-type TResourceForm = z.infer<typeof ResourceFormSchema> & {
-  topics: string[]
-  status: string
+// export type TResourceForm = z.infer<typeof ResourceFormSchema> & {
+//   topics: string[]
+//   topicId?: string
+//   id?: string
+// }
+export type TResourceForm = Omit<
+  z.infer<typeof ResourceFormSchema>,
+  'topics'
+> & {
+  topics: string | string[]
+  topicId?: string
+  id?: string
 }
 
 const ResourceFormStyled = styled.form`
@@ -58,6 +73,8 @@ type TSelectOption = {
 
 type TSelectOptions = {
   selectOptions: TSelectOption[]
+  initialValues?: Partial<TResourceForm>
+  resourceId?: string
 }
 
 const createResourceFetcher = (resource: object) =>
@@ -76,27 +93,54 @@ const createResourceFetcher = (resource: object) =>
     })
     // eslint-disable-next-line no-console
     .catch((error) => console.error(error))
+const updateResourceFetcher = (resource: object) =>
+  fetch(urls.updateResource, {
+    method: 'PATCH',
+    body: JSON.stringify(resource),
+    headers: {
+      'Content-type': 'application/json',
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error('Error al actualizar el recurso')
+      }
+      return res.status === 204 ? {} : res.json()
+    })
+    // eslint-disable-next-line no-console
+    .catch((error) => console.error(error))
 
-export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
+export const ResourceForm: FC<TSelectOptions> = ({
+  selectOptions,
+  initialValues,
+  resourceId,
+}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<TResourceForm>({
     resolver: zodResolver(ResourceFormSchema),
+    defaultValues: initialValues ?? undefined,
   })
   const navigate = useNavigate()
-
   const createResource = useMutation(createResourceFetcher, {
     onSuccess: () => {
       reset()
       navigate(paths.home)
     },
   })
-
+  const updateResource = useMutation(updateResourceFetcher, {
+    onSuccess: () => {
+      reset()
+      navigate(paths.home)
+    },
+  })
   const onSubmit = handleSubmit(async (data) => {
     const { title, description, url, topics, resourceType } = data
+
     await createResource.mutateAsync({
       title,
       description,
@@ -105,9 +149,26 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
       resourceType,
     })
   })
+  const onSubmitUpdate = handleSubmit(async (data) => {
+    const { title, description, url, topicId, resourceType } = data
 
+    const updatedData = {
+      id: resourceId,
+      title,
+      description,
+      url,
+      topicId: topicId ?? initialValues?.topicId ?? '',
+      resourceType,
+    }
+    // console.log(updatedData, 'updatedData')
+    await updateResource.mutateAsync(updatedData)
+  })
+  const handleTopicChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const selectedTopicId = event.target.value
+    setValue('topicId', selectedTopicId)
+  }
   return (
-    <ResourceFormStyled onSubmit={onSubmit}>
+    <ResourceFormStyled onSubmit={initialValues ? onSubmitUpdate : onSubmit}>
       <InputGroup
         hiddenLabel
         id="title"
@@ -142,8 +203,10 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
         label="Tema"
         options={selectOptions}
         {...register('topics')}
+        defaultValue={initialValues?.topicId}
         error={!!errors.topics}
         validationMessage={errors.topics?.message}
+        onChange={handleTopicChange}
       />
 
       <Radio
@@ -164,7 +227,7 @@ export const ResourceForm: FC<TSelectOptions> = ({ selectOptions }) => {
         ) : null}
       </FlexErrorStyled>
       <ButtonContainerStyled align="stretch">
-        <Button type="submit">Crear</Button>
+        <Button type="submit">{initialValues ? 'Actualizar' : 'Crear'}</Button>
       </ButtonContainerStyled>
     </ResourceFormStyled>
   )

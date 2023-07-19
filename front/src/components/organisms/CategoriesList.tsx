@@ -2,9 +2,8 @@ import { FC } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { FlexBox, colors, device, dimensions, font } from '../../styles'
-import { CategoryBlock } from '../molecules'
-import { Spinner, Title } from '../atoms'
+import { FlexBox, colors, dimensions, font } from '../../styles'
+import { Spinner } from '../atoms'
 import icons from '../../assets/icons'
 import { urls } from '../../constants'
 
@@ -14,27 +13,10 @@ const ImgStyled = styled.img`
   margin-top: ${dimensions.spacing.lg};
 `
 
-const MobileStyled = styled.div`
-  display: block;
-  @media only ${device.Tablet} {
-    display: none;
-  }
-`
-const DesktopStyled = styled.div`
-  display: none;
-  @media only ${device.Tablet} {
-    display: block;
-  }
-`
-
 export const SmallSpinner = styled(Spinner)`
   width: 70px;
   height: 70px;
   margin: 0 auto;
-`
-
-const CategoriesListStyled = styled(FlexBox)`
-  margin-bottom: ${dimensions.spacing.lg};
 `
 
 const LinkCategory = styled(Link)`
@@ -44,11 +26,10 @@ const LinkCategory = styled(Link)`
 `
 const CategoriesContainerStyled = styled(FlexBox)`
   padding-left: ${dimensions.spacing.xxs};
-  padding-right: ${dimensions.spacing.xs};
   margin-right: ${dimensions.spacing.sm};
   align-items: flex-start;
   color: ${colors.gray.gray3};
-  min-width: 11.5rem;
+  min-width: 10rem;
 `
 type TLinkStyled = {
   active?: boolean
@@ -117,46 +98,27 @@ export const CategoriesList: FC = () => {
   if (isLoading) return <SmallSpinner role="status" />
   if (error) return <p>Ha habido un error...</p>
   return (
-    <>
-      <MobileStyled>
-        <CategoriesListStyled align="stretch">
-          <Title as="h3" fontWeight="bold">
-            Categorías
-          </Title>
-          <FlexBox gap="1rem" align="stretch">
-            {data?.map((category: TCategory) => (
-              <CategoryBlock
-                key={category.id}
-                slug={category.slug}
-                name={category.name}
-                img={categoryImg[category.name]}
+    <div>
+      <CategoriesContainerStyled>
+        {data?.map((category: TCategory) => (
+          <LinkCategory
+            to={`/category/${category.slug}`}
+            state={{ name: category.name }}
+            key={category.id}
+            data-testid={category.name}
+          >
+            <FlexBox direction="row">
+              <ImgStyled
+                src={categoryImg[category.name]}
+                alt={`${category.name} logo`}
               />
-            ))}
-          </FlexBox>
-        </CategoriesListStyled>
-      </MobileStyled>
-      <DesktopStyled>
-        <CategoriesContainerStyled>
-          {data?.map((category: TCategory) => (
-            <LinkCategory
-              to={`/category/${category.slug}`}
-              state={{ name: category.name }}
-              key={category.id}
-              data-testid={category.name}
-            >
-              <FlexBox direction="row">
-                <ImgStyled
-                  src={categoryImg[category.name]}
-                  alt={`${category.name} logo`}
-                />
-                <CategoryStyled active={slug === category.slug}>
-                  {category.name}
-                </CategoryStyled>
-              </FlexBox>
-            </LinkCategory>
-          ))}
-        </CategoriesContainerStyled>
-      </DesktopStyled>
-    </>
+              <CategoryStyled active={slug === category.slug}>
+                {category.name}
+              </CategoryStyled>
+            </FlexBox>
+          </LinkCategory>
+        ))}
+      </CategoriesContainerStyled>
+    </div>
   )
 }

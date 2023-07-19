@@ -1,7 +1,9 @@
+// eslint-disable-next-line import/no-cycle
 import { CategoriesList } from './CategoriesList'
 import { HowToHelpCard } from './HowToHelpCard'
-import { ResourceCardList } from './ResourceCardList'
-import { ResourceForm } from './ResourceForm'
+// eslint-disable-next-line import/no-cycle
+import { ResourceCardList, TResource } from './ResourceCardList'
+import { ResourceForm, TResourceForm } from './ResourceForm'
 import { TopicsRadioWidget } from './TopicsRadioWidget'
 import { Navbar } from './Navbar'
 import { MyFavoritesList } from './MyFavoritesList'
@@ -21,3 +23,4 @@ export {
   Login,
   Register,
 }
+export type { TResourceForm, TResource }

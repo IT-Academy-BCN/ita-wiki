@@ -1,5 +1,6 @@
 import { AccessModalContent } from './AccessModalContent'
-import { CardResource } from './CardResource'
+// eslint-disable-next-line import/no-cycle
+import { CardResource, TCardResource } from './CardResource'
 import { CategoryBlock } from './CategoryBlock'
 import { CreateAuthor } from './CreateAuthor'
 import InputGroup from './InputGroup'
@@ -11,6 +12,10 @@ import TextareaGroup from './TextareaGroup'
 import { TypesFilterWidget } from './TypesFilterWidget'
 import { VoteCounter } from './VoteCounter'
 import { CardHome } from './CardHome'
+import { UserButton } from './UserButton'
+import { SelectLanguage } from './SelectLanguage'
+import { Tooltip } from './Tooltip'
+
 
 export {
   AccessModalContent,
@@ -26,5 +31,8 @@ export {
   CreateAuthor,
   VoteCounter,
   CardHome,
+  SelectLanguage,
+  UserButton,
+  Tooltip,
 }
-export type { TResourceTitleLink }
+export type { TResourceTitleLink, TCardResource }
