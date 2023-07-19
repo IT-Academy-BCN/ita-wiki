@@ -1,7 +1,7 @@
 import Router from '@koa/router'
 import { USER_ROLE } from '@prisma/client'
 import { z } from 'zod'
-import { getUsers, modifyUser } from '../controllers'
+import { getUsers, patchUser } from '../controllers'
 import { pathRoot } from './routes'
 import { authenticate, authorize, validate } from '../middleware'
 import { userPatchSchema } from '../schemas'
@@ -16,7 +16,7 @@ usersRouter.patch(
   authenticate,
   authorize(USER_ROLE.ADMIN),
   validate(z.object({ body: userPatchSchema })),
-  modifyUser
+  patchUser
 )
 
 export { usersRouter }
