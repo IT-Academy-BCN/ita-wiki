@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { paths } from './constants'
-import { Home, Category, ErrorPage, NewCategory } from './pages'
+import { Home, Category, ErrorPage } from './pages'
 import { Information } from './pages/Information'
 import { AuthProvider } from './context/AuthProvider'
 
@@ -16,8 +16,7 @@ const router = createBrowserRouter([
   },
   {
     path: paths.categories,
-    // element: <Category />,
-    element: <NewCategory />,
+    element: <Category />,
   },
   {
     path: paths.information,
