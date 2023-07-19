@@ -1,6 +1,5 @@
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components'
-import { Title, Text, Button, Icon } from '../atoms'
+import { Title, Text, Button, Counter } from '../atoms'
 import { FlexBox, colors, font, dimensions, device } from '../../styles'
 import UserImage from '../atoms/UserImage'
 import icons from '../../assets/icons'
@@ -16,8 +15,9 @@ const ContentContainer = styled(FlexBox)`
   max-width: 1189px;
   width: 100%;
   border-radius: ${dimensions.borderRadius.sm};
+  transition: all .3s ease;
   
-  @media only ${device.Tablet} {
+  @media only ${device.Laptop} {
     padding: ${dimensions.spacing.xxl} 49px;
     background-color: ${colors.white};
     align-items: start;
@@ -30,7 +30,7 @@ const InfoContainer = styled(FlexBox)`
   width: 100%;
   margin-top: ${dimensions.spacing.xxl};
 
-  @media only ${device.Tablet} {
+  @media only ${device.Laptop} {
     flex-direction: row;
     margin-top: ${dimensions.spacing.none};
   }
@@ -39,7 +39,7 @@ const InfoContainer = styled(FlexBox)`
 const UserInfoContainer = styled(FlexBox)`
   gap: ${dimensions.spacing.base};
 
-  @media only ${device.Tablet} {
+  @media only ${device.Laptop} {
     flex-direction: row;
     gap: ${dimensions.spacing.xxl};
   }
@@ -49,7 +49,7 @@ const UserInfoWrapper = styled(FlexBox)`
   gap: ${dimensions.spacing.xxs};
   justify-content: space-between;
 
-  @media only ${device.Tablet} {
+  @media only ${device.Laptop} {
     align-items: start;
   }
 `
@@ -65,7 +65,7 @@ const TitleStyled = styled(Title)`
   margin: ${dimensions.spacing.none};
   display: none;
   
-  @media only ${device.Tablet} {
+  @media only ${device.Laptop} {
     font-size: 30px;
     margin: ${dimensions.spacing.none};
     display: block;
@@ -93,63 +93,38 @@ const ButtonStyled = styled(Button)`
   top: ${dimensions.spacing.base};
   right: ${dimensions.spacing.base};
 
-  @media only ${device.Tablet} {
+  @media only ${device.Laptop} {
     position: relative;
     margin-top: ${dimensions.spacing.xxs};
     inset: ${dimensions.spacing.none};
   }
 `
 
-export const LinkStyled = styled(Text)`
-  margin: ${dimensions.spacing.none};
-  font-weight: ${font.medium};
-  display: flex;
-  align-items: center;
-  position: absolute;
-  top: ${dimensions.spacing.base};
-  left: ${dimensions.spacing.base};
-  cursor: pointer;
-  &:hover {
-    opacity: .7;
-  }
-
-  @media only ${device.Tablet} {
-    display: none;
-  }
-`
-
 const UserActivityWrapper = styled(FlexBox)`
   flex-direction: row;
-  justify-content: center;
-  gap: ${dimensions.spacing.xxl};
+  justify-content: space-between;
+  align-items: start;
+  gap: ${dimensions.spacing.xxs};
   margin-top: ${dimensions.spacing.xxl};
 
-  @media only ${device.Tablet} {
+  @media only ${device.Laptop} {
     margin-left: ${dimensions.spacing.xxl};
     margin-top: ${dimensions.spacing.none};
   }
 `
 
-const ActivityCounterStyled = styled(Text)`
-  font-size: 18px;
-  font-weight: ${font.bold};
-  margin: 0 0 .4em;
-
-  @media only ${device.Tablet} {
-    font-size: 30px;
-    margin: ${dimensions.spacing.none};
-  }
-`
-
 const CenteredCounter = styled(FlexBox)`
-  text-align: center;
-  align-self: center;
-  margin-left: auto;
   width: 60%;
+  @media only ${device.Laptop} {
+    width: auto;
+  }
 `
 
 const SideCounter = styled(FlexBox)`
   width: 20%;
+  @media only ${device.Laptop} {
+    width: auto;
+  }
 `
 
 type TCardProfile = {
@@ -170,23 +145,13 @@ const CardProfile = ({
   votes = 0,
   favorites = 0,
   handleLogOut
-}: TCardProfile) => {
-  const navigate = useNavigate()
-  const handlePrevPage = () => {
-  navigate(-1)
-  }
-  return (
+}: TCardProfile) => 
     <MainContainer>
       <ContentContainer gap={ `${dimensions.spacing.lg}` }>
 
         <TitleStyled as="h1" fontWeight="bold" color={colors.black.black3}>
           Perfil
         </TitleStyled>
-
-        <LinkStyled onClick={ handlePrevPage }>
-          <Icon name='arrow_back_ios' wght={700} style={{fontSize: `${font.base}`}}/>
-          Volver
-        </LinkStyled>
 
         <InfoContainer>
 
@@ -199,7 +164,7 @@ const CardProfile = ({
               <TextStyled>
                 { email }
               </TextStyled>
-              <ButtonStyled outline onClick={ handleLogOut} >
+              <ButtonStyled outline onClick={ handleLogOut } >
                   Cerrar sesión 
                   <img src={ icons.logout } alt='logout icon'/> 
               </ButtonStyled>
@@ -209,30 +174,15 @@ const CardProfile = ({
           <UserActivityWrapper>
 
             <SideCounter>
-              <ActivityCounterStyled>
-                { contributions }
-              </ActivityCounterStyled>
-              <TextStyled>
-                Aportaciones
-              </TextStyled>
+              <Counter number={ contributions } text='Aportaciones' icon='attach_file' />
             </SideCounter>
 
             <CenteredCounter>
-              <ActivityCounterStyled>
-                { votes }
-              </ActivityCounterStyled>
-              <TextStyled>
-                Votos
-              </TextStyled>
+              <Counter number={ votes } text='Votos recibidos' icon='expand_less' />
             </CenteredCounter>
 
             <SideCounter>
-              <ActivityCounterStyled>
-                { favorites }
-              </ActivityCounterStyled>
-              <TextStyled>
-                Favoritos
-              </TextStyled>
+              <Counter number={ favorites } text='Favoritos guardados' icon='favorite' />
             </SideCounter>
 
           </UserActivityWrapper>
@@ -241,8 +191,5 @@ const CardProfile = ({
 
       </ContentContainer>
     </MainContainer>
-  )
-} 
-
 
 export { CardProfile }

@@ -42,22 +42,5 @@ describe('CardProfile', () => {
 
     expect(screen.getByText(15)).toBeInTheDocument()
     expect(screen.getByText(/favoritos/i)).toBeInTheDocument()
-
-    const volver: HTMLParagraphElement = screen.getByText(/volver/i)
-    expect(volver).toBeInTheDocument()
-  })
-  
-  it('executes previous page function', () => {
-    render(
-      <LinkStyled
-        onClick={ mockVolver }
-      >
-        Volver
-      </LinkStyled>
-    )
-    const volver: HTMLParagraphElement = screen.getByText(/volver/i)
-    expect(volver).toBeInTheDocument()
-    fireEvent.click(volver)
-    expect(mockVolver).toHaveBeenCalled()
   })
 })

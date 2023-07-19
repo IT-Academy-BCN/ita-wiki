@@ -1,63 +1,50 @@
 import { FC } from 'react'
-import {useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router-dom'
 import { CardProfile } from '../components/molecules/CardProfile'
 import icons from '../assets/icons'
-import {urls, paths} from '../constants'
-import { Spinner } from '../components/atoms'
+import { paths } from '../constants'
+import { logOut } from '../utils/logOut'
+import { useGetFavorites } from '../hooks/useGetFavorites'
+import { useGetMyResources } from '../hooks/useGetMyResources'
+import { useAuth } from '../context/AuthProvider'
+import { BackButton } from '../components/atoms/BackButton'
 
-interface UserData {
-  name: string
-  dni: string
-  email: string
-  status: string
-  role: string
-}
-
-const UserProfile: FC = () => {
-  // const [ favorites, setFavorites ] = useState(null)
+export const UserProfile: FC = () => {
+  const favorites = useGetFavorites()
+  const { resources } = useGetMyResources()
+  const { user } = useAuth()
   const navigate = useNavigate()
 
-  const getUser = async () => fetch(urls.getMe)
-      .then((res) => res.json())
-
-  const {
-    error,
-    data,
-    status
-  } = useQuery<UserData>({
-    queryKey: ["currentUser"],
-    queryFn: getUser
-  })
-
-  if(status === 'loading') {
-    return <Spinner />
+  type UserWithEmail = {
+    name: string
+    avatar: string
+    email: string
   }
 
-  if(status === 'error') {
-    navigate(paths.home)
-    throw new Error(`Error fetching user info ${error}`)
+  const userWithEmail = user as UserWithEmail
+
+  type Resource = {
+    voteCount : {
+      total: number
+    }
   }
 
-  const handleLogOut = async (): Promise<void> => {
-    await fetch(urls.logOut)
-    navigate(paths.home)
-    window.location.reload()
-  }
+  const totalVotes: number = resources && resources.length > 0 ? resources.map(({ voteCount }: Resource) => voteCount.total).reduce((a: number,b: number) => a + b) : 0
 
   return (
-    <CardProfile
-      img={ icons.profileImg } 
-      userName={ data.name ? data.name : '@userName' }
-      email={ data.email ? data.email : 'ona_costa@gmail.com' }
-      contributions={ 5 } 
-      votes={ 54 }
-      favorites={ 73 }
-      handleLogOut={ handleLogOut }
-    />
+    <>
+      <BackButton />
+      <CardProfile
+        img={ icons.user } 
+        userName={ userWithEmail?.name ?? '@userName' }
+        email={ userWithEmail?.email ?? 'user@user.com' }
+        contributions={ resources?.length ?? 0 } 
+        votes={ totalVotes }
+        favorites={ favorites?.length ?? 0 }
+        handleLogOut={ () => logOut(navigate, paths.home) }
+      />
+    </>
   )
-
 }
 
-export { UserProfile }
 
