@@ -16,11 +16,11 @@ import {
   MyFavoritesList,
   MyResources,
   ResourceCardList,
-  ResourceForm,
   TopicsRadioWidget,
   Login,
   Register,
 } from '../components/organisms'
+import ResourceForm from '../components/organisms/ResourceForm'
 import icons from '../assets/icons'
 import { paths, urls } from '../constants'
 import { TFilters } from '../helpers'

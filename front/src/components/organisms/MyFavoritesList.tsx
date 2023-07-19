@@ -12,8 +12,8 @@ import {
   font,
   responsiveSizes,
 } from '../../styles'
-// eslint-disable-next-line import/no-cycle
-import { CardResource, Modal, ResourceTitleLink } from '../molecules'
+import { Modal, ResourceTitleLink } from '../molecules'
+import CardResource from './CardResource'
 import Login from './Login'
 import Register from './Register'
 
