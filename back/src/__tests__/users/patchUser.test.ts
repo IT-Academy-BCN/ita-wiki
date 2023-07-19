@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import { expect, it, describe, afterEach, beforeAll } from 'vitest'
+import { expect, it, describe, afterEach, beforeEach } from 'vitest'
 import { USER_ROLE, USER_STATUS, User } from '@prisma/client'
 import { server } from '../globalSetup'
 import { prisma } from '../../prisma/client'
@@ -8,17 +8,21 @@ import { authToken } from '../setup'
 
 let sampleUser: User | null
 
-beforeAll(async () => {
-  await prisma.user.create({
-    data: {
-      email: 'sampleUser1@sampleUser.com',
-      name: 'sampleUser1',
-      dni: '99999999Z',
-      password: 'samplePassword1',
-      role: USER_ROLE.REGISTERED,
-      status: USER_STATUS.ACTIVE,
-    },
-  })
+beforeEach(async () => {
+  try {
+    await prisma.user.create({
+      data: {
+        email: 'sampleUser1@sampleUser.com',
+        name: 'sampleUser1',
+        dni: '99999999Z',
+        password: 'samplePassword1',
+        role: USER_ROLE.REGISTERED,
+        status: USER_STATUS.ACTIVE,
+      },
+    })
+  } catch (error) {
+    console.error(error)
+  }
 })
 
 afterEach(async () => {
