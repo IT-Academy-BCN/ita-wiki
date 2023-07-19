@@ -1,9 +1,9 @@
 import styled, { keyframes } from 'styled-components'
 import { Link, useLocation, useParams } from 'react-router-dom'
-import { FC, useEffect, useState } from 'react'
-import { QueryFunctionContext, useQuery } from '@tanstack/react-query'
+import { ChangeEvent, FC, useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
-import { paths, urls } from '../constants'
+import { paths } from '../constants'
 import icons from '../assets/icons'
 import {
   CategoriesList,
@@ -23,6 +23,7 @@ import {
   TypesFilterWidget,
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
+import { TGetTopics, getTopics } from '../helpers/fetchers'
 
 const MainContainer = styled.div`
   display: block;
@@ -318,26 +319,6 @@ const CloseFilterButton = styled(Button)`
   }
 `
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const getTopics = async (query?: QueryFunctionContext<string[], any>) => {
-  const slug = query?.queryKey[1] as string
-  return fetch(`${urls.getTopics}?category=${slug}`)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error fetching topics: ${res.statusText}`)
-      }
-      return res.json()
-    })
-    .catch((err) => {
-      throw new Error(`Error fetching topics: ${err.message}`)
-    })
-}
-
-type TMappedTopics = {
-  id: string
-  name: string
-}
-
 const Category: FC = () => {
   const { slug } = useParams()
   const { state } = useLocation()
@@ -389,21 +370,22 @@ const Category: FC = () => {
     setTopic(selectedTopic)
   }
 
-  const handleSelectTopicFilter = (event: {
-    target: { label: string; value: string }
-  }) => {
+  const handleSelectTopicFilter = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedTopic = event.target.value
     const filterTopic = selectedTopic === 'todos' ? undefined : selectedTopic
     setFilters({ ...filters, topic: filterTopic })
     setTopic(selectedTopic)
   }
 
-  const { data: fetchedTopics } = useQuery(['getTopics', slug || ''], getTopics)
+  const { data: fetchedTopics } = useQuery<TGetTopics>(
+    ['getTopics', slug || ''],
+    () => getTopics(slug)
+  )
 
   const mappedTopics = [
     { value: 'todos', label: 'Todos' },
-    ...(fetchedTopics?.topics.map((t: TMappedTopics) => {
-      const selectOptions = { id: t.id, value: t.name, label: t.name }
+    ...(fetchedTopics?.topics.map((t) => {
+      const selectOptions = { id: t.id, value: t.slug, label: t.name }
       return selectOptions
     }) || []),
   ]
@@ -425,7 +407,6 @@ const Category: FC = () => {
           {/* SELECT */}
 
           <StyledSelectGroup
-            slug={slug}
             defaultValue={topic}
             options={mappedTopics}
             id="topics"

@@ -3,20 +3,13 @@ import styled from 'styled-components'
 import { useQuery } from '@tanstack/react-query'
 import { dimensions } from '../../styles'
 import { Radio, Spinner } from '../atoms'
-import { urls } from '../../constants'
+import { TGetTopics, getTopics } from '../../helpers/fetchers'
 
 const StyledRadio = styled(Radio)`
   flex-direction: column;
   align-items: start;
   gap: ${dimensions.spacing.xs};
 `
-
-type TTopic = {
-  id: string
-  name: string
-  slug: string
-  categoryId: string
-}
 
 type TTopicsSlug = {
   slug: string
@@ -35,22 +28,10 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
   topic,
   setTopic,
 }) => {
-  const getTopics = () =>
-    fetch(`${urls.getTopics}?slug=${slug}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(`Error fetching topics: ${res.statusText}`)
-        }
-        return res.json()
-      })
-      .catch((err) => {
-        throw new Error(`Error fetching topics: ${err.message}`)
-      })
-
-  const { data, isLoading, isError } = useQuery<{ topics: TTopic[] }>({
-    queryKey: ['getTopics', slug],
-    queryFn: getTopics,
-  })
+  const { data, isLoading, isError } = useQuery<TGetTopics>(
+    ['getTopics', slug],
+    () => getTopics(slug)
+  )
 
   const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value)
