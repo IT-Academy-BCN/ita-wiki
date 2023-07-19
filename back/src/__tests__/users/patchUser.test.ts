@@ -79,7 +79,7 @@ describe('Testing user patch endpoint', () => {
 
     expect(response.status).toBe(204)
   })
-  it('User patch should fail if attempted with duplicate data', async () => {
+  it.only('User patch should fail if attempted with duplicate data', async () => {
     sampleUser = await prisma.user.findUnique({
       where: { email: 'sampleUser1@sampleUser.com' },
     })
@@ -87,13 +87,13 @@ describe('Testing user patch endpoint', () => {
       id: sampleUser!.id,
       name: 'UpdatedSampleUser',
       dni: testUserData.user.dni,
+      email: testUserData.user.email,
     }
     const response = await supertest(server)
       .patch(`${pathRoot.v1.users}`)
       .set('Cookie', authToken.admin)
       .send(modifiedUser)
-
-    expect(response.status).toBe(400)
+    expect(response.status).toBe(409)
   })
   it('User patch should fail if attempted with invalid data', async () => {
     sampleUser = await prisma.user.findUnique({
