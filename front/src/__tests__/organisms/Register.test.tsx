@@ -1,34 +1,29 @@
-import { render, screen, waitFor } from '@testing-library/react'
 import axios from 'axios'
 import userEvent from '@testing-library/user-event'
-import { BrowserRouter } from 'react-router-dom'
 import Register from '../../components/organisms/Register'
+import { render, screen, waitFor } from '../test-utils'
 
 const handleRegister = () => {}
 
 describe('Register', () => {
   it('Register renders correctly', () => {
     render(
-      <BrowserRouter>
-        <Register
-          handleLoginModal={handleRegister}
-          handleRegisterModal={handleRegister}
-          categories={[]}
-        />
-      </BrowserRouter>
+      <Register
+        handleLoginModal={handleRegister}
+        handleRegisterModal={handleRegister}
+        categories={[]}
+      />
     )
     expect(screen.getByText(/Registrarme/i)).toBeInTheDocument()
   })
 
   it('registers new users', async () => {
     render(
-      <BrowserRouter>
-        <Register
-          handleLoginModal={handleRegister}
-          handleRegisterModal={handleRegister}
-          categories={[]}
-        />
-      </BrowserRouter>
+      <Register
+        handleLoginModal={handleRegister}
+        handleRegisterModal={handleRegister}
+        categories={[]}
+      />
     )
     userEvent.type(screen.getByTestId('DNI'), '123456')
     userEvent.type(screen.getByTestId('email'), 'email@email.com')
