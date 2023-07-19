@@ -12,6 +12,8 @@ import Radio from './Radio'
 import Text from './Text'
 import Textarea from './Textarea'
 import ValidationMessage from './ValidationMessage'
+import UserImage from './UserImage'
+import Counter from './Counter'
 
 export {
   Button,
@@ -28,4 +30,6 @@ export {
   Textarea,
   Title,
   ValidationMessage,
+  UserImage,
+  Counter
 }

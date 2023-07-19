@@ -17,6 +17,8 @@ import react from './react.svg'
 import spring from './spring.svg'
 import thumbUp from './thumb-up-dynamic-color.svg'
 import vue from './vue.svg'
+import logout from './logout.svg'
+import user from './user.svg'
 
 const icons = {
   angular,
@@ -38,6 +40,8 @@ const icons = {
   spring,
   vue,
   thumbUp,
+  logout,
+  user
 }
 
 export default icons
