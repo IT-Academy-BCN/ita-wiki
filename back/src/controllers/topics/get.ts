@@ -34,5 +34,5 @@ export const getTopics: Middleware = async (ctx: Koa.Context) => {
     },
   })
   ctx.status = 200
-  ctx.body = { topics }
+  ctx.body = topics
 }

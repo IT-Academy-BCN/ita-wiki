@@ -249,13 +249,13 @@ paths:
                     example: user@example.cat
                   role:
                     type: string
-                    enum: &a5
+                    enum: &a6
                       - ADMIN
                       - REGISTERED
                       - MENTOR
                   status:
                     type: string
-                    enum: &a4
+                    enum: &a5
                       - ACTIVE
                       - INACTIVE
                 required:
@@ -276,7 +276,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/MissingUserError"
-                  - example: &a3
+                  - example: &a4
                       message: User not found
         "405":
           description: Invalid token
@@ -359,44 +359,38 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  topics:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        name:
-                          type: string
-                          example: React Props
-                        slug:
-                          type: string
-                          example: react-props
-                        categoryId:
-                          type: string
-                      required:
-                        - id
-                        - name
-                        - categoryId
-                required:
-                  - topics
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                      example: React Props
+                    slug:
+                      type: string
+                      example: react-props
+                    categoryId:
+                      type: string
+                  required:
+                    - id
+                    - name
+                    - categoryId
         "404":
-          description: Category was not found
+          description: Category not found.
           content:
             application/json:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/MissingUserError"
-                  - examples:
-                      - message: No category found with this id
-                      - message: No category found with this slug
+                  - example:
+                      message: Category not found
     post:
       tags:
         - topics
-      description: Creates a new topic, given a name and a category id, as long as the
-        requestor is logged in and has role MENTOR or higher.
+      description: Creates a new topic. The requestor has to be logged in and with
+        role MENTOR or higher.
       summary: Creates a new topic.
       security:
         - cookieAuth: []
@@ -430,7 +424,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/ForbiddenError"
-                  - example: &a6
+                  - example: &a1
                       message: Access denied. You don't have permissions
         "405":
           description: Invalid token
@@ -453,7 +447,8 @@ paths:
     patch:
       tags:
         - topics
-      description: Modifies the name, slug and or categoryId of an existing topic.
+      description: Modifies an existing topic. The requestor has to be logged in and
+        with role MENTOR or higher.
       summary: Patch a topic.
       security:
         - cookieAuth: []
@@ -482,6 +477,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MissingTokenError"
+        "403":
+          description: Forbidden. Acces denied.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ForbiddenError"
+                  - example: *a1
         "404":
           description: Topic not found
         "405":
@@ -542,7 +545,7 @@ paths:
                       example: https://tutorials.cat/learn/javascript
                     resourceType:
                       type: string
-                      enum: &a1
+                      enum: &a2
                         - BLOG
                         - VIDEO
                         - TUTORIAL
@@ -560,7 +563,7 @@ paths:
                         - type: string
                     status:
                       type: string
-                      enum: &a2
+                      enum: &a3
                         - SEEN
                         - NOT_SEEN
                       example: NOT_SEEN
@@ -677,7 +680,7 @@ paths:
                       example: https://tutorials.cat/learn/javascript
                     resourceType:
                       type: string
-                      enum: *a1
+                      enum: *a2
                     createdAt:
                       anyOf:
                         - type: string
@@ -690,7 +693,7 @@ paths:
                         - type: string
                     status:
                       type: string
-                      enum: *a2
+                      enum: *a3
                       example: NOT_SEEN
                     user:
                       type: object
@@ -814,10 +817,10 @@ paths:
                   example: https://tutorials.cat/learn/javascript
                 resourceType:
                   type: string
-                  enum: *a1
+                  enum: *a2
                 status:
                   type: string
-                  enum: *a2
+                  enum: *a3
                   example: NOT_SEEN
                 topics:
                   type: array
@@ -932,7 +935,7 @@ paths:
                     example: https://tutorials.cat/learn/javascript
                   resourceType:
                     type: string
-                    enum: *a1
+                    enum: *a2
                   createdAt:
                     anyOf:
                       - type: string
@@ -945,7 +948,7 @@ paths:
                       - type: string
                   status:
                     type: string
-                    enum: *a2
+                    enum: *a3
                     example: NOT_SEEN
                   user:
                     type: object
@@ -1107,7 +1110,7 @@ paths:
                     example: https://tutorials.cat/learn/javascript
                   resourceType:
                     type: string
-                    enum: *a1
+                    enum: *a2
                   createdAt:
                     anyOf:
                       - type: string
@@ -1120,7 +1123,7 @@ paths:
                       - type: string
                   status:
                     type: string
-                    enum: *a2
+                    enum: *a3
                     example: NOT_SEEN
                   user:
                     type: object
@@ -1246,7 +1249,7 @@ paths:
                           example: https://tutorials.cat/learn/javascript
                         resourceType:
                           type: string
-                          enum: *a1
+                          enum: *a2
                         createdAt:
                           anyOf:
                             - type: string
@@ -1259,7 +1262,7 @@ paths:
                             - type: string
                         status:
                           type: string
-                          enum: *a2
+                          enum: *a3
                           example: NOT_SEEN
                         user:
                           type: object
@@ -1352,7 +1355,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/MissingUserError"
-                  - example: *a3
+                  - example: *a4
         "405":
           description: Invalid token
           content:
@@ -1620,10 +1623,10 @@ paths:
                       type: string
                     status:
                       type: string
-                      enum: *a4
+                      enum: *a5
                     role:
                       type: string
-                      enum: *a5
+                      enum: *a6
                     createdAt:
                       type: string
                       format: date-time
@@ -1651,7 +1654,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/ForbiddenError"
-                  - example: *a6
+                  - example: *a1
         "405":
           description: Invalid token
           content:
@@ -1735,7 +1738,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/ForbiddenError"
-                  - example: *a6
+                  - example: *a1
         "404":
           description: Not found
         "405":
