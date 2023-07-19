@@ -9,10 +9,29 @@ export const modifyUser: Middleware = async (ctx: Context) => {
     where: { id },
   })
 
-  console.log('user: ', user)
-
   if (!user) {
     throw new NotFoundError('User not found')
+  }
+
+  const existingUser = await prisma.user.findFirst({
+    where: {
+      OR: [{ dni: newData.dni }, { email: newData.email }],
+    },
+  })
+
+  if (existingUser) {
+    let message: String = ''
+    if (existingUser.dni === newData.dni) {
+      message = 'DNI already exists'
+    }
+    if (existingUser.email === newData.email) {
+      message = 'email already exists'
+    }
+    ctx.status = 400
+    ctx.body = {
+      error: message,
+    }
+    return
   }
 
   const userDataUpdate = {
@@ -26,19 +45,13 @@ export const modifyUser: Middleware = async (ctx: Context) => {
     ...(newData.createdAt && { createdAt: newData.createdAt }),
     ...(newData.updatedAt && { updatedAt: newData.updatedAt }),
   }
-  console.log('userDataUpdate: ', userDataUpdate)
-  try {
-    await prisma.$transaction(async (tx) => {
-      await tx.user.update({
-        where: { id },
-        data: userDataUpdate,
-      })
-    })
-  } catch (error) {
-    console.log('There was an error: ', error)
-  }
 
-  console.log('AFTER TRANSACTION')
+  await prisma.$transaction(async (tx) => {
+    await tx.user.update({
+      where: { id },
+      data: userDataUpdate,
+    })
+  })
 
   ctx.status = 204
 }
