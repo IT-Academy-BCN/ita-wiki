@@ -102,7 +102,7 @@ const HomeBtn = styled.button`
   &:hover {
     cursor: pointer;
     background-color: rgb(0, 0, 0, 0.1);
-    box-shadow:0px 0px 5px rgb(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 5px rgb(0, 0, 0, 0.1);
   }
 `
 
@@ -145,6 +145,33 @@ const AccountAdmin: FC = () => {
     return <div>Error fetching users</div>
   }
 
+  const updateUserStatus = async (user: User) => {
+    try {
+      const updatedStatus = user.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
+      const updatedUser = {
+        ...user,
+        status: updatedStatus,
+        createdAt: new Date(user.createdAt),
+        updatedAt: new Date(),
+      }
+
+      const response = await fetch('/api/v1/users', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedUser),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to update user status')
+      }
+      console.log('User status updated successfully')
+    } catch (error) {
+      console.error('Error updating user status', error)
+    }
+  }
+
   return (
     <UserListContainer>
       <Link to={paths.home}>
@@ -179,9 +206,13 @@ const AccountAdmin: FC = () => {
               <TableCell>{user.status}</TableCell>
               <TableCell>
                 {user.status === 'ACTIVE' ? (
-                  <DeactivateBtn>Desactivar</DeactivateBtn>
+                  <DeactivateBtn onClick={() => updateUserStatus(user)}>
+                    Desactivar
+                  </DeactivateBtn>
                 ) : (
-                  <ActivateBtn>Activatar</ActivateBtn>
+                  <ActivateBtn onClick={() => updateUserStatus(user)}>
+                    Activatar
+                  </ActivateBtn>
                 )}
               </TableCell>
               <TableCell>
