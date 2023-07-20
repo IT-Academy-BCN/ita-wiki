@@ -40,9 +40,7 @@ export type TResource = {
   topics: TTopic[]
 }
 
-const StyledSpinner = styled(Spinner)`
-  width: 100px;
-  height: 100px;
+const SpinnerStyled = styled(Spinner)`
   align-self: center;
   justify-content: center;
 `
@@ -105,7 +103,7 @@ const ResourceCardList: FC<TResourceCardList> = ({
 
   return (
     <StyledFlexBox direction="column">
-      {isLoading && <StyledSpinner role="status" />}
+      {isLoading && <SpinnerStyled size="medium" role="status" />}
       {data && data?.length > 0 ? (
         sortedItems?.map((resource: TResource) => (
           <CardResource
