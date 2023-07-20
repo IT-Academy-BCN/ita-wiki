@@ -1,10 +1,9 @@
 import {screen, fireEvent} from '@testing-library/react';
 import { vi } from 'vitest'
 import { render } from '../test-utils'
-import { CardProfile, LinkStyled } from '../../components/molecules/CardProfile'
+import { CardProfile } from '../../components/molecules/CardProfile'
 
 const mockLogOut = vi.fn()
-const mockVolver = vi.fn()
 
 describe('CardProfile', () => {
   it('renders correctly with all given props', () => {  
