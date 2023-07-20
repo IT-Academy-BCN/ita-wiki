@@ -2,8 +2,7 @@ import { vi } from 'vitest'
 import { render, screen } from '../test-utils'
 import { UserProfile } from '../../pages'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
-import { useGetMyResources } from '../../hooks/useGetMyResources'
-import { useGetFavorites } from '../../hooks/useGetFavorites'
+import { useGetMyResources, useGetFavorites } from '../../hooks'
 
 vi.mock("../../hooks/useGetMyResources", () => ({
   useGetMyResources: vi.fn(() => ({
