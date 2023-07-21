@@ -4,8 +4,8 @@ import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { useAuth } from '../../context/AuthProvider'
 import { urls } from '../../constants'
-// eslint-disable-next-line import/no-cycle
-import { CardResource, Modal, ResourceTitleLink } from '../molecules'
+import { Modal } from '../molecules'
+import CardResource from './CardResource'
 import { Title, Spinner, Icon, Text } from '../atoms'
 import {
   FlexBox,
@@ -15,6 +15,7 @@ import {
   font,
   responsiveSizes,
 } from '../../styles'
+import { CardResourceLink } from './CardResourceLink'
 import Login from './Login'
 import Register from './Register'
 
@@ -46,6 +47,7 @@ type TResource = {
     downvote: number
     total: number
   }
+  editable: boolean
 }
 
 const TitleContainer = styled(FlexBox)`
@@ -86,7 +88,6 @@ const StyledText = styled(Text)`
     color: ${colors.gray.gray4};
   }
 `
-
 const TextDecorationStyled = styled.span`
   text-decoration: underline;
   cursor: pointer;
@@ -118,7 +119,13 @@ const getResourcesByUser = async (categorySlug: string | undefined) => {
   }
 
   const data = await response.json()
-  return data.resources
+
+  return data.resources.map((resource: TResource) => ({
+    ...resource,
+    editable: true,
+
+    // Agregamos la propiedad editable a cada recurso y la establecemos como true
+  }))
 }
 
 const MyResources = () => {
@@ -142,6 +149,7 @@ const MyResources = () => {
     queryFn: () => getResourcesByUser(categorySlug),
     enabled: !!user, // Enable the query only if there is a logged-in user
   })
+  // console.log(data, 'data')
 
   const handleRegisterModal = () => {
     setIsRegisterOpen(!isRegisterOpen)
@@ -180,7 +188,7 @@ const MyResources = () => {
         </StyledText>
       )}
 
-      {isLoading && user && <Spinner />}
+      {isLoading && user && <Spinner size="medium" />}
 
       {!isLoading &&
         !error &&
@@ -201,13 +209,22 @@ const MyResources = () => {
                     handleAccessModal={() => {}}
                     resourceType=""
                     topics={[]}
-                    editable={false}
+                    editable={resource.editable}
                   />
                 ) : (
-                  <ResourceTitleLink
-                    url={resource.url}
-                    title={resource.title}
+                  <CardResourceLink
+                    createdBy={resource.user.name}
+                    createdAt={resource.createdAt}
+                    updatedAt={resource.updatedAt}
                     description={resource.description}
+                    img=""
+                    id={resource.id}
+                    title={resource.title}
+                    url={resource.url}
+                    handleAccessModal={() => {}}
+                    resourceType={resource.resourceType}
+                    topics={resource.topics}
+                    editable={resource.editable}
                   />
                 )}
               </MyResourcesCardList>

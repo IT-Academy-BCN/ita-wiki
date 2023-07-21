@@ -15,9 +15,6 @@ const StyledText = styled(Text)`
 `
 
 const StyledSpinner = styled(Spinner)`
-  width: 50px;
-  height: 50px;
-  border-width: 10px;
   align-self: center;
   justify-content: center;
 `
@@ -91,7 +88,7 @@ const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
   return (
     <StyledFlexbox direction="column" align="start" data-testid="types-filter">
       <StyledText fontWeight="bold">Tipo</StyledText>
-      {isLoading && <StyledSpinner role="status" />}
+      {isLoading && <StyledSpinner size="small" role="status" />}
       {data?.map((item: string) => (
         <CheckBoxStyled
           key={item}

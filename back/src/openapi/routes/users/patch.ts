@@ -1,4 +1,4 @@
-import { resourcePatchSchema } from '../../../schemas/resource/resourcePatchSchema'
+import { userPatchSchema } from '../../../schemas'
 import { registry } from '../../registry'
 import { z } from '../../zod'
 import { pathRoot } from '../../../routes/routes'
@@ -20,7 +20,7 @@ registry.registerPath({
     body: {
       content: {
         'application/json': {
-          schema: resourcePatchSchema,
+          schema: userPatchSchema,
         },
       },
     },
@@ -35,6 +35,9 @@ registry.registerPath({
       description: 'Not found',
     },
     405: invalidTokenResponse,
+    409: {
+      description: 'Conflict, data already exists.',
+    },
     500: {
       description: 'Other error',
       content: {

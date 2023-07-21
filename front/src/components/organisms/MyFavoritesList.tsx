@@ -12,8 +12,8 @@ import {
   font,
   responsiveSizes,
 } from '../../styles'
-// eslint-disable-next-line import/no-cycle
-import { CardResource, Modal, ResourceTitleLink } from '../molecules'
+import { Modal, ResourceTitleLink } from '../molecules'
+import CardResource from './CardResource'
 import Login from './Login'
 import Register from './Register'
 
@@ -34,11 +34,11 @@ const FavoritesContainer = styled(FlexBox)`
   overflow-x: auto;
   justify-content: flex-start;
   margin-bottom: ${dimensions.spacing.base};
-
+  
   &::-webkit-scrollbar {
     display: none;
   }
-
+  
   @media only ${device.Tablet} {
     flex-direction: column;
     align-items: flex-start;
@@ -79,12 +79,6 @@ const StyledText = styled(Text)`
 const TextDecorationStyled = styled.span`
   text-decoration: underline;
   cursor: pointer;
-`
-
-const StyledSpinner = styled(Spinner)`
-  width: 70px;
-  height: 70px;
-  border-width: 15px;
 `
 
 const getWindowIsMobile = () =>
@@ -158,7 +152,7 @@ export const MyFavoritesList: FC = () => {
         </StyledText>
       )}
 
-      {isLoading && user && <StyledSpinner role="status" />}
+      {isLoading && user && <Spinner size="medium" role="status" />}
 
       {data && data?.length ? (
         <FavoritesContainer>

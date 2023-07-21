@@ -4,8 +4,7 @@ import { FC } from 'react'
 import { urls } from '../../constants'
 import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
-// eslint-disable-next-line import/no-cycle
-import { CardResource } from '../molecules'
+import CardResource from './CardResource'
 import { TFilters, buildQueryString } from '../../helpers'
 import { useSortByDate } from '../../hooks/useSortByDate'
 import { useAuth } from '../../context/AuthProvider'
@@ -41,9 +40,7 @@ export type TResource = {
   topics: TTopic[]
 }
 
-const StyledSpinner = styled(Spinner)`
-  width: 100px;
-  height: 100px;
+const SpinnerStyled = styled(Spinner)`
   align-self: center;
   justify-content: center;
 `
@@ -105,8 +102,8 @@ const ResourceCardList: FC<TResourceCardList> = ({
   if (error) return <p>Ha habido un error...</p>
 
   return (
-    <StyledFlexBox direction="column" data-testid="resource-card">
-      {isLoading && <StyledSpinner role="status" />}
+    <StyledFlexBox direction="column">
+      {isLoading && <SpinnerStyled size="medium" role="status" />}
       {data && data?.length > 0 ? (
         sortedItems?.map((resource: TResource) => (
           <CardResource
