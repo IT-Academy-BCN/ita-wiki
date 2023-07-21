@@ -71,6 +71,7 @@ describe('Testing user patch endpoint', () => {
       dni: '88888888X',
       password: 'UpdatedSamplePassword1',
       status: USER_STATUS.INACTIVE,
+      updatedAt: new Date(),
     }
     const response = await supertest(server)
       .patch(`${pathRoot.v1.users}`)

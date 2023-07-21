@@ -9,6 +9,6 @@ export const userSchema = z.object({
   name: z.string().optional(),
   status: z.enum(['ACTIVE', 'INACTIVE']),
   role: z.enum(['ADMIN', 'REGISTERED', 'MENTOR']),
-  createdAt: z.date(),
-  updatedAt: z.date(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
 })
