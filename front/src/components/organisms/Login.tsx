@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
 import { UserLoginSchema } from '@itacademy/schemas'
+import { useMutation } from '@tanstack/react-query'
 import InputGroup from '../molecules/InputGroup'
 import { Button, Icon, Spinner, Text, Title, ValidationMessage } from '../atoms'
 import { urls } from '../../constants'
@@ -49,7 +50,8 @@ const ButtonStyled = styled(Button)<TButton>`
   background-color: ${(props) => props.backgroundColor};
   border: 2px solid ${(props) => props.backgroundColor};
   padding: ${(props) => props.padding};
-  &:hover {
+  &:hover,
+  &:disabled {
     background-color: ${(props) => props.backgroundColor};
     border: 2px solid ${(props) => props.backgroundColor};
   }
@@ -79,8 +81,27 @@ type TLogin = {
   handleRegisterModal: () => void
 }
 
-type TErrorResponse = {
-  message: string
+const loginUserFetcher = async (user: object) => {
+  const errorMessage: { [key: number]: string } = {
+    403: 'Usuario en proceso de activación. Por favor, inténtelo más tarde.',
+    404: 'Acceso restringido. Por favor, contacte con el personal de IT Academy.',
+    422: 'Identificador o contraseña incorrectos.',
+  }
+
+  const response = await fetch(urls.logIn, {
+    method: 'POST',
+    body: JSON.stringify(user),
+    headers: { 'Content-Type': 'application/json' },
+  })
+
+  if (
+    !response.ok &&
+    Object.hasOwnProperty.call(errorMessage, response.status)
+  ) {
+    throw new Error(errorMessage[response.status])
+  }
+
+  return response.status === 204 ? null : response.json()
 }
 
 const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
@@ -94,51 +115,28 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
   } = useForm<TForm>({
     resolver: zodResolver(UserLoginSchema),
   })
-  const [isLoading, setIsLoading] = useState(false)
-  const [onSuccess, setOnSuccess] = useState(false)
 
-  const loginUser = async (user: object) => {
-    const config = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(user),
-    }
+  const loginUser = useMutation(loginUserFetcher, {
+    onMutate: () =>
+      new Promise((resolve) => {
+        setTimeout(resolve, 500)
+      }),
+    onSuccess: () => {
+      setTimeout(() => window.location.reload(), 2000)
+    },
+    onError: (error: Error) => {
+      setResponseError(error.message)
+    },
+  })
 
-    const errorMessage: { [key: number]: string } = {
-      403: 'Usuario en proceso de activación. Por favor, inténtelo más tarde.',
-      404: 'Acceso restringido. Por favor, contacte con el personal de IT Academy.',
-      422: 'Identificador o contraseña incorrectos.',
-    }
+  const { isLoading, isSuccess } = loginUser
 
-    try {
-      const response = await fetch(urls.logIn, config)
-
-      if (response.status === 204) {
-        setResponseError('')
-        setIsLoading(false)
-        setOnSuccess(true)
-        setTimeout(() => {
-          window.location.reload()
-        }, 2000)
-      }
-
-      if (Object.hasOwnProperty.call(errorMessage, response.status)) {
-        throw new Error(errorMessage[response.status])
-      }
-    } catch (error) {
-      setIsLoading(false)
-      setResponseError((error as TErrorResponse).message)
-    }
-  }
-
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     const { dni, password } = data
-    setIsLoading(true)
-    setTimeout(() => {
-      loginUser({ dni, password })
-    }, 500)
+    await loginUser.mutateAsync({
+      dni,
+      password,
+    })
   })
 
   return (
@@ -196,17 +194,18 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
             <Text>Recordar/cambiar contraseña</Text>
           </TextDecorationStyled>
         </FlexBox>
-        {onSuccess ? (
+        {isSuccess ? (
           <ButtonStyled
             backgroundColor={colors.success}
             padding={dimensions.spacing.xs}
+            disabled
           >
             <Icon data-testid="done-icon" name="done" />
           </ButtonStyled>
         ) : (
-          <ButtonStyled type="submit" disabled={isLoading}>
+          <Button disabled={isLoading}>
             {isLoading ? <StyledSpinner /> : 'Login'}
-          </ButtonStyled>
+          </Button>
         )}
       </FormStyled>
       <Text fontWeight="bold">

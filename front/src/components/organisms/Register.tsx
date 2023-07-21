@@ -1,11 +1,11 @@
 import { FC, HTMLAttributes, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { UserRegisterSchema } from '@itacademy/schemas'
-import axios from 'axios'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useMutation, useQuery } from '@tanstack/react-query'
+import { z } from 'zod'
 import {
   Title,
   Text,
@@ -19,6 +19,7 @@ import InputGroup from '../molecules/InputGroup'
 import SelectGroup from '../molecules/SelectGroup'
 import { urls } from '../../constants'
 import { colors, device, dimensions, FlexBox } from '../../styles'
+import { getCategories } from '../../helpers'
 
 const RegisterStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.sm};
@@ -83,7 +84,8 @@ const ButtonStyled = styled(Button)<TButton>`
   background-color: ${(props) => props.backgroundColor};
   border: 2px solid ${(props) => props.backgroundColor};
   padding: ${(props) => props.padding};
-  &:hover {
+  &:hover,
+  &:disabled {
     background-color: ${(props) => props.backgroundColor};
     border: 2px solid ${(props) => props.backgroundColor};
   }
@@ -107,15 +109,7 @@ const StyledSpinner = styled(Spinner)`
   border-right-color: ${colors.primary};
 `
 
-type TForm = {
-  dni: string
-  email: string
-  name: string
-  password: string
-  confirmPassword?: string
-  specialization: string
-  accept?: string
-}
+type TForm = z.infer<typeof UserRegisterSchema>
 
 type TCategory = {
   name: string
@@ -127,17 +121,18 @@ type TRegister = {
   handleRegisterModal: () => void
 }
 
-const getCategories = () =>
-  fetch(urls.getCategories)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error fetching categories: ${res.statusText}`)
-      }
-      return res.json()
-    })
-    .catch((err) => {
-      throw new Error(`Error fetching categories: ${err.message}`)
-    })
+const registerNewUser = async (useData: TForm) => {
+  const response = await fetch(urls.register, {
+    method: 'POST',
+    body: JSON.stringify(useData),
+    headers: { 'Content-type': 'application/json' },
+  })
+
+  if (!response.ok)
+    throw new Error(`Error al registrar usuario: ${response.statusText}`)
+
+  return response.status === 204 ? null : response.json()
+}
 
 const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
   const [visibility, setVisibility] = useState(false)
@@ -159,33 +154,32 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     label: category.name,
   }))
 
-  const registerMutation = useMutation(
-    (userData: TForm) =>
+  const registerUser = useMutation(registerNewUser, {
+    onMutate: () =>
       new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(axios.post(urls.register, userData))
-        }, 500)
-      })
-  )
+        setTimeout(resolve, 500)
+      }),
+    onSuccess: () => {
+      setTimeout(handleRegisterModal, 2000)
+    },
+    onError: (error: Error) => {
+      setResponseError(error.message)
+    },
+  })
 
-  const { isLoading, isSuccess } = registerMutation
+  const { isLoading, isSuccess } = registerUser
 
-  const registerNewUser = async (useData: TForm) => {
-    try {
-      await registerMutation.mutateAsync(useData)
-      setTimeout(() => {
-        handleRegisterModal()
-      }, 2000)
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
-      setResponseError(e.response.data.error)
-    }
-  }
-
-  const onSubmit = handleSubmit((userData) => {
+  const onSubmit = handleSubmit(async (userData) => {
     const { email, password, name, dni, specialization } = userData
-    registerNewUser({ email, password, name, dni, specialization })
+    await registerUser.mutateAsync({
+      email,
+      password,
+      name,
+      dni,
+      specialization,
+      confirmPassword: '',
+      accept: false,
+    })
   })
 
   return (
@@ -303,6 +297,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
         <GridAreaStyled gridArea="accept">
           <FlexBox justify="flex-start" direction="row">
             <CheckBoxStyled
+              data-testid="accept"
               id="accept"
               label=""
               hiddenLabel
@@ -326,13 +321,14 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             <ButtonStyled
               backgroundColor={colors.success}
               padding={dimensions.spacing.xs}
+              disabled
             >
               <Icon name="done" />
             </ButtonStyled>
           ) : (
-            <ButtonStyled type="submit" disabled={isLoading}>
+            <Button disabled={isLoading}>
               {isLoading ? <StyledSpinner /> : 'Registrarme'}
-            </ButtonStyled>
+            </Button>
           )}
         </GridAreaStyled>
       </FormStyled>
