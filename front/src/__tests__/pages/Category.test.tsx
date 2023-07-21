@@ -18,30 +18,26 @@ vi.mock('react-router-dom', async () => {
 
 const server = setupServer(...handlers)
 
-// beforeEach(() => {
-//   vi.mocked(useAuth).mockReturnValue({
-//     user: {
-//       name: 'Name',
-//       avatar: 'Avatar',
-//     },
-//   } as TAuthContext)
-// })
-
 beforeEach(() => {
-  vi.mock('../../context/AuthProvider', async () => {
-    const actual = await vi.importActual('../../context/AuthProvider')
-    return {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      ...actual,
-      useAuth: () =>
-        ({
-          user: {
-            name: 'Name',
-            avatar: 'Avatar',
-          },
-        } as TAuthContext),
-    }
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'Name',
+      avatar: 'Avatar',
+    },
+  } as TAuthContext)
+})
+
+describe.skip('Resource', () => {
+  beforeEach(() => {
+    vi.mock('../../context/AuthProvider', async () => {
+      const actual = await vi.importActual('../../context/AuthProvider')
+      return {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        ...actual,
+        useAuth: vi.fn(),
+      }
+    })
   })
 })
 
@@ -76,4 +72,33 @@ it('create new resource modal opens and closes correctly', () => {
 
   fireEvent.click(screen.getByText('+ Crear nuevo recurso'))
   expect(screen.getByText(/Nuevo Recurso/)).toBeInTheDocument()
+})
+
+it('modal opens and closes correctly when user is not logged', () => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: null,
+  } as TAuthContext)
+
+  render(<Category />)
+
+  fireEvent.click(screen.getByRole('button', { name: '+ Crear nuevo recurso' }))
+  const modalTitle = screen.getByRole('heading', {
+    name: /acceso restringido/i,
+  })
+
+  expect(modalTitle).toBeInTheDocument()
+  fireEvent.keyDown(document, { key: 'Escape' })
+  expect(modalTitle).not.toBeInTheDocument()
+})
+
+it('modal opens and closes correctly when user is logged', () => {
+  render(<Category />)
+
+  fireEvent.click(screen.getByRole('button', { name: '+ Crear nuevo recurso' }))
+  const modalTitle = screen.getByRole('heading', {
+    name: /nuevo recurso/i,
+  })
+  expect(modalTitle).toBeInTheDocument()
+  fireEvent.keyDown(document, { key: 'Escape' })
+  expect(modalTitle).not.toBeInTheDocument()
 })

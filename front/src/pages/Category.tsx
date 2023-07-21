@@ -7,8 +7,10 @@ import { paths } from '../constants'
 import icons from '../assets/icons'
 import {
   CategoriesList,
+  Login,
   MyFavoritesList,
   MyResources,
+  Navbar,
   ResourceCardList,
   ResourceForm,
   TopicsRadioWidget,
@@ -16,6 +18,7 @@ import {
 import { Button, Icon, Input, Text, Title } from '../components/atoms'
 import { TFilters } from '../helpers'
 import {
+  AccessModalContent,
   InputGroup,
   Modal,
   SelectGroup,
@@ -204,10 +207,15 @@ const MobileTopicsContainer = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
   background-color: ${colors.gray.gray5};
-  padding: ${dimensions.spacing.lg};
+  padding-right: ${dimensions.spacing.lg};
+  padding-left: ${dimensions.spacing.lg};
+  padding-bottom: ${dimensions.spacing.md};
+  padding-top: ${dimensions.spacing.none};
+
   position: sticky;
   top: 0;
   z-index: 1;
+  height: 100%;
 
   @media ${device.Tablet} {
     display: none;
@@ -234,7 +242,7 @@ const NewResourceButton = styled(Button)`
 
 const StyledSelectGroup = styled(SelectGroup)`
   border: none;
-
+  width: 85vw;
   &:focus {
     outline: 0 none;
   }
@@ -319,6 +327,17 @@ const CloseFilterButton = styled(Button)`
   }
 `
 
+const StyledDateToggle = styled(Text)`
+  color: ${colors.gray.gray3};
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.96);
+  }
+`
+
+type SortOrder = 'asc' | 'desc'
+
 const Category: FC = () => {
   const { slug } = useParams()
   const { state } = useLocation()
@@ -328,6 +347,8 @@ const Category: FC = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false)
   const [isFiltersOpen, setIsFiltersOpen] = useState(false)
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false)
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
 
   const [topic, setTopic] = useState('todos')
   const [filters, setFilters] = useState<TFilters>({
@@ -336,6 +357,11 @@ const Category: FC = () => {
     status: [],
     topic: topic === 'todos' ? undefined : topic,
   })
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen)
+  }
 
   const handleFiltersOpen = () => {
     setIsFiltersOpen(true)
@@ -364,6 +390,14 @@ const Category: FC = () => {
     setIsAccessModalOpen(!isAccessModalOpen)
   }
 
+  const handleRegisterModal = () => {
+    setIsRegisterOpen(!isRegisterOpen)
+  }
+
+  const handleLoginModal = () => {
+    setIsLoginOpen(!isLoginOpen)
+  }
+
   const handleTopicFilter = (selectedTopic: string) => {
     const filterTopic = selectedTopic === 'todos' ? undefined : selectedTopic
     setFilters({ ...filters, topic: filterTopic })
@@ -375,6 +409,10 @@ const Category: FC = () => {
     const filterTopic = selectedTopic === 'todos' ? undefined : selectedTopic
     setFilters({ ...filters, topic: filterTopic })
     setTopic(selectedTopic)
+  }
+
+  const handleSortOrder = () => {
+    setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
   }
 
   const { data: fetchedTopics } = useQuery<TGetTopics>(
@@ -391,134 +429,154 @@ const Category: FC = () => {
   ]
 
   return (
-    <MainContainer>
-      <Container>
-        <LateralDiv>
-          <Link to={paths.home}>
-            <ImageStyled src={icons.itLogo} alt="IT Academy logo" />
-          </Link>
-          <CategoriesList />
-        </LateralDiv>
+    <>
+      <MainContainer>
+        <Navbar toggleModal={toggleModal} />
+        <Container>
+          <LateralDiv>
+            <Link to={paths.home}>
+              <ImageStyled src={icons.itLogo} alt="IT Academy logo" />
+            </Link>
+            <CategoriesList />
+          </LateralDiv>
 
-        <MobileTopicsContainer>
-          <Title as="h2" fontWeight="bold">
-            Temas
-          </Title>
-          {/* SELECT */}
-
-          <StyledSelectGroup
-            defaultValue={topic}
-            options={mappedTopics}
-            id="topics"
-            label="Temas"
-            name="topics"
-            onChange={handleSelectTopicFilter}
-          />
-        </MobileTopicsContainer>
-
-        <WhiteContainer>
-          <FiltersContainer data-testid="filters-container">
+          <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
-              Filtros
+              Temas
             </Title>
-            <Text fontWeight="bold">Temas</Text>
-            <ScrollTopics>
-              {slug && (
-                <TopicsRadioWidget
-                  slug={slug}
-                  topic={topic}
-                  setTopic={handleTopicFilter}
-                />
-              )}
-            </ScrollTopics>
-            <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
-            <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
-          </FiltersContainer>
-          <ResourcesContainer>
-            <TitleResourcesContainer>
+            <StyledSelectGroup
+              defaultValue={topic}
+              options={mappedTopics}
+              id="topics"
+              label="Temas"
+              name="topics"
+              onChange={handleSelectTopicFilter}
+            />
+          </MobileTopicsContainer>
+
+          <WhiteContainer>
+            <FiltersContainer data-testid="filters-container">
               <Title as="h2" fontWeight="bold">
-                Recursos de {state?.name}
+                Filtros
               </Title>
-              <SearchBar
-                data-testid="inputGroupSearch"
-                label="searchResource"
-                name="searchResource"
-                placeholder="Buscar recurso"
-                id="searchResource"
-                icon="search"
-              />
-              <FilterButton
-                data-testid="filters-button"
-                onClick={handleFiltersOpen}
-              >
-                Filtrar
-              </FilterButton>
-            </TitleResourcesContainer>
-            <VotesDateContainer>
-              <FlexBox direction="row" gap="15px">
-                <FlexBox direction="row">
-                  <Text fontWeight="bold">Votos</Text>
-                  <Icon name="arrow_downward" />
+              <Text fontWeight="bold">Temas</Text>
+              <ScrollTopics>
+                {slug && (
+                  <TopicsRadioWidget
+                    slug={slug}
+                    topic={topic}
+                    setTopic={handleTopicFilter}
+                  />
+                )}
+              </ScrollTopics>
+              <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
+              <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+            </FiltersContainer>
+            <ResourcesContainer>
+              <TitleResourcesContainer>
+                <Title as="h2" fontWeight="bold">
+                  Recursos de {state?.name}
+                </Title>
+                <SearchBar
+                  data-testid="inputGroupSearch"
+                  label="searchResource"
+                  name="searchResource"
+                  placeholder="Buscar recurso"
+                  id="searchResource"
+                  icon="search"
+                />
+                <FilterButton
+                  data-testid="filters-button"
+                  onClick={handleFiltersOpen}
+                >
+                  Filtrar
+                </FilterButton>
+              </TitleResourcesContainer>
+              <VotesDateContainer>
+                <FlexBox direction="row" gap="15px">
+                  <FlexBox direction="row">
+                    <Text fontWeight="bold">Votos</Text>
+                    <Icon name="arrow_downward" />
+                  </FlexBox>
+                  <StyledDateToggle
+                    onClick={handleSortOrder}
+                    color={colors.gray.gray3}
+                  >
+                    Fecha
+                  </StyledDateToggle>
                 </FlexBox>
-                <Text color={colors.gray.gray3}>Fecha</Text>
-              </FlexBox>
-            </VotesDateContainer>
-            <ScrollDiv>
-              <NewResourceButton
-                onClick={
-                  user ? () => setIsOpen(!isOpen) : () => handleAccessModal()
-                }
-              >
-                + Crear nuevo recurso
-              </NewResourceButton>
+              </VotesDateContainer>
+              <ScrollDiv>
+                <NewResourceButton
+                  onClick={
+                    user ? () => setIsOpen(!isOpen) : () => handleAccessModal()
+                  }
+                >
+                  + Crear nuevo recurso
+                </NewResourceButton>
+                <ResourceCardList
+                  handleAccessModal={handleAccessModal}
+                  filters={filters}
+                  sortOrder={sortOrder}
+                />
+              </ScrollDiv>
+            </ResourcesContainer>
+          </WhiteContainer>
 
-              {/* LA CARD */}
-
-              <ResourceCardList
-                handleAccessModal={handleAccessModal}
-                filters={filters}
-                sortOrder="desc"
-              />
-            </ScrollDiv>
-          </ResourcesContainer>
-        </WhiteContainer>
-
-        {isFiltersOpen && (
-          <MobileFiltersContainer
-            data-testid="mobile-filters"
-            className={isFiltersOpen ? 'open' : 'close'}
-          >
-            <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
-            <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
-            <CloseFilterButton
-              data-testid="close-filters-button"
-              onClick={handleFiltersClose}
+          {isFiltersOpen && (
+            <MobileFiltersContainer
+              data-testid="mobile-filters"
+              className={isFiltersOpen ? 'open' : 'close'}
             >
-              Cerrar
-            </CloseFilterButton>
-          </MobileFiltersContainer>
-        )}
-        <ContainerWhiteScroll>
-          <WhiteScrollDiv>
-            <MyFavoritesList />
-          </WhiteScrollDiv>
-          <WhiteScrollDiv>
-            <MyResources />
-          </WhiteScrollDiv>
-        </ContainerWhiteScroll>
-      </Container>
-      {/* ==> ADD RESOURCE MODAL */}
-      <Modal
-        isOpen={isOpen}
-        toggleModal={() => setIsOpen(false)}
-        title="Nuevo Recurso"
-      >
-        <ResourceForm selectOptions={mappedTopics} />
-        <Button outline onClick={() => setIsOpen(false)}>
-          Cancelar
-        </Button>
+              <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
+              <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+              <CloseFilterButton
+                data-testid="close-filters-button"
+                onClick={handleFiltersClose}
+              >
+                Cerrar
+              </CloseFilterButton>
+            </MobileFiltersContainer>
+          )}
+          <ContainerWhiteScroll>
+            <WhiteScrollDiv>
+              <MyFavoritesList />
+            </WhiteScrollDiv>
+            <WhiteScrollDiv>
+              <MyResources />
+            </WhiteScrollDiv>
+          </ContainerWhiteScroll>
+        </Container>
+        {/* ==> ADD RESOURCE MODAL */}
+        <Modal isOpen={isOpen} toggleModal={toggleModal} title="Nuevo Recurso">
+          <ResourceForm selectOptions={mappedTopics} />
+          <Button outline onClick={toggleModal}>
+            Cancelar
+          </Button>
+        </Modal>
+      </MainContainer>
+      {/* RESTRICTED ACCES MODAL */}
+      <Modal isOpen={isAccessModalOpen} toggleModal={handleAccessModal}>
+        <AccessModalContent
+          handleLoginModal={handleLoginModal}
+          handleRegisterModal={handleRegisterModal}
+          handleAccessModal={handleAccessModal}
+        />
       </Modal>
-    </MainContainer>
+      <Modal
+        isOpen={isLoginOpen || isRegisterOpen}
+        toggleModal={() =>
+          isLoginOpen ? setIsLoginOpen(false) : setIsRegisterOpen(false)
+        }
+      >
+        {isLoginOpen && (
+          <Login
+            handleLoginModal={handleLoginModal}
+            handleRegisterModal={handleRegisterModal}
+          />
+        )}
+      </Modal>
+    </>
   )
 }
 

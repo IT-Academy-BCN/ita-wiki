@@ -23,16 +23,12 @@ const NavbarStyled = styled(FlexBox)`
 
   width: 100%;
   @media (max-height: 870px) {
-    padding-top: 50px;
-    min-height: 120px;
   }
   @media (max-width: 768px) {
     justify-content: space-between;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    padding-top: 30px;
     position: relative;
-    top: -30px;
   }
 `
 
@@ -104,8 +100,11 @@ const MenuItems = styled(FlexBox)`
   }
 `
 
+type TNavbar = {
+  toggleModal: () => void
+}
 
-export const Navbar: React.FC = () => {
+export const Navbar = ({ toggleModal }: TNavbar) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const toggleMenu = () => {
@@ -119,6 +118,7 @@ export const Navbar: React.FC = () => {
         data-testid="new-post-button"
         src={PlusImg}
         alt="newPost"
+        onClick={toggleModal}
       />
       <LangDesktop>
         <SelectLanguage />
