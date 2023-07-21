@@ -104,7 +104,6 @@ const MenuItems = styled(FlexBox)`
   }
 `
 
-
 export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -115,11 +114,7 @@ export const Navbar: React.FC = () => {
   return (
     <NavbarStyled direction="row">
       <HamburgerMenu src={MenuHamburger} alt="menu" onClick={toggleMenu} />
-      <ButtonImg
-        data-testid="new-post-button"
-        src={PlusImg}
-        alt="newPost"
-      />
+      <ButtonImg data-testid="new-post-button" src={PlusImg} alt="newPost" />
       <LangDesktop>
         <SelectLanguage />
       </LangDesktop>

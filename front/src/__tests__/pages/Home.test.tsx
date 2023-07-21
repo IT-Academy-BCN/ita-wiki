@@ -54,7 +54,6 @@ describe('Home page', () => {
 
     expect(screen.queryByText(/registrarme/i)).not.toBeInTheDocument()
 
-    screen.debug()
   })
 
   it('shows register modal when user clicks its button', () => {
