@@ -6,6 +6,7 @@ import { Modal } from './Modal'
 import { ResourceTitleLink, TResourceTitleLink } from './ResourceTitleLink'
 import { StatusFilterWidget } from './StatusFilterWidget'
 import SelectGroup from './SelectGroup'
+import TabsManager from './TabsManager'
 import TextareaGroup from './TextareaGroup'
 import { TypesFilterWidget } from './TypesFilterWidget'
 import { VoteCounter } from './VoteCounter'
@@ -15,7 +16,6 @@ import { SelectLanguage } from './SelectLanguage'
 import { Tooltip } from './Tooltip'
 import type { TCardResource } from '../organisms/CardResource'
 
-
 export {
   AccessModalContent,
   CategoryBlock,
@@ -24,6 +24,7 @@ export {
   ResourceTitleLink,
   SelectGroup,
   StatusFilterWidget,
+  TabsManager,
   TextareaGroup,
   TypesFilterWidget,
   CreateAuthor,

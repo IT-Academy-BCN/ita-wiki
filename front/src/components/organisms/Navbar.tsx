@@ -9,6 +9,8 @@ import closeButton from '../../assets/icons/x.svg'
 import PlusImg from '../../assets/icons/plus.svg'
 import MenuHamburger from '../../assets/icons/menu-left.svg'
 import SettingsImg from '../../assets/icons/settings.svg'
+import { Modal } from '../molecules/Modal'
+import { SettingsManager } from './SettingsManager'
 
 const NavbarStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
@@ -104,46 +106,57 @@ const MenuItems = styled(FlexBox)`
   }
 `
 
-
 export const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
+  const handleSettingsModal = () => {
+    setIsSettingsOpen(!isSettingsOpen)
+  }
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
 
   return (
-    <NavbarStyled direction="row">
-      <HamburgerMenu src={MenuHamburger} alt="menu" onClick={toggleMenu} />
-      <ButtonImg
-        data-testid="new-post-button"
-        src={PlusImg}
-        alt="newPost"
-      />
-      <LangDesktop>
-        <SelectLanguage />
-      </LangDesktop>
-      <ButtonImg
-        data-testid="settings-button"
-        src={SettingsImg}
-        alt="settings"
-      />
-      <UserButton />
-      {isMenuOpen && (
-        <>
-          <BgWhite />
-          <MenuItems>
-            <CloseButton
-              data-testid="close-button"
-              src={closeButton}
-              alt="close"
-              onClick={toggleMenu}
-            />
-            <CategoriesList />
-          </MenuItems>
-        </>
-      )}
-    </NavbarStyled>
+    <>
+      <NavbarStyled direction="row">
+        <HamburgerMenu src={MenuHamburger} alt="menu" onClick={toggleMenu} />
+        <ButtonImg data-testid="new-post-button" src={PlusImg} alt="newPost" />
+        <LangDesktop>
+          <SelectLanguage />
+        </LangDesktop>
+        <ButtonImg
+          data-testid="settings-button"
+          src={SettingsImg}
+          alt="settings"
+          onClick={() => handleSettingsModal()}
+        />
+        <UserButton />
+        {isMenuOpen && (
+          <>
+            <BgWhite />
+            <MenuItems>
+              <CloseButton
+                data-testid="close-button"
+                src={closeButton}
+                alt="close"
+                onClick={toggleMenu}
+              />
+              <CategoriesList />
+            </MenuItems>
+          </>
+        )}
+      </NavbarStyled>
+      <Modal
+        title="Ajustes"
+        isOpen={isSettingsOpen}
+        toggleModal={() =>
+          isSettingsOpen ? setIsSettingsOpen(false) : setIsSettingsOpen(false)
+        }
+      >
+        {isSettingsOpen && <SettingsManager />}
+      </Modal>
+    </>
   )
 }
 
