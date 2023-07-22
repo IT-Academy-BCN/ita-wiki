@@ -15,19 +15,6 @@ const ImgStyled = styled.img`
   margin-top: ${dimensions.spacing.lg};
 `
 
-// const MobileStyled = styled.div`
-//   display: block;
-//   @media only ${device.Tablet} {
-//     display: none;
-//   }
-// `
-// const DesktopStyled = styled.div`
-//   display: none;
-//   @media only ${device.Tablet} {
-//     display: block;
-//   }
-// `
-
 const SpinnerStyled = styled(Spinner)`
   margin: 0 auto;
 `
