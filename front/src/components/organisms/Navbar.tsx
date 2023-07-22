@@ -150,9 +150,7 @@ export const Navbar: React.FC = () => {
       <Modal
         title="Ajustes"
         isOpen={isSettingsOpen}
-        toggleModal={() =>
-          isSettingsOpen ? setIsSettingsOpen(false) : setIsSettingsOpen(false)
-        }
+        toggleModal={() => setIsSettingsOpen(false)}
       >
         {isSettingsOpen && <SettingsManager />}
       </Modal>
