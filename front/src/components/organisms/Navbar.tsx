@@ -1,33 +1,28 @@
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import styled from 'styled-components'
-import { FlexBox, colors, dimensions } from '../../styles'
-import { Title } from '../atoms'
-import { SelectLanguage } from '../molecules/SelectLanguage'
+import { FlexBox, colors, device, dimensions } from '../../styles'
+import { Icon, Title } from '../atoms'
 import { UserButton } from '../molecules/UserButton'
+import { SelectLanguage } from '../molecules'
 import { CategoriesList } from './CategoriesList'
-import closeButton from '../../assets/icons/x.svg'
-import PlusImg from '../../assets/icons/plus.svg'
-import MenuHamburger from '../../assets/icons/menu-left.svg'
-import SettingsImg from '../../assets/icons/settings.svg'
 
 const NavbarStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
   justify-content: end;
   align-items: center;
-  padding-right: 2rem;
-  height: 80px;
+  padding-right: ${dimensions.spacing.xl};
+  height: 5rem;
 
   ${Title} {
     color: ${colors.white};
   }
-
   width: 100%;
   @media (max-height: 870px) {
     padding-top: 50px;
     min-height: 120px;
   }
-  @media (max-width: 768px) {
-    justify-content: space-between;
+  @media (max-width: 468px) {
+    background-color: ${colors.white};
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     padding-top: 30px;
@@ -35,116 +30,108 @@ const NavbarStyled = styled(FlexBox)`
     top: -30px;
   }
 `
-
-const LangDesktop = styled.div`
-  @media (max-width: 768px) {
-    display: none;
-  }
-`
-const HamburgerMenu = styled.img`
-  margin-right: 1.5rem;
-  width: 2rem;
-  height: 2rem;
-  cursor: pointer;
+const IconStyled = styled.div`
   display: none;
+  @media ${device.Tablet} {
+    margin: 0px 15px 0px 15px;
+    padding: 6px;
+    width: 3rem;
+    height: ${dimensions.spacing.xxl};
+    border-radius: 20%;
+    background-color: ${colors.white};
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 
-  @media (max-width: 768px) {
-    display: block;
+    display: flex;
   }
 `
-
-const ButtonImg = styled.img`
-  margin: 0px 15px 0px 15px;
-  padding: 6px;
-  width: 3rem;
-  height: 2.5rem;
-  border-radius: 20%;
-  background-color: ${colors.white};
-  cursor: pointer;
-  right: ${dimensions.spacing.base};
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`
-
-const CloseButton = styled.img`
-  width: 3rem;
-  height: 2.5rem;
-  cursor: pointer;
-  position: fixed;
-  top: 20px;
+const HamburgerMenu = styled.button<{ open: boolean }>`
+  position: absolute;
+  top: 71px;
   left: 20px;
-`
-const BgWhite = styled(FlexBox)`
-  position: absolute;
-  top: -70px;
-  right: -20px;
-  background-color: ${colors.white};
-  z-index: 999;
-  width: 100vh;
-  height: 100vh;
-  @media (min-width: 769px) {
-    display: none;
-  }
-`
-
-const MenuItems = styled(FlexBox)`
+  display: flex;
   flex-direction: column;
-  position: absolute;
-  top: -40px;
-  right: 0;
-  padding: 15px;
+  justify-content: space-around;
+  width: 1.8rem;
+  height: 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+  margin-left: ${dimensions.spacing.xl};
+  &:focus {
+    outline: none;
+  }
+
+  div {
+    height: 0.2rem;
+    background-color: ${colors.black.black1};
+    border-radius: 10px;
+    transition: all 0.3s linear;
+    position: relative;
+    transform-origin: 1px;
+    &:first-child {
+      width: ${({ open }) => (open ? '2rem' : '1.5rem')};
+      transform: ${({ open }) => (open ? 'rotate(45deg)' : 'rotate(0)')};
+    }
+
+    &:nth-child(2) {
+      width: 2rem;
+      opacity: ${({ open }) => (open ? '0' : '1')};
+      transform: ${({ open }) => (open ? 'translateX(20px)' : 'translateX(0)')};
+    }
+
+    &:last-child {
+      width: ${({ open }) => (open ? '2rem' : '1.5rem')};
+      transform: ${({ open }) => (open ? 'rotate(-45deg)' : 'rotate(0)')};
+    }
+  }
+
+  @media ${device.Tablet} {
+    display: none;
+  }
+`
+const MenuItems = styled(FlexBox)<{ open: boolean }>`
+  flex-direction: column;
   background-color: ${colors.white};
-  z-index: 999;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 115vh;
+  height: 100vh;
+  transition: transform 0.3s ease-in-out;
+  transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(-100%)')};
   @media (min-width: 769px) {
     display: none;
   }
 `
-
-
-export const Navbar: React.FC = () => {
+export const Navbar: FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
-
   return (
-    <NavbarStyled direction="row">
-      <HamburgerMenu src={MenuHamburger} alt="menu" onClick={toggleMenu} />
-      <ButtonImg
-        data-testid="new-post-button"
-        src={PlusImg}
-        alt="newPost"
-      />
-      <LangDesktop>
-        <SelectLanguage />
-      </LangDesktop>
-      <ButtonImg
-        data-testid="settings-button"
-        src={SettingsImg}
-        alt="settings"
-      />
+    <NavbarStyled direction="row" data-testid="navbar">
+      <HamburgerMenu
+        open={isMenuOpen}
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        data-testid="hamburger-menu"
+      >
+        <div />
+        <div />
+        <div />
+      </HamburgerMenu>
+      <IconStyled data-testid="new-post-button">
+        <Icon name="add" color={colors.gray.gray3} />
+      </IconStyled>
+      <SelectLanguage />
+      <IconStyled data-testid="settings-button">
+        <Icon name="settings" color={colors.gray.gray3} />
+      </IconStyled>
       <UserButton />
-      {isMenuOpen && (
-        <>
-          <BgWhite />
-          <MenuItems>
-            <CloseButton
-              data-testid="close-button"
-              src={closeButton}
-              alt="close"
-              onClick={toggleMenu}
-            />
-            <CategoriesList />
-          </MenuItems>
-        </>
-      )}
+      <MenuItems open={isMenuOpen} data-testid="menu-items">
+        <CategoriesList />
+      </MenuItems>
     </NavbarStyled>
   )
 }
-
 export default styled(Navbar)``

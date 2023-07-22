@@ -1,14 +1,20 @@
 import { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useAuth } from '../../context/AuthProvider'
-import { FlexBox, colors, dimensions } from '../../styles'
+import { FlexBox, colors, device, dimensions } from '../../styles'
 import userAvatar from '../../assets/icons/profile-avatar.svg'
 import defaultAvatar from '../../assets/icons/user.svg'
-import Login  from '../organisms/Login'
+import Login from '../organisms/Login'
 import { Modal } from './Modal'
 
+const StyledFlexBox = styled(FlexBox)`
+  display: none;
+  @media only ${device.Tablet} {
+    display: block;
+  }
+`
 const AvatarImage = styled.img`
-  padding: 6px;  
+  padding: 6px;
   width: 3rem;
   height: 2.5rem;
   border-radius: 20%;
@@ -24,7 +30,6 @@ export const UserButton: React.FC = () => {
 
   const avatarRef = useRef<HTMLImageElement>(null)
 
-
   const handleLoginModal = () => {
     setIsLoginOpen(!isLoginOpen)
   }
@@ -32,25 +37,24 @@ export const UserButton: React.FC = () => {
     setIsRegisterOpen(!isRegisterOpen)
   }
 
-
   return (
-    <FlexBox>
+    <StyledFlexBox>
       {!user && (
-          <AvatarImage
-            data-testid="avatarImage"
-            src={defaultAvatar}
-            alt="Avatar"
-            onClick={handleLoginModal}
-            ref={avatarRef}
-          />  
+        <AvatarImage
+          data-testid="avatarImage"
+          src={defaultAvatar}
+          alt="Avatar"
+          onClick={handleLoginModal}
+          ref={avatarRef}
+        />
       )}
       {user && (
-          <AvatarImage
-            data-testid="avatarImage"
-            src={user.avatar ? user.avatar : userAvatar}
-            alt="Avatar"
-            ref={avatarRef}
-          />
+        <AvatarImage
+          data-testid="avatarImage"
+          src={user.avatar ? user.avatar : userAvatar}
+          alt="Avatar"
+          ref={avatarRef}
+        />
       )}
       <Modal
         isOpen={isLoginOpen || isRegisterOpen}
@@ -65,7 +69,7 @@ export const UserButton: React.FC = () => {
           />
         )}
       </Modal>
-    </FlexBox>
+    </StyledFlexBox>
   )
 }
 
