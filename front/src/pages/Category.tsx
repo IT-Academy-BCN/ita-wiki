@@ -350,7 +350,7 @@ const Category: FC = () => {
             <Link to={paths.home}>
               <ImageStyled src={icons.itLogo} alt="logo" />
             </Link>
-            <CategoriesList />
+            <CategoriesList renderDesktopStyle />
           </LateralDiv>
           {/* ==> CONTAINER CON LAS LAS COLUMNAS */}
           <DivStyled>
