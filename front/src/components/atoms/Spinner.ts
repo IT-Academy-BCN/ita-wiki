@@ -10,10 +10,16 @@ from {
     }
 `
 
-const Spinner = styled.div`
-  height: 133px;
-  width: 133px;
-  border: 20px solid ${colors.outlineHover};
+type TSpinner = {
+  size: 'small' | 'medium' | 'big'
+}
+
+const Spinner = styled.div<TSpinner>`
+  height: ${({ size }) =>
+    (size === 'small' && '50px') || (size === 'medium' && '70px') || '133px'};
+  width: ${({ size }) =>
+    (size === 'small' && '50px') || (size === 'medium' && '70px') || '133px'};
+  border: 10px solid ${colors.outlineHover};
   border-top-color: ${colors.primary};
   border-right-color: ${colors.primary};
   border-radius: 50%;

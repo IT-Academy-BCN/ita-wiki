@@ -1,7 +1,11 @@
 /* eslint-disable no-ex-assign */
 import { Context, Next } from 'koa'
 import { ZodError } from 'zod'
-import { UnauthorizedError, ValidationError } from '../helpers/errors'
+import {
+  DefaultError,
+  UnauthorizedError,
+  ValidationError,
+} from '../helpers/errors'
 
 const errorMiddleware = async (ctx: Context, next: Next) => {
   try {
@@ -11,6 +15,11 @@ const errorMiddleware = async (ctx: Context, next: Next) => {
       error = new ValidationError(error.errors)
     } else if (error?.errorInfo?.code === 'auth/id-token-expired') {
       error = new UnauthorizedError('refresh_token')
+    } else if (error.code === 'P2002') {
+      error = new DefaultError(
+        409,
+        `Error, ${error.meta.target} already exists.`
+      )
     }
     ctx.status = error.status || 500
     ctx.body = {
