@@ -4,14 +4,14 @@ import { colors } from '../../styles'
 
 describe('Spinner', () => {
   it('renders correctly', () => {
-    render(<Spinner data-testid="spinner" />)
+    render(<Spinner size="medium" data-testid="spinner" />)
 
     const spinner = screen.getByTestId('spinner')
     expect(spinner).toBeInTheDocument()
-    expect(screen.getByTestId('spinner')).toHaveStyle({ height: '133px' })
-    expect(screen.getByTestId('spinner')).toHaveStyle({ width: '133px' })
+    expect(screen.getByTestId('spinner')).toHaveStyle({ height: '70px' })
+    expect(screen.getByTestId('spinner')).toHaveStyle({ width: '70px' })
     expect(screen.getByTestId('spinner')).toHaveStyle({
-      border: `20px solid ${colors.outlineHover}`,
+      border: `10px solid ${colors.outlineHover}`,
     })
     expect(screen.getByTestId('spinner')).toHaveStyle({
       'border-top-color': `${colors.primary}`,

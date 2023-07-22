@@ -1539,7 +1539,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/ForbiddenError"
-                  - example:
+                  - example: &a6
                       message: Access denied. You don't have permissions
         "405":
           description: Invalid token
@@ -1547,6 +1547,92 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
+    patch:
+      tags:
+        - users
+      description: Allows a logged in ADMIN user to modify another user.
+      summary: Patch a user.
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                  example: user@example.cat
+                dni:
+                  type: string
+                password:
+                  type: string
+                  minLength: 8
+                  pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*$
+                name:
+                  type: string
+                status:
+                  type: string
+                  enum:
+                    - ACTIVE
+                    - INACTIVE
+                role:
+                  type: string
+                  enum:
+                    - ADMIN
+                    - REGISTERED
+                    - MENTOR
+                specialization:
+                  type: string
+                createdAt:
+                  type: string
+                updatedAt:
+                  type: string
+              required:
+                - id
+              additionalProperties: false
+      responses:
+        "204":
+          description: User has been modified
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "403":
+          description: Forbidden. Acces denied.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ForbiddenError"
+                  - example: *a6
+        "404":
+          description: Not found
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+        "409":
+          description: Conflict, data already exists.
         "500":
           description: Other error
           content:
