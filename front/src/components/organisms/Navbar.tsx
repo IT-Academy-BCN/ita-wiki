@@ -107,6 +107,7 @@ const MenuItems = styled(FlexBox)<{ open: boolean }>`
     display: none;
   }
 `
+
 export const Navbar: FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   return (
@@ -129,7 +130,7 @@ export const Navbar: FC = () => {
       </IconStyled>
       <UserButton />
       <MenuItems open={isMenuOpen} data-testid="menu-items">
-        <CategoriesList />
+        <CategoriesList renderDesktopStyle />
       </MenuItems>
     </NavbarStyled>
   )

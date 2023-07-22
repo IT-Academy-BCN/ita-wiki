@@ -21,6 +21,6 @@ export {
   MyFavoritesList,
   Login,
   Register,
-  CardResourceLink
+  CardResourceLink,
 }
 export type { TResourceForm, TResource, TCardResource}
