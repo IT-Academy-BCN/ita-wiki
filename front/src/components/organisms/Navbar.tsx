@@ -101,7 +101,7 @@ const MenuItems = styled(FlexBox)`
 `
 
 type TNavbar = {
-  toggleModal: () => void
+  toggleModal?: () => void
 }
 
 export const Navbar = ({ toggleModal }: TNavbar) => {
