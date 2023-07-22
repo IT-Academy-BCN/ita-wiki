@@ -102,7 +102,6 @@ const ResourcesContainer = styled(FlexBox)`
   padding: 1.2rem 1.5rem;
   justify-content: flex-start;
   align-items: flex-start;
-  /* overflow: scroll; */
   overflow-y: auto;
 
   &::-webkit-scrollbar {

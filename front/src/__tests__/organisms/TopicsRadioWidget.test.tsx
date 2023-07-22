@@ -4,6 +4,11 @@ import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
 
+afterEach(() => {
+  mswServer.resetHandlers()
+  vi.restoreAllMocks()
+})
+
 describe('TopicsRadioWidget', () => {
   it('renders correctly on succesfull API call', async () => {
     const setTopic = vi.fn()

@@ -102,7 +102,7 @@ const ResourceCardList: FC<TResourceCardList> = ({
   if (error) return <p>Ha habido un error...</p>
 
   return (
-    <StyledFlexBox direction="column">
+    <StyledFlexBox direction="column" data-testid="resource-list">
       {isLoading && <SpinnerStyled size="medium" role="status" />}
       {data && data?.length > 0 ? (
         sortedItems?.map((resource: TResource) => (

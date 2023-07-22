@@ -52,7 +52,7 @@ it('renders correctly', () => {
   expect(screen.getByTestId('filters-container')).toBeInTheDocument()
   expect(screen.getByTestId('types-filter')).toBeInTheDocument()
   expect(screen.getByTestId('status-filter')).toBeInTheDocument()
-  expect(screen.getByTestId('resource-card')).toBeInTheDocument()
+  expect(screen.getByTestId('resource-list')).toBeInTheDocument()
   expect(screen.getByText('Mis recursos')).toBeInTheDocument()
   expect(screen.getByText('Recursos favoritos')).toBeInTheDocument()
 })

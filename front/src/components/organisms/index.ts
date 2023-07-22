@@ -1,7 +1,8 @@
 import { CategoriesList } from './CategoriesList'
 import { HowToHelpCard } from './HowToHelpCard'
 import { ResourceCardList, TResource } from './ResourceCardList'
-import type  {  TResourceForm } from './ResourceForm'
+import type { TResourceForm } from './ResourceForm'
+import ResourceForm from './ResourceForm'
 import { TopicsRadioWidget } from './TopicsRadioWidget'
 import { Navbar } from './Navbar'
 import { MyFavoritesList } from './MyFavoritesList'
@@ -21,6 +22,7 @@ export {
   MyFavoritesList,
   Login,
   Register,
-  CardResourceLink
+  CardResourceLink,
+  ResourceForm,
 }
-export type { TResourceForm, TResource, TCardResource}
+export type { TResourceForm, TResource, TCardResource }
