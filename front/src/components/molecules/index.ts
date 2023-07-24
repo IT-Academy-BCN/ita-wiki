@@ -1,6 +1,4 @@
 import { AccessModalContent } from './AccessModalContent'
-// eslint-disable-next-line import/no-cycle
-import { CardResource, TCardResource } from './CardResource'
 import { CategoryBlock } from './CategoryBlock'
 import { CreateAuthor } from './CreateAuthor'
 import InputGroup from './InputGroup'
@@ -15,11 +13,11 @@ import { CardHome } from './CardHome'
 import { UserButton } from './UserButton'
 import { SelectLanguage } from './SelectLanguage'
 import { Tooltip } from './Tooltip'
+import type { TCardResource } from '../organisms/CardResource'
 
 
 export {
   AccessModalContent,
-  CardResource,
   CategoryBlock,
   InputGroup,
   Modal,
