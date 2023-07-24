@@ -1626,7 +1626,6 @@ paths:
                       enum: *a5
                     createdAt:
                       type: string
-
                       format: date-time
                     updatedAt:
                       type: string

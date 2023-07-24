@@ -6,7 +6,6 @@ import { pathRoot } from './routes'
 import { authenticate, authorize, validate } from '../middleware'
 import { userPatchSchema } from '../schemas'
 
-
 const usersRouter = new Router()
 usersRouter.prefix(pathRoot.v1.users)
 
@@ -19,4 +18,5 @@ usersRouter.patch(
   validate(z.object({ body: userPatchSchema })),
   patchUser
 )
+
 export { usersRouter }

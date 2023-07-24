@@ -20,4 +20,3 @@ export { postMedia } from './media/postMediaController'
 export { getTypes } from './type/typeController'
 export { getUsers } from './users/get'
 export { patchUser } from './users/patch'
-
