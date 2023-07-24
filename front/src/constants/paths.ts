@@ -4,4 +4,5 @@ export const paths = {
   resource: '/category/:categoryId',
   information: '/info',
   accountAdmin: '/useradmin',
+  profile: '/profile'
 }

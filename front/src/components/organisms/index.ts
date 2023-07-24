@@ -1,28 +1,31 @@
+import { CardResourceLink } from './CardResourceLink'
 import { CategoriesList } from './CategoriesList'
 import { HowToHelpCard } from './HowToHelpCard'
-import { ResourceCardList, TResource } from './ResourceCardList'
-import type { TResourceForm } from './ResourceForm'
-import ResourceForm from './ResourceForm'
-import { TopicsRadioWidget } from './TopicsRadioWidget'
-import { Navbar } from './Navbar'
+import Login from './Login'
 import { MyFavoritesList } from './MyFavoritesList'
 import { MyResources } from './MyResources'
-import Login from './Login'
+import { Navbar } from './Navbar'
+import { ResourceCardList, TResource } from './ResourceCardList'
 import Register from './Register'
-import { CardResourceLink } from './CardResourceLink'
+import ResourceForm from './ResourceForm'
+import { SettingsManager } from './SettingsManager'
 import type { TCardResource } from './CardResource'
+import { TopicsRadioWidget } from './TopicsRadioWidget'
+import type { TResourceForm } from './ResourceForm'
 
 export {
-  ResourceCardList,
-  TopicsRadioWidget,
-  MyResources,
-  HowToHelpCard,
-  CategoriesList,
-  Navbar,
-  MyFavoritesList,
-  Login,
-  Register,
   CardResourceLink,
+  CategoriesList,
+  HowToHelpCard,
+  Login,
+  MyFavoritesList,
+  MyResources,
+  Navbar,
+  Register,
+  ResourceCardList,
   ResourceForm,
+  SettingsManager,
+  TopicsRadioWidget,
 }
+
 export type { TResourceForm, TResource, TCardResource }
