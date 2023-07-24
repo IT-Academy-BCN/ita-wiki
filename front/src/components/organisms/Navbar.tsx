@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../../styles'
-import { Icon, Title } from '../atoms'
+import { Icon, Title, HamburgerMenu } from '../atoms'
 import { UserButton } from '../molecules/UserButton'
 import { SelectLanguage } from '../molecules'
 import { CategoriesList } from './CategoriesList'
@@ -42,53 +42,7 @@ const IconStyled = styled.div`
     display: flex;
   }
 `
-const HamburgerMenu = styled.button<{ open: boolean }>`
-  position: absolute;
-  top: 71px;
-  left: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 1.8rem;
-  height: 2rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  z-index: 10;
-  margin-left: ${dimensions.spacing.xl};
-  &:focus {
-    outline: none;
-  }
 
-  div {
-    height: 0.2rem;
-    background-color: ${colors.black.black1};
-    border-radius: 10px;
-    transition: all 0.3s linear;
-    position: relative;
-    transform-origin: 1px;
-    &:first-child {
-      width: ${({ open }) => (open ? '2rem' : '1.5rem')};
-      transform: ${({ open }) => (open ? 'rotate(45deg)' : 'rotate(0)')};
-    }
-
-    &:nth-child(2) {
-      width: 2rem;
-      opacity: ${({ open }) => (open ? '0' : '1')};
-      transform: ${({ open }) => (open ? 'translateX(20px)' : 'translateX(0)')};
-    }
-
-    &:last-child {
-      width: ${({ open }) => (open ? '2rem' : '1.5rem')};
-      transform: ${({ open }) => (open ? 'rotate(-45deg)' : 'rotate(0)')};
-    }
-  }
-
-  @media ${device.Tablet} {
-    display: none;
-  }
-`
 const MenuItems = styled(FlexBox)<{ open: boolean }>`
   flex-direction: column;
   background-color: ${colors.white};
@@ -97,6 +51,7 @@ const MenuItems = styled(FlexBox)<{ open: boolean }>`
   left: 0;
   width: 100%;
   height: 100vh;
+  z-index: 20;
   transition: transform 0.3s ease-in-out;
   transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(-100%)')};
   @media (min-width: 769px) {
@@ -112,11 +67,7 @@ export const Navbar: FC = () => {
         open={isMenuOpen}
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         data-testid="hamburger-menu"
-      >
-        <div />
-        <div />
-        <div />
-      </HamburgerMenu>
+      />
       <IconStyled data-testid="new-post-button">
         <Icon name="add" color={colors.gray.gray3} />
       </IconStyled>
@@ -126,7 +77,7 @@ export const Navbar: FC = () => {
       </IconStyled>
       <UserButton />
       <MenuItems open={isMenuOpen} data-testid="menu-items">
-        <CategoriesList renderDesktopStyle />
+        <CategoriesList />
       </MenuItems>
     </NavbarStyled>
   )

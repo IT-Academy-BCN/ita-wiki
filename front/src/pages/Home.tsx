@@ -163,7 +163,7 @@ const Home: FC = () => {
           <Link to={paths.home}>
             <LogoImage src={icons.itLogo} alt="logo" />
           </Link>
-          <CategoriesList renderDesktopStyle />
+          <CategoriesList />
           <div style={{ height: '79px' }} />
         </LateralMenu>
         <ContainerMain>

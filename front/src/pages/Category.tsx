@@ -430,13 +430,13 @@ const Category: FC = () => {
   return (
     <>
       <MainContainer>
-        <Navbar toggleModal={toggleModal} />
+        <Navbar />
         <Container>
           <LateralDiv>
             <Link to={paths.home}>
               <ImageStyled src={icons.itLogo} alt="IT Academy logo" />
             </Link>
-            <CategoriesList renderDesktopStyle />
+            <CategoriesList />
           </LateralDiv>
 
           <MobileTopicsContainer>

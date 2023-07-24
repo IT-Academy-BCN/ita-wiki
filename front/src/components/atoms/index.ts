@@ -12,6 +12,7 @@ import Radio from './Radio'
 import Text from './Text'
 import Textarea from './Textarea'
 import ValidationMessage from './ValidationMessage'
+import HamburgerMenu from './HamburgerMenu'
 
 export {
   Button,
@@ -28,4 +29,5 @@ export {
   Textarea,
   Title,
   ValidationMessage,
+  HamburgerMenu
 }
