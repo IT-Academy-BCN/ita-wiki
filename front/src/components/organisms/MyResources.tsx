@@ -188,7 +188,7 @@ const MyResources = () => {
         </StyledText>
       )}
 
-      {isLoading && user && <Spinner />}
+      {isLoading && user && <Spinner size="medium" />}
 
       {!isLoading &&
         !error &&
