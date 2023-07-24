@@ -370,10 +370,10 @@ paths:
                           type: string
                         name:
                           type: string
-                          example: React
+                          example: React Props
                         slug:
                           type: string
-                          example: react
+                          example: react-props
                         categoryId:
                           type: string
                       required:
@@ -392,6 +392,116 @@ paths:
                   - examples:
                       - message: No category found with this id
                       - message: No category found with this slug
+    post:
+      tags:
+        - topics
+      description: Creates a new topic, given a name and a category id, as long as the
+        requestor is logged in and has role MENTOR or higher.
+      summary: Creates a new topic.
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: React Props
+                categoryId:
+                  type: string
+              required:
+                - name
+                - categoryId
+      responses:
+        "204":
+          description: New topic created succesfully.
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "403":
+          description: Forbidden. Acces denied.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ForbiddenError"
+                  - example: &a6
+                      message: Access denied. You don't have permissions
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
+    patch:
+      tags:
+        - topics
+      description: Modifies the name, slug and or categoryId of an existing topic.
+      summary: Patch a topic.
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                  example: Advanced React Props
+                categoryId:
+                  type: string
+              required:
+                - id
+              additionalProperties: false
+      responses:
+        "204":
+          description: Topic successully modified.
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: Topic not found
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
   /api/v1/resources/favorites:
     get:
       tags:
@@ -605,10 +715,10 @@ paths:
                                 type: string
                               name:
                                 type: string
-                                example: React
+                                example: React Props
                               slug:
                                 type: string
-                                example: react
+                                example: react-props
                               categoryId:
                                 type: string
                               createdAt:
@@ -860,10 +970,10 @@ paths:
                               type: string
                             name:
                               type: string
-                              example: React
+                              example: React Props
                             slug:
                               type: string
-                              example: react
+                              example: react-props
                             categoryId:
                               type: string
                             createdAt:
@@ -1035,10 +1145,10 @@ paths:
                               type: string
                             name:
                               type: string
-                              example: React
+                              example: React Props
                             slug:
                               type: string
-                              example: react
+                              example: react-props
                             categoryId:
                               type: string
                             createdAt:
@@ -1174,10 +1284,10 @@ paths:
                                     type: string
                                   name:
                                     type: string
-                                    example: React
+                                    example: React Props
                                   slug:
                                     type: string
-                                    example: react
+                                    example: react-props
                                   categoryId:
                                     type: string
                                   createdAt:
@@ -1516,8 +1626,10 @@ paths:
                       enum: *a5
                     createdAt:
                       type: string
+                      format: date-time
                     updatedAt:
                       type: string
+                      format: date-time
                   required:
                     - id
                     - email
@@ -1539,8 +1651,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/ForbiddenError"
-                  - example: &a6
-                      message: Access denied. You don't have permissions
+                  - example: *a6
         "405":
           description: Invalid token
           content:
@@ -1601,8 +1712,10 @@ paths:
                   type: string
                 createdAt:
                   type: string
+                  format: date-time
                 updatedAt:
                   type: string
+                  format: date-time
               required:
                 - id
               additionalProperties: false
