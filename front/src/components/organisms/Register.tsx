@@ -101,14 +101,6 @@ const TextDecorationStyled = styled.span`
   cursor: pointer;
 `
 
-const StyledSpinner = styled(Spinner)`
-  width: 1.15rem;
-  height: 1.15rem;
-  border: 3px solid ${colors.outlineHover};
-  border-top-color: ${colors.primary};
-  border-right-color: ${colors.primary};
-`
-
 type TForm = z.infer<typeof UserRegisterSchema>
 
 type TCategory = {
@@ -327,7 +319,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             </ButtonStyled>
           ) : (
             <Button disabled={isLoading}>
-              {isLoading ? <StyledSpinner /> : 'Registrarme'}
+              {isLoading ? <Spinner size="xsmall" /> : 'Registrarme'}
             </Button>
           )}
         </GridAreaStyled>

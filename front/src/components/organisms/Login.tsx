@@ -63,14 +63,6 @@ const TextDecorationStyled = styled.span`
   margin-bottom: ${dimensions.spacing.base};
 `
 
-const StyledSpinner = styled(Spinner)`
-  width: 1.15rem;
-  height: 1.15rem;
-  border: 3px solid ${colors.outlineHover};
-  border-top-color: ${colors.primary};
-  border-right-color: ${colors.primary};
-`
-
 type TForm = {
   dni: string
   password: string
@@ -204,7 +196,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
           </ButtonStyled>
         ) : (
           <Button disabled={isLoading}>
-            {isLoading ? <StyledSpinner /> : 'Login'}
+            {isLoading ? <Spinner size="xsmall" /> : 'Login'}
           </Button>
         )}
       </FormStyled>
