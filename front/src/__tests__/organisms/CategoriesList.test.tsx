@@ -6,7 +6,7 @@ import { errorHandlers } from '../../__mocks__/handlers'
 
 describe('CategoriesList', () => {
   it('renders correctly on success', async () => {
-    render(<CategoriesList renderDesktopStyle={false} />)
+    render(<CategoriesList />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
 
@@ -19,7 +19,7 @@ describe('CategoriesList', () => {
 
   it('renders correctly on error', async () => {
     mswServer.use(...errorHandlers)
-    render(<CategoriesList renderDesktopStyle={false} />)
+    render(<CategoriesList />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
 
@@ -31,7 +31,7 @@ describe('CategoriesList', () => {
   })
 
   it.skip('changes the url path when clicking a category', async () => {
-    render(<CategoriesList renderDesktopStyle={false} />)
+    render(<CategoriesList />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
 
