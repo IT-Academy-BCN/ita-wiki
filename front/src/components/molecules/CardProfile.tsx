@@ -114,14 +114,14 @@ const UserActivityWrapper = styled(FlexBox)`
 `
 
 const CenteredCounter = styled(FlexBox)`
-  width: 60%;
+  flex: 1;
   @media only ${device.Laptop} {
     width: auto;
   }
 `
 
 const SideCounter = styled(FlexBox)`
-  width: 20%;
+  flex: 1;
   @media only ${device.Laptop} {
     width: auto;
   }
