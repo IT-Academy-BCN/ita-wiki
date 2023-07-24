@@ -60,7 +60,7 @@ const Counter: FC<TCounter> = ({
 }) => (
   <CounterWrapper>
     <IconStyled name={ icon } wght={ 600 } fill={ 0 } />
-    <CounterStyled>
+    <CounterStyled data-testid={ text }>
     { number }
     </CounterStyled>
     <TextStyled>

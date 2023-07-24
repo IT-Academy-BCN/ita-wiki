@@ -25,12 +25,11 @@ describe('BackButton', () => {
     expect(button).toBeInTheDocument()
   })
 
-  it('navigates to the previous page on click event', async () => {
+  it('triggers navigation to the previous page on click event', async () => {
     render(
       <BackButton onClick={ mockClick } />
     )
     const button = screen.getByText(/volver/i)
-    expect(button).toBeInTheDocument()
     fireEvent.click(button)
     await waitFor(() => {
     expect(navigate).toHaveBeenCalledWith(-1)
