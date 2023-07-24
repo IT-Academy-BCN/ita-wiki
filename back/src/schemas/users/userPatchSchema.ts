@@ -16,7 +16,7 @@ export const userPatchSchema = z
     status: z.enum(['ACTIVE', 'INACTIVE']).optional(),
     role: z.enum(['ADMIN', 'REGISTERED', 'MENTOR']).optional(),
     specialization: z.string().optional(),
-    createdAt: z.date().optional(),
-    updatedAt: z.date().optional(),
+    createdAt: z.string().datetime().optional(),
+    updatedAt: z.string().datetime().optional(),
   })
   .strict()

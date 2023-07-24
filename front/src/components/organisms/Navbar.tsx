@@ -18,16 +18,12 @@ const NavbarStyled = styled(FlexBox)`
   }
   width: 100%;
   @media (max-height: 870px) {
-    padding-top: 50px;
-    min-height: 120px;
   }
   @media (max-width: 468px) {
     background-color: ${colors.white};
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    padding-top: 30px;
     position: relative;
-    top: -30px;
   }
 `
 const IconStyled = styled.div`
