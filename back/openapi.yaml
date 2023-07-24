@@ -1626,8 +1626,10 @@ paths:
                       enum: *a5
                     createdAt:
                       type: string
+                      format: date-time
                     updatedAt:
                       type: string
+                      format: date-time
                   required:
                     - id
                     - email
@@ -1710,8 +1712,10 @@ paths:
                   type: string
                 createdAt:
                   type: string
+                  format: date-time
                 updatedAt:
                   type: string
+                  format: date-time
               required:
                 - id
               additionalProperties: false
