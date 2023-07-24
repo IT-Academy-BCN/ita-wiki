@@ -430,7 +430,7 @@ const Category: FC = () => {
   return (
     <>
       <MainContainer>
-        <Navbar />
+        <Navbar toggleModal={toggleModal} />
         <Container>
           <LateralDiv>
             <Link to={paths.home}>

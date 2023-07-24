@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../../styles'
 import { Icon, Title, HamburgerMenu } from '../atoms'
@@ -63,7 +63,7 @@ const MenuItems = styled(FlexBox)<{ open: boolean }>`
 type TNavbar = {
   toggleModal?: () => void
 }
-export const Navbar: FC = ({ toggleModal }: TNavbar) => {
+export const Navbar = ({ toggleModal }: TNavbar) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
