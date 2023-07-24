@@ -7,6 +7,10 @@ const server = setupServer(...handlers)
 
 beforeAll(() => server.listen())
 
+afterEach(() => server.resetHandlers())
+
+afterAll(() => server.close())
+
 describe('UserProfile', () => {
   it('renders correctly with correct props and a return button', async () => {
     render(<UserProfile />)
