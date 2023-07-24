@@ -1,9 +1,6 @@
-import { setupServer } from 'msw/node'
-import { fireEvent } from '@testing-library/react'
 import { expect, vi } from 'vitest'
-import { render, screen } from '../test-utils'
+import { render, screen, fireEvent } from '../test-utils'
 import { Category } from '../../pages'
-import { handlers } from '../../__mocks__/handlers'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
 vi.mock('react-router-dom', async () => {
@@ -15,8 +12,6 @@ vi.mock('react-router-dom', async () => {
     useParams: () => ({ categoryId: 1 }),
   }
 })
-
-const server = setupServer(...handlers)
 
 beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
@@ -39,11 +34,6 @@ describe.skip('Resource', () => {
       }
     })
   })
-})
-
-afterEach(() => {
-  server.resetHandlers()
-  vi.resetAllMocks()
 })
 
 it('renders correctly', () => {
