@@ -5,6 +5,8 @@ import { Icon, Title, HamburgerMenu } from '../atoms'
 import { UserButton } from '../molecules/UserButton'
 import { SelectLanguage } from '../molecules'
 import { CategoriesList } from './CategoriesList'
+import { Modal } from '../molecules/Modal'
+import { SettingsManager } from './SettingsManager'
 
 const NavbarStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
@@ -58,28 +60,48 @@ const MenuItems = styled(FlexBox)<{ open: boolean }>`
     display: none;
   }
 `
-
-export const Navbar: FC = () => {
+type TNavbar = {
+  toggleModal?: () => void
+}
+export const Navbar: FC = ({ toggleModal }: TNavbar) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+
+  const handleSettingsModal = () => {
+    setIsSettingsOpen(!isSettingsOpen)
+  }
+
   return (
-    <NavbarStyled direction="row" data-testid="navbar">
-      <HamburgerMenu
-        open={isMenuOpen}
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-        data-testid="hamburger-menu"
-      />
-      <IconStyled data-testid="new-post-button">
-        <Icon name="add" color={colors.gray.gray3} />
-      </IconStyled>
-      <SelectLanguage />
-      <IconStyled data-testid="settings-button">
-        <Icon name="settings" color={colors.gray.gray3} />
-      </IconStyled>
-      <UserButton />
-      <MenuItems open={isMenuOpen} data-testid="menu-items">
-        <CategoriesList />
-      </MenuItems>
-    </NavbarStyled>
+    <>
+      <NavbarStyled direction="row" data-testid="navbar">
+        <HamburgerMenu
+          open={isMenuOpen}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          data-testid="hamburger-menu"
+        />
+        <IconStyled data-testid="new-post-button" onClick={toggleModal}>
+          <Icon name="add" color={colors.gray.gray3} />
+        </IconStyled>
+        <SelectLanguage />
+        <IconStyled
+          data-testid="settings-button"
+          onClick={() => handleSettingsModal()}
+        >
+          <Icon name="settings" color={colors.gray.gray3} />
+        </IconStyled>
+        <UserButton />
+        <MenuItems open={isMenuOpen} data-testid="menu-items">
+          <CategoriesList />
+        </MenuItems>
+      </NavbarStyled>
+      <Modal
+        title="Ajustes"
+        isOpen={isSettingsOpen}
+        toggleModal={() => setIsSettingsOpen(false)}
+      >
+        {isSettingsOpen && <SettingsManager />}
+      </Modal>
+    </>
   )
 }
 export default styled(Navbar)``

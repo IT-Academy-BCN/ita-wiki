@@ -13,6 +13,8 @@ import Text from './Text'
 import Textarea from './Textarea'
 import ValidationMessage from './ValidationMessage'
 import HamburgerMenu from './HamburgerMenu'
+import UserImage from './UserImage'
+import Counter from './Counter'
 
 export {
   Button,
@@ -29,5 +31,7 @@ export {
   Textarea,
   Title,
   ValidationMessage,
-  HamburgerMenu
+  HamburgerMenu,
+  UserImage,
+  Counter
 }

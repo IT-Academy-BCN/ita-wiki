@@ -53,7 +53,6 @@ describe('Home page', () => {
     render(<Home />)
 
     expect(screen.queryByText(/registrarme/i)).not.toBeInTheDocument()
-
   })
 
   it('shows register modal when user clicks its button', () => {
