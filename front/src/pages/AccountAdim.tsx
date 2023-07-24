@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 import { FC, useState } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { paths } from '../constants'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { colors } from '../styles'
 
 interface User {
@@ -107,7 +107,6 @@ const AccountAdmin: FC = () => {
     data: users,
     isLoading,
     isError,
-    refetch
   } = useQuery<User[]>(['users'], fetchUsers)
   const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('')
@@ -160,9 +159,8 @@ const AccountAdmin: FC = () => {
         }
         return prevData;
       });
-      console.log('User status updated successfully')
     } catch (error) {
-      console.error('Error updating user status', error)
+      <p>Error</p>
     }
   }
 
@@ -172,7 +170,7 @@ const AccountAdmin: FC = () => {
         <HomeBtn>Volver</HomeBtn>
       </Link>
       <h1>Lista de usuarios</h1>
-      <label htmlFor="search">Buscar por DNI:</label>
+      <p>Buscar por DNI:</p>
       <SearchInput
         type="text"
         id="search"
@@ -187,7 +185,7 @@ const AccountAdmin: FC = () => {
             <TableHeader>DNI</TableHeader>
             <TableHeader>Email</TableHeader>
             <TableHeader>Estado</TableHeader>
-            <TableHeader></TableHeader>
+            <TableHeader>Cambiar estado</TableHeader>
           </tr>
         </TableHead>
         <TableBody>
@@ -199,12 +197,12 @@ const AccountAdmin: FC = () => {
               <TableCell>{user.status}</TableCell>
               <TableCell>
                 {user.status === 'ACTIVE' ? (
-                  <DeactivateBtn onClick={() => updateUserStatus(user)}>
+                  <DeactivateBtn data-testid="status-desactivar"onClick={() => updateUserStatus(user)}>
                     Desactivar
                   </DeactivateBtn>
                 ) : (
-                  <ActivateBtn onClick={() => updateUserStatus(user)}>
-                    Activatar
+                  <ActivateBtn data-testid="status-activar" onClick={() => updateUserStatus(user)}>
+                    Activar
                   </ActivateBtn>
                 )}
               </TableCell>
