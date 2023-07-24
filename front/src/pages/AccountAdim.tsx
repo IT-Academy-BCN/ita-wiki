@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { FC, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { paths } from '../constants'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { colors } from '../styles'
 
 interface User {
@@ -80,17 +80,7 @@ const DeactivateBtn = styled.button`
     background-color: ${colors.warning};
   }
 `
-const DeleteBtn = styled.button`
-  background-color: rgb(191, 67, 67, 0.6);
-  border: 1px solid rgb(0, 0, 0, 0.5);
-  border-radius: 5px;
-  padding: 10px;
 
-  &:hover {
-    cursor: pointer;
-    background-color: rgb(191, 67, 67);
-  }
-`
 const HomeBtn = styled.button`
   position: absolute;
   top: 10px;
@@ -109,7 +99,7 @@ const HomeBtn = styled.button`
 const fetchUsers = async () => {
   const response = await fetch('/api/v1/users')
   const data = await response.json()
-  return data
+  return data;
 }
 
 const AccountAdmin: FC = () => {
@@ -117,8 +107,9 @@ const AccountAdmin: FC = () => {
     data: users,
     isLoading,
     isError,
+    refetch
   } = useQuery<User[]>(['users'], fetchUsers)
-
+  const queryClient = useQueryClient();
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -151,8 +142,6 @@ const AccountAdmin: FC = () => {
       const updatedUser = {
         ...user,
         status: updatedStatus,
-        createdAt: new Date(user.createdAt),
-        updatedAt: new Date(),
       }
 
       const response = await fetch('/api/v1/users', {
@@ -162,10 +151,15 @@ const AccountAdmin: FC = () => {
         },
         body: JSON.stringify(updatedUser),
       })
-
       if (!response.ok) {
         throw new Error('Failed to update user status')
       }
+      queryClient.setQueryData<User[]>(['users'], (prevData) => {
+        if (prevData) {
+          return prevData.map((u) => (u.id === updatedUser.id ? { ...u, status: updatedStatus } : u));
+        }
+        return prevData;
+      });
       console.log('User status updated successfully')
     } catch (error) {
       console.error('Error updating user status', error)
@@ -194,7 +188,6 @@ const AccountAdmin: FC = () => {
             <TableHeader>Email</TableHeader>
             <TableHeader>Estado</TableHeader>
             <TableHeader></TableHeader>
-            <TableHeader>Eliminar usuario</TableHeader>
           </tr>
         </TableHead>
         <TableBody>
@@ -214,9 +207,6 @@ const AccountAdmin: FC = () => {
                     Activatar
                   </ActivateBtn>
                 )}
-              </TableCell>
-              <TableCell>
-                <DeleteBtn>Eliminar</DeleteBtn>
               </TableCell>
             </TableRow>
           ))}
