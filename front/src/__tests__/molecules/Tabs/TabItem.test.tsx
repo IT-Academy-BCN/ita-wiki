@@ -1,7 +1,7 @@
 import { vi } from 'vitest'
-import { render, screen, waitFor, fireEvent } from '../test-utils'
-import { TabItem } from '../../components/atoms'
-import { colors } from '../../styles'
+import { render, screen, waitFor, fireEvent } from '../../test-utils'
+import { TabItem } from '../../../components/molecules/Tabs/TabItem'
+import { colors } from '../../../styles'
 
 describe('TabItem component', () => {
   const onClickItem = vi.fn()

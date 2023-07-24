@@ -1,5 +1,5 @@
-import { render, screen, waitFor, fireEvent } from '../test-utils'
-import { TabsManager } from '../../components/molecules'
+import { render, screen, waitFor, fireEvent } from '../../test-utils'
+import { Tabs } from '../../../components/molecules/Tabs'
 
 const tabsTestData = [
   {
@@ -18,7 +18,7 @@ const tabsTestData = [
 
 describe('TabsManager component', () => {
   it('renders correctly', () => {
-    render(<TabsManager tabsData={tabsTestData} />)
+    render(<Tabs tabsData={tabsTestData} />)
 
     const tabA = screen.getByRole('button', {
       name: /test a/i,
@@ -45,7 +45,7 @@ describe('TabsManager component', () => {
   })
 
   it('should change content tab according to click on menu tab', async () => {
-    render(<TabsManager tabsData={tabsTestData} />)
+    render(<Tabs tabsData={tabsTestData} />)
 
     const tabB = screen.getByRole('button', {
       name: /test b/i,

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { colors, dimensions, font } from '../../styles'
+import { colors, dimensions, font } from '../../../styles'
 
 const TabItemLi = styled.li<{ isActive: boolean }>`
   list-style-type: none;

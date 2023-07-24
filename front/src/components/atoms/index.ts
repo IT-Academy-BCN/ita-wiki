@@ -9,7 +9,6 @@ import Input from './Input'
 import Label from './Label'
 import Link from './Link'
 import Radio from './Radio'
-import { TabItem } from './TabItem'
 import Text from './Text'
 import Textarea from './Textarea'
 import ValidationMessage from './ValidationMessage'
@@ -25,7 +24,6 @@ export {
   Radio,
   Select,
   Spinner,
-  TabItem,
   Text,
   Textarea,
   Title,

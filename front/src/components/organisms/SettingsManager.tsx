@@ -1,7 +1,7 @@
 import { FC, ReactElement } from 'react'
 import { TopicsManager } from './TopicsManager'
 import { UsersManager } from './UsersManager'
-import { TabsManager } from '../molecules'
+import { Tabs } from '../molecules/Tabs'
 
 type TTabsData = {
   title: string
@@ -19,4 +19,4 @@ const tabsData: TTabsData[] = [
   },
 ]
 
-export const SettingsManager: FC = () => <TabsManager tabsData={tabsData} />
+export const SettingsManager: FC = () => <Tabs tabsData={tabsData} />

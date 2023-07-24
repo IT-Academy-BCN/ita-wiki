@@ -1,7 +1,7 @@
 import { ReactElement, useState } from 'react'
 import styled from 'styled-components'
-import { FlexBox, colors, dimensions } from '../../styles'
-import { TabItem } from '../atoms'
+import { FlexBox, colors, dimensions } from '../../../styles'
+import { TabItem } from './TabItem'
 
 const StyledFlexBox = styled(FlexBox)`
   margin: ${dimensions.spacing.xs} ${dimensions.spacing.md};
@@ -28,7 +28,7 @@ type TTabsData = {
   tabComponent: ReactElement
 }
 
-const TabsManager = ({ tabsData }: { tabsData: TTabsData[] }) => {
+const Tabs = ({ tabsData }: { tabsData: TTabsData[] }) => {
   const [activeTab, setActiveTab] = useState(0)
 
   return (
@@ -51,4 +51,4 @@ const TabsManager = ({ tabsData }: { tabsData: TTabsData[] }) => {
   )
 }
 
-export default TabsManager
+export default Tabs

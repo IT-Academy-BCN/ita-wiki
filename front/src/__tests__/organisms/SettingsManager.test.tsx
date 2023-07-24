@@ -9,8 +9,6 @@ describe('SettingsManager component', () => {
     expect(screen.getByText(/usuarios/i)).toBeInTheDocument()
     expect(screen.getByText('Topics Manager')).toBeInTheDocument()
     expect(screen.queryByText('Users Manager')).not.toBeInTheDocument()
-
-    screen.debug()
   })
 
   it('should change content tab according to click on menu tab', async () => {
