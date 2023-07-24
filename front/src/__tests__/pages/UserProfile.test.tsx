@@ -1,5 +1,4 @@
 import { setupServer } from 'msw/node'
-import { vi } from 'vitest'
 import { render, screen } from '../test-utils'
 import { UserProfile } from '../../pages'
 import { handlers } from '../../__mocks__/handlers'
