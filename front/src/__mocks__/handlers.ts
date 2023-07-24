@@ -39,9 +39,10 @@ export const handlers = [
       ])
     )
   ),
+
   // eslint-disable-next-line consistent-return
   rest.get(urls.getTopics, (req, res, ctx) => {
-    const slug = req.url.searchParams.get('slug')
+    const slug = req.url.searchParams.get('category')
     if (slug === 'react') {
       return res(
         ctx.status(200),
@@ -61,6 +62,13 @@ export const handlers = [
             },
           ],
         })
+      )
+    }
+
+    if (slug === 'invalid-slug') {
+      return res(
+        ctx.status(404),
+        ctx.json({ message: 'No category found with this slug' })
       )
     }
   }),
@@ -183,17 +191,6 @@ export const errorHandlers = [
   rest.get(urls.getResources, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
-
-  // eslint-disable-next-line consistent-return
-  rest.get(urls.getTopics, (req, res, ctx) => {
-    const slug = req.url.searchParams.get('slug')
-    if (slug === 'invalid-slug') {
-      return res(
-        ctx.status(404),
-        ctx.json({ message: 'No category found with this slug' })
-      )
-    }
-  }),
 
   rest.get(urls.getTypes, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))

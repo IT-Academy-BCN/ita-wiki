@@ -48,7 +48,7 @@ const StatusFilterWidget = ({ handleStatusFilter }: Props) => {
   }
 
   return (
-    <StyledFlexbox direction="column" align="start">
+    <StyledFlexbox direction="column" align="start" data-testid="status-filter">
       <StyledText fontWeight="bold">Estado</StyledText>
       {statusData.map((item: string) => (
         <CheckBoxStyled
