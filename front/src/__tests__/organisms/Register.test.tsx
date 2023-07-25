@@ -37,7 +37,7 @@ describe('Register', () => {
     await userEvent.selectOptions(screen.getByTestId('specialization'), 'react')
     await userEvent.click(screen.getByTestId('accept'))
 
-    userEvent.click(screen.getByTestId('submitButton'))
+    await userEvent.click(screen.getByTestId('submitButton'))
 
     await waitFor(
       () => {
