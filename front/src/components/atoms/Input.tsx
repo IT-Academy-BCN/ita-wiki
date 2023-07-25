@@ -4,10 +4,11 @@ import { colors, dimensions, font } from '../../styles'
 
 const InputStyled = styled.input<TInput>`
   width: 100%;
-  padding: ${dimensions.spacing.sm};
+  padding: ${dimensions.spacing.base};
   border-radius: ${dimensions.borderRadius.base};
   border: 1px solid ${colors.gray.gray4};
   font-family: ${font.fontFamily};
+  line-height: 1;
 
   ${({ success }) => success && `border: 1px solid ${colors.success};`}
   ${({ warning }) => warning && `border: 1px solid ${colors.warning};`}

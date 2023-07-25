@@ -1,50 +1,50 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import axios from 'axios'
+import { vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { BrowserRouter } from 'react-router-dom'
 import Register from '../../components/organisms/Register'
-
-const handleRegister = () => {}
+import { render, screen, waitFor } from '../test-utils'
 
 describe('Register', () => {
   it('Register renders correctly', () => {
+    const handleLoginModal = vi.fn()
+    const handleRegisterModal = vi.fn()
+
     render(
-      <BrowserRouter>
-        <Register
-          handleLoginModal={handleRegister}
-          handleRegisterModal={handleRegister}
-        />
-      </BrowserRouter>
+      <Register
+        handleLoginModal={handleLoginModal}
+        handleRegisterModal={handleRegisterModal}
+      />
     )
     expect(screen.getByText(/Registrarme/i)).toBeInTheDocument()
   })
 
   it('registers new users', async () => {
+    const handleLoginModal = vi.fn()
+    const handleRegisterModal = vi.fn()
     render(
-      <BrowserRouter>
-        <Register
-          handleLoginModal={handleRegister}
-          handleRegisterModal={handleRegister}
-        />
-      </BrowserRouter>
+      <Register
+        handleLoginModal={handleLoginModal}
+        handleRegisterModal={handleRegisterModal}
+      />
     )
-    userEvent.type(screen.getByTestId('DNI'), '123456')
-    userEvent.type(screen.getByTestId('email'), 'email@email.com')
-    userEvent.type(screen.getByTestId('name'), 'Jane Doe')
-    userEvent.type(screen.getByLabelText('password'), 'password')
-    userEvent.type(screen.getByLabelText('confirmPassword'), 'password')
-    userEvent.type(screen.getByTestId('specialization'), 'specialization')
-
-    const response = await axios.post(
-      'http://localhost:8999/api/v1/auth/register'
+    await userEvent.type(screen.getByLabelText('dni'), '47163785P')
+    await userEvent.type(screen.getByTestId('email'), 'email@email.com')
+    await userEvent.type(screen.getByTestId('name'), 'Jane Doe')
+    await userEvent.type(screen.getByLabelText('password'), 'password123AAAA')
+    await userEvent.type(
+      screen.getByLabelText('confirmPassword'),
+      'password123AAAA'
     )
+    await userEvent.selectOptions(screen.getByTestId('specialization'), 'react')
+    await userEvent.click(screen.getByTestId('accept'))
 
-    await waitFor(() => {
-      expect(window.location.pathname).toBe('/')
-      expect(response.status).toEqual(204)
-      expect(
-        screen.queryByText('Este campo es obligatorio')
-      ).not.toBeInTheDocument()
-    })
+    await userEvent.click(screen.getByTestId('submitButton'))
+
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('registerSuccess')).toBeInTheDocument()
+        expect(handleRegisterModal).toHaveBeenCalled()
+      },
+      { timeout: 5000 }
+    )
   })
 })

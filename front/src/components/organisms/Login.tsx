@@ -1,26 +1,36 @@
-import { FC, useState } from 'react'
+import { FC, HTMLAttributes, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
 import { UserLoginSchema } from '@itacademy/schemas'
+import { useMutation } from '@tanstack/react-query'
 import InputGroup from '../molecules/InputGroup'
-import { Button, Text, Title, ValidationMessage } from '../atoms'
+import { Button, Icon, Spinner, Text, Title, ValidationMessage } from '../atoms'
 import { urls } from '../../constants'
-import { dimensions, colors, FlexBox } from '../../styles'
+import { dimensions, colors, FlexBox, device } from '../../styles'
 
 const FlexErrorStyled = styled(FlexBox)`
-  height: ${dimensions.spacing.xxxs};
-  margin-left: 0.2rem;
-  margin-bottom: ${dimensions.spacing.xxxs};
+  height: ${dimensions.spacing.none};
 `
 
 const LoginStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.sm};
   padding: ${dimensions.spacing.lg};
+  align-items: stretch;
+
+  @media ${device.Tablet} {
+    width: 80%;
+    margin: auto;
+  }
+
+  @media ${device.Laptop} {
+    width: 70%;
+  }
 `
 
 const TitleStyled = styled(Title)`
   width: 100%;
+  text-align: center;
 `
 
 const FormStyled = styled.form`
@@ -30,8 +40,21 @@ const FormStyled = styled.form`
   width: 100%;
 `
 
-const ButtonStyled = styled(Button)`
+type TButton = HTMLAttributes<HTMLParagraphElement> & {
+  backgroundColor?: string
+  padding?: string
+}
+
+const ButtonStyled = styled(Button)<TButton>`
   margin: ${dimensions.spacing.none};
+  background-color: ${(props) => props.backgroundColor};
+  border: 2px solid ${(props) => props.backgroundColor};
+  padding: ${(props) => props.padding};
+  &:hover,
+  &:disabled {
+    background-color: ${(props) => props.backgroundColor};
+    border: 2px solid ${(props) => props.backgroundColor};
+  }
 `
 
 const TextDecorationStyled = styled.span`
@@ -50,8 +73,27 @@ type TLogin = {
   handleRegisterModal: () => void
 }
 
-type TErrorResponse = {
-  message: string
+const loginUserFetcher = async (user: object) => {
+  const errorMessage: { [key: number]: string } = {
+    403: 'Usuario en proceso de activación. Por favor, inténtelo más tarde.',
+    404: 'Acceso restringido. Por favor, contacte con el personal de IT Academy.',
+    422: 'Identificador o contraseña incorrectos.',
+  }
+
+  const response = await fetch(urls.logIn, {
+    method: 'POST',
+    body: JSON.stringify(user),
+    headers: { 'Content-Type': 'application/json' },
+  })
+
+  if (
+    !response.ok &&
+    Object.hasOwnProperty.call(errorMessage, response.status)
+  ) {
+    throw new Error(errorMessage[response.status])
+  }
+
+  return response.status === 204 ? null : response.json()
 }
 
 const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
@@ -61,45 +103,52 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
     register,
     handleSubmit,
     formState: { errors },
+    trigger,
   } = useForm<TForm>({
     resolver: zodResolver(UserLoginSchema),
   })
 
-  const loginUser = async (user: object) => {
-    const config = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(user),
-    }
+  const loginUser = useMutation(loginUserFetcher, {
+    onMutate: () =>
+      new Promise((resolve) => {
+        setTimeout(resolve, 500)
+      }),
+    onSuccess: () => {
+      setTimeout(() => window.location.reload(), 2000)
+    },
+    onError: (error: Error) => {
+      setResponseError(error.message)
+    },
+  })
 
-    try {
-      const response = await fetch(urls.logIn, config)
+  const { isLoading, isSuccess } = loginUser
 
-      if (response.status === 204) {
-        setResponseError('')
-        window.location.reload()
-      }
-
-      if (response.status === 404) throw new Error('Usuario no encontrado')
-      if (response.status === 422) throw new Error('Contraseña incorrecta')
-    } catch (error) {
-      setResponseError((error as TErrorResponse).message)
-    }
-  }
-
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     const { dni, password } = data
-    loginUser({ dni, password })
+    await loginUser.mutateAsync({
+      dni,
+      password,
+    })
   })
 
   return (
-    <LoginStyled justify="space-between">
+    <LoginStyled>
       <TitleStyled as="h1" fontWeight="bold">
         Login
       </TitleStyled>
-
+      {responseError && (
+        <FlexErrorStyled align="start">
+          <ValidationMessage color="error" text={responseError} />
+        </FlexErrorStyled>
+      )}
+      {(errors.dni || errors.password) && (
+        <FlexErrorStyled align="start">
+          <ValidationMessage
+            color="error"
+            text="Identificador o contraseña incorrectos"
+          />
+        </FlexErrorStyled>
+      )}
       <FormStyled onSubmit={onSubmit}>
         <InputGroup
           id="dni"
@@ -108,12 +157,10 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
           {...register('dni')}
           name="dni"
           error={errors.dni && true}
+          onBlur={() => {
+            trigger('dni')
+          }}
         />
-        <FlexErrorStyled align="start">
-          {errors?.dni ? (
-            <ValidationMessage color="error" text="Identificador incorrecto" />
-          ) : null}
-        </FlexErrorStyled>
         <InputGroup
           type={isVisibility ? 'text' : 'password'}
           id="password"
@@ -125,12 +172,10 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
           iconClick={() => setIsVisibility(!isVisibility)}
           icon="visibility_off"
           error={errors.password && true}
+          onBlur={() => {
+            trigger('password')
+          }}
         />
-        <FlexErrorStyled align="start">
-          {responseError ? (
-            <ValidationMessage color="error" text={responseError} />
-          ) : null}
-        </FlexErrorStyled>
         <FlexBox align="end">
           <TextDecorationStyled
             onClick={() => {
@@ -141,7 +186,19 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
             <Text>Recordar/cambiar contraseña</Text>
           </TextDecorationStyled>
         </FlexBox>
-        <ButtonStyled type="submit">Login</ButtonStyled>
+        {isSuccess ? (
+          <ButtonStyled
+            backgroundColor={colors.success}
+            padding={dimensions.spacing.xs}
+            disabled
+          >
+            <Icon data-testid="done-icon" name="done" />
+          </ButtonStyled>
+        ) : (
+          <Button disabled={isLoading}>
+            {isLoading ? <Spinner size="xsmall" /> : 'Login'}
+          </Button>
+        )}
       </FormStyled>
       <Text fontWeight="bold">
         <TextDecorationStyled

@@ -10,16 +10,23 @@ from {
     }
 `
 
-type TSpinner = {
-  size: 'small' | 'medium' | 'big'
+const sizes = {
+  xsmall: '18px',
+  small: '50px',
+  medium: '70px',
+  big: '133px',
 }
 
-const Spinner = styled.div<TSpinner>`
-  height: ${({ size }) =>
-    (size === 'small' && '50px') || (size === 'medium' && '70px') || '133px'};
-  width: ${({ size }) =>
-    (size === 'small' && '50px') || (size === 'medium' && '70px') || '133px'};
-  border: 10px solid ${colors.outlineHover};
+type TSpinner = {
+  size?: 'xsmall' | 'small' | 'medium' | 'big'
+}
+
+const Spinner = styled.div.attrs<TSpinner>((props) => ({ size: props?.size })) <TSpinner>`
+ ${({ size }) => `
+    height: ${size ? sizes[size] : sizes.medium};
+    width: ${size ? sizes[size] : sizes.medium}};
+    border: ${size ? parseInt(sizes[size], 10) / 6 : parseInt(sizes.medium, 10) / 6}px solid ${colors.outlineHover};
+  `};
   border-top-color: ${colors.primary};
   border-right-color: ${colors.primary};
   border-radius: 50%;

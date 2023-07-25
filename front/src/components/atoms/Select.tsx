@@ -6,9 +6,8 @@ const SelectStyled = styled.select<TSelect>`
   border-radius: ${dimensions.borderRadius.base};
   border: 1px solid ${colors.gray.gray4};
   color: ${colors.gray.gray3};
-  font-weight: 500;
   font-family: ${font.fontFamily};
-  padding: ${dimensions.spacing.sm};
+  padding: ${dimensions.spacing.base};
   width: 100%;
 
   ${({ error }) => error && `border: 1px solid ${colors.error};`}

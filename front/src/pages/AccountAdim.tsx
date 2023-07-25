@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { FC, useState } from 'react'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
-import { paths } from '../constants'
+import { paths, urls } from '../constants'
 import { colors } from '../styles'
 
 interface User {
@@ -97,9 +97,9 @@ const HomeBtn = styled.button`
 `
 
 const fetchUsers = async () => {
-  const response = await fetch('/api/v1/users')
+  const response = await fetch(urls.users)
   const data = await response.json()
-  return data;
+  return data
 }
 
 const AccountAdmin: FC = () => {
@@ -108,7 +108,7 @@ const AccountAdmin: FC = () => {
     isLoading,
     isError,
   } = useQuery<User[]>(['users'], fetchUsers)
-  const queryClient = useQueryClient();
+  const queryClient = useQueryClient()
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,7 +143,7 @@ const AccountAdmin: FC = () => {
         status: updatedStatus,
       }
 
-      const response = await fetch('/api/v1/users', {
+      const response = await fetch(urls.users, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -155,11 +155,13 @@ const AccountAdmin: FC = () => {
       }
       queryClient.setQueryData<User[]>(['users'], (prevData) => {
         if (prevData) {
-          return prevData.map((u) => (u.id === updatedUser.id ? { ...u, status: updatedStatus } : u));
+          return prevData.map((u) =>
+            u.id === updatedUser.id ? { ...u, status: updatedStatus } : u
+          )
         }
-        return prevData;
-      });
-    }catch (error) {
+        return prevData
+      })
+    } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error)
     }
@@ -198,11 +200,17 @@ const AccountAdmin: FC = () => {
               <TableCell>{user.status}</TableCell>
               <TableCell>
                 {user.status === 'ACTIVE' ? (
-                  <DeactivateBtn data-testid="status-desactivar"onClick={() => updateUserStatus(user)}>
+                  <DeactivateBtn
+                    data-testid="status-desactivar"
+                    onClick={() => updateUserStatus(user)}
+                  >
                     Desactivar
                   </DeactivateBtn>
                 ) : (
-                  <ActivateBtn data-testid="status-activar" onClick={() => updateUserStatus(user)}>
+                  <ActivateBtn
+                    data-testid="status-activar"
+                    onClick={() => updateUserStatus(user)}
+                  >
                     Activar
                   </ActivateBtn>
                 )}

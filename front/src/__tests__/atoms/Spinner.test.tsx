@@ -6,12 +6,13 @@ describe('Spinner', () => {
   it('renders correctly', () => {
     render(<Spinner size="medium" data-testid="spinner" />)
 
+    const medium = 70
     const spinner = screen.getByTestId('spinner')
     expect(spinner).toBeInTheDocument()
-    expect(screen.getByTestId('spinner')).toHaveStyle({ height: '70px' })
-    expect(screen.getByTestId('spinner')).toHaveStyle({ width: '70px' })
+    expect(screen.getByTestId('spinner')).toHaveStyle({ height: `${medium}px` })
+    expect(screen.getByTestId('spinner')).toHaveStyle({ width: `${medium}px` })
     expect(screen.getByTestId('spinner')).toHaveStyle({
-      border: `10px solid ${colors.outlineHover}`,
+      border: `${medium / 6}px solid ${colors.outlineHover}`,
     })
     expect(screen.getByTestId('spinner')).toHaveStyle({
       'border-top-color': `${colors.primary}`,

@@ -6,9 +6,7 @@ export const handlers = [
   rest.post(urls.logIn, (req, res, ctx) => res(ctx.status(204))),
 
   // Handles a POST /register request
-  rest.post('http://localhost:8999/api/v1/auth/register', (req, res, ctx) =>
-    res(ctx.status(204))
-  ),
+  rest.post(urls.register, (req, res, ctx) => res(ctx.status(204))),
 
   rest.post(urls.createResource, (req, res, ctx) => res(ctx.status(204))),
 

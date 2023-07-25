@@ -51,7 +51,25 @@ describe('Login', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Login' }))
 
     await waitFor(() => {
-      expect(screen.getByText(/Identificador incorrecto/i)).toBeInTheDocument()
+      expect(
+        screen.getByText(/Identificador o contraseña incorrectos/i)
+      ).toBeInTheDocument()
+    })
+  })
+  it('show render done button on successful login', async () => {
+    render(
+      <Login handleLoginModal={handleLogin} handleRegisterModal={handleLogin} />
+    )
+    fireEvent.change(screen.getByLabelText(/dni/i), {
+      target: { value: '11111111A' },
+    })
+    fireEvent.change(screen.getByLabelText(/password/i), {
+      target: { value: 'testingPswd1' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Login' }))
+
+    await waitFor(() => {
+      expect(screen.getByTestId('done-icon')).toBeInTheDocument()
     })
   })
 })
