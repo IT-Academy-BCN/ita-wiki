@@ -16,6 +16,7 @@ export const testUserData = {
     password: 'testingPswd1',
     role: USER_ROLE.REGISTERED,
     status: USER_STATUS.ACTIVE,
+    specializationName: 'Testing',
   },
   admin: {
     email: 'testingAdmin@user.cat',
@@ -24,6 +25,7 @@ export const testUserData = {
     password: 'testingPswd2',
     role: USER_ROLE.ADMIN,
     status: USER_STATUS.ACTIVE,
+    specializationName: 'Testing',
   },
   mentor: {
     email: 'testingMentor@user.cat',
@@ -32,6 +34,7 @@ export const testUserData = {
     password: 'testingPswd4',
     role: USER_ROLE.MENTOR,
     status: USER_STATUS.ACTIVE,
+    specializationName: 'Testing',
   },
   inactiveUser: {
     email: 'testingInactiveUser@user.cat',
@@ -40,18 +43,26 @@ export const testUserData = {
     password: 'testingPswd3',
     role: USER_ROLE.REGISTERED,
     status: USER_STATUS.INACTIVE,
+    specializationName: 'Testing',
   },
 }
 
 export async function setup() {
   // Cleanup database
-  await prisma.topicsOnResources.deleteMany({})
-  await prisma.topic.deleteMany({})
-  await prisma.resource.deleteMany({})
   await prisma.user.deleteMany({})
   await prisma.category.deleteMany({})
+  await prisma.resource.deleteMany({})
+  await prisma.topicsOnResources.deleteMany({})
+  await prisma.topic.deleteMany({})
 
   // Create required test data
+  const testCategory = await prisma.category.create({
+    data: {
+      name: 'Testing',
+      slug: 'testing',
+    },
+  })
+
   await prisma.user.createMany({
     data: [
       testUserData.admin,
@@ -59,12 +70,6 @@ export async function setup() {
       testUserData.mentor,
       testUserData.inactiveUser,
     ],
-  })
-  const testCategory = await prisma.category.create({
-    data: {
-      name: 'Testing',
-      slug: 'testing',
-    },
   })
 
   await prisma.topic.create({

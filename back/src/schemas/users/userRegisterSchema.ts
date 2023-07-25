@@ -7,8 +7,8 @@ export const userRegisterSchema = userSchema
     email: true,
     name: true,
     dni: true,
+    specialization: true,
   })
   .extend({
-    specialization: z.string(),
     password: z.string().min(8).regex(passwordRegex),
   })

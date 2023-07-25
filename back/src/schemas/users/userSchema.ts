@@ -7,6 +7,7 @@ export const userSchema = z.object({
   dni: dniSchema,
   password: z.string().min(8),
   name: z.string().optional(),
+  specialization: z.string(),
   status: z.enum(['ACTIVE', 'INACTIVE']),
   role: z.enum(['ADMIN', 'REGISTERED', 'MENTOR']),
   createdAt: z.string().datetime(),

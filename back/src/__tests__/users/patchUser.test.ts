@@ -17,6 +17,7 @@ beforeEach(async () => {
       password: 'samplePassword1',
       role: USER_ROLE.REGISTERED,
       status: USER_STATUS.ACTIVE,
+      specializationName: 'Testing',
     },
   })
 })

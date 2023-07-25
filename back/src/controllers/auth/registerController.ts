@@ -2,7 +2,7 @@ import { Middleware, Context } from 'koa'
 import { prisma } from '../../prisma/client'
 
 export const registerController: Middleware = async (ctx: Context) => {
-  const { dni, password, name, email } = ctx.request.body
+  const { dni, password, name, email, specialization } = ctx.request.body
 
   const userByDni = await prisma.user.findUnique({
     where: { dni: dni.toUpperCase() as string },
@@ -31,7 +31,13 @@ export const registerController: Middleware = async (ctx: Context) => {
   }
 
   const user = await prisma.user.create({
-    data: { dni: dni.toUpperCase(), password, name, email },
+    data: {
+      dni: dni.toUpperCase(),
+      password,
+      name,
+      email,
+      specializationName: specialization,
+    },
   })
 
   if (!user || user.dni !== dni.toUpperCase()) {

@@ -5,12 +5,12 @@ import { categories } from './data/categories'
 import { resources } from './data/resources'
 
 async function seedDB() {
-  await prisma.user.createMany({
-    data: users,
-  })
-
   await prisma.category.createMany({
     data: categories,
+  })
+
+  await prisma.user.createMany({
+    data: users,
   })
 
   const userAdmin = await prisma.user.findUnique({
