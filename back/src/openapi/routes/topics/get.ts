@@ -1,6 +1,6 @@
 import { pathRoot } from '../../../routes/routes'
 import { topicSchema } from '../../../schemas'
-import { NotFoundError } from '../../components/errorSchemas'
+import { categoryNotFoundResponse } from '../../components/responses/category'
 import { registry } from '../../registry'
 import { z } from '../../zod'
 
@@ -22,29 +22,15 @@ registry.registerPath({
       description: 'Topics retrieved succesfully,',
       content: {
         'application/json': {
-          schema: z.object({
-            topics: z.array(
-              topicSchema.omit({
-                createdAt: true,
-                updatedAt: true,
-              })
-            ),
-          }),
+          schema: z.array(
+            topicSchema.omit({
+              createdAt: true,
+              updatedAt: true,
+            })
+          ),
         },
       },
     },
-    404: {
-      description: 'Category was not found',
-      content: {
-        'application/json': {
-          schema: NotFoundError.openapi({
-            examples: [
-              { message: 'No category found with this id' },
-              { message: 'No category found with this slug' },
-            ],
-          }),
-        },
-      },
-    },
+    404: categoryNotFoundResponse,
   },
 })

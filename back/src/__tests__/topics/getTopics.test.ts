@@ -12,19 +12,17 @@ describe('Testing topics endpoint', () => {
       const response = await supertest(server).get(`${pathRoot.v1.topics}`)
 
       expect(response.status).toBe(200)
-      expect(response.body.topics).toBeInstanceOf(Array)
-      expect(response.body.topics.length).toBeGreaterThan(0)
+      expect(response.body).toBeInstanceOf(Array)
+      expect(response.body.length).toBeGreaterThan(0)
       expect(response.body).toEqual(
-        expect.objectContaining({
-          topics: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              name: expect.any(String),
-              slug: expect.any(String),
-              categoryId: expect.any(String),
-            }),
-          ]),
-        })
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            name: expect.any(String),
+            slug: expect.any(String),
+            categoryId: expect.any(String),
+          }),
+        ])
       )
     })
   })
@@ -43,19 +41,17 @@ describe('Testing topics endpoint', () => {
         .query({ categoryId: category.id })
 
       expect(response.status).toBe(200)
-      expect(response.body.topics).toBeInstanceOf(Array)
-      expect(response.body.topics.length).toBeGreaterThan(0)
+      expect(response.body).toBeInstanceOf(Array)
+      expect(response.body.length).toBeGreaterThan(0)
       expect(response.body).toEqual(
-        expect.objectContaining({
-          topics: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              name: expect.any(String),
-              slug: expect.any(String),
-              categoryId: expect.any(String),
-            }),
-          ]),
-        })
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            name: expect.any(String),
+            slug: expect.any(String),
+            categoryId: expect.any(String),
+          }),
+        ])
       )
     })
     it('Should respond OK status and return topics as an array. when category slug given', async () => {
@@ -64,19 +60,17 @@ describe('Testing topics endpoint', () => {
         .query({ slug: category.slug })
 
       expect(response.status).toBe(200)
-      expect(response.body.topics).toBeInstanceOf(Array)
-      expect(response.body.topics.length).toBeGreaterThan(0)
+      expect(response.body).toBeInstanceOf(Array)
+      expect(response.body.length).toBeGreaterThan(0)
       expect(response.body).toEqual(
-        expect.objectContaining({
-          topics: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              name: expect.any(String),
-              slug: expect.any(String),
-              categoryId: expect.any(String),
-            }),
-          ]),
-        })
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            name: expect.any(String),
+            slug: expect.any(String),
+            categoryId: expect.any(String),
+          }),
+        ])
       )
     })
 
@@ -90,19 +84,17 @@ describe('Testing topics endpoint', () => {
         })
 
       expect(response.status).toBe(200)
-      expect(response.body.topics).toBeInstanceOf(Array)
-      expect(response.body.topics.length).toBeGreaterThan(0)
+      expect(response.body).toBeInstanceOf(Array)
+      expect(response.body.length).toBeGreaterThan(0)
       expect(response.body).toEqual(
-        expect.objectContaining({
-          topics: expect.arrayContaining([
-            expect.objectContaining({
-              id: expect.any(String),
-              name: expect.any(String),
-              slug: expect.any(String),
-              categoryId: expect.any(String),
-            }),
-          ]),
-        })
+        expect.arrayContaining([
+          expect.objectContaining({
+            id: expect.any(String),
+            name: expect.any(String),
+            slug: expect.any(String),
+            categoryId: expect.any(String),
+          }),
+        ])
       )
     })
     describe('Testing fail cases', () => {
