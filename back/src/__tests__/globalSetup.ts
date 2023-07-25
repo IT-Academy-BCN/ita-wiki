@@ -16,7 +16,7 @@ export const testUserData = {
     password: 'testingPswd1',
     role: USER_ROLE.REGISTERED,
     status: USER_STATUS.ACTIVE,
-    specializationName: 'Testing',
+    specializationId: '',
   },
   admin: {
     email: 'testingAdmin@user.cat',
@@ -25,7 +25,7 @@ export const testUserData = {
     password: 'testingPswd2',
     role: USER_ROLE.ADMIN,
     status: USER_STATUS.ACTIVE,
-    specializationName: 'Testing',
+    specializationId: '',
   },
   mentor: {
     email: 'testingMentor@user.cat',
@@ -34,7 +34,7 @@ export const testUserData = {
     password: 'testingPswd4',
     role: USER_ROLE.MENTOR,
     status: USER_STATUS.ACTIVE,
-    specializationName: 'Testing',
+    specializationId: '',
   },
   inactiveUser: {
     email: 'testingInactiveUser@user.cat',
@@ -43,7 +43,7 @@ export const testUserData = {
     password: 'testingPswd3',
     role: USER_ROLE.REGISTERED,
     status: USER_STATUS.INACTIVE,
-    specializationName: 'Testing',
+    specializationId: '',
   },
 }
 
@@ -63,12 +63,19 @@ export async function setup() {
     },
   })
 
+  const existingTestCategory = await prisma.category.findUnique({
+    where: { name: 'Testing' },
+  })
+
   await prisma.user.createMany({
     data: [
-      testUserData.admin,
-      testUserData.user,
-      testUserData.mentor,
-      testUserData.inactiveUser,
+      { ...testUserData.admin, specializationId: existingTestCategory!.id },
+      { ...testUserData.user, specializationId: existingTestCategory!.id },
+      { ...testUserData.mentor, specializationId: existingTestCategory!.id },
+      {
+        ...testUserData.inactiveUser,
+        specializationId: existingTestCategory!.id,
+      },
     ],
   })
 

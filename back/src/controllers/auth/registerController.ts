@@ -1,5 +1,6 @@
 import { Middleware, Context } from 'koa'
 import { prisma } from '../../prisma/client'
+import { NotFoundError } from '../../helpers/errors'
 
 export const registerController: Middleware = async (ctx: Context) => {
   const { dni, password, name, email, specialization } = ctx.request.body
@@ -30,13 +31,21 @@ export const registerController: Middleware = async (ctx: Context) => {
     return
   }
 
+  const existingCategory = await prisma.category.findUnique({
+    where: { name: specialization },
+  })
+
+  if (!existingCategory) {
+    throw new NotFoundError('Resource not found')
+  }
+
   const user = await prisma.user.create({
     data: {
       dni: dni.toUpperCase(),
       password,
       name,
       email,
-      specializationName: specialization,
+      specializationId: existingCategory.id,
     },
   })
 

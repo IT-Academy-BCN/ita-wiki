@@ -8,4 +8,4 @@
 ALTER TABLE "user" ADD COLUMN     "specialization" TEXT NOT NULL;
 
 -- AddForeignKey
-ALTER TABLE "user" ADD CONSTRAINT "user_specialization_fkey" FOREIGN KEY ("specialization") REFERENCES "category"("name") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "user" ADD CONSTRAINT "user_specialization_fkey" FOREIGN KEY ("specialization") REFERENCES "category"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

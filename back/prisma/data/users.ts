@@ -8,7 +8,7 @@ export const users: Prisma.UserCreateArgs['data'][] = [
     dni: '12345678A',
     status: 'ACTIVE',
     role: 'ADMIN',
-    specializationName: 'React',
+    specializationId: '',
   },
   {
     email: 'registered@registered.com',
@@ -17,7 +17,7 @@ export const users: Prisma.UserCreateArgs['data'][] = [
     dni: '23456789B',
     status: 'ACTIVE',
     role: 'REGISTERED',
-    specializationName: 'React',
+    specializationId: '',
   },
   {
     email: 'mentor@mentor.com',
@@ -26,6 +26,6 @@ export const users: Prisma.UserCreateArgs['data'][] = [
     dni: '34567890C',
     status: 'ACTIVE',
     role: 'MENTOR',
-    specializationName: 'Node',
+    specializationId: '',
   },
 ]

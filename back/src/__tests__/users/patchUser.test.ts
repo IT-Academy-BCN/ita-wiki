@@ -9,6 +9,9 @@ import { authToken } from '../setup'
 let sampleUser: User | null
 
 beforeEach(async () => {
+  const existingTestCategory = await prisma.category.findUnique({
+    where: { name: 'Testing' },
+  })
   await prisma.user.create({
     data: {
       email: 'sampleUser1@sampleUser.com',
@@ -17,7 +20,7 @@ beforeEach(async () => {
       password: 'samplePassword1',
       role: USER_ROLE.REGISTERED,
       status: USER_STATUS.ACTIVE,
-      specializationName: 'Testing',
+      specializationId: existingTestCategory!.id,
     },
   })
 })
