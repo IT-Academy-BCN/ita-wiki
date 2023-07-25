@@ -30,6 +30,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
     ['getTopics', slug],
     () => getTopics(slug)
   )
+  console.log('Data:', data) // Agregar este log para verificar los datos recibidos
 
   const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value)
@@ -41,7 +42,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
   return (
     <StyledRadio
       options={[{ id: 'todos', name: 'Todos' }].concat(
-        data?.topics.map((t) => ({ id: t.slug, name: t.name }))
+        data?.map((t) => ({ id: t.id, name: t.name }))
       )}
       inputName="Topics Radio Filter"
       onChange={onTopicChange}
