@@ -313,6 +313,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             <ButtonStyled
               backgroundColor={colors.success}
               padding={dimensions.spacing.xs}
+              data-testid="registerSuccess"
               disabled
             >
               <Icon name="done" />

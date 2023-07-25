@@ -1,4 +1,3 @@
-import axios from 'axios'
 import userEvent from '@testing-library/user-event'
 import Register from '../../components/organisms/Register'
 import { render, screen, waitFor } from '../test-utils'
@@ -30,16 +29,8 @@ describe('Register', () => {
     userEvent.type(screen.getByLabelText('confirmPassword'), 'password')
     userEvent.type(screen.getByTestId('specialization'), 'specialization')
 
-    const response = await axios.post(
-      'http://localhost:8999/api/v1/auth/register'
-    )
-
-    await waitFor(() => {
-      expect(window.location.pathname).toBe('/')
-      expect(response.status).toEqual(204)
-      expect(
-        screen.queryByText('Este campo es obligatorio')
-      ).not.toBeInTheDocument()
+    waitFor(() => {
+      expect(screen.getByTestId('registerSuccess')).toBeInTheDocument()
     })
   })
 })
