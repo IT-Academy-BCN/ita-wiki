@@ -12,6 +12,7 @@ import Radio from './Radio'
 import Text from './Text'
 import Textarea from './Textarea'
 import ValidationMessage from './ValidationMessage'
+import HamburgerMenu from './HamburgerMenu'
 import UserImage from './UserImage'
 import Counter from './Counter'
 
@@ -30,6 +31,7 @@ export {
   Textarea,
   Title,
   ValidationMessage,
+  HamburgerMenu,
   UserImage,
   Counter
 }

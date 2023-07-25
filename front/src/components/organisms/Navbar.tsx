@@ -1,14 +1,10 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { FlexBox, colors, dimensions } from '../../styles'
-import { Title } from '../atoms'
-import { SelectLanguage } from '../molecules/SelectLanguage'
+import { FlexBox, colors, device, dimensions } from '../../styles'
+import { Icon, Title, HamburgerMenu } from '../atoms'
 import { UserButton } from '../molecules/UserButton'
+import { SelectLanguage } from '../molecules'
 import { CategoriesList } from './CategoriesList'
-import closeButton from '../../assets/icons/x.svg'
-import PlusImg from '../../assets/icons/plus.svg'
-import MenuHamburger from '../../assets/icons/menu-left.svg'
-import SettingsImg from '../../assets/icons/settings.svg'
 import { Modal } from '../molecules/Modal'
 import { SettingsManager } from './SettingsManager'
 
@@ -16,96 +12,57 @@ const NavbarStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
   justify-content: end;
   align-items: center;
-  padding-right: 2rem;
-  height: 80px;
+  padding-right: ${dimensions.spacing.xl};
+  height: 5rem;
 
   ${Title} {
     color: ${colors.white};
   }
-
   width: 100%;
   @media (max-height: 870px) {
   }
-  @media (max-width: 768px) {
-    justify-content: space-between;
+  @media (max-width: 468px) {
+    background-color: ${colors.white};
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     position: relative;
   }
 `
-
-const LangDesktop = styled.div`
-  @media (max-width: 768px) {
-    display: none;
-  }
-`
-const HamburgerMenu = styled.img`
-  margin-right: 1.5rem;
-  width: 2rem;
-  height: 2rem;
-  cursor: pointer;
+const IconStyled = styled.div`
   display: none;
+  @media ${device.Tablet} {
+    margin: 0px 15px 0px 15px;
+    padding: 6px;
+    width: 3rem;
+    height: ${dimensions.spacing.xxl};
+    border-radius: 20%;
+    background-color: ${colors.white};
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 
-  @media (max-width: 768px) {
-    display: block;
+    display: flex;
   }
 `
 
-const ButtonImg = styled.img`
-  margin: 0px 15px 0px 15px;
-  padding: 6px;
-  width: 3rem;
-  height: 2.5rem;
-  border-radius: 20%;
-  background-color: ${colors.white};
-  cursor: pointer;
-  right: ${dimensions.spacing.base};
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`
-
-const CloseButton = styled.img`
-  width: 3rem;
-  height: 2.5rem;
-  cursor: pointer;
-  position: fixed;
-  top: 20px;
-  left: 20px;
-`
-const BgWhite = styled(FlexBox)`
-  position: absolute;
-  top: -70px;
-  right: -20px;
-  background-color: ${colors.white};
-  z-index: 999;
-  width: 100vh;
-  height: 100vh;
-  @media (min-width: 769px) {
-    display: none;
-  }
-`
-
-const MenuItems = styled(FlexBox)`
+const MenuItems = styled(FlexBox)<{ open: boolean }>`
   flex-direction: column;
-  position: absolute;
-  top: -40px;
-  right: 0;
-  padding: 15px;
   background-color: ${colors.white};
-  z-index: 999;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 115vh;
+  height: 100vh;
+  z-index: 20;
+  transition: transform 0.3s ease-in-out;
+  transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(-100%)')};
   @media (min-width: 769px) {
     display: none;
   }
 `
-
 type TNavbar = {
   toggleModal?: () => void
 }
-
 export const Navbar = ({ toggleModal }: TNavbar) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -113,44 +70,29 @@ export const Navbar = ({ toggleModal }: TNavbar) => {
   const handleSettingsModal = () => {
     setIsSettingsOpen(!isSettingsOpen)
   }
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen)
-  }
 
   return (
     <>
-      <NavbarStyled direction="row">
-        <HamburgerMenu src={MenuHamburger} alt="menu" onClick={toggleMenu} />
-        <ButtonImg
-          data-testid="new-post-button"
-          src={PlusImg}
-          alt="newPost" 
-          onClick={toggleModal} 
+      <NavbarStyled direction="row" data-testid="navbar">
+        <HamburgerMenu
+          open={isMenuOpen}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          data-testid="hamburger-menu"
         />
-        <LangDesktop>
-          <SelectLanguage />
-        </LangDesktop>
-        <ButtonImg
+        <IconStyled data-testid="new-post-button" onClick={toggleModal}>
+          <Icon name="add" color={colors.gray.gray3} />
+        </IconStyled>
+        <SelectLanguage />
+        <IconStyled
           data-testid="settings-button"
-          src={SettingsImg}
-          alt="settings"
           onClick={() => handleSettingsModal()}
-        />
+        >
+          <Icon name="settings" color={colors.gray.gray3} />
+        </IconStyled>
         <UserButton />
-        {isMenuOpen && (
-          <>
-            <BgWhite />
-            <MenuItems>
-              <CloseButton
-                data-testid="close-button"
-                src={closeButton}
-                alt="close"
-                onClick={toggleMenu}
-              />
-              <CategoriesList />
-            </MenuItems>
-          </>
-        )}
+        <MenuItems open={isMenuOpen} data-testid="menu-items">
+          <CategoriesList />
+        </MenuItems>
       </NavbarStyled>
       <Modal
         title="Ajustes"
@@ -162,5 +104,4 @@ export const Navbar = ({ toggleModal }: TNavbar) => {
     </>
   )
 }
-
 export default styled(Navbar)``
