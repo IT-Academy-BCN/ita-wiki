@@ -319,7 +319,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
               <Icon name="done" />
             </ButtonStyled>
           ) : (
-            <Button disabled={isLoading}>
+            <Button disabled={isLoading} data-testid="submitButton">
               {isLoading ? <Spinner size="xsmall" /> : 'Registrarme'}
             </Button>
           )}
