@@ -30,7 +30,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
     ['getTopics', slug],
     () => getTopics(slug)
   )
-  console.log('Data:', data) // Agregar este log para verificar los datos recibidos
+  // console.log('Data:', data)
 
   const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value)
