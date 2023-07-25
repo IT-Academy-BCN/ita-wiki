@@ -51,8 +51,8 @@ export async function setup() {
   // Cleanup database
   await prisma.user.deleteMany({})
   await prisma.category.deleteMany({})
-  await prisma.resource.deleteMany({})
   await prisma.topicsOnResources.deleteMany({})
+  await prisma.resource.deleteMany({})
   await prisma.topic.deleteMany({})
 
   // Create required test data
