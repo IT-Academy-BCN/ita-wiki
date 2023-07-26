@@ -1,5 +1,6 @@
 import { CardResourceLink } from './CardResourceLink'
 import { CategoriesList } from './CategoriesList'
+import { DesktopSideMenu } from './DesktopSideMenu'
 import { HowToHelpCard } from './HowToHelpCard'
 import Login from './Login'
 import { MyFavoritesList } from './MyFavoritesList'
@@ -16,6 +17,7 @@ import type { TResourceForm } from './ResourceForm'
 export {
   CardResourceLink,
   CategoriesList,
+  DesktopSideMenu,
   HowToHelpCard,
   Login,
   MyFavoritesList,

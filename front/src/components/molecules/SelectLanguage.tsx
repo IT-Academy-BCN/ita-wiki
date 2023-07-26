@@ -20,7 +20,7 @@ const DropdownLang = styled.select`
   }
   @media ${device.Tablet} {
     margin: 0;
-    padding: 0.5rem;
+    padding: 0.47rem;
     color: ${colors.gray.gray3};
   }
 `

@@ -1,14 +1,10 @@
 import styled from 'styled-components'
-import { FC, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { FC } from 'react'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
-import { CardHome, Modal } from '../components/molecules'
-import { CategoriesList, Navbar } from '../components/organisms'
-import { Title, Text, Button } from '../components/atoms'
-import { paths } from '../constants'
-import Register from '../components/organisms/Register'
-import Login from '../components/organisms/Login'
+import { CardHome, UserAccessHome } from '../components/molecules'
+import { DesktopSideMenu, Navbar } from '../components/organisms'
+import { Title, Text } from '../components/atoms'
 import { useAuth } from '../context/AuthProvider'
 
 const Container = styled(FlexBox)`
@@ -26,21 +22,10 @@ const Container = styled(FlexBox)`
   }
 `
 
-const LateralMenu = styled(FlexBox)`
-  display: none;
-
-  @media only ${device.Tablet} {
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-top: ${dimensions.spacing.lg};
-  }
-`
-
 const ContainerMain = styled(FlexBox)`
   width: 100%;
   height: 100%;
+  justify-content: flex-start;
 `
 
 const MainDiv = styled(FlexBox)`
@@ -70,12 +55,6 @@ const MainContent = styled(FlexBox)`
   }
 `
 
-const LogoImage = styled.img`
-  max-width: 79px;
-  height: auto;
-  margin-left: ${dimensions.spacing.xxxs};
-`
-
 const StyledTitle = styled(Title)`
   margin-top: ${dimensions.spacing.xs};
   font-size: 35px;
@@ -86,21 +65,6 @@ const StyledText = styled(Text)`
     ${dimensions.spacing.xxxs} ${dimensions.spacing.none};
   line-height: 1.3rem;
   font-weight: ${font.regular};
-`
-
-const ButtonContainerStyled = styled(FlexBox)`
-  margin: ${dimensions.spacing.xxs} ${dimensions.spacing.none}
-    ${dimensions.spacing.xxl} ${dimensions.spacing.none};
-  width: 100%;
-
-  @media only ${device.Tablet} {
-    flex-direction: row;
-  }
-`
-const ButtonStyled = styled(Button)`
-  height: 62px;
-  min-width: 50%;
-  margin: ${dimensions.spacing.xxxs} ${dimensions.spacing.xs};
 `
 
 const ResponsiveFlexBox = styled(FlexBox)`
@@ -145,101 +109,47 @@ const cardHomeContent = [
 
 const Home: FC = () => {
   const { user } = useAuth()
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false)
-  const [isLoginOpen, setIsLoginOpen] = useState(false)
-
-  const handleRegisterModal = () => {
-    setIsRegisterOpen(!isRegisterOpen)
-  }
-
-  const handleLoginModal = () => {
-    setIsLoginOpen(!isLoginOpen)
-  }
 
   return (
-    <>
-      <Container direction="row" justify="flex-start" align="start">
-        <LateralMenu>
-          <Link to={paths.home}>
-            <LogoImage src={icons.itLogo} alt="logo" />
-          </Link>
-          <CategoriesList />
-          <div style={{ height: '79px' }} />
-        </LateralMenu>
-        <ContainerMain>
-          <Navbar />
-          <MainDiv
-            as="main"
-            justify="flex-start"
-            align="center"
-            color={`${colors.gray.gray3}`}
-          >
-            <MainContent>
-              <StyledTitle as="h1" fontWeight="bold">
-                ¡Bienvenid@ a la wiki de la IT Academy!
-              </StyledTitle>
-              {!user && (
-                <FlexBox>
-                  <StyledText
-                    color={`${colors.gray.gray3}`}
-                    fontSize={`${font.base}`}
-                  >
-                    Regístrate o inicia sesión para poder subir y votar recursos
-                  </StyledText>
-                  <ButtonContainerStyled direction="column">
-                    <ButtonStyled outline onClick={handleLoginModal}>
-                      Entrar
-                    </ButtonStyled>
-                    <ButtonStyled onClick={handleRegisterModal}>
-                      Registrarme
-                    </ButtonStyled>
-                  </ButtonContainerStyled>
-                </FlexBox>
-              )}
-              <FlexBox>
-                <StyledText
-                  color={`${colors.gray.gray3}`}
-                  fontSize={`${font.base}`}
-                >
-                  Funcionalidades básicas que te ofrece esta plataforma:
-                </StyledText>
-                <ResponsiveFlexBox direction="column" gap="1rem">
-                  {cardHomeContent.map((content) => (
-                    <CardHome
-                      key={content.id}
-                      cardTitle={content.title}
-                      cardSubtitle={content.subtitle}
-                      indicator={content.indicator}
-                      icon={content.icon}
-                      data-testid="cardHome"
-                    />
-                  ))}
-                </ResponsiveFlexBox>
-              </FlexBox>
-            </MainContent>
-          </MainDiv>
-        </ContainerMain>
-      </Container>
-      <Modal
-        isOpen={isLoginOpen || isRegisterOpen}
-        toggleModal={() =>
-          isLoginOpen ? setIsLoginOpen(false) : setIsRegisterOpen(false)
-        }
-      >
-        {isLoginOpen && (
-          <Login
-            handleLoginModal={handleLoginModal}
-            handleRegisterModal={handleRegisterModal}
-          />
-        )}
-        {isRegisterOpen && (
-          <Register
-            handleLoginModal={handleLoginModal}
-            handleRegisterModal={handleRegisterModal}
-          />
-        )}
-      </Modal>
-    </>
+    <Container direction="row" justify="flex-start" align="start">
+      <DesktopSideMenu />
+      <ContainerMain>
+        <Navbar />
+        <MainDiv
+          as="main"
+          justify="flex-start"
+          align="center"
+          color={`${colors.gray.gray3}`}
+        >
+          <MainContent>
+            <StyledTitle as="h1" fontWeight="bold">
+              ¡Bienvenid@ a la wiki de la IT Academy!
+            </StyledTitle>
+            {!user && <UserAccessHome />}
+            <FlexBox>
+              <StyledText
+                color={`${colors.gray.gray3}`}
+                fontSize={`${font.base}`}
+              >
+                Funcionalidades básicas que te ofrece esta plataforma:
+              </StyledText>
+              <ResponsiveFlexBox direction="column" gap="1rem">
+                {cardHomeContent.map((content) => (
+                  <CardHome
+                    key={content.id}
+                    cardTitle={content.title}
+                    cardSubtitle={content.subtitle}
+                    indicator={content.indicator}
+                    icon={content.icon}
+                    data-testid="cardHome"
+                  />
+                ))}
+              </ResponsiveFlexBox>
+            </FlexBox>
+          </MainContent>
+        </MainDiv>
+      </ContainerMain>
+    </Container>
   )
 }
 
