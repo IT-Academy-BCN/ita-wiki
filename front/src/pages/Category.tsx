@@ -67,9 +67,10 @@ const WiderContainer = styled(FlexBox)`
 const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 2;
+  flex: 2 1 1;
   background-color: ${colors.white};
   height: 100%;
+  padding: ${dimensions.spacing.sm} ${dimensions.spacing.xxs};
   border-radius: ${dimensions.borderRadius.base};
 
   @media ${device.Tablet} {
@@ -230,7 +231,7 @@ const NewResourceButton = styled(Button)`
   color: ${colors.gray.gray3};
   background-color: ${colors.white};
   border: 1px dashed ${colors.gray.gray3};
-  margin-bottom: ${dimensions.spacing.xs};
+  margin: ${dimensions.spacing.xs} ${dimensions.spacing.none};
 
   &:hover {
     background-color: ${colors.white};
