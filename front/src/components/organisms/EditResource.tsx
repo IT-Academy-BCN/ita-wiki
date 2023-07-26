@@ -18,6 +18,7 @@ type TTopic = {
     updatedAt: string
   }
 }
+
 type TEditResourceProps = {
   description: string
   id: string
@@ -68,12 +69,11 @@ const EditResource = ({
   const { data: fetchedTopics } = useQuery(['getTopics'], getTopics)
 
   const mappedTopics =
-    fetchedTopics?.topics?.map((topic: TMappedTopics) => ({
+    fetchedTopics?.map((topic: TMappedTopics) => ({
       value: topic.id,
       label: topic.name,
     })) ?? []
   const initialTopicId = topics && topics.length > 0 ? topics[0].topic.id : ''
-
   return (
     <>
       <Modal

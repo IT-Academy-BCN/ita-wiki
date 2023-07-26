@@ -44,22 +44,20 @@ export const handlers = [
     if (slug === 'react') {
       return res(
         ctx.status(200),
-        ctx.json({
-          topics: [
-            {
-              id: 'cli04v2l0000008mq5pwx7w5j',
-              name: 'Listas',
-              slug: 'listas',
-              categoryId: 'clh78rhsk000008l0ahamgoug',
-            },
-            {
-              id: 'cli04uxud000609k37w9phejw',
-              name: 'Renderizado condicional',
-              slug: 'renderizado-condicional',
-              categoryId: 'clh78rhsk000008l0ahamgoug',
-            },
-          ],
-        })
+        ctx.json([
+          {
+            id: 'cli04v2l0000008mq5pwx7w5j',
+            name: 'Listas',
+            slug: 'listas',
+            categoryId: 'clh78rhsk000008l0ahamgoug',
+          },
+          {
+            id: 'cli04uxud000609k37w9phejw',
+            name: 'Renderizado condicional',
+            slug: 'renderizado-condicional',
+            categoryId: 'clh78rhsk000008l0ahamgoug',
+          },
+        ])
       )
     }
 
