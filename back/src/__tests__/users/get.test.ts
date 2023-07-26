@@ -48,6 +48,7 @@ describe('Testing GET endpoint', () => {
           createdAt: expect.any(String),
           id: expect.any(String),
           updatedAt: expect.any(String),
+          specializationId: expect.any(String),
         },
         {
           email: testUserData.inactiveUser.email,
@@ -58,6 +59,7 @@ describe('Testing GET endpoint', () => {
           createdAt: expect.any(String),
           id: expect.any(String),
           updatedAt: expect.any(String),
+          specializationId: expect.any(String),
         },
         {
           email: testUserData.mentor.email,
@@ -68,6 +70,7 @@ describe('Testing GET endpoint', () => {
           createdAt: expect.any(String),
           id: expect.any(String),
           updatedAt: expect.any(String),
+          specializationId: expect.any(String),
         },
         {
           email: testUserData.user.email,
@@ -78,6 +81,7 @@ describe('Testing GET endpoint', () => {
           createdAt: expect.any(String),
           id: expect.any(String),
           updatedAt: expect.any(String),
+          specializationId: expect.any(String),
         },
       ])
     )

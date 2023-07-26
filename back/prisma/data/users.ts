@@ -8,6 +8,7 @@ export const users: Prisma.UserCreateArgs['data'][] = [
     dni: '12345678A',
     status: 'ACTIVE',
     role: 'ADMIN',
+    specializationId: '',
   },
   {
     email: 'registered@registered.com',
@@ -15,6 +16,8 @@ export const users: Prisma.UserCreateArgs['data'][] = [
     name: 'Django Unchained',
     dni: '23456789B',
     status: 'ACTIVE',
+    role: 'REGISTERED',
+    specializationId: '',
   },
   {
     email: 'mentor@mentor.com',
@@ -23,5 +26,6 @@ export const users: Prisma.UserCreateArgs['data'][] = [
     dni: '34567890C',
     status: 'ACTIVE',
     role: 'MENTOR',
+    specializationId: '',
   },
 ]

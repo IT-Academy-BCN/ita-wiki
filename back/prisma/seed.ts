@@ -5,12 +5,33 @@ import { categories } from './data/categories'
 import { resources } from './data/resources'
 
 async function seedDB() {
-  await prisma.user.createMany({
-    data: users,
-  })
-
   await prisma.category.createMany({
     data: categories,
+  })
+
+  const categoryReact = await prisma.category.findUnique({
+    where: { name: 'React' },
+  })
+
+  const categoryNode = await prisma.category.findUnique({
+    where: { name: 'Node' },
+  })
+
+  await prisma.user.createMany({
+    data: [
+      {
+        ...users[0],
+        specializationId: categoryReact!.id,
+      },
+      {
+        ...users[1],
+        specializationId: categoryReact!.id,
+      },
+      {
+        ...users[2],
+        specializationId: categoryNode!.id,
+      },
+    ],
   })
 
   const userAdmin = await prisma.user.findUnique({
@@ -23,14 +44,6 @@ async function seedDB() {
 
   const userRegistered = await prisma.user.findUnique({
     where: { email: 'registered@registered.com' },
-  })
-
-  const categoryReact = await prisma.category.findUnique({
-    where: { name: 'React' },
-  })
-
-  const categoryNode = await prisma.category.findUnique({
-    where: { name: 'Node' },
   })
 
   const topicCategories = [

@@ -1621,6 +1621,8 @@ paths:
                       type: string
                     name:
                       type: string
+                    specialization:
+                      type: string
                     status:
                       type: string
                       enum: *a5
@@ -1637,6 +1639,7 @@ paths:
                     - id
                     - email
                     - dni
+                    - specialization
                     - status
                     - role
                     - createdAt
