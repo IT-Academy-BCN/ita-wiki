@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
 import { Modal } from '../../components/molecules'
 import { Text } from '../../components/atoms'
@@ -17,7 +17,7 @@ describe('Modal', () => {
     expect(screen.getByText('Modal content')).toBeInTheDocument()
   })
 
-  it('calls toggleModal function when close icon, background or "Escape" is clicked', () => {
+  it('calls toggleModal function when close icon, background or "Escape" is clicked', async () => {
     render(
       <Modal isOpen toggleModal={mockToggleModal} title="Test Modal">
         <Text>Modal content</Text>
@@ -27,6 +27,8 @@ describe('Modal', () => {
     fireEvent.click(screen.getByTestId('modal-wrapper'))
     fireEvent.click(screen.getByRole('img'))
     fireEvent.keyDown(document, { key: 'Escape' })
-    expect(mockToggleModal).toHaveBeenCalledTimes(3)
+    await waitFor(() => {
+      expect(mockToggleModal).toHaveBeenCalledTimes(3)
+    })
   })
 })
