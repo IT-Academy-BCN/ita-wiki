@@ -1,5 +1,5 @@
 import { expect, vi } from 'vitest'
-import { render, screen, fireEvent } from '../test-utils'
+import { render, screen, fireEvent, waitFor } from '../test-utils'
 import { Category } from '../../pages'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
@@ -64,7 +64,7 @@ it('create new resource modal opens and closes correctly', () => {
   expect(screen.getByText(/Nuevo Recurso/)).toBeInTheDocument()
 })
 
-it('modal opens and closes correctly when user is not logged', () => {
+it('modal opens and closes correctly when user is not logged', async () => {
   vi.mocked(useAuth).mockReturnValue({
     user: null,
   } as TAuthContext)
@@ -78,10 +78,12 @@ it('modal opens and closes correctly when user is not logged', () => {
 
   expect(modalTitle).toBeInTheDocument()
   fireEvent.keyDown(document, { key: 'Escape' })
-  expect(modalTitle).not.toBeInTheDocument()
+  await waitFor(() => {
+    expect(modalTitle).not.toBeInTheDocument()
+  })
 })
 
-it('modal opens and closes correctly when user is logged', () => {
+it('modal opens and closes correctly when user is logged', async () => {
   render(<Category />)
 
   fireEvent.click(screen.getByRole('button', { name: '+ Crear nuevo recurso' }))
@@ -90,5 +92,7 @@ it('modal opens and closes correctly when user is logged', () => {
   })
   expect(modalTitle).toBeInTheDocument()
   fireEvent.keyDown(document, { key: 'Escape' })
-  expect(modalTitle).not.toBeInTheDocument()
+  await waitFor(() => {
+    expect(modalTitle).not.toBeInTheDocument()
+  })
 })
