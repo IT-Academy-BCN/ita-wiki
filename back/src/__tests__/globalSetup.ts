@@ -49,11 +49,12 @@ export const testUserData = {
 
 export async function setup() {
   // Cleanup database
-  await prisma.user.deleteMany({})
-  await prisma.category.deleteMany({})
-  await prisma.topicsOnResources.deleteMany({})
-  await prisma.resource.deleteMany({})
-  await prisma.topic.deleteMany({})
+  await prisma.topicsOnResources.deleteMany()
+  await prisma.viewedResource.deleteMany()
+  await prisma.topic.deleteMany()
+  await prisma.resource.deleteMany()
+  await prisma.user.deleteMany()
+  await prisma.category.deleteMany()
 
   // Create required test data
   const testCategory = await prisma.category.create({
@@ -66,7 +67,6 @@ export async function setup() {
   const existingTestCategory = await prisma.category.findUnique({
     where: { name: 'Testing' },
   })
-
   await prisma.user.createMany({
     data: [
       { ...testUserData.admin, specializationId: existingTestCategory!.id },
