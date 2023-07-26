@@ -421,7 +421,7 @@ const Category: FC = () => {
 
   const mappedTopics = [
     { value: 'todos', label: 'Todos' },
-    ...(fetchedTopics?.topics.map((t) => {
+    ...(fetchedTopics?.map((t) => {
       const selectOptions = { id: t.id, value: t.slug, label: t.name }
       return selectOptions
     }) || []),

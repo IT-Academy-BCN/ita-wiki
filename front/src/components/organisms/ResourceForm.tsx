@@ -153,14 +153,13 @@ const ResourceForm: FC<TSelectOptions> = ({
       topicId: topicId ?? initialValues?.topicId ?? '',
       resourceType,
     }
-    // console.log(updatedData, 'updatedData')
     await updateResource.mutateAsync(updatedData)
   })
   const handleTopicChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedTopicId = event.target.value
     setValue('topicId', selectedTopicId)
   }
-  // console.log(initialValues, 'initialValues')
+
   return (
     <ResourceFormStyled
       onSubmit={initialValues ? update : create}
