@@ -62,6 +62,7 @@ const ResourceFormStyled = styled.form`
 type TSelectOption = {
   value: string
   label: string
+  id: string
 }
 
 type TSelectOptions = {
@@ -133,7 +134,6 @@ const ResourceForm: FC<TSelectOptions> = ({
   })
   const create = handleSubmit(async (data) => {
     const { title, description, url, topics, resourceType } = data
-
     await createResource.mutateAsync({
       title,
       description,
@@ -155,11 +155,17 @@ const ResourceForm: FC<TSelectOptions> = ({
     }
     await updateResource.mutateAsync(updatedData)
   })
+
   const handleTopicChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedTopicId = event.target.value
-    setValue('topicId', selectedTopicId)
+    const selectedTopic = selectOptions.find(
+      (option) => option.value === selectedTopicId
+    )
+    if (selectedTopic) {
+      setValue('topics', selectedTopic.label)
+      setValue('topicId', selectedTopic.value)
+    }
   }
-
   return (
     <ResourceFormStyled
       onSubmit={initialValues ? update : create}

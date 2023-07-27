@@ -20,6 +20,7 @@ const SelectStyled = styled.select<TSelect>`
 type TOption = {
   value: string
   label: string
+  id: string
 }
 
 type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
@@ -43,8 +44,8 @@ const Select = forwardRef<HTMLSelectElement, TSelect>(
       <option value="" disabled>
         {placeholder}
       </option>
-      {options.map(({ value, label }) => (
-        <option key={value} value={value}>
+      {options.map(({ value, label, id }) => (
+        <option key={value} value={id}>
           {label}
         </option>
       ))}

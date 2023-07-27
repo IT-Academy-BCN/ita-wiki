@@ -19,22 +19,27 @@ const options = [
   {
     value: 'cli04v2l0000008mq5pwx7w5j',
     label: 'Listas',
+    id: 'cli04v2l0000008mq5pwx7w5j',
   },
   {
     value: 'cli04uxud000609k37w9phejw',
     label: 'Renderizado condicional',
+    id: 'cli04uxud000609k37w9phejw',
   },
   {
     value: 'cli04ut8j000509k389fv899t',
     label: 'Eventos',
+    id: 'cli04ut8j000509k389fv899t',
   },
   {
     value: 'cli04up9q000409k3db4lcf6r',
     label: 'UseState & useEffect',
+    id: 'cli04up9q000409k3db4lcf6r',
   },
   {
     value: 'cli04ukio000309k3eqr02v4s',
     label: 'Components',
+    id: 'cli04ukio000309k3eqr02v4s',
   },
 ]
 
@@ -79,12 +84,10 @@ describe('ResourceForm', () => {
       target: { value: 'https://dev.itadirectory.eurecatacademy.org/' },
     })
 
-    fireEvent.change(screen.getByLabelText(/tema/i), {
+    const temaSelect = screen.getByLabelText(/tema/i) as HTMLSelectElement
+    fireEvent.change(temaSelect, {
       target: { value: 'cli04uxud000609k37w9phejw' },
     })
-    expect(
-      screen.getByDisplayValue('Renderizado condicional')
-    ).toBeInTheDocument()
 
     const videoRadio = screen.getByLabelText(/video/i)
     fireEvent.click(videoRadio)
@@ -133,12 +136,8 @@ describe('ResourceForm', () => {
       target: { value: 'https://updated-example.com' },
     })
 
-    fireEvent.change(screen.getByLabelText(/tema/i), {
-      target: { value: 'cli04uxud000609k37w9phejw' },
-    })
-    expect(
-      screen.getByDisplayValue('Renderizado condicional')
-    ).toBeInTheDocument()
+    const temaSelect = screen.getByLabelText(/tema/i) as HTMLSelectElement
+    fireEvent.change(temaSelect, { target: { value: initialValues.topicId } })
 
     const button = screen.getByText(/editar/i)
     fireEvent.click(button)

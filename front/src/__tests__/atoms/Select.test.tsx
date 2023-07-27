@@ -13,13 +13,13 @@ describe('Select', () => {
 
   it('selecting an option should update the select value', () => {
     const options = [
-      { value: '0', label: 'Especialidad' },
-      { value: '1', label: 'React' },
-      { value: '2', label: 'Angular' },
-      { value: '3', label: 'Vue' },
-      { value: '4', label: 'Node' },
-      { value: '5', label: 'Java' },
-      { value: '6', label: 'Fullstack' },
+      { value: '0', label: 'Especialidad', id: '0' },
+      { value: '1', label: 'React', id: '1' },
+      { value: '2', label: 'Angular', id: '2' },
+      { value: '3', label: 'Vue', id: '3' },
+      { value: '4', label: 'Node', id: '4' },
+      { value: '5', label: 'Java', id: '5' },
+      { value: '6', label: 'Fullstack', id: '6' },
     ]
 
     render(<Select options={options} />)
