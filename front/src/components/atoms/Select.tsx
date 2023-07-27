@@ -20,7 +20,7 @@ const SelectStyled = styled.select<TSelect>`
 type TOption = {
   value: string
   label: string
-  id: string
+  id?: string
 }
 
 type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {

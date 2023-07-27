@@ -62,7 +62,7 @@ const ResourceFormStyled = styled.form`
 type TSelectOption = {
   value: string
   label: string
-  id: string
+  id?: string
 }
 
 type TSelectOptions = {
