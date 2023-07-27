@@ -106,6 +106,7 @@ type TForm = z.infer<typeof UserRegisterSchema>
 type TCategory = {
   name: string
   slug: string
+  id: string
 }
 
 type TRegister = {
@@ -142,7 +143,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
   })
 
   const categoriesMap = data?.map((category: TCategory) => ({
-    value: category.slug,
+    value: category.id,
     label: category.name,
   }))
 
