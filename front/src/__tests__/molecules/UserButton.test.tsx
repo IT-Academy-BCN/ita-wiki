@@ -29,6 +29,6 @@ describe('UserButton', () => {
     } as TAuthContext)
 
     render(<UserButton />)
-    expect(screen.getByTestId('avatarImage')).toBeInTheDocument()
+    expect(screen.getByTestId('avatarImageUser')).toBeInTheDocument()
   })
 })
