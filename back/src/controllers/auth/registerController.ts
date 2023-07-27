@@ -1,4 +1,5 @@
 import { Middleware, Context } from 'koa'
+import { Category } from '@prisma/client'
 import { prisma } from '../../prisma/client'
 import { NotFoundError } from '../../helpers/errors'
 
@@ -31,13 +32,19 @@ export const registerController: Middleware = async (ctx: Context) => {
     return
   }
 
-  const existingCategory = await prisma.category.findUnique({
+  let existingCategory: Category | null
+
+  existingCategory = await prisma.category.findUnique({
     where: { slug: specialization.toLowerCase() },
   })
 
   if (!existingCategory) {
-    throw new NotFoundError('Category not found')
-
+    existingCategory = await prisma.category.findUnique({
+      where: { id: specialization },
+    })
+    if (!existingCategory) {
+      throw new NotFoundError('Category not found')
+    }
   }
 
   const user = await prisma.user.create({
