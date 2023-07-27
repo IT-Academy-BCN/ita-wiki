@@ -32,11 +32,11 @@ export const registerController: Middleware = async (ctx: Context) => {
   }
 
   const existingCategory = await prisma.category.findUnique({
-    where: { name: specialization },
+    where: { slug: specialization.toLowerCase() },
   })
 
   if (!existingCategory) {
-    throw new NotFoundError('Resource not found')
+    throw new NotFoundError('Category not found')
   }
 
   const user = await prisma.user.create({

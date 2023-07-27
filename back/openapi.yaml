@@ -189,6 +189,7 @@ paths:
                   type: string
                 specialization:
                   type: string
+                  example: clkju6s770000h8msg...
                 password:
                   type: string
                   minLength: 8
@@ -1623,6 +1624,7 @@ paths:
                       type: string
                     specialization:
                       type: string
+                      example: clkju6s770000h8msg...
                     status:
                       type: string
                       enum: *a5
