@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { render, fireEvent, screen } from '../test-utils'
+import { render, screen } from '../test-utils'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { Home } from '../../pages'
 
@@ -53,16 +53,5 @@ describe('Home page', () => {
     render(<Home />)
 
     expect(screen.queryByText(/registrarme/i)).not.toBeInTheDocument()
-  })
-
-  it('shows register modal when user clicks its button', () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: null,
-    } as TAuthContext)
-    render(<Home />)
-
-    fireEvent.click(screen.getByText(/entrar/i))
-    const modalTitle = screen.getAllByText(/login/i)
-    expect(modalTitle[0]).toBeInTheDocument()
   })
 })

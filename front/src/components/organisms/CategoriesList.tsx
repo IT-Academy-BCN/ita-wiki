@@ -22,6 +22,7 @@ const LinkCategory = styled(Link)`
   margin: 0;
   padding: 0;
 `
+
 const CategoriesContainerStyled = styled(FlexBox)`
   padding-left: ${dimensions.spacing.xxs};
   margin-right: ${dimensions.spacing.sm};
@@ -39,6 +40,10 @@ const CategoryStyled = styled.span<TLinkStyled>`
   font-family: ${font.fontFamily};
   margin-top: ${dimensions.spacing.lg};
   cursor: pointer;
+
+  :hover {
+    color: ${({ active }) => (active ? colors.black.black3 : colors.primary)};
+  }
 
   &::before {
     content: '${({ active }) => (active ? '●' : '')}';

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../../styles'
 import { Icon, Title, HamburgerMenu } from '../atoms'
 import { UserButton } from '../molecules/UserButton'
-import { SelectLanguage } from '../molecules'
+import { SelectLanguage } from '../molecules/SelectLanguage'
 import { CategoriesList } from './CategoriesList'
 import { Modal } from '../molecules/Modal'
 import { SettingsManager } from './SettingsManager'
@@ -12,15 +12,14 @@ const NavbarStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
   justify-content: end;
   align-items: center;
-  padding-right: ${dimensions.spacing.xl};
   height: 5rem;
+  width: 100%;
+  padding: ${dimensions.spacing.xs} ${dimensions.spacing.none};
 
   ${Title} {
     color: ${colors.white};
   }
-  width: 100%;
-  @media (max-height: 870px) {
-  }
+
   @media (max-width: 468px) {
     background-color: ${colors.white};
     padding-left: 0.5rem;
@@ -40,7 +39,6 @@ const IconStyled = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
-
     display: flex;
   }
 `
@@ -79,13 +77,20 @@ export const Navbar = ({ toggleModal }: TNavbar) => {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           data-testid="hamburger-menu"
         />
-        <IconStyled data-testid="new-post-button" onClick={toggleModal}>
+        <IconStyled
+          data-testid="new-post-button"
+          onClick={toggleModal}
+          title="Añadir recurso"
+          role="button"
+        >
           <Icon name="add" color={colors.gray.gray3} />
         </IconStyled>
         <SelectLanguage />
         <IconStyled
           data-testid="settings-button"
           onClick={() => handleSettingsModal()}
+          title="Configuración"
+          role="button"
         >
           <Icon name="settings" color={colors.gray.gray3} />
         </IconStyled>

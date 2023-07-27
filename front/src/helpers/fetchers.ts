@@ -7,9 +7,9 @@ type TTopicReturned = {
   categoryId: string
 }
 
-export type TGetTopics = {
-  topics: TTopicReturned[]
-}
+
+export type TGetTopics = TTopicReturned[]
+  
 
 export const getTopics = async (slug?: string): Promise<TGetTopics> =>
   fetch(`${urls.getTopics}?category=${slug}`)

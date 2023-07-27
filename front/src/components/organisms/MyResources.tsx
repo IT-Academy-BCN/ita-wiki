@@ -149,7 +149,6 @@ const MyResources = () => {
     queryFn: () => getResourcesByUser(categorySlug),
     enabled: !!user, // Enable the query only if there is a logged-in user
   })
-  // console.log(data, 'data')
 
   const handleRegisterModal = () => {
     setIsRegisterOpen(!isRegisterOpen)

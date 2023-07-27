@@ -37,6 +37,7 @@ export const registerController: Middleware = async (ctx: Context) => {
 
   if (!existingCategory) {
     throw new NotFoundError('Category not found')
+
   }
 
   const user = await prisma.user.create({

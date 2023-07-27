@@ -1,5 +1,4 @@
 import { AccessModalContent } from './AccessModalContent'
-import { CategoryBlock } from './CategoryBlock'
 import { CreateAuthor } from './CreateAuthor'
 import InputGroup from './InputGroup'
 import { Modal } from './Modal'
@@ -10,14 +9,14 @@ import TextareaGroup from './TextareaGroup'
 import { TypesFilterWidget } from './TypesFilterWidget'
 import { VoteCounter } from './VoteCounter'
 import { CardHome } from './CardHome'
-import { UserButton } from './UserButton'
 import { SelectLanguage } from './SelectLanguage'
 import { Tooltip } from './Tooltip'
 import type { TCardResource } from '../organisms/CardResource'
+import { UserAccessHome } from './UserAccessHome'
+import { UserButton } from './UserButton'
 
 export {
   AccessModalContent,
-  CategoryBlock,
   InputGroup,
   Modal,
   ResourceTitleLink,
@@ -29,7 +28,9 @@ export {
   VoteCounter,
   CardHome,
   SelectLanguage,
-  UserButton,
   Tooltip,
+  UserAccessHome,
+  UserButton,
 }
+
 export type { TResourceTitleLink, TCardResource }

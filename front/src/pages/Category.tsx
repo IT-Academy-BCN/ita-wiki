@@ -1,16 +1,15 @@
 import styled, { keyframes } from 'styled-components'
-import { Link, useLocation, useParams } from 'react-router-dom'
+import { useLocation, useParams } from 'react-router-dom'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
-import { paths } from '../constants'
-import icons from '../assets/icons'
 import {
-  CategoriesList,
+  DesktopSideMenu,
   Login,
   MyFavoritesList,
   MyResources,
   Navbar,
+  Register,
   ResourceCardList,
   ResourceForm,
   TopicsRadioWidget,
@@ -28,52 +27,55 @@ import {
 import { useAuth } from '../context/AuthProvider'
 import { TGetTopics, getTopics } from '../helpers/fetchers'
 
-const MainContainer = styled.div`
-  display: block;
-`
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  @media ${device.Tablet} {
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-    background-color: ${colors.gray.gray5};
-    height: 100vh;
-    width: 100%;
-    padding: ${dimensions.spacing.xl};
-  }
-`
-
-const LateralDiv = styled.div`
-  display: none;
-
-  @media ${device.Tablet} {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-`
-
-const ImageStyled = styled.img`
-  margin-bottom: ${dimensions.spacing.xl};
-  margin-left: ${dimensions.spacing.xl};
-  max-width: 79px;
-  height: auto;
-`
-
-const WhiteContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+const Container = styled(FlexBox)`
   background-color: ${colors.white};
   width: 100%;
+
+  @media only ${device.Tablet} {
+    height: 100vh;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+    background-color: ${colors.gray.gray5};
+    padding: ${dimensions.spacing.none} ${dimensions.spacing.md}
+      ${dimensions.spacing.xl} ${dimensions.spacing.sm};
+  }
+`
+
+const ContainerMain = styled(FlexBox)`
+  width: 100%;
+  height: 90%;
+
+  @media only ${device.Tablet} {
+    display: flex;
+
+    flex-direction: row;
+
+    align-items: flex-start;
+    gap: ${dimensions.spacing.xl};
+    justify-content: flex-end;
+  }
+`
+
+const WiderContainer = styled(FlexBox)`
+  width: 100%;
   height: 100%;
+  justify-content: flex-start;
+`
+
+const MainContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 2 1 1;
+  background-color: ${colors.white};
+  height: 100%;
+  padding: ${dimensions.spacing.sm} ${dimensions.spacing.xxs};
   border-radius: ${dimensions.borderRadius.base};
 
   @media ${device.Tablet} {
     flex-direction: row;
+    padding: ${dimensions.spacing.md} ${dimensions.spacing.xxxl};
   }
 `
 
@@ -85,7 +87,7 @@ const FiltersContainer = styled(FlexBox)`
     justify-content: flex-start;
     align-items: flex-start;
     flex: 1 2 20rem;
-    padding: ${dimensions.spacing.sm} ${dimensions.spacing.xxxl};
+    padding-top: ${dimensions.spacing.xxs};
   }
 `
 
@@ -99,7 +101,8 @@ const ScrollTopics = styled(FlexBox)`
 `
 
 const ResourcesContainer = styled(FlexBox)`
-  padding: 1.2rem 1.5rem;
+  padding: ${dimensions.spacing.none} ${dimensions.spacing.xs}
+    ${dimensions.spacing.none} ${dimensions.spacing.xs};
   justify-content: flex-start;
   align-items: flex-start;
   overflow-y: auto;
@@ -110,6 +113,7 @@ const ResourcesContainer = styled(FlexBox)`
 
   @media ${device.Laptop} {
     flex: 4 1 26rem;
+    padding-left: ${dimensions.spacing.xs};
   }
 `
 
@@ -117,7 +121,7 @@ const TitleResourcesContainer = styled(FlexBox)`
   justify-content: space-between;
   flex-direction: row;
   width: 100%;
-  padding: ${dimensions.spacing.base} ${dimensions.spacing.none};
+  padding: ${dimensions.spacing.none};
 `
 
 const SearchBar = styled(InputGroup)`
@@ -126,8 +130,9 @@ const SearchBar = styled(InputGroup)`
   @media ${device.Tablet} {
     display: flex;
     color: ${colors.gray.gray4};
-    margin-top: 1rem;
+    margin-top: ${dimensions.spacing.xxs};
     width: 40%;
+    justify-content: flex-end;
 
     ${FlexBox} {
       justify-content: flex-start;
@@ -173,33 +178,32 @@ const ScrollDiv = styled(FlexBox)`
   }
 `
 
-const ContainerWhiteScroll = styled(FlexBox)`
+const ContainerResourcesAside = styled(FlexBox)`
   display: none;
 
   @media ${device.Tablet} {
     display: flex;
+    flex: 1;
     justify-content: flex-start;
     align-items: flex-start;
-    padding: ${dimensions.spacing.none} ${dimensions.spacing.md};
+    align-content: flex-end;
     gap: ${dimensions.spacing.xl};
+    height: 100%;
   }
 `
 
-const WhiteScrollDiv = styled(FlexBox)`
+const ResourcesAside = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
   flex: 1 2 20rem;
+  min-height: 14rem;
+  max-height: 20rem;
   overflow: hidden;
   overflow-x: auto;
   width: 100%;
-  height: auto;
   background-color: ${colors.white};
   border-radius: ${dimensions.borderRadius.base};
   padding: ${dimensions.spacing.none} ${dimensions.spacing.xxl};
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `
 
 const MobileTopicsContainer = styled(FlexBox)`
@@ -210,11 +214,11 @@ const MobileTopicsContainer = styled(FlexBox)`
   padding-left: ${dimensions.spacing.lg};
   padding-bottom: ${dimensions.spacing.md};
   padding-top: ${dimensions.spacing.none};
-
   position: sticky;
   top: 0;
   z-index: 1;
   height: 100%;
+  width: 100%;
 
   @media ${device.Tablet} {
     display: none;
@@ -227,7 +231,7 @@ const NewResourceButton = styled(Button)`
   color: ${colors.gray.gray3};
   background-color: ${colors.white};
   border: 1px dashed ${colors.gray.gray3};
-  margin-bottom: ${dimensions.spacing.xs};
+  margin: ${dimensions.spacing.xs} ${dimensions.spacing.none};
 
   &:hover {
     background-color: ${colors.white};
@@ -241,7 +245,7 @@ const NewResourceButton = styled(Button)`
 
 const StyledSelectGroup = styled(SelectGroup)`
   border: none;
-  width: 85vw;
+
   &:focus {
     outline: 0 none;
   }
@@ -421,7 +425,7 @@ const Category: FC = () => {
 
   const mappedTopics = [
     { value: 'todos', label: 'Todos' },
-    ...(fetchedTopics?.topics.map((t) => {
+    ...(fetchedTopics?.map((t) => {
       const selectOptions = { id: t.id, value: t.slug, label: t.name }
       return selectOptions
     }) || []),
@@ -429,16 +433,10 @@ const Category: FC = () => {
 
   return (
     <>
-      <MainContainer>
-        <Navbar toggleModal={toggleModal} />
-        <Container>
-          <LateralDiv>
-            <Link to={paths.home}>
-              <ImageStyled src={icons.itLogo} alt="IT Academy logo" />
-            </Link>
-            <CategoriesList />
-          </LateralDiv>
-
+      <Container direction="row" justify="flex-start" align="start">
+        <DesktopSideMenu />
+        <WiderContainer>
+          <Navbar toggleModal={toggleModal} />
           <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
               Temas
@@ -452,108 +450,112 @@ const Category: FC = () => {
               onChange={handleSelectTopicFilter}
             />
           </MobileTopicsContainer>
-
-          <WhiteContainer>
-            <FiltersContainer data-testid="filters-container">
-              <Title as="h2" fontWeight="bold">
-                Filtros
-              </Title>
-              <Text fontWeight="bold">Temas</Text>
-              <ScrollTopics>
-                {slug && (
-                  <TopicsRadioWidget
-                    slug={slug}
-                    topic={topic}
-                    setTopic={handleTopicFilter}
-                  />
-                )}
-              </ScrollTopics>
-              <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
-              <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
-            </FiltersContainer>
-            <ResourcesContainer>
-              <TitleResourcesContainer>
+          <ContainerMain>
+            <MainContainer as="main">
+              <FiltersContainer data-testid="filters-container">
                 <Title as="h2" fontWeight="bold">
-                  Recursos de {state?.name}
+                  Filtros
                 </Title>
-                <SearchBar
-                  data-testid="inputGroupSearch"
-                  label="searchResource"
-                  name="searchResource"
-                  placeholder="Buscar recurso"
-                  id="searchResource"
-                  icon="search"
-                />
-                <FilterButton
-                  data-testid="filters-button"
-                  onClick={handleFiltersOpen}
-                >
-                  Filtrar
-                </FilterButton>
-              </TitleResourcesContainer>
-              <VotesDateContainer>
-                <FlexBox direction="row" gap="15px">
-                  <FlexBox direction="row">
-                    <Text fontWeight="bold">Votos</Text>
-                    <Icon name="arrow_downward" />
-                  </FlexBox>
-                  <StyledDateToggle
-                    onClick={handleSortOrder}
-                    color={colors.gray.gray3}
+                <Text fontWeight="bold">Temas</Text>
+                <ScrollTopics>
+                  {slug && (
+                    <TopicsRadioWidget
+                      slug={slug}
+                      topic={topic}
+                      setTopic={handleTopicFilter}
+                    />
+                  )}
+                </ScrollTopics>
+                <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
+                <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+              </FiltersContainer>
+              <ResourcesContainer>
+                <TitleResourcesContainer>
+                  <Title as="h2" fontWeight="bold">
+                    Recursos de {state?.name}
+                  </Title>
+                  <SearchBar
+                    data-testid="inputGroupSearch"
+                    label="searchResource"
+                    name="searchResource"
+                    placeholder="Buscar recurso"
+                    id="searchResource"
+                    icon="search"
+                  />
+                  <FilterButton
+                    data-testid="filters-button"
+                    onClick={handleFiltersOpen}
                   >
-                    Fecha
-                  </StyledDateToggle>
-                </FlexBox>
-              </VotesDateContainer>
-              <ScrollDiv>
-                <NewResourceButton
-                  onClick={
-                    user ? () => setIsOpen(!isOpen) : () => handleAccessModal()
-                  }
-                >
-                  + Crear nuevo recurso
-                </NewResourceButton>
-                <ResourceCardList
-                  handleAccessModal={handleAccessModal}
-                  filters={filters}
-                  sortOrder={sortOrder}
-                />
-              </ScrollDiv>
-            </ResourcesContainer>
-          </WhiteContainer>
-
-          {isFiltersOpen && (
-            <MobileFiltersContainer
-              data-testid="mobile-filters"
-              className={isFiltersOpen ? 'open' : 'close'}
-            >
-              <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
-              <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
-              <CloseFilterButton
-                data-testid="close-filters-button"
-                onClick={handleFiltersClose}
+                    Filtrar
+                  </FilterButton>
+                </TitleResourcesContainer>
+                <VotesDateContainer>
+                  <FlexBox direction="row" gap="15px">
+                    <FlexBox direction="row">
+                      <Text fontWeight="bold">Votos</Text>
+                      <Icon name="arrow_downward" />
+                    </FlexBox>
+                    <StyledDateToggle
+                      onClick={handleSortOrder}
+                      color={colors.gray.gray3}
+                    >
+                      Fecha
+                    </StyledDateToggle>
+                  </FlexBox>
+                </VotesDateContainer>
+                <ScrollDiv>
+                  <NewResourceButton
+                    onClick={
+                      user
+                        ? () => setIsOpen(!isOpen)
+                        : () => handleAccessModal()
+                    }
+                  >
+                    + Crear nuevo recurso
+                  </NewResourceButton>
+                </ScrollDiv>
+                <ScrollDiv>
+                  <ResourceCardList
+                    handleAccessModal={handleAccessModal}
+                    filters={filters}
+                    sortOrder={sortOrder}
+                  />
+                </ScrollDiv>
+              </ResourcesContainer>
+            </MainContainer>
+            {isFiltersOpen && (
+              <MobileFiltersContainer
+                data-testid="mobile-filters"
+                className={isFiltersOpen ? 'open' : 'close'}
               >
-                Cerrar
-              </CloseFilterButton>
-            </MobileFiltersContainer>
-          )}
-          <ContainerWhiteScroll>
-            <WhiteScrollDiv>
-              <MyFavoritesList />
-            </WhiteScrollDiv>
-            <WhiteScrollDiv>
-              <MyResources />
-            </WhiteScrollDiv>
-          </ContainerWhiteScroll>
-        </Container>
-        {/* ==> ADD RESOURCE MODAL */}
-        <Modal isOpen={isOpen} toggleModal={toggleModal} title="Nuevo Recurso">
-          <ResourceForm selectOptions={mappedTopics} />
-          <Button outline onClick={toggleModal}>
-            Cancelar
-          </Button>
-        </Modal>
-      </MainContainer>
+                <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
+                <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+                <CloseFilterButton
+                  data-testid="close-filters-button"
+                  onClick={handleFiltersClose}
+                >
+                  Cerrar
+                </CloseFilterButton>
+              </MobileFiltersContainer>
+            )}
+            <ContainerResourcesAside as="aside">
+              <ResourcesAside>
+                <MyFavoritesList />
+              </ResourcesAside>
+              <ResourcesAside>
+                <MyResources />
+              </ResourcesAside>
+            </ContainerResourcesAside>
+          </ContainerMain>
+        </WiderContainer>
+      </Container>
+      {/* ==> ADD RESOURCE MODAL */}
+      <Modal isOpen={isOpen} toggleModal={toggleModal} title="Nuevo Recurso">
+        <ResourceForm selectOptions={mappedTopics} />
+        <Button outline onClick={toggleModal}>
+          Cancelar
+        </Button>
+      </Modal>
       {/* RESTRICTED ACCES MODAL */}
       <Modal isOpen={isAccessModalOpen} toggleModal={handleAccessModal}>
         <AccessModalContent
@@ -562,6 +564,7 @@ const Category: FC = () => {
           handleAccessModal={handleAccessModal}
         />
       </Modal>
+      {/* LOGIN AND REGISTER MODALS (INCLUDE BOTH!! - THEY TOGGLE) */}
       <Modal
         isOpen={isLoginOpen || isRegisterOpen}
         toggleModal={() =>
@@ -570,6 +573,12 @@ const Category: FC = () => {
       >
         {isLoginOpen && (
           <Login
+            handleLoginModal={handleLoginModal}
+            handleRegisterModal={handleRegisterModal}
+          />
+        )}
+        {isRegisterOpen && (
+          <Register
             handleLoginModal={handleLoginModal}
             handleRegisterModal={handleRegisterModal}
           />

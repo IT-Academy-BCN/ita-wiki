@@ -41,7 +41,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
   return (
     <StyledRadio
       options={[{ id: 'todos', name: 'Todos' }].concat(
-        data?.topics.map((t) => ({ id: t.slug, name: t.name }))
+        data?.map((t) => ({ id: t.id, name: t.name }))
       )}
       inputName="Topics Radio Filter"
       onChange={onTopicChange}
