@@ -34,7 +34,10 @@ describe('Register', () => {
       screen.getByLabelText('confirmPassword'),
       'password123AAAA'
     )
-    await userEvent.selectOptions(screen.getByTestId('specialization'), 'react')
+    await userEvent.selectOptions(
+      screen.getByLabelText('specialization'),
+      'React'
+    )
     await userEvent.click(screen.getByTestId('accept'))
 
     await userEvent.click(screen.getByTestId('submitButton'))
