@@ -1,8 +1,17 @@
 import supertest from 'supertest'
-import { expect, test, describe, afterAll } from 'vitest'
+import { expect, test, describe, afterAll, beforeAll } from 'vitest'
+import { Category } from '@prisma/client'
 import { server } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
+
+let existingTestCategory: Category | null
+
+beforeAll(async () => {
+  existingTestCategory = await prisma.category.findUnique({
+    where: { name: 'Testing' },
+  })
+})
 
 afterAll(async () => {
   await prisma.user.deleteMany({
@@ -18,7 +27,7 @@ describe('Testing registration endpoint', () => {
         name: 'Example2',
         email: 'example2@example.com',
         password: 'password1',
-        specialization: 'Testing',
+        specialization: existingTestCategory!.id,
       })
 
     expect(response.status).toBe(204)
@@ -33,7 +42,7 @@ describe('Testing registration endpoint', () => {
           name: 'Example2',
           email: 'anotherexample@example.com',
           password: 'password1',
-          specialization: 'Testing',
+          specialization: existingTestCategory!.id,
         })
       expect(response.status).toBe(400)
       expect(response.body.error).toBe('DNI already exists')
@@ -47,7 +56,7 @@ describe('Testing registration endpoint', () => {
           name: 'Example2',
           email: 'example2@example.com',
           password: 'password1',
-          specialization: 'Testing',
+          specialization: existingTestCategory!.id,
         })
       expect(response.status).toBe(400)
       expect(response.body.error).toBe('Email already exists')
@@ -62,7 +71,7 @@ describe('Testing registration endpoint', () => {
           name: 'Example2',
           email: 'example2@example.com',
           password: 'password1',
-          specialization: 'Testing',
+          specialization: existingTestCategory!.id,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
@@ -76,7 +85,7 @@ describe('Testing registration endpoint', () => {
           dni: '45632452c',
           name: 'Example2',
           password: 'password1',
-          specialization: 'Testing',
+          specialization: existingTestCategory!.id,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
@@ -90,7 +99,7 @@ describe('Testing registration endpoint', () => {
           dni: '45632452c',
           name: 'Example2',
           email: 'example2@example.com',
-          specialization: 'Testing',
+          specialization: existingTestCategory!.id,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
@@ -121,7 +130,7 @@ describe('Testing registration endpoint', () => {
           name: 'Example2',
           email: 'example2@example.com',
           password: 'password1',
-          specialization: 'Testing',
+          specialization: existingTestCategory!.id,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].validation).toBe('regex')
@@ -136,7 +145,7 @@ describe('Testing registration endpoint', () => {
           name: 'Example2',
           email: 'notAValidEmail',
           password: 'password1',
-          specialization: 'Testing',
+          specialization: existingTestCategory!.id,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].validation).toBe('email')
@@ -151,7 +160,7 @@ describe('Testing registration endpoint', () => {
           name: 'Example2',
           email: 'example2@example.com',
           password: 'pswd1',
-          specialization: 'Testing',
+          specialization: existingTestCategory!.id,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].path).toContain('password')
@@ -166,7 +175,7 @@ describe('Testing registration endpoint', () => {
           name: 'Example2',
           email: 'example2@example.com',
           password: 'password',
-          specialization: 'Testing',
+          specialization: existingTestCategory!.id,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].validation).toBe('regex')
@@ -181,7 +190,7 @@ describe('Testing registration endpoint', () => {
           name: 'Example2',
           email: 'example2@example.com',
           password: 'password1?',
-          specialization: 'Testing',
+          specialization: existingTestCategory!.id,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].validation).toBe('regex')
