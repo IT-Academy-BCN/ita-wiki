@@ -58,7 +58,7 @@ const ModalContainer = styled.div`
   left: 0;
   padding-top: 4rem;
   overflow: auto;
-  z-index: 1;
+  z-index: 2;
 
   @media only ${device.Tablet} {
     padding-top: ${dimensions.spacing.xl};

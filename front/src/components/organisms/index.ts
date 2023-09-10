@@ -11,6 +11,7 @@ import Register from './Register'
 import ResourceForm from './ResourceForm'
 import { SettingsManager } from './SettingsManager'
 import type { TCardResource } from './CardResource'
+import { TopicsManagerBoard } from './TopicsManagerBoard'
 import { TopicsRadioWidget } from './TopicsRadioWidget'
 import type { TResourceForm } from './ResourceForm'
 
@@ -27,6 +28,7 @@ export {
   ResourceCardList,
   ResourceForm,
   SettingsManager,
+  TopicsManagerBoard,
   TopicsRadioWidget,
 }
 

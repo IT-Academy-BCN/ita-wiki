@@ -9,7 +9,8 @@ const StyledFlexBox = styled(FlexBox)`
 
 const StyledContentFlexBox = styled(FlexBox)`
   width: 100%;
-  margin: ${dimensions.spacing.md};
+  margin: ${dimensions.spacing.md} ${dimensions.spacing.md} 0.25rem
+    ${dimensions.spacing.md};
 `
 
 const TabMenuNav = styled.ul`

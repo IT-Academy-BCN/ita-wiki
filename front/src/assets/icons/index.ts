@@ -2,6 +2,7 @@ import angular from './angular.svg'
 import arrowDown from './arrow-down.svg'
 import chevronDown from './chevron-down.svg'
 import dataScience from './data-science.svg'
+import deleteIcon from './delete-icon.svg'
 import editPen from './edit-pen.svg'
 import itLogo from './it-logo.png'
 import java from './java.svg'
@@ -25,6 +26,7 @@ const icons = {
   arrowDown,
   chevronDown,
   dataScience,
+  deleteIcon,
   editPen,
   itLogo,
   java,
@@ -41,7 +43,7 @@ const icons = {
   vue,
   thumbUp,
   logout,
-  user
+  user,
 }
 
 export default icons
