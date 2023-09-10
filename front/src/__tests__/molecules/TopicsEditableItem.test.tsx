@@ -84,7 +84,7 @@ describe('TopicsEditableItem component', () => {
 
     expect(editButton).toBeInTheDocument()
 
-    expect(screen.getByRole('button', { name: 'Borrar tema' }))
+    expect(screen.getByRole('button', { name: 'Borrar tema' })).toBeInTheDocument()
 
     expect(screen.getByTestId('rowContainer')).toHaveStyle(`opacity: 0.5`)
     expect(screen.getByTestId('rowContainer')).toHaveStyle(
