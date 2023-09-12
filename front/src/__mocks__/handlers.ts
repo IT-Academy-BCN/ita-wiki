@@ -40,7 +40,7 @@ export const handlers = [
 
   // eslint-disable-next-line consistent-return
   rest.get(urls.getTopics, (req, res, ctx) => {
-    const slug = req.url.searchParams.get('category')
+    const slug = req.url.searchParams.get('slug')
     if (slug === 'react') {
       return res(
         ctx.status(200),
