@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../../styles'
-import { Icon, Title, HamburgerMenu } from '../atoms'
+import { Button, Icon, Title, HamburgerMenu } from '../atoms'
 import { UserButton } from '../molecules/UserButton'
 import { SelectLanguage } from '../molecules/SelectLanguage'
 import { CategoriesList } from './CategoriesList'
@@ -58,6 +58,16 @@ const MenuItems = styled(FlexBox)<{ open: boolean }>`
     display: none;
   }
 `
+
+const StyledButton = styled(Button)`
+  margin: ${dimensions.spacing.none} ${dimensions.spacing.md}
+    ${dimensions.spacing.md} ${dimensions.spacing.md};
+  width: 90%;
+  @media ${device.Tablet} {
+    width: 12rem;
+  }
+`
+
 type TNavbar = {
   toggleModal?: () => void
 }
@@ -105,8 +115,14 @@ export const Navbar = ({ toggleModal }: TNavbar) => {
         toggleModal={() => setIsSettingsOpen(false)}
       >
         {isSettingsOpen && <SettingsManager />}
+        <FlexBox>
+          <StyledButton onClick={() => setIsSettingsOpen(false)}>
+            Cerrar
+          </StyledButton>
+        </FlexBox>
       </Modal>
     </>
   )
 }
+
 export default styled(Navbar)``

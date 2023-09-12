@@ -5,9 +5,13 @@ describe('SettingsManager component', () => {
   it('renders correctly', () => {
     render(<SettingsManager />)
 
-    expect(screen.getByText(/temas/i)).toBeInTheDocument()
+    expect(screen.getByText('Temas')).toBeInTheDocument()
     expect(screen.getByText(/usuarios/i)).toBeInTheDocument()
-    expect(screen.getByText('Topics Manager')).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        'No hay temas disponibles. Accede desde una categoría para ver o gestionar sus temas.'
+      )
+    ).toBeInTheDocument()
     expect(screen.queryByText('Users Manager')).not.toBeInTheDocument()
   })
 
@@ -19,6 +23,11 @@ describe('SettingsManager component', () => {
     await waitFor(() =>
       expect(screen.getByText('Users Manager')).toBeInTheDocument()
     )
-    expect(screen.queryByText('Topics Manager')).not.toBeInTheDocument()
+
+    expect(
+      screen.queryByText(
+        'No hay temas disponibles. Accede desde una categoría para ver o gestionar sus temas.'
+      )
+    ).not.toBeInTheDocument()
   })
 })

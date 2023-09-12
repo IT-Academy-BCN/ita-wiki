@@ -104,7 +104,7 @@ export const CategoriesList: FC = () => {
         {data?.map((category: TCategory) => (
           <LinkCategory
             to={`/category/${category.slug}`}
-            state={{ name: category.name }}
+            state={{ name: category.name, id: category.id }}
             key={category.id}
             data-testid={category.name}
           >

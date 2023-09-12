@@ -1,5 +1,5 @@
 import { FC, ReactElement } from 'react'
-import { TopicsManager } from './TopicsManager'
+import { TopicsManagerBoard } from './TopicsManagerBoard'
 import { UsersManager } from './UsersManager'
 import { Tabs } from '../molecules/Tabs'
 
@@ -11,7 +11,7 @@ type TTabsData = {
 const tabsData: TTabsData[] = [
   {
     title: 'Temas',
-    tabComponent: <TopicsManager />,
+    tabComponent: <TopicsManagerBoard />,
   },
   {
     title: 'Usuarios',

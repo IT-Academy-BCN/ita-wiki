@@ -60,7 +60,9 @@ export const handlers = [
         ])
       )
     }
-
+    if (slug === 'empty-topics') {
+      return res(ctx.status(200), ctx.json([]))
+    }
     if (slug === 'invalid-slug') {
       return res(
         ctx.status(404),
@@ -181,6 +183,10 @@ export const handlers = [
 
 export const errorHandlers = [
   rest.get(urls.getCategories, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
+  rest.get(urls.getTopics, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 
