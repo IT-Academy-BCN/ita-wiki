@@ -1,0 +1,16 @@
+{
+  "welcomeMsg": "¡Bienvenid@ a la wiki de la IT Academy!",
+  "signUpOrRegister": "Regístrate o inicia sesión para poder subir y votar recursos",
+  "signupButton": "Registrarme",
+  "loginButton": "Entrar",
+  "basicFunctionalities": "Funcionalidades básicas que te ofrece esta plataforma:",
+
+  "card1Title": "Guarda tus recursos favoritos",
+  "card1Subtitle": "Ten tus recursos bien organizados",
+
+  "card2Title": "Colabora con tus compañer@s",
+  "card2Subtitle": "Recursos compartidos",
+  
+  "card3Title": "Vota los\nrecursos",
+  "card3Subtitle": "La comunidad decide cuáles son más relevantes"
+}

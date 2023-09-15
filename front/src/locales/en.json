@@ -1,0 +1,16 @@
+{
+  "welcomeMsg": "Welcome to IT Academy's Wiki!",
+  "signUpOrRegister": "Sign up or log in to upload and vote resources",
+  "signupButton": "Sign Up",
+  "loginButton": "Log In",
+  "basicFunctionalities": "This is what you can do on this platform:",
+
+  "card1Title": "Save your favorite resources",
+  "card1Subtitle": "Have your resources well organized",
+
+  "card2Title": "Collaborate with your course mates",
+  "card2Subtitle": "Shared resources",
+
+  "card3Title": "Vote \nresources",
+  "card3Subtitle": "The community decides which ones are the most relevant"
+}

@@ -8,7 +8,7 @@ describe('LanguageSelector', () => {
       const dropdown = screen.getByRole('combobox');
       expect(dropdown).toBeInTheDocument();
   
-      expect(dropdown).toHaveValue('esp');
+      expect(dropdown).toHaveValue('es');
   
       fireEvent.change(dropdown, { target: { value: 'cat' } });
   

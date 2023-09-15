@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
 import { CardHome, UserAccessHome } from '../components/molecules'
@@ -83,32 +84,34 @@ const ResponsiveFlexBox = styled(FlexBox)`
   }
 `
 
-const cardHomeContent = [
-  {
-    id: 1,
-    indicator: '/ 01',
-    icon: `${icons.newFolder}`,
-    title: 'Guarda tus recursos favoritos',
-    subtitle: 'Ten tus recursos bien organizados',
-  },
-  {
-    id: 2,
-    indicator: '/ 02',
-    icon: `${icons.puzzleDynamic}`,
-    title: 'Colabora con tus compañer@s',
-    subtitle: 'Recursos compartidos',
-  },
-  {
-    id: 3,
-    indicator: '/ 03',
-    icon: `${icons.thumbUp}`,
-    title: `Vota los\nrecursos`,
-    subtitle: 'La comunidad decide cuáles son más relevantes',
-  },
-]
-
 const Home: FC = () => {
   const { user } = useAuth()
+
+  const { t } = useTranslation()
+
+  const cardHomeContent = [
+    {
+      id: 1,
+      indicator: '/ 01',
+      icon: `${icons.newFolder}`,
+      title: `${t('card1Title')}`,
+      subtitle: `${t('card1Subtitle')}`,
+    },
+    {
+      id: 2,
+      indicator: '/ 02',
+      icon: `${icons.puzzleDynamic}`,
+      title: `${t('card2Title')}`,
+      subtitle: `${t('card2Subtitle')}`,
+    },
+    {
+      id: 3,
+      indicator: '/ 03',
+      icon: `${icons.thumbUp}`,
+      title: `${t('card3Title')}`,
+      subtitle: `${t('card3Subtitle')}`,
+    },
+  ]
 
   return (
     <Container direction="row" justify="flex-start" align="start">
@@ -123,7 +126,7 @@ const Home: FC = () => {
         >
           <MainContent>
             <StyledTitle as="h1" fontWeight="bold">
-              ¡Bienvenid@ a la wiki de la IT Academy!
+              {t('welcomeMsg')}
             </StyledTitle>
             {!user && <UserAccessHome />}
             <FlexBox>
@@ -131,7 +134,7 @@ const Home: FC = () => {
                 color={`${colors.gray.gray3}`}
                 fontSize={`${font.base}`}
               >
-                Funcionalidades básicas que te ofrece esta plataforma:
+                {t('basicFunctionalities')}
               </StyledText>
               <ResponsiveFlexBox direction="column" gap="1rem">
                 {cardHomeContent.map((content) => (

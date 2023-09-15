@@ -9,6 +9,7 @@ import { Home, Category, ErrorPage, UserProfile, AccountAdmin } from './pages'
 import { Information } from './pages/Information'
 import { AuthProvider } from './context/AuthProvider'
 import { font } from './styles'
+import './i18n'
 
 const GlobalStyle = createGlobalStyle`
   body {
