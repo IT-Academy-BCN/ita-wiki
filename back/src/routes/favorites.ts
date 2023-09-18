@@ -13,7 +13,8 @@ favorites.put(
   '/',
   authenticate,
   validate(z.object({ body: favoritePutSchema })),
-  putFavoriteByUserId
+  putFavoriteByUserId,
+  errorMiddleware
 )
 
 export { favorites }
