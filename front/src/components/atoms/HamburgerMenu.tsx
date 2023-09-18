@@ -53,6 +53,9 @@ const StyledBurger = styled.button<HamburgerMenuProps>`
   @media ${device.Tablet} {
     display: none;
   }
+  @media only screen and (min-width: 469px) {
+    top: 3%;
+  }
 `
 
 const HamburgerMenu: FC<HamburgerMenuProps> = ({ open, onClick }) => (
