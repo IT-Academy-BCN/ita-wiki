@@ -4,11 +4,11 @@ import { ZodIssue } from 'zod'
 /* eslint-disable max-classes-per-file */
 class DefaultError extends Error {
   public status: number
-  public message: string
-  constructor(status: number, message: string) {
-    super(message)
+  public error: string
+  constructor(status: number, error: string) {
+    super(error)
     this.status = status
-    this.message = message
+    this.error = error
   }
 }
 
@@ -27,6 +27,20 @@ class UnauthorizedError extends DefaultError {
 class ForbiddenError extends DefaultError {
   constructor(message: string = 'Forbidden') {
     super(403, `${message}`)
+  }
+}
+function formatResourceName(resource: string): string {
+  if (resource === 'dni') {
+    return 'DNI'
+  }
+  if (!resource) {
+    return 'Resource'
+  }
+  return resource.charAt(0).toUpperCase() + resource.slice(1)
+}
+class DuplicateError extends DefaultError {
+  constructor(resource: string) {
+    super(409, `${formatResourceName(resource)} already exists`)
   }
 }
 
@@ -52,11 +66,12 @@ class ValidationError {
 }
 
 export {
-  NotFoundError,
   DefaultError,
+  NotFoundError,
   UnauthorizedError,
   ForbiddenError,
-  UnsupportedMediaType,
+  DuplicateError,
   MissingParamError,
+  UnsupportedMediaType,
   ValidationError,
 }
