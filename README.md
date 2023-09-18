@@ -14,15 +14,16 @@ Quicklinks:
 - <a href="https://dev.itadirectory.eurecatacademy.org/">Development server</a>.
 - <a href="https://dev.api.itadirectory.eurecatacademy.org/api/v1/api-docs">Swagger docs</a>.
 - <a href="https://dev.itadirectory.eurecatacademy.org/">Demo front dev</a>.
+  <!--- ATENCIÓ: pot ser que el Development server i el Demo front dev tinguin el mateix enllaç? --->
 
 ### Important procedures and meetings
 
-- We have a daily at 9.00AM everyday and it is mandatary to assist.
-- We have a sprint planning once each two weeks, preferably on mondays.
-- We have a sprint review (retro) once each two weeks, preferably on thursdays.
+- We have a daily meeting at 9:00 AM every day, and it is mandatory to assist.
+- We have sprint planning every two weeks, preferably on Mondays.
+- We have a sprint review (retro) every two weeks, preferably on Thursdays.
 - The project requires a dedication of 15~25 hours.
 
-IMPORTANT: If you cannot dedicate enough time, nor be on the meetings, please reach out to the project lead.
+IMPORTANT: If you cannot dedicate enough time, nor attend the meetings, please reach out to the project lead.
 
 ### Frontend and Backend
 
