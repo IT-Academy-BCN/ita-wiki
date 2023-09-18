@@ -45,7 +45,7 @@ describe('Testing registration endpoint', () => {
           specialization: existingTestCategory!.id,
         })
       expect(response.status).toBe(409)
-      expect(response.body.message).toBe('DNI already exists')
+      expect(response.body.message).toBe('dni already exists')
     })
 
     test('should fail with duplicate: email', async () => {
@@ -59,7 +59,7 @@ describe('Testing registration endpoint', () => {
           specialization: existingTestCategory!.id,
         })
       expect(response.status).toBe(409)
-      expect(response.body.message).toBe('Email already exists')
+      expect(response.body.message).toBe('email already exists')
     })
   })
 

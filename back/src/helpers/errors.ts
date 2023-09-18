@@ -29,15 +29,10 @@ class ForbiddenError extends DefaultError {
     super(403, `${message}`)
   }
 }
-function formatResourceName(resource: string): string {
-  if (resource === 'dni') {
-    return 'DNI'
-  }
-  return resource.charAt(0).toUpperCase() + resource.slice(1)
-}
+
 class DuplicateError extends DefaultError {
   constructor(resource: string) {
-    super(409, `${formatResourceName(resource)} already exists`)
+    super(409, `${resource} already exists`)
   }
 }
 
