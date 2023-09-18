@@ -23,7 +23,7 @@ components:
       properties:
         message:
           type: string
-          example: DNI already exists
+          example: dni already exists
       required:
         - message
     EmailError:
@@ -31,7 +31,7 @@ components:
       properties:
         message:
           type: string
-          example: Email already exists
+          example: email already exists
       required:
         - message
     MissingTokenError:
@@ -211,6 +211,8 @@ paths:
                   - $ref: "#/components/schemas/ValidationError"
                   - $ref: "#/components/schemas/DniError"
                   - $ref: "#/components/schemas/EmailError"
+        "409":
+          description: Conflict, data already exists.
         "500":
           description: Other error
           content:
