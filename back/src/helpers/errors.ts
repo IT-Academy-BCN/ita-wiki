@@ -4,11 +4,11 @@ import { ZodIssue } from 'zod'
 /* eslint-disable max-classes-per-file */
 class DefaultError extends Error {
   public status: number
-  public error: string
-  constructor(status: number, error: string) {
-    super(error)
+  public message: string
+  constructor(status: number, message: string) {
+    super(message)
     this.status = status
-    this.error = error
+    this.message = message
   }
 }
 
@@ -32,9 +32,6 @@ class ForbiddenError extends DefaultError {
 function formatResourceName(resource: string): string {
   if (resource === 'dni') {
     return 'DNI'
-  }
-  if (!resource) {
-    return 'Resource'
   }
   return resource.charAt(0).toUpperCase() + resource.slice(1)
 }
