@@ -30,6 +30,12 @@ class ForbiddenError extends DefaultError {
   }
 }
 
+class DuplicateError extends DefaultError {
+  constructor(resource: string) {
+    super(409, `${resource} already exists`)
+  }
+}
+
 class MissingParamError extends DefaultError {
   constructor(parameter: string) {
     super(422, `Missing ${parameter}`)
@@ -52,11 +58,12 @@ class ValidationError {
 }
 
 export {
-  NotFoundError,
   DefaultError,
+  NotFoundError,
   UnauthorizedError,
   ForbiddenError,
-  UnsupportedMediaType,
+  DuplicateError,
   MissingParamError,
+  UnsupportedMediaType,
   ValidationError,
 }

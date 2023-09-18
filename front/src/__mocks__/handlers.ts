@@ -40,7 +40,7 @@ export const handlers = [
 
   // eslint-disable-next-line consistent-return
   rest.get(urls.getTopics, (req, res, ctx) => {
-    const slug = req.url.searchParams.get('category')
+    const slug = req.url.searchParams.get('slug')
     if (slug === 'react') {
       return res(
         ctx.status(200),
@@ -60,7 +60,9 @@ export const handlers = [
         ])
       )
     }
-
+    if (slug === 'empty-topics') {
+      return res(ctx.status(200), ctx.json([]))
+    }
     if (slug === 'invalid-slug') {
       return res(
         ctx.status(404),
@@ -181,6 +183,10 @@ export const handlers = [
 
 export const errorHandlers = [
   rest.get(urls.getCategories, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
+  rest.get(urls.getTopics, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 

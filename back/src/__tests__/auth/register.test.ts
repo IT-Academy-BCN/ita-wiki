@@ -44,8 +44,8 @@ describe('Testing registration endpoint', () => {
           password: 'password1',
           specialization: existingTestCategory!.id,
         })
-      expect(response.status).toBe(400)
-      expect(response.body.error).toBe('DNI already exists')
+      expect(response.status).toBe(409)
+      expect(response.body.message).toBe('dni already exists')
     })
 
     test('should fail with duplicate: email', async () => {
@@ -58,8 +58,8 @@ describe('Testing registration endpoint', () => {
           password: 'password1',
           specialization: existingTestCategory!.id,
         })
-      expect(response.status).toBe(400)
-      expect(response.body.error).toBe('Email already exists')
+      expect(response.status).toBe(409)
+      expect(response.body.message).toBe('email already exists')
     })
   })
 

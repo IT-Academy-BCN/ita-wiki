@@ -47,14 +47,16 @@ const ContainerMain = styled(FlexBox)`
   width: 100%;
   height: 90%;
 
-  @media only ${device.Tablet} {
+  @media ${device.Tablet} {
     display: flex;
-
     flex-direction: row;
-
     align-items: flex-start;
-    gap: ${dimensions.spacing.xl};
+    gap: ${dimensions.spacing.sm};
     justify-content: flex-end;
+  }
+
+  @media ${device.Desktop} {
+    gap: ${dimensions.spacing.xl};
   }
 `
 
@@ -67,13 +69,18 @@ const WiderContainer = styled(FlexBox)`
 const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 2 1 1;
-  background-color: ${colors.white};
   height: 100%;
+  width: 100%;
+  background-color: ${colors.white};
   padding: ${dimensions.spacing.sm} ${dimensions.spacing.xxs};
   border-radius: ${dimensions.borderRadius.base};
 
   @media ${device.Tablet} {
+    flex-direction: row;
+    padding: ${dimensions.spacing.md} ${dimensions.spacing.base};
+  }
+
+  @media ${device.Desktop} {
     flex-direction: row;
     padding: ${dimensions.spacing.md} ${dimensions.spacing.xxxl};
   }
@@ -86,7 +93,7 @@ const FiltersContainer = styled(FlexBox)`
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    flex: 1 2 20rem;
+    flex: 1 2 34rem;
     padding-top: ${dimensions.spacing.xxs};
   }
 `
@@ -112,8 +119,8 @@ const ResourcesContainer = styled(FlexBox)`
   }
 
   @media ${device.Laptop} {
-    flex: 4 1 26rem;
-    padding-left: ${dimensions.spacing.xs};
+    width: 100%;
+    padding-left: ${dimensions.spacing.sm};
   }
 `
 
@@ -131,6 +138,7 @@ const SearchBar = styled(InputGroup)`
     display: flex;
     color: ${colors.gray.gray4};
     margin-top: ${dimensions.spacing.xxs};
+    margin-right: 0.08rem;
     width: 40%;
     justify-content: flex-end;
 
@@ -165,6 +173,7 @@ const VotesDateContainer = styled(FlexBox)`
     align-items: flex-end;
     direction: row;
     width: 100%;
+    padding-right: ${dimensions.spacing.base};
   }
 `
 
@@ -187,8 +196,13 @@ const ContainerResourcesAside = styled(FlexBox)`
     justify-content: flex-start;
     align-items: flex-start;
     align-content: flex-end;
+    gap: ${dimensions.spacing.sm};
+    max-width: 14rem;
+  }
+
+  @media ${device.Desktop} {
+    max-width: 24rem;
     gap: ${dimensions.spacing.xl};
-    height: 100%;
   }
 `
 
@@ -196,8 +210,6 @@ const ResourcesAside = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
   flex: 1 2 20rem;
-  min-height: 14rem;
-  max-height: 20rem;
   overflow: hidden;
   overflow-x: auto;
   width: 100%;
