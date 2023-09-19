@@ -15,6 +15,13 @@ export const EmailError = registry.register(
   })
 )
 
+export const InputError = registry.register(
+  'InputError',
+  z.object({
+    message: z.string().openapi({ example: 'Input is not a string' }),
+  })
+)
+
 export const MissingTokenError = registry.register(
   'MissingTokenError',
   z.object({

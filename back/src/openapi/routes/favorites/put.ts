@@ -6,8 +6,8 @@ import {
   invalidTokenResponse,
   missingTokenResponse,
 } from '../../components/responses/authMiddleware'
-import { deniedAccessResponse } from '../../components/responses/authorize'
 import { favoritePutSchema } from '../../../schemas/favorites/favoritePutSchema'
+import { InputError, ValidationError } from '../../components/errorSchemas'
 
 registry.registerPath({
   method: 'put',
@@ -27,26 +27,20 @@ registry.registerPath({
   },
   responses: {
     204: {
-      description: 'Put has been added/removed',
+      description: 'Favorite has been added/removed',
     },
-    401: missingTokenResponse,
-    403: deniedAccessResponse,
-    404: {
-      description: 'Not found',
-    },
-    405: invalidTokenResponse,
-    409: {
-      description: 'Conflict, data already exists.',
-    },
-    500: {
-      description: 'Other error',
+    400: {
+      description: 'Invalid input',
       content: {
         'application/json': {
-          schema: z.object({
-            message: z.string().openapi({ example: 'Database error' }),
-          }),
+          schema: z.union([ValidationError, InputError]),
         },
       },
     },
+    401: missingTokenResponse,
+    404: {
+      description: 'User not found',
+    },
+    405: invalidTokenResponse,
   },
 })
