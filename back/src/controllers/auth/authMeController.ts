@@ -1,6 +1,7 @@
 import { Middleware, Context } from 'koa'
 import jwt, { Secret } from 'jsonwebtoken'
 import { prisma } from '../../prisma/client'
+import { NotFoundError } from '../../helpers/errors'
 
 export const authMeController: Middleware = async (ctx: Context) => {
   const token = ctx.cookies.get('token') as string
@@ -19,11 +20,7 @@ export const authMeController: Middleware = async (ctx: Context) => {
     },
   })
 
-  if (!user) {
-    ctx.status = 404
-    ctx.body = { error: 'User not found' }
-    return
-  }
+  if (!user) throw new NotFoundError('User not found')
   ctx.status = 200
   ctx.body = user
 }

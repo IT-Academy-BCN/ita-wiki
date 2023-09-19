@@ -42,6 +42,12 @@ class UnsupportedMediaType extends DefaultError {
   }
 }
 
+class DuplicateDataError extends DefaultError {
+  constructor(message: string) {
+    super(409, message)
+  }
+}
+
 class ValidationError {
   public status: number
   public message: ZodIssue[]
@@ -59,4 +65,5 @@ export {
   UnsupportedMediaType,
   MissingParamError,
   ValidationError,
+  DuplicateDataError,
 }

@@ -6,6 +6,7 @@ import {
   UnauthorizedError,
   ValidationError,
 } from '../helpers/errors'
+import { logger } from '../helpers/index'
 
 const errorMiddleware = async (ctx: Context, next: Next) => {
   try {
@@ -21,6 +22,7 @@ const errorMiddleware = async (ctx: Context, next: Next) => {
         `Error, ${error.meta.target} already exists.`
       )
     }
+    logger.error(error.stack)
     ctx.status = error.status || 500
     ctx.body = {
       message: error.messages || error.message || 'Something bad happened',

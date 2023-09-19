@@ -2,6 +2,11 @@ import Koa from 'koa'
 import jwt, { Secret } from 'jsonwebtoken'
 import { prisma } from '../../prisma/client'
 import { checkPassword } from '../../helpers/passwordHash'
+import {
+  ForbiddenError,
+  NotFoundError,
+  UnauthorizedError,
+} from '../../helpers/errors'
 
 export const loginController = async (ctx: Koa.Context) => {
   const { dni, password } = ctx.request.body
@@ -12,25 +17,14 @@ export const loginController = async (ctx: Koa.Context) => {
     select: { id: true, password: true, status: true },
   })
 
-  if (!user) {
-    ctx.status = 404
-    ctx.body = { error: 'User not found' }
-    return
-  }
+  if (!user) throw new NotFoundError('User not found')
 
-  if (user.status !== 'ACTIVE') {
-    ctx.status = 403
-    ctx.body = { error: 'Only active users can login' }
-    return
-  }
+  if (user.status !== 'ACTIVE')
+    throw new ForbiddenError('Only active users can login')
 
   const isPasswordValid = await checkPassword(password, user.password)
 
-  if (!isPasswordValid) {
-    ctx.status = 422
-    ctx.body = { error: 'Invalid password' }
-    return
-  }
+  if (!isPasswordValid) throw new UnauthorizedError('Invalid password')
 
   const token = jwt.sign({ userId: user.id }, process.env.JWT_KEY as Secret, {
     expiresIn: '1d',

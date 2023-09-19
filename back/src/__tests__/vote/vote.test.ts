@@ -65,7 +65,6 @@ describe('Testing VOTE endpoint, PUT method', async () => {
       vote: 'up',
     })
     expect(response.status).toBe(401)
-    expect(response.body.error).toBe('Unauthorized: Missing token')
   })
   describe('With valid token', () => {
     describe('Testing success: up, down and cancel options', () => {

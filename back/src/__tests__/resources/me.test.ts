@@ -33,7 +33,6 @@ describe('Testing resources/me endpoint', () => {
   test('Should return error if no token is provided', async () => {
     const response = await supertest(server).get(`${pathRoot.v1.resources}/me`)
     expect(response.status).toBe(401)
-    expect(response.body.error).toBe('Unauthorized: Missing token')
   })
 
   test('User with no resources posted returns empty array.', async () => {

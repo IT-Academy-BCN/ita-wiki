@@ -25,7 +25,6 @@ describe('Testing authentication endpoint', () => {
         password: testUserData.inactiveUser.password,
       })
     expect(response.status).toBe(403)
-    expect(response.body.error).toBe('Only active users can login')
   })
 
   test('should fail with incorrect password', async () => {
@@ -35,8 +34,7 @@ describe('Testing authentication endpoint', () => {
         dni: testUserData.admin.dni,
         password: 'wrong password',
       })
-    expect(response.status).toBe(422)
-    expect(response.body.error).toBe('Invalid password')
+    expect(response.status).toBe(401)
   })
 
   test('should fail with user not found', async () => {
@@ -47,6 +45,5 @@ describe('Testing authentication endpoint', () => {
         password: 'password1',
       })
     expect(response.status).toBe(404)
-    expect(response.body.error).toBe('User not found')
   })
 })

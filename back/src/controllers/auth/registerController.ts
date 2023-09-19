@@ -1,6 +1,6 @@
 import { Middleware, Context } from 'koa'
 import { prisma } from '../../prisma/client'
-import { NotFoundError } from '../../helpers/errors'
+import { DuplicateDataError, NotFoundError } from '../../helpers/errors'
 
 export const registerController: Middleware = async (ctx: Context) => {
   const { dni, password, name, email, specialization } = ctx.request.body
@@ -10,34 +10,20 @@ export const registerController: Middleware = async (ctx: Context) => {
     select: { id: true },
   })
 
-  if (userByDni) {
-    ctx.status = 400
-    ctx.body = {
-      error: 'DNI already exists',
-    }
-    return
-  }
+  if (userByDni) throw new DuplicateDataError(`Error, DNI already exists.`)
 
   const userByEmail = await prisma.user.findUnique({
     where: { email },
     select: { id: true },
   })
 
-  if (userByEmail) {
-    ctx.status = 400
-    ctx.body = {
-      error: 'Email already exists',
-    }
-    return
-  }
+  if (userByEmail) throw new DuplicateDataError(`Error, email already exists.`)
 
   const existingCategory = await prisma.category.findUnique({
     where: { id: specialization },
   })
 
-  if (!existingCategory) {
-    throw new NotFoundError('Category not found')
-  }
+  if (!existingCategory) throw new NotFoundError('Category not found')
 
   const user = await prisma.user.create({
     data: {
@@ -49,13 +35,7 @@ export const registerController: Middleware = async (ctx: Context) => {
     },
   })
 
-  if (!user || user.dni !== dni.toUpperCase()) {
-    ctx.status = 500
-    ctx.body = {
-      error: 'Database error',
-    }
-    return
-  }
+  if (!user || user.dni !== dni.toUpperCase()) throw new Error()
 
   ctx.status = 204
 }

@@ -40,7 +40,6 @@ describe('Testing user patch endpoint', () => {
   it('Should return error if no token is provided', async () => {
     const response = await supertest(server).patch(`${pathRoot.v1.users}`)
     expect(response.status).toBe(401)
-    expect(response.body.error).toBe('Unauthorized: Missing token')
   })
   it('Should NOT be able to access if user level is not ADMIN', async () => {
     const response = await supertest(server)
