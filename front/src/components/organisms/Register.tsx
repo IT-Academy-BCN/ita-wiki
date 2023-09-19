@@ -163,16 +163,31 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
   const { isLoading, isSuccess } = registerUser
 
   const onSubmit = handleSubmit(async (userData) => {
-    const { email, password, name, dni, specialization } = userData
-    await registerUser.mutateAsync({
+    const {
       email,
       password,
       name,
       dni,
       specialization,
-      confirmPassword: '',
-      accept: false,
-    })
+      confirmPassword,
+      accept,
+    } = userData
+
+    const selectedCategory = categoriesMap.find(
+      (category: { label: string }) => category.label === specialization
+    )
+
+    if (selectedCategory && password === confirmPassword && accept) {
+      await registerUser.mutateAsync({
+        email,
+        password,
+        name,
+        dni,
+        specialization: selectedCategory.value,
+        confirmPassword,
+        accept,
+      })
+    }
   })
 
   return (
