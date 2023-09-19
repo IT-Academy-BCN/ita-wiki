@@ -11,7 +11,7 @@ export type TGetTopics = TTopicReturned[]
 export type TGetTypes = string[]
 
 export const getTopics = async (slug?: string): Promise<TGetTopics> =>
-  fetch(`${urls.getTopics}?category=${slug}`)
+  fetch(`${urls.getTopics}?slug=${slug}`)
     .then((res) => {
       if (!res.ok) {
         throw new Error(`Error fetching topics: ${res.statusText}`)
