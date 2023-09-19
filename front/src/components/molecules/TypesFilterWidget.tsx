@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { CheckBox, Label, Spinner, Text } from '../atoms'
 import { colors, dimensions, FlexBox, font } from '../../styles'
 import { urls } from '../../constants'
-import { useFiltersContext } from '../../context/FiltersProvider'
+import { useFiltersContext } from '../../context/store/context'
 
 const StyledFlexbox = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -65,7 +65,7 @@ const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
 
   // ==> TESTING CONTEXT
   const filters = useFiltersContext()
-  console.log('filtriños', filters)
+  console.log('filters', filters)
 
   useEffect(() => {
     if (data !== undefined) {
