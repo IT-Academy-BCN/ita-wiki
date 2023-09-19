@@ -1,9 +1,11 @@
 import { Middleware, Context } from 'koa'
 import { prisma } from '../../prisma/client'
 import { NotFoundError } from '../../helpers/errors'
+import { UserRegister } from '../../schemas/users/userRegisterSchema'
 
 export const registerController: Middleware = async (ctx: Context) => {
-  const { dni, password, name, email, specialization } = ctx.request.body
+  const { dni, password, name, email, specialization }: UserRegister =
+    ctx.request.body
 
   const existingCategory = await prisma.category.findUnique({
     where: { id: specialization },

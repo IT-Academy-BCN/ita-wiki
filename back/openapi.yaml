@@ -183,14 +183,22 @@ paths:
                   type: string
                   format: email
                   example: user@example.cat
-                name:
-                  type: string
                 dni:
                   type: string
                 specialization:
                   type: string
                   example: specializationId
+                name:
+                  type: string
+                accept:
+                  type: boolean
+                  enum:
+                    - true
                 password:
+                  type: string
+                  minLength: 8
+                  pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*$
+                confirmPassword:
                   type: string
                   minLength: 8
                   pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*$
@@ -198,7 +206,10 @@ paths:
                 - email
                 - dni
                 - specialization
+                - name
+                - accept
                 - password
+                - confirmPassword
       responses:
         "204":
           description: The user has been registered
