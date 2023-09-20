@@ -4,123 +4,118 @@ import { topics } from './data/topics'
 import { categories } from './data/categories'
 import { resources } from './data/resources'
 
-async function seedDB() {
+async function seedCategories() {
   await prisma.category.createMany({
     data: categories,
   })
-
-  const categoryReact = await prisma.category.findUnique({
-    where: { name: 'React' },
+}
+async function fetchCategoryIds() {
+  return await prisma.category.findMany({
+    select: {
+      id: true,
+    },
   })
+}
 
-  const categoryNode = await prisma.category.findUnique({
-    where: { name: 'Node' },
+async function seedUsersWithSpecialization(categoryIds: { id: string }[]) {
+  const usersWithSpecialization = users.map((user) => {
+    const randomCategoryId =
+      categoryIds[Math.floor(Math.random() * categoryIds.length)].id
+    return {
+      ...user,
+      specializationId: randomCategoryId,
+    }
   })
 
   await prisma.user.createMany({
-    data: [
-      {
-        ...users[0],
-        specializationId: categoryReact!.id,
-      },
-      {
-        ...users[1],
-        specializationId: categoryReact!.id,
-      },
-      {
-        ...users[2],
-        specializationId: categoryNode!.id,
-      },
-    ],
+    data: usersWithSpecialization,
   })
+}
 
-  const userAdmin = await prisma.user.findUnique({
-    where: { email: 'admin@admin.com' },
+async function fetchUsersIds() {
+  return await prisma.user.findMany({
+    select: {
+      id: true,
+    },
   })
+}
 
-  const userMentor = await prisma.user.findUnique({
-    where: { email: 'mentor@mentor.com' },
+async function seedTopicsWithCategories(categoryIds: { id: string }[]) {
+  const topicsWithSpecialization = topics.map((topic) => {
+    const randomCategoryId =
+      categoryIds[Math.floor(Math.random() * categoryIds.length)].id
+    return {
+      ...topic,
+      categoryId: randomCategoryId,
+    }
   })
-
-  const userRegistered = await prisma.user.findUnique({
-    where: { email: 'registered@registered.com' },
-  })
-
-  const topicCategories = [
-    categoryReact,
-    categoryNode,
-    categoryReact,
-    categoryNode,
-  ]
-
-  const mapedTopics = topics.map((topic, index) => ({
-    ...topic,
-    categoryId: topicCategories[index]?.id || '',
-  }))
 
   await prisma.topic.createMany({
-    data: mapedTopics,
+    data: topicsWithSpecialization,
   })
+}
+async function fetchTopicsIds() {
+  return await prisma.topic.findMany({
+    select: {
+      id: true,
+    },
+  })
+}
 
-  const resourceUsers = [
-    userAdmin,
-    userAdmin,
-    userRegistered,
-    userRegistered,
-    userMentor,
-    userMentor,
-  ]
-
-  const resourcesWithUser = resources.map((resource, index) => ({
-    ...resource,
-    userId: resourceUsers[index]?.id || '',
-  }))
+async function seedResourcesWithUsers(userIds: { id: string }[]) {
+  const resourcesWithUsers = resources.map((resource) => {
+    const randomUserId = userIds[Math.floor(Math.random() * userIds.length)].id
+    return {
+      ...resource,
+      userId: randomUserId,
+    }
+  })
 
   await prisma.resource.createMany({
-    data: resourcesWithUser,
+    data: resourcesWithUsers,
   })
+}
 
-  // Resources
-
-  const eventosTopic = await prisma.topic.findFirst({
-    where: { name: 'Eventos' },
-  })
-
-  const listasTopic = await prisma.topic.findFirst({
-    where: { name: 'Listas' },
-  })
-
-  const firstResource = await prisma.resource.findFirst({
-    where: { title: 'My resource in React' },
-  })
-
-  const secondResource = await prisma.resource.findFirst({
-    where: { title: 'My resource in Node' },
-  })
-
-  const topicsOnResources = [
-    {
-      topicId: eventosTopic?.id || '',
-      resourceId: firstResource?.id || '',
+async function fetchResourcesIds() {
+  return await prisma.resource.findMany({
+    select: {
+      id: true,
     },
-    {
-      topicId: listasTopic?.id || '',
-      resourceId: firstResource?.id || '',
-    },
-    {
-      topicId: eventosTopic?.id || '',
-      resourceId: secondResource?.id || '',
-    },
-    {
-      topicId: listasTopic?.id || '',
-      resourceId: secondResource?.id || '',
-    },
-  ]
+  })
+}
+
+async function seedTopicsOnResourcesWithTopicsAndResources(
+  topicsIds: { id: string }[],
+  resourcesIds: { id: string }[]
+) {
+  const topicsOnResources = topicsIds.map((topic, index) => ({
+    topicId: topic.id,
+    resourceId: resourcesIds[index].id,
+  }))
 
   await prisma.topicsOnResources.createMany({
-    // @ts-ignore
     data: topicsOnResources,
   })
 }
 
+async function seedDB() {
+  await seedCategories()
+  const categoryIds = await fetchCategoryIds()
+  await seedUsersWithSpecialization(categoryIds)
+  const usersIds = await fetchUsersIds()
+  await seedTopicsWithCategories(categoryIds)
+  const topicsIds = await fetchTopicsIds()
+  await seedResourcesWithUsers(usersIds)
+  const resourcesIds = await fetchResourcesIds()
+  await seedTopicsOnResourcesWithTopicsAndResources(topicsIds, resourcesIds)
+}
+
 seedDB()
+  .catch((e) => {
+    // eslint-disable-next-line no-console
+    console.error(e)
+    process.exit(1)
+  })
+  .finally(async () => {
+    await prisma.$disconnect()
+  })
