@@ -1,6 +1,7 @@
 /* eslint-disable no-ex-assign */
 import { Context, Next } from 'koa'
 import { ZodError } from 'zod'
+import { JsonWebTokenError } from 'jsonwebtoken'
 import {
   DuplicateError,
   UnauthorizedError,
@@ -15,6 +16,8 @@ const errorMiddleware = async (ctx: Context, next: Next) => {
       error = new ValidationError(error.errors)
     } else if (error?.errorInfo?.code === 'auth/id-token-expired') {
       error = new UnauthorizedError('refresh_token')
+    } else if (error instanceof JsonWebTokenError) {
+      error = new UnauthorizedError('invalid_token')
     } else if (error.code === 'P2002') {
       const resourceName = error.meta.target[0] || 'Resource'
       error = new DuplicateError(resourceName)

@@ -49,7 +49,18 @@ resourcesRouter.get(
   getResourcesByUserId
 )
 
-resourcesRouter.get('/favorites', authenticate, getFavoriteResources)
+resourcesRouter.get(
+  '/favorites/:categorySlug?',
+  authenticate,
+  validate(
+    z.object({
+      params: z.object({
+        categorySlug: z.string().optional(),
+      }),
+    })
+  ),
+  getFavoriteResources
+)
 
 resourcesRouter.get(
   '/id/:resourceId',

@@ -1,6 +1,7 @@
 import Koa, { Middleware } from 'koa'
 import { User } from '@prisma/client'
 import { prisma } from '../../prisma/client'
+// import { resourceGetSchema } from '../../schemas'
 
 export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User
@@ -26,5 +27,6 @@ export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
   })
 
   ctx.status = 200
-  ctx.body = favorites
+  const parsedResources = favorites.map((resource) => resource.resource)
+  ctx.body = parsedResources
 }

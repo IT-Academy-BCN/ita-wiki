@@ -34,6 +34,14 @@ components:
           example: email already exists
       required:
         - message
+    InputError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Input is not a string
+      required:
+        - message
     MissingTokenError:
       type: object
       properties:
@@ -1779,3 +1787,46 @@ paths:
                     example: Database error
                 required:
                   - message
+  /api/v1/favorites:
+    put:
+      tags:
+        - favorites
+      description: Allows a logged in users to add/remove favorite resources.
+      summary: Put or delete a favorite resource by userId.
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+              required:
+                - id
+      responses:
+        "204":
+          description: Favorite has been added/removed
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: "#/components/schemas/ValidationError"
+                  - $ref: "#/components/schemas/InputError"
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
