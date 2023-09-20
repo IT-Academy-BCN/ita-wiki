@@ -45,14 +45,14 @@ export const UserAccessHome: FC = () => {
     <>
       <FlexBox>
         <StyledText color={`${colors.gray.gray3}`} fontSize={`${font.base}`}>
-          {t('signUpOrRegister')}
+          {t("Registra't")}
         </StyledText>
         <ButtonContainerStyled direction="column">
           <ButtonStyled outline onClick={handleLoginModal}>
-            {t('loginButton')}
+            {t('EntrarBtn')}
           </ButtonStyled>
           <ButtonStyled onClick={handleRegisterModal}>
-            {t('signupButton')}
+            {t('RegistrarmeBtn')}
           </ButtonStyled>
         </ButtonContainerStyled>
       </FlexBox>

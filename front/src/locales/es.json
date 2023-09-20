@@ -1,16 +1,16 @@
 {
-  "welcomeMsg": "¡Bienvenid@ a la wiki de la IT Academy!",
-  "signUpOrRegister": "Regístrate o inicia sesión para poder subir y votar recursos",
-  "signupButton": "Registrarme",
-  "loginButton": "Entrar",
-  "basicFunctionalities": "Funcionalidades básicas que te ofrece esta plataforma:",
+  "Benvinguts": "¡Bienvenid@ a la wiki de la IT Academy!",
+  "Registra't": "Regístrate o inicia sesión para poder subir y votar recursos",
+  "RegistrarmeBtn": "Registrarme",
+  "EntrarBtn": "Entrar",
+  "Funcionalitats": "Funcionalidades básicas que te ofrece esta plataforma:",
 
-  "card1Title": "Guarda tus recursos favoritos",
-  "card1Subtitle": "Ten tus recursos bien organizados",
+  "Guarda els teus recursos": "Guarda tus recursos favoritos",
+  "Tingues els teus recursos": "Ten tus recursos bien organizados",
 
-  "card2Title": "Colabora con tus compañer@s",
-  "card2Subtitle": "Recursos compartidos",
-  
-  "card3Title": "Vota los\nrecursos",
-  "card3Subtitle": "La comunidad decide cuáles son más relevantes"
+  "Col·labora": "Colabora con tus compañer@s",
+  "Recursos compartits": "Recursos compartidos",
+
+  "Vota els recursos": "Vota los recursos",
+  "La comunitat decideix": "La comunidad decide cuáles son más relevantes"
 }

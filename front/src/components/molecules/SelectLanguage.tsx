@@ -28,7 +28,7 @@ const DropdownLang = styled.select`
 
 export const SelectLanguage: React.FC = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<Language | string>(
-    localStorage.getItem('lng') ?? 'es'
+    localStorage.getItem('lng') ?? 'cat'
   )
 
   const {
@@ -46,8 +46,8 @@ export const SelectLanguage: React.FC = () => {
   return (
     <div>
       <DropdownLang value={selectedLanguage} onChange={handleLanguageChange}>
-        <option value="es">ES</option>
         <option value="cat">CAT</option>
+        <option value="es">ES</option>
         <option value="en">EN</option>
       </DropdownLang>
     </div>

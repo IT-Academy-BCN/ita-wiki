@@ -6,21 +6,20 @@ import catJSON from './locales/cat.json'
 import enJSON from './locales/en.json'
 
 i18n.use(initReactI18next).init({
-  fallbackLng: localStorage.getItem('lng') || 'es',
+  lng: localStorage.getItem('lng') || 'cat',
 
   resources: {
-    es: {
-      translation: esJSON,
-    },
     cat: {
       translation: catJSON,
+    },
+    es: {
+      translation: esJSON,
     },
     en: {
       translation: enJSON,
     },
   },
-
-  debug: true,
+  // debug: true,
 
   interpolation: {
     escapeValue: false,

@@ -84,34 +84,34 @@ const ResponsiveFlexBox = styled(FlexBox)`
   }
 `
 
+const cardHomeContent = [
+  {
+    id: 1,
+    indicator: '/ 01',
+    icon: `${icons.newFolder}`,
+    title: 'Guarda els teus recursos',
+    subtitle: 'Tingues els teus recursos',
+  },
+  {
+    id: 2,
+    indicator: '/ 02',
+    icon: `${icons.puzzleDynamic}`,
+    title: 'Col·labora',
+    subtitle: 'Recursos compartits',
+  },
+  {
+    id: 3,
+    indicator: '/ 03',
+    icon: `${icons.thumbUp}`,
+    title: 'Vota els recursos',
+    subtitle: 'La comunitat decideix',
+  },
+]
+
 const Home: FC = () => {
   const { user } = useAuth()
 
   const { t } = useTranslation()
-
-  const cardHomeContent = [
-    {
-      id: 1,
-      indicator: '/ 01',
-      icon: `${icons.newFolder}`,
-      title: `${t('card1Title')}`,
-      subtitle: `${t('card1Subtitle')}`,
-    },
-    {
-      id: 2,
-      indicator: '/ 02',
-      icon: `${icons.puzzleDynamic}`,
-      title: `${t('card2Title')}`,
-      subtitle: `${t('card2Subtitle')}`,
-    },
-    {
-      id: 3,
-      indicator: '/ 03',
-      icon: `${icons.thumbUp}`,
-      title: `${t('card3Title')}`,
-      subtitle: `${t('card3Subtitle')}`,
-    },
-  ]
 
   return (
     <Container direction="row" justify="flex-start" align="start">
@@ -126,7 +126,7 @@ const Home: FC = () => {
         >
           <MainContent>
             <StyledTitle as="h1" fontWeight="bold">
-              {t('welcomeMsg')}
+              {t('Benvinguts')}
             </StyledTitle>
             {!user && <UserAccessHome />}
             <FlexBox>
@@ -134,7 +134,7 @@ const Home: FC = () => {
                 color={`${colors.gray.gray3}`}
                 fontSize={`${font.base}`}
               >
-                {t('basicFunctionalities')}
+                {t('Funcionalitats')}
               </StyledText>
               <ResponsiveFlexBox direction="column" gap="1rem">
                 {cardHomeContent.map((content) => (
