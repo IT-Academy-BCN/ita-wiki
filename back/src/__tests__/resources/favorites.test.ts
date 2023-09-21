@@ -69,11 +69,11 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
       .set('Cookie', `token=${invalidUserToken}`)
     expect(response.status).toBe(404)
   })
-  test('Should respond 405 status with invalid token', async () => {
+  test('Should respond 498 status with invalid token', async () => {
     const response = await supertest(server)
       .get(`${url}/${categorySlug}`)
       .set('Cookie', 'token=randomToken')
-    expect(response.status).toBe(401)
+    expect(response.status).toBe(498)
   })
 
   test('Should return favorites as an array of objects.', async () => {
@@ -95,6 +95,11 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
           userId: expect.any(String),
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
+          voteCount: expect.objectContaining({
+            upvote: expect.any(Number),
+            downvote: expect.any(Number),
+            total: expect.any(Number),
+          }),
         }),
       ])
     )

@@ -1,7 +1,8 @@
 import Koa, { Middleware } from 'koa'
 import { User } from '@prisma/client'
 import { prisma } from '../../prisma/client'
-// import { resourceGetSchema } from '../../schemas'
+import { addVoteCountToResource } from '../../helpers/addVoteCountToResource'
+import { resourceFavoriteSchema } from '../../schemas'
 
 export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User
@@ -22,11 +23,30 @@ export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
       },
     },
     select: {
-      resource: true,
+      resource: {
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          description: true,
+          url: true,
+          resourceType: true,
+          createdAt: true,
+          updatedAt: true,
+          status: true,
+          userId: true,
+          topics: true,
+          vote: { select: { vote: true } },
+        },
+      },
     },
   })
 
+  const parsedResources = favorites.map((resource) => {
+    const resourceWithVote = addVoteCountToResource(resource.resource)
+    return resourceFavoriteSchema.parse(resourceWithVote)
+  })
+
   ctx.status = 200
-  const parsedResources = favorites.map((resource) => resource.resource)
   ctx.body = parsedResources
 }

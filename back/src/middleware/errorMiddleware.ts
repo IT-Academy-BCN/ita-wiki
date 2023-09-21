@@ -4,6 +4,7 @@ import { ZodError } from 'zod'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import {
   DuplicateError,
+  InvalidToken,
   UnauthorizedError,
   ValidationError,
 } from '../helpers/errors'
@@ -17,7 +18,7 @@ const errorMiddleware = async (ctx: Context, next: Next) => {
     } else if (error?.errorInfo?.code === 'auth/id-token-expired') {
       error = new UnauthorizedError('refresh_token')
     } else if (error instanceof JsonWebTokenError) {
-      error = new UnauthorizedError('invalid_token')
+      error = new InvalidToken()
     } else if (error.code === 'P2002') {
       const resourceName = error.meta.target[0] || 'Resource'
       error = new DuplicateError(resourceName)
