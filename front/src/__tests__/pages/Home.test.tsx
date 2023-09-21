@@ -25,12 +25,14 @@ describe('Home page', () => {
     } as TAuthContext)
     render(<Home />)
 
-    expect(screen.getByText(/vota los recursos/i)).toBeInTheDocument()
+    expect(screen.getByText(/Vota els recursos/i)).toBeInTheDocument()
     expect(
-      screen.getByText(/¡Bienvenid@ a la wiki de la IT Academy!/)
+      screen.getByText(/Benvinguts a la wiki de la IT Academy!/)
     ).toBeInTheDocument()
     expect(
-      screen.getByText(/Funcionalidades básicas que te ofrece esta plataforma:/)
+      screen.getByText(
+        /Funcionalitats bàsiques que t'ofereix aquesta plataforma:/
+      )
     ).toBeInTheDocument()
   })
 
