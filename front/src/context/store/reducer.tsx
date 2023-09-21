@@ -1,28 +1,20 @@
 // ==> ACTIONS TO MODIFY STATE
-
-import { TAction, TFilterContext } from './types'
-
-export const Actions = {
-  SET_RESOURCES: 'SET_RESOURCES',
-  SET_TYPES: 'SET_TYPES',
-  SET_TOPICS: 'SET_TOPICS',
-  SET_STATUS: 'SET_STATUS',
-}
+import { ActionTypes, FiltersAction, TInitialState } from './types'
 
 // ==> REDUCER
 export const filtersReducer = (
-  state: TFilterContext,
-  action: TAction
-): TFilterContext => {
+  state: TInitialState,
+  action: FiltersAction
+): TInitialState => {
   switch (action.type) {
-    case Actions.SET_RESOURCES:
-      return { ...state, types: action.payload }
-    case Actions.SET_TYPES:
-      return { ...state, types: action.payload }
-    case Actions.SET_TOPICS:
-      return { ...state, topics: action.payload }
-    case Actions.SET_STATUS:
-      return { ...state, status: action.payload }
+    case ActionTypes.SetResources:
+      return { ...state, resources: action.payload.resources }
+    case ActionTypes.SetTypes:
+      return { ...state, types: action.payload.types }
+    case ActionTypes.SetTopics:
+      return { ...state, topics: action.payload.topics }
+    case ActionTypes.SetStatus:
+      return { ...state, status: action.payload.status }
 
     default:
       return state

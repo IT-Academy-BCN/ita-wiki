@@ -3,8 +3,9 @@ import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { CheckBox, Label, Spinner, Text } from '../atoms'
 import { colors, dimensions, FlexBox, font } from '../../styles'
-import { urls } from '../../constants'
 import { useFiltersContext } from '../../context/store/context'
+import { getTypes } from '../../helpers/fetchers'
+import { ActionTypes } from '../../context/store/types'
 
 const StyledFlexbox = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -28,23 +29,6 @@ const CheckBoxStyled = styled(CheckBox)`
   }
 `
 
-const getTypes = () =>
-  fetch(urls.getTypes, {
-    headers: {
-      Accept: 'application/json',
-    },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error fetching resources: ${res.statusText}`)
-      }
-
-      return res.json() as Promise<TData>
-    })
-    .catch((err) => {
-      throw new Error(`Error fetching resources: ${err.message}`)
-    })
-
 type TTypesFilterWidget = {
   handleTypesFilter: (selectedTypes: TData) => void
 }
@@ -63,17 +47,13 @@ const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
 
   const [selectedTypes, setSelectedTypes] = useState<TData>([])
 
-  // ==> TESTING CONTEXT
-  const filters = useFiltersContext()
-  console.log('filters', filters)
-
-  useEffect(() => {
-    if (data !== undefined) {
-      setSelectedTypes(data)
-      handleTypesFilter(data)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  // useEffect(() => {
+  //   if (data !== undefined) {
+  //     setSelectedTypes(data)
+  //     handleTypesFilter(data)
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [data])
 
   const changeSelection = (e: ChangeEvent<HTMLInputElement>, item: string) => {
     if (e.target.checked) {
@@ -87,6 +67,25 @@ const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
     setSelectedTypes(removeTypes)
     return removeTypes
   }
+
+  // TESTING FILTERS
+  const { types, dispatch } = useFiltersContext()
+
+  useEffect(() => {
+    if (dispatch && data) {
+      dispatch({ type: ActionTypes.SetTypes, payload: { types: data } })
+    }
+  }, [dispatch, data])
+
+  useEffect(() => {
+    if (types !== undefined) {
+      setSelectedTypes(types)
+      handleTypesFilter(types)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [types])
+
+  console.log('types', types)
 
   if (error) return <p>Ha habido un error...</p>
 
