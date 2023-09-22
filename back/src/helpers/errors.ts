@@ -58,7 +58,7 @@ class MissingParamError extends DefaultError {
 }
 
 class InvalidToken extends DefaultError {
-  constructor(message: string = 'Invalid token') {
+  constructor(message: string = 'Token is not valid') {
     super(498, `${message}`)
   }
 }
