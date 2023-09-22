@@ -1,5 +1,13 @@
 import pino from 'pino'
 
 export const logger = pino({
-  level: 'info', // Adjust the log level as needed (e.g., 'info', 'error', 'debug')
+  level: 'info',
+  timestamp: pino.stdTimeFunctions.isoTime,
+  redact: {
+    paths: ['pid', 'hostname'],
+    remove: true,
+  },
+  formatters: {
+    level: (label) => ({ level: label }),
+  },
 })

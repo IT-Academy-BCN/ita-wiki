@@ -14,15 +14,19 @@ const errorMiddleware = async (ctx: Context, next: Next) => {
   } catch (error: any) {
     if (error instanceof ZodError) {
       error = new ValidationError(error.errors)
+      logger.error(error.message)
     } else if (error?.errorInfo?.code === 'auth/id-token-expired') {
       error = new UnauthorizedError('refresh_token')
+      logger.error(error.stack)
     } else if (error.code === 'P2002') {
       error = new DefaultError(
         409,
         `Error, ${error.meta.target} already exists.`
       )
+      logger.error(error.stack)
+    } else {
+      logger.error(error.stack)
     }
-    logger.error(error.stack)
     ctx.status = error.status || 500
     ctx.body = {
       message: error.messages || error.message || 'Something bad happened',
