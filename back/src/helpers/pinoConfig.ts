@@ -1,13 +1,21 @@
 import pino from 'pino'
 
-export const logger = pino({
-  level: 'info',
-  timestamp: pino.stdTimeFunctions.isoTime,
-  redact: {
-    paths: ['pid', 'hostname'],
-    remove: true,
+const logFileStream = pino.destination('./src/static/logs/pino.log')
+
+const config = pino(
+  {
+    timestamp: pino.stdTimeFunctions.isoTime,
+    formatters: {
+      level: (label) => ({ level: label.toUpperCase() }),
+    },
   },
-  formatters: {
-    level: (label) => ({ level: label }),
-  },
-})
+  pino.multistream([{ stream: process.stdout }, { stream: logFileStream }])
+)
+
+export const logger = (info: any) => {
+  config.error(info)
+}
+
+export const fatal = (error: any) => {
+  config.fatal(error)
+}

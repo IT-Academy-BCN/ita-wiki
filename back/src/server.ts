@@ -13,6 +13,7 @@ import { errorMiddleware } from './middleware'
 import { generateOpenapiFile } from './openapi/generateFile'
 import { openapiFilename, swaggeruiUrl } from './openapi/config'
 import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
+import { fatal } from './helpers/pinoConfig'
 
 dotenv.config()
 
@@ -34,6 +35,9 @@ app.use(
     ],
   })
 )
+app.on('uncaughtException', (err) => {
+  fatal(err)
+})
 app.use(errorMiddleware)
 
 // Routes
