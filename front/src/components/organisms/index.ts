@@ -1,6 +1,7 @@
 import { CardResourceLink } from './CardResourceLink'
 import { CategoriesList } from './CategoriesList'
 import { DesktopSideMenu } from './DesktopSideMenu'
+import { FavoritesWidget } from './FavoritesWidget'
 import { HowToHelpCard } from './HowToHelpCard'
 import Login from './Login'
 import { MyFavoritesList } from './MyFavoritesList'
@@ -19,6 +20,7 @@ export {
   CardResourceLink,
   CategoriesList,
   DesktopSideMenu,
+  FavoritesWidget,
   HowToHelpCard,
   Login,
   MyFavoritesList,

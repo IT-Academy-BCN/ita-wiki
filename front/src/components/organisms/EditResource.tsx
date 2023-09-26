@@ -26,28 +26,41 @@ type TEditResourceProps = {
   url: string
   resourceType: string
   topics: TTopic[]
+  isInCardResource?: boolean
 }
+
 type TMappedTopics = {
   id: string
   name: string
 }
+
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
   margin: ${dimensions.spacing.xs} 0;
 `
+
 const ButtonStyled = styled(Button)`
   font-weight: 500;
   margin: ${dimensions.spacing.xxxs} ${dimensions.spacing.xl};
   color: ${({ outline }) =>
     outline ? `${colors.gray.gray3}` : `${colors.white}`};
 `
-const StyledSvg = styled.div`
-  position: absolute;
-  top: ${dimensions.spacing.xxs};
-  right: ${dimensions.spacing.xxs};
-  padding: 2px;
-  background-color: rgba(255, 255, 255, 0.5);
+
+const StyledSvg = styled.div<{ isInCardResource: boolean }>`
+  position: ${(props) => (props.isInCardResource ? 'relative' : 'absolute')};
+  top: ${(props) =>
+    props.isInCardResource ? '2px' : `${dimensions.spacing.xxs}`};
+  right: ${(props) =>
+    props.isInCardResource ? '0' : `${dimensions.spacing.xxxs}`};
+  background-color: ${(props) =>
+    props.isInCardResource ? 'transpareny' : 'rgba(255, 255, 255, 0.5)'};
+  padding: ${(props) => (props.isInCardResource ? '0px' : '2px')};
+
+  > img {
+    cursor: pointer;
+  }
 `
+
 const EditResource = ({
   description,
   id,
@@ -55,6 +68,7 @@ const EditResource = ({
   url,
   resourceType,
   topics,
+  isInCardResource = false,
 }: TEditResourceProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
@@ -74,6 +88,8 @@ const EditResource = ({
       label: topic.name,
     })) ?? []
   const initialTopicId = topics && topics.length > 0 ? topics[0].topic.id : ''
+
+  console.log(isInCardResource)
 
   return (
     <>
@@ -99,7 +115,7 @@ const EditResource = ({
           <ButtonStyled outline>Eliminar</ButtonStyled>
         </ButtonContainerStyled>
       </Modal>
-      <StyledSvg onClick={openModal} style={{ cursor: 'pointer' }}>
+      <StyledSvg onClick={openModal} isInCardResource={isInCardResource}>
         <img src={icons.editPen} alt="Editar recurso" data-testid="edit-icon" />
       </StyledSvg>
     </>

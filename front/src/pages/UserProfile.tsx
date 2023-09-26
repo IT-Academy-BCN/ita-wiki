@@ -12,6 +12,7 @@ import { BackButton } from '../components/atoms/BackButton'
 export const UserProfile: FC = () => {
   const favorites = useGetFavorites()
   const favoritesData = favorites.data as TFavorites[] | undefined
+  console.log('PROFILE', favorites, favorites.data)
   const favoritesLength = favoritesData?.length ?? 0
   const resources = useGetResources()
   const resourcesData = resources.data as TResources[] | undefined

@@ -42,6 +42,7 @@ export const handlers = [
   rest.get(urls.getTopics, (req, res, ctx) => {
     const slug = req.url.searchParams.get('slug')
     if (slug === 'react') {
+      console.log('slug is Ract?:', slug)
       return res(
         ctx.status(200),
         ctx.json([
@@ -61,6 +62,7 @@ export const handlers = [
       )
     }
     if (slug === 'empty-topics') {
+      console.log('slug EMpty?:', slug)
       return res(ctx.status(200), ctx.json([]))
     }
     if (slug === 'invalid-slug') {
@@ -109,11 +111,32 @@ export const handlers = [
   ),
 
   rest.get(urls.getFavorites, (req, res, ctx) => {
-    const favoritesUserId = req.url.searchParams.get('userId')
-    if (favoritesUserId === 'emptyResource') {
-      return res(ctx.status(200), ctx.json([]))
-    }
-
+    // const categorySlug = req.url.searchParams.get('slug')
+    // console.log('categorySlug:', categorySlug)
+    // if (categorySlug === 'slugWithoutFavs') {
+    //   console.log('HERE')
+    //   return res(ctx.status(200), ctx.json([]))
+    // }
+    // if (categorySlug === 'react') {
+    //   console.log('is categorySlug React?:', categorySlug)
+    //   return res(
+    //     ctx.status(200),
+    //     ctx.json([
+    //       {
+    //         id: 'favoriteId',
+    //         title: 'My favorite title',
+    //         slug: 'my-favorite',
+    //         description: 'Favorite description',
+    //         url: 'https://tutorials.cat/learn/javascript',
+    //         resourceType: 'VIDEO',
+    //         userId: 'userId', //això no pot estar bé, em temo!!!
+    //         createdAt: '11/11/2011',
+    //         updatedAt: '12/12/2012',
+    //       },
+    //     ])
+    //   )
+    // }
+    console.log('Vamos ')
     return res(
       ctx.status(200),
       ctx.json([
@@ -124,7 +147,7 @@ export const handlers = [
           description: 'Favorite description',
           url: 'https://tutorials.cat/learn/javascript',
           resourceType: 'VIDEO',
-          userId: 'userId',
+          userId: 'userId', //això no pot estar bé, em temo!!!
           createdAt: '11/11/2011',
           updatedAt: '12/12/2012',
         },
@@ -201,6 +224,10 @@ export const errorHandlers = [
   // eslint-disable-next-line consistent-return
   rest.get(urls.getFavorites, (req, res, ctx) =>
     res(ctx.status(404), ctx.json({ message: 'Invalid userId' }))
+  ),
+
+  rest.get(urls.getFavorites, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 
   rest.put(urls.vote, (_, res, ctx) =>

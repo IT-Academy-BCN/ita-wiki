@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { urls } from '../../constants'
@@ -34,11 +35,11 @@ const FavoritesContainer = styled(FlexBox)`
   overflow-x: auto;
   justify-content: flex-start;
   margin-bottom: ${dimensions.spacing.base};
-  
+
   &::-webkit-scrollbar {
     display: none;
   }
-  
+
   @media only ${device.Tablet} {
     flex-direction: column;
     align-items: flex-start;
@@ -67,6 +68,8 @@ type TFavorites = {
   updatedAt: string
 }
 
+type TGetFavorites = TFavorites[]
+
 const StyledText = styled(Text)`
   color: ${colors.gray.gray3};
   font-weight: ${font.regular};
@@ -84,8 +87,9 @@ const TextDecorationStyled = styled.span`
 const getWindowIsMobile = () =>
   window.innerWidth <= parseInt(responsiveSizes.tablet, 10)
 
-const getFavorites = async () =>
-  fetch(urls.getFavorites)
+const getFavorites = async (slug?: string) =>
+  fetch(`${urls.getFavorites}?categorySlug=${slug}`)
+    //fetch(`${urls.getFavorites}`)
     .then((res) => {
       if (!res.ok) {
         throw new Error(`Error fetching favorite resources: ${res.statusText}`)
@@ -98,6 +102,7 @@ const getFavorites = async () =>
 
 export const MyFavoritesList: FC = () => {
   const { user } = useAuth()
+  const { slug } = useParams()
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(getWindowIsMobile())
@@ -109,11 +114,20 @@ export const MyFavoritesList: FC = () => {
     window.addEventListener('resize', handleResize)
   }, [isMobile])
 
-  const { isLoading, data, error } = useQuery({
-    queryKey: ['getFavorites'],
-    queryFn: () => getFavorites(),
+  const { isLoading, data, error } = useQuery<TGetFavorites>({
+    queryKey: ['getFavorites', slug],
+    queryFn: () => getFavorites(slug),
     enabled: !!user, // Enable the query only if there is a logged-in user
   })
+
+  //AMS SLUG
+  // const { isLoading, data, error } = useQuery<TGetFavorites>({
+  //   queryKey: ['getFavorites', slug],
+  //   queryFn: () => getFavorites(slug),
+  //   enabled: !!user, // Enable the query only if there is a logged-in user
+  // })
+
+  console.log('FAVS', data)
 
   const handleRegisterModal = () => {
     setIsRegisterOpen(!isRegisterOpen)
@@ -140,7 +154,7 @@ export const MyFavoritesList: FC = () => {
         )}
       </TitleContainer>
       {!user && (
-        <StyledText>
+        <StyledText data-testid="no-user">
           <TextDecorationStyled onClick={handleRegisterModal}>
             Regístrate
           </TextDecorationStyled>
@@ -154,40 +168,42 @@ export const MyFavoritesList: FC = () => {
 
       {isLoading && user && <Spinner size="medium" role="status" />}
 
-      {data && data?.length ? (
-        <FavoritesContainer>
-          {data.map((fav: TFavorites) => (
-            <FavoritesCardList key={fav.id}>
-              {isMobile ? (
-                <CardResource
-                  createdBy={fav.userId}
-                  createdAt={fav.createdAt}
-                  updatedAt={fav.updatedAt}
-                  description={fav.description}
-                  img=""
-                  id={fav.id}
-                  title={fav.title}
-                  url={fav.url}
-                  handleAccessModal={() => {}}
-                  resourceType=""
-                  topics={[]}
-                  editable={false}
-                />
-              ) : (
-                <ResourceTitleLink
-                  url={fav.url}
-                  title={fav.title}
-                  description={fav.description}
-                />
-              )}
-            </FavoritesCardList>
-          ))}
-        </FavoritesContainer>
-      ) : null}
-
-      {data?.length === 0 ? (
-        <StyledText>No tienes recursos favoritos</StyledText>
-      ) : null}
+      {!isLoading &&
+        !error &&
+        (data && data.length > 0 ? (
+          <FavoritesContainer>
+            {data.map((fav: TFavorites) => (
+              <FavoritesCardList key={fav.id}>
+                {isMobile ? (
+                  <CardResource
+                    createdBy={fav.userId}
+                    createdAt={fav.createdAt}
+                    updatedAt={fav.updatedAt}
+                    description={fav.description}
+                    img=""
+                    id={fav.id}
+                    title={fav.title}
+                    url={fav.url}
+                    handleAccessModal={() => {}}
+                    resourceType=""
+                    topics={[]}
+                    editable={false}
+                  />
+                ) : (
+                  <ResourceTitleLink
+                    url={fav.url}
+                    title={fav.title}
+                    description={fav.description}
+                  />
+                )}
+              </FavoritesCardList>
+            ))}
+          </FavoritesContainer>
+        ) : (
+          <StyledText data-testid="no-favs">
+            No tienes recursos favoritos
+          </StyledText>
+        ))}
 
       {error && user && !isLoading ? <p>Algo ha ido mal...</p> : null}
 

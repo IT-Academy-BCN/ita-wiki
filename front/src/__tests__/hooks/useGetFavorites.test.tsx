@@ -1,7 +1,7 @@
-import { QueryClientProvider } from "@tanstack/react-query"
-import { renderHook, waitFor } from "../test-utils"
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook, waitFor } from '../test-utils'
 import { queryClient } from '../setup'
-import { useGetFavorites } from "../../hooks"
+import { useGetFavorites } from '../../hooks'
 
 describe('useGetFavorites', () => {
   it("gets an array of user's favorite resources", async () => {
