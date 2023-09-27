@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '../test-utils'
-import { UserAccessHome } from '../../components/molecules'
+import { UserAccessHome } from '../../components/organisms'
 
 describe('UserAccessHome component', () => {
   it('renders correctly', () => {

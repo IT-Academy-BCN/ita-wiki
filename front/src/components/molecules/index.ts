@@ -13,7 +13,6 @@ import { SelectLanguage } from './SelectLanguage'
 import { Tooltip } from './Tooltip'
 import { TopicsEditableItem } from './TopicsEditableItem'
 import type { TCardResource } from '../organisms/CardResource'
-import { UserAccessHome } from '../organisms/UserAccessHome'
 import { UserButton } from './UserButton'
 
 export {
@@ -31,7 +30,6 @@ export {
   SelectLanguage,
   Tooltip,
   TopicsEditableItem,
-  UserAccessHome,
   UserButton,
 }
 
