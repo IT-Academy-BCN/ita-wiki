@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { colors, device, dimensions, FlexBox, font } from '../../styles'
 import { Button, Text } from '../atoms'
-import Login from '../organisms/Login'
-import Register from '../organisms/Register'
-import { Modal } from './Modal'
+import Login from './Login'
+import Register from './Register'
+import { Modal } from '../molecules/Modal'
 
 const StyledText = styled(Text)`
   margin: ${dimensions.spacing.sm} ${dimensions.spacing.none}
