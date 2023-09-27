@@ -75,7 +75,7 @@ type TLogin = {
 
 const loginUserFetcher = async (user: object) => {
   const errorMessage: { [key: number]: string } = {
-    403: 'Usuario en proceso de activación. Por favor, inténtelo más tarde.',
+    403: 'Usuario en proceso de activación. Por favor, póngase en contacto con el administrador.',
     404: 'Acceso restringido. Por favor, contacte con el personal de IT Academy.',
     422: 'Identificador o contraseña incorrectos.',
   }
