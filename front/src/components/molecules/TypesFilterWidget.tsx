@@ -85,8 +85,6 @@ const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [types])
 
-  console.log('types', types)
-
   if (error) return <p>Ha habido un error...</p>
 
   return (
