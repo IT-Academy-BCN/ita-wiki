@@ -11,8 +11,7 @@ const DropdownLang = styled.select`
   border-radius: 20%;
   font-weight: ${font.regular};
   color: ${colors.black.black1};
-  margin-right: 3rem;
-  margin-top: 1.1rem;
+  margin-right: 1rem;
   &:hover {
     cursor: pointer;
   }
