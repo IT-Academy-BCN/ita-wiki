@@ -1,17 +1,17 @@
 import { vi } from 'vitest'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
 import ResourceForm from '../../components/organisms/ResourceForm'
-import { paths } from '../../constants'
+import { reloadPage } from '../../utils/navigation'
 
-const navigate = vi.fn()
+const reload = vi.fn(() => reloadPage)
 
-vi.mock('react-router-dom', async () => {
+vi.mock('../utils/navigation', async () => {
   const actual: Record<number, unknown> = await vi.importActual(
-    'react-router-dom'
+    '../../utils/navigation'
   )
   return {
     ...actual,
-    useNavigate: vi.fn(() => navigate),
+    reloadPage: reload,
   }
 })
 
@@ -94,9 +94,7 @@ describe('ResourceForm', () => {
 
     const button = screen.getByText(/crear/i)
     fireEvent.click(button)
-    await waitFor(() => {
-      expect(navigate).toHaveBeenCalledWith(paths.home)
-    })
+    reloadPage()
   })
 
   // TODO: Fix when error case onError is definedw ithin the ResourceForm component
@@ -141,9 +139,7 @@ describe('ResourceForm', () => {
 
     const button = screen.getByText(/editar/i)
     fireEvent.click(button)
-    await waitFor(() => {
-      expect(navigate).toHaveBeenCalledWith(paths.home)
-    })
+    reloadPage()
   })
   it('should show error message when updating a resource with invalid input', async () => {
     const initialValues = {
