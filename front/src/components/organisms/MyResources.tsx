@@ -122,8 +122,6 @@ const getResourcesByUser = async (categorySlug: string | undefined) => {
   return data.resources.map((resource: TResource) => ({
     ...resource,
     editable: true,
-
-    // Agregamos la propiedad editable a cada recurso y la establecemos como true
   }))
 }
 
