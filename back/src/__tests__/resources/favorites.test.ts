@@ -46,10 +46,10 @@ afterAll(async () => {
   })
 })
 
-describe.skip('Testing GET resource/favorites/:categorySlug?', () => {
+describe('Testing GET resource/favorites/:categorySlug?', () => {
   test('Should respond 200 status with category param', async () => {
     const response = await supertest(server)
-      .get(`${url}`)
+      .get(`${url}/:${categorySlug}`)
       .set('Cookie', authToken.admin)
     expect(response.status).toBe(200)
   })
@@ -69,16 +69,16 @@ describe.skip('Testing GET resource/favorites/:categorySlug?', () => {
       .set('Cookie', `token=${invalidUserToken}`)
     expect(response.status).toBe(404)
   })
-  test('Should respond 405 status with invalid token', async () => {
+  test('Should respond 498 status with invalid token', async () => {
     const response = await supertest(server)
       .get(`${url}/${categorySlug}`)
       .set('Cookie', 'token=randomToken')
-    expect(response.status).toBe(405)
+    expect(response.status).toBe(498)
   })
 
   test('Should return favorites as an array of objects.', async () => {
     const response = await supertest(server)
-      .get(`${url}/${categorySlug}`)
+      .get(`${url}`)
       .set('Cookie', authToken.admin)
 
     expect(response.body).toBeInstanceOf(Array)
@@ -86,16 +86,19 @@ describe.skip('Testing GET resource/favorites/:categorySlug?', () => {
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          resource: expect.objectContaining({
-            id: expect.any(String),
-            title: expect.any(String),
-            slug: expect.any(String),
-            description: expect.any(String),
-            url: expect.any(String),
-            resourceType: expect.any(String),
-            userId: expect.any(String),
-            createdAt: expect.any(String),
-            updatedAt: expect.any(String),
+          id: expect.any(String),
+          title: expect.any(String),
+          slug: expect.any(String),
+          description: expect.any(String),
+          url: expect.any(String),
+          resourceType: expect.any(String),
+          userId: expect.any(String),
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          voteCount: expect.objectContaining({
+            upvote: expect.any(Number),
+            downvote: expect.any(Number),
+            total: expect.any(Number),
           }),
         }),
       ])

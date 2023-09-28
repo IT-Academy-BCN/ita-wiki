@@ -3,8 +3,12 @@ import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
-import { CardHome, UserAccessHome } from '../components/molecules'
-import { DesktopSideMenu, Navbar } from '../components/organisms'
+import { CardHome } from '../components/molecules'
+import {
+  DesktopSideMenu,
+  Navbar,
+  UserAccessHome,
+} from '../components/organisms'
 import { Title, Text } from '../components/atoms'
 import { useAuth } from '../context/AuthProvider'
 

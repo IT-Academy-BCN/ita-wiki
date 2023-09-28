@@ -50,6 +50,8 @@ export const testUserData = {
 export async function setup() {
   // Cleanup database
   await prisma.topicsOnResources.deleteMany()
+  await prisma.favorites.deleteMany()
+  await prisma.vote.deleteMany()
   await prisma.viewedResource.deleteMany()
   await prisma.topic.deleteMany()
   await prisma.resource.deleteMany()
