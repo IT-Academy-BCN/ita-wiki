@@ -10,6 +10,7 @@ import { Information } from './pages/Information'
 import { AuthProvider } from './context/AuthProvider'
 import { font } from './styles'
 import { FiltersProvider } from './context/store/context'
+import './i18n'
 
 const GlobalStyle = createGlobalStyle`
   body {

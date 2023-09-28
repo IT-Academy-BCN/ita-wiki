@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from '../test-utils'
-import { UserAccessHome } from '../../components/molecules'
+import { UserAccessHome } from '../../components/organisms'
 
 describe('UserAccessHome component', () => {
   it('renders correctly', () => {
@@ -7,12 +7,12 @@ describe('UserAccessHome component', () => {
 
     expect(
       screen.getByText(
-        'Regístrate o inicia sesión para poder subir y votar recursos'
+        "Registra't o inicia sessió per poder pujar i votar recursos"
       )
     ).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Entrar' })).toBeInTheDocument()
     expect(
-      screen.getByRole('button', { name: 'Registrarme' })
+      screen.getByRole('button', { name: 'Registrar-me' })
     ).toBeInTheDocument()
   })
 

@@ -1,6 +1,6 @@
 import { pathRoot } from '../../../routes/routes'
 import { registry } from '../../registry'
-import { resourceSchema } from '../../../schemas'
+import { resourceFavoriteSchema } from '../../../schemas'
 import { z } from '../../zod'
 
 registry.registerPath({
@@ -24,7 +24,7 @@ registry.registerPath({
       description: 'Favorite resources retrieved successfully.',
       content: {
         'application/json': {
-          schema: z.array(resourceSchema),
+          schema: z.array(resourceFavoriteSchema),
         },
       },
     },
@@ -50,12 +50,12 @@ registry.registerPath({
         },
       },
     },
-    405: {
+    498: {
       description: 'Invalid token',
       content: {
         'application/json': {
           schema: z.object({
-            error: z.string().openapi({ example: 'Token is not valid' }),
+            message: z.string().openapi({ example: 'Token is not valid' }),
           }),
         },
       },

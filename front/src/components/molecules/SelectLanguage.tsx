@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { colors, device, font } from '../../styles'
 
-type Language = 'esp' | 'cat'
+type Language = 'es' | 'cat' | 'en'
 
 const DropdownLang = styled.select`
   font-size: ${font.base};
@@ -26,19 +27,28 @@ const DropdownLang = styled.select`
 `
 
 export const SelectLanguage: React.FC = () => {
-  const [selectedLanguage, setSelectedLanguage] = useState<Language>('esp')
+  const [selectedLanguage, setSelectedLanguage] = useState<Language | string>(
+    localStorage.getItem('lng') ?? 'cat'
+  )
+
+  const {
+    i18n: { changeLanguage },
+  } = useTranslation()
 
   const handleLanguageChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setSelectedLanguage(event.target.value as Language)
+    localStorage.setItem('lng', event.target.value)
+    changeLanguage(event.target.value)
   }
 
   return (
     <div>
       <DropdownLang value={selectedLanguage} onChange={handleLanguageChange}>
-        <option value="esp">ES</option>
-        <option value="cat">CA</option>
+        <option value="cat">CAT</option>
+        <option value="es">ES</option>
+        <option value="en">EN</option>
       </DropdownLang>
     </div>
   )

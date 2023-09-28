@@ -1,9 +1,14 @@
 import styled from 'styled-components'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
-import { CardHome, UserAccessHome } from '../components/molecules'
-import { DesktopSideMenu, Navbar } from '../components/organisms'
+import { CardHome } from '../components/molecules'
+import {
+  DesktopSideMenu,
+  Navbar,
+  UserAccessHome,
+} from '../components/organisms'
 import { Title, Text } from '../components/atoms'
 import { useAuth } from '../context/AuthProvider'
 
@@ -88,27 +93,29 @@ const cardHomeContent = [
     id: 1,
     indicator: '/ 01',
     icon: `${icons.newFolder}`,
-    title: 'Guarda tus recursos favoritos',
-    subtitle: 'Ten tus recursos bien organizados',
+    title: 'Guarda els teus recursos',
+    subtitle: 'Tingues els teus recursos',
   },
   {
     id: 2,
     indicator: '/ 02',
     icon: `${icons.puzzleDynamic}`,
-    title: 'Colabora con tus compañer@s',
-    subtitle: 'Recursos compartidos',
+    title: 'Col·labora',
+    subtitle: 'Recursos compartits',
   },
   {
     id: 3,
     indicator: '/ 03',
     icon: `${icons.thumbUp}`,
-    title: `Vota los\nrecursos`,
-    subtitle: 'La comunidad decide cuáles son más relevantes',
+    title: 'Vota els recursos',
+    subtitle: 'La comunitat decideix',
   },
 ]
 
 const Home: FC = () => {
   const { user } = useAuth()
+
+  const { t } = useTranslation()
 
   return (
     <Container direction="row" justify="flex-start" align="start">
@@ -123,7 +130,7 @@ const Home: FC = () => {
         >
           <MainContent>
             <StyledTitle as="h1" fontWeight="bold">
-              ¡Bienvenid@ a la wiki de la IT Academy!
+              {t('Benvinguts')}
             </StyledTitle>
             {!user && <UserAccessHome />}
             <FlexBox>
@@ -131,7 +138,7 @@ const Home: FC = () => {
                 color={`${colors.gray.gray3}`}
                 fontSize={`${font.base}`}
               >
-                Funcionalidades básicas que te ofrece esta plataforma:
+                {t('Funcionalitats')}
               </StyledText>
               <ResponsiveFlexBox direction="column" gap="1rem">
                 {cardHomeContent.map((content) => (
