@@ -29,19 +29,24 @@ const ResourceFormSchema = z.object({
   title: z
     .string({ required_error: 'Este campo es obligatorio' })
     .min(1, { message: 'Este campo es obligatorio' }),
-  description: z.string().optional(),
+  description: z
+    .string({ required_error: 'Este campo es obligatorio' })
+    .min(1, { message: 'Este campo es obligatorio' }),
   url: z
     .string({ required_error: 'Este campo es obligatorio' })
-    .url({ message: 'La URL proporcionada no es válida' }),
-  topics: z.string().refine((val) => val !== 'Options', {
-    message: 'Debe seleccionar al menos un tema',
-  }),
+    .min(1, { message: 'Este campo es obligatorio' }),
+  topics: z
+    .string({ required_error: 'Debe seleccionar al menos un tema' })
+    .refine((val) => val === 'Options', {
+      message: 'Debe seleccionar al menos un tema',
+    }),
   topicId: z
     .string()
     .optional()
     .refine((val) => val !== '', 'Debe seleccionar un tema válido'),
-  resourceType: z.string(),
-  userEmail: z.string().optional(),
+  resourceType: z.string({
+    required_error: 'Debe seleccionar al menos un tema',
+  }),
 })
 
 export type TResourceForm = Omit<
@@ -158,12 +163,19 @@ const ResourceForm: FC<TSelectOptions> = ({
 
   const handleTopicChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedTopicId = event.target.value
+    console.log('Selected Topic ID:', selectedTopicId)
+    console.log('Select Options:', selectOptions)
+
     const selectedTopic = selectOptions.find(
       (option) => option.value === selectedTopicId
     )
+    console.log('Selected Topic object', selectedTopic)
     if (selectedTopic) {
+      console.log('Selected Topic:', selectedTopic.label)
       setValue('topics', selectedTopic.label)
       setValue('topicId', selectedTopic.value)
+    } else {
+      console.log('No Topic Selected')
     }
   }
   return (
@@ -188,6 +200,9 @@ const ResourceForm: FC<TSelectOptions> = ({
         label="Descripción"
         placeholder="Descripción"
         {...register('description')}
+        error={errors.description && true}
+        validationMessage={errors.description?.message}
+        validationType="error"
       />
       <InputGroup
         hiddenLabel
@@ -203,11 +218,13 @@ const ResourceForm: FC<TSelectOptions> = ({
       <SelectGroup
         id="topics"
         label="Tema"
-        options={selectOptions}
+        placeholder="Tema"
+        options={initialValues ? selectOptions : selectOptions.slice(1)}
         {...register('topics')}
         defaultValue={initialValues?.topicId}
         error={!!errors.topics}
         validationMessage={errors.topics?.message}
+        validationType="error"
         onChange={handleTopicChange}
       />
 
