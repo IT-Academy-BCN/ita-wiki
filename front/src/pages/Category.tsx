@@ -500,7 +500,9 @@ const Category: FC = () => {
                   )}
                 </ScrollTopics>
                 <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
-                <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+                {user && (
+                  <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+                )}
               </FiltersContainer>
               <ResourcesContainer>
                 <TitleResourcesContainer>
@@ -562,7 +564,9 @@ const Category: FC = () => {
                 className={isFiltersOpen ? 'open' : 'close'}
               >
                 <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
-                <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+                {user && (
+                  <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+                )}
                 <CloseFilterButton
                   data-testid="close-filters-button"
                   onClick={handleFiltersClose}
