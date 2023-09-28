@@ -8,6 +8,7 @@ type TTopicReturned = {
 }
 
 export type TGetTopics = TTopicReturned[]
+export type TGetTypes = string[]
 
 export const getTopics = async (slug?: string): Promise<TGetTopics> =>
   fetch(`${urls.getTopics}?slug=${slug}`)
@@ -31,4 +32,20 @@ export const getCategories = async () =>
     })
     .catch((err) => {
       throw new Error(`Error fetching categories: ${err.message}`)
+    })
+
+export const getTypes = (): Promise<TGetTypes> =>
+  fetch(urls.getTypes, {
+    headers: {
+      Accept: 'application/json',
+    },
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error fetching types: ${res.statusText}`)
+      }
+      return res.json() as Promise<TGetTypes>
+    })
+    .catch((err) => {
+      throw new Error(`Error fetching types: ${err.message}`)
     })
