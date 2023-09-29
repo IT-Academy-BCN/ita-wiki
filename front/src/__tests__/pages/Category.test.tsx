@@ -96,3 +96,13 @@ it('modal opens and closes correctly when user is logged', async () => {
     expect(modalTitle).not.toBeInTheDocument()
   })
 })
+
+it('status filter widget does not appear for users who are not logged in', () => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: null,
+  } as TAuthContext)
+  render(<Category />)
+
+  const statusFilterWidget = screen.queryByTestId('status-filter')
+  expect(statusFilterWidget).not.toBeInTheDocument()
+})
