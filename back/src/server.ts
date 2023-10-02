@@ -13,9 +13,10 @@ import { errorMiddleware } from './middleware'
 import { generateOpenapiFile } from './openapi/generateFile'
 import { openapiFilename, swaggeruiUrl } from './openapi/config'
 import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
-import { fatal } from './helpers/pinoConfig'
+import { config } from './helpers/pinoConfig'
 
 dotenv.config()
+const logger = config
 
 fs.mkdir(path.join(__dirname, '/static/media'), { recursive: true }, (err) => {
   // eslint-disable-next-line no-console
@@ -35,10 +36,8 @@ app.use(
     ],
   })
 )
-app.on('uncaughtException', (err) => {
-  fatal(err)
-})
-app.use(errorMiddleware)
+
+app.use(errorMiddleware({ logger }))
 
 // Routes
 app.use(Routes.authRouter.routes())
