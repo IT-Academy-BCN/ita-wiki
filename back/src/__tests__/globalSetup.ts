@@ -80,13 +80,19 @@ export async function setup() {
       },
     ],
   })
-
-  await prisma.topic.create({
-    data: {
-      name: 'Testing',
-      slug: 'testing',
-      categoryId: testCategory.id,
-    },
+  await prisma.topic.createMany({
+    data: [
+      {
+        name: 'Testing',
+        slug: 'testing',
+        categoryId: testCategory.id,
+      },
+      {
+        name: 'Test Debugging',
+        slug: 'test-debugging',
+        categoryId: testCategory.id,
+      },
+    ],
   })
 }
 

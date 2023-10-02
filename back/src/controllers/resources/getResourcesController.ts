@@ -17,7 +17,7 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
   const where: Prisma.ResourceWhereInput = {
     topics: {
       some: {
-        topic: { category: { slug }, slug: topic },
+        topic: { category: { slug }, id: topic },
       },
     },
     resourceType: { in: resourceTypes },

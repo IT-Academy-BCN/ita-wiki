@@ -9,27 +9,31 @@ import { resourceGetSchema } from '../../schemas'
 import { resourceTestData } from '../mocks/resources'
 
 beforeAll(async () => {
-  const testResources = resourceTestData.map((testResource) => ({
+  // createMany does not allow nested create on many-to-many relationships as per prisma docs. Therefore individual creates are made.
+  const testResources = resourceTestData.map((testResource, index) => ({
     ...testResource,
     user: { connect: { dni: testUserData.user.dni } },
-    topics: {
-      create: [{ topic: { connect: { slug: 'testing' } } }],
-    },
+    topics:
+      index % 2 === 0
+        ? { create: [{ topic: { connect: { slug: 'testing' } } }] }
+        : { create: [{ topic: { connect: { slug: 'test-debugging' } } }] },
   }))
-  // createMany does not allow nested create on many-to-many relationships as per prisma docs. Therefore individual creates are made.
   await prisma.$transaction(
     testResources.map((resource) => prisma.resource.create({ data: resource }))
   )
 })
 
-afterAll(async () => {
-  await prisma.topicsOnResources.deleteMany({
-    where: { topic: { slug: 'testing' } },
-  })
-  await prisma.resource.deleteMany({
-    where: { user: { dni: testUserData.user.dni } },
-  })
-})
+// afterAll(async () => {
+//   await prisma.topicsOnResources.deleteMany({
+//     where: { topic: { slug: 'testing' } },
+//   })
+//   await prisma.topicsOnResources.deleteMany({
+//     where: { topic: { slug: 'test-debugging' } },
+//   })
+//   await prisma.resource.deleteMany({
+//     where: { user: { dni: testUserData.user.dni } },
+//   })
+// })
 // resourceTypes as array from prisma types for the it.each tests.
 const resourceTypes = Object.keys(RESOURCE_TYPE)
 type ResourceWithTopics = Resource & { topics: { topic: Topic }[] }
@@ -44,12 +48,16 @@ describe('Testing resources GET endpoint', () => {
   })
 
   it('should get all resources by topic slug', async () => {
-    const topicSlug = 'testing'
+    const topicSlug = 'test-debugging'
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
       .query({ topic: topicSlug })
 
+    console.log('response.status', response.status)
+
     expect(response.status).toBe(200)
+    console.log('response.body.length', response.body.length)
+
     expect(response.body.length).toBeGreaterThanOrEqual(1)
     response.body.forEach((resource: ResourceWithTopics) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
