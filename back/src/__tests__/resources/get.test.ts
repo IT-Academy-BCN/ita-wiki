@@ -101,7 +101,7 @@ describe('Testing resources GET endpoint', () => {
     })
   })
 
-  it.only.each(resourceTypes)(
+  it.each(resourceTypes)(
     "should get all resources by type '%s', topic 'Testing' and category slug 'Testing'.",
     async (resourceType) => {
       const existingTopic = await prisma.topic.findUnique({
