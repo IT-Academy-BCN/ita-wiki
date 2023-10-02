@@ -11,8 +11,8 @@ const DropdownLang = styled.select`
   border-radius: 20%;
   font-weight: ${font.regular};
   color: ${colors.black.black1};
-  margin-right: 3rem;
-  margin-top: 1.1rem;
+  background-color: transparent;
+  margin-right: 1rem;
   &:hover {
     cursor: pointer;
   }
@@ -20,6 +20,7 @@ const DropdownLang = styled.select`
     outline: 0 none;
   }
   @media ${device.Tablet} {
+    background-color: ${colors.white};
     margin: 0;
     padding: 0.47rem;
     color: ${colors.gray.gray3};
