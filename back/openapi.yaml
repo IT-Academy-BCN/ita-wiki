@@ -741,12 +741,6 @@ paths:
                       properties:
                         name:
                           type: string
-                        email:
-                          type: string
-                          format: email
-                          example: user@example.cat
-                      required:
-                        - email
                     topics:
                       type: array
                       items:
@@ -996,12 +990,6 @@ paths:
                     properties:
                       name:
                         type: string
-                      email:
-                        type: string
-                        format: email
-                        example: user@example.cat
-                    required:
-                      - email
                   topics:
                     type: array
                     items:
@@ -1171,12 +1159,6 @@ paths:
                     properties:
                       name:
                         type: string
-                      email:
-                        type: string
-                        format: email
-                        example: user@example.cat
-                    required:
-                      - email
                   topics:
                     type: array
                     items:
@@ -1310,12 +1292,6 @@ paths:
                           properties:
                             name:
                               type: string
-                            email:
-                              type: string
-                              format: email
-                              example: user@example.cat
-                          required:
-                            - email
                         topics:
                           type: array
                           items:

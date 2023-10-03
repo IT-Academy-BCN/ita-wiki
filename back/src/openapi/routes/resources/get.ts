@@ -11,6 +11,39 @@ registry.registerPath({
   description:
     'Returns a collection of resources. Filters by resource type, topic name and category slug are optional. Resources that match all filters are fetched.',
   summary: 'Returns a collection of resources',
+  parameters: [
+    {
+      name: 'slug',
+      in: 'query',
+      required: false,
+      description: 'Slug of the category for which to retrieve resources',
+      example: 'react',
+    },
+    {
+      name: 'resourceTypes',
+      in: 'query',
+      required: false,
+      description: 'Resource types to filter by',
+      example: ['BLOG', 'VIDEO'],
+    },
+    {
+      name: 'topic',
+      in: 'query',
+      required: false,
+      schema: {
+        type: 'string',
+      },
+      description: 'Numeric ID of the topic for which to retrieve resources',
+      example: 'cln2u09xo0037s6wvbf6t9jfg',
+    },
+    {
+      name: 'status',
+      in: 'query',
+      required: false,
+      description: 'Status to filter by',
+      example: 'SEEN',
+    },
+  ],
   request: {
     query: resourcesGetParamsSchema,
   },

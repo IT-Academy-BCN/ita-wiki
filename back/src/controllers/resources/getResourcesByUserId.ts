@@ -14,7 +14,6 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
     user: {
       select: {
         name: true,
-        email: true,
       },
     },
     vote: { select: { vote: true } },
