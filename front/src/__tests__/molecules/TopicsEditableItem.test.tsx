@@ -16,7 +16,7 @@ describe('TopicsEditableItem component', () => {
     render(
       <TopicsEditableItem
         id="newTopic"
-        name="Nombre del nuevo tema"
+        name=""
         rowStatus="available"
         handleRowStatus={onClickRowStatus}
         handleErrorMessage={onClickErrorMessage}
@@ -66,6 +66,42 @@ describe('TopicsEditableItem component', () => {
     )
   })
 
+  it('renders new topic correctly in editing mode', async () => {
+    render(
+      <TopicsEditableItem
+        id="newTopic"
+        name=""
+        rowStatus="editing"
+        handleRowStatus={onClickRowStatus}
+        handleErrorMessage={onClickErrorMessage}
+        handleTopicChange={onClickTopicChange}
+      />
+    )
+
+    const topicInput = screen.getByPlaceholderText('Nombre del nuevo tema')
+
+    expect(topicInput).toBeInTheDocument()
+
+    expect(screen.getByTestId('rowContainer')).toHaveStyle(`opacity: 1`)
+
+    const confirmEdit = screen.getByRole('button', {
+      name: 'Confirmar edición',
+    })
+
+    const cancelEdit = screen.getByRole('button', {
+      name: 'Cancelar edición',
+    })
+
+    expect(confirmEdit).toBeInTheDocument()
+    expect(cancelEdit).toBeInTheDocument()
+
+    await userEvent.type(topicInput, 'New test topic name')
+
+    fireEvent.click(confirmEdit)
+
+    await waitFor(() => expect(onClickTopicChange).toHaveBeenCalled())
+  })
+
   it('renders correctly in disabled mode', () => {
     render(
       <TopicsEditableItem
@@ -84,7 +120,9 @@ describe('TopicsEditableItem component', () => {
 
     expect(editButton).toBeInTheDocument()
 
-    expect(screen.getByRole('button', { name: 'Borrar tema' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Borrar tema' })
+    ).toBeInTheDocument()
 
     expect(screen.getByTestId('rowContainer')).toHaveStyle(`opacity: 0.5`)
     expect(screen.getByTestId('rowContainer')).toHaveStyle(
@@ -92,7 +130,7 @@ describe('TopicsEditableItem component', () => {
     )
   })
 
-  it('renders correctly in editing mode', async () => {
+  it.only('renders correctly in editing mode', async () => {
     render(
       <TopicsEditableItem
         id="testTopicId"
@@ -117,17 +155,18 @@ describe('TopicsEditableItem component', () => {
     })
 
     expect(confirmEdit).toBeInTheDocument()
-
+    //AIXò NO ESTÂ BÉ!!??
     fireEvent.click(confirmEdit)
     await waitFor(() =>
       expect(onClickRowStatus).toHaveBeenCalledWith('available', '')
     )
-
+    //TOO MUVCH CLICKS - -tESTEJO SI O CANVIA EL TEXT; QUE N O FA RES? -- O AFEGEIXO QUE TIR MISSATGE ERROR I NO PASSI DE TOT
     await userEvent.type(topicInput, 'New test topic name')
 
     fireEvent.click(confirmEdit)
     await waitFor(() => expect(onClickTopicChange).toHaveBeenCalled())
 
+    //AIXÒ MEREIX TEST SEPARAT : CANCLE BUTON
     expect(cancelEdit).toBeInTheDocument()
     fireEvent.click(cancelEdit)
     await waitFor(() =>
@@ -169,15 +208,20 @@ describe('TopicsEditableItem component', () => {
       />
     )
 
-    const topicInput = screen.getByDisplayValue('testTopicName')
+    const topicInput = screen.getByDisplayValue(
+      'testTopicName'
+    ) as HTMLInputElement
 
     await userEvent.clear(topicInput)
+
+    expect(topicInput.placeholder).toBe('Nombre del tema')
 
     fireEvent.click(
       screen.getByRole('button', {
         name: 'Confirmar edición',
       })
     )
+
     await waitFor(() =>
       expect(onClickErrorMessage).toHaveBeenCalledWith(
         'Por favor, no dejes vacío el nombre del tema.'

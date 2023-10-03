@@ -7,6 +7,7 @@ import { SelectLanguage } from '../molecules/SelectLanguage'
 import { CategoriesList } from './CategoriesList'
 import { Modal } from '../molecules/Modal'
 import { SettingsManager } from './SettingsManager'
+import { useAuth } from '../../context/AuthProvider'
 
 const NavbarStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
@@ -26,11 +27,14 @@ const NavbarStyled = styled(FlexBox)`
     padding-right: 0.5rem;
     position: relative;
   }
+
+  @media ${device.Tablet} {
+    gap: 15px;
+  }
 `
 const IconStyled = styled.div`
   display: none;
   @media ${device.Tablet} {
-    margin: 0px 15px 0px 15px;
     padding: 6px;
     width: 3rem;
     height: ${dimensions.spacing.xxl};
@@ -72,6 +76,7 @@ type TNavbar = {
   toggleModal?: () => void
 }
 export const Navbar = ({ toggleModal }: TNavbar) => {
+  const { user } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
@@ -96,14 +101,17 @@ export const Navbar = ({ toggleModal }: TNavbar) => {
           <Icon name="add" color={colors.gray.gray3} />
         </IconStyled>
         <SelectLanguage />
-        <IconStyled
-          data-testid="settings-button"
-          onClick={() => handleSettingsModal()}
-          title="Configuración"
-          role="button"
-        >
-          <Icon name="settings" color={colors.gray.gray3} />
-        </IconStyled>
+        {user && user.role !== 'MENTOR' ? (
+          //GOOD LINE; DELETE RPREVIOUS {user && user.role === 'MENTOR' ? (
+          <IconStyled
+            data-testid="settings-button"
+            onClick={() => handleSettingsModal()}
+            title="Configuración"
+            role="button"
+          >
+            <Icon name="settings" color={colors.gray.gray3} />
+          </IconStyled>
+        ) : null}
         <UserButton />
         <MenuItems open={isMenuOpen} data-testid="menu-items">
           <CategoriesList />

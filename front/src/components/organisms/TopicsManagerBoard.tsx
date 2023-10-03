@@ -7,44 +7,47 @@ import { Spinner, Text } from '../atoms'
 import { TopicsEditableItem } from '../molecules'
 import { urls } from '../../constants'
 import { TGetTopics, getTopics } from '../../helpers/fetchers'
+import { useAuth } from '../../context/AuthProvider'
 
 const StyledFlexBox = styled(FlexBox)`
   width: 100%;
 `
 
+const errorMessageStatus: { [key: number]: string } = {
+  401: 'Operación no autorizada. Es necesario iniciar sesión de usuario.',
+  403: 'Acceso denegado. No tienes los permisos necesarios para realizar la operación.',
+  404: 'Error al guardar el tema en la base de datos. Por favor, inténtalo de nuevo y si el error persiste, contacta con el administrador.',
+  405: 'Identificador de usuario no válido.',
+  500: 'Error en la base de datos. Por favor, inténtalo más tarde.',
+}
+
 const createTopicFetcher = (createdTopic: TTopic) =>
-  fetch(urls.getTopics, {
+  fetch(urls.postTopics, {
     method: 'POST',
     body: JSON.stringify(createdTopic),
     headers: {
       'Content-type': 'application/json',
     },
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error(errorMessageStatus[res.status])
+    }
+    return res.status === 204 ? {} : res.json()
   })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('Error al crear el tema')
-      }
-      return res.status === 204 ? {} : res.json()
-    })
-    // eslint-disable-next-line no-console
-    .catch((error) => console.error(error))
 
 const updateTopicFetcher = (updatedTopic: TTopic) =>
-  fetch(urls.getTopics, {
+  fetch(urls.patchTopics, {
     method: 'PATCH',
     body: JSON.stringify(updatedTopic),
     headers: {
       'Content-type': 'application/json',
     },
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error(errorMessageStatus[res.status])
+    }
+    return res.status === 204 ? null : res.json()
   })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('Error al actualizar el tema')
-      }
-      return res.status === 204 ? null : res.json()
-    })
-    // eslint-disable-next-line no-console
-    .catch((error) => console.error(error))
 
 type TTopic = {
   id?: string
@@ -54,9 +57,11 @@ type TTopic = {
 }
 
 export const TopicsManagerBoard: FC = () => {
+  const { user } = useAuth()
   const { slug } = useParams()
   const { state } = useLocation()
 
+  console.log(state)
   const [rowStatus, setRowStatus] = useState<string>('available')
 
   const [selectedId, setSelectedId] = useState<string>('')
@@ -75,15 +80,22 @@ export const TopicsManagerBoard: FC = () => {
       if (errorMessage !== '') setErrorMessage('')
       setRowStatus('available')
     },
+    onError: (error: Error) => {
+      console.log('Error update:', error.message)
+      setErrorMessage(error.message)
+    },
   })
 
   const createTopic = useMutation({
     mutationFn: createTopicFetcher,
-
     onSuccess: async () => {
       await refetch()
       if (errorMessage !== '') setErrorMessage('')
       setRowStatus('available')
+    },
+    onError: (error: Error) => {
+      console.log('Error create:', error.message)
+      setErrorMessage(error.message)
     },
   })
 
@@ -134,13 +146,19 @@ export const TopicsManagerBoard: FC = () => {
 
   return (
     <>
-      {slug ? (
+      {/* //OJU, lo bo és === 'MENTOR'
+      {user && user.role === 'MENTOR' ? ( */}
+
+      {user ? (
+        // {slug && ( ) //HO HE HAGUT FD'ELIMIANR PER SIMPLIFICAR; I CREC QUE NO CAL PQ JA HEM DEFINIT RUTA SI ÉS UNDEFINED
+
         <StyledFlexBox>
+          <Text fontWeight="bold">Temas de {state.name}</Text>
           {data
             .concat([
               {
                 id: 'newTopic',
-                name: 'Nombre del nuevo tema',
+                name: '',
                 categoryId: `${state?.id}`,
                 slug: `${state?.slug}`,
               },
@@ -158,7 +176,11 @@ export const TopicsManagerBoard: FC = () => {
             ))
             .reverse()}
         </StyledFlexBox>
-      ) : null}
+      ) : (
+        <Text>
+          No tienes los permisos necesarios para acceder a este contenido.
+        </Text>
+      )}
       <br />
       <Text color={`${colors.error}`}>{errorMessage}</Text>
     </>

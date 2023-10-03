@@ -186,8 +186,16 @@ export const errorHandlers = [
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 
+  rest.post(urls.getTopics, (_, res, ctx) =>
+    res(ctx.status(401), ctx.json({ message: 'Unauthorized: Missing token' }))
+  ),
+
   rest.get(urls.getTopics, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
+  rest.post(urls.getTopics, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Database error' }))
   ),
 
   rest.get(urls.getResources, (_, res, ctx) =>

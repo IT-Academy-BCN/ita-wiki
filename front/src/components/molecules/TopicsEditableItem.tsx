@@ -19,6 +19,11 @@ const FlexBoxRow = styled(FlexBox)`
   padding: ${dimensions.spacing.xxs} 0;
 `
 
+const StyledText = styled(Text)`
+  padding: 0.09rem 0;
+  cursor: pointer;
+`
+
 const StyledButton = styled(Button).attrs({ type: 'button' })`
   width: 2rem;
   height: 2rem;
@@ -90,15 +95,14 @@ const AvailableMode = ({ id, name, handleRowStatus }: TTopicAvailable) => {
         align="center"
         id={id}
       >
-        <Text
+        <StyledText
           color={`${colors.primary}`}
           onClick={() => {
             handleRowStatus('editing', id)
           }}
-          style={{ padding: '0.09rem 0' }}
         >
           + Crear nuevo tema
-        </Text>
+        </StyledText>
       </StyledFlexBox>
     )
   }
@@ -116,6 +120,7 @@ const AvailableMode = ({ id, name, handleRowStatus }: TTopicAvailable) => {
           onClick={() => {
             handleRowStatus('editing', id)
           }}
+          data-testid={`edit${id}`}
         >
           Editar
         </TextButton>
@@ -198,10 +203,13 @@ export const TopicsEditableItem = ({
           id={id}
         >
           <StyledInput
-            placeholder="Nombre del tema"
+            placeholder={
+              id === 'newTopic' ? 'Nombre del nuevo tema' : 'Nombre del tema'
+            }
             defaultValue={name}
             ref={topicNameRef}
             id="editingTopic"
+            data-testid="input"
           />
           <FlexBoxRow direction="row" gap={`${dimensions.spacing.xxxs}`}>
             <StyledButton
@@ -210,6 +218,7 @@ export const TopicsEditableItem = ({
               onClick={() => {
                 editTopic(id)
               }}
+              data-testid={`confirm${id}`}
             >
               <StyledIcon name="done" color={`${colors.success}`} wght={600} />
             </StyledButton>
