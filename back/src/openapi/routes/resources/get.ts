@@ -33,7 +33,7 @@ registry.registerPath({
       schema: {
         type: 'string',
       },
-      description: 'Numeric ID of the topic for which to retrieve resources',
+      description: 'ID of the topic for which to retrieve resources',
       example: 'cln2u09xo0037s6wvbf6t9jfg',
     },
     {
