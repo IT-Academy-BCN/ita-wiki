@@ -1,7 +1,7 @@
 import { registry } from '../../registry'
 import { z } from '../../zod'
 import { pathRoot } from '../../../routes/routes'
-import { resourceGetSchema, resourcesGetParamsSchema } from '../../../schemas'
+import { resourceGetSchema } from '../../../schemas'
 import { ValidationError } from '../../components/errorSchemas'
 
 registry.registerPath({
@@ -33,7 +33,8 @@ registry.registerPath({
       schema: {
         type: 'string',
       },
-      description: 'ID of the topic for which to retrieve resources',
+      description:
+        'ID of the topic for which to retrieve resources. If not provided, resources for ALL topics are fetched.',
       example: 'cln2u09xo0037s6wvbf6t9jfg',
     },
     {
@@ -44,9 +45,6 @@ registry.registerPath({
       example: 'SEEN',
     },
   ],
-  request: {
-    query: resourcesGetParamsSchema,
-  },
   responses: {
     200: {
       description: 'Sucessful operation',
