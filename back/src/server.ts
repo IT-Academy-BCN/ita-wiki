@@ -8,15 +8,14 @@ import yamljs from 'yamljs'
 import { koaSwagger } from 'koa2-swagger-ui'
 import path from 'path'
 import * as Routes from './routes'
-import { appConfig } from './config/config'
+import { appConfig, pinoConfig } from './config/config'
 import { errorMiddleware } from './middleware'
 import { generateOpenapiFile } from './openapi/generateFile'
 import { openapiFilename, swaggeruiUrl } from './openapi/config'
 import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
-import { config } from './helpers/pinoConfig'
 
 dotenv.config()
-const logger = config
+const logger = pinoConfig
 
 fs.mkdir(path.join(__dirname, '/static/media'), { recursive: true }, (err) => {
   // eslint-disable-next-line no-console

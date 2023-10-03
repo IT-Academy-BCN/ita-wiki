@@ -1,3 +1,5 @@
+import pino from 'pino'
+
 const appConfig = {
   port: process.env.PORT ?? 8999,
   jwtKey: process.env.JWT_KEY ?? 'secret',
@@ -18,4 +20,22 @@ const bcryptConfig = {
   saltRounds: 10,
 }
 
-export { appConfig, dbConfig, bcryptConfig }
+let path = ''
+
+if (process.env.NODE_ENV !== 'test') path = './src/static/logs/pino.log'
+else path = './src/__tests__/static/logs/pino.log'
+
+const pinoConfig = pino(
+  {
+    timestamp: pino.stdTimeFunctions.isoTime,
+    formatters: {
+      level: (label) => ({ level: label.toUpperCase() }),
+    },
+  },
+  pino.multistream([
+    { stream: process.stdout },
+    { stream: pino.destination(path) },
+  ])
+)
+
+export { appConfig, dbConfig, bcryptConfig, pinoConfig }
