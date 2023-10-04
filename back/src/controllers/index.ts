@@ -3,7 +3,7 @@ export { logoutController } from './auth/logoutController'
 export { registerController } from './auth/register'
 export { authMeController } from './auth/authMeController'
 export { createResource } from './resources/createResourceController'
-export { getResources } from './resources/getResourcesController'
+export { getResources } from './resources/get'
 export { getResourcesById } from './resources/getResourcesById'
 export {
   getResourcesByTopicId,
