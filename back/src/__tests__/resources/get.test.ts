@@ -43,19 +43,23 @@ describe('Testing resources GET endpoint', () => {
     expect(response.status).toBe(400)
   })
 
-  it('should get all resources by topic slug', async () => {
-    const topicSlug = 'testing'
+  it('should get all resources by topic id', async () => {
+    const existingTopic = await prisma.topic.findUnique({
+      where: { slug: 'testing' },
+    })
+    const topicId = existingTopic?.id
+
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .query({ topic: topicSlug })
+      .query({ topic: topicId })
 
     expect(response.status).toBe(200)
     expect(response.body.length).toBeGreaterThanOrEqual(1)
     response.body.forEach((resource: ResourceWithTopics) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       expect(
-        resource.topics.map((t: { topic: Topic }) => t.topic.slug)
-      ).toContain(topicSlug)
+        resource.topics.map((t: { topic: Topic }) => t.topic.id)
+      ).toContain(topicId)
     })
   })
 
@@ -93,15 +97,18 @@ describe('Testing resources GET endpoint', () => {
   })
 
   it.each(resourceTypes)(
-    "should get all resources by type '%s', topic 'Testing' and category slug 'Testing'.",
+    "should get all resources by type '%s', topic 'Testing' and category slug 'testing'.",
     async (resourceType) => {
-      const topicSlug = 'testing'
+      const existingTopic = await prisma.topic.findUnique({
+        where: { slug: 'testing' },
+      })
+      const topicId = existingTopic?.id
       const categorySlug = 'testing'
       const response = await supertest(server)
         .get(`${pathRoot.v1.resources}`)
         .query(
           qs.stringify({
-            topic: topicSlug,
+            topic: topicId,
             resourceTypes: [resourceType],
             category: categorySlug,
           })
@@ -112,8 +119,8 @@ describe('Testing resources GET endpoint', () => {
       response.body.forEach((resource: ResourceWithTopics) => {
         expect(() => resourceGetSchema.parse(resource)).not.toThrow()
         expect(
-          resource.topics.map((t: { topic: Topic }) => t.topic.slug)
-        ).toContain(topicSlug)
+          resource.topics.map((t: { topic: Topic }) => t.topic.id)
+        ).toContain(topicId)
         expect(resource.resourceType).toBe(resourceType)
         // The returned resource has at least a topic related to the queried category
         expect(
