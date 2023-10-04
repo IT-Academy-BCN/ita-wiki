@@ -271,13 +271,13 @@ paths:
                     example: user@example.cat
                   role:
                     type: string
-                    enum: &a6
+                    enum: &a7
                       - ADMIN
                       - REGISTERED
                       - MENTOR
                   status:
                     type: string
-                    enum: &a5
+                    enum: &a6
                       - ACTIVE
                       - INACTIVE
                 required:
@@ -298,7 +298,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/MissingUserError"
-                  - example: &a4
+                  - example: &a5
                       message: User not found
         "405":
           description: Invalid token
@@ -603,6 +603,12 @@ paths:
                         total:
                           type: integer
                           example: 12
+                        userVote:
+                          type: string
+                          enum: &a4
+                            - upvote
+                            - downvote
+                            - none
                       required:
                         - upvote
                         - downvote
@@ -785,6 +791,9 @@ paths:
                         total:
                           type: integer
                           example: 12
+                        userVote:
+                          type: string
+                          enum: *a4
                       required:
                         - upvote
                         - downvote
@@ -1034,6 +1043,9 @@ paths:
                       total:
                         type: integer
                         example: 12
+                      userVote:
+                        type: string
+                        enum: *a4
                     required:
                       - upvote
                       - downvote
@@ -1203,6 +1215,9 @@ paths:
                       total:
                         type: integer
                         example: 12
+                      userVote:
+                        type: string
+                        enum: *a4
                     required:
                       - upvote
                       - downvote
@@ -1336,6 +1351,9 @@ paths:
                             total:
                               type: integer
                               example: 12
+                            userVote:
+                              type: string
+                              enum: *a4
                           required:
                             - upvote
                             - downvote
@@ -1366,7 +1384,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/MissingUserError"
-                  - example: *a4
+                  - example: *a5
         "405":
           description: Invalid token
           content:
@@ -1409,6 +1427,9 @@ paths:
                       total:
                         type: integer
                         example: 12
+                      userVote:
+                        type: string
+                        enum: *a4
                     required:
                       - upvote
                       - downvote
@@ -1637,10 +1658,10 @@ paths:
                       example: specializationId
                     status:
                       type: string
-                      enum: *a5
+                      enum: *a6
                     role:
                       type: string
-                      enum: *a6
+                      enum: *a7
                     createdAt:
                       type: string
                       format: date-time
