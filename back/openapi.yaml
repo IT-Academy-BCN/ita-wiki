@@ -662,37 +662,31 @@ paths:
         are fetched.
       summary: Returns a collection of resources
       parameters:
-        - in: query
-          name: resourceType
+        - name: slug
+          in: query
+          required: false
+          description: Slug of the category for which to retrieve resources
+          example: react
+        - name: resourceTypes
+          in: query
+          required: false
+          description: Resource types to filter by
+          example:
+            - BLOG
+            - VIDEO
+        - name: topic
+          in: query
+          required: false
           schema:
             type: string
-            enum:
-              - BLOG
-              - VIDEO
-              - TUTORIAL
-            example: BLOG
+          description: ID of the topic for which to retrieve resources. If not provided,
+            resources for ALL topics are fetched.
+          example: cln2u09xo0037s6wvbf6t9jfg
+        - name: status
+          in: query
           required: false
-        - in: query
-          name: topic
-          schema:
-            type: string
-            example: Listas
-          required: false
-        - in: query
-          name: category
-          schema:
-            type: string
-            example: javascript
-          required: false
-        - in: query
-          name: status
-          schema:
-            type: string
-            enum:
-              - SEEN
-              - NOT_SEEN
-            example: NOT_SEEN
-          required: false
+          description: Status to filter by
+          example: SEEN
       responses:
         "200":
           description: Sucessful operation
@@ -741,12 +735,6 @@ paths:
                       properties:
                         name:
                           type: string
-                        email:
-                          type: string
-                          format: email
-                          example: user@example.cat
-                      required:
-                        - email
                     topics:
                       type: array
                       items:
@@ -996,12 +984,6 @@ paths:
                     properties:
                       name:
                         type: string
-                      email:
-                        type: string
-                        format: email
-                        example: user@example.cat
-                    required:
-                      - email
                   topics:
                     type: array
                     items:
@@ -1171,12 +1153,6 @@ paths:
                     properties:
                       name:
                         type: string
-                      email:
-                        type: string
-                        format: email
-                        example: user@example.cat
-                    required:
-                      - email
                   topics:
                     type: array
                     items:
@@ -1310,12 +1286,6 @@ paths:
                           properties:
                             name:
                               type: string
-                            email:
-                              type: string
-                              format: email
-                              example: user@example.cat
-                          required:
-                            - email
                         topics:
                           type: array
                           items:
