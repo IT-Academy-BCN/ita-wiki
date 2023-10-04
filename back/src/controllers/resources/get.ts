@@ -7,7 +7,12 @@ import { resourceGetSchema } from '../../schemas'
 
 export const getResources: Middleware = async (ctx: Koa.Context) => {
   const parsedQuery = qs.parse(ctx.querystring, { ignoreQueryPrefix: true })
-  const { resourceTypes, topic, slug, status } = parsedQuery as {
+  const {
+    resourceTypes,
+    topic: topicId,
+    slug,
+    status,
+  } = parsedQuery as {
     resourceTypes?: (keyof typeof RESOURCE_TYPE)[]
     topic?: string
     slug?: string
@@ -17,7 +22,7 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
   const where: Prisma.ResourceWhereInput = {
     topics: {
       some: {
-        topic: { category: { slug }, id: topic },
+        topic: { category: { slug }, id: topicId },
       },
     },
     resourceType: { in: resourceTypes },
