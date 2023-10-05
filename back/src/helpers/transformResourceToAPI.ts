@@ -1,11 +1,15 @@
 import { z } from 'zod'
-import { resourceGetSchema } from '../schemas'
+import { resourceSchema } from '../schemas'
 
-const resourceSchemaIn = resourceGetSchema.omit({ voteCount: true })
+const resourceSchemaIn = resourceSchema
 
-type TResourceIn = z.infer<typeof resourceSchemaIn>
-type TResourceOut = z.infer<typeof resourceGetSchema>
-
+type TResource = z.infer<typeof resourceSchemaIn> & {
+  userId?: string
+  user?: {
+    name: string
+  }
+  vote: { userId?: string; vote: number }[]
+}
 type TVoteCount = {
   upvote: number
   downvote: number
@@ -13,7 +17,7 @@ type TVoteCount = {
   userVote: number
 }
 
-type TResourceWithVoteCount = TResourceOut & {
+type TResourceWithVoteCount = TResource & {
   voteCount: TVoteCount
 }
 
@@ -23,7 +27,7 @@ type TResourceWithVoteCount = TResourceOut & {
  * @returns Resource with voteCount.
  */
 export function transformResourceToAPI(
-  resource: TResourceIn & { vote: { userId?: string; vote: number }[] },
+  resource: TResource & { vote: { userId?: string; vote: number }[] },
   userId?: string
 ): TResourceWithVoteCount {
   let upvote = 0

@@ -3,6 +3,7 @@ import qs from 'qs'
 import { Prisma, RESOURCE_TYPE, RESOURCE_STATUS, User } from '@prisma/client'
 import { prisma } from '../../prisma/client'
 import { transformResourceToAPI } from '../../helpers/transformResourceToAPI'
+import { resourceGetSchema } from '../../schemas'
 
 export const getResources: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User | null
@@ -45,7 +46,9 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
   })
 
   const parsedResources = resources.map((resource) =>
-    transformResourceToAPI(resource, user ? user.id : undefined)
+    resourceGetSchema.parse(
+      transformResourceToAPI(resource, user ? user.id : undefined)
+    )
   )
 
   ctx.status = 200
