@@ -10,7 +10,7 @@ type TResource = z.infer<typeof resourceSchemaIn> & {
   }
   vote: { userId?: string; vote: number }[]
 }
-type TVoteCount = {
+export type TVoteCount = {
   upvote: number
   downvote: number
   total: number
