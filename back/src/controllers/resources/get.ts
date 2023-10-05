@@ -2,11 +2,10 @@ import Koa, { Middleware } from 'koa'
 import qs from 'qs'
 import { Prisma, RESOURCE_TYPE, RESOURCE_STATUS, User } from '@prisma/client'
 import { prisma } from '../../prisma/client'
-import { addVoteCountToResource } from '../../helpers/addVoteCountToResource'
-import { resourceGetSchema } from '../../schemas'
+import { transformResourceToAPI } from '../../helpers/transformResourceToAPI'
 
 export const getResources: Middleware = async (ctx: Koa.Context) => {
-  const user = ctx.user as User
+  const user = ctx.user as User | null
   const parsedQuery = qs.parse(ctx.querystring, { ignoreQueryPrefix: true })
   const {
     resourceTypes,
@@ -45,13 +44,9 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
     },
   })
 
-  const parsedResources = resources.map((resource) => {
-    const resourceWithVote = addVoteCountToResource(
-      resource,
-      user ? user.id : undefined
-    )
-    return resourceGetSchema.parse(resourceWithVote)
-  })
+  const parsedResources = resources.map((resource) =>
+    transformResourceToAPI(resource, user ? user.id : undefined)
+  )
 
   ctx.status = 200
   ctx.body = parsedResources

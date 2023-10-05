@@ -1,6 +1,6 @@
 import Koa, { Middleware } from 'koa'
 import { prisma } from '../../prisma/client'
-import { addVoteCountToResource } from '../../helpers/addVoteCountToResource'
+import { addVoteCountToResource } from '../../helpers/transformResourceToAPI'
 import { resourceGetSchema } from '../../schemas'
 import { NotFoundError } from '../../helpers/errors'
 

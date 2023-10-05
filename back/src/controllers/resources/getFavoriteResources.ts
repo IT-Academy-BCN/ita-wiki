@@ -1,7 +1,7 @@
 import Koa, { Middleware } from 'koa'
 import { User } from '@prisma/client'
 import { prisma } from '../../prisma/client'
-import { addVoteCountToResource } from '../../helpers/addVoteCountToResource'
+import { addVoteCountToResource } from '../../helpers/transformResourceToAPI'
 import { resourceFavoriteSchema } from '../../schemas'
 
 export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {

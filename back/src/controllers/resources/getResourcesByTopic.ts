@@ -1,7 +1,7 @@
 import Koa, { Middleware } from 'koa'
 import { prisma } from '../../prisma/client'
 import { MissingParamError, NotFoundError } from '../../helpers/errors'
-import { addVoteCountToResource } from '../../helpers/addVoteCountToResource'
+import { addVoteCountToResource } from '../../helpers/transformResourceToAPI'
 import { resourceGetSchema } from '../../schemas'
 
 export const getResourcesByTopicId: Middleware = async (ctx: Koa.Context) => {
