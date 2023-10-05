@@ -10,7 +10,14 @@ import { resourceGetSchema, topicSchema } from '../../schemas'
 import { resourceTestData } from '../mocks/resources'
 import { authToken } from '../setup'
 
-const votePattern = [-1, 0, 1]
+type ResourceVotes = {
+  [key: string]: number
+}
+const votesForResources: ResourceVotes = {
+  'test-resource-1-blog': -1,
+  'test-resource-2-video': 0,
+  'test-resource-3-tutorial': 1,
+}
 beforeAll(async () => {
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,
@@ -26,7 +33,7 @@ beforeAll(async () => {
   const createdResources = await prisma.resource.findMany({})
 
   await prisma.$transaction(
-    createdResources.map((resource, index) =>
+    createdResources.map((resource) =>
       prisma.vote.create({
         data: {
           user: {
@@ -35,7 +42,7 @@ beforeAll(async () => {
           resource: {
             connect: { id: resource.id },
           },
-          vote: votePattern[index],
+          vote: votesForResources[resource.slug],
         },
       })
     )
@@ -200,8 +207,9 @@ describe('Testing resources GET endpoint', () => {
       .query({})
     expect(response.status).toBe(200)
     expect(response.body.length).toBeGreaterThanOrEqual(1)
-    response.body.forEach((resource: ResourceGetSchema, index: number) => {
-      expect(resource.voteCount.userVote).toBe(votePattern[index])
+    response.body.forEach((resource: ResourceGetSchema) => {
+      const expectedVote = votesForResources[resource.slug]
+      expect(resource.voteCount.userVote).toBe(expectedVote)
     })
   })
 })
