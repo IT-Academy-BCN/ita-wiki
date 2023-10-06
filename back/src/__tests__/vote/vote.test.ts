@@ -25,6 +25,17 @@ beforeAll(async () => {
       userId: testUser.id,
     },
   })
+  await prisma.vote.create({
+    data: {
+      user: {
+        connect: { dni: testUserData.user.dni },
+      },
+      resource: {
+        connect: { id: resource.id },
+      },
+      vote: -1,
+    },
+  })
 })
 
 afterAll(async () => {
@@ -37,13 +48,33 @@ afterAll(async () => {
 })
 
 describe('Testing VOTE endpoint, GET method', async () => {
-  it('Should succeed with valid params', async () => {
+  it('Should succeed with valid params but no logged in user', async () => {
     const response = await supertest(server).get(
       `${pathRoot.v1.vote}/${resource.id}`
     )
     expect(response.status).toBe(200)
-    expect(() => voteCountSchema.parse(response.body.voteCount)).not.toThrow()
+    expect(() => voteCountSchema.parse(response.body)).not.toThrow()
+    expect(response.body.userVote).toBe(0)
   })
+  it('Should return userVote as 0 for logged in user who hasn’t voted', async () => {
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.vote}/${resource.id}`)
+      .set('Cookie', authToken.admin)
+
+    expect(response.status).toBe(200)
+    expect(() => voteCountSchema.parse(response.body)).not.toThrow()
+    expect(response.body.userVote).toBe(0)
+  })
+  it('Should return userVote as a number for logged in user who has voted', async () => {
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.vote}/${resource.id}`)
+      .set('Cookie', authToken.user)
+
+    expect(response.status).toBe(200)
+    expect(() => voteCountSchema.parse(response.body)).not.toThrow()
+    expect(response.body.userVote).toBe(-1)
+  })
+
   it('Should fail with invalid resourceId', async () => {
     const response = await supertest(server).get(
       `${pathRoot.v1.vote}/someInvalidResourceId`
