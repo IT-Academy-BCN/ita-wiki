@@ -603,6 +603,8 @@ paths:
                         total:
                           type: integer
                           example: 12
+                        userVote:
+                          type: number
                       required:
                         - upvote
                         - downvote
@@ -785,6 +787,8 @@ paths:
                         total:
                           type: integer
                           example: 12
+                        userVote:
+                          type: number
                       required:
                         - upvote
                         - downvote
@@ -1034,6 +1038,8 @@ paths:
                       total:
                         type: integer
                         example: 12
+                      userVote:
+                        type: number
                     required:
                       - upvote
                       - downvote
@@ -1203,6 +1209,8 @@ paths:
                       total:
                         type: integer
                         example: 12
+                      userVote:
+                        type: number
                     required:
                       - upvote
                       - downvote
@@ -1336,6 +1344,8 @@ paths:
                             total:
                               type: integer
                               example: 12
+                            userVote:
+                              type: number
                           required:
                             - upvote
                             - downvote
@@ -1409,6 +1419,8 @@ paths:
                       total:
                         type: integer
                         example: 12
+                      userVote:
+                        type: number
                     required:
                       - upvote
                       - downvote
