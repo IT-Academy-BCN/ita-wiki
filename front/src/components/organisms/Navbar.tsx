@@ -1,14 +1,15 @@
 import { useState } from 'react'
+import styled from 'styled-components'
 import { useAuth } from '../../context/AuthProvider'
 import { useLocation } from 'react-router-dom'
-import styled from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../../styles'
 import { Button, Icon, Title, HamburgerMenu } from '../atoms'
 import { UserButton } from '../molecules/UserButton'
 import { SelectLanguage } from '../molecules/SelectLanguage'
 import { CategoriesList } from './CategoriesList'
 import { AccessModalContent, Modal } from '../molecules'
-import { Login, Register } from '../organisms'
+import Login from './Login'
+import Register from './Register'
 import { SettingsManager } from './SettingsManager'
 
 const NavbarStyled = styled(FlexBox)`
