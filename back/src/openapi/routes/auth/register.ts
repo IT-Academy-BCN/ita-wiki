@@ -36,6 +36,9 @@ registry.registerPath({
         },
       },
     },
+    409: {
+      description: 'Conflict, data already exists.',
+    },
     500: {
       description: 'Other error',
       content: {

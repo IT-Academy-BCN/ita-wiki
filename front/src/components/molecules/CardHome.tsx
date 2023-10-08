@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { FlexBox, colors, dimensions, font } from '../../styles'
 import { Text } from '../atoms'
 import bgHomeCardCorner from '../../assets/icons/bg-home-card-corner.svg'
@@ -66,17 +67,24 @@ export const CardHome = ({
   cardSubtitle,
   indicator,
   icon,
-}: TCardHome) => (
-  <CardContainer>
-    <IndicatorStyled direction="row">{indicator}</IndicatorStyled>
-    <ImgStyled alt="" src={icon} data-testid="testIcon" />
-    <FlexBox justify="flex-start">
-      <TitleStyled as="h2" fontSize="18px">
-        {cardTitle}
-      </TitleStyled>
-      <SubtitleStyled color={`${colors.gray.gray3}`} fontSize={`${font.base}`}>
-        {cardSubtitle}
-      </SubtitleStyled>
-    </FlexBox>
-  </CardContainer>
-)
+}: TCardHome) => {
+  const { t } = useTranslation()
+
+  return (
+    <CardContainer>
+      <IndicatorStyled direction="row">{indicator}</IndicatorStyled>
+      <ImgStyled alt="" src={icon} data-testid="testIcon" />
+      <FlexBox justify="flex-start">
+        <TitleStyled as="h2" fontSize="18px">
+          {t(`${cardTitle}`)}
+        </TitleStyled>
+        <SubtitleStyled
+          color={`${colors.gray.gray3}`}
+          fontSize={`${font.base}`}
+        >
+          {t(`${cardSubtitle}`)}
+        </SubtitleStyled>
+      </FlexBox>
+    </CardContainer>
+  )
+}

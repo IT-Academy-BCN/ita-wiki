@@ -5,7 +5,7 @@ import { CreateAuthor } from '../molecules/CreateAuthor'
 import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
 import { VoteCounter } from '../molecules/VoteCounter'
 import EditResource from './EditResource'
-import { FavoritesWidget } from './FavoritesWidget'
+import { FavoritesWidget } from '../molecules/FavoritesWidget'
 import { useAuth } from '../../context/AuthProvider'
 
 const CardContainerStyled = styled(FlexBox)`

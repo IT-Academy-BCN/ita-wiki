@@ -12,9 +12,12 @@ class DefaultError extends Error {
   }
 }
 
-class NotFoundError extends DefaultError {
-  constructor(message: string = 'Not found') {
-    super(404, `${message}`)
+class ValidationError {
+  public status: number
+  public message: ZodIssue[]
+  constructor(message: ZodIssue[]) {
+    this.status = 400
+    this.message = message
   }
 }
 
@@ -30,9 +33,15 @@ class ForbiddenError extends DefaultError {
   }
 }
 
-class MissingParamError extends DefaultError {
-  constructor(parameter: string) {
-    super(422, `Missing ${parameter}`)
+class NotFoundError extends DefaultError {
+  constructor(message: string = 'Not found') {
+    super(404, `${message}`)
+  }
+}
+
+class DuplicateError extends DefaultError {
+  constructor(resource: string) {
+    super(409, `${resource} already exists`)
   }
 }
 
@@ -42,21 +51,26 @@ class UnsupportedMediaType extends DefaultError {
   }
 }
 
-class ValidationError {
-  public status: number
-  public message: ZodIssue[]
-  constructor(message: ZodIssue[]) {
-    this.status = 400
-    this.message = message
+class MissingParamError extends DefaultError {
+  constructor(parameter: string) {
+    super(422, `Missing ${parameter}`)
+  }
+}
+
+class InvalidToken extends DefaultError {
+  constructor(message: string = 'Token is not valid') {
+    super(498, `${message}`)
   }
 }
 
 export {
-  NotFoundError,
   DefaultError,
+  ValidationError,
   UnauthorizedError,
   ForbiddenError,
+  NotFoundError,
+  DuplicateError,
   UnsupportedMediaType,
   MissingParamError,
-  ValidationError,
+  InvalidToken,
 }

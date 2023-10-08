@@ -9,6 +9,8 @@ import { Home, Category, ErrorPage, UserProfile, AccountAdmin } from './pages'
 import { Information } from './pages/Information'
 import { AuthProvider } from './context/AuthProvider'
 import { font } from './styles'
+import { FiltersProvider } from './context/store/context'
+import './i18n'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -48,9 +50,11 @@ const root = ReactDOM.createRoot(rootElement)
 root.render(
   <AuthProvider>
     <QueryClientProvider client={queryClient}>
-      <GlobalStyle />
-      <RouterProvider router={router} />
-      <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+      <FiltersProvider>
+        <GlobalStyle />
+        <RouterProvider router={router} />
+        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+      </FiltersProvider>
     </QueryClientProvider>
   </AuthProvider>
 )

@@ -1,14 +1,14 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { ChangeEvent, FC } from 'react'
 import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio } from '../atoms'
 import { FlexBox, dimensions } from '../../styles'
-import { paths, urls } from '../../constants'
+import { urls } from '../../constants'
+import { reloadPage } from '../../utils/navigation'
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -119,17 +119,16 @@ const ResourceForm: FC<TSelectOptions> = ({
     resolver: zodResolver(ResourceFormSchema),
     defaultValues: initialValues ?? undefined,
   })
-  const navigate = useNavigate()
   const createResource = useMutation(createResourceFetcher, {
     onSuccess: () => {
       reset()
-      navigate(paths.home)
+      reloadPage()
     },
   })
   const updateResource = useMutation(updateResourceFetcher, {
     onSuccess: () => {
       reset()
-      navigate(paths.home)
+      reloadPage()
     },
   })
   const create = handleSubmit(async (data) => {

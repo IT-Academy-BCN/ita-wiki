@@ -9,8 +9,7 @@ type HamburgerMenuProps = {
 
 const StyledBurger = styled.button<HamburgerMenuProps>`
   position: absolute;
-  top: 45%;
-  left: 20px;
+  left: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-around;

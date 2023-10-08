@@ -1,5 +1,6 @@
 import { AccessModalContent } from './AccessModalContent'
 import { CreateAuthor } from './CreateAuthor'
+import { FavoritesWidget } from './FavoritesWidget'
 import InputGroup from './InputGroup'
 import { Modal } from './Modal'
 import { ResourceTitleLink, TResourceTitleLink } from './ResourceTitleLink'
@@ -13,11 +14,12 @@ import { SelectLanguage } from './SelectLanguage'
 import { Tooltip } from './Tooltip'
 import { TopicsEditableItem } from './TopicsEditableItem'
 import type { TCardResource } from '../organisms/CardResource'
-import { UserAccessHome } from './UserAccessHome'
 import { UserButton } from './UserButton'
 
 export {
   AccessModalContent,
+  CreateAuthor,
+  FavoritesWidget,
   InputGroup,
   Modal,
   ResourceTitleLink,
@@ -25,13 +27,11 @@ export {
   StatusFilterWidget,
   TextareaGroup,
   TypesFilterWidget,
-  CreateAuthor,
   VoteCounter,
   CardHome,
   SelectLanguage,
   Tooltip,
   TopicsEditableItem,
-  UserAccessHome,
   UserButton,
 }
 

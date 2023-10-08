@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../../context/AuthProvider'
-import { FlexBox, colors, device, dimensions } from '../../styles'
+import { colors, device } from '../../styles'
 import userAvatar from '../../assets/icons/profile-avatar.svg'
 import defaultAvatar from '../../assets/icons/user.svg'
 import Login from '../organisms/Login'
@@ -10,21 +10,16 @@ import Register from '../organisms/Register'
 import { Modal } from './Modal'
 import { paths } from '../../constants'
 
-const StyledFlexBox = styled(FlexBox)`
-  display: none;
-  height: 40px;
-  @media only ${device.Tablet} {
-    display: block;
-  }
-`
 const AvatarImage = styled.img`
-  padding: 6px;
-  width: 2.8rem;
-  height: 2.5rem;
-  border-radius: 20%;
+  padding: 1px;
+  height: 40px;
+  width: 48px;
+  border-radius: 50%;
   background-color: ${colors.white};
   cursor: pointer;
-  right: ${dimensions.spacing.base};
+  @media only ${device.Tablet} {
+    border-radius: 20%;
+  }
 `
 
 export const UserButton: React.FC = () => {
@@ -47,7 +42,7 @@ export const UserButton: React.FC = () => {
   }
 
   return (
-    <StyledFlexBox>
+    <>
       {!user && (
         <AvatarImage
           data-testid="avatarImage"
@@ -85,7 +80,7 @@ export const UserButton: React.FC = () => {
           />
         )}
       </Modal>
-    </StyledFlexBox>
+    </>
   )
 }
 

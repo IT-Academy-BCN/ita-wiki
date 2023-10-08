@@ -48,13 +48,11 @@ const ButtonStyled = styled(Button)`
 
 const StyledSvg = styled.div<{ isInCardResource: boolean }>`
   position: ${(props) => (props.isInCardResource ? 'relative' : 'absolute')};
-  top: ${(props) =>
-    props.isInCardResource ? '2px' : `${dimensions.spacing.xxs}`};
-  right: ${(props) =>
-    props.isInCardResource ? '0' : `${dimensions.spacing.xxxs}`};
+  top: ${(props) => (props.isInCardResource ? '1px' : '4px')};
+  right: ${(props) => (props.isInCardResource ? '0' : '6px')};
   background-color: ${(props) =>
-    props.isInCardResource ? 'transpareny' : 'rgba(255, 255, 255, 0.5)'};
-  padding: ${(props) => (props.isInCardResource ? '0px' : '2px')};
+    props.isInCardResource ? 'transparent' : 'rgba(255, 255, 255, 0.5)'};
+  padding: ${(props) => (props.isInCardResource ? '1px' : '2px')};
 
   > img {
     cursor: pointer;
@@ -88,8 +86,6 @@ const EditResource = ({
       label: topic.name,
     })) ?? []
   const initialTopicId = topics && topics.length > 0 ? topics[0].topic.id : ''
-
-  console.log(isInCardResource)
 
   return (
     <>

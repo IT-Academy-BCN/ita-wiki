@@ -11,16 +11,15 @@ Welcome to the IT-Academy-BCN's Wiki GitHub repository! We're glad to have you o
 Quicklinks:
 
 - <a href="https://www.figma.com/file/DynJHHUlOiqx3F5h9dtvAW/Projectes-IT-Academy?type=design&node-id=0-1&mode=design&t=8cMyQZFllwXaCZe5-0">Visual design</a>.
-- <a href="https://dev.itadirectory.eurecatacademy.org/">Development server</a>.
 - <a href="https://dev.api.itadirectory.eurecatacademy.org/api/v1/api-docs">Swagger docs</a>.
 - <a href="https://dev.itadirectory.eurecatacademy.org/">Demo front dev</a>.
 
 ### Important procedures and meetings
 
-- We have a daily at 9.00AM everyday and it is mandatary to assist.
-- We have a sprint planning once each two weeks, preferably on mondays.
-- We have a sprint review (retro) once each two weeks, preferably on thursdays.
-- The project requires a dedication of 15~25 hours.
+- We hold a daily meeting at 9.00AM from Monday to Thursday, and it is mandatory to assist.
+- We have sprint planning every two weeks, preferably on Mondays.
+- We have a sprint review (retro) every two weeks, preferably on Thursdays.
+- The project requires a weekly dedication of 15~25 hours.
 
 IMPORTANT: If you cannot dedicate enough time, nor be on the meetings, please reach out to the project lead.
 

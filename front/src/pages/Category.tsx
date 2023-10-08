@@ -93,8 +93,16 @@ const FiltersContainer = styled(FlexBox)`
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    flex: 1 2 34rem;
+    flex: 1 2 9rem;
+  }
+
+  @media ${device.Laptop} {
     padding-top: ${dimensions.spacing.xxs};
+    flex: 1 2 28rem;
+  }
+
+  @media ${device.Desktop} {
+    flex: 1 2 34rem;
   }
 `
 
@@ -108,8 +116,7 @@ const ScrollTopics = styled(FlexBox)`
 `
 
 const ResourcesContainer = styled(FlexBox)`
-  padding: ${dimensions.spacing.none} ${dimensions.spacing.xs}
-    ${dimensions.spacing.none} ${dimensions.spacing.xs};
+  padding-left: ${dimensions.spacing.xxxs};
   justify-content: flex-start;
   align-items: flex-start;
   overflow-y: auto;
@@ -120,7 +127,7 @@ const ResourcesContainer = styled(FlexBox)`
 
   @media ${device.Laptop} {
     width: 100%;
-    padding-left: ${dimensions.spacing.sm};
+    padding-left: ${dimensions.spacing.md};
   }
 `
 
@@ -140,6 +147,7 @@ const SearchBar = styled(InputGroup)`
     margin-top: ${dimensions.spacing.xxs};
     margin-right: 0.08rem;
     width: 40%;
+    max-width: 11rem;
     justify-content: flex-end;
 
     ${FlexBox} {
@@ -192,16 +200,20 @@ const ContainerResourcesAside = styled(FlexBox)`
 
   @media ${device.Tablet} {
     display: flex;
-    flex: 1;
     justify-content: flex-start;
     align-items: flex-start;
     align-content: flex-end;
     gap: ${dimensions.spacing.sm};
-    max-width: 14rem;
+    max-width: 12rem;
+  }
+
+  @media ${device.Laptop} {
+    max-width: 16rem;
+    gap: ${dimensions.spacing.md};
   }
 
   @media ${device.Desktop} {
-    max-width: 24rem;
+    max-width: 20rem;
     gap: ${dimensions.spacing.xl};
   }
 `
@@ -209,13 +221,22 @@ const ContainerResourcesAside = styled(FlexBox)`
 const ResourcesAside = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
-  flex: 1 2 20rem;
+  flex: 1 2 19rem;
   overflow: hidden;
   overflow-x: auto;
   width: 100%;
   background-color: ${colors.white};
   border-radius: ${dimensions.borderRadius.base};
-  padding: ${dimensions.spacing.none} ${dimensions.spacing.xxl};
+  padding: ${dimensions.spacing.none} ${dimensions.spacing.md};
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media ${device.Laptop} {
+    padding: ${dimensions.spacing.none} ${dimensions.spacing.xs}
+      ${dimensions.spacing.md} ${dimensions.spacing.lg};
+  }
 `
 
 const MobileTopicsContainer = styled(FlexBox)`
@@ -479,7 +500,9 @@ const Category: FC = () => {
                   )}
                 </ScrollTopics>
                 <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
-                <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+                {user && (
+                  <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+                )}
               </FiltersContainer>
               <ResourcesContainer>
                 <TitleResourcesContainer>
@@ -541,7 +564,9 @@ const Category: FC = () => {
                 className={isFiltersOpen ? 'open' : 'close'}
               >
                 <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
-                <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+                {user && (
+                  <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+                )}
                 <CloseFilterButton
                   data-testid="close-filters-button"
                   onClick={handleFiltersClose}

@@ -1,7 +1,6 @@
 import { CardResourceLink } from './CardResourceLink'
 import { CategoriesList } from './CategoriesList'
 import { DesktopSideMenu } from './DesktopSideMenu'
-import { FavoritesWidget } from './FavoritesWidget'
 import { HowToHelpCard } from './HowToHelpCard'
 import Login from './Login'
 import { MyFavoritesList } from './MyFavoritesList'
@@ -15,12 +14,12 @@ import type { TCardResource } from './CardResource'
 import { TopicsManagerBoard } from './TopicsManagerBoard'
 import { TopicsRadioWidget } from './TopicsRadioWidget'
 import type { TResourceForm } from './ResourceForm'
+import { UserAccessHome } from './UserAccessHome'
 
 export {
   CardResourceLink,
   CategoriesList,
   DesktopSideMenu,
-  FavoritesWidget,
   HowToHelpCard,
   Login,
   MyFavoritesList,
@@ -32,6 +31,7 @@ export {
   SettingsManager,
   TopicsManagerBoard,
   TopicsRadioWidget,
+  UserAccessHome,
 }
 
 export type { TResourceForm, TResource, TCardResource }

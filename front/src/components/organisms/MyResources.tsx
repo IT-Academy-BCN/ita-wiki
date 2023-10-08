@@ -57,7 +57,7 @@ const TitleContainer = styled(FlexBox)`
     flex-direction: row;
     align-items: center;
     gap: ${dimensions.spacing.xxxs};
-    margin-top: ${dimensions.spacing.xl};
+    margin-top: ${dimensions.spacing.md};
   }
 `
 
@@ -66,7 +66,6 @@ const ResourcesUserStyled = styled(FlexBox)`
   overflow: hidden;
   overflow-x: auto;
   justify-content: flex-start;
-  margin-bottom: ${dimensions.spacing.base};
 
   &::-webkit-scrollbar {
     display: none;
@@ -123,8 +122,6 @@ const getResourcesByUser = async (categorySlug: string | undefined) => {
   return data.resources.map((resource: TResource) => ({
     ...resource,
     editable: true,
-
-    // Agregamos la propiedad editable a cada recurso y la establecemos como true
   }))
 }
 

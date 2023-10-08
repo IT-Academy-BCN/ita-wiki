@@ -23,7 +23,7 @@ components:
       properties:
         message:
           type: string
-          example: DNI already exists
+          example: dni already exists
       required:
         - message
     EmailError:
@@ -31,7 +31,15 @@ components:
       properties:
         message:
           type: string
-          example: Email already exists
+          example: email already exists
+      required:
+        - message
+    InputError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Input is not a string
       required:
         - message
     MissingTokenError:
@@ -183,14 +191,22 @@ paths:
                   type: string
                   format: email
                   example: user@example.cat
-                name:
-                  type: string
                 dni:
                   type: string
                 specialization:
                   type: string
                   example: specializationId
+                name:
+                  type: string
+                accept:
+                  type: boolean
+                  enum:
+                    - true
                 password:
+                  type: string
+                  minLength: 8
+                  pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*$
+                confirmPassword:
                   type: string
                   minLength: 8
                   pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*$
@@ -198,7 +214,10 @@ paths:
                 - email
                 - dni
                 - specialization
+                - name
+                - accept
                 - password
+                - confirmPassword
       responses:
         "204":
           description: The user has been registered
@@ -211,6 +230,8 @@ paths:
                   - $ref: "#/components/schemas/ValidationError"
                   - $ref: "#/components/schemas/DniError"
                   - $ref: "#/components/schemas/EmailError"
+        "409":
+          description: Conflict, data already exists.
         "500":
           description: Other error
           content:
@@ -568,6 +589,24 @@ paths:
                         - SEEN
                         - NOT_SEEN
                       example: NOT_SEEN
+                    voteCount:
+                      type: object
+                      properties:
+                        upvote:
+                          type: integer
+                          minimum: 0
+                          example: 14
+                        downvote:
+                          type: integer
+                          minimum: 0
+                          example: 2
+                        total:
+                          type: integer
+                          example: 12
+                      required:
+                        - upvote
+                        - downvote
+                        - total
                   required:
                     - id
                     - title
@@ -577,6 +616,7 @@ paths:
                     - userId
                     - createdAt
                     - updatedAt
+                    - voteCount
         "401":
           description: Missing token
           content:
@@ -601,18 +641,18 @@ paths:
                     example: User not found
                 required:
                   - error
-        "405":
+        "498":
           description: Invalid token
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  error:
+                  message:
                     type: string
                     example: Token is not valid
                 required:
-                  - error
+                  - message
   /api/v1/resources:
     get:
       tags:
@@ -1766,3 +1806,46 @@ paths:
                     example: Database error
                 required:
                   - message
+  /api/v1/favorites:
+    put:
+      tags:
+        - favorites
+      description: Allows a logged in users to add/remove favorite resources.
+      summary: Put or delete a favorite resource by userId.
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+              required:
+                - id
+      responses:
+        "204":
+          description: Favorite has been added/removed
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: "#/components/schemas/ValidationError"
+                  - $ref: "#/components/schemas/InputError"
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+        "405":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
