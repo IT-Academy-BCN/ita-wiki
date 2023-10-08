@@ -10,6 +10,24 @@ type TTopicReturned = {
 export type TGetTopics = TTopicReturned[]
 export type TGetTypes = string[]
 
+export type TFavorites = {
+  id: string
+  title: string
+  slug: string
+  description: string
+  url: string
+  resourceType: string
+  userId: string
+  createdAt: string
+  updatedAt: string
+  status: 'NOT_SEEN' | 'SEEN'
+  voteCount: {
+    upvote: number
+    downvote: number
+    total: number
+  }
+}
+
 export const getTopics = async (slug?: string): Promise<TGetTopics> =>
   fetch(`${urls.getTopics}?slug=${slug}`)
     .then((res) => {
@@ -49,3 +67,35 @@ export const getTypes = (): Promise<TGetTypes> =>
     .catch((err) => {
       throw new Error(`Error fetching types: ${err.message}`)
     })
+
+export const getFavorites = async (
+  slug?: string
+): Promise<TFavorites[] | Error> => {
+  const urlFavorites = slug
+    ? `${urls.getFavorites}/${slug}`
+    : `${urls.getFavorites}`
+
+  try {
+    const response: Response = await fetch(urlFavorites)
+
+    if (!response.ok) {
+      throw new Error('Error fetching favorite resources')
+    }
+    const data: TFavorites[] = await response.json()
+
+    return data
+  } catch (error) {
+    throw new Error('Error fetching favorite resources')
+  }
+}
+
+export const favMutation = async (id: string) => {
+  const response = await fetch(urls.favorites, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id }),
+  })
+  if (!response.ok) {
+    throw new Error(`Error updating favorite resource: ${response.statusText}`)
+  }
+}
