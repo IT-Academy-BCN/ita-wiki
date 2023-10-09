@@ -1,10 +1,8 @@
-import { useLocation } from 'react-router-dom'
 import { Navbar } from '../../components/organisms/Navbar'
 import { render, screen, fireEvent } from '../test-utils'
 
 describe('Navbar', () => {
   it('renders Navbar component', () => {
-    const location = useLocation();
     render(<Navbar />)
 
     const menuButton = screen.getByTestId('hamburger-menu')
@@ -20,13 +18,14 @@ describe('Navbar', () => {
     fireEvent.click(menuButton)
     expect(menuItems).toHaveStyle('transform: translateX(-100%)')
 
-    if (location.pathname !== '/') {
-      const newPostButton = screen.getByTestId('new-post-button');
-      expect(newPostButton).toBeInTheDocument();
-      fireEvent.click(newPostButton);
-    }
-
     const settingsButton = screen.getByTestId('settings-button')
     fireEvent.click(settingsButton)
-  })
+  });
+
+  it('does not render new-post-button', () => {
+    render(<Navbar />);
+  
+    const newPostButton = screen.queryByTestId('new-post-button');
+    expect(newPostButton).not.toBeInTheDocument();
+  });
 })
