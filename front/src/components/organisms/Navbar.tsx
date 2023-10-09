@@ -83,6 +83,7 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
     setIsSettingsOpen(!isSettingsOpen)
   }
 
+  const location = useLocation();
   const shouldRenderIcons = location.pathname !== '/'
 
   return (
@@ -94,8 +95,7 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
           data-testid="hamburger-menu"
         />
         {shouldRenderIcons && (
-          <>
-            <IconStyled
+          <IconStyled
               data-testid="new-post-button"
               onClick={() => {
                 if (user) {
@@ -109,7 +109,6 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
             >
               <Icon name="add" color={colors.gray.gray3} />
             </IconStyled>
-          </>
         )}
         <SelectLanguage />
         <IconStyled

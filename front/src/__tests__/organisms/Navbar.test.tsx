@@ -1,9 +1,10 @@
+import { useLocation } from 'react-router-dom'
 import { Navbar } from '../../components/organisms/Navbar'
 import { render, screen, fireEvent } from '../test-utils'
-import { useLocation } from 'react-router-dom'
 
 describe('Navbar', () => {
   it('renders Navbar component', () => {
+    const location = useLocation();
     render(<Navbar />)
 
     const menuButton = screen.getByTestId('hamburger-menu')
