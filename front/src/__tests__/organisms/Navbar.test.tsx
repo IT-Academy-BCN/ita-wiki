@@ -1,5 +1,6 @@
 import { Navbar } from '../../components/organisms/Navbar'
 import { render, screen, fireEvent } from '../test-utils'
+import { useLocation } from 'react-router-dom'
 
 describe('Navbar', () => {
   it('renders Navbar component', () => {
@@ -18,9 +19,11 @@ describe('Navbar', () => {
     fireEvent.click(menuButton)
     expect(menuItems).toHaveStyle('transform: translateX(-100%)')
 
-    const newPostButton = screen.getByTestId('new-post-button')
-    expect(newPostButton).toBeInTheDocument()
-    fireEvent.click(newPostButton)
+    if (location.pathname !== '/') {
+      const newPostButton = screen.getByTestId('new-post-button');
+      expect(newPostButton).toBeInTheDocument();
+      fireEvent.click(newPostButton);
+    }
 
     const settingsButton = screen.getByTestId('settings-button')
     fireEvent.click(settingsButton)

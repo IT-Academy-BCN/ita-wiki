@@ -469,7 +469,7 @@ const Category: FC = () => {
       <Container direction="row" justify="flex-start" align="start">
         <DesktopSideMenu />
         <WiderContainer>
-          <Navbar toggleModal={toggleModal} />
+          <Navbar toggleModal={toggleModal} handleAccessModal={handleAccessModal} />
           <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
               Temas

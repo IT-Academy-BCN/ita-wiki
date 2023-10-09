@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
+import { useLocation } from 'react-router-dom'
+import { useAuth } from '../../context/AuthProvider'
 import { FlexBox, colors, device, dimensions } from '../../styles'
 import { Button, Icon, Title, HamburgerMenu } from '../atoms'
 import { UserButton } from '../molecules/UserButton'
@@ -70,14 +72,18 @@ const StyledButton = styled(Button)`
 
 type TNavbar = {
   toggleModal?: () => void
+  handleAccessModal?: () => void
 }
-export const Navbar = ({ toggleModal }: TNavbar) => {
+export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
+  const { user } = useAuth()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   const handleSettingsModal = () => {
     setIsSettingsOpen(!isSettingsOpen)
   }
+
+  const shouldRenderIcons = location.pathname !== '/'
 
   return (
     <>
@@ -87,14 +93,24 @@ export const Navbar = ({ toggleModal }: TNavbar) => {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           data-testid="hamburger-menu"
         />
-        <IconStyled
-          data-testid="new-post-button"
-          onClick={toggleModal}
-          title="Añadir recurso"
-          role="button"
-        >
-          <Icon name="add" color={colors.gray.gray3} />
-        </IconStyled>
+        {shouldRenderIcons && (
+          <>
+            <IconStyled
+              data-testid="new-post-button"
+              onClick={() => {
+                if (user) {
+                  toggleModal?.();
+                } else {
+                  handleAccessModal?.();
+                }
+              }}
+              title="Añadir recurso"
+              role="button"
+            >
+              <Icon name="add" color={colors.gray.gray3} />
+            </IconStyled>
+          </>
+        )}
         <SelectLanguage />
         <IconStyled
           data-testid="settings-button"
