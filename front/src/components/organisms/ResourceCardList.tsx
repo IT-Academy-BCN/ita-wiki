@@ -35,6 +35,7 @@ export type TResource = {
     upvote: number
     downvote: number
     total: number
+    userVote: number
   }
   resourceType: string
   topics: TTopic[]

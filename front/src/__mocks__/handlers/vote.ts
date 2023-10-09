@@ -6,11 +6,10 @@ export const voteHandlers = [
     res(
       ctx.status(200),
       ctx.json({
-        voteCount: {
-          upvote: 1,
-          downvote: 0,
-          total: 1,
-        },
+        upvote: 1,
+        downvote: 0,
+        total: 1,
+        userVote: 1,
       })
     )
   ),
