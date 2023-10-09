@@ -604,11 +604,14 @@ paths:
                           type: integer
                           example: 12
                         userVote:
-                          type: number
+                          type: integer
+                          minimum: -1
+                          maximum: 1
                       required:
                         - upvote
                         - downvote
                         - total
+                        - userVote
                   required:
                     - id
                     - title
@@ -788,11 +791,14 @@ paths:
                           type: integer
                           example: 12
                         userVote:
-                          type: number
+                          type: integer
+                          minimum: -1
+                          maximum: 1
                       required:
                         - upvote
                         - downvote
                         - total
+                        - userVote
                   required:
                     - id
                     - title
@@ -1039,11 +1045,14 @@ paths:
                         type: integer
                         example: 12
                       userVote:
-                        type: number
+                        type: integer
+                        minimum: -1
+                        maximum: 1
                     required:
                       - upvote
                       - downvote
                       - total
+                      - userVote
                 required:
                   - id
                   - title
@@ -1210,11 +1219,14 @@ paths:
                         type: integer
                         example: 12
                       userVote:
-                        type: number
+                        type: integer
+                        minimum: -1
+                        maximum: 1
                     required:
                       - upvote
                       - downvote
                       - total
+                      - userVote
                 required:
                   - id
                   - title
@@ -1345,11 +1357,14 @@ paths:
                               type: integer
                               example: 12
                             userVote:
-                              type: number
+                              type: integer
+                              minimum: -1
+                              maximum: 1
                           required:
                             - upvote
                             - downvote
                             - total
+                            - userVote
                       required:
                         - id
                         - title
@@ -1387,46 +1402,46 @@ paths:
     get:
       tags:
         - vote
-      description: Get the vote count for a resource, separeted in total votes,
-        upvotes and downvotes
-      summary: Get the vote count for a resource.
+      description: Retrieve a detailed vote count for a specified resource, including
+        the number of upvotes, downvotes, and the overall vote balance.
+      summary: Fetch detailed vote statistics for a resource.
       parameters:
         - in: path
           name: resourceId
           schema:
             type: string
-            description: ID of the resource to get the vote count
+            description: Unique identifier of the resource for which vote statistics are
+              requested.
           required: true
       responses:
         "200":
-          description: Successful operation. Votes are retrieved and summed.
+          description: Successfully retrieved detailed vote statistics for the specified
+            resource.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  voteCount:
-                    type: object
-                    properties:
-                      upvote:
-                        type: integer
-                        minimum: 0
-                        example: 14
-                      downvote:
-                        type: integer
-                        minimum: 0
-                        example: 2
-                      total:
-                        type: integer
-                        example: 12
-                      userVote:
-                        type: number
-                    required:
-                      - upvote
-                      - downvote
-                      - total
+                  upvote:
+                    type: integer
+                    minimum: 0
+                    example: 14
+                  downvote:
+                    type: integer
+                    minimum: 0
+                    example: 2
+                  total:
+                    type: integer
+                    example: 12
+                  userVote:
+                    type: integer
+                    minimum: -1
+                    maximum: 1
                 required:
-                  - voteCount
+                  - upvote
+                  - downvote
+                  - total
+                  - userVote
         "404":
           description: Resource not found
           content:

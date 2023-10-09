@@ -37,7 +37,7 @@ beforeAll(async () => {
       prisma.vote.create({
         data: {
           user: {
-            connect: { dni: testUserData.user.dni },
+            connect: { dni: testUserData.admin.dni },
           },
           resource: {
             connect: { id: resource.id },
