@@ -20,12 +20,36 @@ describe('Navbar', () => {
 
     const settingsButton = screen.getByTestId('settings-button')
     fireEvent.click(settingsButton)
-  });
+  })
 
-  it('does not render new-post-button', () => {
-    render(<Navbar />);
+  it('renders and changes language using the language dropdown in the Navbar', () => {
+    render(<Navbar />)
   
-    const newPostButton = screen.queryByTestId('new-post-button');
-    expect(newPostButton).not.toBeInTheDocument();
-  });
+    expect(screen.getByText('CAT')).toBeInTheDocument()
+  
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'es' } })
+  
+    expect(screen.getByText('ES')).toBeInTheDocument()
+  })
+
+  it('does not render new-post-button nor access-modal on Homepage', () => {
+    window.history.pushState({}, 'Home Page', '/')
+    render(<Navbar />)
+  
+    const newPostButton = screen.queryByTestId('new-post-button')
+    expect(newPostButton).not.toBeInTheDocument()
+
+    const accessModal = screen.queryByTestId('access-modal')
+    expect(accessModal).not.toBeInTheDocument()
+
+    window.history.pushState({}, 'Original Page', '/')
+  })
+
+  it('renders the Navbar items on pages other than Homepage', () => {
+    window.history.pushState({}, 'Category Page', '/category/react')
+    render(<Navbar />)
+    
+    const menuItems = screen.queryAllByRole('button')
+    expect(menuItems.length).toBeGreaterThan(0)
+  })
 })
