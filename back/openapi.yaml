@@ -573,8 +573,6 @@ paths:
                         - TUTORIAL
                     userId:
                       type: string
-                    categoryId:
-                      type: string
                     createdAt:
                       anyOf:
                         - type: string
@@ -616,7 +614,6 @@ paths:
                     - url
                     - resourceType
                     - userId
-                    - categoryId
                     - createdAt
                     - updatedAt
                     - voteCount
@@ -719,8 +716,6 @@ paths:
                     resourceType:
                       type: string
                       enum: *a2
-                    categoryId:
-                      type: string
                     createdAt:
                       anyOf:
                         - type: string
@@ -800,7 +795,6 @@ paths:
                     - slug
                     - url
                     - resourceType
-                    - categoryId
                     - createdAt
                     - updatedAt
                     - user
@@ -853,8 +847,6 @@ paths:
                 resourceType:
                   type: string
                   enum: *a2
-                categoryId:
-                  type: string
                 status:
                   type: string
                   enum: *a3
@@ -867,7 +859,6 @@ paths:
                 - title
                 - url
                 - resourceType
-                - categoryId
                 - topics
       responses:
         "204":
@@ -974,8 +965,6 @@ paths:
                   resourceType:
                     type: string
                     enum: *a2
-                  categoryId:
-                    type: string
                   createdAt:
                     anyOf:
                       - type: string
@@ -1055,7 +1044,6 @@ paths:
                   - slug
                   - url
                   - resourceType
-                  - categoryId
                   - createdAt
                   - updatedAt
                   - user
@@ -1146,8 +1134,6 @@ paths:
                   resourceType:
                     type: string
                     enum: *a2
-                  categoryId:
-                    type: string
                   createdAt:
                     anyOf:
                       - type: string
@@ -1227,7 +1213,6 @@ paths:
                   - slug
                   - url
                   - resourceType
-                  - categoryId
                   - createdAt
                   - updatedAt
                   - user
@@ -1282,8 +1267,6 @@ paths:
                         resourceType:
                           type: string
                           enum: *a2
-                        categoryId:
-                          type: string
                         createdAt:
                           anyOf:
                             - type: string
@@ -1363,7 +1346,6 @@ paths:
                         - slug
                         - url
                         - resourceType
-                        - categoryId
                         - createdAt
                         - updatedAt
                         - user
@@ -1810,11 +1792,8 @@ paths:
               properties:
                 id:
                   type: string
-                categoryId:
-                  type: string
               required:
                 - id
-                - categoryId
       responses:
         "204":
           description: Favorite has been added/removed
