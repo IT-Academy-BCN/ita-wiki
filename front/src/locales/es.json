@@ -36,5 +36,17 @@
   "inicia sesión": "inicia sesión",
   "para añadir recursos favoritos": " para añadir recursos favoritos",
   "No tienes recursos favoritos": "No tienes recursos favoritos",
-  "Algo ha ido mal...": "Algo ha ido mal..."
+  "Algo ha ido mal...": "Algo ha ido mal...",
+
+  "Registre": "Registro",
+  "DNI": "DNI o NIE",
+  "Especialidad": "Especialidad",
+  "Password": "Contraseña",
+  "repetirpassword": "Repetir contraseña",
+  "password error": "La contraseña debe tener al menos 8 caracteres y contener solo letras y números",
+  "acepto": "Acepto",
+  "terminos legales": "términos legales",
+  "tienes una cuenta?": "¿Tienes una cuenta?, entrar",
+  "recordar/cambiar": "Recordar/cambiar contraseña",
+  "no tienes una cuenta?": "¿No tienes una cuenta?, crear una"
 }

@@ -45,6 +45,7 @@ describe('filters reducer', () => {
         upvote: 14,
         downvote: 2,
         total: 12,
+        userVote: 1
       },
       editable: true,
     }

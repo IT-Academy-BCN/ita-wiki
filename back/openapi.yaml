@@ -603,10 +603,15 @@ paths:
                         total:
                           type: integer
                           example: 12
+                        userVote:
+                          type: integer
+                          minimum: -1
+                          maximum: 1
                       required:
                         - upvote
                         - downvote
                         - total
+                        - userVote
                   required:
                     - id
                     - title
@@ -662,37 +667,31 @@ paths:
         are fetched.
       summary: Returns a collection of resources
       parameters:
-        - in: query
-          name: resourceType
+        - name: slug
+          in: query
+          required: false
+          description: Slug of the category for which to retrieve resources
+          example: react
+        - name: resourceTypes
+          in: query
+          required: false
+          description: Resource types to filter by
+          example:
+            - BLOG
+            - VIDEO
+        - name: topic
+          in: query
+          required: false
           schema:
             type: string
-            enum:
-              - BLOG
-              - VIDEO
-              - TUTORIAL
-            example: BLOG
+          description: ID of the topic for which to retrieve resources. If not provided,
+            resources for ALL topics are fetched.
+          example: cln2u09xo0037s6wvbf6t9jfg
+        - name: status
+          in: query
           required: false
-        - in: query
-          name: topic
-          schema:
-            type: string
-            example: Listas
-          required: false
-        - in: query
-          name: category
-          schema:
-            type: string
-            example: javascript
-          required: false
-        - in: query
-          name: status
-          schema:
-            type: string
-            enum:
-              - SEEN
-              - NOT_SEEN
-            example: NOT_SEEN
-          required: false
+          description: Status to filter by
+          example: SEEN
       responses:
         "200":
           description: Sucessful operation
@@ -741,12 +740,6 @@ paths:
                       properties:
                         name:
                           type: string
-                        email:
-                          type: string
-                          format: email
-                          example: user@example.cat
-                      required:
-                        - email
                     topics:
                       type: array
                       items:
@@ -797,10 +790,15 @@ paths:
                         total:
                           type: integer
                           example: 12
+                        userVote:
+                          type: integer
+                          minimum: -1
+                          maximum: 1
                       required:
                         - upvote
                         - downvote
                         - total
+                        - userVote
                   required:
                     - id
                     - title
@@ -996,12 +994,6 @@ paths:
                     properties:
                       name:
                         type: string
-                      email:
-                        type: string
-                        format: email
-                        example: user@example.cat
-                    required:
-                      - email
                   topics:
                     type: array
                     items:
@@ -1052,10 +1044,15 @@ paths:
                       total:
                         type: integer
                         example: 12
+                      userVote:
+                        type: integer
+                        minimum: -1
+                        maximum: 1
                     required:
                       - upvote
                       - downvote
                       - total
+                      - userVote
                 required:
                   - id
                   - title
@@ -1171,12 +1168,6 @@ paths:
                     properties:
                       name:
                         type: string
-                      email:
-                        type: string
-                        format: email
-                        example: user@example.cat
-                    required:
-                      - email
                   topics:
                     type: array
                     items:
@@ -1227,10 +1218,15 @@ paths:
                       total:
                         type: integer
                         example: 12
+                      userVote:
+                        type: integer
+                        minimum: -1
+                        maximum: 1
                     required:
                       - upvote
                       - downvote
                       - total
+                      - userVote
                 required:
                   - id
                   - title
@@ -1310,12 +1306,6 @@ paths:
                           properties:
                             name:
                               type: string
-                            email:
-                              type: string
-                              format: email
-                              example: user@example.cat
-                          required:
-                            - email
                         topics:
                           type: array
                           items:
@@ -1366,10 +1356,15 @@ paths:
                             total:
                               type: integer
                               example: 12
+                            userVote:
+                              type: integer
+                              minimum: -1
+                              maximum: 1
                           required:
                             - upvote
                             - downvote
                             - total
+                            - userVote
                       required:
                         - id
                         - title
@@ -1407,44 +1402,46 @@ paths:
     get:
       tags:
         - vote
-      description: Get the vote count for a resource, separeted in total votes,
-        upvotes and downvotes
-      summary: Get the vote count for a resource.
+      description: Retrieve a detailed vote count for a specified resource, including
+        the number of upvotes, downvotes, and the overall vote balance.
+      summary: Fetch detailed vote statistics for a resource.
       parameters:
         - in: path
           name: resourceId
           schema:
             type: string
-            description: ID of the resource to get the vote count
+            description: Unique identifier of the resource for which vote statistics are
+              requested.
           required: true
       responses:
         "200":
-          description: Successful operation. Votes are retrieved and summed.
+          description: Successfully retrieved detailed vote statistics for the specified
+            resource.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  voteCount:
-                    type: object
-                    properties:
-                      upvote:
-                        type: integer
-                        minimum: 0
-                        example: 14
-                      downvote:
-                        type: integer
-                        minimum: 0
-                        example: 2
-                      total:
-                        type: integer
-                        example: 12
-                    required:
-                      - upvote
-                      - downvote
-                      - total
+                  upvote:
+                    type: integer
+                    minimum: 0
+                    example: 14
+                  downvote:
+                    type: integer
+                    minimum: 0
+                    example: 2
+                  total:
+                    type: integer
+                    example: 12
+                  userVote:
+                    type: integer
+                    minimum: -1
+                    maximum: 1
                 required:
-                  - voteCount
+                  - upvote
+                  - downvote
+                  - total
+                  - userVote
         "404":
           description: Resource not found
           content:

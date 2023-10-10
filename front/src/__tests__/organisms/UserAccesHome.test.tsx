@@ -26,7 +26,7 @@ describe('UserAccessHome component', () => {
 
     await waitFor(() =>
       expect(
-        screen.getByText('Recordar/cambiar contraseña')
+        screen.getByText('Recordar/canviar la contrasenya')
       ).toBeInTheDocument()
     )
   })

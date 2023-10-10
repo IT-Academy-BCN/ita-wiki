@@ -36,5 +36,17 @@
   "inicia sesión": "inicia sessió",
   " para añadir recursos favoritos": " per afegir recursos favorits",
   "No tienes recursos favoritos": "No hi ha recursos favorits",
-  "Algo ha ido mal...": "Alguna cosa ha anat malament..."
+  "Algo ha ido mal...": "Alguna cosa ha anat malament...",
+
+  "Registre": "Registre",
+  "DNI": "DNI o NIE",
+  "Especialidad": "Especialitat",
+  "Password": "Contrasenya",
+  "repetirpassword": "Repetir contrasenya",
+  "password error": "La contrasenya ha de tenir almenys 8 caràcters i contenir només lletres i números",
+  "acepto": "Accepto",
+  "terminos legales": "termes legals",
+  "tienes una cuenta?": "¿Tens un compte?, entra",
+  "recordar/cambiar": "Recordar/canviar la contrasenya",
+  "no tienes una cuenta?": "No tens un compte?, crea un"
 }

@@ -1,6 +1,6 @@
 import Router from '@koa/router'
 import { z } from 'zod'
-import { authenticate, validate } from '../middleware'
+import { authenticate, getUserFromToken, validate } from '../middleware'
 import { getVote, putVote } from '../controllers'
 import { pathRoot } from './routes'
 
@@ -10,6 +10,7 @@ voteRouter.prefix(pathRoot.v1.vote)
 
 voteRouter.get(
   '/:resourceId',
+  getUserFromToken,
   validate(
     z.object({
       params: z.object({

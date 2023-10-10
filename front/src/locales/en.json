@@ -36,5 +36,17 @@
   "inicia sesión": "log in",
   " para añadir recursos favoritos": " to add favorite resources",
   "No tienes recursos favoritos": "There are no favorite resources",
-  "Algo ha ido mal...": "Something gone wrong..."
+  "Algo ha ido mal...": "Something gone wrong...",
+
+  "Registre": "Register",
+  "DNI": "DNI or NIE",
+  "Especialidad": "Specialization",
+  "Password": "Password",
+  "repetirpassword": "Confirm password",
+  "password error": "Password must have at least 8 characters and contain only letters and numbers",
+  "acepto": "Accept",
+  "terminos legales": "legal terms",
+  "tienes una cuenta?": "Do you have an account?, log in",
+  "recordar/cambiar": "Remember/change password",
+  "no tienes una cuenta?": "Don't have an account?, create one"
 }

@@ -46,6 +46,7 @@ type TResource = {
     upvote: number
     downvote: number
     total: number
+    userVote: number
   }
   editable: boolean
 }

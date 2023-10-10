@@ -24,7 +24,7 @@ describe('Vote counter molecule', () => {
     const handleAccessModal = vi.fn()
     render(
       <VoteCounter
-        voteCount={0}
+        totalVotes={0}
         resourceId="test"
         handleAccessModal={handleAccessModal}
       />
@@ -39,14 +39,14 @@ describe('Vote counter molecule', () => {
     const handleAccessModal = vi.fn()
     render(
       <VoteCounter
-        voteCount={0}
+        totalVotes={0}
         resourceId="test"
         handleAccessModal={handleAccessModal}
       />
     )
 
-    const increase = screen.getByTestId('increase')
-    fireEvent.click(increase)
+    const upvoteBtn = screen.getByTestId('increase')
+    fireEvent.click(upvoteBtn)
     await waitFor(() => {
       expect(handleAccessModal).toHaveBeenCalled()
     })
@@ -60,7 +60,7 @@ describe('Vote counter molecule', () => {
 
     render(
       <VoteCounter
-        voteCount={0}
+        totalVotes={0}
         resourceId="test"
         handleAccessModal={handleAccessModal}
       />
@@ -69,12 +69,14 @@ describe('Vote counter molecule', () => {
     expect(screen.getByText('0')).toBeInTheDocument()
     expect(screen.queryByText('1')).not.toBeInTheDocument()
 
-    const increase = screen.getByTestId('increase')
-    expect(increase).toBeInTheDocument()
-    fireEvent.click(increase)
+    const upvoteBtn = screen.getByTestId('increase')
+    expect(upvoteBtn).toBeInTheDocument()
+    fireEvent.click(upvoteBtn)
 
     await waitFor(() => {
       expect(screen.getByText('1')).toBeInTheDocument()
     })
+
+    expect(upvoteBtn).toHaveStyle('color: #27AE60')
   })
 })
