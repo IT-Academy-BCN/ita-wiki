@@ -11,6 +11,10 @@ import { AuthProvider } from './context/AuthProvider'
 import { font } from './styles'
 import { FiltersProvider } from './context/store/context'
 import './i18n'
+import {
+  Notifications,
+  NotificationsProvider,
+} from './components/organisms/Notifications'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -49,12 +53,15 @@ if (!rootElement) throw new Error('Failed to find the root element')
 const root = ReactDOM.createRoot(rootElement)
 root.render(
   <AuthProvider>
-    <QueryClientProvider client={queryClient}>
-      <FiltersProvider>
-        <GlobalStyle />
-        <RouterProvider router={router} />
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-      </FiltersProvider>
-    </QueryClientProvider>
+    <NotificationsProvider>
+      <QueryClientProvider client={queryClient}>
+        <FiltersProvider>
+          <GlobalStyle />
+          <RouterProvider router={router} />
+          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+        </FiltersProvider>
+      </QueryClientProvider>
+      <Notifications />
+    </NotificationsProvider>
   </AuthProvider>
 )
