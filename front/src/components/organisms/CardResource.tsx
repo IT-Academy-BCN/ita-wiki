@@ -102,7 +102,7 @@ const CardResource = ({
     {Number.isInteger(likes) && (
       <CounterContainerStyled>
         <VoteCounter
-          voteCount={likes ?? 0}
+          totalVotes={likes ?? 0}
           resourceId={id}
           handleAccessModal={handleAccessModal || undefined}
         />

@@ -24,6 +24,7 @@ export type TResources = {
     upvote: number
     downvote: number
     total: number
+    userVote: number
   }
 }
 
@@ -31,22 +32,20 @@ const getResources = async (): Promise<TResources[] | Error> => {
   try {
     const response: Response = await fetch(urls.getResourcesByUser)
 
-      if (!response.ok) {
-        throw new Error("Error fetching user's resources")
-      }
-      const data: { resources: TResources[] } = await response.json()
-      return data.resources
-  }
-  catch (error) {
+    if (!response.ok) {
+      throw new Error("Error fetching user's resources")
+    }
+    const data: { resources: TResources[] } = await response.json()
+    return data.resources
+  } catch (error) {
     throw new Error("Error fetching user's resources")
   }
 }
 
 export const useGetResources = () => {
-
-  const data = useQuery<TResources[] | Error> ({
-    queryKey: ["userResources"],
-    queryFn: getResources
+  const data = useQuery<TResources[] | Error>({
+    queryKey: ['userResources'],
+    queryFn: getResources,
   })
 
   return data
