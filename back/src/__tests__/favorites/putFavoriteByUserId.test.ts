@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import { expect, test, describe, beforeEach, afterEach } from 'vitest'
-import { Favorites, User, Resource } from '@prisma/client'
+import { Favorites, User, Resource, Category } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
@@ -8,9 +8,13 @@ import { prisma } from '../../prisma/client'
 
 describe('Testing resource modify endpoint', () => {
   beforeEach(async () => {
-    const user = await prisma.user.findUnique({
+    const user = (await prisma.user.findUnique({
       where: { email: 'testingUser@user.cat' },
-    })
+    })) as User
+
+    const category = (await prisma.category.findUnique({
+      where: { slug: 'testing' },
+    })) as Category
 
     await prisma.resource.create({
       data: {
@@ -20,7 +24,8 @@ describe('Testing resource modify endpoint', () => {
         url: 'https://test.patch',
         resourceType: 'BLOG',
         status: 'SEEN',
-        userId: user!.id,
+        userId: user.id,
+        categoryId: category.id,
       },
     })
   })

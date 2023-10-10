@@ -1,4 +1,4 @@
-import { Resource, User } from '@prisma/client'
+import { Category, Resource, User } from '@prisma/client'
 import supertest from 'supertest'
 import { expect, test, describe, it, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
@@ -15,6 +15,10 @@ beforeAll(async () => {
     where: { dni: testUserData.admin.dni },
   })) as User
 
+  const category = (await prisma.category.findUnique({
+    where: { slug: 'testing' },
+  })) as Category
+
   resource = await prisma.resource.create({
     data: {
       title: 'Test Resource',
@@ -23,6 +27,7 @@ beforeAll(async () => {
       url: 'https://example.com/resource',
       resourceType: 'BLOG',
       userId: testUser.id,
+      categoryId: category.id,
     },
   })
 })

@@ -11,6 +11,7 @@ export const resourceTestData: Omit<
     url: 'https://sample.com',
     resourceType: 'BLOG',
     status: 'SEEN',
+    categoryId: '',
   },
   {
     title: 'test-resource-2-video',
@@ -19,6 +20,7 @@ export const resourceTestData: Omit<
     url: 'https://sample.com',
     resourceType: 'VIDEO',
     status: 'NOT_SEEN',
+    categoryId: '',
   },
   {
     title: 'test-resource-3-tutorial',
@@ -27,5 +29,6 @@ export const resourceTestData: Omit<
     url: 'https://sample.com',
     resourceType: 'TUTORIAL',
     status: 'NOT_SEEN',
+    categoryId: '',
   },
 ]

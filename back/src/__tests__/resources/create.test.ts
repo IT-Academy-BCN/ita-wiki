@@ -1,5 +1,6 @@
 import supertest from 'supertest'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
+import { Category } from '@prisma/client'
 import { server } from '../globalSetup'
 import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
@@ -22,6 +23,10 @@ afterAll(async () => {
 
 describe('Testing resource creation endpoint', () => {
   test('should create a new resource with topics', async () => {
+    const category = (await prisma.category.findUnique({
+      where: { slug: 'testing' },
+    })) as Category
+
     const newResource = {
       title: 'Test Resource',
       description: 'This is a new resource',
@@ -29,6 +34,7 @@ describe('Testing resource creation endpoint', () => {
       resourceType: 'BLOG',
       topics: topicIds,
       status: 'NOT_SEEN',
+      categoryId: category.id,
     }
 
     const response = await supertest(server)
@@ -40,6 +46,10 @@ describe('Testing resource creation endpoint', () => {
   })
 
   test('should fail without topics', async () => {
+    const category = (await prisma.category.findUnique({
+      where: { slug: 'testing' },
+    })) as Category
+
     const newResource = {
       title: 'New Resource',
       description: 'This is a new resource',
@@ -47,6 +57,7 @@ describe('Testing resource creation endpoint', () => {
       resourceType: 'BLOG',
       topics: [],
       status: 'NOT_SEEN',
+      categoryId: category.id,
     }
 
     const response = await supertest(server)

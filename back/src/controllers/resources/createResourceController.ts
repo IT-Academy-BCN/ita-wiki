@@ -2,6 +2,7 @@ import Koa, { Middleware } from 'koa'
 import jwt, { Secret } from 'jsonwebtoken'
 import slugify from 'slugify'
 import { prisma } from '../../prisma/client'
+import { CreateResource } from '../../interfaces/CreateResource'
 import { MissingParamError } from '../../helpers/errors'
 
 export const createResource: Middleware = async (ctx: Koa.Context) => {
@@ -9,24 +10,27 @@ export const createResource: Middleware = async (ctx: Koa.Context) => {
   const { userId } = jwt.verify(token, process.env.JWT_KEY as Secret) as {
     userId: string
   }
-  const resource = ctx.request.body
+  const resource: CreateResource = ctx.request.body
 
   const slug = slugify(resource.title, { lower: true })
+  const { categoryId } = resource as { categoryId: string }
 
   const topicIds = resource.topics
-  delete resource.topics
-  if (topicIds.length === 0)
-    throw new MissingParamError('Must contain at least one topic')
 
-  const resourceId = await prisma.resource.create({
-    data: { ...resource, userId, slug },
-  })
+  if (topicIds.length === 0) throw new MissingParamError('topics')
 
-  await prisma.topicsOnResources.createMany({
-    data: topicIds.map((topicId: string) => ({
-      topicId,
-      resourceId: resourceId.id,
+  resource.topics = {
+    create: resource.topics.map((topicId: string) => ({
+      topic: {
+        connect: {
+          id: topicId,
+        },
+      },
     })),
+  }
+
+  await prisma.resource.create({
+    data: { ...resource, userId, categoryId, slug },
   })
 
   ctx.status = 204
