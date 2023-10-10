@@ -17,6 +17,10 @@ async function seedDB() {
     where: { name: 'Node' },
   })
 
+  const categoryJavascript = await prisma.category.findUnique({
+    where: { name: 'Javascript' },
+  })
+
   await prisma.user.createMany({
     data: [
       {
@@ -71,13 +75,21 @@ async function seedDB() {
     userMentor,
   ]
 
-  const resourcesWithUser = resources.map((resource, index) => ({
+  const resourceCategories = [
+    categoryReact,
+    categoryNode,
+    categoryReact,
+    categoryJavascript,
+  ]
+
+  const resourcesRelations = resources.map((resource, index) => ({
     ...resource,
     userId: resourceUsers[index]?.id || '',
+    categoryId: resourceCategories[index]?.id || '',
   }))
 
   await prisma.resource.createMany({
-    data: resourcesWithUser,
+    data: resourcesRelations,
   })
 
   // Resources
