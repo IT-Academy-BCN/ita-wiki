@@ -26,6 +26,7 @@ export type TFavorites = {
     downvote: number
     total: number
   }
+  isFavorite: boolean
 }
 
 export const getTopics = async (slug?: string): Promise<TGetTopics> =>
@@ -68,9 +69,7 @@ export const getTypes = (): Promise<TGetTypes> =>
       throw new Error(`Error fetching types: ${err.message}`)
     })
 
-export const getFavorites = async (
-  slug?: string
-): Promise<TFavorites[] | Error> => {
+export const getFavorites = async (slug?: string): Promise<TFavorites[]> => {
   const urlFavorites = slug
     ? `${urls.getFavorites}/${slug}`
     : `${urls.getFavorites}`

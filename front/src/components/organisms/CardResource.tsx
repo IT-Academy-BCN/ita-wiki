@@ -5,7 +5,7 @@ import { CreateAuthor } from '../molecules/CreateAuthor'
 import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
 import { VoteCounter } from '../molecules/VoteCounter'
 import EditResource from './EditResource'
-import { FavoritesWidget } from '../molecules/FavoritesWidget'
+import { FavoritesIcon } from '../molecules/FavoritesIcon'
 import { useAuth } from '../../context/AuthProvider'
 
 const CardContainerStyled = styled(FlexBox)`
@@ -71,6 +71,7 @@ export type TCardResource = {
   resourceType: string
   topics: TTopic[]
   editable: boolean
+  isFavorite: boolean
   handleAccessModal: () => void
 }
 
@@ -87,6 +88,7 @@ const CardResource = ({
   editable,
   resourceType,
   topics,
+  isFavorite,
   handleAccessModal,
   ...rest
 }: TCardResource) => {
@@ -114,7 +116,7 @@ const CardResource = ({
               {...rest}
             />
           )}
-          <FavoritesWidget resourceId={id} />
+          <FavoritesIcon resourceId={id} isFavorite={isFavorite} />
         </UserWidgets>
       ) : null}
       {Number.isInteger(likes) && (

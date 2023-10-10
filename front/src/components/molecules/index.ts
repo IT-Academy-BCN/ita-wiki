@@ -1,6 +1,6 @@
 import { AccessModalContent } from './AccessModalContent'
 import { CreateAuthor } from './CreateAuthor'
-import { FavoritesWidget } from './FavoritesWidget'
+import { FavoritesIcon } from './FavoritesIcon'
 import InputGroup from './InputGroup'
 import { Modal } from './Modal'
 import { ResourceTitleLink, TResourceTitleLink } from './ResourceTitleLink'
@@ -19,7 +19,7 @@ import { UserButton } from './UserButton'
 export {
   AccessModalContent,
   CreateAuthor,
-  FavoritesWidget,
+  FavoritesIcon,
   InputGroup,
   Modal,
   ResourceTitleLink,

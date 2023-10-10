@@ -27,6 +27,7 @@ export type TResource = {
     total: number
   }
   editable: boolean
+  isFavorite: boolean
 }
 
 export type TInitialState = {

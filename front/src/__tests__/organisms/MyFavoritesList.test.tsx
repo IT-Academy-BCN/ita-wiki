@@ -27,18 +27,6 @@ beforeEach(() => {
   })
 })
 
-// beforeEach(() => {
-//   vi.mock('react-router-dom', async () => {
-//     const actual: Record<number, unknown> = await vi.importActual(
-//       'react-router-dom'
-//     )
-//     return {
-//       ...actual,
-//       useParams: vi.fn(),
-//     }
-//   })
-// })
-
 afterEach(() => {
   mswServer.resetHandlers()
   vi.resetAllMocks()
@@ -100,11 +88,11 @@ describe('MyFavoritesList', () => {
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() =>
-      expect(
-        screen.getByText('No tienes recursos favoritos')
-      ).toBeInTheDocument()
+      expect(screen.getByText('No hi ha recursos favorits')).toBeInTheDocument()
     )
-    expect(screen.queryByText('Algo ha ido mal...')).not.toBeInTheDocument()
+    expect(
+      screen.queryByText('Alguna cosa ha anat malament...')
+    ).not.toBeInTheDocument()
   })
 
   it('shows correct title when resize to mobile', async () => {
@@ -122,7 +110,7 @@ describe('MyFavoritesList', () => {
     render(<MyFavoritesList />)
 
     const titleElement = screen.getByTestId('title')
-    expect(titleElement).toHaveTextContent('Recursos que te gustan')
+    expect(titleElement).toHaveTextContent("Recursos que t'agraden")
   })
 
   it('shows correct title when resize to desktop', async () => {
@@ -140,7 +128,7 @@ describe('MyFavoritesList', () => {
     render(<MyFavoritesList />)
 
     const titleElement = screen.getByTestId('title')
-    expect(titleElement).toHaveTextContent('Recursos favoritos')
+    expect(titleElement).toHaveTextContent('Recursos favorits')
   })
 
   it('renders correctly on error', async () => {
@@ -162,7 +150,9 @@ describe('MyFavoritesList', () => {
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
-      expect(screen.getByText('Algo ha ido mal...')).toBeInTheDocument()
+      expect(
+        screen.getByText('Alguna cosa ha anat malament...')
+      ).toBeInTheDocument()
     })
   })
 })

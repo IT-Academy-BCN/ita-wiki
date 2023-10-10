@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { useGetFavorites } from '../../hooks/useGetFavorites'
 import { Icon, Title, Spinner, Text } from '../atoms'
 import { useAuth } from '../../context/AuthProvider'
@@ -78,9 +79,8 @@ export const MyFavoritesList: FC = () => {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(getWindowIsMobile())
-
+  const { t } = useTranslation()
   const { isLoading, isError, data } = useGetFavorites(slug)
-  const favoritesData = { data }.data as TFavorites[] | undefined
 
   useEffect(() => {
     const handleResize = () => {
@@ -102,13 +102,13 @@ export const MyFavoritesList: FC = () => {
       <TitleContainer data-testid="title">
         {isMobile ? (
           <Title as="h3" fontWeight="bold">
-            Recursos que te gustan
+            {t('Recursos que te gustan')}
           </Title>
         ) : (
           <>
             <Icon name="favorite" fill={0} />
             <Title as="h2" fontWeight="bold">
-              Recursos favoritos
+              {t('Recursos favoritos')}
             </Title>
           </>
         )}
@@ -116,23 +116,22 @@ export const MyFavoritesList: FC = () => {
       {!user && (
         <StyledText data-testid="no-user">
           <TextDecorationStyled onClick={handleRegisterModal}>
-            Regístrate
+            {t('Regístrate')}
           </TextDecorationStyled>
-          {` o `}
+          {t(' o ')}
           <TextDecorationStyled onClick={handleLoginModal}>
-            inicia sesión
+            {t('inicia sesión')}
           </TextDecorationStyled>
-          {` para añadir recursos favoritos`}
+          {t(' para añadir recursos favoritos')}
         </StyledText>
       )}
 
       {isLoading && user && <Spinner size="medium" role="status" />}
 
-      {!isLoading &&
-        !isError &&
-        (favoritesData && favoritesData.length > 0 ? (
+      {data &&
+        (data?.length > 0 ? (
           <FavoritesContainer>
-            {favoritesData.map((fav: TFavorites) => (
+            {data?.map((fav: TFavorites) => (
               <FavoritesCardList key={fav.id}>
                 {isMobile ? (
                   <CardResource
@@ -148,6 +147,7 @@ export const MyFavoritesList: FC = () => {
                     resourceType=""
                     topics={[]}
                     editable={false}
+                    isFavorite={fav.isFavorite}
                   />
                 ) : (
                   <ResourceTitleLink
@@ -160,10 +160,10 @@ export const MyFavoritesList: FC = () => {
             ))}
           </FavoritesContainer>
         ) : (
-          <StyledText>No tienes recursos favoritos</StyledText>
+          <StyledText>{t('No tienes recursos favoritos')}</StyledText>
         ))}
 
-      {isError && user && !isLoading ? <p>Algo ha ido mal...</p> : null}
+      {isError && user && !isLoading ? <p>{t('Algo ha ido mal...')}</p> : null}
 
       <Modal
         isOpen={isLoginOpen || isRegisterOpen}

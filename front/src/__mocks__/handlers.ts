@@ -128,6 +128,7 @@ export const handlers = [
             downvote: 0,
             total: 3,
           },
+          isFavorite: 'true',
         },
         {
           id: 'secondFavoriteId',
@@ -145,6 +146,7 @@ export const handlers = [
             downvote: 0,
             total: 3,
           },
+          isFavorite: 'true',
         },
       ])
     )
@@ -173,6 +175,7 @@ export const handlers = [
               downvote: 0,
               total: 3,
             },
+            isFavorite: 'true',
           },
         ])
       )

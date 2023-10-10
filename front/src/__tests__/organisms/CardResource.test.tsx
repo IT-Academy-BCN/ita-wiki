@@ -35,6 +35,7 @@ const mockCardResource: TCardResource = {
   resourceType: 'video',
   topics: [],
   editable: true,
+  isFavorite: false,
   handleAccessModal,
 }
 
@@ -69,7 +70,7 @@ describe('CardResource component', () => {
 
     const editIcon = screen.getByTestId('edit-icon')
     expect(editIcon).toBeInTheDocument()
-    const favIcon = screen.getByTitle('Añadir a favoritos')
+    const favIcon = screen.getByTitle('Afegeix a favorits')
     expect(favIcon).toBeInTheDocument()
   })
 
@@ -90,7 +91,7 @@ describe('CardResource component', () => {
 
     const editIcon = screen.queryByTestId('edit-icon')
     expect(editIcon).not.toBeInTheDocument()
-    const favIcon = screen.getByTitle('Añadir a favoritos')
+    const favIcon = screen.getByTitle('Afegeix a favorits')
     expect(favIcon).toBeInTheDocument()
   })
 })

@@ -1,7 +1,7 @@
 import { vi } from 'vitest'
 import { useParams, Params } from 'react-router-dom'
 import { render, screen, waitFor, fireEvent } from '../test-utils'
-import { FavoritesWidget } from '../../components/molecules'
+import { FavoritesIcon } from '../../components/molecules'
 import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
@@ -43,16 +43,14 @@ describe('FavoritesWidget', () => {
       slug: 'react',
     } as Readonly<Params>)
 
-    render(<FavoritesWidget resourceId="notFavoriteId" />)
+    render(<FavoritesIcon resourceId="notFavoriteId" isFavorite={false} />)
 
     await waitFor(() => {
       const favIconDeselected = screen.getByText('favorite')
       expect(favIconDeselected).toBeInTheDocument()
-      expect(favIconDeselected).toHaveAttribute('title', 'Añadir a favoritos')
+      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a favorits')
       expect(favIconDeselected).toHaveAttribute('fill', '0')
-      expect(
-        screen.queryByTitle('Eliminar de favoritos')
-      ).not.toBeInTheDocument()
+      expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
     })
   })
 
@@ -67,14 +65,14 @@ describe('FavoritesWidget', () => {
       slug: 'react',
     } as Readonly<Params>)
 
-    render(<FavoritesWidget resourceId="favoriteId" />)
+    render(<FavoritesIcon resourceId="favoriteId" isFavorite />)
 
     await waitFor(() => {
       const favIconSelected = screen.getByText('favorite')
       expect(favIconSelected).toBeInTheDocument()
-      expect(favIconSelected).toHaveAttribute('title', 'Eliminar de favoritos')
+      expect(favIconSelected).toHaveAttribute('title', 'Elimina de favorits')
       expect(favIconSelected).toHaveAttribute('fill', '1')
-      expect(screen.queryByTitle('Añadir a favoritos')).not.toBeInTheDocument()
+      expect(screen.queryByTitle('Afegeix a favorits')).not.toBeInTheDocument()
     })
   })
 
@@ -89,28 +87,23 @@ describe('FavoritesWidget', () => {
       slug: 'react',
     } as Readonly<Params>)
 
-    render(<FavoritesWidget resourceId="notFavoriteId" />)
+    render(<FavoritesIcon resourceId="notFavoriteId" isFavorite={false} />)
 
     const favIconDeselected = screen.getByText('favorite')
 
     await waitFor(() => {
       expect(favIconDeselected).toBeInTheDocument()
-      expect(favIconDeselected).toHaveAttribute('title', 'Añadir a favoritos')
+      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a favorits')
       expect(favIconDeselected).toHaveAttribute('fill', '0')
-      expect(
-        screen.queryByTitle('Eliminar de favoritos')
-      ).not.toBeInTheDocument()
+      expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
     })
 
     fireEvent.click(favIconDeselected)
 
     await waitFor(() => {
-      expect(favIconDeselected).toHaveAttribute(
-        'title',
-        'Eliminar de favoritos'
-      )
+      expect(favIconDeselected).toHaveAttribute('title', 'Elimina de favorits')
       expect(favIconDeselected).toHaveAttribute('fill', '1')
-      expect(screen.queryByTitle('Añadir a favoritos')).not.toBeInTheDocument()
+      expect(screen.queryByTitle('Afegeix a favorits')).not.toBeInTheDocument()
     })
   })
 
@@ -125,70 +118,23 @@ describe('FavoritesWidget', () => {
       slug: 'react',
     } as Readonly<Params>)
 
-    render(<FavoritesWidget resourceId="notFavoriteId" />)
+    render(<FavoritesIcon resourceId="notFavoriteId" isFavorite />)
 
     const favIconDeselected = screen.getByText('favorite')
 
     await waitFor(() => {
-      expect(favIconDeselected).toHaveAttribute('title', 'Añadir a favoritos')
-      expect(favIconDeselected).toHaveAttribute('fill', '0')
-      expect(
-        screen.queryByTitle('Eliminar de favoritos')
-      ).not.toBeInTheDocument()
+      expect(favIconDeselected).toBeInTheDocument()
+      expect(favIconDeselected).toHaveAttribute('title', 'Elimina de favorits')
+      expect(favIconDeselected).toHaveAttribute('fill', '1')
+      expect(screen.queryByTitle('Afegeix a favorits')).not.toBeInTheDocument()
     })
 
     fireEvent.click(favIconDeselected)
 
     await waitFor(() => {
-      expect(favIconDeselected).toBeInTheDocument()
-      expect(favIconDeselected).toHaveAttribute(
-        'title',
-        'Eliminar de favoritos'
-      )
-      expect(favIconDeselected).toHaveAttribute('fill', '1')
-      expect(screen.queryByTitle('Añadir a favoritos')).not.toBeInTheDocument()
-    })
-  })
-
-  it('renders component as not favorite by default if user is not logged in', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: null,
-    } as TAuthContext)
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-    render(<FavoritesWidget resourceId="notFavoriteId" />)
-
-    await waitFor(() => {
-      const favIconDeselected = screen.getByText('favorite')
-      expect(favIconDeselected).toBeInTheDocument()
-      expect(favIconDeselected).toHaveAttribute('title', 'Añadir a favoritos')
+      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a favorits')
       expect(favIconDeselected).toHaveAttribute('fill', '0')
-      expect(
-        screen.queryByTitle('Eliminar de favoritos')
-      ).not.toBeInTheDocument()
+      expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
     })
-  })
-
-  it('renders correctly on error as not favorite by default', () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatar: 'Avatar',
-      },
-    } as TAuthContext)
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-
-    mswServer.use(...errorHandlers)
-
-    render(<FavoritesWidget resourceId="favoriteId" />)
-
-    const favIconDeselected = screen.getByText('favorite')
-    expect(favIconDeselected).toBeInTheDocument()
-    expect(favIconDeselected).toHaveAttribute('title', 'Añadir a favoritos')
-    expect(favIconDeselected).toHaveAttribute('fill', '0')
-    expect(screen.queryByTitle('Eliminar de favoritos')).not.toBeInTheDocument()
   })
 })
