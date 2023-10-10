@@ -212,4 +212,11 @@ describe('Testing resources GET endpoint', () => {
       expect(resource.voteCount.userVote).toBe(expectedVote)
     })
   })
+  it('should display whether a resource is favorited by a looged user', async () => {
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.resources}`)
+      .set('Cookie', authToken.admin)
+      .query({})
+    expect(response.status).toBe(200)
+  })
 })

@@ -45,7 +45,22 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
     },
   })
 
-  const parsedResources = resources.map((resource) =>
+  const resourcesWithIsFavorite = await Promise.all(
+    resources.map(async (resource) => {
+      let isFavorite: boolean = false
+      if (user !== null) {
+        isFavorite =
+          (await prisma.favorites.findUnique({
+            where: {
+              userId_resourceId: { userId: user.id, resourceId: resource.id },
+            },
+          })) !== null
+      }
+      return { ...resource, isFavorite }
+    })
+  )
+
+  const parsedResources = resourcesWithIsFavorite.map((resource) =>
     resourceGetSchema.parse(
       transformResourceToAPI(resource, user ? user.id : undefined)
     )

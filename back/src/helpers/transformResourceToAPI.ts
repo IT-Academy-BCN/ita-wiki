@@ -7,6 +7,7 @@ type TResource = TResourceSchema & {
     name: string
   }
   vote: { userId?: string; vote: number }[]
+  isFavorite: boolean
 }
 export type TVoteCount = {
   upvote: number

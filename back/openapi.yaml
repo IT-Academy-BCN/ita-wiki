@@ -799,6 +799,9 @@ paths:
                         - downvote
                         - total
                         - userVote
+                    isFavorite:
+                      type: boolean
+                      default: false
                   required:
                     - id
                     - title
@@ -810,6 +813,7 @@ paths:
                     - user
                     - topics
                     - voteCount
+                    - isFavorite
         "400":
           description: Validation error
           content:
@@ -1053,6 +1057,9 @@ paths:
                       - downvote
                       - total
                       - userVote
+                  isFavorite:
+                    type: boolean
+                    default: false
                 required:
                   - id
                   - title
@@ -1064,6 +1071,7 @@ paths:
                   - user
                   - topics
                   - voteCount
+                  - isFavorite
         "400":
           description: Validation error
           content:
@@ -1227,6 +1235,9 @@ paths:
                       - downvote
                       - total
                       - userVote
+                  isFavorite:
+                    type: boolean
+                    default: false
                 required:
                   - id
                   - title
@@ -1238,6 +1249,7 @@ paths:
                   - user
                   - topics
                   - voteCount
+                  - isFavorite
         "404":
           description: Topic not found
           content:
@@ -1365,6 +1377,9 @@ paths:
                             - downvote
                             - total
                             - userVote
+                        isFavorite:
+                          type: boolean
+                          default: false
                       required:
                         - id
                         - title
@@ -1376,6 +1391,7 @@ paths:
                         - user
                         - topics
                         - voteCount
+                        - isFavorite
                 required:
                   - resources
         "401":
