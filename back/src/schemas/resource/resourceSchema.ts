@@ -15,6 +15,7 @@ export const resourceSchema = z.object({
     .openapi({ example: 'https://tutorials.cat/learn/javascript' }),
   resourceType: z.enum(['BLOG', 'VIDEO', 'TUTORIAL']),
   userId: z.string().cuid(),
+  categoryId: z.string().cuid(),
   createdAt: z.union([z.string().datetime(), z.date()]),
   updatedAt: z.union([z.string().datetime(), z.date()]),
   status: z
