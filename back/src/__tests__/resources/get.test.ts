@@ -54,6 +54,7 @@ afterAll(async () => {
   await prisma.topicsOnResources.deleteMany({
     where: { topic: { slug: 'testing' } },
   })
+  await prisma.favorites.deleteMany({})
   await prisma.resource.deleteMany({
     where: { user: { dni: testUserData.user.dni } },
   })
@@ -212,11 +213,32 @@ describe('Testing resources GET endpoint', () => {
       expect(resource.voteCount.userVote).toBe(expectedVote)
     })
   })
-  it('should display whether a resource is favorited by a looged user', async () => {
+  it('should display all resources and specify those favorited by the user.', async () => {
+    const existingResource = await prisma.resource.findUnique({
+      where: { slug: 'test-resource-1-blog' },
+    })
+
+    const existingAdminUserId = await prisma.user.findUnique({
+      where: { dni: testUserData.admin.dni },
+    })
+
+    const testFavoriteResource = await prisma.favorites.create({
+      data: {
+        resourceId: existingResource!.id,
+        userId: existingAdminUserId!.id,
+      },
+    })
+
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
       .set('Cookie', authToken.admin)
       .query({})
     expect(response.status).toBe(200)
+    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    response.body.forEach((resource: ResourceGetSchema) => {
+      if (resource.isFavorite === true) {
+        expect(resource.id).toBe(testFavoriteResource!.resourceId)
+      }
+    })
   })
 })

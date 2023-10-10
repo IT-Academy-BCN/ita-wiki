@@ -32,35 +32,46 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
   const voteSelect =
     ctx.user !== null ? { userId: true, vote: true } : { vote: true }
 
+  const include = {
+    user: {
+      select: {
+        name: true,
+      },
+    },
+    vote: { select: voteSelect },
+    topics: { select: { topic: true } },
+  }
+
   const resources = await prisma.resource.findMany({
     where,
+    include,
+  })
+
+  const userFavorites = await prisma.favorites.findMany({
+    where: {
+      userId: user?.id,
+    },
     include: {
-      user: {
+      resource: {
         select: {
-          name: true,
+          id: true,
         },
       },
-      vote: { select: voteSelect },
-      topics: { select: { topic: true } },
     },
   })
 
-  const resourcesWithIsFavorite = await Promise.all(
-    resources.map(async (resource) => {
-      let isFavorite: boolean = false
-      if (user !== null) {
-        isFavorite =
-          (await prisma.favorites.findUnique({
-            where: {
-              userId_resourceId: { userId: user.id, resourceId: resource.id },
-            },
-          })) !== null
-      }
-      return { ...resource, isFavorite }
-    })
-  )
+  const resourcesWithFavorites = resources.map((resource) => {
+    const isFavorite = !!userFavorites.find(
+      (favorite) => favorite.resourceId === resource.id
+    )
 
-  const parsedResources = resourcesWithIsFavorite.map((resource) =>
+    return {
+      ...resource,
+      isFavorite,
+    }
+  })
+
+  const parsedResources = resourcesWithFavorites.map((resource) =>
     resourceGetSchema.parse(
       transformResourceToAPI(resource, user ? user.id : undefined)
     )
