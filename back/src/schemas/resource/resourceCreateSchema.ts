@@ -12,3 +12,5 @@ export const resourceCreateSchema = resourceSchema
   .extend({
     topics: z.array(z.string().cuid()), // Son las FK
   })
+
+export type TResourceCreateSchema = z.infer<typeof resourceCreateSchema>
