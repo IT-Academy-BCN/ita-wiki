@@ -43,13 +43,7 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
       vote: { select: voteSelect },
       topics: { select: { topic: true } },
       favorites: {
-        include: {
-          resource: {
-            select: {
-              id: true,
-            },
-          },
-        },
+        where: { userId: user ? user.id : undefined },
       },
     },
   })
