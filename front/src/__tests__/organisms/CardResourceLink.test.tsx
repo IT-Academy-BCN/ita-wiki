@@ -20,6 +20,7 @@ describe('ResourceTitleLink', () => {
         handleAccessModal={() => {}}
         resourceType="BLOG"
         topics={[]}
+        isFavorite={false}
       />
     )
   })
@@ -40,6 +41,7 @@ describe('ResourceTitleLink', () => {
         handleAccessModal={() => {}}
         resourceType="BLOG"
         topics={[]}
+        isFavorite={false}
       />
     )
 

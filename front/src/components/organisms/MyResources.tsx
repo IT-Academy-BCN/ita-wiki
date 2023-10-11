@@ -49,6 +49,7 @@ type TResource = {
     userVote: number
   }
   editable: boolean
+  isFavorite: boolean
 }
 
 const TitleContainer = styled(FlexBox)`
