@@ -50,11 +50,10 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
 
   const resourcesWithFavorites = resources.map((resource) => {
     let isFavorite: boolean = false
-    if (user !== null && resource.favorites.length > 0) {
+    if (user !== null)
       isFavorite = !!resource.favorites.find(
         (favorite) => favorite.userId === user.id
       )
-    }
 
     return {
       ...resource,
