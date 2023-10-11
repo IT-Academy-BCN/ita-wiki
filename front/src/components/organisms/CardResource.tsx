@@ -91,39 +91,49 @@ const CardResource = ({
   isFavorite,
   handleAccessModal,
   ...rest
-}: TCardResource) => (
-  <CardContainerStyled
-    data-testid="resource-card"
-    direction="row"
-    align="center"
-    justify="flex-start"
-    id={id}
-    {...rest}
-  >
-    {editable && (
-      <EditResource
-        description={description}
-        id={id}
-        title={title}
-        url={url}
-        resourceType={resourceType}
-        topics={topics}
-        {...rest}
-      />
-    )}
-    {Number.isInteger(likes) && (
-      <CounterContainerStyled>
-        <VoteCounter
-          totalVotes={likes ?? 0}
-          resourceId={id}
-          handleAccessModal={handleAccessModal || undefined}
-        />
-      </CounterContainerStyled>
-    )}
-    <FlexBoxStyled align="start" justify="space-between" gap="4px">
-      <ResourceTitleLink description={description} title={title} url={url} />
-      <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
-    </FlexBoxStyled>
-  </CardContainerStyled>
-)
+}: TCardResource) => {
+  const { user } = useAuth()
+  return (
+    <CardContainerStyled
+      data-testid="resource-card"
+      direction="row"
+      align="center"
+      justify="flex-start"
+      id={id}
+      {...rest}
+    >
+      {user ? (
+        <UserWidgets direction="row" gap="0.5rem">
+          {editable && (
+            <EditResource
+              description={description}
+              id={id}
+              title={title}
+              url={url}
+              resourceType={resourceType}
+              topics={topics}
+              isInCardResource
+              {...rest}
+            />
+          )}
+          <FavoritesIcon resourceId={id} isFavorite={isFavorite} />
+        </UserWidgets>
+      ) : null}
+      {Number.isInteger(likes) && (
+        <CounterContainerStyled>
+          <VoteCounter
+            totalVotes={likes ?? 0}
+            resourceId={id}
+            handleAccessModal={handleAccessModal || undefined}
+          />
+        </CounterContainerStyled>
+      )}
+      <FlexBoxStyled align="start" justify="space-between" gap="4px">
+        <ResourceTitleLink description={description} title={title} url={url} />
+        <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
+      </FlexBoxStyled>
+    </CardContainerStyled>
+  )
+}
+
 export default CardResource
