@@ -67,7 +67,7 @@ describe('Testing POST media endpoint', () => {
         .attach('media', `${pathUploadMedia}/testImage.png`)
 
       expect(response.status).toBe(401)
-      expect(response.body.error).toBe('Unauthorized: Missing token')
+      expect(response.body.message).toBe('Unauthorized: Missing token')
       await fs.rm(`${pathUploadMedia}/testImage.png`)
     })
     it('Should clear the token cookie if an invalid token is provided', async () => {
