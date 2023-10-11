@@ -5,14 +5,16 @@ import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 describe('Testing resource modify endpoint', () => {
+  const req: { id: string } = { id: '' }
   beforeEach(async () => {
     const user = await prisma.user.findUnique({
       where: { email: 'testingUser@user.cat' },
     })
 
-    await prisma.resource.create({
+    const resource = await prisma.resource.create({
       data: {
         title: 'test-patch-resource',
         slug: 'test-patch-resource',
@@ -23,6 +25,7 @@ describe('Testing resource modify endpoint', () => {
         userId: user!.id,
       },
     })
+    req.id = resource.id
   })
 
   afterEach(async () => {
@@ -42,24 +45,17 @@ describe('Testing resource modify endpoint', () => {
   })
 
   test('should create a favorite', async () => {
-    const resource = await prisma.resource.findUnique({
-      where: { slug: 'test-patch-resource' },
-    })
-    const newResource = {
-      id: resource!.id,
-    }
-
     const response = await supertest(server)
       .put(`${pathRoot.v1.favorites}/`)
       .set('Cookie', authToken.user)
-      .send(newResource!)
+      .send(req)
 
     const favorite = await prisma.favorites.findFirst({
-      where: { resourceId: resource!.id },
+      where: { resourceId: req.id },
     })
 
     expect(favorite).not.toBe(null)
-    expect(favorite?.resourceId).toBe(resource!.id)
+    expect(favorite?.resourceId).toBe(req.id)
     expect(response.status).toBe(204)
   })
 
@@ -73,7 +69,7 @@ describe('Testing resource modify endpoint', () => {
     })) as User
 
     ;(await prisma.favorites.create({
-      data: { resourceId: resource.id, userId: user.id },
+      data: { resourceId: req.id, userId: user.id },
     })) as Favorites
 
     const response = await supertest(server)
@@ -102,7 +98,8 @@ describe('Testing resource modify endpoint', () => {
     const response = await supertest(server)
       .put(`${pathRoot.v1.favorites}/`)
       .set('Cookie', authToken.user)
-      .send(newResource!)
+      .send(newResource)
     expect(response.status).toBe(400)
   })
+  checkInvalidToken(`${pathRoot.v1.favorites}/`, 'put', req)
 })

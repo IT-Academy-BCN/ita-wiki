@@ -70,6 +70,29 @@ describe('Testing POST media endpoint', () => {
       expect(response.body.error).toBe('Unauthorized: Missing token')
       await fs.rm(`${pathUploadMedia}/testImage.png`)
     })
+    it('Should clear the token cookie if an invalid token is provided', async () => {
+      const testImage =
+        'iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAKElEQVQ4jWNgYGD4Twzu6FhFFGYYNXDUwGFpIAk2E4dHDRw1cDgaCAASFOffhEIO3gAAAABJRU5ErkJggg=='
+      const bufferData = Buffer.from(testImage, 'base64')
+      await fs.writeFile(`${pathUploadMedia}/testImage.png`, bufferData)
+      const response = await supertest(server)
+        .post(`${pathRoot.v1.media}`)
+        .set('Cookie', 'token=invalidToken')
+        .attach('media', `${pathUploadMedia}/testImage.png`)
+
+      expect(response.status).toBe(498)
+      expect(response.body.message).toBe('Token is not valid')
+      const cookieHeader = response.headers['set-cookie']
+      expect(cookieHeader).toBeDefined()
+
+      const tokenCookie = cookieHeader.find((header: string) =>
+        header.startsWith('token=')
+      )
+      expect(tokenCookie).toBe(
+        'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly'
+      )
+      await fs.rm(`${pathUploadMedia}/testImage.png`)
+    })
     it('Should fail if no file is attached to the request', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.media}`)
