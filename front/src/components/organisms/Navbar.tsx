@@ -1,7 +1,6 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { useLocation } from 'react-router-dom'
-import { useAuth } from '../../context/AuthProvider'
 import { FlexBox, colors, device, dimensions } from '../../styles'
 import { Button, Icon, Title, HamburgerMenu } from '../atoms'
 import { UserButton } from '../molecules/UserButton'
@@ -73,9 +72,9 @@ const StyledButton = styled(Button)`
 type TNavbar = {
   toggleModal?: () => void
   handleAccessModal?: () => void
+  isUserLogged: boolean
 }
-export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
-  const { user } = useAuth()
+export const Navbar = ({ toggleModal, handleAccessModal, isUserLogged }: TNavbar) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
@@ -83,8 +82,8 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
     setIsSettingsOpen(!isSettingsOpen)
   }
 
-  const location = useLocation();
-  const shouldRenderIcons = location.pathname !== '/'
+  const location = useLocation()
+  const shouldRenderIcons = useMemo(() => location.pathname !== '/', [location])
 
   return (
     <>
@@ -98,7 +97,7 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
           <IconStyled
               data-testid="new-post-button"
               onClick={() => {
-                if (user) {
+                if (isUserLogged) {
                   toggleModal?.();
                 } else {
                   handleAccessModal?.();
