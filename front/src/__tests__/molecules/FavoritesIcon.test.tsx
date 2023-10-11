@@ -137,4 +137,33 @@ describe('FavoritesWidget', () => {
       expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
     })
   })
+
+  it('renders correctly on error (fav icon does not change)', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Name',
+        avatar: 'Avatar',
+      },
+    } as TAuthContext)
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'react',
+    } as Readonly<Params>)
+
+    mswServer.use(...errorHandlers)
+
+    render(<FavoritesIcon resourceId="favoriteId" isFavorite={false} />)
+    const favIconDeselected = screen.getByText('favorite')
+    expect(favIconDeselected).toBeInTheDocument()
+    expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a favorits')
+    expect(favIconDeselected).toHaveAttribute('fill', '0')
+    expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
+
+    fireEvent.click(favIconDeselected)
+
+    await waitFor(() => {
+      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a favorits')
+      expect(favIconDeselected).toHaveAttribute('fill', '0')
+      expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
+    })
+  })
 })
