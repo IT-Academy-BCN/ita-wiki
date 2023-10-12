@@ -16,7 +16,7 @@ const Container = styled(FlexBox)`
   background-color: ${colors.white};
   width: 100%;
 
-  @media only ${device.Tablet} {
+  @media only ${device.Mobile} {
     height: 100vh;
     display: flex;
     flex-direction: row;

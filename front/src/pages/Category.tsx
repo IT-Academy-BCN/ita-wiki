@@ -31,7 +31,7 @@ const Container = styled(FlexBox)`
   background-color: ${colors.white};
   width: 100%;
 
-  @media only ${device.Tablet} {
+  @media only ${device.Mobile} {
     height: 100vh;
     display: flex;
     justify-content: flex-start;
@@ -271,7 +271,7 @@ const NewResourceButton = styled(Button)`
     border: 1px dashed ${colors.gray.gray3};
   }
 
-  @media ${device.Tablet} {
+  @media ${device.Mobile} {
     display: none;
   }
 `

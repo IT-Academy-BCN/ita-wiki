@@ -29,7 +29,7 @@ const NavbarStyled = styled(FlexBox)`
 `
 const IconStyled = styled.div`
   display: none;
-  @media ${device.Tablet} {
+  @media ${device.Mobile} {
     margin: 0px 15px 0px 15px;
     padding: 6px;
     width: 3rem;

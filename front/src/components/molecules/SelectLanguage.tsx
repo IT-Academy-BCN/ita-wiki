@@ -19,12 +19,12 @@ const DropdownLang = styled.select`
   &:focus {
     outline: 0 none;
   }
-  @media ${device.Tablet} {
+  @media ${device.Mobile} {
     background-color: ${colors.white};
     margin: 0;
     padding: 0.47rem;
     color: ${colors.gray.gray3};
-  }
+  } 
 `
 
 export const SelectLanguage: React.FC = () => {
