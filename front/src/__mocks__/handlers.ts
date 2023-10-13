@@ -95,6 +95,7 @@ export const handlers = [
             upvote: 6,
             downvote: 2,
             total: 4,
+            userVote: 1
           },
         },
       ])

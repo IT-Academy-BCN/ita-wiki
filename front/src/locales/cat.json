@@ -12,5 +12,17 @@
   "Recursos compartits": "Recursos compartits",
 
   "Vota els recursos": "Vota els recursos",
-  "La comunitat decideix": "La comunitat decideix quins són més rellevants"
+  "La comunitat decideix": "La comunitat decideix quins són més rellevants",
+
+  "Registre": "Registre",
+  "DNI": "DNI o NIE",
+  "Especialidad": "Especialitat",
+  "Password": "Contrasenya",
+  "repetirpassword": "Repetir contrasenya",
+  "password error": "La contrasenya ha de tenir almenys 8 caràcters i contenir només lletres i números",
+  "acepto": "Accepto",
+  "terminos legales": "termes legals",
+  "tienes una cuenta?": "¿Tens un compte?, entra",
+  "recordar/cambiar": "Recordar/canviar la contrasenya",
+  "no tienes una cuenta?": "No tens un compte?, crea un"
 }

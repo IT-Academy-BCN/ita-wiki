@@ -5,7 +5,10 @@ export const resourcesGetParamsSchema = z.object({
     .enum(['BLOG', 'VIDEO', 'TUTORIAL'])
     .optional()
     .openapi({ example: 'BLOG' }),
-  topic: z.string().optional().openapi({ example: 'Listas' }),
+  topic: z
+    .string()
+    .optional()
+    .openapi({ example: 'cln2u09xo0037s6wvbf6t9jfg' }),
   category: z.string().optional().openapi({ example: 'javascript' }),
   status: z
     .enum(['SEEN', 'NOT_SEEN'])

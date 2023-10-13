@@ -3,7 +3,7 @@ export { logoutController } from './auth/logoutController'
 export { registerController } from './auth/register'
 export { authMeController } from './auth/authMeController'
 export { createResource } from './resources/createResourceController'
-export { getResources } from './resources/getResourcesController'
+export { getResources } from './resources/get'
 export { getResourcesById } from './resources/getResourcesById'
 export {
   getResourcesByTopicId,
@@ -11,7 +11,8 @@ export {
 } from './resources/getResourcesByTopic'
 export { getResourcesByUserId } from './resources/getResourcesByUserId'
 export { getFavoriteResources } from './resources/getFavoriteResources'
-export { getVote, putVote } from './vote/voteController'
+export { getVote } from './vote/get'
+export { putVote } from './vote/put'
 export { getTopics } from './topics/get'
 export { createTopic } from './topics/create'
 export { patchTopic } from './topics/patch'

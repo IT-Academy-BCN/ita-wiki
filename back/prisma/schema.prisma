@@ -134,8 +134,6 @@ model ViewedResource {
   userId     String   @map("user_id")
   resource   Resource @relation(fields: [resourceId], references: [id])
   resourceId String   @map("resource_id")
-  createdAt  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
 
   @@id([userId, resourceId])
   @@map("viewed_resource")
