@@ -461,7 +461,7 @@ const Category: FC = () => {
     ...(fetchedTopics?.map((t) => {
       const selectOptions = { id: t.id, value: t.slug, label: t.name }
       return selectOptions
-    }) || []),
+    }) ?? []),
   ]
 
   const topicsForResourceForm = fetchedTopics?.map(
@@ -470,7 +470,7 @@ const Category: FC = () => {
         id: t.id,
         value: t.slug,
         label: t.name,
-      } || [])
+      })
   )
 
   return (

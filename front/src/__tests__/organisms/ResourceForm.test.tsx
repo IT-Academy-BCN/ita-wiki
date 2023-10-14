@@ -94,6 +94,10 @@ describe('ResourceForm', () => {
 
     const button = screen.getByText(/crear/i)
     fireEvent.click(button)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('done-icon')).toBeInTheDocument()
+    })
     reloadPage()
   })
 
