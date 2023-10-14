@@ -72,7 +72,7 @@ const ResourcesUserStyled = styled(FlexBox)`
     display: none;
   }
 
-  @media only ${device.Mobile} {
+  @media only ${device.Tablet} {
     flex-direction: column;
     align-items: flex-start;
     overflow: hidden;

@@ -8,6 +8,7 @@ import { CategoriesList } from './CategoriesList'
 import { Modal } from '../molecules/Modal'
 import { SettingsManager } from './SettingsManager'
 
+
 const NavbarStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
   justify-content: end;
@@ -20,7 +21,7 @@ const NavbarStyled = styled(FlexBox)`
     color: ${colors.white};
   }
 
-  @media (max-width: 468px) {
+  @media (max-width: 480px) {
     background-color: ${colors.white};
     padding-left: 0.5rem;
     padding-right: 0.5rem;
@@ -95,7 +96,7 @@ export const Navbar = ({ toggleModal }: TNavbar) => {
         >
           <Icon name="add" color={colors.gray.gray3} />
         </IconStyled>
-        <SelectLanguage />
+        <SelectLanguage/>
         <IconStyled
           data-testid="settings-button"
           onClick={() => handleSettingsModal()}

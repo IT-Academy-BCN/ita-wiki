@@ -23,7 +23,7 @@ const DropdownLang = styled.select`
     background-color: ${colors.white};
     margin: 0;
     padding: 0.47rem;
-    color: ${colors.gray.gray3};
+       color: ${colors.gray.gray3};
   } 
 `
 
