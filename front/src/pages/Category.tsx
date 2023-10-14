@@ -597,7 +597,7 @@ const Category: FC = () => {
       </Container>
       {/* ==> ADD RESOURCE MODAL */}
       <Modal isOpen={isOpen} toggleModal={toggleModal} title="Nuevo Recurso">
-        <ResourceForm selectOptions={topicsForResourceForm || []} />
+        <ResourceForm selectOptions={topicsForResourceForm ?? []} />
         <Button outline onClick={toggleModal}>
           Cancelar
         </Button>
