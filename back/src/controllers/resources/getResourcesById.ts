@@ -1,6 +1,6 @@
 import Koa, { Middleware } from 'koa'
 import { prisma } from '../../prisma/client'
-import { addVoteCountToResource } from '../../helpers/addVoteCountToResource'
+import { transformResourceToAPI } from '../../helpers/transformResourceToAPI'
 import { resourceGetSchema } from '../../schemas'
 import { NotFoundError } from '../../helpers/errors'
 
@@ -20,7 +20,7 @@ export const getResourcesById: Middleware = async (ctx: Koa.Context) => {
   })
   if (!resource) throw new NotFoundError('Resource not found')
 
-  const resourceWithVote = addVoteCountToResource(resource)
+  const resourceWithVote = transformResourceToAPI(resource)
   const parsedResource = resourceGetSchema.parse(resourceWithVote)
   ctx.status = 200
   ctx.body = parsedResource
