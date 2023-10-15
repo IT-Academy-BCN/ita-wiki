@@ -499,6 +499,7 @@ const Category: FC = () => {
                     />
                   )}
                 </ScrollTopics>
+
                 <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
                 {user && (
                   <StatusFilterWidget handleStatusFilter={handleStatusFilter} />

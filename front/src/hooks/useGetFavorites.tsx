@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { urls } from '../constants'
+import { useNotifications } from '../components/molecules/Notifications/useNotifications'
 
 export type TFavorites = {
   id: string
@@ -17,23 +18,30 @@ const getFavorites = async (): Promise<TFavorites[] | Error> => {
   try {
     const response: Response = await fetch(urls.getFavorites)
 
-      if (!response.ok) {
-        throw new Error("Error fetching favorite resources")
-      }
-      const data: TFavorites[] = await response.json()
-      return data
-  }
-  catch (error) {
-    throw new Error("Error fetching favorite resources")
+    if (!response.ok) {
+      throw new Error('Error fetching favorite resources')
+    }
+    const data: TFavorites[] = await response.json()
+    return data
+  } catch (error) {
+    throw new Error('Error fetching favorite resources')
   }
 }
 
 export const useGetFavorites = () => {
+  const { addNotification } = useNotifications()
 
-  const data = useQuery<TFavorites[] | Error> ({
-    queryKey: ["userFavorites"],
-    queryFn: getFavorites
+  const data = useQuery<TFavorites[] | Error>({
+    queryKey: ['userFavorites'],
+    queryFn: getFavorites,
+    onSuccess: () => {
+      addNotification({
+        title: 'Favorites',
+        description: 'Favorites loaded successfully',
+        variant: 'success',
+      })
+    },
   })
-  
+
   return data
 }
