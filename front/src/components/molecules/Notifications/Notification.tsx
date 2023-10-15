@@ -4,6 +4,7 @@ import { FlexBox, colors, dimensions, font } from '../../../styles'
 import { Icon, Text } from '../../atoms'
 import { NActions, TNotification, TVariant } from './types'
 import { NotificationsContext } from './context'
+import { useNotifications } from './useNotifications'
 
 const ContainerStyled = styled(FlexBox)<{ variant: TVariant }>`
   flex-direction: row;
@@ -48,6 +49,7 @@ const Notification: FC<TNotification> = ({
   variant,
 }: TNotification) => {
   const { dispatch } = useContext(NotificationsContext)
+  const { removeNotification } = useNotifications()
 
   useEffect(() => {
     if (autoClose) {
@@ -66,7 +68,7 @@ const Notification: FC<TNotification> = ({
         <HeaderStyled>{title}</HeaderStyled>
         <TextStyled color={colors.white}>{description}</TextStyled>
       </ContentStyled>
-      <IconStyled name="close" wght={700} />
+      <IconStyled name="close" wght={700} onClick={() => removeNotification} />
     </ContainerStyled>
   )
 }
