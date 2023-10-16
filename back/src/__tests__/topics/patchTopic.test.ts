@@ -6,6 +6,7 @@ import { server } from '../globalSetup'
 import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 let testCategory1: Category | null
 let testCategory2: Category | null
@@ -92,5 +93,23 @@ describe('Testing topic patch endpoint', () => {
       .send(modifiedTopic)
 
     expect(response.status).toBe(403)
+  })
+  it('Should return 401 status if no token is provided', async () => {
+    const response = await supertest(server)
+      .patch(`${pathRoot.v1.topics}`)
+      .send({
+        id: testTopicToPatch!.id,
+        name: 'Node File System',
+        categoryId: testCategory1!.id,
+      })
+    expect(response.status).toBe(401)
+    expect(response.body.message).toBe('Missing token')
+  })
+  it('Check invalid token ', async () => {
+    checkInvalidToken(`${pathRoot.v1.topics}`, 'patch', {
+      id: testTopicToPatch!.id,
+      name: 'Node File System',
+      categoryId: testCategory1!.id,
+    })
   })
 })

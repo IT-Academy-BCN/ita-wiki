@@ -9,6 +9,7 @@ import { prisma } from '../../prisma/client'
 import { resourceGetSchema, topicSchema } from '../../schemas'
 import { resourceTestData } from '../mocks/resources'
 import { authToken } from '../setup'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 type ResourceVotes = {
   [key: string]: number
@@ -241,4 +242,6 @@ describe('Testing resources GET endpoint', () => {
       }
     })
   })
+
+  checkInvalidToken(`${pathRoot.v1.resources}`, 'get')
 })
