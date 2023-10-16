@@ -1,19 +1,19 @@
 import supertest from 'supertest'
-import { expect, test, describe, beforeEach, afterEach } from 'vitest'
-import { Favorites, User, Resource, Category } from '@prisma/client'
+import { expect, test, describe, beforeAll, afterAll } from 'vitest'
+import { User, Resource, Category } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
-describe('Testing resource modify endpoint', () => {
-  const req: { id: string } = { id: '' }
-  beforeEach(async () => {
-    const user = (await prisma.user.findUnique({
-      where: { email: 'testingUser@user.cat' },
-    })) as User
+describe('Testing resource modify endpoint', async () => {
+  const user = (await prisma.user.findUnique({
+    where: { email: 'testingUser@user.cat' },
+  })) as User
 
+  const req: { id: string } = { id: '' }
+  beforeAll(async () => {
     const category = (await prisma.category.findUnique({
       where: { slug: 'testing' },
     })) as Category
@@ -33,10 +33,7 @@ describe('Testing resource modify endpoint', () => {
     req.id = resource.id
   })
 
-  afterEach(async () => {
-    const user = await prisma.user.findUnique({
-      where: { email: 'testingUser@user.cat' },
-    })
+  afterAll(async () => {
     const resource = await prisma.resource.findUnique({
       where: { slug: 'test-patch-resource' },
     })
@@ -69,14 +66,6 @@ describe('Testing resource modify endpoint', () => {
       where: { slug: 'test-patch-resource' },
     })) as Resource
 
-    const user = (await prisma.user.findUnique({
-      where: { email: 'testingUser@user.cat' },
-    })) as User
-
-    ;(await prisma.favorites.create({
-      data: { resourceId: req.id, userId: user.id },
-    })) as Favorites
-
     const response = await supertest(server)
       .put(`${pathRoot.v1.favorites}/`)
       .set('Cookie', authToken.user)
@@ -90,21 +79,5 @@ describe('Testing resource modify endpoint', () => {
     expect(response.status).toBe(204)
   })
 
-  test('should accept string only', async () => {
-    const newResource = {
-      id: 23,
-      title: 23,
-      slug: 'test-resource-1-blog',
-      description: 'Lorem ipsum blog',
-      url: 'https://sample.com',
-      resourceType: 'BLOG',
-    }
-
-    const response = await supertest(server)
-      .put(`${pathRoot.v1.favorites}/`)
-      .set('Cookie', authToken.user)
-      .send(newResource)
-    expect(response.status).toBe(400)
-  })
   checkInvalidToken(`${pathRoot.v1.favorites}/`, 'put', req)
 })

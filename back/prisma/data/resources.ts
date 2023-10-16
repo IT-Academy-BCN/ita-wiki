@@ -2,8 +2,8 @@ import { Prisma } from '@prisma/client'
 import slugify from 'slugify'
 
 export const resources: Omit<
-  Omit<Prisma.ResourceCreateArgs['data'], 'userId'>,
-  'categoryId'
+  Prisma.ResourceCreateArgs['data'],
+  'userId' | 'categoryId'
 >[] = [
   {
     title: 'My resource in React',
