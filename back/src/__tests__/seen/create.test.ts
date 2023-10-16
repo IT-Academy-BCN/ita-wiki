@@ -6,6 +6,7 @@ import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { resourceTestData } from '../mocks/resources'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 let testResource: Resource
 const uri = `${pathRoot.v1.seen}/`
@@ -71,8 +72,13 @@ describe('Testing viewed resource creation endpoint', () => {
     it('Should response status code 401 if no token is provided', async () => {
       const response = await supertest(server).post(`${uri + testResource.id}`)
       expect(response.status).toBe(401)
-      expect(response.body.error).toBe('Unauthorized: Missing token')
+      expect(response.body.message).toBe('Missing token')
     })
+
+    it('Check invalid token', async () => {
+      checkInvalidToken(`${uri + testResource.id}`, 'post')
+    })
+
     it('should response status code 404 if resource does not exist', async () => {
       const response = await supertest(server)
         .post(`${uri}clnjyhw7t000008ju4ozndeqi`)
