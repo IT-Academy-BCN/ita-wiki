@@ -7,6 +7,7 @@ import { MissingParamError } from '../../helpers/errors'
 
 export const postMedia: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User
+  const categoryId = (user.specializationId as string) || null
   const media = ctx.file
 
   if (!media) throw new MissingParamError('media')
@@ -34,6 +35,7 @@ export const postMedia: Middleware = async (ctx: Koa.Context) => {
       mimeType: media.mimetype,
       filePath,
       userId: user.id,
+      categoryId,
     },
   })
 

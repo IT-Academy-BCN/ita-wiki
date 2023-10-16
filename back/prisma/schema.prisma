@@ -78,6 +78,7 @@ model Category {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   User      User[]
+  media     Media[]
 
   @@map("category")
 }
@@ -96,13 +97,15 @@ model Topic {
 }
 
 model Media {
-  id        String   @id @default(cuid())
-  mimeType  String   @map("mime_type")
-  filePath  String   @map("file_path")
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @map("user_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id         String    @id @default(cuid())
+  mimeType   String    @map("mime_type")
+  filePath   String    @map("file_path")
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String    @map("user_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?
 
   @@map("media")
 }
