@@ -6,6 +6,7 @@ import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
 import { resourceGetSchema } from '../../schemas'
 import { resourceTestData } from '../mocks/resources'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 beforeAll(async () => {
   const user = await prisma.user.findUnique({
@@ -33,8 +34,10 @@ describe('Testing resources/me endpoint', () => {
   test('Should return error if no token is provided', async () => {
     const response = await supertest(server).get(`${pathRoot.v1.resources}/me`)
     expect(response.status).toBe(401)
-    expect(response.body.error).toBe('Unauthorized: Missing token')
+    expect(response.body.message).toBe('Missing token')
   })
+
+  checkInvalidToken(`${pathRoot.v1.resources}/me`, 'get')
 
   test('User with no resources posted returns empty array.', async () => {
     // User admin has no posted resources

@@ -1,11 +1,12 @@
 import { Category, Resource, User } from '@prisma/client'
 import supertest from 'supertest'
-import { expect, test, describe, it, beforeAll, afterAll } from 'vitest'
+import { expect, describe, it, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { voteCountSchema } from '../../schemas'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 let resource: Resource
 let testUser: User
@@ -30,6 +31,17 @@ beforeAll(async () => {
       categoryId: category.id,
     },
   })
+  await prisma.vote.create({
+    data: {
+      user: {
+        connect: { dni: testUserData.user.dni },
+      },
+      resource: {
+        connect: { id: resource.id },
+      },
+      vote: -1,
+    },
+  })
 })
 
 afterAll(async () => {
@@ -42,13 +54,33 @@ afterAll(async () => {
 })
 
 describe('Testing VOTE endpoint, GET method', async () => {
-  it('Should succeed with valid params', async () => {
+  it('Should succeed with valid params but no logged in user', async () => {
     const response = await supertest(server).get(
       `${pathRoot.v1.vote}/${resource.id}`
     )
     expect(response.status).toBe(200)
-    expect(() => voteCountSchema.parse(response.body.voteCount)).not.toThrow()
+    expect(() => voteCountSchema.parse(response.body)).not.toThrow()
+    expect(response.body.userVote).toBe(0)
   })
+  it('Should return userVote as 0 for logged in user who hasn’t voted', async () => {
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.vote}/${resource.id}`)
+      .set('Cookie', authToken.admin)
+
+    expect(response.status).toBe(200)
+    expect(() => voteCountSchema.parse(response.body)).not.toThrow()
+    expect(response.body.userVote).toBe(0)
+  })
+  it('Should return userVote as a number for logged in user who has voted', async () => {
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.vote}/${resource.id}`)
+      .set('Cookie', authToken.user)
+
+    expect(response.status).toBe(200)
+    expect(() => voteCountSchema.parse(response.body)).not.toThrow()
+    expect(response.body.userVote).toBe(-1)
+  })
+
   it('Should fail with invalid resourceId', async () => {
     const response = await supertest(server).get(
       `${pathRoot.v1.vote}/someInvalidResourceId`
@@ -64,14 +96,21 @@ describe('Testing VOTE endpoint, GET method', async () => {
   })
 })
 describe('Testing VOTE endpoint, PUT method', async () => {
-  test('Should return error if no token is provided', async () => {
+  it('Should return error if no token is provided', async () => {
     const response = await supertest(server).put(`${pathRoot.v1.vote}`).send({
       resourceId: resource.id,
       vote: 'up',
     })
     expect(response.status).toBe(401)
-    expect(response.body.error).toBe('Unauthorized: Missing token')
+    expect(response.body.message).toBe('Missing token')
   })
+  it('Check invalid token', async () => {
+    checkInvalidToken(`${pathRoot.v1.vote}`, 'put', {
+      resourceId: resource.id,
+      vote: 'up',
+    })
+  })
+
   describe('With valid token', () => {
     describe('Testing success: up, down and cancel options', () => {
       it('Should succeed with up vote, and update the data in the db', async () => {

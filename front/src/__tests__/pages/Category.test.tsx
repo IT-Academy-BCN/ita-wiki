@@ -47,6 +47,29 @@ it('renders correctly', () => {
   expect(screen.getByText('Recursos favoritos')).toBeInTheDocument()
 })
 
+it('renders Navbar for logged in users', () => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'Name',
+      avatar: 'Avatar',
+    },
+  } as TAuthContext)
+
+  render(<Category />)
+
+  expect(screen.getByTestId('navbar')).toBeInTheDocument()
+})
+
+it('renders Navbar for unregistered users', () => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: null,
+  } as TAuthContext)
+
+  render(<Category />)
+
+  expect(screen.getByTestId('navbar')).toBeInTheDocument()
+})
+
 it('filters opens and closes correctly', () => {
   render(<Category />)
 

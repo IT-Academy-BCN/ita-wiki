@@ -22,3 +22,5 @@ export const resourceSchema = z.object({
     .optional()
     .openapi({ example: 'NOT_SEEN' }),
 })
+
+export type TResourceSchema = z.infer<typeof resourceSchema>

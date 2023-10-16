@@ -53,11 +53,11 @@ components:
     InvalidTokenError:
       type: object
       properties:
-        error:
+        message:
           type: string
           example: Token is not valid
       required:
-        - error
+        - message
     ForbiddenError:
       type: object
       properties:
@@ -155,13 +155,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: User not found
-                required:
-                  - message
+                $ref: "#/components/schemas/MissingUserError"
         "422":
           description: Invalid password
           content:
@@ -271,13 +265,13 @@ paths:
                     example: user@example.cat
                   role:
                     type: string
-                    enum: &a6
+                    enum: &a5
                       - ADMIN
                       - REGISTERED
                       - MENTOR
                   status:
                     type: string
-                    enum: &a5
+                    enum: &a4
                       - ACTIVE
                       - INACTIVE
                 required:
@@ -296,11 +290,8 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/MissingUserError"
-                  - example: &a4
-                      message: User not found
-        "405":
+                $ref: "#/components/schemas/MissingUserError"
+        "498":
           description: Invalid token
           content:
             application/json:
@@ -448,7 +439,7 @@ paths:
                   - $ref: "#/components/schemas/ForbiddenError"
                   - example: &a1
                       message: Access denied. You don't have permissions
-        "405":
+        "498":
           description: Invalid token
           content:
             application/json:
@@ -509,7 +500,7 @@ paths:
                   - example: *a1
         "404":
           description: Topic not found
-        "405":
+        "498":
           description: Invalid token
           content:
             application/json:
@@ -603,10 +594,15 @@ paths:
                         total:
                           type: integer
                           example: 12
+                        userVote:
+                          type: integer
+                          minimum: -1
+                          maximum: 1
                       required:
                         - upvote
                         - downvote
                         - total
+                        - userVote
                   required:
                     - id
                     - title
@@ -622,37 +618,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: "Unauthorized: Missing token"
-                required:
-                  - error
+                $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: User not found
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  error:
-                    type: string
-                    example: User not found
-                required:
-                  - error
+                $ref: "#/components/schemas/MissingUserError"
         "498":
           description: Invalid token
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Token is not valid
-                required:
-                  - message
+                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/resources:
     get:
       tags:
@@ -785,10 +763,18 @@ paths:
                         total:
                           type: integer
                           example: 12
+                        userVote:
+                          type: integer
+                          minimum: -1
+                          maximum: 1
                       required:
                         - upvote
                         - downvote
                         - total
+                        - userVote
+                    isFavorite:
+                      type: boolean
+                      default: false
                   required:
                     - id
                     - title
@@ -800,6 +786,7 @@ paths:
                     - user
                     - topics
                     - voteCount
+                    - isFavorite
         "400":
           description: Validation error
           content:
@@ -820,6 +807,12 @@ paths:
                             - resourceType
                           message: Invalid enum value. Expected 'BLOG' | 'VIDEO' | 'TUTORIAL', received
                             'BLO'
+        "498":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
     post:
       tags:
         - resources
@@ -869,7 +862,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MissingTokenError"
-        "405":
+        "498":
           description: Invalid token
           content:
             application/json:
@@ -918,7 +911,7 @@ paths:
                 $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: Not found
-        "405":
+        "498":
           description: Invalid token
           content:
             application/json:
@@ -1034,10 +1027,18 @@ paths:
                       total:
                         type: integer
                         example: 12
+                      userVote:
+                        type: integer
+                        minimum: -1
+                        maximum: 1
                     required:
                       - upvote
                       - downvote
                       - total
+                      - userVote
+                  isFavorite:
+                    type: boolean
+                    default: false
                 required:
                   - id
                   - title
@@ -1049,6 +1050,7 @@ paths:
                   - user
                   - topics
                   - voteCount
+                  - isFavorite
         "400":
           description: Validation error
           content:
@@ -1203,10 +1205,18 @@ paths:
                       total:
                         type: integer
                         example: 12
+                      userVote:
+                        type: integer
+                        minimum: -1
+                        maximum: 1
                     required:
                       - upvote
                       - downvote
                       - total
+                      - userVote
+                  isFavorite:
+                    type: boolean
+                    default: false
                 required:
                   - id
                   - title
@@ -1218,6 +1228,7 @@ paths:
                   - user
                   - topics
                   - voteCount
+                  - isFavorite
         "404":
           description: Topic not found
           content:
@@ -1336,10 +1347,18 @@ paths:
                             total:
                               type: integer
                               example: 12
+                            userVote:
+                              type: integer
+                              minimum: -1
+                              maximum: 1
                           required:
                             - upvote
                             - downvote
                             - total
+                            - userVote
+                        isFavorite:
+                          type: boolean
+                          default: false
                       required:
                         - id
                         - title
@@ -1351,6 +1370,7 @@ paths:
                         - user
                         - topics
                         - voteCount
+                        - isFavorite
                 required:
                   - resources
         "401":
@@ -1364,10 +1384,8 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/MissingUserError"
-                  - example: *a4
-        "405":
+                $ref: "#/components/schemas/MissingUserError"
+        "498":
           description: Invalid token
           content:
             application/json:
@@ -1377,44 +1395,46 @@ paths:
     get:
       tags:
         - vote
-      description: Get the vote count for a resource, separeted in total votes,
-        upvotes and downvotes
-      summary: Get the vote count for a resource.
+      description: Retrieve a detailed vote count for a specified resource, including
+        the number of upvotes, downvotes, and the overall vote balance.
+      summary: Fetch detailed vote statistics for a resource.
       parameters:
         - in: path
           name: resourceId
           schema:
             type: string
-            description: ID of the resource to get the vote count
+            description: Unique identifier of the resource for which vote statistics are
+              requested.
           required: true
       responses:
         "200":
-          description: Successful operation. Votes are retrieved and summed.
+          description: Successfully retrieved detailed vote statistics for the specified
+            resource.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  voteCount:
-                    type: object
-                    properties:
-                      upvote:
-                        type: integer
-                        minimum: 0
-                        example: 14
-                      downvote:
-                        type: integer
-                        minimum: 0
-                        example: 2
-                      total:
-                        type: integer
-                        example: 12
-                    required:
-                      - upvote
-                      - downvote
-                      - total
+                  upvote:
+                    type: integer
+                    minimum: 0
+                    example: 14
+                  downvote:
+                    type: integer
+                    minimum: 0
+                    example: 2
+                  total:
+                    type: integer
+                    example: 12
+                  userVote:
+                    type: integer
+                    minimum: -1
+                    maximum: 1
                 required:
-                  - voteCount
+                  - upvote
+                  - downvote
+                  - total
+                  - userVote
         "404":
           description: Resource not found
           content:
@@ -1427,6 +1447,12 @@ paths:
                     example: Resource not found
                 required:
                   - error
+        "498":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/vote:
     put:
       tags:
@@ -1484,7 +1510,7 @@ paths:
                       - Resource not found
                 required:
                   - message
-        "405":
+        "498":
           description: Invalid token
           content:
             application/json:
@@ -1543,12 +1569,6 @@ paths:
                     example: User not found
                 required:
                   - error
-        "405":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
         "415":
           description: Unsupported media type. File must be an image.
           content:
@@ -1573,6 +1593,12 @@ paths:
                     example: Missing media
                 required:
                   - message
+        "498":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
         "500":
           description: Other error
           content:
@@ -1637,10 +1663,10 @@ paths:
                       example: specializationId
                     status:
                       type: string
-                      enum: *a5
+                      enum: *a4
                     role:
                       type: string
-                      enum: *a6
+                      enum: *a5
                     createdAt:
                       type: string
                       format: date-time
@@ -1670,7 +1696,7 @@ paths:
                 allOf:
                   - $ref: "#/components/schemas/ForbiddenError"
                   - example: *a1
-        "405":
+        "498":
           description: Invalid token
           content:
             application/json:
@@ -1756,14 +1782,14 @@ paths:
                   - example: *a1
         "404":
           description: Not found
-        "405":
+        "409":
+          description: Conflict, data already exists.
+        "498":
           description: Invalid token
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
-        "409":
-          description: Conflict, data already exists.
         "500":
           description: Other error
           content:
@@ -1813,7 +1839,11 @@ paths:
                 $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: User not found
-        "405":
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingUserError"
+        "498":
           description: Invalid token
           content:
             application/json:

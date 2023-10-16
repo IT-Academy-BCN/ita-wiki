@@ -12,5 +12,18 @@
   "Recursos compartits": "Shared resources",
 
   "Vota els recursos": "Vote resources",
-  "La comunitat decideix": "The community decides which ones are the most relevant"
+  "La comunitat decideix": "The community decides which ones are the most relevant",
+
+  "Registre": "Register",
+  "DNI": "DNI or NIE",
+  "Especialidad": "Specialization",
+  "Password": "Password",
+  "repetirpassword": "Confirm password",
+  "password error": "Password must have at least 8 characters and contain only letters and numbers",
+  "acepto": "Accept",
+  "terminos legales": "legal terms",
+  "tienes una cuenta?": "Do you have an account?, log in",
+  "recordar/cambiar": "Remember/change password",
+  "no tienes una cuenta?": "Don't have an account?, create one"
+
 }
