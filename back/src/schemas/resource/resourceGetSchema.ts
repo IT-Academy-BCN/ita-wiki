@@ -15,4 +15,5 @@ export const resourceGetSchema = resourceSchema
     }),
     topics: z.array(z.object({ topic: topicSchema })),
     voteCount: voteCountSchema,
+    isFavorite: z.boolean().default(false),
   })
