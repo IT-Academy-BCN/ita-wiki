@@ -8,8 +8,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        // target: 'https://dev.api.itadirectory.eurecatacademy.org/',
-        target: 'http://localhost:8999/',
+        target: 'https://dev.api.itadirectory.eurecatacademy.org/',
+        // target: 'http://localhost:8999/',
 
         changeOrigin: true,
         // rewrite: (path) => path.replace(/^\/api/, ''),
