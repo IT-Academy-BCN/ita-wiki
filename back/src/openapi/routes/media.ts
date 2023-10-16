@@ -49,7 +49,6 @@ registry.registerPath({
       },
     },
     401: missingTokenResponse,
-    405: invalidTokenResponse,
     404: {
       description: 'User not found',
       content: {
@@ -80,6 +79,7 @@ registry.registerPath({
         },
       },
     },
+    498: invalidTokenResponse,
     500: {
       description: 'Other error',
       content: {

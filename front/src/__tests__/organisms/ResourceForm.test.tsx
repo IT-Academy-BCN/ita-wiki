@@ -64,7 +64,7 @@ describe('ResourceForm', () => {
     })
     fireEvent.click(screen.getByText(/crear/i))
     await waitFor(() =>
-      expect(screen.getByText('Este campo es obligatorio')).toBeInTheDocument()
+      expect(screen.getAllByText('Este campo es obligatorio')).toHaveLength(2)
     )
   })
 
@@ -94,6 +94,10 @@ describe('ResourceForm', () => {
 
     const button = screen.getByText(/crear/i)
     fireEvent.click(button)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('done-icon')).toBeInTheDocument()
+    })
     reloadPage()
   })
 

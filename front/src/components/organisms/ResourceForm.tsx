@@ -3,10 +3,10 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import styled from 'styled-components'
-import { ChangeEvent, FC } from 'react'
+import { ChangeEvent, FC, HTMLAttributes } from 'react'
 import { InputGroup, SelectGroup } from '../molecules'
-import { Button, ValidationMessage, Radio } from '../atoms'
-import { FlexBox, dimensions } from '../../styles'
+import { Button, ValidationMessage, Radio, Icon, Spinner } from '../atoms'
+import { FlexBox, colors, dimensions } from '../../styles'
 import { urls } from '../../constants'
 import { reloadPage } from '../../utils/navigation'
 
@@ -20,6 +20,23 @@ const ButtonContainerStyled = styled(FlexBox)`
   }
 `
 
+type TButton = HTMLAttributes<HTMLParagraphElement> & {
+  backgroundColor?: string
+  padding?: string
+}
+
+const ButtonStyled = styled(Button)<TButton>`
+  margin: ${dimensions.spacing.none};
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  border: 2px solid ${({ backgroundColor }) => backgroundColor};
+  padding: ${({ padding }) => padding};
+  &:hover,
+  &:disabled {
+    background-color: ${({ backgroundColor }) => backgroundColor};
+    border: 2px solid ${({ backgroundColor }) => backgroundColor};
+  }
+`
+
 const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.xxxs};
   margin-left: 0.2rem;
@@ -29,11 +46,13 @@ const ResourceFormSchema = z.object({
   title: z
     .string({ required_error: 'Este campo es obligatorio' })
     .min(1, { message: 'Este campo es obligatorio' }),
-  description: z.string().optional(),
+  description: z
+    .string({ required_error: 'Este campo es obligatorio' })
+    .min(1, { message: 'Este campo es obligatorio' }),
   url: z
     .string({ required_error: 'Este campo es obligatorio' })
     .url({ message: 'La URL proporcionada no es válida' }),
-  topics: z.string().refine((val) => val !== 'Options', {
+  topics: z.string().refine((val) => val !== '', {
     message: 'Debe seleccionar al menos un tema',
   }),
   topicId: z
@@ -41,7 +60,6 @@ const ResourceFormSchema = z.object({
     .optional()
     .refine((val) => val !== '', 'Debe seleccionar un tema válido'),
   resourceType: z.string(),
-  userEmail: z.string().optional(),
 })
 
 export type TResourceForm = Omit<
@@ -87,6 +105,7 @@ const createResourceFetcher = (resource: object) =>
     })
     // eslint-disable-next-line no-console
     .catch((error) => console.error(error))
+
 const updateResourceFetcher = (resource: object) =>
   fetch(urls.updateResource, {
     method: 'PATCH',
@@ -119,18 +138,30 @@ const ResourceForm: FC<TSelectOptions> = ({
     resolver: zodResolver(ResourceFormSchema),
     defaultValues: initialValues ?? undefined,
   })
+
+  const buttonText = initialValues ? 'Editar' : 'Crear'
+
   const createResource = useMutation(createResourceFetcher, {
     onSuccess: () => {
       reset()
       reloadPage()
     },
   })
+
+  const { isLoading: isCreateLoading, isSuccess: isCreateSuccess } =
+    createResource
+
   const updateResource = useMutation(updateResourceFetcher, {
     onSuccess: () => {
       reset()
       reloadPage()
     },
   })
+  const {
+    isLoading: isUpdateResourceLoading,
+    isSuccess: isUpdateResourceSuccess,
+  } = updateResource
+
   const create = handleSubmit(async (data) => {
     const { title, description, url, topics, resourceType } = data
     await createResource.mutateAsync({
@@ -141,6 +172,7 @@ const ResourceForm: FC<TSelectOptions> = ({
       resourceType,
     })
   })
+
   const update = handleSubmit(async (data) => {
     const { title, description, url, topicId, resourceType } = data
 
@@ -160,6 +192,7 @@ const ResourceForm: FC<TSelectOptions> = ({
     const selectedTopic = selectOptions.find(
       (option) => option.value === selectedTopicId
     )
+
     if (selectedTopic) {
       setValue('topics', selectedTopic.label)
       setValue('topicId', selectedTopic.value)
@@ -187,6 +220,9 @@ const ResourceForm: FC<TSelectOptions> = ({
         label="Descripción"
         placeholder="Descripción"
         {...register('description')}
+        error={errors.description && true}
+        validationMessage={errors.description?.message}
+        validationType="error"
       />
       <InputGroup
         hiddenLabel
@@ -218,6 +254,7 @@ const ResourceForm: FC<TSelectOptions> = ({
           { id: 'BLOG', name: 'Blog' },
         ]}
         inputName="resourceType"
+        defaultChecked="VIDEO"
       />
       <FlexErrorStyled align="start">
         {errors?.title ||
@@ -228,7 +265,26 @@ const ResourceForm: FC<TSelectOptions> = ({
         ) : null}
       </FlexErrorStyled>
       <ButtonContainerStyled align="stretch">
-        <Button type="submit">{initialValues ? 'Editar' : 'Crear'}</Button>
+        {isCreateSuccess || isUpdateResourceSuccess ? (
+          <ButtonStyled
+            backgroundColor={colors.success}
+            padding={dimensions.spacing.xs}
+            disabled
+          >
+            <Icon data-testid="done-icon" name="done" />
+          </ButtonStyled>
+        ) : (
+          <Button
+            type="submit"
+            disabled={isCreateLoading || isUpdateResourceLoading}
+          >
+            {isCreateLoading || isUpdateResourceLoading ? (
+              <Spinner size="xsmall" />
+            ) : (
+              buttonText
+            )}
+          </Button>
+        )}
       </ButtonContainerStyled>
     </ResourceFormStyled>
   )

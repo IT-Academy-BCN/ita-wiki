@@ -19,6 +19,7 @@ const errorMiddleware = async (ctx: Context, next: Next) => {
       error = new UnauthorizedError('refresh_token')
     } else if (error instanceof JsonWebTokenError) {
       error = new InvalidToken()
+      ctx.cookies.set('token', null, { expires: new Date(0), overwrite: true })
     } else if (error.code === 'P2002') {
       const resourceName = error.meta.target[0] || 'Resource'
       error = new DuplicateError(resourceName)
