@@ -21,8 +21,8 @@ const NavbarStyled = styled(FlexBox)`
     color: ${colors.white};
   }
 
-  @media (max-width: 480px) {
-    background-color: ${colors.white};
+  @media  ${device.Mobile} {
+    background-color: ${colors.black};
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     position: relative;
