@@ -22,7 +22,7 @@ afterAll(async () => {
   })
 })
 
-describe('Testing resource creation endpoint', () => {
+describe('Testing resource creation endpoint', async () => {
   const category = (await prisma.category.findUnique({
     where: { slug: 'testing' },
   })) as Category
