@@ -121,7 +121,7 @@ const Home: FC = () => {
     <Container direction="row" justify="flex-start" align="start">
       <DesktopSideMenu />
       <ContainerMain>
-        <Navbar />
+        <Navbar isUserLogged={user !== null} />
         <MainDiv
           as="main"
           justify="flex-start"
