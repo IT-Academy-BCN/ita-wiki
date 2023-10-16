@@ -6,6 +6,7 @@ import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { resourceTestData } from '../mocks/resources'
 import { pathRoot } from '../../routes/routes'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 const url: string = `${pathRoot.v1.resources}/favorites`
 const categorySlug = 'testing'
@@ -69,12 +70,8 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
       .set('Cookie', `token=${invalidUserToken}`)
     expect(response.status).toBe(404)
   })
-  test('Should respond 498 status with invalid token', async () => {
-    const response = await supertest(server)
-      .get(`${url}/${categorySlug}`)
-      .set('Cookie', 'token=randomToken')
-    expect(response.status).toBe(498)
-  })
+
+  checkInvalidToken(`${url}/${categorySlug}`, 'get')
 
   test('Should return favorites as an array of objects.', async () => {
     const response = await supertest(server)

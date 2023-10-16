@@ -4,6 +4,7 @@ import { z } from '../../zod'
 import { ValidationError } from '../../components/errorSchemas'
 import { setCookieHeader } from '../../components/setCookieHeader'
 import { pathRoot } from '../../../routes/routes'
+import { userNotFoundResponse } from '../../components/responses/authMiddleware'
 
 registry.registerPath({
   method: 'post',
@@ -25,16 +26,15 @@ registry.registerPath({
       description: 'The user has been authenticated',
       headers: { 'Set-Cookie': setCookieHeader.ref },
     },
-    404: {
-      description: 'User not found',
+    400: {
+      description: 'Zod validation error',
       content: {
         'application/json': {
-          schema: z.object({
-            message: z.string().openapi({ example: 'User not found' }),
-          }),
+          schema: ValidationError,
         },
       },
     },
+    404: userNotFoundResponse,
     422: {
       description: 'Invalid password',
       content: {
@@ -42,14 +42,6 @@ registry.registerPath({
           schema: z.object({
             message: z.string().openapi({ example: 'Invalid password' }),
           }),
-        },
-      },
-    },
-    400: {
-      description: 'Zod validation error',
-      content: {
-        'application/json': {
-          schema: ValidationError,
         },
       },
     },
