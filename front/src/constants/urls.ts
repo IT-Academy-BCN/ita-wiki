@@ -13,4 +13,5 @@ export const urls = {
   updateResource: '/api/v1/resources',
   vote: '/api/v1/vote/',
   users: '/api/v1/users',
+  favorites: '/api/v1/favorites',
 }

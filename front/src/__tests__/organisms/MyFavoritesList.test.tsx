@@ -1,42 +1,51 @@
-import { setupServer } from 'msw/node'
-import { expect, vi } from 'vitest'
+import { vi } from 'vitest'
+import { useParams, Params } from 'react-router-dom'
+import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { render, screen, waitFor } from '../test-utils'
 import { MyFavoritesList } from '../../components/organisms'
-import { errorHandlers, handlers } from '../../__mocks__/handlers'
-import { TAuthContext, useAuth } from '../../context/AuthProvider'
-
-const server = setupServer(...handlers)
+import { mswServer } from '../setup'
+import { errorHandlers } from '../../__mocks__/handlers'
 
 beforeEach(() => {
-  vi.mocked(useAuth).mockReturnValue({
-    user: {
-      name: 'Name',
-      avatar: 'Avatar',
-    },
-  } as TAuthContext)
+  vi.mock('../../context/AuthProvider', async () => {
+    const actual: Record<number, unknown> = await vi.importActual(
+      '../../context/AuthProvider'
+    )
+    return {
+      ...actual,
+      useAuth: vi.fn(),
+    }
+  })
+  vi.mock('react-router-dom', async () => {
+    const actual: Record<number, unknown> = await vi.importActual(
+      'react-router-dom'
+    )
+    return {
+      ...actual,
+      useParams: vi.fn(),
+    }
+  })
 })
 
 afterEach(() => {
-  server.resetHandlers()
+  mswServer.resetHandlers()
   vi.resetAllMocks()
 })
 
-afterAll(() => server.close())
+afterAll(() => mswServer.close())
 
 describe('MyFavoritesList', () => {
-  beforeEach(() => {
-    vi.mock('../../context/AuthProvider', async () => {
-      const actual = await vi.importActual('../../context/AuthProvider')
-      return {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        ...actual,
-        useAuth: vi.fn(),
-      }
-    })
-  })
-
   it('renders correctly', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'TestName',
+        avatar: 'TestAvatar',
+      },
+    } as TAuthContext)
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'react',
+    } as Readonly<Params>)
+
     render(<MyFavoritesList />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
@@ -44,43 +53,106 @@ describe('MyFavoritesList', () => {
     expect(screen.getByTestId('title')).toBeInTheDocument()
 
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
+    await waitFor(() =>
+      expect(screen.getByText('My favorite title')).toBeInTheDocument()
+    )
   })
 
-  it('shows message if user is not logged', async () => {
+  it('shows message if user is not logged in', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: null,
     } as TAuthContext)
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'react',
+    } as Readonly<Params>)
 
     render(<MyFavoritesList />)
+
+    expect(screen.getByTestId('no-user')).toBeInTheDocument()
   })
 
-  it('receives data when API call returns 200 and the user has no favorite resources', async () => {
+  it('shows no favorites message when the user has no favorite resources for a category', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'TestName',
+        avatar: 'TestAvatar',
+      },
+    } as TAuthContext)
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'slugWithoutFavs',
+    } as Readonly<Params>)
+
     render(<MyFavoritesList />)
+
+    const spinnerComponent = screen.getByRole('status') as HTMLDivElement
+    await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
+
+    await waitFor(() =>
+      expect(screen.getByText('No hi ha recursos favorits')).toBeInTheDocument()
+    )
+    expect(
+      screen.queryByText('Alguna cosa ha anat malament...')
+    ).not.toBeInTheDocument()
   })
 
   it('shows correct title when resize to mobile', async () => {
     global.innerWidth = 600
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'TestName',
+        avatar: 'TestAvatar',
+      },
+    } as TAuthContext)
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'react',
+    } as Readonly<Params>)
+
     render(<MyFavoritesList />)
+
     const titleElement = screen.getByTestId('title')
-    expect(titleElement).toHaveTextContent('Recursos que te gustan')
+    expect(titleElement).toHaveTextContent("Recursos que t'agraden")
   })
 
   it('shows correct title when resize to desktop', async () => {
     global.innerWidth = 1024
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'TestName',
+        avatar: 'TestAvatar',
+      },
+    } as TAuthContext)
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'react',
+    } as Readonly<Params>)
+
     render(<MyFavoritesList />)
+
     const titleElement = screen.getByTestId('title')
-    expect(titleElement).toHaveTextContent('Recursos favoritos')
+    expect(titleElement).toHaveTextContent('Recursos favorits')
   })
 
-  it.skip('renders correctly on error', async () => {
-    server.use(...errorHandlers)
+  it('renders correctly on error', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'TestName',
+        avatar: 'TestAvatar',
+      },
+    } as TAuthContext)
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'react',
+    } as Readonly<Params>)
+    mswServer.use(...errorHandlers)
+
     render(<MyFavoritesList />)
+
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
 
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
-      expect(screen.getByText('Algo ha ido mal...')).toBeInTheDocument()
+      expect(
+        screen.getByText('Alguna cosa ha anat malament...')
+      ).toBeInTheDocument()
     })
   })
 })
