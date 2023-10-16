@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { z } from 'zod'
+import { useTranslation } from 'react-i18next'
 import {
   Title,
   Text,
@@ -113,6 +114,9 @@ type TRegister = {
   handleLoginModal: () => void
   handleRegisterModal: () => void
 }
+export function validatePassword(password: string): boolean {
+  return /^(?=.*[A-Za-z\d])[A-Za-z\d]{8,}$/.test(password)
+}
 
 const registerNewUser = async (useData: TForm) => {
   const response = await fetch(urls.register, {
@@ -130,6 +134,7 @@ const registerNewUser = async (useData: TForm) => {
 const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
   const [visibility, setVisibility] = useState(false)
   const [responseError, setResponseError] = useState('')
+  const { t } = useTranslation()
   const {
     register,
     handleSubmit,
@@ -176,7 +181,10 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     const selectedCategory = categoriesMap.find(
       (category: { label: string }) => category.label === specialization
     )
-
+    if (!validatePassword(password)) {
+      setResponseError(t('password error'))
+      return
+    }
     if (selectedCategory && password === confirmPassword && accept) {
       await registerUser.mutateAsync({
         email,
@@ -193,7 +201,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
   return (
     <RegisterStyled>
       <TitleStyled as="h1" fontWeight="bold">
-        Registro
+        {t('Registre')}
       </TitleStyled>
       {responseError && (
         <FlexErrorStyled align="start">
@@ -207,7 +215,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             id="dni"
             label="dni"
             type="text"
-            placeholder="DNI o NIE"
+            placeholder={t('DNI')}
             error={errors.dni && true}
             validationMessage={errors.dni?.message}
             validationType="error"
@@ -255,9 +263,15 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             id="password"
             label="password"
             type={visibility ? 'text' : 'password'}
-            placeholder="Contraseña"
-            error={errors.password && true}
-            validationMessage={errors.password?.message}
+            placeholder={t('Password')}
+            error={
+              errors.password &&
+              'La contraseña debe tener al menos 8 caracteres y contener solo letras y números'
+            }
+            validationMessage={
+              errors.password?.message &&
+              'La contraseña debe tener al menos 8 caracteres y contener solo letras y números'
+            }
             validationType="error"
             color={colors.gray.gray4}
             icon={visibility ? 'visibility' : 'visibility_off'}
@@ -274,7 +288,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             id="confirmPassword"
             label="confirmPassword"
             type={visibility ? 'text' : 'password'}
-            placeholder="Repetir contraseña"
+            placeholder={t('repetirpassword')}
             icon={visibility ? 'visibility' : 'visibility_off'}
             iconClick={() => setVisibility(!visibility)}
             color={colors.gray.gray4}
@@ -292,7 +306,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             data-testid="specialization"
             id="specialization"
             label="specialization"
-            placeholder="Especialidad"
+            placeholder={t('Especialidad')}
             error={errors.specialization && true}
             options={categoriesMap}
             validationMessage={errors.specialization?.message}
@@ -312,9 +326,9 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
               {...register('accept')}
             />
             <TextStyled as="label" htmlFor="accept">
-              Acepto{' '}
+              {t('acepto')}{' '}
               <LegalTermsLinkStyled to="#">
-                términos legales
+                {t('terminos legales')}
               </LegalTermsLinkStyled>
             </TextStyled>
           </FlexBox>
@@ -336,7 +350,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             </ButtonStyled>
           ) : (
             <Button disabled={isLoading} data-testid="submitButton">
-              {isLoading ? <Spinner size="xsmall" /> : 'Registrarme'}
+              {isLoading ? <Spinner size="xsmall" /> : t('RegistrarmeBtn')}
             </Button>
           )}
         </GridAreaStyled>
@@ -348,7 +362,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             handleRegisterModal()
           }}
         >
-          ¿Tienes una cuenta?, entrar
+          {t('tienes una cuenta?')}
         </TextDecorationStyled>
       </Text>
     </RegisterStyled>

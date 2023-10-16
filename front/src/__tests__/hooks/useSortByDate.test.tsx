@@ -32,6 +32,7 @@ const mockedResources = [
       upvote: 2,
       downvote: 2,
       total: 0,
+      userVote: 1
     },
   },
   {
@@ -64,6 +65,7 @@ const mockedResources = [
       upvote: 0,
       downvote: 0,
       total: 0,
+      userVote: 0
     },
   },
 ]

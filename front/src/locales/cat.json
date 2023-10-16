@@ -12,5 +12,41 @@
   "Recursos compartits": "Recursos compartits",
 
   "Vota els recursos": "Vota els recursos",
-  "La comunitat decideix": "La comunitat decideix quins són més rellevants"
+  "La comunitat decideix": "La comunitat decideix quins són més rellevants",
+
+  "Registre": "Registre",
+  "DNI": "DNI o NIE",
+  "Especialidad": "Especialitat",
+  "Password": "Contrasenya",
+  "repetirpassword": "Repetir contrasenya",
+  "password error": "La contrasenya ha de tenir almenys 8 caràcters i contenir només lletres i números",
+  "acepto": "Accepto",
+  "terminos legales": "termes legals",
+  "tienes una cuenta?": "Tens un compte?, entra",
+  "recordar/cambiar": "Recordar/canviar la contrasenya",
+  "no tienes una cuenta?": "No tens un compte?, crea'n un",
+
+  "Eliminar de favoritos": "Elimina de favorits",
+  "Añadir a favoritos": "Afegeix a favorits",
+
+  "Recursos favoritos": "Recursos favorits",
+  "Recursos que te gustan": "Recursos que t'agraden",
+  "Regístrate": "Registra't",
+  " o ": " o ",
+  "inicia sesión": "inicia sessió",
+  " para añadir recursos favoritos": " per afegir recursos favorits",
+  "No tienes recursos favoritos": "No hi ha recursos favorits",
+  "Algo ha ido mal...": "Alguna cosa ha anat malament...",
+
+  "Registre": "Registre",
+  "DNI": "DNI o NIE",
+  "Especialidad": "Especialitat",
+  "Password": "Contrasenya",
+  "repetirpassword": "Repetir contrasenya",
+  "password error": "La contrasenya ha de tenir almenys 8 caràcters i contenir només lletres i números",
+  "acepto": "Accepto",
+  "terminos legales": "termes legals",
+  "tienes una cuenta?": "¿Tens un compte?, entra",
+  "recordar/cambiar": "Recordar/canviar la contrasenya",
+  "no tienes una cuenta?": "No tens un compte?, crea un"
 }

@@ -35,9 +35,11 @@ export type TResource = {
     upvote: number
     downvote: number
     total: number
+    userVote: number
   }
   resourceType: string
   topics: TTopic[]
+  isFavorite: boolean
 }
 
 const SpinnerStyled = styled(Spinner)`
@@ -118,6 +120,7 @@ const ResourceCardList: FC<TResourceCardList> = ({
             createdAt={resource.createdAt}
             updatedAt={resource.updatedAt}
             handleAccessModal={handleAccessModal}
+            isFavorite={user ? resource.isFavorite : false}
             editable={user?.name === resource.user.name}
             resourceType={resource.resourceType}
             topics={resource.topics}

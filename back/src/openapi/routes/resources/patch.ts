@@ -28,9 +28,9 @@ registry.registerPath({
       description: 'Resource has been modified',
     },
     401: missingTokenResponse,
-    405: invalidTokenResponse,
     404: {
       description: 'Not found',
     },
+    498: invalidTokenResponse,
   },
 })

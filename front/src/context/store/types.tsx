@@ -25,8 +25,10 @@ export type TResource = {
     upvote: number
     downvote: number
     total: number
+    userVote: number
   }
   editable: boolean
+  isFavorite: boolean
 }
 
 export type TInitialState = {

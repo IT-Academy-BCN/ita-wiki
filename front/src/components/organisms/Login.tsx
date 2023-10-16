@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
 import { UserLoginSchema } from '@itacademy/schemas'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import InputGroup from '../molecules/InputGroup'
 import { Button, Icon, Spinner, Text, Title, ValidationMessage } from '../atoms'
 import { urls } from '../../constants'
@@ -99,6 +100,7 @@ const loginUserFetcher = async (user: object) => {
 const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
   const [isVisibility, setIsVisibility] = useState(false)
   const [responseError, setResponseError] = useState('')
+  const { t } = useTranslation()
   const {
     register,
     handleSubmit,
@@ -153,7 +155,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
         <InputGroup
           id="dni"
           label="dni"
-          placeholder="DNI o NIE"
+          placeholder={t('DNI')}
           {...register('dni')}
           name="dni"
           error={errors.dni && true}
@@ -165,7 +167,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
           type={isVisibility ? 'text' : 'password'}
           id="password"
           label="password"
-          placeholder="Contraseña"
+          placeholder={t('Password')}
           {...register('password')}
           name="password"
           color={colors.gray.gray4}
@@ -183,7 +185,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
               handleLoginModal()
             }}
           >
-            <Text>Recordar/cambiar contraseña</Text>
+            <Text>{t('recordar/cambiar')}</Text>
           </TextDecorationStyled>
         </FlexBox>
         {isSuccess ? (
@@ -207,7 +209,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
             handleLoginModal()
           }}
         >
-          ¿No tienes cuenta?, crear una
+          {t('no tienes una cuenta?')}
         </TextDecorationStyled>
       </Text>
     </LoginStyled>
