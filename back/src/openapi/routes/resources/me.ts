@@ -6,7 +6,7 @@ import { cookieAuth } from '../../components/cookieAuth'
 import {
   invalidTokenResponse,
   missingTokenResponse,
-  userNotFound,
+  userNotFoundResponse,
 } from '../../components/responses/authMiddleware'
 
 registry.registerPath({
@@ -28,7 +28,7 @@ registry.registerPath({
       },
     },
     401: missingTokenResponse,
-    405: invalidTokenResponse,
-    404: userNotFound,
+    404: userNotFoundResponse,
+    498: invalidTokenResponse,
   },
 })

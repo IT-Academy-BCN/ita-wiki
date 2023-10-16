@@ -1,14 +1,12 @@
 import Koa from 'koa'
 import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
 import { prisma } from '../prisma/client'
-import { NotFoundError } from '../helpers/errors'
+import { NotFoundError, UnauthorizedError } from '../helpers/errors'
 
 export const authenticate = async (ctx: Koa.Context, next: Koa.Next) => {
   const token = ctx.cookies.get('token')
   if (!token) {
-    ctx.status = 401
-    ctx.body = { error: 'Unauthorized: Missing token' }
-    return
+    throw new UnauthorizedError()
   }
 
   const { userId } = jwt.verify(

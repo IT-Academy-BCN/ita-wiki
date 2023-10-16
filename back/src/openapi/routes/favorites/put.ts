@@ -5,6 +5,7 @@ import { cookieAuth } from '../../components/cookieAuth'
 import {
   invalidTokenResponse,
   missingTokenResponse,
+  userNotFoundResponse,
 } from '../../components/responses/authMiddleware'
 import { favoritePutSchema } from '../../../schemas/favorites/favoritePutSchema'
 import { InputError, ValidationError } from '../../components/errorSchemas'
@@ -38,9 +39,7 @@ registry.registerPath({
       },
     },
     401: missingTokenResponse,
-    404: {
-      description: 'User not found',
-    },
-    405: invalidTokenResponse,
+    404: userNotFoundResponse,
+    498: invalidTokenResponse,
   },
 })

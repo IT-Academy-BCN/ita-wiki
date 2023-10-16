@@ -5,6 +5,7 @@ import { server } from '../globalSetup'
 import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 let testCategory: Category | null
 
@@ -56,5 +57,21 @@ describe('Testing resource creation endpoint', () => {
       .send(newTopic)
 
     expect(response.status).toBe(403)
+  })
+  it('Should return 401 status if no token is provided', async () => {
+    const response = await supertest(server)
+      .post(`${pathRoot.v1.topics}`)
+      .send({
+        name: 'Node File System',
+        categoryId: testCategory!.id,
+      })
+    expect(response.status).toBe(401)
+    expect(response.body.message).toBe('Missing token')
+  })
+  it('Check invalid token', async () => {
+    checkInvalidToken(`${pathRoot.v1.topics}`, 'post', {
+      name: 'Node File System',
+      categoryId: testCategory!.id,
+    })
   })
 })
