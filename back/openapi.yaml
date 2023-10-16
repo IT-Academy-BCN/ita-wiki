@@ -924,6 +924,37 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
+  "/api/v1/seen/{resourceId}":
+    post:
+      tags:
+        - seen
+      description: Allows a logged in user to mark a resource as viewed.
+      summary: Mark a resource as viewed
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: resourceId
+          schema:
+            type: string
+            minLength: 1
+            description: ID of the resource to be retrieved.
+          required: true
+      responses:
+        "204":
+          description: Resource marked as viewed
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "498":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
   "/api/v1/resources/id/{resourceId}":
     get:
       tags:
