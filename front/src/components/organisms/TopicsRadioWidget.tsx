@@ -1,9 +1,8 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import { useQuery } from '@tanstack/react-query'
 import { dimensions } from '../../styles'
 import { Radio, Spinner } from '../atoms'
-import { TGetTopics, getTopics } from '../../helpers/fetchers'
+import { useGetTopics } from '../../hooks'
 
 const StyledRadio = styled(Radio)`
   flex-direction: column;
@@ -26,10 +25,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
   topic,
   setTopic,
 }) => {
-  const { data, isLoading, isError } = useQuery<TGetTopics>(
-    ['getTopics', slug],
-    () => getTopics(slug)
-  )
+  const { data, isLoading, isError } = useGetTopics(slug as string)
 
   const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value)
@@ -41,7 +37,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
   return (
     <StyledRadio
       options={[{ id: 'todos', name: 'Todos' }].concat(
-        data?.map((t) => ({ id: t.id, name: t.name }))
+        data ? data.map((t) => ({ id: t.id, name: t.name })) : []
       )}
       inputName="Topics Radio Filter"
       onChange={onTopicChange}

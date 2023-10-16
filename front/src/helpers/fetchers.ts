@@ -1,16 +1,22 @@
 import { urls } from '../constants'
 
-type TTopicReturned = {
+export type TTopic = {
+  id?: string
+  name: string
+  slug?: string
+  categoryId?: string
+}
+
+export type TGetTopics = {
   id: string
   name: string
   slug: string
   categoryId: string
-}
+}[]
 
-export type TGetTopics = TTopicReturned[]
 export type TGetTypes = string[]
 
-export const getTopics = async (slug?: string): Promise<TGetTopics> =>
+export const getTopics = async (slug: string): Promise<TGetTopics> =>
   fetch(`${urls.getTopics}?slug=${slug}`)
     .then((res) => {
       if (!res.ok) {

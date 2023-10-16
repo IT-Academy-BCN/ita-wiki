@@ -6,8 +6,9 @@ import { colors, FlexBox } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import { TopicsEditableItem } from '../molecules'
 import { urls } from '../../constants'
-import { TGetTopics, getTopics } from '../../helpers/fetchers'
+import { TGetTopics, getTopics, TTopic } from '../../helpers/fetchers'
 import { useAuth } from '../../context/AuthProvider'
+import { useGetTopics } from '../../hooks'
 
 const StyledFlexBox = styled(FlexBox)`
   width: 100%;
@@ -21,6 +22,7 @@ const errorMessageStatus: { [key: number]: string } = {
   500: 'Error en la base de datos. Por favor, inténtalo más tarde.',
 }
 
+//@SI PASSO AIxÔ A FETCHERS CLA FER ALGUNA MANBERA DE PASSAR ELS ERORRS AQUÏ, PEX FER QUE isEroor retorni núm error i en aquesta pantalla el capto i mostro -- opció B: fer els errors gene´rics i posar-lso a fetchers, retornar el missatge amb isError
 const createTopicFetcher = (createdTopic: TTopic) =>
   fetch(urls.postTopics, {
     method: 'POST',
@@ -49,12 +51,12 @@ const updateTopicFetcher = (updatedTopic: TTopic) =>
     return res.status === 204 ? null : res.json()
   })
 
-type TTopic = {
-  id?: string
-  name: string
-  slug?: string
-  categoryId?: string
-}
+// export type TTopic = {
+//   id?: string
+//   name: string
+//   slug?: string
+//   categoryId?: string
+// }
 
 export const TopicsManagerBoard: FC = () => {
   const { user } = useAuth()
@@ -68,10 +70,12 @@ export const TopicsManagerBoard: FC = () => {
 
   const [errorMessage, setErrorMessage] = useState<string>('')
 
-  const { data, isLoading, isError, refetch } = useQuery<TGetTopics>(
-    ['getTopics', slug],
-    () => getTopics(slug)
-  )
+  // const { data, isLoading, isError, refetch } = useQuery<TGetTopics>(
+  //   ['getTopics', slug],
+  //   () => getTopics(slug)
+  // )
+
+  const { data, isLoading, isError, refetch } = useGetTopics(slug as string)
 
   const updateTopic = useMutation({
     mutationFn: updateTopicFetcher,
@@ -146,35 +150,42 @@ export const TopicsManagerBoard: FC = () => {
 
   return (
     <>
-      {/* //OJU, lo bo és === 'MENTOR'
-      {user && user.role === 'MENTOR' ? ( */}
+      {/* {/* //OJU, lo bo és === 'MENTOR'
+      {user && user.role === 'MENTOR' ? ( *
+      //però tb ha de ser admin, o sigui que usear "== 'REGISTERED"
+        /} */}
 
       {user ? (
         // {slug && ( ) //HO HE HAGUT FD'ELIMIANR PER SIMPLIFICAR; I CREC QUE NO CAL PQ JA HEM DEFINIT RUTA SI ÉS UNDEFINED
 
         <StyledFlexBox>
           <Text fontWeight="bold">Temas de {state.name}</Text>
-          {data
-            .concat([
-              {
-                id: 'newTopic',
-                name: '',
-                categoryId: `${state?.id}`,
-                slug: `${state?.slug}`,
-              },
-            ])
-            .map((topic) => (
-              <TopicsEditableItem
-                key={topic.id}
-                id={topic.id}
-                name={topic.name}
-                rowStatus={rowStatusCalculator(rowStatus, selectedId, topic.id)}
-                handleRowStatus={handleRowStatus}
-                handleErrorMessage={handleErrorMessage}
-                handleTopicChange={handleTopicChange}
-              />
-            ))
-            .reverse()}
+          {data &&
+            data
+              .concat([
+                {
+                  id: 'newTopic',
+                  name: '',
+                  categoryId: `${state?.id}`,
+                  slug: `${state?.slug}`,
+                },
+              ])
+              .map((topic) => (
+                <TopicsEditableItem
+                  key={topic.id}
+                  id={topic.id}
+                  name={topic.name}
+                  rowStatus={rowStatusCalculator(
+                    rowStatus,
+                    selectedId,
+                    topic.id
+                  )}
+                  handleRowStatus={handleRowStatus}
+                  handleErrorMessage={handleErrorMessage}
+                  handleTopicChange={handleTopicChange}
+                />
+              ))
+              .reverse()}
         </StyledFlexBox>
       ) : (
         <Text>

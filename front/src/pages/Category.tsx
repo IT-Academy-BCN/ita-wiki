@@ -26,6 +26,7 @@ import {
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
 import { TGetTopics, getTopics } from '../helpers/fetchers'
+import { useGetTopics } from '../hooks'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -451,10 +452,12 @@ const Category: FC = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
   }
 
-  const { data: fetchedTopics } = useQuery<TGetTopics>(
-    ['getTopics', slug || ''],
-    () => getTopics(slug)
-  )
+  // const { data: fetchedTopics } = useQuery<TGetTopics>(
+  //   ['getTopics', slug || ''],
+  //   () => getTopics(slug)
+  // )
+
+  const { data: fetchedTopics } = useGetTopics(slug || '')
 
   const mappedTopics = [
     { value: 'todos', label: 'Todos' },

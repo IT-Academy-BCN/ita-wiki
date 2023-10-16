@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { colors, dimensions, FlexBox, font } from '../../styles'
 import { Button, Icon, Input, Text } from '../atoms'
 import icons from '../../assets/icons'
+import { TTopic } from '../../helpers/fetchers'
+//import { TTopic } from '../organisms/TopicsManagerBoard'
 
 const Container = styled.div<{ isDisabled: boolean }>`
   pointer-events: ${(props) => (props.isDisabled ? 'none' : 'auto')};
@@ -71,13 +73,6 @@ type TTopicRow = {
   handleRowStatus: (selectedStatus: string, id: string) => void
   handleTopicChange: (actionTopic: string, changedTopic: TTopic) => void
   rowStatus: string
-}
-
-type TTopic = {
-  id?: string
-  name: string
-  slug?: string
-  categoryId?: string
 }
 
 type TTopicAvailable = {
