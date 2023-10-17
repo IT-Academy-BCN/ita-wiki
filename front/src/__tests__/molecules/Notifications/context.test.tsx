@@ -1,32 +1,28 @@
-import { ReactElement } from 'react'
 import { renderHook } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
-import { FiltersProvider } from '../../../context/store/context'
 import { useNotifications } from '../../../components/molecules/Notifications/useNotifications'
+import { NotificationsProvider } from '../../../components/molecules/Notifications'
 
 describe('NotificationsProvider', () => {
   it('should render children', () => {
-    const wrapper = ({ children }: { children: ReactElement }) => (
-      <FiltersProvider>{children}</FiltersProvider>
-    )
-
-    const { result } = renderHook(() => useNotifications(), { wrapper })
+    const { result } = renderHook(() => useNotifications())
     expect(result.current.state.all).toStrictEqual([])
     expect(result.current.state.byId).toStrictEqual({})
   })
 
-  it('should add notifications', async () => {
-    const wrapper = ({ children }: { children: ReactElement }) => (
-      <FiltersProvider>{children}</FiltersProvider>
-    )
+  it('should dispatch notifications', async () => {
+    const { result } = renderHook(() => useNotifications(), {
+      wrapper: NotificationsProvider,
+    })
+    expect(result.current.state.all).toStrictEqual([])
 
-    const { result } = renderHook(() => useNotifications(), { wrapper })
     act(() => {
-      expect(result.current.state.all).toStrictEqual([])
       result.current.addNotification({
-        all: ['testid'],
-        byId: {},
+        title: 'title1',
+        description: 'description1',
+        variant: 'info',
       })
     })
+    expect(result.current.state.all).toHaveLength(1)
   })
 })

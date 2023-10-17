@@ -470,6 +470,7 @@ const Category: FC = () => {
         <DesktopSideMenu />
         <WiderContainer>
           <Navbar toggleModal={toggleModal} />
+
           <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
               Temas
