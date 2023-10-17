@@ -28,6 +28,6 @@ registry.registerPath({
       description: 'Resource has been posted',
     },
     401: missingTokenResponse,
-    405: invalidTokenResponse,
+    498: invalidTokenResponse,
   },
 })

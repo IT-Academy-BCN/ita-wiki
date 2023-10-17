@@ -44,7 +44,30 @@ it('renders correctly', () => {
   expect(screen.getByTestId('status-filter')).toBeInTheDocument()
   expect(screen.getByTestId('resource-list')).toBeInTheDocument()
   expect(screen.getByText('Mis recursos')).toBeInTheDocument()
-  expect(screen.getByText('Recursos favoritos')).toBeInTheDocument()
+  expect(screen.getByText('Recursos favorits')).toBeInTheDocument()
+})
+
+it('renders Navbar for logged in users', () => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'Name',
+      avatar: 'Avatar',
+    },
+  } as TAuthContext)
+
+  render(<Category />)
+
+  expect(screen.getByTestId('navbar')).toBeInTheDocument()
+})
+
+it('renders Navbar for unregistered users', () => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: null,
+  } as TAuthContext)
+
+  render(<Category />)
+
+  expect(screen.getByTestId('navbar')).toBeInTheDocument()
 })
 
 it('filters opens and closes correctly', () => {

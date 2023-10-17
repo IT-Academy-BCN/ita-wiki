@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import styled from 'styled-components'
+import { useLocation } from 'react-router-dom'
 import { FlexBox, colors, device, dimensions } from '../../styles'
 import { Button, Icon, Title, HamburgerMenu } from '../atoms'
 import { UserButton } from '../molecules/UserButton'
@@ -71,14 +72,19 @@ const StyledButton = styled(Button)`
 
 type TNavbar = {
   toggleModal?: () => void
+  handleAccessModal?: () => void
+  isUserLogged: boolean
 }
-export const Navbar = ({ toggleModal }: TNavbar) => {
+export const Navbar = ({ toggleModal, handleAccessModal, isUserLogged }: TNavbar) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
   const handleSettingsModal = () => {
     setIsSettingsOpen(!isSettingsOpen)
   }
+
+  const location = useLocation()
+  const shouldRenderIcons = useMemo(() => location.pathname !== '/', [location])
 
   return (
     <>
@@ -88,15 +94,23 @@ export const Navbar = ({ toggleModal }: TNavbar) => {
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           data-testid="hamburger-menu"
         />
-        <IconStyled
-          data-testid="new-post-button"
-          onClick={toggleModal}
-          title="Añadir recurso"
-          role="button"
-        >
-          <Icon name="add" color={colors.gray.gray3} />
-        </IconStyled>
-        <SelectLanguage/>
+        {shouldRenderIcons && (
+          <IconStyled
+              data-testid="new-post-button"
+              onClick={() => {
+                if (isUserLogged) {
+                  toggleModal?.();
+                } else {
+                  handleAccessModal?.();
+                }
+              }}
+              title="Añadir recurso"
+              role="button"
+            >
+              <Icon name="add" color={colors.gray.gray3} />
+            </IconStyled>
+        )}
+        <SelectLanguage />
         <IconStyled
           data-testid="settings-button"
           onClick={() => handleSettingsModal()}

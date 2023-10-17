@@ -35,7 +35,7 @@ registry.registerPath({
     404: {
       description: 'Topic not found',
     },
-    405: invalidTokenResponse,
+    498: invalidTokenResponse,
     500: {
       description: 'Other error',
       content: {

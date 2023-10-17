@@ -32,7 +32,7 @@ registry.registerPath({
     },
     401: missingTokenResponse,
     403: deniedAccessResponse,
-    405: invalidTokenResponse,
+    498: invalidTokenResponse,
     500: {
       description: 'Other error',
       content: {

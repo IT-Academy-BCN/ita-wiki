@@ -1,11 +1,12 @@
 import { Resource, User } from '@prisma/client'
 import supertest from 'supertest'
-import { expect, test, describe, it, beforeAll, afterAll } from 'vitest'
+import { expect, describe, it, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { voteCountSchema } from '../../schemas'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 let resource: Resource
 let testUser: User
@@ -90,14 +91,21 @@ describe('Testing VOTE endpoint, GET method', async () => {
   })
 })
 describe('Testing VOTE endpoint, PUT method', async () => {
-  test('Should return error if no token is provided', async () => {
+  it('Should return error if no token is provided', async () => {
     const response = await supertest(server).put(`${pathRoot.v1.vote}`).send({
       resourceId: resource.id,
       vote: 'up',
     })
     expect(response.status).toBe(401)
-    expect(response.body.error).toBe('Unauthorized: Missing token')
+    expect(response.body.message).toBe('Missing token')
   })
+  it('Check invalid token', async () => {
+    checkInvalidToken(`${pathRoot.v1.vote}`, 'put', {
+      resourceId: resource.id,
+      vote: 'up',
+    })
+  })
+
   describe('With valid token', () => {
     describe('Testing success: up, down and cancel options', () => {
       it('Should succeed with up vote, and update the data in the db', async () => {

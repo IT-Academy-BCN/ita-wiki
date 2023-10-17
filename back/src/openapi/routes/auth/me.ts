@@ -6,7 +6,7 @@ import { cookieAuth } from '../../components/cookieAuth'
 import {
   invalidTokenResponse,
   missingTokenResponse,
-  userNotFound,
+  userNotFoundResponse,
 } from '../../components/responses/authMiddleware'
 
 // const authCookie = z.string().openapi({example: 'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhUmFuZG9tVXNlcklkIiwiaWF0IjoxNjgyNTAwNjczLCJleHAiOjE2ODI1ODcwNzN9.fvH3xbno7DQW3IPOekXz5D8H6TUpAq99UCK-_jY_qgI;'})
@@ -35,8 +35,8 @@ registry.registerPath({
       },
     },
     401: missingTokenResponse,
-    405: invalidTokenResponse,
-    404: userNotFound,
+    404: userNotFoundResponse,
+    498: invalidTokenResponse,
     500: {
       description: 'Other error',
       content: {

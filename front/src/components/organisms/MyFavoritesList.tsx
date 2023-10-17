@@ -1,7 +1,8 @@
 import { FC, useEffect, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
+import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { urls } from '../../constants'
+import { useTranslation } from 'react-i18next'
+import { useGetFavorites } from '../../hooks/useGetFavorites'
 import { Icon, Title, Spinner, Text } from '../atoms'
 import { useAuth } from '../../context/AuthProvider'
 import {
@@ -16,6 +17,7 @@ import { Modal, ResourceTitleLink } from '../molecules'
 import CardResource from './CardResource'
 import Login from './Login'
 import Register from './Register'
+import { TFavorites } from '../../helpers/fetchers'
 
 const TitleContainer = styled(FlexBox)`
   align-items: stretch;
@@ -54,18 +56,6 @@ const FavoritesCardList = styled(FlexBox)`
   }
 `
 
-type TFavorites = {
-  id: string
-  title: string
-  slug: string
-  description: string
-  url: string
-  resourceType: string
-  userId: string
-  createdAt: string
-  updatedAt: string
-}
-
 const StyledText = styled(Text)`
   color: ${colors.gray.gray3};
   font-weight: ${font.regular};
@@ -83,23 +73,14 @@ const TextDecorationStyled = styled.span`
 const getWindowIsMobile = () =>
   window.innerWidth <= parseInt(responsiveSizes.tablet, 10)
 
-const getFavorites = async () =>
-  fetch(urls.getFavorites)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error fetching favorite resources: ${res.statusText}`)
-      }
-      return res.json()
-    })
-    .catch((err) => {
-      throw new Error(`Error fetching favorite resources: ${err.message}`)
-    })
-
 export const MyFavoritesList: FC = () => {
   const { user } = useAuth()
+  const { slug } = useParams()
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(getWindowIsMobile())
+  const { t } = useTranslation()
+  const { isLoading, isError, data } = useGetFavorites(slug)
 
   useEffect(() => {
     const handleResize = () => {
@@ -107,12 +88,6 @@ export const MyFavoritesList: FC = () => {
     }
     window.addEventListener('resize', handleResize)
   }, [isMobile])
-
-  const { isLoading, data, error } = useQuery({
-    queryKey: ['getFavorites'],
-    queryFn: () => getFavorites(),
-    enabled: !!user, // Enable the query only if there is a logged-in user
-  })
 
   const handleRegisterModal = () => {
     setIsRegisterOpen(!isRegisterOpen)
@@ -127,68 +102,68 @@ export const MyFavoritesList: FC = () => {
       <TitleContainer data-testid="title">
         {isMobile ? (
           <Title as="h3" fontWeight="bold">
-            Recursos que te gustan
+            {t('Recursos que te gustan')}
           </Title>
         ) : (
           <>
             <Icon name="favorite" fill={0} />
             <Title as="h2" fontWeight="bold">
-              Recursos favoritos
+              {t('Recursos favoritos')}
             </Title>
           </>
         )}
       </TitleContainer>
       {!user && (
-        <StyledText>
+        <StyledText data-testid="no-user">
           <TextDecorationStyled onClick={handleRegisterModal}>
-            Regístrate
+            {t('Regístrate')}
           </TextDecorationStyled>
-          {` o `}
+          {t(' o ')}
           <TextDecorationStyled onClick={handleLoginModal}>
-            inicia sesión
+            {t('inicia sesión')}
           </TextDecorationStyled>
-          {` para añadir recursos favoritos`}
+          {t(' para añadir recursos favoritos')}
         </StyledText>
       )}
 
       {isLoading && user && <Spinner size="medium" role="status" />}
 
-      {data && data?.length ? (
-        <FavoritesContainer>
-          {data.map((fav: TFavorites) => (
-            <FavoritesCardList key={fav.id}>
-              {isMobile ? (
-                <CardResource
-                  createdBy={fav.userId}
-                  createdAt={fav.createdAt}
-                  updatedAt={fav.updatedAt}
-                  description={fav.description}
-                  img=""
-                  id={fav.id}
-                  title={fav.title}
-                  url={fav.url}
-                  handleAccessModal={() => {}}
-                  resourceType=""
-                  topics={[]}
-                  editable={false}
-                />
-              ) : (
-                <ResourceTitleLink
-                  url={fav.url}
-                  title={fav.title}
-                  description={fav.description}
-                />
-              )}
-            </FavoritesCardList>
-          ))}
-        </FavoritesContainer>
-      ) : null}
+      {data &&
+        (data?.length > 0 ? (
+          <FavoritesContainer>
+            {data?.map((fav: TFavorites) => (
+              <FavoritesCardList key={fav.id}>
+                {isMobile ? (
+                  <CardResource
+                    createdBy={fav.userId}
+                    createdAt={fav.createdAt}
+                    updatedAt={fav.updatedAt}
+                    description={fav.description}
+                    img=""
+                    id={fav.id}
+                    title={fav.title}
+                    url={fav.url}
+                    handleAccessModal={() => {}}
+                    resourceType=""
+                    topics={[]}
+                    editable={false}
+                    isFavorite={fav.isFavorite}
+                  />
+                ) : (
+                  <ResourceTitleLink
+                    url={fav.url}
+                    title={fav.title}
+                    description={fav.description}
+                  />
+                )}
+              </FavoritesCardList>
+            ))}
+          </FavoritesContainer>
+        ) : (
+          <StyledText>{t('No tienes recursos favoritos')}</StyledText>
+        ))}
 
-      {data?.length === 0 ? (
-        <StyledText>No tienes recursos favoritos</StyledText>
-      ) : null}
-
-      {error && user && !isLoading ? <p>Algo ha ido mal...</p> : null}
+      {isError && user && !isLoading ? <p>{t('Algo ha ido mal...')}</p> : null}
 
       <Modal
         isOpen={isLoginOpen || isRegisterOpen}

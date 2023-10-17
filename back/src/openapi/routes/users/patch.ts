@@ -34,10 +34,10 @@ registry.registerPath({
     404: {
       description: 'Not found',
     },
-    405: invalidTokenResponse,
     409: {
       description: 'Conflict, data already exists.',
     },
+    498: invalidTokenResponse,
     500: {
       description: 'Other error',
       content: {
