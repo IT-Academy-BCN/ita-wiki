@@ -23,7 +23,7 @@ const NavbarStyled = styled(FlexBox)`
   }
 
   @media  ${device.Mobile} {
-    background-color: ${colors.black};
+    background-color: ${colors.gray.gray5};
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     position: relative;
@@ -56,7 +56,7 @@ const MenuItems = styled(FlexBox)<{ open: boolean }>`
   z-index: 20;
   transition: transform 0.3s ease-in-out;
   transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(-100%)')};
-  @media (min-width: 769px) {
+  @media ${device.Tablet} {
     display: none;
   }
 `
