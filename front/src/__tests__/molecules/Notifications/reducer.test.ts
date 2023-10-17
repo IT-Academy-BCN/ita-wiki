@@ -34,7 +34,7 @@ describe('Notifications reducer', () => {
     })
   })
 
-  it('Should handle NActions.removeNotificaation', () => {
+  it('Should handle NActions.removeNotification', () => {
     const initialState: TInitialState = {
       all: ['test1', 'test2'],
       byId: {
