@@ -1,6 +1,13 @@
 import { render, screen, fireEvent } from '../test-utils'
 import { CardResourceLink } from '../../components/organisms/CardResourceLink'
 
+const voteCount = {
+  upvote: 1,
+  downvote: 0,
+  total: 0,
+  userVote: 1,
+}
+
 describe('ResourceTitleLink', () => {
   const url = 'https://www.youtube.com/watch?v=n5qbzhZUMsY'
 
@@ -14,7 +21,7 @@ describe('ResourceTitleLink', () => {
         createdAt="2022-01-01"
         img="image.png"
         id="1"
-        likes={10}
+        voteCount={voteCount}
         updatedAt="2022-01-02"
         editable={false}
         handleAccessModal={() => {}}
@@ -35,7 +42,7 @@ describe('ResourceTitleLink', () => {
         createdAt="2022-01-01"
         img="image.png"
         id="1"
-        likes={10}
+        voteCount={voteCount}
         updatedAt="2022-01-02"
         editable={false}
         handleAccessModal={() => {}}
