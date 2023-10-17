@@ -35,8 +35,14 @@ describe('Testing viewed resource creation endpoint', () => {
     const response = await supertest(server)
       .post(`${pathRoot.v1.seen}/${testResource.id}`)
       .set('Cookie', authToken.admin)
-
+    const viewedResources = await prisma.viewedResource.findMany({
+      where: {
+        user: { dni: testUserData.admin.dni },
+        resourceId: testResource.id,
+      },
+    })
     expect(response.status).toBe(204)
+    expect(viewedResources.length).toBeGreaterThanOrEqual(1)
   })
 
   it('should not create duplicate entries for viewed resources', async () => {

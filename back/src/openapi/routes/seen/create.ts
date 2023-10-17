@@ -6,6 +6,7 @@ import {
   missingTokenResponse,
 } from '../../components/responses/authMiddleware'
 import { registry } from '../../registry'
+import { resourceId } from '../../components/paramSchemas'
 
 registry.registerPath({
   method: 'post',
@@ -16,9 +17,7 @@ registry.registerPath({
   security: [{ [cookieAuth.name]: [] }],
   request: {
     params: z.object({
-      resourceId: z.string().trim().min(1).openapi({
-        description: 'ID of the resource to be retrieved.',
-      }),
+      resourceId,
     }),
   },
   responses: {

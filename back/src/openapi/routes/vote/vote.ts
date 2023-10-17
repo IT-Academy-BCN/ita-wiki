@@ -8,6 +8,7 @@ import {
 } from '../../components/responses/authMiddleware'
 import { ValidationError } from '../../components/errorSchemas'
 import { voteCountSchema } from '../../../schemas'
+import { resourceId } from '../../components/paramSchemas'
 
 registry.registerPath({
   method: 'get',
@@ -18,10 +19,7 @@ registry.registerPath({
   summary: 'Fetch detailed vote statistics for a resource.',
   request: {
     params: z.object({
-      resourceId: z.string().cuid().openapi({
-        description:
-          'Unique identifier of the resource for which vote statistics are requested.',
-      }),
+      resourceId,
     }),
   },
   responses: {
