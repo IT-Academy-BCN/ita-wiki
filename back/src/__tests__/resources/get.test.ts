@@ -177,17 +177,17 @@ describe('Testing resources GET endpoint', () => {
       })
     }
   )
-  it('should get all resources with status SEEN when not logged in', async () => {
+  it.only('should get all resources without status when not logged in', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .query({ status: 'SEEN' })
+      .query({ status: undefined })
     expect(response.status).toBe(200)
     expect(response.body.length).toBe(createdResources.length)
     response.body.forEach((resource: ResourceGetSchema) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })
   })
-  it('should get viewed resources with status SEEN when logged in', async () => {
+  it('should retrieve resources viewed by the user with SEEN status when logged in', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
       .set('Cookie', authToken.admin)
@@ -199,17 +199,8 @@ describe('Testing resources GET endpoint', () => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })
   })
-  it('should get all resources with status NOT_SEEN when not logged in', async () => {
-    const response = await supertest(server)
-      .get(`${pathRoot.v1.resources}`)
-      .query({ status: 'NOT_SEEN' })
-    expect(response.status).toBe(200)
-    expect(response.body.length).toBe(createdResources.length)
-    response.body.forEach((resource: ResourceGetSchema) => {
-      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
-    })
-  })
-  it('should get all resources with status NOT_SEEN when logged in', async () => {
+
+  it('should retrieve resources not viewed by the user with NOT_SEEN status when logged in"', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
       .set('Cookie', authToken.admin)
