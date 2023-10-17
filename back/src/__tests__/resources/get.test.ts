@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import { expect, it, describe, beforeAll, afterAll, vi } from 'vitest'
+import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { RESOURCE_TYPE, Resource, ViewedResource } from '@prisma/client'
 import qs from 'qs'
 import { z } from 'zod'
