@@ -49,6 +49,7 @@ type TResource = {
     userVote: number
   }
   editable: boolean
+  isFavorite: boolean
 }
 
 const TitleContainer = styled(FlexBox)`
@@ -207,6 +208,7 @@ const MyResources = () => {
                     resourceType=""
                     topics={[]}
                     editable={resource.editable}
+                    isFavorite={false}
                   />
                 ) : (
                   <CardResourceLink
@@ -222,6 +224,7 @@ const MyResources = () => {
                     resourceType={resource.resourceType}
                     topics={resource.topics}
                     editable={resource.editable}
+                    isFavorite={false}
                   />
                 )}
               </MyResourcesCardList>

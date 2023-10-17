@@ -28,6 +28,7 @@ export type TResource = {
     userVote: number
   }
   editable: boolean
+  isFavorite: boolean
 }
 
 export type TInitialState = {

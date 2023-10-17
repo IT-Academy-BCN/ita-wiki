@@ -3,6 +3,7 @@ import { z } from '../../zod'
 import { pathRoot } from '../../../routes/routes'
 import { resourceGetSchema } from '../../../schemas'
 import { ValidationError } from '../../components/errorSchemas'
+import { invalidTokenResponse } from '../../components/responses/authMiddleware'
 
 registry.registerPath({
   method: 'get',
@@ -75,5 +76,6 @@ registry.registerPath({
         },
       },
     },
+    498: invalidTokenResponse,
   },
 })

@@ -456,28 +456,37 @@ const Category: FC = () => {
     () => getTopics(slug)
   )
 
-  const mappedTopics = [
+  const mappedTopicsForFilterWidget = [
     { value: 'todos', label: 'Todos' },
     ...(fetchedTopics?.map((t) => {
       const selectOptions = { id: t.id, value: t.slug, label: t.name }
       return selectOptions
-    }) || []),
+    }) ?? []),
   ]
+
+  const topicsForResourceForm = fetchedTopics?.map((t) => ({
+    id: t.id,
+    value: t.slug,
+    label: t.name,
+  }))
 
   return (
     <>
       <Container direction="row" justify="flex-start" align="start">
         <DesktopSideMenu />
         <WiderContainer>
-          <Navbar toggleModal={toggleModal} />
-
+          <Navbar
+            isUserLogged={user !== null}
+            toggleModal={toggleModal}
+            handleAccessModal={handleAccessModal}
+          />
           <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
               Temas
             </Title>
             <StyledSelectGroup
               defaultValue={topic}
-              options={mappedTopics}
+              options={mappedTopicsForFilterWidget}
               id="topics"
               label="Temas"
               name="topics"
@@ -590,7 +599,7 @@ const Category: FC = () => {
       </Container>
       {/* ==> ADD RESOURCE MODAL */}
       <Modal isOpen={isOpen} toggleModal={toggleModal} title="Nuevo Recurso">
-        <ResourceForm selectOptions={mappedTopics} />
+        <ResourceForm selectOptions={topicsForResourceForm ?? []} />
         <Button outline onClick={toggleModal}>
           Cancelar
         </Button>

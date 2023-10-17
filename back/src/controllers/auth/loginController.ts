@@ -6,6 +6,7 @@ import { checkPassword } from '../../helpers/passwordHash'
 export const loginController = async (ctx: Koa.Context) => {
   const { dni, password } = ctx.request.body
   const dniUpperCase = dni.toUpperCase()
+  const expirationInMilliseconds = 86400000
 
   const user = await prisma.user.findUnique({
     where: { dni: dniUpperCase as string },
@@ -33,10 +34,13 @@ export const loginController = async (ctx: Koa.Context) => {
   }
 
   const token = jwt.sign({ userId: user.id }, process.env.JWT_KEY as Secret, {
-    expiresIn: '1d',
+    expiresIn: expirationInMilliseconds.toString(),
   })
 
-  ctx.cookies.set('token', token, { httpOnly: true })
+  ctx.cookies.set('token', token, {
+    httpOnly: true,
+    maxAge: expirationInMilliseconds,
+  })
 
   ctx.status = 204
 }
