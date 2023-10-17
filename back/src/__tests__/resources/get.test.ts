@@ -200,7 +200,7 @@ describe('Testing resources GET endpoint', () => {
     })
   })
 
-  it('should retrieve resources not viewed by the user with NOT_SEEN status when logged in"', async () => {
+  it('should retrieve resources not viewed by the user with NOT_SEEN status when logged in', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
       .set('Cookie', authToken.admin)
