@@ -7,6 +7,13 @@ const user = {
   name: 'Hola',
   avatar: 'Adios',
 }
+
+const voteCount = {
+  upvote: 1,
+  downvote: 0,
+  total: 0,
+  userVote: 1,
+}
 vi.mock('../../context/AuthProvider', async () => {
   const actual = (await vi.importActual(
     '../../context/AuthProvider'
@@ -24,7 +31,7 @@ describe('Vote counter molecule', () => {
     const handleAccessModal = vi.fn()
     render(
       <VoteCounter
-        totalVotes={0}
+        voteCount={voteCount}
         resourceId="test"
         handleAccessModal={handleAccessModal}
       />
@@ -39,7 +46,7 @@ describe('Vote counter molecule', () => {
     const handleAccessModal = vi.fn()
     render(
       <VoteCounter
-        totalVotes={0}
+        voteCount={voteCount}
         resourceId="test"
         handleAccessModal={handleAccessModal}
       />
@@ -60,7 +67,7 @@ describe('Vote counter molecule', () => {
 
     render(
       <VoteCounter
-        totalVotes={0}
+        voteCount={voteCount}
         resourceId="test"
         handleAccessModal={handleAccessModal}
       />

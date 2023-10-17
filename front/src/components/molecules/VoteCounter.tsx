@@ -21,7 +21,7 @@ const StyledIcon = styled(Icon)<ArrowProp>`
 `
 
 type TVoteCounter = {
-  totalVotes: number
+  voteCount: TVoteCountResponse
   resourceId: string
   handleAccessModal: () => void
 }
@@ -60,7 +60,7 @@ const updateVote = async ({ resourceId, vote }: TVoteMutationData) => {
 }
 
 export const VoteCounter: FC<TVoteCounter> = ({
-  totalVotes,
+  voteCount,
   resourceId,
   handleAccessModal,
 }) => {
@@ -70,6 +70,7 @@ export const VoteCounter: FC<TVoteCounter> = ({
     ['votes', resourceId],
     () => getVotes(resourceId),
     {
+      enabled: false,
       onError: () => {
         // eslint-disable-next-line no-console
         console.error('Error fetching votes')
@@ -87,6 +88,8 @@ export const VoteCounter: FC<TVoteCounter> = ({
       console.error('Error voting')
     },
   })
+  
+  const voteHistory = fetchedVotes?.userVote ?? voteCount.userVote
 
   const handleClick = (vote: 'up' | 'down' | 'cancel') => {
     if (!user) {
@@ -94,23 +97,20 @@ export const VoteCounter: FC<TVoteCounter> = ({
       return
     }
 
-    if (fetchedVotes?.userVote === 0) {
+    if (voteHistory === 0) {
       castVote.mutate({ resourceId, vote })
     } else {
       castVote.mutate({ resourceId, vote: 'cancel' })
     }
   }
 
+
   return (
     <FlexBox data-testid="voteCounter">
       <StyledIcon
         name="expand_less"
         data-testid="increase"
-        color={
-          fetchedVotes !== undefined && fetchedVotes.userVote > 0
-            ? colors.success
-            : colors.gray.gray3
-        }
+        color={voteHistory > 0 ? colors.success : colors.gray.gray3}
         onClick={() => handleClick('up')}
       />
       <Text
@@ -118,17 +118,13 @@ export const VoteCounter: FC<TVoteCounter> = ({
         style={{ marginTop: '0', marginBottom: '0' }}
         data-testid="voteTest"
       >
-        {fetchedVotes?.total ?? totalVotes}
+        {fetchedVotes?.total ?? voteCount.total}
       </Text>
       <StyledIcon
         name="expand_more"
         id="decrease"
         data-testid="decrease"
-        color={
-          fetchedVotes !== undefined && fetchedVotes.userVote < 0
-            ? colors.error
-            : colors.gray.gray3
-        }
+        color={voteHistory < 0 ? colors.error : colors.gray.gray3}
         onClick={() => handleClick('down')}
       />
     </FlexBox>
