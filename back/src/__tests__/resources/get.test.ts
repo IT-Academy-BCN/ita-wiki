@@ -177,7 +177,7 @@ describe('Testing resources GET endpoint', () => {
       })
     }
   )
-  it.only('should get all resources without status when not logged in', async () => {
+  it('should get all resources without status when not logged in', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
       .query({ status: undefined })
