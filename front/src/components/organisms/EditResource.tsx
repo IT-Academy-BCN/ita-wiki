@@ -6,7 +6,6 @@ import ResourceForm from './ResourceForm'
 import { Button } from '../atoms'
 import icons from '../../assets/icons'
 import { urls } from '../../constants'
-import { useGetTopics } from '../../hooks'
 import { Modal } from '../molecules/Modal'
 
 type TTopic = {
@@ -80,10 +79,6 @@ const EditResource = ({
     return data
   }
   const { data: fetchedTopics } = useQuery(['getTopics'], getTopics)
-
-  //const { data, isLoading, isError } = useGetTopics(slug)
-
-  // @@COM és POSSIBLE UQE FACI UN GET DE TOPICS SENSE ESPECIFICAR l'SLUG?? PER TESTEAJR-HO, CAL PODER CREAR RECURS D'UNA ALTRA CATEGORIA I VEURE SI CARREGA NOMÉS ELS SEUS TOPICS
 
   const mappedTopics =
     fetchedTopics?.map((topic: TMappedTopics) => ({
