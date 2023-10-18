@@ -4,9 +4,11 @@ import Notification from './Notification'
 import { NotificationsContext } from './context'
 
 const NotificationsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   position: fixed;
-  z-index: 100;
-  align-self: flex-end;
+  z-index: 10;
+  right: 0;
 `
 
 export const Notifications = () => {

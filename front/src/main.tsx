@@ -12,6 +12,7 @@ import { font } from './styles'
 import { FiltersProvider } from './context/store/context'
 import './i18n'
 import { NotificationsProvider } from './components/molecules/Notifications/context'
+import { Notifications } from './components/molecules/Notifications'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -53,6 +54,7 @@ root.render(
     <NotificationsProvider>
       <QueryClientProvider client={queryClient}>
         <FiltersProvider>
+          <Notifications />
           <GlobalStyle />
           <RouterProvider router={router} />
           <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />

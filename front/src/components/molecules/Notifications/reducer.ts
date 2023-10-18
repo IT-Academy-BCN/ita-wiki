@@ -9,7 +9,6 @@ export const notificationsReducer = (
       const crypto = window.crypto || window.Crypto
       const array = new Uint32Array(1)
       const id = crypto.getRandomValues(array).toString()
-      // const id = Math.random().toString(36).substring(2, 9)
       return {
         ...state,
         all: [...state.all, id],
