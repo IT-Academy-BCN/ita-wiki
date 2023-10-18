@@ -159,8 +159,7 @@ const CardProfile = ({
             <UsernameStyled>{userName}</UsernameStyled>
             <TextStyled>{email}</TextStyled>
             <ButtonStyled outline onClick={handleLogOut}>
-              Cerrar sesión
-              <img src={icons.logout} alt="logout icon" />
+              Cerrar sesión <img src={icons.logout} alt="logout icon" />
             </ButtonStyled>
           </UserInfoWrapper>
         </UserInfoContainer>
