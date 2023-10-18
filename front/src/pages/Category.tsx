@@ -464,21 +464,22 @@ const Category: FC = () => {
     }) ?? []),
   ]
 
-  const topicsForResourceForm = fetchedTopics?.map(
-    (t) =>
-      ({
-        id: t.id,
-        value: t.slug,
-        label: t.name,
-      })
-  )
+  const topicsForResourceForm = fetchedTopics?.map((t) => ({
+    id: t.id,
+    value: t.slug,
+    label: t.name,
+  }))
 
   return (
     <>
       <Container direction="row" justify="flex-start" align="start">
         <DesktopSideMenu />
         <WiderContainer>
-          <Navbar isUserLogged={user !== null} toggleModal={toggleModal} handleAccessModal={handleAccessModal} />
+          <Navbar
+            isUserLogged={user !== null}
+            toggleModal={toggleModal}
+            handleAccessModal={handleAccessModal}
+          />
           <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
               Temas
@@ -508,6 +509,7 @@ const Category: FC = () => {
                     />
                   )}
                 </ScrollTopics>
+
                 <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
                 {user && (
                   <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
