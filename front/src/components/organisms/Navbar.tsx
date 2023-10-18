@@ -23,8 +23,7 @@ const NavbarStyled = styled(FlexBox)<{ isInCategoryPage: boolean }>`
     color: ${colors.white};
   }
 
-  @media (max-width: 468px) {
-    background-color: ${colors.white};
+  @media ${device.Mobile} {
     background-color: ${({ isInCategoryPage }) =>
       isInCategoryPage ? `${colors.gray.gray5}` : `${colors.white}`};
     padding-left: 0.5rem;
@@ -38,7 +37,8 @@ const NavbarStyled = styled(FlexBox)<{ isInCategoryPage: boolean }>`
 `
 const IconStyled = styled.div`
   display: none;
-  @media ${device.Tablet} {
+  @media ${device.Mobile} {
+    margin: 0px 15px 0px 15px;
     padding: 6px;
     width: 3rem;
     height: ${dimensions.spacing.xxl};
@@ -62,7 +62,7 @@ const MenuItems = styled(FlexBox)<{ open: boolean }>`
   z-index: 20;
   transition: transform 0.3s ease-in-out;
   transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(-100%)')};
-  @media (min-width: 769px) {
+  @media ${device.Tablet} {
     display: none;
   }
 `

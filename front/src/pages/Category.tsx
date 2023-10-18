@@ -270,7 +270,7 @@ const NewResourceButton = styled(Button)`
     border: 1px dashed ${colors.gray.gray3};
   }
 
-  @media ${device.Tablet} {
+  @media ${device.Mobile} {
     display: none;
   }
 `
@@ -509,6 +509,7 @@ const Category: FC = () => {
                     />
                   )}
                 </ScrollTopics>
+
                 <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
                 {user && (
                   <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
