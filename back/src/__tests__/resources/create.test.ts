@@ -28,7 +28,6 @@ describe('Testing resource creation endpoint', () => {
     url: 'https://example.com/resource',
     resourceType: 'BLOG',
     topics: topicIds,
-    status: 'NOT_SEEN',
   }
   test('should create a new resource with topics', async () => {
     newResource.topics = topicIds
