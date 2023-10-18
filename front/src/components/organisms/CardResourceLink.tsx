@@ -10,6 +10,7 @@ const CardContainerStyled = styled(FlexBox)`
   min-width: 17rem;
   position: relative;
   margin-top: ${dimensions.spacing.xxs};
+  
 `
 
 export const CardResourceLink = ({ editable, ...rest }: TCardResource) => (

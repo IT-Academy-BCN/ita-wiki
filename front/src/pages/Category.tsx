@@ -30,6 +30,9 @@ import { TGetTopics, getTopics } from '../helpers/fetchers'
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
   width: 100%;
+  
+
+  
 
   @media only ${device.Tablet} {
     height: 100vh;
@@ -46,6 +49,8 @@ const Container = styled(FlexBox)`
 const ContainerMain = styled(FlexBox)`
   width: 100%;
   height: 90%;
+
+
 
   @media ${device.Tablet} {
     display: flex;
@@ -64,6 +69,8 @@ const WiderContainer = styled(FlexBox)`
   width: 100%;
   height: 100%;
   justify-content: flex-start;
+ 
+
 `
 
 const MainContainer = styled.div`
@@ -72,9 +79,9 @@ const MainContainer = styled.div`
   height: 100%;
   width: 100%;
   background-color: ${colors.white};
-  padding: ${dimensions.spacing.sm} ${dimensions.spacing.xxs};
+  padding: ${dimensions.spacing.sm} ;
   border-radius: ${dimensions.borderRadius.base};
-
+  
   @media ${device.Tablet} {
     flex-direction: row;
     padding: ${dimensions.spacing.md} ${dimensions.spacing.base};
@@ -88,6 +95,8 @@ const MainContainer = styled.div`
 
 const FiltersContainer = styled(FlexBox)`
   display: none;
+
+  
 
   @media ${device.Tablet} {
     display: flex;
@@ -110,16 +119,19 @@ const ScrollTopics = styled(FlexBox)`
   overflow-y: scroll;
   justify-content: flex-start;
 
+
+
   &::-webkit-scrollbar {
     display: none;
   }
 `
 
 const ResourcesContainer = styled(FlexBox)`
-  padding-left: ${dimensions.spacing.xxxs};
+  
   justify-content: flex-start;
   align-items: flex-start;
   overflow-y: auto;
+
 
   &::-webkit-scrollbar {
     display: none;
@@ -136,6 +148,7 @@ const TitleResourcesContainer = styled(FlexBox)`
   flex-direction: row;
   width: 100%;
   padding: ${dimensions.spacing.none};
+
 `
 
 const SearchBar = styled(InputGroup)`
@@ -149,6 +162,7 @@ const SearchBar = styled(InputGroup)`
     width: 40%;
     max-width: 11rem;
     justify-content: flex-end;
+
 
     ${FlexBox} {
       justify-content: flex-start;
@@ -175,6 +189,7 @@ const SearchBar = styled(InputGroup)`
 const VotesDateContainer = styled(FlexBox)`
   display: none;
 
+
   @media ${device.Tablet} {
     display: flex;
     justify-content: flex-end;
@@ -182,6 +197,7 @@ const VotesDateContainer = styled(FlexBox)`
     direction: row;
     width: 100%;
     padding-right: ${dimensions.spacing.base};
+  
   }
 `
 
@@ -197,6 +213,7 @@ const ScrollDiv = styled(FlexBox)`
 
 const ContainerResourcesAside = styled(FlexBox)`
   display: none;
+
 
   @media ${device.Tablet} {
     display: flex;
@@ -229,6 +246,7 @@ const ResourcesAside = styled(FlexBox)`
   border-radius: ${dimensions.borderRadius.base};
   padding: ${dimensions.spacing.none} ${dimensions.spacing.md};
 
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -252,6 +270,7 @@ const MobileTopicsContainer = styled(FlexBox)`
   z-index: 1;
   height: 100%;
   width: 100%;
+
 
   @media ${device.Tablet} {
     display: none;
@@ -279,6 +298,7 @@ const NewResourceButton = styled(Button)`
 const StyledSelectGroup = styled(SelectGroup)`
   border: none;
 
+
   &:focus {
     outline: 0 none;
   }
@@ -290,6 +310,8 @@ const FilterButton = styled(Button)`
   border: 2px solid ${colors.gray.gray3};
   width: fit-content;
   padding: ${dimensions.spacing.xs} ${dimensions.spacing.lg};
+
+
 
   &:hover {
     background-color: ${colors.white};
@@ -335,6 +357,7 @@ const MobileFiltersContainer = styled.div`
   border-top-right-radius: ${dimensions.borderRadius.sm};
   box-shadow: ${dimensions.spacing.none} -0.2rem ${dimensions.spacing.base} ${colors.gray.gray3};
 
+
   &.open {
     transform: translateY(100%);
     animation: ${slideInAnimation} 1s forwards;
@@ -366,6 +389,7 @@ const CloseFilterButton = styled(Button)`
 const StyledDateToggle = styled(Text)`
   color: ${colors.gray.gray3};
   cursor: pointer;
+  /* Este no es */
 
   &:active {
     transform: scale(0.96);
@@ -585,12 +609,12 @@ const Category: FC = () => {
               </MobileFiltersContainer>
             )}
             <ContainerResourcesAside as="aside">
-              <ResourcesAside>
+               <ResourcesAside>
                 <MyFavoritesList />
               </ResourcesAside>
               <ResourcesAside>
-                <MyResources />
-              </ResourcesAside>
+                <MyResources /> 
+              </ResourcesAside> 
             </ContainerResourcesAside>
           </ContainerMain>
         </WiderContainer>

@@ -1,15 +1,22 @@
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { Text } from '../atoms'
-import { colors, dimensions, font } from '../../styles'
+import { colors, device, dimensions, font } from '../../styles'
 
 const LinkStyled = styled(Link)`
   text-decoration: none;
   margin-bottom: ${dimensions.spacing.xxs};
+  height: ${dimensions.spacing.xxl};
+  overflow: hidden auto;
+  flex-basis:80%;
 
   ${Text} {
     margin: 0rem;
     margin-top: 5px;
+  }
+
+  @media only ${device.Tablet}{
+    overflow: visible;
   }
 `
 

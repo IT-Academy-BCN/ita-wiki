@@ -10,6 +10,7 @@ const MetaInfo = styled(Text)`
   font-weight: ${font.medium};
   font-size: ${font.xss};
   color: ${colors.gray.gray3};
+  
 `
 
 type TCreateAuthor = {
