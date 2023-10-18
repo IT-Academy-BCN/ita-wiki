@@ -29,7 +29,7 @@ const UserWidgets = styled(FlexBox)`
 const CounterContainerStyled = styled(FlexBox)`
   margin: 0 ${dimensions.spacing.xs};
   align-self: flex-start;
-
+  
   ${Text} {
     margin: 0rem;
   }
@@ -37,6 +37,7 @@ const CounterContainerStyled = styled(FlexBox)`
 
 const FlexBoxStyled = styled(FlexBox)`
   height: 100%;
+  flex-basis: 80%;
 
   ${FlexBox} {
     gap: 2px;
