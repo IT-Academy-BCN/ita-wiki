@@ -9,6 +9,7 @@ import { CategoriesList } from './CategoriesList'
 import { Modal } from '../molecules/Modal'
 import { SettingsManager } from './SettingsManager'
 
+
 const NavbarStyled = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
   justify-content: end;
@@ -21,8 +22,8 @@ const NavbarStyled = styled(FlexBox)`
     color: ${colors.white};
   }
 
-  @media (max-width: 468px) {
-    background-color: ${colors.white};
+  @media  ${device.Mobile} {
+    background-color: ${colors.gray.gray5};
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     position: relative;
@@ -30,7 +31,7 @@ const NavbarStyled = styled(FlexBox)`
 `
 const IconStyled = styled.div`
   display: none;
-  @media ${device.Tablet} {
+  @media ${device.Mobile} {
     margin: 0px 15px 0px 15px;
     padding: 6px;
     width: 3rem;
@@ -55,7 +56,7 @@ const MenuItems = styled(FlexBox)<{ open: boolean }>`
   z-index: 20;
   transition: transform 0.3s ease-in-out;
   transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(-100%)')};
-  @media (min-width: 769px) {
+  @media ${device.Tablet} {
     display: none;
   }
 `
