@@ -15,8 +15,9 @@ export const createSeenResource: Middleware = async (ctx: Koa.Context) => {
   })
 
   if (!resourceFound) throw new NotFoundError('Resource not found')
-
-  const existingViewedResource = await prisma.viewedResource.findUnique({
+  await prisma.viewedResource.upsert({
+    create: { userId: user.id, resourceId },
+    update: {},
     where: {
       userId_resourceId: {
         userId: user.id,
@@ -24,14 +25,5 @@ export const createSeenResource: Middleware = async (ctx: Koa.Context) => {
       },
     },
   })
-
-  if (!existingViewedResource) {
-    await prisma.viewedResource.create({
-      data: {
-        userId: user.id,
-        resourceId,
-      },
-    })
-  }
   ctx.status = 204
 }
