@@ -109,32 +109,27 @@ export const TopicsManagerBoard: FC = () => {
           <Text fontWeight="bold">
             {t('Temas de (category)', { name: state?.name })}
           </Text>
-          {data &&
-            data
-              .concat([
-                {
-                  id: 'newTopic',
-                  name: '',
-                  categoryId: `${state?.id}`,
-                  slug: `${state?.slug}`,
-                },
-              ])
-              .map((topic) => (
-                <TopicsEditableItem
-                  key={topic.id}
-                  id={topic.id}
-                  name={topic.name}
-                  rowStatus={rowStatusCalculator(
-                    rowStatus,
-                    selectedId,
-                    topic.id
-                  )}
-                  handleRowStatus={handleRowStatus}
-                  handleErrorMessage={handleErrorMessage}
-                  handleTopicChange={handleTopicChange}
-                />
-              ))
-              .reverse()}
+          {data
+            ?.concat([
+              {
+                id: 'newTopic',
+                name: '',
+                categoryId: `${state?.id}`,
+                slug: `${state?.slug}`,
+              },
+            ])
+            .map((topic) => (
+              <TopicsEditableItem
+                key={topic.id}
+                id={topic.id}
+                name={topic.name}
+                rowStatus={rowStatusCalculator(rowStatus, selectedId, topic.id)}
+                handleRowStatus={handleRowStatus}
+                handleErrorMessage={handleErrorMessage}
+                handleTopicChange={handleTopicChange}
+              />
+            ))
+            .reverse()}
         </StyledFlexBox>
       ) : (
         <Text>{t('No tienes permiso de acceso')}</Text>

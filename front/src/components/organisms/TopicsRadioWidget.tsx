@@ -25,7 +25,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
   topic,
   setTopic,
 }) => {
-  const { data, isLoading, isError } = useGetTopics(slug as string)
+  const { data, isLoading, isError } = useGetTopics(slug)
 
   const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value)

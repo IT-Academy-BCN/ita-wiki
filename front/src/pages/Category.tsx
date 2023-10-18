@@ -450,12 +450,7 @@ const Category: FC = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
   }
 
-  // const { data: fetchedTopics } = useQuery<TGetTopics>(
-  //   ['getTopics', slug || ''],
-  //   () => getTopics(slug)
-  // )
-
-  const { data: fetchedTopics } = useGetTopics(slug || '')
+  const { data: fetchedTopics } = useGetTopics(slug ?? '')
 
   const mappedTopicsForFilterWidget = [
     { value: 'todos', label: 'Todos' },
