@@ -27,13 +27,6 @@ beforeEach(() => {
       ...actual,
       useParams: vi.fn(),
       useLocation: vi.fn(),
-      // useLocation: vi.fn().mockImplementation(() => ({
-      //   pathname: '',
-      //   search: '',
-      //   hash: '',
-      //   key: '',
-      //   state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-      // })),
     }
   })
 })
@@ -65,7 +58,7 @@ describe('TopicsManagerBoard component', () => {
 
     expect(
       screen.getByText(
-        'No hay temas disponibles. Accede desde una categoría para ver o gestionar sus temas.'
+        /No hi ha temes disponibles. *Accedeix des d'una categoria per veure o gestionar els temes./
       )
     ).toBeInTheDocument()
   })
@@ -95,8 +88,8 @@ describe('TopicsManagerBoard component', () => {
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
-      expect(screen.getByText('Temas de React')).toBeInTheDocument()
-      expect(screen.getByText('+ Crear nuevo tema')).toBeInTheDocument()
+      expect(screen.getByText('Temes de React')).toBeInTheDocument()
+      expect(screen.getByText('+ Crea un nou tema')).toBeInTheDocument()
       expect(screen.getByText('Listas')).toBeInTheDocument()
       expect(screen.getByText('Renderizado condicional')).toBeInTheDocument()
     })
@@ -129,16 +122,16 @@ describe('TopicsManagerBoard component', () => {
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
-      expect(screen.getByText('+ Crear nuevo tema')).toBeInTheDocument()
+      expect(screen.getByText('+ Crea un nou tema')).toBeInTheDocument()
       expect(screen.queryByText('Listas')).not.toBeInTheDocument()
       expect(
         screen.queryByText('Renderizado condicional')
       ).not.toBeInTheDocument()
       expect(
-        screen.queryByRole('button', { name: 'Editar' })
+        screen.queryByRole('button', { name: 'Edita' })
       ).not.toBeInTheDocument()
       expect(
-        screen.queryByRole('button', { name: 'Borrar tema' })
+        screen.queryByRole('button', { name: 'Esborra el tema' })
       ).not.toBeInTheDocument()
     })
     screen.debug()
@@ -169,11 +162,11 @@ describe('TopicsManagerBoard component', () => {
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
-      expect(screen.getByText('Ha habido un error...')).toBeInTheDocument()
+      expect(screen.getByText('Hi ha hagut un error...')).toBeInTheDocument()
     })
   })
 
-  it('shows error message on create error (401)', async () => {
+  it('shows error message on create error', async () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)
@@ -188,7 +181,7 @@ describe('TopicsManagerBoard component', () => {
       user: null,
     } as TAuthContext)
     mswServer.use(...errorHandlers)
-    //NOSÉ SI EL PUC FER!!
+
     render(<TopicsManagerBoard />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
@@ -196,12 +189,11 @@ describe('TopicsManagerBoard component', () => {
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
-      expect(screen.getByText('Ha habido un error...')).toBeInTheDocument()
+      expect(screen.getByText('Hi ha hagut un error...')).toBeInTheDocument()
     })
   })
 
-  //FUNCIONA SI !== MENTOR
-  it('shows error message on update topic if user is not a mentor (error 403)', async () => {
+  it('shows error message on update topic if user is not a mentor/admin (error 403)', async () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)
@@ -231,20 +223,19 @@ describe('TopicsManagerBoard component', () => {
 
     fireEvent.click(
       screen.getByRole('button', {
-        name: 'Confirmar edición',
+        name: "Confirma l'edició",
       })
     )
 
     await waitFor(() =>
       expect(
         screen.getByText(
-          'Acceso denegado. No tienes los permisos necesarios para realizar la operación.'
+          "Accés denegat. No tens els permisos necessaris per realitzar l'operació."
         )
       ).toBeInTheDocument()
     )
   })
 
-  //FUNCIONA SI === MENTOR
   it('shows error message on update topic in case of server error (error 500)', async () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
@@ -275,14 +266,14 @@ describe('TopicsManagerBoard component', () => {
 
     fireEvent.click(
       screen.getByRole('button', {
-        name: 'Confirmar edición',
+        name: "Confirma l'edició",
       })
     )
 
     await waitFor(() =>
       expect(
         screen.getByText(
-          'Error en la base de datos. Por favor, inténtalo más tarde.'
+          'Error en la base de dades. Per favor, intenta-ho més tard.'
         )
       ).toBeInTheDocument()
     )
@@ -315,7 +306,7 @@ describe('TopicsManagerBoard component', () => {
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
-      expect(screen.getByText('Ha habido un error...')).toBeInTheDocument()
+      expect(screen.getByText('Hi ha hagut un error...')).toBeInTheDocument()
     })
   })
 })

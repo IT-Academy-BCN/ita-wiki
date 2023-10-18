@@ -1,12 +1,16 @@
 import { FC, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { colors, FlexBox } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import { TopicsEditableItem } from '../molecules'
-import { urls } from '../../constants'
-import { TGetTopics, getTopics, TTopic } from '../../helpers/fetchers'
+import {
+  TTopic,
+  createTopicFetcher,
+  updateTopicFetcher,
+} from '../../helpers/fetchers'
 import { useAuth } from '../../context/AuthProvider'
 import { useGetTopics } from '../../hooks'
 
@@ -14,66 +18,18 @@ const StyledFlexBox = styled(FlexBox)`
   width: 100%;
 `
 
-const errorMessageStatus: { [key: number]: string } = {
-  401: 'Operación no autorizada. Es necesario iniciar sesión de usuario.',
-  403: 'Acceso denegado. No tienes los permisos necesarios para realizar la operación.',
-  404: 'Error al guardar el tema en la base de datos. Por favor, inténtalo de nuevo y si el error persiste, contacta con el administrador.',
-  405: 'Identificador de usuario no válido.',
-  500: 'Error en la base de datos. Por favor, inténtalo más tarde.',
-}
-
-//@SI PASSO AIxÔ A FETCHERS CLA FER ALGUNA MANBERA DE PASSAR ELS ERORRS AQUÏ, PEX FER QUE isEroor retorni núm error i en aquesta pantalla el capto i mostro -- opció B: fer els errors gene´rics i posar-lso a fetchers, retornar el missatge amb isError
-const createTopicFetcher = (createdTopic: TTopic) =>
-  fetch(urls.postTopics, {
-    method: 'POST',
-    body: JSON.stringify(createdTopic),
-    headers: {
-      'Content-type': 'application/json',
-    },
-  }).then((res) => {
-    if (!res.ok) {
-      throw new Error(errorMessageStatus[res.status])
-    }
-    return res.status === 204 ? {} : res.json()
-  })
-
-const updateTopicFetcher = (updatedTopic: TTopic) =>
-  fetch(urls.patchTopics, {
-    method: 'PATCH',
-    body: JSON.stringify(updatedTopic),
-    headers: {
-      'Content-type': 'application/json',
-    },
-  }).then((res) => {
-    if (!res.ok) {
-      throw new Error(errorMessageStatus[res.status])
-    }
-    return res.status === 204 ? null : res.json()
-  })
-
-// export type TTopic = {
-//   id?: string
-//   name: string
-//   slug?: string
-//   categoryId?: string
-// }
-
 export const TopicsManagerBoard: FC = () => {
   const { user } = useAuth()
   const { slug } = useParams()
   const { state } = useLocation()
 
-  console.log(state)
+  const { t } = useTranslation()
+
   const [rowStatus, setRowStatus] = useState<string>('available')
 
   const [selectedId, setSelectedId] = useState<string>('')
 
   const [errorMessage, setErrorMessage] = useState<string>('')
-
-  // const { data, isLoading, isError, refetch } = useQuery<TGetTopics>(
-  //   ['getTopics', slug],
-  //   () => getTopics(slug)
-  // )
 
   const { data, isLoading, isError, refetch } = useGetTopics(slug as string)
 
@@ -85,7 +41,6 @@ export const TopicsManagerBoard: FC = () => {
       setRowStatus('available')
     },
     onError: (error: Error) => {
-      console.log('Error update:', error.message)
       setErrorMessage(error.message)
     },
   })
@@ -98,7 +53,6 @@ export const TopicsManagerBoard: FC = () => {
       setRowStatus('available')
     },
     onError: (error: Error) => {
-      console.log('Error create:', error.message)
       setErrorMessage(error.message)
     },
   })
@@ -106,8 +60,8 @@ export const TopicsManagerBoard: FC = () => {
   if (slug === undefined) {
     return (
       <Text color={`${colors.error}`}>
-        No hay temas disponibles. <br />
-        Accede desde una categoría para ver o gestionar sus temas.
+        {t('No hay temas disponibles.')} <br />
+        {t('Accede desde una categoría para ver o gestionar sus temas.')}
       </Text>
     )
   }
@@ -146,20 +100,15 @@ export const TopicsManagerBoard: FC = () => {
   }
 
   if (isLoading) return <Spinner size="small" role="status" />
-  if (isError) return <p>Ha habido un error...</p>
+  if (isError) return <p>{t('Ha habido un error...')}</p>
 
   return (
     <>
-      {/* {/* //OJU, lo bo és === 'MENTOR'
-      {user && user.role === 'MENTOR' ? ( *
-      //però tb ha de ser admin, o sigui que usear "== 'REGISTERED"
-        /} */}
-
       {user ? (
-        // {slug && ( ) //HO HE HAGUT FD'ELIMIANR PER SIMPLIFICAR; I CREC QUE NO CAL PQ JA HEM DEFINIT RUTA SI ÉS UNDEFINED
-
         <StyledFlexBox>
-          <Text fontWeight="bold">Temas de {state.name}</Text>
+          <Text fontWeight="bold">
+            {t('Temas de (category)', { name: state?.name })}
+          </Text>
           {data &&
             data
               .concat([
@@ -188,12 +137,10 @@ export const TopicsManagerBoard: FC = () => {
               .reverse()}
         </StyledFlexBox>
       ) : (
-        <Text>
-          No tienes los permisos necesarios para acceder a este contenido.
-        </Text>
+        <Text>{t('No tienes permiso de acceso')}</Text>
       )}
       <br />
-      <Text color={`${colors.error}`}>{errorMessage}</Text>
+      <Text color={`${colors.error}`}>{t(errorMessage)}</Text>
     </>
   )
 }

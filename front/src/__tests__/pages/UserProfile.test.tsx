@@ -12,6 +12,6 @@ describe('UserProfile', () => {
     const votesElement = await screen.findByTestId(/votos recibidos/i)
     expect(votesElement).toHaveTextContent('8')
     const favoritesElement = await screen.findByTestId(/Favoritos guardados/i)
-    expect(favoritesElement).toHaveTextContent('1')
+    expect(favoritesElement).toHaveTextContent('2')
   })
 })

@@ -4,14 +4,13 @@ import { CardProfile } from '../components/molecules/CardProfile'
 import icons from '../assets/icons'
 import { paths } from '../constants'
 import { logOut } from '../utils/logOut'
-import { useGetFavorites, TFavorites } from '../hooks/useGetFavorites'
+import { useGetFavorites } from '../hooks/useGetFavorites'
 import { useGetResources, TResources } from '../hooks/useGetResources'
 import { useAuth } from '../context/AuthProvider'
 import { BackButton } from '../components/atoms/BackButton'
 
 export const UserProfile: FC = () => {
-  const favorites = useGetFavorites()
-  const favoritesData = favorites.data as TFavorites[] | undefined
+  const { data: favoritesData } = useGetFavorites()
   const favoritesLength = favoritesData?.length ?? 0
   const resources = useGetResources()
   const resourcesData = resources.data as TResources[] | undefined

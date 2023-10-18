@@ -24,7 +24,7 @@ describe('TopicsEditableItem component', () => {
       />
     )
 
-    const textCreateNewTopic = screen.getByText('+ Crear nuevo tema')
+    const textCreateNewTopic = screen.getByText('+ Crea un nou tema')
 
     expect(textCreateNewTopic).toBeInTheDocument()
 
@@ -50,12 +50,12 @@ describe('TopicsEditableItem component', () => {
 
     expect(screen.getByText('testTopicName')).toBeInTheDocument()
 
-    const editButton = screen.getByRole('button', { name: 'Editar' })
+    const editButton = screen.getByRole('button', { name: 'Edita' })
 
     expect(editButton).toBeInTheDocument()
 
     expect(
-      screen.getByRole('button', { name: 'Borrar tema' })
+      screen.getByRole('button', { name: 'Esborra el tema' })
     ).toBeInTheDocument()
 
     expect(screen.getByTestId('rowContainer')).toHaveStyle(`opacity: 1`)
@@ -78,18 +78,18 @@ describe('TopicsEditableItem component', () => {
       />
     )
 
-    const topicInput = screen.getByPlaceholderText('Nombre del nuevo tema')
+    const topicInput = screen.getByPlaceholderText('Nom del tema nou')
 
     expect(topicInput).toBeInTheDocument()
 
     expect(screen.getByTestId('rowContainer')).toHaveStyle(`opacity: 1`)
 
     const confirmEdit = screen.getByRole('button', {
-      name: 'Confirmar edición',
+      name: "Confirma l'edició",
     })
 
     const cancelEdit = screen.getByRole('button', {
-      name: 'Cancelar edición',
+      name: "Cancel·la l'edició",
     })
 
     expect(confirmEdit).toBeInTheDocument()
@@ -116,12 +116,12 @@ describe('TopicsEditableItem component', () => {
 
     expect(screen.getByText('testTopicName')).toBeInTheDocument()
 
-    const editButton = screen.getByRole('button', { name: 'Editar' })
+    const editButton = screen.getByRole('button', { name: 'Edita' })
 
     expect(editButton).toBeInTheDocument()
 
     expect(
-      screen.getByRole('button', { name: 'Borrar tema' })
+      screen.getByRole('button', { name: 'Esborra el tema' })
     ).toBeInTheDocument()
 
     expect(screen.getByTestId('rowContainer')).toHaveStyle(`opacity: 0.5`)
@@ -130,7 +130,7 @@ describe('TopicsEditableItem component', () => {
     )
   })
 
-  it.only('renders correctly in editing mode', async () => {
+  it('renders correctly in editing mode', async () => {
     render(
       <TopicsEditableItem
         id="testTopicId"
@@ -147,26 +147,42 @@ describe('TopicsEditableItem component', () => {
     expect(topicInput).toBeInTheDocument()
 
     const confirmEdit = screen.getByRole('button', {
-      name: 'Confirmar edición',
-    })
-
-    const cancelEdit = screen.getByRole('button', {
-      name: 'Cancelar edición',
+      name: "Confirma l'edició",
     })
 
     expect(confirmEdit).toBeInTheDocument()
-    //AIXò NO ESTÂ BÉ!!??
+
     fireEvent.click(confirmEdit)
     await waitFor(() =>
       expect(onClickRowStatus).toHaveBeenCalledWith('available', '')
     )
-    //TOO MUVCH CLICKS - -tESTEJO SI O CANVIA EL TEXT; QUE N O FA RES? -- O AFEGEIXO QUE TIR MISSATGE ERROR I NO PASSI DE TOT
+
     await userEvent.type(topicInput, 'New test topic name')
 
     fireEvent.click(confirmEdit)
     await waitFor(() => expect(onClickTopicChange).toHaveBeenCalled())
+  })
 
-    //AIXÒ MEREIX TEST SEPARAT : CANCLE BUTON
+  it('cancel button exits edit mode ', async () => {
+    render(
+      <TopicsEditableItem
+        id="testTopicId"
+        name="testTopicName"
+        rowStatus="editing"
+        handleRowStatus={onClickRowStatus}
+        handleErrorMessage={onClickErrorMessage}
+        handleTopicChange={onClickTopicChange}
+      />
+    )
+
+    const topicInput = screen.getByDisplayValue('testTopicName')
+
+    expect(topicInput).toBeInTheDocument()
+
+    const cancelEdit = screen.getByRole('button', {
+      name: "Cancel·la l'edició",
+    })
+
     expect(cancelEdit).toBeInTheDocument()
     fireEvent.click(cancelEdit)
     await waitFor(() =>
@@ -188,7 +204,7 @@ describe('TopicsEditableItem component', () => {
 
     fireEvent.click(
       screen.getByRole('button', {
-        name: 'Confirmar edición',
+        name: "Confirma l'edició",
       })
     )
     await waitFor(() =>
@@ -214,17 +230,17 @@ describe('TopicsEditableItem component', () => {
 
     await userEvent.clear(topicInput)
 
-    expect(topicInput.placeholder).toBe('Nombre del tema')
+    expect(topicInput.placeholder).toBe('Nom del tema')
 
     fireEvent.click(
       screen.getByRole('button', {
-        name: 'Confirmar edición',
+        name: "Confirma l'edició",
       })
     )
 
     await waitFor(() =>
       expect(onClickErrorMessage).toHaveBeenCalledWith(
-        'Por favor, no dejes vacío el nombre del tema.'
+        'Per favor, no deixis buit el nom del tema.'
       )
     )
 
@@ -244,8 +260,8 @@ describe('TopicsEditableItem component', () => {
     )
 
     const topicText = screen.getByText('testTopicName')
-    const cancelButton = screen.getByRole('button', { name: 'Cancelar' })
-    const deleteButton = screen.getByRole('button', { name: 'Borrar tema' })
+    const cancelButton = screen.getByRole('button', { name: 'Cancel·la' })
+    const deleteButton = screen.getByRole('button', { name: 'Esborra el tema' })
 
     expect(topicText).toBeInTheDocument()
     expect(topicText).toHaveStyle(`text-decoration: line-through`)

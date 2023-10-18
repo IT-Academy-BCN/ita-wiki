@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 import { useLocation, useParams } from 'react-router-dom'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
 import {
   DesktopSideMenu,
@@ -25,7 +24,6 @@ import {
   TypesFilterWidget,
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
-import { TGetTopics, getTopics } from '../helpers/fetchers'
 import { useGetTopics } from '../hooks'
 
 const Container = styled(FlexBox)`
@@ -467,21 +465,21 @@ const Category: FC = () => {
     }) ?? []),
   ]
 
-  const topicsForResourceForm = fetchedTopics?.map(
-    (t) =>
-      ({
-        id: t.id,
-        value: t.slug,
-        label: t.name,
-      })
-  )
+  const topicsForResourceForm = fetchedTopics?.map((t) => ({
+    id: t.id,
+    value: t.slug,
+    label: t.name,
+  }))
 
   return (
     <>
       <Container direction="row" justify="flex-start" align="start">
         <DesktopSideMenu />
         <WiderContainer>
-          <Navbar isUserLogged={user !== null} toggleModal={toggleModal} handleAccessModal={handleAccessModal} />
+          <Navbar
+            toggleModal={toggleModal}
+            handleAccessModal={handleAccessModal}
+          />
           <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
               Temas
