@@ -346,6 +346,120 @@ paths:
                     - id
                     - name
                     - slug
+    post:
+      tags:
+        - categories
+      description: Creates a new category. The requestor has to be logged in and with
+        role ADMIN.
+      summary: Creates a new category.
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: React
+              required:
+                - name
+      responses:
+        "204":
+          description: New category created succesfully.
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "403":
+          description: Forbidden. Acces denied.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ForbiddenError"
+                  - example: &a1
+                      message: Access denied. You don't have permissions
+        "498":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
+    patch:
+      tags:
+        - categories
+      description: Modifies an existing category. The requestor has to be logged in
+        and with role ADMIN.
+      summary: Patch a category.
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                name:
+                  type: string
+                  example: React
+              required:
+                - id
+                - name
+      responses:
+        "204":
+          description: Category modified succesfully.
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "403":
+          description: Forbidden. Acces denied.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ForbiddenError"
+                  - example: *a1
+        "404":
+          description: Category not found
+        "498":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
   /api/v1/topics:
     get:
       tags:
@@ -437,8 +551,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/ForbiddenError"
-                  - example: &a1
-                      message: Access denied. You don't have permissions
+                  - example: *a1
         "498":
           description: Invalid token
           content:
