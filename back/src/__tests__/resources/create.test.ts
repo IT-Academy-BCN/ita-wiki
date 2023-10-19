@@ -1,97 +1,79 @@
 import supertest from 'supertest'
-import { expect, describe, beforeAll, afterAll, it, afterEach } from 'vitest'
-import { Resource } from '@prisma/client'
-import { server, testUserData } from '../globalSetup'
+import { expect, test, describe, beforeAll, afterAll } from 'vitest'
+import { server } from '../globalSetup'
 import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
-import { resourceTestData } from '../mocks/resources'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
-let testResource: Resource
-const uri = `${pathRoot.v1.seen}/`
+let topicIds: string[] = []
+
 beforeAll(async () => {
-  const testResourceData = {
-    ...resourceTestData[0],
-    user: { connect: { dni: testUserData.user.dni } },
-  }
-  testResource = await prisma.resource.create({
-    data: testResourceData,
-  })
+  topicIds = (await prisma.topic.findMany()).map((topic) => topic.id)
 })
 
 afterAll(async () => {
-  await prisma.viewedResource.deleteMany({ where: {} })
-  await prisma.resource.deleteMany({
-    where: { user: { dni: testUserData.user.dni } },
+  await prisma.topicsOnResources.deleteMany({
+    where: { resource: { slug: 'test-resource' } },
+  })
+  await prisma.resource.delete({
+    where: { slug: 'test-resource' },
   })
 })
 
-afterEach(async () => {
-  await prisma.viewedResource.deleteMany({ where: {} })
-})
-describe('Testing viewed resource creation endpoint', () => {
-  it('should mark a resource as viewed', async () => {
+describe('Testing resource creation endpoint', () => {
+  const newResource = {
+    title: 'Test Resource',
+    description: 'This is a new resource',
+    url: 'https://example.com/resource',
+    resourceType: 'BLOG',
+    topics: topicIds,
+  }
+  test('should create a new resource with topics', async () => {
+    newResource.topics = topicIds
     const response = await supertest(server)
-      .post(`${pathRoot.v1.seen}/${testResource.id}`)
+      .post(`${pathRoot.v1.resources}`)
       .set('Cookie', authToken.admin)
-    const viewedResources = await prisma.viewedResource.findMany({
-      where: {
-        user: { dni: testUserData.admin.dni },
-        resourceId: testResource.id,
-      },
-    })
+      .send(newResource)
+
     expect(response.status).toBe(204)
-    expect(viewedResources.length).toBeGreaterThanOrEqual(1)
   })
 
-  it('should not create duplicate entries for viewed resources', async () => {
+  test('should fail without topics', async () => {
+    newResource.topics = []
     const response = await supertest(server)
-      .post(`${uri + testResource.id}`)
+      .post(`${pathRoot.v1.resources}`)
       .set('Cookie', authToken.admin)
-    expect(response.statusCode).toBe(204)
-    const secondResponse = await supertest(server)
-      .post(`${uri + testResource.id}`)
+      .send(newResource)
+
+    expect(response.status).toBe(422)
+  })
+
+  test('should fail with wrong resource type', async () => {
+    const invalidResource = {
+      title: 'Invalid Resource',
+      description: 'This is a new resource',
+      url: 'https://example.com/resource',
+      resourceType: 'INVALIDE-RESOURCE',
+      topicId: topicIds,
+      status: 'NOT_SEEN',
+    }
+
+    const response = await supertest(server)
+      .post(`${pathRoot.v1.resources}`)
       .set('Cookie', authToken.admin)
-    expect(secondResponse.statusCode).toBe(204)
-    const viewedResources = await prisma.viewedResource.findMany({
-      where: {
-        user: { dni: testUserData.admin.dni },
-        resourceId: testResource.id,
-      },
-    })
-    expect(viewedResources.length).toBe(1)
+      .send(invalidResource)
+
+    expect(response.status).toBe(400)
+    expect(response.body.message[0].received).toBe('INVALIDE-RESOURCE')
   })
-  describe('Fail cases', () => {
-    it('Should response status code 400 if no valid cuid is provided', async () => {
-      const response = await supertest(server)
-        .post(`${uri}abc`)
-        .set('Cookie', authToken.admin)
-      expect(response.status).toBe(400)
-      expect(response.body.message[0]).toStrictEqual({
-        code: 'invalid_string',
-        message: 'Invalid cuid',
-        path: ['params', 'resourceId'],
-        validation: 'cuid',
-      })
-    })
-    it('Should response status code 401 if no token is provided', async () => {
-      const response = await supertest(server).post(`${uri + testResource.id}`)
-      expect(response.status).toBe(401)
-      expect(response.body.message).toBe('Missing token')
-    })
 
-    it('Check invalid token', async () => {
-      checkInvalidToken(`${uri + testResource.id}`, 'post')
-    })
-
-    it('should response status code 404 if resource does not exist', async () => {
-      const response = await supertest(server)
-        .post(`${uri}clnjyhw7t000008ju4ozndeqi`)
-        .set('Cookie', authToken.admin)
-
-      expect(response.statusCode).toBe(404)
-      expect(response.body.message).toBe('Resource not found')
-    })
+  test('Should return error 401 if no token is provided', async () => {
+    const response = await supertest(server)
+      .post(`${pathRoot.v1.resources}`)
+      .send(newResource)
+    expect(response.status).toBe(401)
+    expect(response.body.message).toBe('Missing token')
   })
+  checkInvalidToken(`${pathRoot.v1.resources}`, 'post', newResource)
 })
