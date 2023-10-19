@@ -14,6 +14,12 @@
   "Vota els recursos": "Vota los recursos",
   "La comunitat decideix": "La comunidad decide cuáles son más relevantes",
 
+  "Configuración": "Configuración",
+  "Añadir recurso": "Añadir recurso",
+  "Menú": "Menú",
+  "Ajustes": "Ajustes",
+  "Cerrar": "Cerrar",
+
   "Registre": "Registro",
   "DNI": "DNI o NIE",
   "Especialidad": "Especialidad",
@@ -38,15 +44,29 @@
   "No tienes recursos favoritos": "No tienes recursos favoritos",
   "Algo ha ido mal...": "Algo ha ido mal...",
 
-  "Registre": "Registro",
-  "DNI": "DNI o NIE",
-  "Especialidad": "Especialidad",
-  "Password": "Contraseña",
-  "repetirpassword": "Repetir contraseña",
-  "password error": "La contraseña debe tener al menos 8 caracteres y contener solo letras y números",
-  "acepto": "Acepto",
-  "terminos legales": "términos legales",
-  "tienes una cuenta?": "¿Tienes una cuenta?, entrar",
-  "recordar/cambiar": "Recordar/cambiar contraseña",
-  "no tienes una cuenta?": "¿No tienes una cuenta?, crear una"
+  "Temas": "Temas",
+  "Usuarios": "Usuarios",
+
+  "No hay temas disponibles.": "No hay temas disponibles.",
+  "Accede desde una categoría para ver o gestionar sus temas.": "Accede desde una categoría para ver o gestionar sus temas.",
+  "Temas de (category)": "Temas de {{name}}",
+  "No tienes permiso de acceso": "No tienes los permisos necesarios para acceder a este contenido.",
+  "Ha habido un error...": "Ha habido un error...",
+
+  "+ Crear nuevo tema": "+ Crear nuevo tema",
+  "Nombre del tema": "Nombre del tema",
+  "Nombre del nuevo tema": "Nombre del nuevo tema",
+  "Editar": "Editar",
+  "Confirmar edición": "Confirmar edición",
+  "Cancelar edición": "Cancelar edición",
+  "Por favor, no dejes vacío el nombre del tema.": "Por favor, no dejes vacío el nombre del tema.",
+  "Cancelar": "Cancelar",
+  "Borrar tema": "Borrar tema",
+  "No es posible borrar el tema.": "No es posible borrar el tema.",
+
+  "Error 401 - No autorizado": "Operación no autorizada. Es necesario iniciar sesión de usuario.",
+  "Error 403 - Acceso denegado": "Acceso denegado. No tienes los permisos necesarios para realizar la operación.",
+  "Error 404 - No se puede guardar": "Error al guardar en la base de datos. Por favor, inténtalo de nuevo y si el error persiste, contacta con el administrador.",
+  "Error 405 - Id de usuario inválido": "Identificador de usuario no válido.",
+  "Error 500 - Error bbdd": "Error en la base de datos. Por favor, inténtalo más tarde."
 }

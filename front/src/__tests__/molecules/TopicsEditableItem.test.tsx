@@ -16,7 +16,7 @@ describe('TopicsEditableItem component', () => {
     render(
       <TopicsEditableItem
         id="newTopic"
-        name="Nombre del nuevo tema"
+        name=""
         rowStatus="available"
         handleRowStatus={onClickRowStatus}
         handleErrorMessage={onClickErrorMessage}
@@ -24,7 +24,7 @@ describe('TopicsEditableItem component', () => {
       />
     )
 
-    const textCreateNewTopic = screen.getByText('+ Crear nuevo tema')
+    const textCreateNewTopic = screen.getByText('+ Crea un nou tema')
 
     expect(textCreateNewTopic).toBeInTheDocument()
 
@@ -50,12 +50,12 @@ describe('TopicsEditableItem component', () => {
 
     expect(screen.getByText('testTopicName')).toBeInTheDocument()
 
-    const editButton = screen.getByRole('button', { name: 'Editar' })
+    const editButton = screen.getByRole('button', { name: 'Edita' })
 
     expect(editButton).toBeInTheDocument()
 
     expect(
-      screen.getByRole('button', { name: 'Borrar tema' })
+      screen.getByRole('button', { name: 'Esborra el tema' })
     ).toBeInTheDocument()
 
     expect(screen.getByTestId('rowContainer')).toHaveStyle(`opacity: 1`)
@@ -64,6 +64,42 @@ describe('TopicsEditableItem component', () => {
     await waitFor(() =>
       expect(onClickRowStatus).toHaveBeenCalledWith('editing', 'testTopicId')
     )
+  })
+
+  it('renders new topic correctly in editing mode', async () => {
+    render(
+      <TopicsEditableItem
+        id="newTopic"
+        name=""
+        rowStatus="editing"
+        handleRowStatus={onClickRowStatus}
+        handleErrorMessage={onClickErrorMessage}
+        handleTopicChange={onClickTopicChange}
+      />
+    )
+
+    const topicInput = screen.getByPlaceholderText('Nom del tema nou')
+
+    expect(topicInput).toBeInTheDocument()
+
+    expect(screen.getByTestId('rowContainer')).toHaveStyle(`opacity: 1`)
+
+    const confirmEdit = screen.getByRole('button', {
+      name: "Confirma l'edició",
+    })
+
+    const cancelEdit = screen.getByRole('button', {
+      name: "Cancel·la l'edició",
+    })
+
+    expect(confirmEdit).toBeInTheDocument()
+    expect(cancelEdit).toBeInTheDocument()
+
+    await userEvent.type(topicInput, 'New test topic name')
+
+    fireEvent.click(confirmEdit)
+
+    await waitFor(() => expect(onClickTopicChange).toHaveBeenCalled())
   })
 
   it('renders correctly in disabled mode', () => {
@@ -80,11 +116,13 @@ describe('TopicsEditableItem component', () => {
 
     expect(screen.getByText('testTopicName')).toBeInTheDocument()
 
-    const editButton = screen.getByRole('button', { name: 'Editar' })
+    const editButton = screen.getByRole('button', { name: 'Edita' })
 
     expect(editButton).toBeInTheDocument()
 
-    expect(screen.getByRole('button', { name: 'Borrar tema' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'Esborra el tema' })
+    ).toBeInTheDocument()
 
     expect(screen.getByTestId('rowContainer')).toHaveStyle(`opacity: 0.5`)
     expect(screen.getByTestId('rowContainer')).toHaveStyle(
@@ -109,11 +147,7 @@ describe('TopicsEditableItem component', () => {
     expect(topicInput).toBeInTheDocument()
 
     const confirmEdit = screen.getByRole('button', {
-      name: 'Confirmar edición',
-    })
-
-    const cancelEdit = screen.getByRole('button', {
-      name: 'Cancelar edición',
+      name: "Confirma l'edició",
     })
 
     expect(confirmEdit).toBeInTheDocument()
@@ -127,6 +161,27 @@ describe('TopicsEditableItem component', () => {
 
     fireEvent.click(confirmEdit)
     await waitFor(() => expect(onClickTopicChange).toHaveBeenCalled())
+  })
+
+  it('cancel button exits edit mode ', async () => {
+    render(
+      <TopicsEditableItem
+        id="testTopicId"
+        name="testTopicName"
+        rowStatus="editing"
+        handleRowStatus={onClickRowStatus}
+        handleErrorMessage={onClickErrorMessage}
+        handleTopicChange={onClickTopicChange}
+      />
+    )
+
+    const topicInput = screen.getByDisplayValue('testTopicName')
+
+    expect(topicInput).toBeInTheDocument()
+
+    const cancelEdit = screen.getByRole('button', {
+      name: "Cancel·la l'edició",
+    })
 
     expect(cancelEdit).toBeInTheDocument()
     fireEvent.click(cancelEdit)
@@ -149,7 +204,7 @@ describe('TopicsEditableItem component', () => {
 
     fireEvent.click(
       screen.getByRole('button', {
-        name: 'Confirmar edición',
+        name: "Confirma l'edició",
       })
     )
     await waitFor(() =>
@@ -169,18 +224,23 @@ describe('TopicsEditableItem component', () => {
       />
     )
 
-    const topicInput = screen.getByDisplayValue('testTopicName')
+    const topicInput = screen.getByDisplayValue(
+      'testTopicName'
+    ) as HTMLInputElement
 
     await userEvent.clear(topicInput)
 
+    expect(topicInput.placeholder).toBe('Nom del tema')
+
     fireEvent.click(
       screen.getByRole('button', {
-        name: 'Confirmar edición',
+        name: "Confirma l'edició",
       })
     )
+
     await waitFor(() =>
       expect(onClickErrorMessage).toHaveBeenCalledWith(
-        'Por favor, no dejes vacío el nombre del tema.'
+        'Per favor, no deixis buit el nom del tema.'
       )
     )
 
@@ -200,8 +260,8 @@ describe('TopicsEditableItem component', () => {
     )
 
     const topicText = screen.getByText('testTopicName')
-    const cancelButton = screen.getByRole('button', { name: 'Cancelar' })
-    const deleteButton = screen.getByRole('button', { name: 'Borrar tema' })
+    const cancelButton = screen.getByRole('button', { name: 'Cancel·la' })
+    const deleteButton = screen.getByRole('button', { name: 'Esborra el tema' })
 
     expect(topicText).toBeInTheDocument()
     expect(topicText).toHaveStyle(`text-decoration: line-through`)
