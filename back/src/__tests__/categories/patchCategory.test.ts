@@ -7,7 +7,7 @@ import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 
 let testCategory: Category | null
-describe('Testing PATCH method', () => {
+describe('Testing category PATCH method', () => {
   beforeAll(async () => {
     await prisma.category.create({
       data: { name: 'Debugging', slug: 'debugging' },
@@ -22,17 +22,21 @@ describe('Testing PATCH method', () => {
       where: { id: testCategory!.id },
     })
   })
+
+  const baseURL = `${pathRoot.v1.categories}/id`
+
   it('Should respond 204 status when patching a category', async () => {
     const response = await supertest(server)
-      .patch(`${pathRoot.v1.categories}`)
+      .patch(`${baseURL}/${testCategory!.id}`)
       .set('Cookie', authToken.admin)
-      .send({ id: testCategory!.id, name: 'Test Debugging' })
+      .send({ name: 'Test Debugging' })
 
     expect(response.status).toBe(204)
   })
   it('Should not be able to patch a category if no admin user', async () => {
     const response = await supertest(server)
-      .post(`${pathRoot.v1.categories}`)
+      .patch(`${baseURL}/${testCategory!.id}`)
+
       .set('Cookie', authToken.user)
       .send({ id: testCategory!.id, name: 'Test Debugging' })
 
@@ -40,9 +44,9 @@ describe('Testing PATCH method', () => {
   })
   it('Should respond 409 if attempting to patch a category with an already existing name', async () => {
     const response = await supertest(server)
-      .post(`${pathRoot.v1.categories}`)
+      .patch(`${baseURL}/${testCategory!.id}`)
       .set('Cookie', authToken.admin)
-      .send({ name: 'Testing' })
+      .send({ id: testCategory!.id, name: 'Testing' })
 
     expect(response.status).toBe(409)
   })

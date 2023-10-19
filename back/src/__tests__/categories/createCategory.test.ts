@@ -6,7 +6,7 @@ import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 
 const newCategory = { name: 'New Category' }
-describe('Testing POST method', () => {
+describe('Testing category POST method', () => {
   afterEach(async () => {
     await prisma.category.deleteMany({
       where: { name: newCategory.name },

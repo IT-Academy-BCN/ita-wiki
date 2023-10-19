@@ -12,10 +12,10 @@ import { registry } from '../../registry'
 registry.registerPath({
   method: 'patch',
   tags: ['categories'],
-  path: `${pathRoot.v1.categories}`,
+  path: `${pathRoot.v1.categories}/id/{id}`,
+  summary: 'Patch a category by its ID.',
   description:
     'Modifies an existing category. The requestor has to be logged in and with role ADMIN.',
-  summary: 'Patch a category.',
   security: [{ [cookieAuth.name]: [] }],
   request: {
     body: {
@@ -26,6 +26,15 @@ registry.registerPath({
       },
     },
   },
+  parameters: [
+    {
+      name: 'categoryId',
+      in: 'path',
+      required: true,
+      description: 'ID of the category to modify',
+      example: 'clnwzimjp0000h88ktz1ibtq5',
+    },
+  ],
   responses: {
     204: {
       description: 'Category modified succesfully.',

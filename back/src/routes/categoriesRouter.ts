@@ -19,7 +19,7 @@ categoriesRouter.post(
   createCategory
 )
 categoriesRouter.patch(
-  '/',
+  '/id/:categoryId',
   authenticate,
   authorize(USER_ROLE.ADMIN),
   validate(z.object({ body: categoryPatchSchema })),

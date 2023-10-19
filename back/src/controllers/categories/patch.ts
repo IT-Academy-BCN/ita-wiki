@@ -1,28 +1,17 @@
 import Koa, { Middleware } from 'koa'
 import slugify from 'slugify'
 import { prisma } from '../../prisma/client'
-import { MissingParamError, NotFoundError } from '../../helpers/errors'
 
 export const patchCategory: Middleware = async (ctx: Koa.Context) => {
-  const { id, ...newData } = ctx.request.body
-  if (!id) throw new MissingParamError('resourceId')
-  const category = await prisma.category.findFirst({ where: { id } })
+  const newData = ctx.request.body
 
-  if (!category) throw new NotFoundError('Topic not found')
-
-  let updatedName: string = category.name
-  let updatedSlug: string = category.slug
-
-  if (category.name !== newData.name) {
-    updatedSlug = slugify(newData.name, { lower: true })
-    updatedName = newData.name
-  }
+  const { categoryId } = ctx.params
 
   await prisma.category.update({
-    where: { id },
+    where: { id: categoryId },
     data: {
-      name: updatedName,
-      slug: updatedSlug,
+      ...newData,
+      slug: slugify(newData.name, { lower: true }),
     },
   })
 
