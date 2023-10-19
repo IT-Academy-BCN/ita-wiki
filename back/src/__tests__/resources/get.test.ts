@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
-import { RESOURCE_TYPE } from '@prisma/client'
+import { RESOURCE_TYPE, Resource, ViewedResource } from '@prisma/client'
 import qs from 'qs'
 import { z } from 'zod'
 import { server, testUserData } from '../globalSetup'
@@ -19,6 +19,8 @@ const votesForResources: ResourceVotes = {
   'test-resource-2-video': 0,
   'test-resource-3-tutorial': 1,
 }
+let createdResources: Resource[] = []
+let viewedResource: ViewedResource
 beforeAll(async () => {
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,
@@ -31,8 +33,16 @@ beforeAll(async () => {
   await prisma.$transaction(
     testResources.map((resource) => prisma.resource.create({ data: resource }))
   )
-  const createdResources = await prisma.resource.findMany({})
+  createdResources = await prisma.resource.findMany({})
 
+  viewedResource = await prisma.viewedResource.create({
+    data: {
+      user: { connect: { dni: testUserData.admin.dni } },
+      resource: {
+        connect: { id: createdResources[0].id },
+      },
+    },
+  })
   await prisma.$transaction(
     createdResources.map((resource) =>
       prisma.vote.create({
@@ -51,6 +61,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
+  await prisma.viewedResource.deleteMany({})
   await prisma.vote.deleteMany({})
   await prisma.topicsOnResources.deleteMany({
     where: { topic: { slug: 'testing' } },
@@ -166,15 +177,41 @@ describe('Testing resources GET endpoint', () => {
       })
     }
   )
-  it('should get all resources with status SEEN', async () => {
+  it('should get all resources without status when not logged in', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .query({ status: 'SEEN' })
+      .query({ status: undefined })
     expect(response.status).toBe(200)
-    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    expect(response.body.length).toBe(createdResources.length)
     response.body.forEach((resource: ResourceGetSchema) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
-      expect(resource.status).toBe('SEEN')
+    })
+  })
+  it('should retrieve resources viewed by the user with SEEN status when logged in', async () => {
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.resources}`)
+      .set('Cookie', authToken.admin)
+      .query({ status: 'SEEN' })
+    expect(response.status).toBe(200)
+    expect(response.body.length).toBe(1)
+    expect(viewedResource.resourceId).toBe(createdResources[0].id)
+    response.body.forEach((resource: ResourceGetSchema) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
+    })
+  })
+
+  it('should retrieve resources not viewed by the user with NOT_SEEN status when logged in', async () => {
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.resources}`)
+      .set('Cookie', authToken.admin)
+      .query({ status: 'NOT_SEEN' })
+    expect(response.status).toBe(200)
+    expect(response.body.length).toBe(2)
+    expect(viewedResource.resourceId).not.toContain(
+      createdResources.map((r) => r.id)
+    )
+    response.body.forEach((resource: ResourceGetSchema) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })
   })
   it('should get all resources when no filters applied', async () => {

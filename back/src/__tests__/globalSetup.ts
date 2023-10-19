@@ -94,6 +94,7 @@ export async function teardown() {
   // Cleanup database
   await prisma.topicsOnResources.deleteMany({})
   await prisma.topic.deleteMany({})
+  await prisma.viewedResource.deleteMany()
   await prisma.resource.deleteMany({})
   await prisma.user.deleteMany({})
   await prisma.category.deleteMany({})
