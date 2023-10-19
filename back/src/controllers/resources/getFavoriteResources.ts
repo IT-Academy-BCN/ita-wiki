@@ -33,7 +33,6 @@ export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
           resourceType: true,
           createdAt: true,
           updatedAt: true,
-          status: true,
           userId: true,
           categoryId: true,
           topics: true,

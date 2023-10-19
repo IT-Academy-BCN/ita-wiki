@@ -1,5 +1,6 @@
 import { AccessModalContent } from './AccessModalContent'
 import { CreateAuthor } from './CreateAuthor'
+import { FavoritesIcon } from './FavoritesIcon'
 import InputGroup from './InputGroup'
 import { Modal } from './Modal'
 import { ResourceTitleLink, TResourceTitleLink } from './ResourceTitleLink'
@@ -17,6 +18,8 @@ import { UserButton } from './UserButton'
 
 export {
   AccessModalContent,
+  CreateAuthor,
+  FavoritesIcon,
   InputGroup,
   Modal,
   ResourceTitleLink,
@@ -24,7 +27,6 @@ export {
   StatusFilterWidget,
   TextareaGroup,
   TypesFilterWidget,
-  CreateAuthor,
   VoteCounter,
   CardHome,
   SelectLanguage,

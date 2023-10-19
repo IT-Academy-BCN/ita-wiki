@@ -45,11 +45,11 @@ components:
     MissingTokenError:
       type: object
       properties:
-        error:
+        message:
           type: string
-          example: "Unauthorized: Missing token"
+          example: Missing token
       required:
-        - error
+        - message
     InvalidTokenError:
       type: object
       properties:
@@ -265,13 +265,13 @@ paths:
                     example: user@example.cat
                   role:
                     type: string
-                    enum: &a5
+                    enum: &a4
                       - ADMIN
                       - REGISTERED
                       - MENTOR
                   status:
                     type: string
-                    enum: &a4
+                    enum: &a3
                       - ACTIVE
                       - INACTIVE
                 required:
@@ -574,12 +574,6 @@ paths:
                         - type: string
                           format: date-time
                         - type: string
-                    status:
-                      type: string
-                      enum: &a3
-                        - SEEN
-                        - NOT_SEEN
-                      example: NOT_SEEN
                     voteCount:
                       type: object
                       properties:
@@ -704,10 +698,6 @@ paths:
                         - type: string
                           format: date-time
                         - type: string
-                    status:
-                      type: string
-                      enum: *a3
-                      example: NOT_SEEN
                     user:
                       type: object
                       properties:
@@ -840,10 +830,6 @@ paths:
                 resourceType:
                   type: string
                   enum: *a2
-                status:
-                  type: string
-                  enum: *a3
-                  example: NOT_SEEN
                 topics:
                   type: array
                   items:
@@ -917,6 +903,38 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
+  "/api/v1/seen/{resourceId}":
+    post:
+      tags:
+        - seen
+      description: Allows a logged in user to mark a resource as viewed.
+      summary: Mark a resource as viewed
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: resourceId
+          schema:
+            type: string
+            minLength: 1
+            example: cln2u09xo0037s6wvbf6t9jfg
+          required: true
+          description: ID of the resource to be retrieved.
+      responses:
+        "204":
+          description: Resource marked as viewed
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "498":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
   "/api/v1/resources/id/{resourceId}":
     get:
       tags:
@@ -929,8 +947,9 @@ paths:
           schema:
             type: string
             minLength: 1
-            description: ID of the resource to be retrieved.
+            example: cln2u09xo0037s6wvbf6t9jfg
           required: true
+          description: ID of the resource to be retrieved.
       responses:
         "200":
           description: Resource found
@@ -968,10 +987,6 @@ paths:
                       - type: string
                         format: date-time
                       - type: string
-                  status:
-                    type: string
-                    enum: *a3
-                    example: NOT_SEEN
                   user:
                     type: object
                     properties:
@@ -1146,10 +1161,6 @@ paths:
                       - type: string
                         format: date-time
                       - type: string
-                  status:
-                    type: string
-                    enum: *a3
-                    example: NOT_SEEN
                   user:
                     type: object
                     properties:
@@ -1288,10 +1299,6 @@ paths:
                             - type: string
                               format: date-time
                             - type: string
-                        status:
-                          type: string
-                          enum: *a3
-                          example: NOT_SEEN
                         user:
                           type: object
                           properties:
@@ -1403,9 +1410,10 @@ paths:
           name: resourceId
           schema:
             type: string
-            description: Unique identifier of the resource for which vote statistics are
-              requested.
+            minLength: 1
+            example: cln2u09xo0037s6wvbf6t9jfg
           required: true
+          description: ID of the resource to be retrieved.
       responses:
         "200":
           description: Successfully retrieved detailed vote statistics for the specified
@@ -1663,10 +1671,10 @@ paths:
                       example: specializationId
                     status:
                       type: string
-                      enum: *a4
+                      enum: *a3
                     role:
                       type: string
-                      enum: *a5
+                      enum: *a4
                     createdAt:
                       type: string
                       format: date-time

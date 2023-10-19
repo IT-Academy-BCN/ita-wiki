@@ -9,5 +9,6 @@ export const pathRoot = {
     types: '/api/v1/types',
     users: '/api/v1/users',
     favorites: '/api/v1/favorites',
+    seen: '/api/v1/seen',
   },
 }

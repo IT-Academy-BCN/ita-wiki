@@ -14,6 +14,12 @@
   "Vota els recursos": "Vota els recursos",
   "La comunitat decideix": "La comunitat decideix quins són més rellevants",
 
+  "Configuración": "Configuració",
+  "Añadir recurso": "Afegeix un recurs",
+  "Menú": "Menú",
+  "Ajustes": "Ajustaments",
+  "Cerrar": "Tanca",
+
   "Registre": "Registre",
   "DNI": "DNI o NIE",
   "Especialidad": "Especialitat",
@@ -22,7 +28,45 @@
   "password error": "La contrasenya ha de tenir almenys 8 caràcters i contenir només lletres i números",
   "acepto": "Accepto",
   "terminos legales": "termes legals",
-  "tienes una cuenta?": "¿Tens un compte?, entra",
+  "tienes una cuenta?": "Tens un compte?, entra",
   "recordar/cambiar": "Recordar/canviar la contrasenya",
-  "no tienes una cuenta?": "No tens un compte?, crea un"
+  "no tienes una cuenta?": "No tens un compte?, crea'n un",
+
+  "Eliminar de favoritos": "Elimina de favorits",
+  "Añadir a favoritos": "Afegeix a favorits",
+
+  "Recursos favoritos": "Recursos favorits",
+  "Recursos que te gustan": "Recursos que t'agraden",
+  "Regístrate": "Registra't",
+  " o ": " o ",
+  "inicia sesión": "inicia sessió",
+  " para añadir recursos favoritos": " per afegir recursos favorits",
+  "No tienes recursos favoritos": "No hi ha recursos favorits",
+  "Algo ha ido mal...": "Alguna cosa ha anat malament...",
+
+  "Temas": "Temes",
+  "Usuarios": "Usuaris",
+
+  "No hay temas disponibles.": "No hi ha temes disponibles.",
+  "Accede desde una categoría para ver o gestionar sus temas.": "Accedeix des d'una categoria per veure o gestionar els temes.",
+  "Temas de (category)": "Temes de {{name}}",
+  "No tienes permiso de acceso": "No tens els permisos necessaris per accedir a aquest contingut.",
+  "Ha habido un error...": "Hi ha hagut un error...",
+
+  "+ Crear nuevo tema": "+ Crea un nou tema",
+  "Nombre del tema": "Nom del tema",
+  "Nombre del nuevo tema": "Nom del tema nou",
+  "Editar": "Edita",
+  "Confirmar edición": "Confirma l'edició",
+  "Cancelar edición": "Cancel·la l'edició",
+  "Por favor, no dejes vacío el nombre del tema.": "Per favor, no deixis buit el nom del tema.",
+  "Cancelar": "Cancel·la",
+  "Borrar tema": "Esborra el tema",
+  "No es posible borrar el tema.": "No és possible esborrar el tema.",
+
+  "Error 401 - No autorizado": "Operació no autoritzada. És necessari iniciar sessió d'usuari.",
+  "Error 403 - Acceso denegado": "Accés denegat. No tens els permisos necessaris per realitzar l'operació.",
+  "Error 404 - No se puede guardar": "Error en desar a la base de dades. Si us plau, torna a intentar-ho i si l'error persisteix, contacta amb l'administrador.",
+  "Error 405 - Id de usuario inválido": "Identificador d'usuari no vàlid.",
+  "Error 500 - Error bbdd": "Error en la base de dades. Per favor, intenta-ho més tard."
 }

@@ -6,6 +6,7 @@ import { I18nextProvider } from 'react-i18next'
 import i18n from '../i18n'
 import { queryClient } from './setup'
 import { AuthProvider } from '../context/AuthProvider'
+import { NotificationsProvider } from '../components/molecules/Notifications'
 
 const AllTheProviders = ({
   children,
@@ -15,11 +16,15 @@ const AllTheProviders = ({
   initialEntries?: string[]
 }) => (
   <AuthProvider>
-    <QueryClientProvider client={queryClient}>
-      <I18nextProvider i18n={i18n}>
-        <MemoryRouter initialEntries={initialEntries}>{children}</MemoryRouter>
-      </I18nextProvider>
-    </QueryClientProvider>
+    <NotificationsProvider>
+      <QueryClientProvider client={queryClient}>
+        <I18nextProvider i18n={i18n}>
+          <MemoryRouter initialEntries={initialEntries}>
+            {children}
+          </MemoryRouter>
+        </I18nextProvider>
+      </QueryClientProvider>
+    </NotificationsProvider>
   </AuthProvider>
 )
 

@@ -25,8 +25,7 @@ describe('Testing resource modify endpoint', async () => {
         description: 'Test patch resource',
         url: 'https://test.patch',
         resourceType: 'BLOG',
-        status: 'SEEN',
-        userId: user.id,
+        userId: user!.id,
         categoryId: category.id,
       },
     })

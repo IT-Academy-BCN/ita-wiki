@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { FlexBox, colors, device, dimensions } from '../../styles'
 import { Button, Icon, Title, HamburgerMenu } from '../atoms'
 import { UserButton } from '../molecules/UserButton'
@@ -8,8 +9,9 @@ import { SelectLanguage } from '../molecules/SelectLanguage'
 import { CategoriesList } from './CategoriesList'
 import { Modal } from '../molecules/Modal'
 import { SettingsManager } from './SettingsManager'
+import { useAuth } from '../../context/AuthProvider'
 
-const NavbarStyled = styled(FlexBox)`
+const NavbarStyled = styled(FlexBox)<{ isInCategoryPage: boolean }>`
   background-color: ${colors.gray.gray5};
   justify-content: end;
   align-items: center;
@@ -21,16 +23,21 @@ const NavbarStyled = styled(FlexBox)`
     color: ${colors.white};
   }
 
-  @media (max-width: 468px) {
-    background-color: ${colors.white};
+  @media ${device.Mobile} {
+    background-color: ${({ isInCategoryPage }) =>
+      isInCategoryPage ? `${colors.gray.gray5}` : `${colors.white}`};
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     position: relative;
   }
+
+  @media ${device.Tablet} {
+    gap: 15px;
+  }
 `
 const IconStyled = styled.div`
   display: none;
-  @media ${device.Tablet} {
+  @media ${device.Mobile} {
     margin: 0px 15px 0px 15px;
     padding: 6px;
     width: 3rem;
@@ -55,7 +62,7 @@ const MenuItems = styled(FlexBox)<{ open: boolean }>`
   z-index: 20;
   transition: transform 0.3s ease-in-out;
   transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(-100%)')};
-  @media (min-width: 769px) {
+  @media ${device.Tablet} {
     display: none;
   }
 `
@@ -72,11 +79,13 @@ const StyledButton = styled(Button)`
 type TNavbar = {
   toggleModal?: () => void
   handleAccessModal?: () => void
-  isUserLogged: boolean
 }
-export const Navbar = ({ toggleModal, handleAccessModal, isUserLogged }: TNavbar) => {
+export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+
+  const { user } = useAuth()
+  const { t } = useTranslation()
 
   const handleSettingsModal = () => {
     setIsSettingsOpen(!isSettingsOpen)
@@ -87,51 +96,60 @@ export const Navbar = ({ toggleModal, handleAccessModal, isUserLogged }: TNavbar
 
   return (
     <>
-      <NavbarStyled direction="row" data-testid="navbar">
+      <NavbarStyled
+        direction="row"
+        data-testid="navbar"
+        isInCategoryPage={shouldRenderIcons}
+      >
         <HamburgerMenu
           open={isMenuOpen}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           data-testid="hamburger-menu"
+          aria-label={t('Menú')}
         />
         {shouldRenderIcons && (
           <IconStyled
-              data-testid="new-post-button"
-              onClick={() => {
-                if (isUserLogged) {
-                  toggleModal?.();
-                } else {
-                  handleAccessModal?.();
-                }
-              }}
-              title="Añadir recurso"
-              role="button"
-            >
-              <Icon name="add" color={colors.gray.gray3} />
-            </IconStyled>
+            data-testid="new-post-button"
+            onClick={() => {
+              if (user) {
+                toggleModal?.()
+              } else {
+                handleAccessModal?.()
+              }
+            }}
+            title={t('Añadir recurso')}
+            aria-label={t('Añadir recurso')}
+            role="button"
+          >
+            <Icon name="add" color={colors.gray.gray3} />
+          </IconStyled>
         )}
         <SelectLanguage />
-        <IconStyled
-          data-testid="settings-button"
-          onClick={() => handleSettingsModal()}
-          title="Configuración"
-          role="button"
-        >
-          <Icon name="settings" color={colors.gray.gray3} />
-        </IconStyled>
+        {user && user.role !== 'REGISTERED' ? (
+          <IconStyled
+            data-testid="settings-button"
+            onClick={() => handleSettingsModal()}
+            title={t('Configuración')}
+            aria-label={t('Configuración')}
+            role="button"
+          >
+            <Icon name="settings" color={colors.gray.gray3} />
+          </IconStyled>
+        ) : null}
         <UserButton />
         <MenuItems open={isMenuOpen} data-testid="menu-items">
           <CategoriesList />
         </MenuItems>
       </NavbarStyled>
       <Modal
-        title="Ajustes"
+        title={t('Ajustes')}
         isOpen={isSettingsOpen}
         toggleModal={() => setIsSettingsOpen(false)}
       >
         {isSettingsOpen && <SettingsManager />}
         <FlexBox>
           <StyledButton onClick={() => setIsSettingsOpen(false)}>
-            Cerrar
+            {t('Cerrar')}
           </StyledButton>
         </FlexBox>
       </Modal>

@@ -95,7 +95,7 @@ export const handlers = [
             upvote: 6,
             downvote: 2,
             total: 4,
-            userVote: 1
+            userVote: 1,
           },
         },
       ])
@@ -109,13 +109,8 @@ export const handlers = [
     )
   ),
 
-  rest.get(urls.getFavorites, (req, res, ctx) => {
-    const favoritesUserId = req.url.searchParams.get('userId')
-    if (favoritesUserId === 'emptyResource') {
-      return res(ctx.status(200), ctx.json([]))
-    }
-
-    return res(
+  rest.get(urls.getFavorites, (_, res, ctx) =>
+    res(
       ctx.status(200),
       ctx.json([
         {
@@ -128,10 +123,70 @@ export const handlers = [
           userId: 'userId',
           createdAt: '11/11/2011',
           updatedAt: '12/12/2012',
+          status: 'NOT_SEEN',
+          voteCount: {
+            upvote: 3,
+            downvote: 0,
+            total: 3,
+          },
+          isFavorite: 'true',
+        },
+        {
+          id: 'secondFavoriteId',
+          title: 'My favorite title 2',
+          slug: 'my-favorite-two',
+          description: 'Favorite description two',
+          url: 'https://tutorials.cat/learn/',
+          resourceType: 'VIDEO',
+          userId: 'userId',
+          createdAt: '11/11/2011',
+          updatedAt: '12/12/2012',
+          status: 'NOT_SEEN',
+          voteCount: {
+            upvote: 3,
+            downvote: 0,
+            total: 3,
+          },
+          isFavorite: 'true',
         },
       ])
     )
+  ),
+
+  // eslint-disable-next-line consistent-return
+  rest.get(`${urls.getFavorites}/:slug`, (req, res, ctx) => {
+    const { slug } = req.params
+    if (slug === 'react') {
+      return res(
+        ctx.status(200),
+        ctx.json([
+          {
+            id: 'favoriteId',
+            title: 'My favorite title',
+            slug: 'my-favorite',
+            description: 'Favorite description',
+            url: 'https://tutorials.cat/learn/javascript',
+            resourceType: 'VIDEO',
+            userId: 'userId',
+            createdAt: '11/11/2011',
+            updatedAt: '12/12/2012',
+            status: 'NOT_SEEN',
+            voteCount: {
+              upvote: 3,
+              downvote: 0,
+              total: 3,
+            },
+            isFavorite: 'true',
+          },
+        ])
+      )
+    }
+    if (slug === 'slugWithoutFavs') {
+      return res(ctx.status(200), ctx.json([]))
+    }
   }),
+
+  rest.put(urls.favorites, (_, res, ctx) => res(ctx.status(204))),
 
   rest.get(urls.getResourcesByUser, (req, res, ctx) => {
     const categorySlug = req.url.searchParams.get('category')
@@ -187,11 +242,23 @@ export const errorHandlers = [
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 
+  rest.post(urls.getTopics, (_, res, ctx) =>
+    res(ctx.status(401), ctx.json({ message: 'Unauthorized: Missing token' }))
+  ),
+
   rest.get(urls.getTopics, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 
+  rest.post(urls.getTopics, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Database error' }))
+  ),
+
   rest.get(urls.getResources, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
+  rest.put(urls.getResources, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 
@@ -199,9 +266,8 @@ export const errorHandlers = [
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 
-  // eslint-disable-next-line consistent-return
-  rest.get(urls.getFavorites, (req, res, ctx) =>
-    res(ctx.status(404), ctx.json({ message: 'Invalid userId' }))
+  rest.get(`${urls.getFavorites}/:slug`, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 
   rest.put(urls.vote, (_, res, ctx) =>

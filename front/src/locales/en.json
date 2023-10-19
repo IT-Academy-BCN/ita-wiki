@@ -14,6 +14,12 @@
   "Vota els recursos": "Vote resources",
   "La comunitat decideix": "The community decides which ones are the most relevant",
 
+  "Configuración": "Settings",
+  "Añadir recurso": "Add resource",
+  "Menú": "Menu",
+  "Ajustes": "Settings",
+  "Cerrar": "Close",
+
   "Registre": "Register",
   "DNI": "DNI or NIE",
   "Especialidad": "Specialization",
@@ -24,6 +30,43 @@
   "terminos legales": "legal terms",
   "tienes una cuenta?": "Do you have an account?, log in",
   "recordar/cambiar": "Remember/change password",
-  "no tienes una cuenta?": "Don't have an account?, create one"
+  "no tienes una cuenta?": "Don't have an account?, create one",
 
+  "Eliminar de favoritos": "Remove from favorites",
+  "Añadir a favoritos": "Add to favorites",
+
+  "Recursos favoritos": "Favorite resources",
+  "Recursos que te gustan": "Resources you like",
+  "Regístrate": "Sign up",
+  " o ": " or ",
+  "inicia sesión": "log in",
+  " para añadir recursos favoritos": " to add favorite resources",
+  "No tienes recursos favoritos": "There are no favorite resources",
+  "Algo ha ido mal...": "Something gone wrong...",
+
+  "Temas": "Topics",
+  "Usuarios": "Users",
+
+  "No hay temas disponibles.": "No topics available.",
+  "Accede desde una categoría para ver o gestionar sus temas.": "Access from a category to view or manage its topics.",
+  "Temas de (category)": "{{name}} topics",
+  "No tienes permiso de acceso": "You do not have the necessary permissions to access this content.",
+  "Ha habido un error...": "An error has occurred.",
+
+  "+ Crear nuevo tema": "+ Create new topic",
+  "Nombre del tema": "Topic name",
+  "Nombre del nuevo tema": "New topic name",
+  "Editar": "Edit",
+  "Confirmar edición": "Confirm edition",
+  "Cancelar edición": "Cancel edition",
+  "Por favor, no dejes vacío el nombre del tema.": "Please do not leave the topic name empty.",
+  "Cancelar": "Cancel",
+  "Borrar tema": "Delete topic",
+  "No es posible borrar el tema.": "The topic cannot be deleted.",
+
+  "Error 401 - No autorizado": "Unauthorized operation. User login required.",
+  "Error 403 - Acceso denegado": "Access denied. You do not have the necessary permissions to perform the operation.",
+  "Error 404 - No se puede guardar": "Error saving to database. Please try again and if the error persists, contact the administrator.",
+  "Error 405 - Id de usuario inválido": "Invalid user ID.",
+  "Error 500 - Error bbdd": "Database error. Please try again later."
 }
