@@ -1,6 +1,6 @@
 import Koa, { Middleware } from 'koa'
 import qs from 'qs'
-import { Prisma, RESOURCE_TYPE, RESOURCE_STATUS, User } from '@prisma/client'
+import { Prisma, RESOURCE_TYPE, User } from '@prisma/client'
 import { prisma } from '../../prisma/client'
 import { transformResourceToAPI } from '../../helpers/transformResourceToAPI'
 import { resourceGetSchema } from '../../schemas'
@@ -17,9 +17,17 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
     resourceTypes?: (keyof typeof RESOURCE_TYPE)[]
     topic?: string
     slug?: string
-    status?: (keyof typeof RESOURCE_STATUS)[]
+    status?: 'SEEN' | 'NOT_SEEN'
   }
-
+  let statusCondition: Prisma.Enumerable<Prisma.ResourceWhereInput> = {}
+  if (user && status) {
+    const viewedFilter = { userId: user.id }
+    if (status === 'SEEN') {
+      statusCondition = { AND: { viewed: { some: viewedFilter } } }
+    } else if (status === 'NOT_SEEN') {
+      statusCondition = { NOT: { viewed: { some: viewedFilter } } }
+    }
+  }
   const where: Prisma.ResourceWhereInput = {
     topics: {
       some: {
@@ -27,7 +35,7 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
       },
     },
     resourceType: { in: resourceTypes },
-    status: { in: status },
+    ...statusCondition,
   }
   const voteSelect =
     ctx.user !== null ? { userId: true, vote: true } : { vote: true }

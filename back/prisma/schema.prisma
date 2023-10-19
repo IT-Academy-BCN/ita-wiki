@@ -54,7 +54,6 @@ model Resource {
   userId       String              @map("user_id")
   createdAt    DateTime            @default(now()) @map("created_at")
   updatedAt    DateTime            @updatedAt @map("updated_at")
-  status       RESOURCE_STATUS     @default(NOT_SEEN)
 
   @@map("resource")
 }
