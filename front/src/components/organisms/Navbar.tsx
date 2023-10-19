@@ -12,12 +12,9 @@ import { SettingsManager } from './SettingsManager'
 import { useAuth } from '../../context/AuthProvider'
 
 const NavbarStyled = styled(FlexBox)<{ isInCategoryPage: boolean }>`
-  background-color: ${colors.gray.gray5};
   justify-content: end;
   align-items: center;
-  height: 5rem;
   width: 100%;
-  padding: ${dimensions.spacing.xs} ${dimensions.spacing.none};
 
   ${Title} {
     color: ${colors.white};
@@ -26,19 +23,20 @@ const NavbarStyled = styled(FlexBox)<{ isInCategoryPage: boolean }>`
   @media ${device.Mobile} {
     background-color: ${({ isInCategoryPage }) =>
       isInCategoryPage ? `${colors.gray.gray5}` : `${colors.white}`};
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    padding: ${dimensions.spacing.none} 0.5rem;
     position: relative;
+    gap: 15px;
+    height: 4rem;
   }
 
   @media ${device.Tablet} {
+    background-color: ${colors.gray.gray5};
+    padding: ${dimensions.spacing.base} ${dimensions.spacing.none};
     gap: 15px;
   }
 `
 const IconStyled = styled.div`
-  display: none;
   @media ${device.Mobile} {
-    margin: 0px 15px 0px 15px;
     padding: 6px;
     width: 3rem;
     height: ${dimensions.spacing.xxl};
@@ -47,6 +45,13 @@ const IconStyled = styled.div`
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    display: flex;
+  }
+`
+
+const AddButton = styled(IconStyled)`
+  display: none;
+  @media ${device.Tablet} {
     display: flex;
   }
 `
@@ -108,7 +113,7 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
           aria-label={t('Menú')}
         />
         {shouldRenderIcons && (
-          <IconStyled
+          <AddButton
             data-testid="new-post-button"
             onClick={() => {
               if (user) {
@@ -122,7 +127,7 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
             role="button"
           >
             <Icon name="add" color={colors.gray.gray3} />
-          </IconStyled>
+          </AddButton>
         )}
         <SelectLanguage />
         {user && user.role !== 'REGISTERED' ? (
