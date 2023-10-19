@@ -5,11 +5,11 @@ describe('SettingsManager component', () => {
   it('renders correctly', () => {
     render(<SettingsManager />)
 
-    expect(screen.getByText('Temas')).toBeInTheDocument()
-    expect(screen.getByText(/usuarios/i)).toBeInTheDocument()
+    expect(screen.getByText('Temes')).toBeInTheDocument()
+    expect(screen.getByText(/usuaris/i)).toBeInTheDocument()
     expect(
       screen.getByText(
-        'No hay temas disponibles. Accede desde una categoría para ver o gestionar sus temas.'
+        /No hi ha temes disponibles. *Accedeix des d'una categoria per veure o gestionar els temes./
       )
     ).toBeInTheDocument()
     expect(screen.queryByText('Users Manager')).not.toBeInTheDocument()
@@ -18,7 +18,7 @@ describe('SettingsManager component', () => {
   it('should change content tab according to click on menu tab', async () => {
     render(<SettingsManager />)
 
-    fireEvent.click(screen.getByText(/usuarios/i))
+    fireEvent.click(screen.getByText(/usuaris/i))
 
     await waitFor(() =>
       expect(screen.getByText('Users Manager')).toBeInTheDocument()
@@ -26,7 +26,7 @@ describe('SettingsManager component', () => {
 
     expect(
       screen.queryByText(
-        'No hay temas disponibles. Accede desde una categoría para ver o gestionar sus temas.'
+        /No hi ha temes disponibles. *Accedeix des d'una categoria per veure o gestionar els temes./
       )
     ).not.toBeInTheDocument()
   })
