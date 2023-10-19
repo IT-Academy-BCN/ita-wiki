@@ -5,4 +5,4 @@
 
 */
 -- AlterTable
-ALTER TABLE "resource" ADD COLUMN     "category_id" TEXT NOT NULL;
+ALTER TABLE "resource" ADD COLUMN     "category_id" TEXT NULL;
