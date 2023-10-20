@@ -18,6 +18,15 @@ registry.registerPath({
     'Modifies an existing category. The requestor has to be logged in and with role ADMIN.',
   security: [{ [cookieAuth.name]: [] }],
   request: {
+    params: z.object({
+      categoryId: z.string().openapi({
+        param: {
+          name: 'categoryId',
+          description: 'ID of the category to modify',
+          example: 'clnwzimjp0000h88ktz1ibtq5',
+        },
+      }),
+    }),
     body: {
       content: {
         'application/json': {
@@ -26,15 +35,6 @@ registry.registerPath({
       },
     },
   },
-  parameters: [
-    {
-      name: 'categoryId',
-      in: 'path',
-      required: true,
-      description: 'ID of the category to modify',
-      example: 'clnwzimjp0000h88ktz1ibtq5',
-    },
-  ],
   responses: {
     204: {
       description: 'Category modified succesfully.',

@@ -4,6 +4,7 @@ import { server } from '../globalSetup'
 import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 const newCategory = { name: 'New Category' }
 describe('Testing category POST method', () => {
@@ -43,4 +44,6 @@ describe('Testing category POST method', () => {
     expect(response.status).toBe(401)
     expect(response.body.message).toBe('Missing token')
   })
+
+  checkInvalidToken(`${pathRoot.v1.categories}`, 'post', newCategory)
 })

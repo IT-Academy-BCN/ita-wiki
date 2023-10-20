@@ -411,8 +411,10 @@ paths:
       security:
         - cookieAuth: []
       parameters:
-        - name: categoryId
-          in: path
+        - in: path
+          name: categoryId
+          schema:
+            type: string
           required: true
           description: ID of the category to modify
           example: clnwzimjp0000h88ktz1ibtq5
