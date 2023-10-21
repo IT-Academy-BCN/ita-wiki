@@ -3,10 +3,11 @@ import { useTranslation } from 'react-i18next'
 import { TopicsManagerBoard } from './TopicsManagerBoard'
 import { UsersManager } from './UsersManager'
 import { Tabs } from '../molecules/Tabs'
+import { useAuth } from '../../context/AuthProvider'
 
 type TTabsData = {
   title: string
-  tabComponent: ReactElement
+  tabComponent: ReactElement | null
 }
 
 const tabsData: TTabsData[] = [
@@ -21,12 +22,29 @@ const tabsData: TTabsData[] = [
 ]
 
 export const SettingsManager: FC = () => {
+  const { user } = useAuth()
+
   const { t } = useTranslation()
 
-  const tTabsData = tabsData.map((tab) => ({
-    title: t(tab.title),
-    tabComponent: tab.tabComponent,
-  }))
+  const tTabsData = tabsData
+    .filter((tab) => {
+      if (tab.title === 'Usuarios') {
+        return user?.role === 'MENTOR' || user?.role === 'ADMIN'
+      }
+      return true
+    })
+    .map((tab) => {
+      const modifiedTab = {
+        title: t(tab.title),
+        tabComponent: tab.tabComponent,
+      }
+      
+      if (tab.title === 'Usuarios' && user?.role !== 'ADMIN') {
+        modifiedTab.tabComponent = null
+      }
+      
+      return modifiedTab
+    })
 
   return <Tabs tabsData={tTabsData} />
 }
