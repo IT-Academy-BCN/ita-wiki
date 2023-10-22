@@ -12,21 +12,18 @@ import { SettingsManager } from './SettingsManager'
 import { useAuth } from '../../context/AuthProvider'
 
 const NavbarStyled = styled(FlexBox)<{ isInCategoryPage: boolean }>`
+  background-color: ${({ isInCategoryPage }) =>
+    isInCategoryPage ? `${colors.gray.gray5}` : `${colors.white}`};
+  padding: ${dimensions.spacing.none} 0.5rem;
   justify-content: end;
   align-items: center;
   width: 100%;
+  height: 4rem;
+  gap: 15px;
+  position: relative;
 
   ${Title} {
     color: ${colors.white};
-  }
-
-  @media ${device.Mobile} {
-    background-color: ${({ isInCategoryPage }) =>
-      isInCategoryPage ? `${colors.gray.gray5}` : `${colors.white}`};
-    padding: ${dimensions.spacing.none} 0.5rem;
-    position: relative;
-    gap: 15px;
-    height: 4rem;
   }
 
   @media ${device.Tablet} {
@@ -36,17 +33,15 @@ const NavbarStyled = styled(FlexBox)<{ isInCategoryPage: boolean }>`
   }
 `
 const IconStyled = styled.div`
-  @media ${device.Mobile} {
-    padding: 6px;
-    width: 3rem;
-    height: ${dimensions.spacing.xxl};
-    border-radius: 20%;
-    background-color: ${colors.white};
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-  }
+  padding: 6px;
+  width: 3rem;
+  height: ${dimensions.spacing.xxl};
+  border-radius: 20%;
+  background-color: ${colors.white};
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
 `
 
 const AddButton = styled(IconStyled)`
