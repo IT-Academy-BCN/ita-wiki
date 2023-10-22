@@ -1,7 +1,7 @@
 import { vi } from 'vitest'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor, fireEvent } from '../test-utils'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SettingsManager } from '../../components/organisms'
 
 const mockUsers = [

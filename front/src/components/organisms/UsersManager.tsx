@@ -1,12 +1,10 @@
-import { AccountAdmin } from "../../pages"
+import { AccountAdmin } from '../../pages/AccountAdim'
 
-const UsersManager = () => {
-  return (
+const UsersManager = () => (
     <>
       Users Manager
       <AccountAdmin />
     </>
   )
-}
 
 export { UsersManager }
