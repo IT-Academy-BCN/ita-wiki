@@ -17,14 +17,15 @@ export type TFavorites = {
   description: string
   url: string
   resourceType: string
-  userId: string
+  userId?: string
+  createdBy: string
   createdAt: string
   updatedAt: string
-  status: 'NOT_SEEN' | 'SEEN'
   voteCount: {
     upvote: number
     downvote: number
     total: number
+    userVote: number
   }
   isFavorite: boolean
 }

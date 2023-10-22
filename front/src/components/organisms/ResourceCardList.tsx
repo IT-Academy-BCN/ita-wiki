@@ -25,6 +25,7 @@ export type TResource = {
   slug: string
   description: string
   url: string
+  createdBy: string
   createdAt: string
   updatedAt: string
   user: {

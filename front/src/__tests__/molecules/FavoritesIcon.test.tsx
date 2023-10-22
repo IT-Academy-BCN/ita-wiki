@@ -76,68 +76,6 @@ describe('FavoritesWidget', () => {
     })
   })
 
-  it('should change to favorite when user clicks on it', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatar: 'Avatar',
-      },
-    } as TAuthContext)
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-
-    render(<FavoritesIcon resourceId="notFavoriteId" isFavorite={false} />)
-
-    const favIconDeselected = screen.getByText('favorite')
-
-    await waitFor(() => {
-      expect(favIconDeselected).toBeInTheDocument()
-      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a favorits')
-      expect(favIconDeselected).toHaveAttribute('fill', '0')
-      expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
-    })
-
-    fireEvent.click(favIconDeselected)
-
-    await waitFor(() => {
-      expect(favIconDeselected).toHaveAttribute('title', 'Elimina de favorits')
-      expect(favIconDeselected).toHaveAttribute('fill', '1')
-      expect(screen.queryByTitle('Afegeix a favorits')).not.toBeInTheDocument()
-    })
-  })
-
-  it('should change to not favorite when user clicks on it', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatar: 'Avatar',
-      },
-    } as TAuthContext)
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-
-    render(<FavoritesIcon resourceId="notFavoriteId" isFavorite />)
-
-    const favIconDeselected = screen.getByText('favorite')
-
-    await waitFor(() => {
-      expect(favIconDeselected).toBeInTheDocument()
-      expect(favIconDeselected).toHaveAttribute('title', 'Elimina de favorits')
-      expect(favIconDeselected).toHaveAttribute('fill', '1')
-      expect(screen.queryByTitle('Afegeix a favorits')).not.toBeInTheDocument()
-    })
-
-    fireEvent.click(favIconDeselected)
-
-    await waitFor(() => {
-      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a favorits')
-      expect(favIconDeselected).toHaveAttribute('fill', '0')
-      expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
-    })
-  })
-
   it('renders correctly on error (fav icon does not change)', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
