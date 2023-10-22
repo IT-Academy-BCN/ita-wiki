@@ -68,18 +68,6 @@ export const VoteCounter: FC<TVoteCounter> = ({
   const { user } = useAuth()
   const queryClient = useQueryClient()
 
-  // const { data: fetchedVotes, refetch } = useQuery<TVoteCountResponse>(
-  //   ['votes', resourceId],
-  //   () => getVotes(resourceId),
-  //   {
-  //     enabled: false,
-  //     onError: () => {
-  //       // eslint-disable-next-line no-console
-  //       console.error('Error fetching votes')
-  //     },
-  //   }
-  // )
-
   const castVote = useMutation({
     mutationFn: updateVote,
     onSuccess: (_, { vote }) => {
@@ -96,35 +84,74 @@ export const VoteCounter: FC<TVoteCounter> = ({
           const newData = data?.map((resource) => {
             if (resource.id === resourceId) {
               // UPDATE VOTE COUNT
-              if (vote === 'up') {
-                if (
-                  resource.voteCount.userVote === 0 ||
-                  resource.voteCount.userVote === -1
-                ) {
+              if (resource.voteCount.userVote === 0) {
+                if (vote === 'up') {
                   return {
                     ...resource,
                     voteCount: {
-                      ...resource.voteCount,
+                      downvote: resource.voteCount.downvote,
                       upvote: resource.voteCount.upvote + 1,
                       total: resource.voteCount.total + 1,
                       userVote: 1,
                     },
                   }
                 }
-              }
 
-              if (vote === 'down') {
-                if (
-                  resource.voteCount.userVote === 0 ||
-                  resource.voteCount.userVote === 1
-                ) {
+                if (vote === 'down') {
                   return {
                     ...resource,
                     voteCount: {
-                      ...resource.voteCount,
-                      upvote: resource.voteCount.upvote - 1,
+                      downvote: resource.voteCount.downvote + 1,
+                      upvote: resource.voteCount.upvote,
                       total: resource.voteCount.total - 1,
                       userVote: -1,
+                    },
+                  }
+                }
+              } else if (resource.voteCount.userVote === 1) {
+                if (vote === 'cancel') {
+                  return {
+                    ...resource,
+                    voteCount: {
+                      downvote: resource.voteCount.downvote,
+                      upvote: resource.voteCount.upvote - 1,
+                      total: resource.voteCount.total - 1,
+                      userVote: 0,
+                    },
+                  }
+                }
+                if (vote === 'down') {
+                  return {
+                    ...resource,
+                    voteCount: {
+                      downvote: resource.voteCount.downvote + 1,
+                      upvote: resource.voteCount.upvote - 1,
+                      total: resource.voteCount.total - 2,
+                      userVote: -1,
+                    },
+                  }
+                }
+              } else if (resource.voteCount.userVote === -1) {
+                if (vote === 'up') {
+                  return {
+                    ...resource,
+                    voteCount: {
+                      downvote: resource.voteCount.downvote - 1,
+                      upvote: resource.voteCount.upvote + 1,
+                      total: resource.voteCount.total + 2,
+                      userVote: 1,
+                    },
+                  }
+                }
+
+                if (vote === 'cancel') {
+                  return {
+                    ...resource,
+                    voteCount: {
+                      downvote: resource.voteCount.downvote - 1,
+                      upvote: resource.voteCount.upvote,
+                      total: resource.voteCount.total + 1,
+                      userVote: 0,
                     },
                   }
                 }
@@ -148,7 +175,13 @@ export const VoteCounter: FC<TVoteCounter> = ({
       return
     }
 
-    castVote.mutate({ resourceId, vote })
+    if (voteCount.userVote === 1 && vote === 'up') {
+      castVote.mutate({ resourceId, vote: 'cancel' })
+    } else if (voteCount.userVote === -1 && vote === 'down') {
+      castVote.mutate({ resourceId, vote: 'cancel' })
+    } else {
+      castVote.mutate({ resourceId, vote })
+    }
   }
 
   return (
