@@ -16,6 +16,11 @@ export const authMeController: Middleware = async (ctx: Context) => {
       email: true,
       status: true,
       role: true,
+      media: {
+        select: {
+          filePath: true,
+        },
+      },
     },
   })
 
