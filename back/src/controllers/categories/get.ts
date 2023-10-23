@@ -1,5 +1,5 @@
 import Koa, { Middleware } from 'koa'
-import { prisma } from '../prisma/client'
+import { prisma } from '../../prisma/client'
 
 export const getCategories: Middleware = async (ctx: Koa.Context) => {
   const categories = await prisma.category.findMany({
