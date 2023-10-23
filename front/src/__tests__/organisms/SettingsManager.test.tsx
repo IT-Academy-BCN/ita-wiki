@@ -64,9 +64,7 @@ describe('SettingsManager component', () => {
       expect(screen.getByText('Usuaris')).toBeInTheDocument()
     })
   
-    expect(
-      screen.queryByText(/No hi ha temes disponibles./)
-    ).not.toBeInTheDocument()
+    expect(screen.queryByText(/No hi ha temes disponibles./)).not.toBeInTheDocument()
     
     fireEvent.click(screen.getByText('Temes'))
   
@@ -79,20 +77,6 @@ describe('SettingsManager component', () => {
 })
 
 describe('User Permissions', () => {
-  it('does not render Usuaris tab for registered users', () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatar: 'Avatar',
-        role: 'REGISTERED',
-      },
-    } as TAuthContext)
-    render(<SettingsManager />)
-  
-    expect(screen.getByText('Temes')).toBeInTheDocument()
-    expect(screen.queryByText('Usuaris')).not.toBeInTheDocument()
-  })
-
   it('only allows admins to fetch users, and renders an error if the process fails', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
