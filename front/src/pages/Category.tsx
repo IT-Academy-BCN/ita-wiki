@@ -270,7 +270,7 @@ const NewResourceButton = styled(Button)`
     border: 1px dashed ${colors.gray.gray3};
   }
 
-  @media ${device.Mobile} {
+  @media ${device.Tablet} {
     display: none;
   }
 `
