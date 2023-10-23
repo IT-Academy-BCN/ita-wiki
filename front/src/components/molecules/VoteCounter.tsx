@@ -15,38 +15,29 @@ const StyledIcon = styled(Icon)<ArrowProp>`
   color: ${({ color }) => color};
 
   &:hover {
-    color: ${({ name }) =>
-      (name === 'expand_less' && colors.success) ||
-      (name === 'expand_more' && colors.error)};
+    color: ${({ name }) => (name === 'expand_less' && colors.success) || (name === 'expand_more' && colors.error)};
   }
 `
 
 type TVoteCounter = {
-  voteCount: TVoteCountResponse
+  voteCount: TVoteCount
   resourceId: string
   handleAccessModal: () => void
 }
 
-type TVoteCountResponse = {
+type TVoteCount = {
   downvote: number
   upvote: number
   total: number
   userVote: number
 }
 
+type TUserVote = 'up' | 'down' | 'cancel'
+
 type TVoteMutationData = {
   resourceId: string
-  vote: 'up' | 'down' | 'cancel'
+  vote: TUserVote
 }
-
-// const getVotes = async (resourceId: string): Promise<TVoteCountResponse> => {
-//   const response = await fetch(`${urls.vote}${resourceId}`)
-//   if (!response.ok) {
-//     throw new Error('Error fetching votes')
-//   }
-//   const data = await (response.json() as Promise<TVoteCountResponse>)
-//   return data
-// }
 
 const updateVote = async ({ resourceId, vote }: TVoteMutationData) => {
   const response = await fetch(urls.vote, {
@@ -60,104 +51,63 @@ const updateVote = async ({ resourceId, vote }: TVoteMutationData) => {
   }
 }
 
-export const VoteCounter: FC<TVoteCounter> = ({
-  voteCount,
-  resourceId,
-  handleAccessModal,
-}) => {
+export const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId, handleAccessModal }) => {
   const { user } = useAuth()
   const queryClient = useQueryClient()
+
+  const updateVoteCount = (currentVoteCount: TVoteCount, vote: TUserVote) => {
+    if (currentVoteCount.userVote === 0) {
+      return {
+        downvote: vote === 'up' ? currentVoteCount.downvote : currentVoteCount.downvote + 1,
+        upvote: vote === 'up' ? currentVoteCount.upvote + 1 : currentVoteCount.upvote,
+        total: vote === 'up' ? currentVoteCount.total + 1 : currentVoteCount.total - 1,
+        userVote: vote === 'up' ? 1 : -1,
+      }
+    }
+
+    if (currentVoteCount.userVote === 1) {
+      return {
+        downvote: vote === 'cancel' ? currentVoteCount.downvote : currentVoteCount.downvote + 1,
+        upvote: currentVoteCount.upvote - 1,
+        total: vote === 'cancel' ? currentVoteCount.total - 1 : currentVoteCount.total - 2,
+        userVote: vote === 'cancel' ? 0 : -1,
+      }
+    }
+
+    if (currentVoteCount.userVote === -1) {
+      return {
+        downvote: currentVoteCount.downvote - 1,
+        upvote: vote === 'up' ? currentVoteCount.upvote + 1 : currentVoteCount.upvote,
+        total: vote === 'up' ? currentVoteCount.total + 2 : currentVoteCount.total + 1,
+
+        userVote: vote === 'up' ? 1 : 0,
+      }
+    }
+
+    return currentVoteCount
+  }
 
   const castVote = useMutation({
     mutationFn: updateVote,
     onSuccess: (_, { vote }) => {
-      const queryCacheGetResources = queryClient
-        .getQueryCache()
-        .findAll(['getResources'])
+      const queryCacheGetResources = queryClient.getQueryCache().findAll(['getResources'])
 
       const queryKeys = queryCacheGetResources.map((q) => q.queryKey)
+
+      // the function takes the current vote count + the user's vote and updates voteCount
 
       for (let i = 0; i < queryKeys.length; i += 1) {
         const queryKey = queryKeys[i]
 
         queryClient.setQueryData(queryKey, (data?: TResource[]) => {
           const newData = data?.map((resource) => {
-            if (resource.id === resourceId) {
-              // UPDATE VOTE COUNT
-              if (resource.voteCount.userVote === 0) {
-                if (vote === 'up') {
-                  return {
-                    ...resource,
-                    voteCount: {
-                      downvote: resource.voteCount.downvote,
-                      upvote: resource.voteCount.upvote + 1,
-                      total: resource.voteCount.total + 1,
-                      userVote: 1,
-                    },
-                  }
-                }
+            if (resource.id !== resourceId) return resource
 
-                if (vote === 'down') {
-                  return {
-                    ...resource,
-                    voteCount: {
-                      downvote: resource.voteCount.downvote + 1,
-                      upvote: resource.voteCount.upvote,
-                      total: resource.voteCount.total - 1,
-                      userVote: -1,
-                    },
-                  }
-                }
-              } else if (resource.voteCount.userVote === 1) {
-                if (vote === 'cancel') {
-                  return {
-                    ...resource,
-                    voteCount: {
-                      downvote: resource.voteCount.downvote,
-                      upvote: resource.voteCount.upvote - 1,
-                      total: resource.voteCount.total - 1,
-                      userVote: 0,
-                    },
-                  }
-                }
-                if (vote === 'down') {
-                  return {
-                    ...resource,
-                    voteCount: {
-                      downvote: resource.voteCount.downvote + 1,
-                      upvote: resource.voteCount.upvote - 1,
-                      total: resource.voteCount.total - 2,
-                      userVote: -1,
-                    },
-                  }
-                }
-              } else if (resource.voteCount.userVote === -1) {
-                if (vote === 'up') {
-                  return {
-                    ...resource,
-                    voteCount: {
-                      downvote: resource.voteCount.downvote - 1,
-                      upvote: resource.voteCount.upvote + 1,
-                      total: resource.voteCount.total + 2,
-                      userVote: 1,
-                    },
-                  }
-                }
-
-                if (vote === 'cancel') {
-                  return {
-                    ...resource,
-                    voteCount: {
-                      downvote: resource.voteCount.downvote - 1,
-                      upvote: resource.voteCount.upvote,
-                      total: resource.voteCount.total + 1,
-                      userVote: 0,
-                    },
-                  }
-                }
-              }
+            const newVoteCount = updateVoteCount(resource.voteCount, vote)
+            return {
+              ...resource,
+              voteCount: newVoteCount,
             }
-            return resource
           })
           return newData
         })
@@ -192,11 +142,7 @@ export const VoteCounter: FC<TVoteCounter> = ({
         color={voteCount.userVote > 0 ? colors.success : colors.gray.gray3}
         onClick={() => handleClick('up')}
       />
-      <Text
-        fontWeight="bold"
-        style={{ marginTop: '0', marginBottom: '0' }}
-        data-testid="voteTest"
-      >
+      <Text fontWeight="bold" style={{ marginTop: '0', marginBottom: '0' }} data-testid="voteTest">
         {voteCount.total}
       </Text>
       <StyledIcon
