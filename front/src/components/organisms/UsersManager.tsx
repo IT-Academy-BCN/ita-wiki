@@ -1,10 +1,15 @@
+import { useAuth } from '../../context/AuthProvider'
 import { AccountAdmin } from '../../pages/AccountAdim'
 
-const UsersManager = () => (
+const UsersManager = () => {
+  const { user } = useAuth()
+
+  return (
     <>
       Users Manager
-      <AccountAdmin />
+      {user?.role === 'ADMIN' && <AccountAdmin />}
     </>
   )
+}
 
 export { UsersManager }

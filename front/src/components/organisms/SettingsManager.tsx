@@ -6,18 +6,24 @@ import { Tabs } from '../molecules/Tabs'
 import { useAuth } from '../../context/AuthProvider'
 
 type TTabsData = {
+  id: string
   title: string
-  tabComponent: ReactElement | null
+  tabComponent: ReactElement
+  requiredRole?: string[]
 }
 
 const tabsData: TTabsData[] = [
   {
+    id: 'topicsTab',
     title: 'Temas',
     tabComponent: <TopicsManagerBoard />,
+    requiredRole: ['MENTOR', 'ADMIN']
   },
   {
+    id: 'usersTab',
     title: 'Usuarios',
     tabComponent: <UsersManager />,
+    requiredRole: ['MENTOR', 'ADMIN']
   },
 ]
 
@@ -27,22 +33,17 @@ export const SettingsManager: FC = () => {
   const { t } = useTranslation()
 
   const tTabsData = tabsData
-    .filter((tab) => {
-      if (tab.title === 'Usuarios') {
-        return user?.role === 'MENTOR' || user?.role === 'ADMIN'
-      }
-      return true
-    })
+    .filter((tab) => (
+      (Array.isArray(tab.requiredRole) && tab.requiredRole.includes(user?.role || '')) ||
+      tab.id === 'usersTab'
+    ))
     .map((tab) => {
       const modifiedTab = {
+        id: tab.id,
         title: t(tab.title),
         tabComponent: tab.tabComponent,
       }
-      
-      if (tab.title === 'Usuarios' && user?.role !== 'ADMIN') {
-        modifiedTab.tabComponent = null
-      }
-      
+
       return modifiedTab
     })
 

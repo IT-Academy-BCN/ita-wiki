@@ -26,7 +26,7 @@ const TabMenuNav = styled.ul`
 
 type TTabsData = {
   title: string;
-  tabComponent: ReactElement | null
+  tabComponent: ReactElement
 }
 
 const Tabs = ({ tabsData }: { tabsData: TTabsData[] }) => {
