@@ -1,7 +1,7 @@
-import { forwardRef } from 'react'
+import { SelectHTMLAttributes, forwardRef } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, font } from '../../styles'
-import { TSelect } from '../../types'
+// import { TSelect } from '../../types'
 
 const SelectStyled = styled.select<TSelect>`
   border-radius: ${dimensions.borderRadius.base};
@@ -17,7 +17,17 @@ const SelectStyled = styled.select<TSelect>`
     outline: 0 none;
   }
 `
+type TOption = {
+  value: string
+  label: string
+  id?: string
+}
 
+type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
+  options?: TOption[]
+  error?: boolean | string
+  placeholder?: string
+}
 const Select = forwardRef<HTMLSelectElement, TSelect>(
   (
     {

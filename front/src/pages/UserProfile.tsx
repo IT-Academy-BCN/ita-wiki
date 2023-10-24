@@ -14,7 +14,7 @@ export const UserProfile: FC = () => {
   const { data: favoritesData } = useGetFavorites()
   const favoritesLength = favoritesData?.length ?? 0
   const resources = useGetResourcesByUser()
-  const resourcesData = resources.data as TResource[] | undefined
+  const resourcesData = resources.data ?? []
   const resourcesLength = resourcesData?.length ?? 0
   const { user } = useAuth()
   const navigate = useNavigate()

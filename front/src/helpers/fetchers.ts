@@ -1,19 +1,8 @@
 
 import { urls } from '../constants'
-import {  TGetTypes, TFavorites, TResource, TVoteCountResponse, TVoteMutationData } from '../types'
+import { TTopic, TGetTopics, TGetTypes, TFavorites, TResource, TVoteCountResponse, TVoteMutationData } from '../types'
 
-export type TTopic = {
-  id?: string
-  name: string
-  slug?: string
-  categoryId?: string
-}
-export type TGetTopics = {
-  id: string
-  name: string
-  slug: string
-  categoryId: string
-}[]
+
 const errorMessageStatus: { [key: number]: string } = {
   401: 'Error 401 - No autorizado',
   403: 'Error 403 - Acceso denegado',

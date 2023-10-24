@@ -231,17 +231,7 @@ export type TRadio = {
   hiddenLabel?: boolean
   defaultChecked?: string
 }
-type TOption = {
-  value: string
-  label: string
-  id?: string
-}
 
-export type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
-  options?: TOption[]
-  error?: boolean | string
-  placeholder?: string
-}
 export type TSpinner = {
   size?: 'xsmall' | 'small' | 'medium' | 'big'
 }
@@ -313,6 +303,16 @@ export type TResourceTitleLink = {
   description: string
   title: string
   url: string
+}
+type TOption = {
+  value: string
+  label: string
+  id?: string
+}
+export type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
+  options?: TOption[]
+  error?: boolean | string
+  placeholder?: string
 }
 export type TSelectGroup = {
   id: string
