@@ -1,12 +1,12 @@
 import supertest from 'supertest'
-import { expect, test, describe } from 'vitest'
+import { expect, it, describe } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 describe('Testing GET endpoint', () => {
-  test('Should return error if no token is provided', async () => {
+  it('Should return error if no token is provided', async () => {
     const response = await supertest(server).get(`${pathRoot.v1.users}`)
     expect(response.status).toBe(401)
     expect(response.body.message).toBe('Missing token')
@@ -14,28 +14,28 @@ describe('Testing GET endpoint', () => {
 
   checkInvalidToken(`${pathRoot.v1.users}`, 'get')
 
-  test('Should return successful response if valid token provided', async () => {
+  it('Should return successful response if valid token provided', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.users}`)
       .set('Cookie', authToken.admin)
     expect(response.status).toBe(200)
   })
 
-  test('Should NOT be able to access if user level is REGISTERED', async () => {
+  it('Should NOT be able to access if user level is REGISTERED', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.users}`)
       .set('Cookie', authToken.user)
     expect(response.status).toBe(403)
   })
 
-  test('Should NOT be able to access if user level is MENTOR', async () => {
+  it('Should NOT be able to access if user level is MENTOR', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.users}`)
       .set('Cookie', authToken.mentor)
     expect(response.status).toBe(403)
   })
 
-  test('Should be able to retrieve user info if user level is ADMIN', async () => {
+  it('Should be able to retrieve user info if user level is ADMIN', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.users}`)
       .set('Cookie', authToken.admin)
@@ -52,6 +52,7 @@ describe('Testing GET endpoint', () => {
           id: expect.any(String),
           updatedAt: expect.any(String),
           specializationId: expect.any(String),
+          avatarId: expect.any(String) || null,
         },
         {
           email: testUserData.inactiveUser.email,
@@ -63,6 +64,7 @@ describe('Testing GET endpoint', () => {
           id: expect.any(String),
           updatedAt: expect.any(String),
           specializationId: expect.any(String),
+          avatarId: expect.any(String) || null,
         },
         {
           email: testUserData.mentor.email,
@@ -74,6 +76,7 @@ describe('Testing GET endpoint', () => {
           id: expect.any(String),
           updatedAt: expect.any(String),
           specializationId: expect.any(String),
+          avatarId: expect.any(String) || null,
         },
         {
           email: testUserData.user.email,
@@ -85,6 +88,7 @@ describe('Testing GET endpoint', () => {
           id: expect.any(String),
           updatedAt: expect.any(String),
           specializationId: expect.any(String),
+          avatarId: expect.any(String) || null,
         },
       ])
     )

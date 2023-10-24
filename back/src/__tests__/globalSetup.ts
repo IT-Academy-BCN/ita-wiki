@@ -17,6 +17,7 @@ export const testUserData = {
     role: USER_ROLE.REGISTERED,
     status: USER_STATUS.ACTIVE,
     specializationId: '',
+    avatarId: null,
   },
   admin: {
     email: 'testingAdmin@user.cat',
@@ -26,6 +27,7 @@ export const testUserData = {
     role: USER_ROLE.ADMIN,
     status: USER_STATUS.ACTIVE,
     specializationId: '',
+    avatarId: null,
   },
   mentor: {
     email: 'testingMentor@user.cat',
@@ -35,6 +37,7 @@ export const testUserData = {
     role: USER_ROLE.MENTOR,
     status: USER_STATUS.ACTIVE,
     specializationId: '',
+    avatarId: null,
   },
   inactiveUser: {
     email: 'testingInactiveUser@user.cat',
@@ -44,6 +47,7 @@ export const testUserData = {
     role: USER_ROLE.REGISTERED,
     status: USER_STATUS.INACTIVE,
     specializationId: '',
+    avatarId: null,
   },
 }
 

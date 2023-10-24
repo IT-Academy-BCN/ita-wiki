@@ -1,5 +1,6 @@
 import { Middleware, Context } from 'koa'
 import jwt, { Secret } from 'jsonwebtoken'
+import { Media, User } from '@prisma/client'
 import { prisma } from '../../prisma/client'
 
 export const authMeController: Middleware = async (ctx: Context) => {
@@ -7,6 +8,8 @@ export const authMeController: Middleware = async (ctx: Context) => {
   const { userId } = jwt.verify(token, process.env.JWT_KEY as Secret) as {
     userId: string
   }
+
+  type UserWithAvatar = User & { avatar: Media }
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -16,11 +19,7 @@ export const authMeController: Middleware = async (ctx: Context) => {
       email: true,
       status: true,
       role: true,
-      media: {
-        select: {
-          filePath: true,
-        },
-      },
+      avatarId: true,
     },
   })
 
@@ -29,6 +28,19 @@ export const authMeController: Middleware = async (ctx: Context) => {
     ctx.body = { error: 'User not found' }
     return
   }
+
+  let userWithAvatar: UserWithAvatar | null = null
+  let userAvatar: Media | null = null
+
+  if (user?.avatarId) {
+    userAvatar = await prisma.media.findUnique({
+      where: { id: user.avatarId },
+    })
+    if (userAvatar) {
+      userWithAvatar = { ...user, avatar: userAvatar } as UserWithAvatar
+    }
+  }
+
   ctx.status = 200
-  ctx.body = user
+  ctx.body = userAvatar ? userWithAvatar : user
 }
