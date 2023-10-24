@@ -3,9 +3,9 @@ import styled from 'styled-components'
 import Text from './Text'
 import Icon from './Icon'
 import { font, dimensions, device, colors, FlexBox } from '../../styles'
+import { TCounter } from '../../types'
 
 const CounterWrapper = styled(FlexBox)`
-
   @media only ${device.Laptop} {
     position: relative;
     background-color: ${colors.gray.gray5};
@@ -18,7 +18,7 @@ const CounterWrapper = styled(FlexBox)`
 const CounterStyled = styled(Text)`
   font-size: 18px;
   font-weight: ${font.bold};
-  margin: 0 0 .4em;
+  margin: 0 0 0.4em;
 
   @media only ${device.Laptop} {
     font-size: 30px;
@@ -45,27 +45,12 @@ const IconStyled = styled(Icon)`
     top: 7px;
     right: 8px;
   }
-` 
-
-type TCounter = {
-  number: number
-  text: string
-  icon: string
-}
-
-const Counter: FC<TCounter> = ({
-  number,
-  text,
-  icon
-}) => (
+`
+const Counter: FC<TCounter> = ({ number, text, icon }) => (
   <CounterWrapper>
-    <IconStyled name={ icon } wght={ 600 } fill={ 0 } />
-    <CounterStyled data-testid={ text }>
-    { number }
-    </CounterStyled>
-    <TextStyled>
-      { text }
-    </TextStyled>
+    <IconStyled name={icon} wght={600} fill={0} />
+    <CounterStyled data-testid={text}>{number}</CounterStyled>
+    <TextStyled>{text}</TextStyled>
   </CounterWrapper>
 )
 

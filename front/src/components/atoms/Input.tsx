@@ -1,6 +1,7 @@
-import React, { InputHTMLAttributes } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, font } from '../../styles'
+import { TInput } from '../../types'
 
 const InputStyled = styled.input<TInput>`
   width: 100%;
@@ -18,14 +19,6 @@ const InputStyled = styled.input<TInput>`
     outline: 0 none;
   }
 `
-
-export type TInput = InputHTMLAttributes<HTMLInputElement> & {
-  error?: boolean | string
-  success?: boolean
-  warning?: boolean
-  type?: 'text' | 'password' | 'email'
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-}
 
 const Input = React.forwardRef<HTMLInputElement, TInput>(
   (

@@ -7,8 +7,8 @@ import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import InputGroup from '../molecules/InputGroup'
 import { Button, Icon, Spinner, Text, Title, ValidationMessage } from '../atoms'
-import { urls } from '../../constants'
 import { dimensions, colors, FlexBox, device } from '../../styles'
+import { loginUserFetcher } from '../../helpers/fetchers'
 
 const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.none};
@@ -72,29 +72,6 @@ type TForm = {
 type TLogin = {
   handleLoginModal: () => void
   handleRegisterModal: () => void
-}
-
-const loginUserFetcher = async (user: object) => {
-  const errorMessage: { [key: number]: string } = {
-    403: 'Usuario en proceso de activación. Por favor, póngase en contacto con el administrador.',
-    404: 'Acceso restringido. Por favor, contacte con el personal de IT Academy.',
-    422: 'Identificador o contraseña incorrectos.',
-  }
-
-  const response = await fetch(urls.logIn, {
-    method: 'POST',
-    body: JSON.stringify(user),
-    headers: { 'Content-Type': 'application/json' },
-  })
-
-  if (
-    !response.ok &&
-    Object.hasOwnProperty.call(errorMessage, response.status)
-  ) {
-    throw new Error(errorMessage[response.status])
-  }
-
-  return response.status === 204 ? null : response.json()
 }
 
 const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {

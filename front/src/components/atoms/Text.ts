@@ -1,12 +1,6 @@
-import { HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import { colors, font } from '../../styles'
-
-type TText = HTMLAttributes<HTMLParagraphElement> & {
-  fontSize?: string
-  fontWeight?: 'normal' | 'bold'
-  fontFamily?: string
-}
+import { TText } from '../../types'
 
 const Text = styled.p<TText>`
   color: ${({ color }) => color || colors.black.black2};

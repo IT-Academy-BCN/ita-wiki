@@ -1,9 +1,9 @@
 import { forwardRef, Ref } from 'react'
 import styled from 'styled-components'
-import Textarea, { TTextarea } from '../atoms/Textarea'
+import Textarea from '../atoms/Textarea'
 import { Label, ValidationMessage } from '../atoms'
 import { dimensions, FlexBox } from '../../styles'
-import { TValidationMessage } from '../atoms/ValidationMessage'
+import { TTextarea, TValidationMessage } from '../../types'
 
 const TextareaGroupStyled = styled(FlexBox)`
   align-items: flex-start;

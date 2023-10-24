@@ -2,8 +2,7 @@ import { forwardRef } from 'react'
 import styled from 'styled-components'
 import { dimensions } from '../../styles'
 import { Label, ValidationMessage, Select } from '../atoms'
-import { TValidationMessage } from '../atoms/ValidationMessage'
-import { TSelect } from '../atoms/Select'
+import { TSelectGroup } from '../../types'
 
 const SelectGroupStyled = styled.div`
   ${ValidationMessage} {
@@ -12,14 +11,6 @@ const SelectGroupStyled = styled.div`
   }
   width: 100%;
 `
-type TSelectGroup = {
-  id: string
-  name: string
-  label: string
-  hiddenLabel?: boolean
-  icon?: string
-  validationMessage?: TValidationMessage['text']
-} & TSelect
 
 const SelectGroup = forwardRef<HTMLSelectElement, TSelectGroup>(
   ({ label, id, name, hiddenLabel, icon, validationMessage, ...rest }, ref) => (

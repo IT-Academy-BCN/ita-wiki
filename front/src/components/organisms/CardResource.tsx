@@ -7,6 +7,7 @@ import { VoteCounter } from '../molecules/VoteCounter'
 import EditResource from './EditResource'
 import { FavoritesIcon } from '../molecules/FavoritesIcon'
 import { useAuth } from '../../context/AuthProvider'
+import { TCardResource } from '../../types'
 
 const CardContainerStyled = styled(FlexBox)`
   background-color: ${colors.white};
@@ -47,33 +48,6 @@ const FlexBoxStyled = styled(FlexBox)`
     margin-top: 2px;
   }
 `
-type TTopic = {
-  topic: {
-    id: string
-    name: string
-    slug: string
-    categoryId: string
-    createdAt: string
-    updatedAt: string
-  }
-}
-export type TCardResource = {
-  createdBy: string
-  createdAt: string
-  description: string
-  img: string | undefined
-  id: string
-  likes?: number
-  title: string
-  updatedAt: string
-  url: string
-  resourceType: string
-  topics: TTopic[]
-  editable: boolean
-  isFavorite: boolean
-  handleAccessModal: () => void
-}
-
 const CardResource = ({
   createdBy,
   createdAt,

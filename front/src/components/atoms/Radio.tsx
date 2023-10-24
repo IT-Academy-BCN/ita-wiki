@@ -2,19 +2,7 @@ import { Ref, forwardRef } from 'react'
 import styled from 'styled-components'
 import { FlexBox, dimensions, colors, font } from '../../styles'
 import Label from './Label'
-
-type TRadioOptions = {
-  id: string
-  name: string
-}
-
-type TRadio = {
-  options: TRadioOptions[]
-  inputName: string
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-  hiddenLabel?: boolean
-  defaultChecked?: string
-}
+import { TRadio } from '../../types'
 
 const RadioStyled = styled(FlexBox)`
   ${FlexBox} {

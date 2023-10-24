@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { colors, font } from '../../styles'
+import { TValidationMessage } from '../../types'
 
 type TValidationMessageStyled = {
   color: 'success' | 'error' | 'warning'
@@ -12,11 +13,6 @@ const ValidationMessageStyled = styled.p<TValidationMessageStyled>`
   font-size: ${font.xs};
   font-family: ${font.fontFamily};
 `
-
-export type TValidationMessage = {
-  text?: string
-  color?: 'success' | 'error' | 'warning'
-}
 
 const ValidationMessage = ({
   text = '',

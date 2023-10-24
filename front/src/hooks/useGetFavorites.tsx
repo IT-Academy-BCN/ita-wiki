@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { getFavorites, TFavorites } from '../helpers/fetchers'
+import { getFavorites } from '../helpers/fetchers'
 import { useAuth } from '../context/AuthProvider'
+import { TFavorites } from '../types'
 
 export const useGetFavorites = (slug?: string) => {
   const { user } = useAuth()

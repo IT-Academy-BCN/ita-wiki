@@ -2,8 +2,7 @@ import { forwardRef, Ref } from 'react'
 import styled from 'styled-components'
 import { dimensions, FlexBox } from '../../styles'
 import { Icon, Input, Label, ValidationMessage } from '../atoms'
-import { TInput } from '../atoms/Input'
-import { TValidationMessage } from '../atoms/ValidationMessage'
+import { TInputGroup } from '../../types'
 
 const InputGroupStyled = styled.div`
   width: 100%;
@@ -35,18 +34,6 @@ const iconDataTestId = (rest: TObjectWithDataTestId) => {
     dataTestId.charAt(0).toUpperCase() + dataTestId.slice(1)
   return dataTestId ? `icon${upperCaseDataTestId}` : ''
 }
-
-type TInputGroup = {
-  id: string
-  name: string
-  label: string
-  validationType?: TValidationMessage['color']
-  validationMessage?: TValidationMessage['text']
-  icon?: string
-  className?: string
-  iconClick?: () => void
-  hiddenLabel?: boolean
-} & TInput
 
 const InputGroup = forwardRef(
   (

@@ -1,7 +1,8 @@
-import { InputHTMLAttributes, forwardRef, Ref } from 'react'
+import { forwardRef, Ref } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, FlexBox } from '../../styles'
 import Label from './Label'
+import { TCheckBox } from '../../types'
 
 export const CheckBoxWrapper = styled(FlexBox)`
   flex-direction: row;
@@ -39,16 +40,6 @@ export const CheckBoxWrapper = styled(FlexBox)`
     }
   }
 `
-
-type TCheckBox = InputHTMLAttributes<HTMLInputElement> & {
-  id: string
-  label: string
-  hiddenLabel?: boolean
-  defaultChecked?: boolean
-  required?: boolean
-  className?: string
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-}
 
 const CheckBox = forwardRef(
   (

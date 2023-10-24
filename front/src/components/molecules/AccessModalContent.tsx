@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Button, Text, Title } from '../atoms'
 import { FlexBox, colors, dimensions, font } from '../../styles'
 import img from '../../assets/icons/lock-dynamic-color.svg'
+import { TAccessModal } from '../../types'
 
 const ImageStyled = styled.div`
   margin-top: 3.5rem;
@@ -27,12 +28,6 @@ const ButtonStyled = styled(Button)`
 const StyledText = styled(Text)`
   font-weight: ${font.medium};
 `
-
-type TAccessModal = {
-  handleAccessModal: () => void
-  handleLoginModal: () => void
-  handleRegisterModal: () => void
-}
 
 const AccessModalContent = ({
   handleAccessModal,

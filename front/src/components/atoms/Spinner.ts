@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 import { colors } from '../../styles'
+import { TSpinner } from '../../types'
 
 const spinnerAnimation = keyframes`
 from {
@@ -17,9 +18,6 @@ const sizes = {
   big: '133px',
 }
 
-type TSpinner = {
-  size?: 'xsmall' | 'small' | 'medium' | 'big'
-}
 
 const Spinner = styled.div.attrs<TSpinner>((props) => ({ size: props?.size })) <TSpinner>`
  ${({ size }) => `

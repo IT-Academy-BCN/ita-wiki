@@ -1,5 +1,6 @@
-import { HTMLAttributes, FC } from 'react'
+import { FC } from 'react'
 import styled from 'styled-components'
+import { TUserImage } from '../../types'
 
 const StyledUserImage = styled.img<TUserImage>`
   width: 97px;
@@ -8,16 +9,8 @@ const StyledUserImage = styled.img<TUserImage>`
   object-fit: cover;
 `
 
-type TUserImage = HTMLAttributes<HTMLDivElement> & {
-  src: string,
-  alt: string
-}
-
-const UserImage: FC<TUserImage> = ({ 
-  src, 
-  alt
-}) => (
-  <StyledUserImage src={ src } alt={ alt } />
+const UserImage: FC<TUserImage> = ({ src, alt }) => (
+  <StyledUserImage src={src} alt={alt} />
 )
 
 export default UserImage
