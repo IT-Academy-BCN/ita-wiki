@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getTopics } from '../helpers/fetchers'
-import { TGetTopics } from '../types'
+import { getTopics, TGetTopics } from '../helpers/fetchers'
 
 export const useGetTopics = (slug?: string) => {
   const { data, isLoading, isError, refetch } = useQuery<TGetTopics>({

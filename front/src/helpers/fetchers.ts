@@ -1,8 +1,19 @@
 
 import { urls } from '../constants'
-import { TTopic, TGetTopics, TGetTypes, TFavorites, TResource, TVoteCountResponse, TVoteMutationData } from '../types'
+import {  TGetTypes, TFavorites, TResource, TVoteCountResponse, TVoteMutationData } from '../types'
 
-
+export type TTopic = {
+  id?: string
+  name: string
+  slug?: string
+  categoryId?: string
+}
+export type TGetTopics = {
+  id: string
+  name: string
+  slug: string
+  categoryId: string
+}[]
 const errorMessageStatus: { [key: number]: string } = {
   401: 'Error 401 - No autorizado',
   403: 'Error 403 - Acceso denegado',
@@ -22,7 +33,7 @@ export const getTopics = async (slug?: string): Promise<TGetTopics> => {
   const data = await response.json();
   return data;
 }
-export const createTopicFetcher = (createdTopic: TTopic[]) =>
+export const createTopicFetcher = (createdTopic: TTopic) =>
   fetch(urls.postTopics, {
     method: 'POST',
     body: JSON.stringify(createdTopic),
@@ -36,7 +47,7 @@ export const createTopicFetcher = (createdTopic: TTopic[]) =>
     return res.status === 204 ? {} : res.json()
   })
 
-export const updateTopicFetcher = (updatedTopic: TTopic[]) =>
+export const updateTopicFetcher = (updatedTopic: TTopic) =>
   fetch(urls.patchTopics, {
     method: 'PATCH',
     body: JSON.stringify(updatedTopic),

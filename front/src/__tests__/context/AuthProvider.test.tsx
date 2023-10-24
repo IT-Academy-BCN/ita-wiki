@@ -19,9 +19,13 @@ describe('AuthProvider', () => {
     const { result } = renderHook(() => useAuth(), { wrapper })
     expect(result.current.user).toBe(null)
     act(() => {
-      result.current.setUser({ name: 'John', avatar: 'avatar' })
+      result.current.setUser({ name: 'John', avatar: 'avatar', email: 'email' })
     })
-    expect(result.current.user).toEqual({ name: 'John', avatar: 'avatar' })
+    expect(result.current.user).toEqual({
+      name: 'John',
+      avatar: 'avatar',
+      email: 'email',
+    })
   })
 
   it('should throw an error', async () => {
