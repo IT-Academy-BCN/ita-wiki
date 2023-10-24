@@ -1,18 +1,11 @@
-import { FC, ReactElement } from 'react'
+import React, { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { TopicsManagerBoard } from './TopicsManagerBoard'
 import { UsersManager } from './UsersManager'
 import { Tabs } from '../molecules/Tabs'
 import { useAuth } from '../../context/AuthProvider'
 
-type TTabsData = {
-  id: string
-  title: string
-  tabComponent: ReactElement
-  requiredRole?: string[]
-}
-
-const tabsData: TTabsData[] = [
+const tabsData: React.ComponentProps<typeof Tabs> ['tabsData'] = [
   {
     id: 'topicsTab',
     title: 'Temas',
@@ -34,7 +27,7 @@ export const SettingsManager: FC = () => {
 
   const tTabsData = tabsData
     .filter((tab) => (
-      (Array.isArray(tab.requiredRole) && tab.requiredRole.includes(user?.role || '')) ||
+      (Array.isArray(tab.requiredRole) && tab.requiredRole.includes(user?.role ?? '')) ||
       tab.id === 'usersTab'
     ))
     .map((tab) => {
