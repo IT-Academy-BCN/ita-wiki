@@ -75,7 +75,9 @@ describe('Vote counter molecule', () => {
     )
 
     const upvoteBtn = screen.getByTestId('increase')
+    const downvoteBtn = screen.getByTestId('decrease')
     expect(upvoteBtn).toBeInTheDocument()
+    expect(downvoteBtn).toBeInTheDocument()
     expect(screen.getByText('0')).toBeInTheDocument()
 
     rerender(
@@ -91,9 +93,24 @@ describe('Vote counter molecule', () => {
       />
     )
 
-    // CHECK IF PUT REQUEST IS BEING MADE
-
     expect(screen.getByText('1')).toBeInTheDocument()
     expect(upvoteBtn).toHaveStyle('color: #27AE60')
+
+    rerender(
+      <VoteCounter
+        voteCount={{
+          upvote: 0,
+          downvote: -1,
+          total: -1,
+          userVote: -1,
+        }}
+        resourceId="test"
+        handleAccessModal={handleAccessModal}
+      />
+    )
+
+    expect(screen.getByText('-1')).toBeInTheDocument()
+    expect(upvoteBtn).toHaveStyle('color: #828282')
+    expect(downvoteBtn).toHaveStyle('color: #EB5757')
   })
 })
