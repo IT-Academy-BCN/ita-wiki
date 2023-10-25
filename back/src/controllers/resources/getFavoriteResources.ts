@@ -7,21 +7,13 @@ import { resourceFavoriteSchema } from '../../schemas'
 export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User
   const { categorySlug } = ctx.params
+  const where = {
+    userId: user.id,
+    resource: categorySlug ? { category: { slug: categorySlug } } : {},
+  }
+
   const favorites = await prisma.favorites.findMany({
-    where: {
-      userId: user.id,
-      resource: {
-        ...(categorySlug && {
-          topics: {
-            some: {
-              topic: {
-                category: { slug: categorySlug },
-              },
-            },
-          },
-        }),
-      },
-    },
+    where,
     select: {
       resource: {
         select: {
