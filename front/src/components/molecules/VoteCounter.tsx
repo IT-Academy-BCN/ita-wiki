@@ -15,7 +15,9 @@ const StyledIcon = styled(Icon)<ArrowProp>`
   color: ${({ color }) => color};
 
   &:hover {
-    color: ${({ name }) => (name === 'expand_less' && colors.success) || (name === 'expand_more' && colors.error)};
+    color: ${({ name }) =>
+      (name === 'expand_less' && colors.success) ||
+      (name === 'expand_more' && colors.error)};
   }
 `
 
@@ -39,6 +41,81 @@ type TVoteMutationData = {
   vote: TUserVote
 }
 
+const getDownvote = (
+  currUserVote: number,
+  currDownvote: number,
+  currVote: TUserVote
+) => {
+  if (
+    (currUserVote === 0 && currVote === 'up') ||
+    (currUserVote === 1 && currVote === 'cancel')
+  )
+    return currDownvote
+  if (
+    (currUserVote === 0 && currVote === 'down') ||
+    (currUserVote === 1 && currVote === 'down')
+  )
+    return currDownvote + 1
+  return currDownvote - 1
+}
+
+const getUpvote = (
+  currUserVote: number,
+  currUpvote: number,
+  currVote: TUserVote
+) => {
+  if (
+    (currUserVote === 0 && currVote === 'down') ||
+    (currUserVote === -1 && currVote === 'cancel')
+  )
+    return currUpvote
+  if (
+    (currUserVote === 0 && currVote === 'up') ||
+    (currUserVote === -1 && currVote === 'up')
+  )
+    return currUpvote + 1
+  return currUpvote - 1
+}
+
+const getTotal = (
+  currUserVote: number,
+  currTotal: number,
+  currVote: TUserVote
+) => {
+  if (
+    (currUserVote === 0 && currVote === 'up') ||
+    (currUserVote === -1 && currVote === 'cancel')
+  )
+    return currTotal + 1
+  if (
+    (currUserVote === 1 && currVote === 'cancel') ||
+    (currUserVote === 0 && currVote === 'down')
+  )
+    return currTotal - 1
+  if (currUserVote === 1 && currVote === 'down') return currTotal - 2
+  return currTotal + 2
+}
+
+const getUserVote = (currVote: TUserVote) => {
+  if (currVote === 'up') return 1
+  if (currVote === 'down') return -1
+  return 0
+}
+
+const updateCachedVoteCount = (
+  currentVoteCount: TVoteCount,
+  vote: TUserVote
+) => {
+  const { downvote, upvote, total, userVote } = currentVoteCount
+
+  return {
+    downvote: getDownvote(userVote, downvote, vote),
+    upvote: getUpvote(userVote, upvote, vote),
+    total: getTotal(userVote, total, vote),
+    userVote: getUserVote(vote),
+  }
+}
+
 const updateVote = async ({ resourceId, vote }: TVoteMutationData) => {
   const response = await fetch(urls.vote, {
     method: 'PUT',
@@ -51,47 +128,20 @@ const updateVote = async ({ resourceId, vote }: TVoteMutationData) => {
   }
 }
 
-export const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId, handleAccessModal }) => {
+export const VoteCounter: FC<TVoteCounter> = ({
+  voteCount,
+  resourceId,
+  handleAccessModal,
+}) => {
   const { user } = useAuth()
   const queryClient = useQueryClient()
-
-  const updateVoteCount = (currentVoteCount: TVoteCount, vote: TUserVote) => {
-    const { downvote, upvote, total, userVote } = currentVoteCount
-
-    switch (userVote) {
-      case 0:
-        return {
-          downvote: vote === 'up' ? downvote : downvote + 1,
-          upvote: vote === 'up' ? upvote + 1 : upvote,
-          total: vote === 'up' ? total + 1 : total - 1,
-          userVote: vote === 'up' ? 1 : -1,
-        }
-
-      case 1:
-        return {
-          downvote: vote === 'cancel' ? downvote : downvote + 1,
-          upvote: upvote - 1,
-          total: vote === 'cancel' ? total - 1 : total - 2,
-          userVote: vote === 'cancel' ? 0 : -1,
-        }
-
-      case -1:
-        return {
-          downvote: downvote - 1,
-          upvote: vote === 'up' ? upvote + 1 : upvote,
-          total: vote === 'up' ? total + 2 : total + 1,
-          userVote: vote === 'up' ? 1 : 0,
-        }
-
-      default:
-        return currentVoteCount
-    }
-  }
 
   const castVote = useMutation({
     mutationFn: updateVote,
     onSuccess: (_, { vote }) => {
-      const queryCacheGetResources = queryClient.getQueryCache().findAll(['getResources'])
+      const queryCacheGetResources = queryClient
+        .getQueryCache()
+        .findAll(['getResources'])
 
       const queryKeys = queryCacheGetResources.map((q) => q.queryKey)
 
@@ -102,7 +152,7 @@ export const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId, handleAcc
           const newData = data?.map((resource) => {
             if (resource.id !== resourceId) return resource
 
-            const newVoteCount = updateVoteCount(resource.voteCount, vote)
+            const newVoteCount = updateCachedVoteCount(resource.voteCount, vote)
             return {
               ...resource,
               voteCount: newVoteCount,
@@ -124,7 +174,10 @@ export const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId, handleAcc
       return
     }
 
-    if ((voteCount.userVote === 1 && vote === 'up') || (voteCount.userVote === -1 && vote === 'down')) {
+    if (
+      (voteCount.userVote === 1 && vote === 'up') ||
+      (voteCount.userVote === -1 && vote === 'down')
+    ) {
       castVote.mutate({ resourceId, vote: 'cancel' })
     } else {
       castVote.mutate({ resourceId, vote })
@@ -139,7 +192,11 @@ export const VoteCounter: FC<TVoteCounter> = ({ voteCount, resourceId, handleAcc
         color={voteCount.userVote > 0 ? colors.success : colors.gray.gray3}
         onClick={() => handleClick('up')}
       />
-      <Text fontWeight="bold" style={{ marginTop: '0', marginBottom: '0' }} data-testid="voteTest">
+      <Text
+        fontWeight="bold"
+        style={{ marginTop: '0', marginBottom: '0' }}
+        data-testid="voteTest"
+      >
         {voteCount.total}
       </Text>
       <StyledIcon
