@@ -3,6 +3,7 @@ import { z } from '../../zod'
 import { NotFoundError, ValidationError } from '../../components/errorSchemas'
 import { pathRoot } from '../../../routes/routes'
 import { resourceGetSchema } from '../../../schemas'
+import { resourceId } from '../../components/paramSchemas'
 
 registry.registerPath({
   method: 'get',
@@ -13,9 +14,7 @@ registry.registerPath({
     'Takes in a valid resource ID and returns the resource related to it.',
   request: {
     params: z.object({
-      resourceId: z.string().trim().min(1).openapi({
-        description: 'ID of the resource to be retrieved.',
-      }),
+      resourceId,
     }),
   },
   responses: {

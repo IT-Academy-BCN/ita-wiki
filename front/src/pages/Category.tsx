@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 import { useLocation, useParams } from 'react-router-dom'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
 import {
   DesktopSideMenu,
@@ -25,7 +24,7 @@ import {
   TypesFilterWidget,
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
-import { TGetTopics, getTopics } from '../helpers/fetchers'
+import { useGetTopics } from '../hooks'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -451,10 +450,7 @@ const Category: FC = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
   }
 
-  const { data: fetchedTopics } = useQuery<TGetTopics>(
-    ['getTopics', slug || ''],
-    () => getTopics(slug)
-  )
+  const { data: fetchedTopics } = useGetTopics(slug ?? '')
 
   const mappedTopicsForFilterWidget = [
     { value: 'todos', label: 'Todos' },
@@ -476,7 +472,6 @@ const Category: FC = () => {
         <DesktopSideMenu />
         <WiderContainer>
           <Navbar
-            isUserLogged={user !== null}
             toggleModal={toggleModal}
             handleAccessModal={handleAccessModal}
           />

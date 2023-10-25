@@ -1,61 +1,29 @@
 import { FC, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import { useQuery, useMutation } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import { colors, FlexBox } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import { TopicsEditableItem } from '../molecules'
-import { urls } from '../../constants'
-import { TGetTopics, getTopics } from '../../helpers/fetchers'
+import {
+  TTopic,
+  createTopicFetcher,
+  updateTopicFetcher,
+} from '../../helpers/fetchers'
+import { useAuth } from '../../context/AuthProvider'
+import { useGetTopics } from '../../hooks'
 
 const StyledFlexBox = styled(FlexBox)`
   width: 100%;
 `
 
-const createTopicFetcher = (createdTopic: TTopic) =>
-  fetch(urls.getTopics, {
-    method: 'POST',
-    body: JSON.stringify(createdTopic),
-    headers: {
-      'Content-type': 'application/json',
-    },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('Error al crear el tema')
-      }
-      return res.status === 204 ? {} : res.json()
-    })
-    // eslint-disable-next-line no-console
-    .catch((error) => console.error(error))
-
-const updateTopicFetcher = (updatedTopic: TTopic) =>
-  fetch(urls.getTopics, {
-    method: 'PATCH',
-    body: JSON.stringify(updatedTopic),
-    headers: {
-      'Content-type': 'application/json',
-    },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('Error al actualizar el tema')
-      }
-      return res.status === 204 ? null : res.json()
-    })
-    // eslint-disable-next-line no-console
-    .catch((error) => console.error(error))
-
-type TTopic = {
-  id?: string
-  name: string
-  slug?: string
-  categoryId?: string
-}
-
 export const TopicsManagerBoard: FC = () => {
+  const { user } = useAuth()
   const { slug } = useParams()
   const { state } = useLocation()
+
+  const { t } = useTranslation()
 
   const [rowStatus, setRowStatus] = useState<string>('available')
 
@@ -63,10 +31,7 @@ export const TopicsManagerBoard: FC = () => {
 
   const [errorMessage, setErrorMessage] = useState<string>('')
 
-  const { data, isLoading, isError, refetch } = useQuery<TGetTopics>(
-    ['getTopics', slug],
-    () => getTopics(slug)
-  )
+  const { data, isLoading, isError, refetch } = useGetTopics(slug as string)
 
   const updateTopic = useMutation({
     mutationFn: updateTopicFetcher,
@@ -75,23 +40,28 @@ export const TopicsManagerBoard: FC = () => {
       if (errorMessage !== '') setErrorMessage('')
       setRowStatus('available')
     },
+    onError: (error: Error) => {
+      setErrorMessage(error.message)
+    },
   })
 
   const createTopic = useMutation({
     mutationFn: createTopicFetcher,
-
     onSuccess: async () => {
       await refetch()
       if (errorMessage !== '') setErrorMessage('')
       setRowStatus('available')
+    },
+    onError: (error: Error) => {
+      setErrorMessage(error.message)
     },
   })
 
   if (slug === undefined) {
     return (
       <Text color={`${colors.error}`}>
-        No hay temas disponibles. <br />
-        Accede desde una categoría para ver o gestionar sus temas.
+        {t('No hay temas disponibles.')} <br />
+        {t('Accede desde una categoría para ver o gestionar sus temas.')}
       </Text>
     )
   }
@@ -130,17 +100,20 @@ export const TopicsManagerBoard: FC = () => {
   }
 
   if (isLoading) return <Spinner size="small" role="status" />
-  if (isError) return <p>Ha habido un error...</p>
+  if (isError) return <p>{t('Ha habido un error...')}</p>
 
   return (
     <>
-      {slug ? (
+      {user ? (
         <StyledFlexBox>
+          <Text fontWeight="bold">
+            {t('Temas de (category)', { name: state?.name })}
+          </Text>
           {data
-            .concat([
+            ?.concat([
               {
                 id: 'newTopic',
-                name: 'Nombre del nuevo tema',
+                name: '',
                 categoryId: `${state?.id}`,
                 slug: `${state?.slug}`,
               },
@@ -158,9 +131,11 @@ export const TopicsManagerBoard: FC = () => {
             ))
             .reverse()}
         </StyledFlexBox>
-      ) : null}
+      ) : (
+        <Text>{t('No tienes permiso de acceso')}</Text>
+      )}
       <br />
-      <Text color={`${colors.error}`}>{errorMessage}</Text>
+      <Text color={`${colors.error}`}>{t(errorMessage)}</Text>
     </>
   )
 }
