@@ -142,7 +142,6 @@ export const VoteCounter: FC<TVoteCounter> = ({
       const queryCacheGetResources = queryClient
         .getQueryCache()
         .findAll(['getResources'])
-
       const queryKeys = queryCacheGetResources.map((q) => q.queryKey)
 
       for (let i = 0; i < queryKeys.length; i += 1) {
@@ -151,7 +150,6 @@ export const VoteCounter: FC<TVoteCounter> = ({
         queryClient.setQueryData(queryKey, (data?: TResource[]) => {
           const newData = data?.map((resource) => {
             if (resource.id !== resourceId) return resource
-
             const newVoteCount = updateCachedVoteCount(resource.voteCount, vote)
             return {
               ...resource,
