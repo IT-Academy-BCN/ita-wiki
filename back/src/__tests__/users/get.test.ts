@@ -1,10 +1,10 @@
 import supertest from 'supertest'
 import { expect, it, describe, expectTypeOf } from 'vitest'
+import { User } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
-import { USER_ROLE, USER_STATUS, User } from '@prisma/client'
 
 describe('Testing GET endpoint', () => {
   it('Should return error if no token is provided', async () => {
