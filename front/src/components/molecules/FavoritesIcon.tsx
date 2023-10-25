@@ -2,8 +2,7 @@ import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '../atoms'
 import { colors } from '../../styles'
-import { favMutation, TFavorites } from '../../helpers/fetchers'
-import { TResource } from '../organisms/ResourceCardList'
+import { favMutation, TResource } from '../../helpers/fetchers'
 
 type TResourceFav = {
   resourceId: string
@@ -17,8 +16,6 @@ export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
   const newFav = useMutation({
     mutationFn: favMutation,
     onSuccess: () => {
-      let theResource: TResource | null = null
-
       const queryCacheGetResources = queryClient
         .getQueryCache()
         .findAll(['getResources'])
@@ -32,13 +29,6 @@ export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
           (data?: TResource[]) => {
             const newData = data?.map((resource) => {
               if (resource.id === resourceId) {
-                if (theResource === null) {
-                  theResource = {
-                    ...resource,
-                    isFavorite: !resource.isFavorite,
-                  }
-                  return theResource
-                }
                 return { ...resource, isFavorite: !resource.isFavorite }
               }
               return resource
@@ -49,10 +39,10 @@ export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
         )
       }
 
-      const queryCacheGetFavs = queryClient
+      const queryCacheGetFavorites = queryClient
         .getQueryCache()
         .findAll(['getFavorites'])
-      const queryFavKeys = queryCacheGetFavs.map((q) => q.queryKey)
+      const queryFavKeys = queryCacheGetFavorites.map((q) => q.queryKey)
 
       for (let i = 0; i < queryFavKeys.length; i += 1) {
         const favQueryKey = queryFavKeys[i]
@@ -60,27 +50,20 @@ export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
         if (isFavorite) {
           queryClient.setQueryData(
             favQueryKey,
-            (data?: TFavorites[]) => {
+            (data?: TResource[]) => {
               const newData = data?.filter(
-                (resource) => resource.id !== resourceId
+                (resource: TResource) => resource.id !== resourceId
               )
               return newData
             },
+
             { updatedAt: Date.now() }
           )
-        }
-        if (!isFavorite) {
-          queryClient.setQueryData(
-            favQueryKey,
-            (data?: TFavorites[]) => {
-              if (data) {
-                const newFavData = [...data, theResource as TFavorites]
-                return newFavData
-              }
-              return [theResource as TFavorites]
-            },
-            { updatedAt: Date.now() }
-          )
+        } else if (!isFavorite) {
+          queryClient.refetchQueries({
+            queryKey: ['getFavorites'],
+            type: 'active',
+          })
         }
       }
     },

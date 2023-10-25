@@ -30,6 +30,26 @@ export type TFavorites = {
   isFavorite: boolean
 }
 
+export type TResource = {
+  id: string
+  title: string
+  slug: string
+  description: string
+  url: string
+  resourceType: string
+  userId?: string
+  createdBy: string
+  createdAt: string
+  updatedAt: string
+  voteCount: {
+    upvote: number
+    downvote: number
+    total: number
+    userVote: number
+  }
+  isFavorite: boolean
+}
+
 export const getTopics = async (slug?: string): Promise<TGetTopics> =>
   fetch(`${urls.getTopics}?slug=${slug}`)
     .then((res) => {

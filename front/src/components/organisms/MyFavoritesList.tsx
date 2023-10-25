@@ -2,6 +2,7 @@ import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import { TFavorites } from '../../helpers/fetchers'
 import { useGetFavorites } from '../../hooks/useGetFavorites'
 import { Icon, Title, Spinner, Text } from '../atoms'
 import { useAuth } from '../../context/AuthProvider'
@@ -16,7 +17,6 @@ import {
 import { Modal, ResourceTitleLink } from '../molecules'
 import Login from './Login'
 import Register from './Register'
-import { TFavorites } from '../../helpers/fetchers'
 
 const TitleContainer = styled(FlexBox)`
   align-items: stretch;

@@ -97,6 +97,7 @@ export const handlers = [
             total: 4,
             userVote: 1,
           },
+          isFavorite: 'false',
         },
       ])
     )
