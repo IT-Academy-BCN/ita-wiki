@@ -1,6 +1,11 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
-import { RESOURCE_TYPE, Resource, ViewedResource } from '@prisma/client'
+import {
+  Category,
+  RESOURCE_TYPE,
+  Resource,
+  ViewedResource,
+} from '@prisma/client'
 import qs from 'qs'
 import { z } from 'zod'
 import { server, testUserData } from '../globalSetup'
@@ -22,12 +27,16 @@ const votesForResources: ResourceVotes = {
 let createdResources: Resource[] = []
 let viewedResource: ViewedResource
 beforeAll(async () => {
+  const testCategory = (await prisma.category.findUnique({
+    where: { slug: 'testing' },
+  })) as Category
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,
     user: { connect: { dni: testUserData.user.dni } },
     topics: {
       create: [{ topic: { connect: { slug: 'testing' } } }],
     },
+    category: { connect: { id: testCategory.id } },
   }))
   // createMany does not allow nested create on many-to-many relationships as per prisma docs. Therefore individual creates are made.
   await prisma.$transaction(
