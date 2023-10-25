@@ -17,6 +17,10 @@ async function seedDB() {
     where: { name: 'Node' },
   })
 
+  const categoryJavascript = await prisma.category.findUnique({
+    where: { name: 'Javascript' },
+  })
+
   await prisma.user.createMany({
     data: [
       {
@@ -50,7 +54,7 @@ async function seedDB() {
     categoryReact,
     categoryNode,
     categoryReact,
-    categoryNode,
+    categoryJavascript,
   ]
 
   const mapedTopics = topics.map((topic, index) => ({
@@ -71,13 +75,21 @@ async function seedDB() {
     userMentor,
   ]
 
-  const resourcesWithUser = resources.map((resource, index) => ({
+  const resourceCategories = [
+    categoryReact,
+    categoryNode,
+    categoryReact,
+    categoryJavascript,
+  ]
+
+  const resourcesRelations = resources.map((resource, index) => ({
     ...resource,
     userId: resourceUsers[index]?.id || '',
+    categoryId: resourceCategories[index]?.id || '',
   }))
 
   await prisma.resource.createMany({
-    data: resourcesWithUser,
+    data: resourcesRelations,
   })
 
   // Resources
@@ -90,6 +102,10 @@ async function seedDB() {
     where: { name: 'Listas' },
   })
 
+  const stylesTopic = await prisma.topic.findFirst({
+    where: { name: 'Estilos' },
+  })
+
   const firstResource = await prisma.resource.findFirst({
     where: { title: 'My resource in React' },
   })
@@ -98,12 +114,16 @@ async function seedDB() {
     where: { title: 'My resource in Node' },
   })
 
+  const thirdResource = await prisma.resource.findFirst({
+    where: { title: 'My resource in Javascript' },
+  })
+
+  const fourthResource = await prisma.resource.findFirst({
+    where: { title: 'My second resource in React' },
+  })
+
   const topicsOnResources = [
     {
-      topicId: eventosTopic?.id || '',
-      resourceId: firstResource?.id || '',
-    },
-    {
       topicId: listasTopic?.id || '',
       resourceId: firstResource?.id || '',
     },
@@ -112,8 +132,12 @@ async function seedDB() {
       resourceId: secondResource?.id || '',
     },
     {
+      topicId: stylesTopic?.id || '',
+      resourceId: thirdResource?.id || '',
+    },
+    {
       topicId: listasTopic?.id || '',
-      resourceId: secondResource?.id || '',
+      resourceId: fourthResource?.id || '',
     },
   ]
 

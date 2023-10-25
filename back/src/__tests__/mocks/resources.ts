@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 
 export const resourceTestData: Omit<
   Prisma.ResourceCreateArgs['data'],
-  'userId'
+  'userId' | 'categoryId'
 >[] = [
   {
     title: 'test-resource-1-blog',
