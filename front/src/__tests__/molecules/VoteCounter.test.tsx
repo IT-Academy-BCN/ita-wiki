@@ -2,29 +2,6 @@ import { expect, vi } from 'vitest'
 import { VoteCounter } from '../../components/molecules'
 import { fireEvent, screen, waitFor, render } from '../test-utils'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
-import { queryClient } from '../setup'
-
-// queryClient.setQueryData(['getResources'], {
-//   id: 'test',
-//   title: 'Resource Test',
-//   description: 'Resource Test Description',
-//   url: 'http://www.google.com',
-//   createdAt: '2023-02-17T03:07:00',
-//   updatedAt: '2023-05-17T03:07:00',
-//   user: {
-//     name: 'Test User Name',
-//     email: 'test@mail.com',
-//   },
-//   voteCount: {
-//     upvote: 0,
-//     downvote: 0,
-//     total: 1,
-//     userVote: 0,
-//   },
-// })
-
-// const queryData = queryClient.getQueryData(['getResources'])
-// console.log(queryData.voteCount)
 
 const user = {
   name: 'Hola',
@@ -37,22 +14,6 @@ const voteCount = {
   total: 0,
   userVote: 0,
 }
-
-// const useMutationMock = vi.fn(() => ({
-//   mutate: vi.fn(),
-//   onSuccess: vi.fn(),
-//   onError: vi.fn(),
-// }))
-
-// vi.mock('@tanstack/react-query', async () => {
-//   const actual: Record<number, unknown> = await vi.importActual(
-//     '@tanstack/react-query'
-//   )
-//   return {
-//     ...actual,
-//     useMutation: () => useMutationMock,
-//   }
-// })
 
 vi.mock('../../context/AuthProvider', async () => {
   const actual = (await vi.importActual(
@@ -99,13 +60,13 @@ describe('Vote counter molecule', () => {
     })
   })
 
-  it.only('can vote when the user is logged in', async () => {
+  it('can vote when the user is logged in', () => {
     const handleAccessModal = vi.fn()
     vi.mocked(useAuth).mockReturnValue({
       user,
     } as TAuthContext)
 
-    render(
+    const { rerender } = render(
       <VoteCounter
         voteCount={voteCount}
         resourceId="test"
@@ -115,12 +76,24 @@ describe('Vote counter molecule', () => {
 
     const upvoteBtn = screen.getByTestId('increase')
     expect(upvoteBtn).toBeInTheDocument()
-    fireEvent.click(upvoteBtn)
+    expect(screen.getByText('0')).toBeInTheDocument()
+
+    rerender(
+      <VoteCounter
+        voteCount={{
+          upvote: 1,
+          downvote: 0,
+          total: 1,
+          userVote: 1,
+        }}
+        resourceId="test"
+        handleAccessModal={handleAccessModal}
+      />
+    )
 
     // CHECK IF PUT REQUEST IS BEING MADE
-  
-    await waitFor(() => {
-      expect(screen.getByText('1')).toBeInTheDocument()
-    })
+
+    expect(screen.getByText('1')).toBeInTheDocument()
+    expect(upvoteBtn).toHaveStyle('color: #27AE60')
   })
 })
