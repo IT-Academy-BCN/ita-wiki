@@ -21,9 +21,7 @@ export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
         .findAll(['getResources'])
       const queryKeys = queryCacheGetResources.map((q) => q.queryKey)
 
-      for (let i = 0; i < queryKeys.length; i += 1) {
-        const queryKey = queryKeys[i]
-
+      queryKeys.forEach((queryKey) => {
         queryClient.setQueryData(
           queryKey,
           (data?: TResource[]) => {
@@ -37,16 +35,14 @@ export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
           },
           { updatedAt: Date.now() }
         )
-      }
+      })
 
       const queryCacheGetFavorites = queryClient
         .getQueryCache()
         .findAll(['getFavorites'])
-      const queryFavKeys = queryCacheGetFavorites.map((q) => q.queryKey)
+      const favQueryKeys = queryCacheGetFavorites.map((q) => q.queryKey)
 
-      for (let i = 0; i < queryFavKeys.length; i += 1) {
-        const favQueryKey = queryFavKeys[i]
-
+      favQueryKeys.forEach((favQueryKey) => {
         if (isFavorite) {
           queryClient.setQueryData(
             favQueryKey,
@@ -65,7 +61,7 @@ export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
             type: 'active',
           })
         }
-      }
+      })
     },
   })
 
