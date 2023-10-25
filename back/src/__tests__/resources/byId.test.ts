@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import { Resource } from '@prisma/client'
+import { Category, Resource } from '@prisma/client'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
@@ -10,9 +10,14 @@ import { resourceTestData } from '../mocks/resources'
 let testResource: Resource
 
 beforeAll(async () => {
+  const testCategory = (await prisma.category.findUnique({
+    where: { slug: 'testing' },
+  })) as Category
+
   const testResourceData = {
     ...resourceTestData[0],
     user: { connect: { dni: testUserData.user.dni } },
+    category: { connect: { id: testCategory.id } },
   }
   testResource = await prisma.resource.create({
     data: testResourceData,

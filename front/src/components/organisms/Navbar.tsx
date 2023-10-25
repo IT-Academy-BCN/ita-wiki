@@ -46,7 +46,7 @@ const IconStyled = styled.div`
 
 const AddButton = styled(IconStyled)`
   display: none;
-  @media ${device.Tablet} {
+  @media ${device.Mobile} {
     display: flex;
   }
 `
