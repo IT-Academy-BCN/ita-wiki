@@ -64,7 +64,7 @@ describe('Vote counter molecule', () => {
     render(
       <VoteCounter
         voteCount={resourceMock.voteCount}
-        resourceId="test"
+        resourceId={resourceMock.id}
         handleAccessModal={handleAccessModal}
       />
     )
@@ -76,10 +76,11 @@ describe('Vote counter molecule', () => {
 
   it('user not logged in can not vote', async () => {
     const handleAccessModal = vi.fn()
+    queryClient.setQueryData(['getResources'], [resourceMock])
     render(
       <VoteCounter
         voteCount={resourceMock.voteCount}
-        resourceId="test"
+        resourceId={resourceMock.id}
         handleAccessModal={handleAccessModal}
       />
     )
@@ -102,7 +103,7 @@ describe('Vote counter molecule', () => {
     const { rerender } = render(
       <VoteCounter
         voteCount={queryData[0].voteCount}
-        resourceId="test"
+        resourceId={resourceMock.id}
         handleAccessModal={handleAccessModal}
       />
     )
@@ -111,28 +112,17 @@ describe('Vote counter molecule', () => {
     expect(upvoteBtn).toBeInTheDocument()
     expect(screen.getByText('0')).toBeInTheDocument()
 
-    rerender(
-      <VoteCounter
-        voteCount={{
-          upvote: 1,
-          downvote: 0,
-          total: 1,
-          userVote: 1,
-        }}
-        resourceId="test"
-        handleAccessModal={handleAccessModal}
-      />
-    )
-
     // CHECK IF PUT REQUEST IS BEING MADE
+    fireEvent.click(upvoteBtn)
     await waitFor(() => {
       const queryDataUpdated = queryClient.getQueryData([
         'getResources',
       ]) as TResource[]
+
       rerender(
         <VoteCounter
           voteCount={queryDataUpdated[0].voteCount}
-          resourceId="test"
+          resourceId={resourceMock.id}
           handleAccessModal={handleAccessModal}
         />
       )
