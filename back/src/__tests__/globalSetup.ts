@@ -96,6 +96,7 @@ export async function setup() {
 
 export async function teardown() {
   // Cleanup database
+  await prisma.media.deleteMany({})
   await prisma.topicsOnResources.deleteMany({})
   await prisma.topic.deleteMany({})
   await prisma.viewedResource.deleteMany()
