@@ -1,3 +1,4 @@
+
 import styled, { keyframes } from 'styled-components'
 import { useLocation, useParams } from 'react-router-dom'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
@@ -243,7 +244,7 @@ const MobileTopicsContainer = styled(FlexBox)`
   align-items: flex-start;
   background-color: ${colors.gray.gray5};
   padding-right: ${dimensions.spacing.lg};
-  padding-left: ${dimensions.spacing.lg};
+  padding-left: ${dimensions.spacing.base};
   padding-bottom: ${dimensions.spacing.md};
   padding-top: ${dimensions.spacing.none};
   position: sticky;

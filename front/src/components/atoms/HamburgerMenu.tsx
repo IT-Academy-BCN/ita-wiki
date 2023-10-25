@@ -1,3 +1,4 @@
+
 import { FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, device } from '../../styles'
@@ -9,11 +10,10 @@ type HamburgerMenuProps = {
 
 const StyledBurger = styled.button<HamburgerMenuProps>`
   position: absolute;
-  left: 0;
+  left: -15px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 1.8rem;
   height: 2rem;
   background: transparent;
   border: none;
@@ -62,3 +62,5 @@ const HamburgerMenu: FC<HamburgerMenuProps> = ({ open, onClick }) => (
   </StyledBurger>
 )
 export default HamburgerMenu
+
+

@@ -9,6 +9,7 @@ import { FavoritesIcon } from '../molecules/FavoritesIcon'
 import { useAuth } from '../../context/AuthProvider'
 
 const CardContainerStyled = styled(FlexBox)`
+
   background-color: ${colors.white};
   border-radius: ${dimensions.borderRadius.sm};
   border: 1px solid ${colors.gray.gray4};
@@ -16,18 +17,19 @@ const CardContainerStyled = styled(FlexBox)`
   width: 100%;
   min-width: 15rem;
   position: relative;
+  align-items: flex-start;
+  justify-content:space-between;
 `
 
 const UserWidgets = styled(FlexBox)`
-  position: absolute;
-  top: ${dimensions.spacing.xxxs};
-  right: ${dimensions.spacing.xxs};
+  top: 0;
+  right:0;
   padding: 2px;
   background-color: rgba(255, 255, 255, 0.5);
 `
 
 const CounterContainerStyled = styled(FlexBox)`
-  margin: 0 ${dimensions.spacing.xs};
+  margin: 0 ${dimensions.spacing.xs} 0 0;
   align-self: flex-start;
 
   ${Text} {
@@ -37,6 +39,7 @@ const CounterContainerStyled = styled(FlexBox)`
 
 const FlexBoxStyled = styled(FlexBox)`
   height: 100%;
+  width: 100%;
 
   ${FlexBox} {
     gap: 2px;
@@ -101,6 +104,19 @@ const CardResource = ({
       id={id}
       {...rest}
     >
+      {Number.isInteger(likes) && (
+        <CounterContainerStyled>
+          <VoteCounter
+            totalVotes={likes ?? 0}
+            resourceId={id}
+            handleAccessModal={handleAccessModal || undefined}
+          />
+        </CounterContainerStyled>
+      )}
+      <FlexBoxStyled align="start" justify="space-between" gap="4px">
+        <ResourceTitleLink description={description} title={title} url={url} />
+        <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
+      </FlexBoxStyled>
       {user ? (
         <UserWidgets direction="row" gap="0.5rem">
           {editable && (
@@ -118,19 +134,6 @@ const CardResource = ({
           <FavoritesIcon resourceId={id} isFavorite={isFavorite} />
         </UserWidgets>
       ) : null}
-      {Number.isInteger(likes) && (
-        <CounterContainerStyled>
-          <VoteCounter
-            totalVotes={likes ?? 0}
-            resourceId={id}
-            handleAccessModal={handleAccessModal || undefined}
-          />
-        </CounterContainerStyled>
-      )}
-      <FlexBoxStyled align="start" justify="space-between" gap="4px">
-        <ResourceTitleLink description={description} title={title} url={url} />
-        <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
-      </FlexBoxStyled>
     </CardContainerStyled>
   )
 }
