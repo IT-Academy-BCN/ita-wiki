@@ -1,8 +1,11 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, device } from '../../styles'
-import { THamburgerMenu } from '../../types'
 
+type THamburgerMenu = {
+  open: boolean
+  onClick: () => void
+}
 const StyledBurger = styled.button<THamburgerMenu>`
   position: absolute;
   left: 0;

@@ -4,7 +4,6 @@ import { useMutation } from '@tanstack/react-query'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
 import { useAuth } from '../../context/AuthProvider'
-import { TVoteCounter } from '../../types'
 import { useGetVotes } from '../../hooks'
 import { updateVote } from '../../helpers/fetchers'
 
@@ -21,6 +20,11 @@ const StyledIcon = styled(Icon)<ArrowProp>`
       (name === 'expand_more' && colors.error)};
   }
 `
+export type TVoteCounter = {
+  totalVotes: number
+  resourceId: string
+  handleAccessModal: () => void
+}
 
 export const VoteCounter: FC<TVoteCounter> = ({
   totalVotes,

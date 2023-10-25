@@ -3,7 +3,6 @@ import { Title, Text, Button, Counter } from '../atoms'
 import { FlexBox, colors, font, dimensions, device } from '../../styles'
 import UserImage from '../atoms/UserImage'
 import icons from '../../assets/icons'
-import { TCardProfile } from '../../types'
 
 const MainContainer = styled(FlexBox)`
   background-color: ${colors.gray.gray5};
@@ -127,7 +126,15 @@ const SideCounter = styled(FlexBox)`
     width: auto;
   }
 `
-
+type TCardProfile = {
+  img: string
+  userName: string
+  email: string
+  contributions?: number
+  votes?: number
+  favorites?: number
+  handleLogOut: () => void
+}
 const CardProfile = ({
   img,
   userName,

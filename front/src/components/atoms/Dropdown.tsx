@@ -4,12 +4,12 @@ import {
   useImperativeHandle,
   useState,
   useRef,
+  HTMLAttributes,
 } from 'react'
 import styled from 'styled-components'
 import Icon from './Icon'
 import Button from './Button'
 import { colors, dimensions, font } from '../../styles'
-import { TDropdown } from '../../types'
 
 const StyledDropdown = styled.div<TDropdown>`
   cursor: pointer;
@@ -57,6 +57,10 @@ export const useOutsideClick = (callback: () => void) => {
   return ref
 }
 
+type TDropdown = HTMLAttributes<HTMLElement> & {
+  selectedValue?: string
+  placeholder?: string
+}
 const Dropdown = forwardRef(
   (
     { selectedValue = '', placeholder = 'Selecciona', children }: TDropdown,

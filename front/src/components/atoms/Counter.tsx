@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import Text from './Text'
 import Icon from './Icon'
 import { font, dimensions, device, colors, FlexBox } from '../../styles'
-import { TCounter } from '../../types'
 
 const CounterWrapper = styled(FlexBox)`
   @media only ${device.Laptop} {
@@ -46,6 +45,11 @@ const IconStyled = styled(Icon)`
     right: 8px;
   }
 `
+type TCounter = {
+  number: number
+  text: string
+  icon: string
+}
 const Counter: FC<TCounter> = ({ number, text, icon }) => (
   <CounterWrapper>
     <IconStyled name={icon} wght={600} fill={0} />

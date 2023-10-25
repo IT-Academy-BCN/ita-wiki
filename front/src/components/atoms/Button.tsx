@@ -1,7 +1,6 @@
-import { FC } from 'react'
+import { ButtonHTMLAttributes, FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, font } from '../../styles'
-import { TButton } from '../../types'
 
 const StyledButton = styled.button<TButton>`
   display: flex;
@@ -69,7 +68,11 @@ const StyledButton = styled.button<TButton>`
         }
     `}
 `
-
+type TButton = ButtonHTMLAttributes<HTMLButtonElement> & {
+  secondary?: boolean
+  outline?: boolean
+  size?: 'small' | 'normal' | 'large'
+}
 const Button: FC<TButton> = ({
   type = 'submit',
   secondary = false,

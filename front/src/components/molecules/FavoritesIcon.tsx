@@ -6,8 +6,11 @@ import { useParams } from 'react-router-dom'
 import { Icon, Spinner } from '../atoms'
 import { colors } from '../../styles'
 import { favMutation } from '../../helpers/fetchers'
-import { TResourceFav } from '../../types'
 
+type TResourceFav = {
+  resourceId: string
+  isFavorite: boolean
+}
 const SpinnerStyled = styled(Spinner)`
   margin: 0 auto;
 `

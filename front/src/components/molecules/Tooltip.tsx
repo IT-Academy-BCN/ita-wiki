@@ -2,8 +2,17 @@ import { FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions } from '../../styles'
 import { Button } from '../atoms'
-import { TTooltip } from '../../types'
 
+type TSize = 'small' | 'medium' | 'big'
+type TTooltip = {
+  children: React.ReactNode
+  size: TSize
+  tipLeft?: boolean
+  tipRight?: boolean
+  tipTop?: boolean
+  tipBottom?: boolean
+  btnText?: string
+}
 const TooltipStyled = styled.div<TTooltip>`
   position: relative;
   font-size: ${({ size }) => (size === 'small' ? '14px' : '16px')};

@@ -31,7 +31,7 @@ describe('useGetVotes', () => {
   })
 
   it('fetches votes successfully', async () => {
-    const resourceId = 'resourceId' // Replace with a valid resource ID
+    const resourceId = 'resourceId'
 
     const { result } = renderHook(() => useGetVotes(resourceId), {
       wrapper: ({ children }) => (
@@ -43,7 +43,6 @@ describe('useGetVotes', () => {
 
     await waitFor(() => expect(result.current.fetchedVotes).toBeTruthy())
 
-    // Replace with the expected vote data for the provided resource ID
     expect(result.current.fetchedVotes).toEqual({
       upvote: 3,
       downvote: 1,

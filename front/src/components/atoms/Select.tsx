@@ -1,7 +1,6 @@
 import { SelectHTMLAttributes, forwardRef } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, font } from '../../styles'
-// import { TSelect } from '../../types'
 
 const SelectStyled = styled.select<TSelect>`
   border-radius: ${dimensions.borderRadius.base};

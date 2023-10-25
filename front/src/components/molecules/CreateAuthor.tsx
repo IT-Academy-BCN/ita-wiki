@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { FlexBox, colors, font } from '../../styles'
 import { Text } from '../atoms'
-import { TCreateAuthor } from '../../types'
 
 const StyledDiv = styled.div`
   padding-right: 4px;
@@ -12,7 +11,11 @@ const MetaInfo = styled(Text)`
   font-size: ${font.xss};
   color: ${colors.gray.gray3};
 `
-
+type TCreateAuthor = {
+  createdBy: string
+  updatedAt: string
+  img?: string
+}
 const dateFormatOption: Intl.DateTimeFormatOptions = {
   year: 'numeric',
   month: 'long',

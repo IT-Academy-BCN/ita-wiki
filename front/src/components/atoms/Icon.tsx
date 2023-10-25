@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { TIcon } from '../../types'
 
 const IconStyled = styled.span<TIcon>`
   font-variation-settings: 'FILL' ${({ fill }) => fill},
@@ -9,7 +8,16 @@ const IconStyled = styled.span<TIcon>`
   color: ${({ color }) => color};
   cursor: pointer;
 `
-
+type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
+  name: string
+  fill?: number
+  wght?: number
+  grad?: number
+  opsz?: number
+  className?: string
+  color?: string
+  cursor?: string
+}
 const Icon: React.FC<TIcon> = ({
   className = '',
   fill = 1,
