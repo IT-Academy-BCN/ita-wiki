@@ -67,11 +67,21 @@ timeout() {
     time=$1
     # start the command in a subshell to avoid problem with pipes
     # (spawn accepts one command)
-    command="/bin/sh -c \"$2\""
-    expect -c "set echo \"-noecho\"; set timeout $time; spawn -noecho $command; expect timeout { exit 1 } eof { exit 0 }"
-    if [ $? = 1 ]; then
+    local time=$1
+    local command="$2"
+    local duration=0
+
+    while ! $command && [[ $duration -lt $time ]]; do
+        sleep 3  # pausa de 3 segundos
+        duration=$((duration + 3))
+    done
+
+    if [[ $duration -ge $time ]]; then
         echo "Timeout after ${time} seconds"
+        return 1
     fi
+
+    return 0
 }
 
 loadEnv() {
