@@ -1,4 +1,3 @@
-
 import { FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, device } from '../../styles'
@@ -62,5 +61,3 @@ const HamburgerMenu: FC<HamburgerMenuProps> = ({ open, onClick }) => (
   </StyledBurger>
 )
 export default HamburgerMenu
-
-
