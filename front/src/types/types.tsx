@@ -116,7 +116,12 @@ export type TCardResource = {
   description: string
   img: string | undefined
   id: string
-  likes?: number
+  voteCount?: {
+    upvote: number
+    downvote: number
+    total: number
+    userVote: number
+  }
   title: string
   updatedAt: string
   url: string
