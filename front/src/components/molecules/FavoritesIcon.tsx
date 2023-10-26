@@ -2,7 +2,8 @@ import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Icon } from '../atoms'
 import { colors } from '../../styles'
-import { favMutation, TResource } from '../../helpers/fetchers'
+import { favMutation } from '../../helpers/fetchers'
+import { TFavorites, TResource } from '../../types'
 
 type TResourceFav = {
   resourceId: string
@@ -46,9 +47,9 @@ export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
         if (isFavorite) {
           queryClient.setQueryData(
             favQueryKey,
-            (data?: TResource[]) => {
+            (data?: TFavorites[]) => {
               const newData = data?.filter(
-                (resource: TResource) => resource.id !== resourceId
+                (resource: TFavorites) => resource.id !== resourceId
               )
               return newData
             },
@@ -56,10 +57,13 @@ export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
             { updatedAt: Date.now() }
           )
         } else if (!isFavorite) {
-          queryClient.refetchQueries({
+          queryClient.invalidateQueries({
             queryKey: ['getFavorites'],
-            type: 'active',
           })
+          // queryClient.refetchQueries({
+          //   queryKey: ['getFavorites'],
+          //   type: 'active',
+          // })
         }
       })
     },

@@ -1,10 +1,10 @@
 import {
   forwardRef,
-  HTMLAttributes,
   useEffect,
   useImperativeHandle,
   useState,
   useRef,
+  HTMLAttributes,
 } from 'react'
 import styled from 'styled-components'
 import Icon from './Icon'
@@ -61,7 +61,6 @@ type TDropdown = HTMLAttributes<HTMLElement> & {
   selectedValue?: string
   placeholder?: string
 }
-
 const Dropdown = forwardRef(
   (
     { selectedValue = '', placeholder = 'Selecciona', children }: TDropdown,

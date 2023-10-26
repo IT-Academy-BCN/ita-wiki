@@ -1,53 +1,17 @@
-import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { FC } from 'react'
-import { urls } from '../../constants'
 import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import CardResource from './CardResource'
-import { TFilters, buildQueryString } from '../../helpers'
 import { useSortByDate } from '../../hooks/useSortByDate'
 import { useAuth } from '../../context/AuthProvider'
-
-type TTopic = {
-  topic: {
-    id: string
-    name: string
-    slug: string
-    categoryId: string
-    createdAt: string
-    updatedAt: string
-  }
-}
-export type TResource = {
-  id: string
-  title: string
-  slug: string
-  description: string
-  url: string
-  createdBy: string
-  createdAt: string
-  updatedAt: string
-  user: {
-    name: string
-    email: string
-  }
-  voteCount: {
-    upvote: number
-    downvote: number
-    total: number
-    userVote: number
-  }
-  resourceType: string
-  topics: TTopic[]
-  isFavorite: boolean
-}
+import { TResource, TFilters } from '../../types'
+import { useGetResources } from '../../hooks'
 
 const SpinnerStyled = styled(Spinner)`
   align-self: center;
   justify-content: center;
 `
-
 const StyledFlexBox = styled(FlexBox)`
   justify-content: flex-start;
   gap: ${dimensions.spacing.base};
@@ -58,26 +22,9 @@ const StyledFlexBox = styled(FlexBox)`
     display: none;
   }
 `
-
 const StyledText = styled(Text)`
   margin: 2rem;
 `
-
-const getResources = async (filters: string) =>
-  fetch(`${urls.getResources}?${filters}`, {
-    headers: {
-      Accept: 'application/json',
-    },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error fetching resources: ${res.statusText}`)
-      }
-      return res.json()
-    })
-    .catch((err) => {
-      throw new Error(`Error fetching resources: ${err.message}`)
-    })
 
 type SortOrder = 'asc' | 'desc'
 
@@ -87,23 +34,15 @@ type TResourceCardList = {
   handleAccessModal: () => void
 }
 
-type TResources = TResource[]
-
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
   sortOrder,
   filters,
 }) => {
   const { user } = useAuth()
-
-  const { isLoading, data, error } = useQuery<TResources>(
-    ['getResources', buildQueryString(filters) || ''],
-    () => getResources(buildQueryString(filters) || '')
-  )
-
+  const { isLoading, data, error } = useGetResources(filters)
   const { sortedItems } = useSortByDate<TResource>(data, 'updatedAt', sortOrder)
   if (error) return <p>Ha habido un error...</p>
-
   return (
     <StyledFlexBox direction="column" data-testid="resource-list">
       {isLoading && <SpinnerStyled size="medium" role="status" />}

@@ -15,7 +15,6 @@ type TRadio = {
   hiddenLabel?: boolean
   defaultChecked?: string
 }
-
 const RadioStyled = styled(FlexBox)`
   ${FlexBox} {
     margin-right: ${dimensions.spacing.xl};
