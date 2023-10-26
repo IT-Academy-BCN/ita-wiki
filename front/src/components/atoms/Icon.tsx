@@ -18,7 +18,6 @@ type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
   color?: string
   cursor?: string
 }
-
 const Icon: React.FC<TIcon> = ({
   className = '',
   fill = 1,

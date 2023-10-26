@@ -52,6 +52,8 @@ model Resource {
   vote         Vote[]
   user         User                @relation(fields: [userId], references: [id])
   userId       String              @map("user_id")
+  category     Category            @relation(fields: [categoryId], references: [id])
+  categoryId   String              @map("category_id")
   createdAt    DateTime            @default(now()) @map("created_at")
   updatedAt    DateTime            @updatedAt @map("updated_at")
 
@@ -73,10 +75,13 @@ model Category {
   id        String   @id @default(cuid())
   name      String   @unique
   slug      String   @unique
+  resources Resource[]
   topics    Topic[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
   User      User[]
+  Media     Media?   @relation(fields: [mediaId], references: [id])
+  mediaId   String?  @unique @map("media_id")
 
   @@map("category")
 }
@@ -95,13 +100,14 @@ model Topic {
 }
 
 model Media {
-  id        String   @id @default(cuid())
-  mimeType  String   @map("mime_type")
-  filePath  String   @map("file_path")
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @map("user_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id        String     @id @default(cuid())
+  mimeType  String     @map("mime_type")
+  filePath  String     @map("file_path")
+  user      User       @relation(fields: [userId], references: [id])
+  userId    String     @map("user_id")
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  Category  Category[]
 
   @@map("media")
 }

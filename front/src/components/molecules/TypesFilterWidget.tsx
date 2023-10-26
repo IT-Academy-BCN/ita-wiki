@@ -27,16 +27,8 @@ const CheckBoxStyled = styled(CheckBox)`
   }
 `
 
-type TData = string[]
-type TError = {
-  message: string
-}
-
-const TypesFilterWidget = () => {
-  const { isLoading, data, error } = useQuery<TData, TError>({
-    queryKey: ['getTypes'],
-    queryFn: () => getTypes(),
-  })
+const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
+  const { isLoading, data, error } = useGetTypes()
 
   const { types, dispatch } = useFiltersContext()
 

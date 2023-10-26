@@ -7,8 +7,11 @@ import { ChangeEvent, FC, HTMLAttributes } from 'react'
 import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio, Icon, Spinner } from '../atoms'
 import { FlexBox, colors, dimensions } from '../../styles'
-import { urls } from '../../constants'
 import { reloadPage } from '../../utils/navigation'
+import {
+  createResourceFetcher,
+  updateResourceFetcher,
+} from '../../helpers/fetchers'
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -88,40 +91,6 @@ type TSelectOptions = {
   initialValues?: Partial<TResourceForm>
   resourceId?: string
 }
-
-const createResourceFetcher = (resource: object) =>
-  fetch(urls.createResource, {
-    method: 'POST',
-    body: JSON.stringify(resource),
-    headers: {
-      'Content-type': 'application/json',
-    },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('Error al crear el recurso')
-      }
-      return res.status === 204 ? {} : res.json()
-    })
-    // eslint-disable-next-line no-console
-    .catch((error) => console.error(error))
-
-const updateResourceFetcher = (resource: object) =>
-  fetch(urls.updateResource, {
-    method: 'PATCH',
-    body: JSON.stringify(resource),
-    headers: {
-      'Content-type': 'application/json',
-    },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('Error al actualizar el recurso')
-      }
-      return res.status === 204 ? {} : res.json()
-    })
-    // eslint-disable-next-line no-console
-    .catch((error) => console.error(error))
 
 const ResourceForm: FC<TSelectOptions> = ({
   selectOptions,

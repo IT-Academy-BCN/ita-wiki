@@ -15,7 +15,7 @@ launchPostgres() {
         -v $DB_NAME:/var/lib/postgresql/data \
         -p $DB_PORT:5432 \
         postgres:14.1-alpine
-    timeout 90s "until docker exec $DB_NAME pg_isready ; do sleep 3 ; done"
+    timeout 90 "docker exec $DB_NAME pg_isready"
 }
 
 

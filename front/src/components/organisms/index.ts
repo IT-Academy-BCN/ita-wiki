@@ -6,11 +6,10 @@ import Login from './Login'
 import { MyFavoritesList } from './MyFavoritesList'
 import { MyResources } from './MyResources'
 import { Navbar } from './Navbar'
-import { ResourceCardList, TResource } from './ResourceCardList'
+import { ResourceCardList} from './ResourceCardList'
 import Register from './Register'
 import ResourceForm from './ResourceForm'
 import { SettingsManager } from './SettingsManager'
-import type { TCardResource } from './CardResource'
 import { TopicsManagerBoard } from './TopicsManagerBoard'
 import { TopicsRadioWidget } from './TopicsRadioWidget'
 import type { TResourceForm } from './ResourceForm'
@@ -34,4 +33,4 @@ export {
   UserAccessHome,
 }
 
-export type { TResourceForm, TResource, TCardResource }
+export type { TResourceForm}

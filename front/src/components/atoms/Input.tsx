@@ -18,7 +18,6 @@ const InputStyled = styled.input<TInput>`
     outline: 0 none;
   }
 `
-
 export type TInput = InputHTMLAttributes<HTMLInputElement> & {
   error?: boolean | string
   success?: boolean
@@ -26,7 +25,6 @@ export type TInput = InputHTMLAttributes<HTMLInputElement> & {
   type?: 'text' | 'password' | 'email'
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
-
 const Input = React.forwardRef<HTMLInputElement, TInput>(
   (
     {

@@ -14,7 +14,7 @@ import {
   TopicsRadioWidget,
 } from '../components/organisms'
 import { Button, Icon, Input, Text, Title } from '../components/atoms'
-import { TFilters } from '../helpers'
+
 import {
   AccessModalContent,
   InputGroup,
@@ -27,6 +27,7 @@ import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
 import { useFiltersContext } from '../context/store/context'
 import { ActionTypes } from '../context/store/types'
+import { TFilters } from '../types'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};

@@ -11,7 +11,6 @@ type TResourceFav = {
   resourceId: string
   isFavorite: boolean
 }
-
 const SpinnerStyled = styled(Spinner)`
   margin: 0 auto;
 `

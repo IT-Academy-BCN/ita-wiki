@@ -17,7 +17,6 @@ const TextareaStyled = styled.textarea<TTextarea>`
     outline: 0 none;
   }
 `
-
 export type TTextarea = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   rows: number
   cols?: number
@@ -25,7 +24,6 @@ export type TTextarea = TextareaHTMLAttributes<HTMLTextAreaElement> & {
   success?: boolean
   warning?: boolean
 }
-
 const Textarea = React.forwardRef<HTMLTextAreaElement, TTextarea>(
   ({ cols = 1, ...rest }, ref) => (
     <TextareaStyled cols={cols} ref={ref} {...rest} />
