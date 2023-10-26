@@ -94,7 +94,7 @@ export const handlers = [
           voteCount: {
             upvote: 6,
             downvote: 2,
-            total: 4,
+            total: 1,
             userVote: 1,
           },
           isFavorite: 'false',
