@@ -1,5 +1,5 @@
-import { HTMLAttributes } from 'react'
 import styled from 'styled-components'
+import { HTMLAttributes } from 'react'
 import { colors, font } from '../../styles'
 
 type TText = HTMLAttributes<HTMLParagraphElement> & {

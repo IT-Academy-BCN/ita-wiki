@@ -17,7 +17,7 @@ import { Modal, ResourceTitleLink } from '../molecules'
 import CardResource from './CardResource'
 import Login from './Login'
 import Register from './Register'
-import { TFavorites } from '../../helpers/fetchers'
+import { TFavorites } from '../../types'
 
 const TitleContainer = styled(FlexBox)`
   align-items: stretch;

@@ -126,7 +126,6 @@ const SideCounter = styled(FlexBox)`
     width: auto;
   }
 `
-
 type TCardProfile = {
   img: string
   userName: string
@@ -136,7 +135,6 @@ type TCardProfile = {
   favorites?: number
   handleLogOut: () => void
 }
-
 const CardProfile = ({
   img,
   userName,
@@ -146,7 +144,7 @@ const CardProfile = ({
   favorites = 0,
   handleLogOut,
 }: TCardProfile) => (
-  <MainContainer>
+  <MainContainer data-testid="card-profile">
     <ContentContainer gap={`${dimensions.spacing.lg}`}>
       <TitleStyled as="h1" fontWeight="bold" color={colors.black.black3}>
         Perfil

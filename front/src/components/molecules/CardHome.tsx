@@ -54,14 +54,12 @@ const SubtitleStyled = styled(Text)`
   font-weight: ${font.regular};
   line-height: 1.3rem;
 `
-
 type TCardHome = {
   cardTitle: string
   cardSubtitle: string
   indicator: string
   icon: string
 }
-
 export const CardHome = ({
   cardTitle,
   cardSubtitle,

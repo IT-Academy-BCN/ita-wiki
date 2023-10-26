@@ -1,38 +1,12 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, dimensions } from '../../styles'
 import ResourceForm from './ResourceForm'
 import { Button } from '../atoms'
 import icons from '../../assets/icons'
-import { urls } from '../../constants'
 import { Modal } from '../molecules/Modal'
-
-type TTopic = {
-  topic: {
-    id: string
-    name: string
-    slug: string
-    categoryId: string
-    createdAt: string
-    updatedAt: string
-  }
-}
-
-type TEditResourceProps = {
-  description: string
-  id: string
-  title: string
-  url: string
-  resourceType: string
-  topics: TTopic[]
-  isInCardResource?: boolean
-}
-
-type TMappedTopics = {
-  id: string
-  name: string
-}
+import { TEditResourceProps, TMappedTopics } from '../../types'
+import { useGetTopics } from '../../hooks'
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -73,13 +47,8 @@ const EditResource = ({
   const openModal = () => {
     setIsModalOpen(true)
   }
-  const getTopics = async () => {
-    const response = await fetch(urls.getTopics)
-    const data = await response.json()
-    return data
-  }
-  const { data: fetchedTopics } = useQuery(['getTopics'], getTopics)
 
+  const { data: fetchedTopics } = useGetTopics()
   const mappedTopics =
     fetchedTopics?.map((topic: TMappedTopics) => ({
       value: topic.id,

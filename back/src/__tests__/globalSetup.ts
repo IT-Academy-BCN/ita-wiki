@@ -63,6 +63,7 @@ export async function setup() {
   await prisma.category.deleteMany()
 
   // Create required test data
+
   const testCategory = await prisma.category.create({
     data: {
       name: 'Testing',

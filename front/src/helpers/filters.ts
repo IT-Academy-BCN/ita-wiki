@@ -1,11 +1,5 @@
 import qs from 'qs'
-
-export type TFilters = {
-  slug?: string
-  resourceTypes?: string[]
-  status?: string[]
-  topic?: string
-}
+import { TFilters } from '../types'
 
 export const buildQueryString = ({
   slug,
