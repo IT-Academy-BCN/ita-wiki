@@ -1,6 +1,7 @@
 import supertest from 'supertest'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import jwt, { Secret } from 'jsonwebtoken'
+import { Category } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
@@ -19,6 +20,9 @@ const invalidUserToken = jwt.sign(
 )
 
 beforeAll(async () => {
+  const testCategory = (await prisma.category.findUnique({
+    where: { slug: 'testing' },
+  })) as Category
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,
     user: { connect: { dni: testUserData.user.dni } },
@@ -28,6 +32,7 @@ beforeAll(async () => {
     favorites: {
       create: [{ user: { connect: { dni: testUserData.admin.dni } } }],
     },
+    category: { connect: { id: testCategory.id } },
   }))
 
   await prisma.$transaction(

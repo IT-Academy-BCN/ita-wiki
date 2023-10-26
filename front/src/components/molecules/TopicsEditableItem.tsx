@@ -1,8 +1,10 @@
 import { useRef } from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { colors, dimensions, FlexBox, font } from '../../styles'
 import { Button, Icon, Input, Text } from '../atoms'
 import icons from '../../assets/icons'
+import { TTopic } from '../../types'
 
 const Container = styled.div<{ isDisabled: boolean }>`
   pointer-events: ${(props) => (props.isDisabled ? 'none' : 'auto')};
@@ -17,6 +19,11 @@ const StyledFlexBox = styled(FlexBox)`
 
 const FlexBoxRow = styled(FlexBox)`
   padding: ${dimensions.spacing.xxs} 0;
+`
+
+const StyledText = styled(Text)`
+  padding: 0.09rem 0;
+  cursor: pointer;
 `
 
 const StyledButton = styled(Button).attrs({ type: 'button' })`
@@ -68,13 +75,6 @@ type TTopicRow = {
   rowStatus: string
 }
 
-type TTopic = {
-  id?: string
-  name: string
-  slug?: string
-  categoryId?: string
-}
-
 type TTopicAvailable = {
   id: string
   name: string
@@ -82,6 +82,8 @@ type TTopicAvailable = {
 }
 
 const AvailableMode = ({ id, name, handleRowStatus }: TTopicAvailable) => {
+  const { t } = useTranslation()
+
   if (id === 'newTopic') {
     return (
       <StyledFlexBox
@@ -90,15 +92,14 @@ const AvailableMode = ({ id, name, handleRowStatus }: TTopicAvailable) => {
         align="center"
         id={id}
       >
-        <Text
+        <StyledText
           color={`${colors.primary}`}
           onClick={() => {
             handleRowStatus('editing', id)
           }}
-          style={{ padding: '0.09rem 0' }}
         >
-          + Crear nuevo tema
-        </Text>
+          {t('+ Crear nuevo tema')}
+        </StyledText>
       </StyledFlexBox>
     )
   }
@@ -116,17 +117,18 @@ const AvailableMode = ({ id, name, handleRowStatus }: TTopicAvailable) => {
           onClick={() => {
             handleRowStatus('editing', id)
           }}
+          data-testid={`edit${id}`}
         >
-          Editar
+          {t('Editar')}
         </TextButton>
         <DeleteButton
           outline
-          aria-label="Borrar tema"
+          title={t('Borrar tema')}
           onClick={() => {
             handleRowStatus('deleting', id)
           }}
         >
-          <img src={icons.deleteIcon} alt="Borrar tema" />
+          <img src={icons.deleteIcon} alt={t('Borrar tema')} />
         </DeleteButton>
       </FlexBoxRow>
     </StyledFlexBox>
@@ -141,6 +143,7 @@ export const TopicsEditableItem = ({
   handleTopicChange,
   rowStatus,
 }: TTopicRow) => {
+  const { t } = useTranslation()
   const topicNameRef = useRef<HTMLInputElement | null>(null)
 
   const editTopic = (idToEdit: string) => {
@@ -150,7 +153,7 @@ export const TopicsEditableItem = ({
         : ''
 
     if (topicNameRef.current?.value === '') {
-      handleErrorMessage('Por favor, no dejes vacío el nombre del tema.')
+      handleErrorMessage(t('Por favor, no dejes vacío el nombre del tema.'))
       return
     }
 
@@ -177,7 +180,7 @@ export const TopicsEditableItem = ({
     // TODO: Delete topic when DELETE endpoint exists
     // eslint-disable-next-line no-console
     console.log('Deleting:', idToDelete)
-    handleErrorMessage('No es posible borrar el tema.')
+    handleErrorMessage(t('No es posible borrar el tema.'))
   }
 
   const setAvailable = () => {
@@ -198,24 +201,32 @@ export const TopicsEditableItem = ({
           id={id}
         >
           <StyledInput
-            placeholder="Nombre del tema"
+            placeholder={
+              id === 'newTopic'
+                ? t('Nombre del nuevo tema')
+                : t('Nombre del tema')
+            }
             defaultValue={name}
             ref={topicNameRef}
             id="editingTopic"
+            data-testid="input"
           />
           <FlexBoxRow direction="row" gap={`${dimensions.spacing.xxxs}`}>
             <StyledButton
               outline
-              aria-label="Confirmar edición"
+              aria-label={t('Confirmar edición')}
+              title={t('Confirmar edición')}
               onClick={() => {
                 editTopic(id)
               }}
+              data-testid={`confirm${id}`}
             >
               <StyledIcon name="done" color={`${colors.success}`} wght={600} />
             </StyledButton>
             <StyledButton
               outline
-              aria-label="Cancelar edición"
+              aria-label={t('Cancelar edición')}
+              title={t('Cancelar edición')}
               onClick={() => {
                 setAvailable()
               }}
@@ -240,16 +251,16 @@ export const TopicsEditableItem = ({
                 setAvailable()
               }}
             >
-              Cancelar
+              {t('Cancelar')}
             </TextButton>
             <DeleteButton
               outline
-              aria-label="Borrar tema"
+              title={t('Borrar tema')}
               onClick={() => {
                 deleteTopic(id)
               }}
             >
-              <img src={icons.deleteIcon} alt="Borrar tema" />
+              <img src={icons.deleteIcon} alt={t('Borrar tema')} />
             </DeleteButton>
           </FlexBoxRow>
         </StyledFlexBox>

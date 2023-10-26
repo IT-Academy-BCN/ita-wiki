@@ -4,7 +4,7 @@ import { UserRegisterSchema } from '@itacademy/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
 import {
@@ -20,7 +20,8 @@ import InputGroup from '../molecules/InputGroup'
 import SelectGroup from '../molecules/SelectGroup'
 import { urls } from '../../constants'
 import { colors, device, dimensions, FlexBox } from '../../styles'
-import { getCategories } from '../../helpers'
+import { TCategory } from '../../types'
+import { useGetCategories } from '../../hooks'
 
 const RegisterStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.sm};
@@ -104,12 +105,6 @@ const TextDecorationStyled = styled.span`
 
 type TForm = z.infer<typeof UserRegisterSchema>
 
-type TCategory = {
-  name: string
-  slug: string
-  id: string
-}
-
 type TRegister = {
   handleLoginModal: () => void
   handleRegisterModal: () => void
@@ -142,11 +137,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     trigger,
   } = useForm<TForm>({ resolver: zodResolver(UserRegisterSchema) })
 
-  const { data } = useQuery({
-    queryKey: ['getCategories'],
-    queryFn: getCategories,
-  })
-
+  const { data } = useGetCategories()
   const categoriesMap = data?.map((category: TCategory) => ({
     value: category.id,
     label: category.name,

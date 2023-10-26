@@ -1,9 +1,9 @@
 import { useState, useEffect, ChangeEvent } from 'react'
-import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { CheckBox, Label, Spinner, Text } from '../atoms'
 import { colors, dimensions, FlexBox, font } from '../../styles'
-import { urls } from '../../constants'
+import { TGetTypes, TTypesFilterWidget } from '../../types/types'
+import { useGetTypes } from '../../hooks'
 
 const StyledFlexbox = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -27,40 +27,10 @@ const CheckBoxStyled = styled(CheckBox)`
   }
 `
 
-const getTypes = () =>
-  fetch(urls.getTypes, {
-    headers: {
-      Accept: 'application/json',
-    },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error fetching resources: ${res.statusText}`)
-      }
-
-      return res.json() as Promise<TData>
-    })
-    .catch((err) => {
-      throw new Error(`Error fetching resources: ${err.message}`)
-    })
-
-type TTypesFilterWidget = {
-  handleTypesFilter: (selectedTypes: TData) => void
-}
-
-type TData = string[]
-
-type TError = {
-  message: string
-}
-
 const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
-  const { isLoading, data, error } = useQuery<TData, TError>({
-    queryKey: ['getTypes'],
-    queryFn: () => getTypes(),
-  })
+  const { isLoading, data, error } = useGetTypes()
 
-  const [selectedTypes, setSelectedTypes] = useState<TData>([])
+  const [selectedTypes, setSelectedTypes] = useState<TGetTypes>([])
 
   useEffect(() => {
     if (data !== undefined) {

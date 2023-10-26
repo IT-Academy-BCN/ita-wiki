@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 import { useLocation, useParams } from 'react-router-dom'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
 import {
   DesktopSideMenu,
@@ -15,7 +14,7 @@ import {
   TopicsRadioWidget,
 } from '../components/organisms'
 import { Button, Icon, Input, Text, Title } from '../components/atoms'
-import { TFilters } from '../helpers'
+
 import {
   AccessModalContent,
   InputGroup,
@@ -25,7 +24,8 @@ import {
   TypesFilterWidget,
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
-import { TGetTopics, getTopics } from '../helpers/fetchers'
+import { useGetTopics } from '../hooks'
+import { TFilters } from '../types'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -271,7 +271,7 @@ const NewResourceButton = styled(Button)`
     border: 1px dashed ${colors.gray.gray3};
   }
 
-  @media ${device.Tablet} {
+  @media ${device.Mobile} {
     display: none;
   }
 `
@@ -451,10 +451,7 @@ const Category: FC = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
   }
 
-  const { data: fetchedTopics } = useQuery<TGetTopics>(
-    ['getTopics', slug || ''],
-    () => getTopics(slug)
-  )
+  const { data: fetchedTopics } = useGetTopics(slug ?? '')
 
   const mappedTopicsForFilterWidget = [
     { value: 'todos', label: 'Todos' },
@@ -464,21 +461,21 @@ const Category: FC = () => {
     }) ?? []),
   ]
 
-  const topicsForResourceForm = fetchedTopics?.map(
-    (t) =>
-      ({
-        id: t.id,
-        value: t.slug,
-        label: t.name,
-      })
-  )
+  const topicsForResourceForm = fetchedTopics?.map((t) => ({
+    id: t.id,
+    value: t.slug,
+    label: t.name,
+  }))
 
   return (
     <>
       <Container direction="row" justify="flex-start" align="start">
         <DesktopSideMenu />
         <WiderContainer>
-          <Navbar isUserLogged={user !== null} toggleModal={toggleModal} handleAccessModal={handleAccessModal} />
+          <Navbar
+            toggleModal={toggleModal}
+            handleAccessModal={handleAccessModal}
+          />
           <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
               Temas
@@ -508,6 +505,7 @@ const Category: FC = () => {
                     />
                   )}
                 </ScrollTopics>
+
                 <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
                 {user && (
                   <StatusFilterWidget handleStatusFilter={handleStatusFilter} />

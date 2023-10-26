@@ -1,20 +1,11 @@
 import styled from 'styled-components'
 import { FC, useState } from 'react'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { paths, urls } from '../constants'
 import { colors } from '../styles'
-
-interface User {
-  id: string
-  email: string
-  dni: string
-  name: string
-  status: string
-  role: string
-  createdAt: string
-  updatedAt: string
-}
+import { TUser } from '../types'
+import { useGetUsers } from '../hooks/useGetUsers'
 
 const UserListContainer = styled.div`
   padding: 20px;
@@ -96,18 +87,8 @@ const HomeBtn = styled.button`
   }
 `
 
-const fetchUsers = async () => {
-  const response = await fetch(urls.users)
-  const data = await response.json()
-  return data
-}
-
 const AccountAdmin: FC = () => {
-  const {
-    data: users,
-    isLoading,
-    isError,
-  } = useQuery<User[]>(['users'], fetchUsers)
+  const { isLoading, isError, data: users } = useGetUsers()
   const queryClient = useQueryClient()
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -115,7 +96,7 @@ const AccountAdmin: FC = () => {
     setSearchTerm(event.target.value)
   }
 
-  let filteredUsers: User[] = []
+  let filteredUsers: TUser[] = []
 
   if (!isLoading && users) {
     if (searchTerm.trim() !== '') {
@@ -135,7 +116,7 @@ const AccountAdmin: FC = () => {
     return <div>Error fetching users</div>
   }
 
-  const updateUserStatus = async (user: User) => {
+  const updateUserStatus = async (user: TUser) => {
     try {
       const updatedStatus = user.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
       const updatedUser = {
@@ -153,7 +134,7 @@ const AccountAdmin: FC = () => {
       if (!response.ok) {
         throw new Error('Failed to update user status')
       }
-      queryClient.setQueryData<User[]>(['users'], (prevData) => {
+      queryClient.setQueryData<TUser[]>(['users'], (prevData) => {
         if (prevData) {
           return prevData.map((u) =>
             u.id === updatedUser.id ? { ...u, status: updatedStatus } : u

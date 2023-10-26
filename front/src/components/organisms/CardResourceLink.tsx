@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
 import EditResource from './EditResource'
-import { TCardResource } from './CardResource'
+import { TCardResource } from '../../types'
 
 const CardContainerStyled = styled(FlexBox)`
   background-color: ${colors.white};

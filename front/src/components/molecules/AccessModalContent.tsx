@@ -27,13 +27,11 @@ const ButtonStyled = styled(Button)`
 const StyledText = styled(Text)`
   font-weight: ${font.medium};
 `
-
 type TAccessModal = {
   handleAccessModal: () => void
   handleLoginModal: () => void
   handleRegisterModal: () => void
 }
-
 const AccessModalContent = ({
   handleAccessModal,
   handleLoginModal,

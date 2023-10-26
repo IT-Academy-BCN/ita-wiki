@@ -25,7 +25,7 @@ export const InputError = registry.register(
 export const MissingTokenError = registry.register(
   'MissingTokenError',
   z.object({
-    error: z.string().openapi({ example: 'Unauthorized: Missing token' }),
+    message: z.string().openapi({ example: 'Missing token' }),
   })
 )
 

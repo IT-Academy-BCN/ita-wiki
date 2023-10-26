@@ -16,7 +16,6 @@ const SelectStyled = styled.select<TSelect>`
     outline: 0 none;
   }
 `
-
 type TOption = {
   value: string
   label: string
@@ -28,7 +27,6 @@ type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
   error?: boolean | string
   placeholder?: string
 }
-
 const Select = forwardRef<HTMLSelectElement, TSelect>(
   (
     {

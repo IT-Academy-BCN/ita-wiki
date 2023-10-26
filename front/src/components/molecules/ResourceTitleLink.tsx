@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { Text } from '../atoms'
 import { colors, dimensions, font } from '../../styles'
+import { TResourceTitleLink } from '../../types'
 
 const LinkStyled = styled(Link)`
   text-decoration: none;
@@ -18,12 +19,6 @@ const Description = styled(Text)`
   font-size: ${font.xss};
   color: ${colors.gray.gray3};
 `
-
-export type TResourceTitleLink = {
-  description: string
-  title: string
-  url: string
-}
 
 const ResourceTitleLink = ({ description, title, url }: TResourceTitleLink) => (
   <LinkStyled

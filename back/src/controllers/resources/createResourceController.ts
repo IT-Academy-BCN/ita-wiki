@@ -12,21 +12,34 @@ export const createResource: Middleware = async (ctx: Koa.Context) => {
   const resource = ctx.request.body
 
   const slug = slugify(resource.title, { lower: true })
+  const { categoryId } = resource as { categoryId: string }
+  const topicIds: string[] = resource.topics
 
-  const topicIds = resource.topics
-  delete resource.topics
-  if (topicIds.length === 0)
-    throw new MissingParamError('Must contain at least one topic')
+  if (topicIds.length === 0) throw new MissingParamError('topics')
 
-  const resourceId = await prisma.resource.create({
-    data: { ...resource, userId, slug },
+  const databaseTopics = await prisma.topic.findMany({
+    where: {
+      id: {
+        in: topicIds,
+      },
+    },
   })
 
-  await prisma.topicsOnResources.createMany({
-    data: topicIds.map((topicId: string) => ({
-      topicId,
-      resourceId: resourceId.id,
+  if (topicIds.length !== databaseTopics.length)
+    throw new MissingParamError('valid topic/s')
+
+  resource.topics = {
+    create: resource.topics.map((topicId: string) => ({
+      topic: {
+        connect: {
+          id: topicId,
+        },
+      },
     })),
+  }
+
+  await prisma.resource.create({
+    data: { ...resource, userId, categoryId, slug },
   })
 
   ctx.status = 204

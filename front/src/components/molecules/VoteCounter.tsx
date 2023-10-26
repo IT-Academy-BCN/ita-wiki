@@ -3,10 +3,10 @@ import { FC } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
-import { urls } from '../../constants'
 import { useAuth } from '../../context/AuthProvider'
 import { TResource } from '../../context/store/types'
 import { updateCachedVoteCount } from '../../helpers'
+import { updateVote } from '../../helpers/fetchers'
 
 type ArrowProp = {
   color: string
@@ -36,25 +36,6 @@ type TVoteCount = {
 }
 
 type TUserVote = 'up' | 'down' | 'cancel'
-
-type TVoteMutationData = {
-  resourceId: string
-  vote: TUserVote
-}
-
-
-
-const updateVote = async ({ resourceId, vote }: TVoteMutationData) => {
-  const response = await fetch(urls.vote, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ resourceId, vote }),
-  })
-
-  if (!response.ok) {
-    throw new Error('Error fetching votes')
-  }
-}
 
 export const VoteCounter: FC<TVoteCounter> = ({
   voteCount,
@@ -94,7 +75,7 @@ export const VoteCounter: FC<TVoteCounter> = ({
     },
   })
 
-  const handleClick = (vote: 'up' | 'down' | 'cancel') => {
+  const handleClick = (vote: TUserVote) => {
     if (!user) {
       handleAccessModal()
       return
