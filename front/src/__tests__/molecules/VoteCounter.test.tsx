@@ -3,7 +3,7 @@ import { VoteCounter } from '../../components/molecules'
 import { fireEvent, screen, waitFor, render } from '../test-utils'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { queryClient } from '../setup'
-import { TResource } from '../../components/organisms'
+import { TResource } from '../../types'
 
 const user = {
   name: 'Hola',
