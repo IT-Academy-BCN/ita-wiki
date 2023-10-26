@@ -64,9 +64,6 @@ function cd_git_root {
 #   $2 command
 # Returns 1 if timed out 0 otherwise
 timeout() {
-    time=$1
-    # start the command in a subshell to avoid problem with pipes
-    # (spawn accepts one command)
     local time=$1
     local command="$2"
     local duration=0
