@@ -2,14 +2,13 @@ import { Middleware, Context } from 'koa'
 import jwt, { Secret } from 'jsonwebtoken'
 import { Media, User } from '@prisma/client'
 import { prisma } from '../../prisma/client'
+import { NotFoundError } from '../../helpers/errors'
 
 export const authMeController: Middleware = async (ctx: Context) => {
   const token = ctx.cookies.get('token') as string
   const { userId } = jwt.verify(token, process.env.JWT_KEY as Secret) as {
     userId: string
   }
-
-  type UserWithAvatar = User & { avatar: Media }
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -23,6 +22,9 @@ export const authMeController: Middleware = async (ctx: Context) => {
     },
   })
 
+  if (!user) throw new NotFoundError('User not found')
+
+  type UserWithAvatar = User & { avatar: Media }
   let userWithAvatar: UserWithAvatar | null = null
   let userAvatar: Media | null = null
 
