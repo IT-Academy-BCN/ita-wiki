@@ -23,12 +23,6 @@ export const authMeController: Middleware = async (ctx: Context) => {
     },
   })
 
-  if (!user) {
-    ctx.status = 404
-    ctx.body = { error: 'User not found' }
-    return
-  }
-
   let userWithAvatar: UserWithAvatar | null = null
   let userAvatar: Media | null = null
 

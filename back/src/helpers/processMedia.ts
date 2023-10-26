@@ -3,7 +3,7 @@ import slugify from 'slugify'
 import multer from '@koa/multer'
 import { prisma } from '../prisma/client'
 
-export const processMedia = async (media: multer.File, userId: String) => {
+export const processMedia = async (media: multer.File, userId: string) => {
   const totalName = media.originalname.split('.')
   const originalFileName = totalName[0]
   const originalExtension = totalName[1]

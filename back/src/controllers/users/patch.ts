@@ -5,7 +5,7 @@ import { processMedia } from '../../helpers/processMedia'
 export const patchUser: Middleware = async (ctx: Context) => {
   const { id, ...newData } = ctx.request.body
   const media = ctx.file
-  let newMediaId: String
+  let newMediaId: string
   if (media) {
     const { mediaId } = await processMedia(media, id)
     newMediaId = mediaId
