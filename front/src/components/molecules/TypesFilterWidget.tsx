@@ -1,12 +1,12 @@
 import { useEffect, ChangeEvent } from 'react'
-import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { CheckBox, Label, Spinner, Text } from '../atoms'
 import { colors, dimensions, FlexBox, font } from '../../styles'
 
 import { useFiltersContext } from '../../context/store/context'
 import { ActionTypes } from '../../context/store/types'
-import { getTypes } from '../../helpers/fetchers'
+
+import { useGetTypes } from '../../hooks'
 
 const StyledFlexbox = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -27,7 +27,7 @@ const CheckBoxStyled = styled(CheckBox)`
   }
 `
 
-const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
+const TypesFilterWidget = () => {
   const { isLoading, data, error } = useGetTypes()
 
   const { types, dispatch } = useFiltersContext()
