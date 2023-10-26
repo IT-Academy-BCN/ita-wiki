@@ -1,8 +1,10 @@
-import { FC } from 'react'
+import React, { FC } from 'react'
 import styled from 'styled-components'
 import { dimensions } from '../../styles'
 import { Radio, Spinner } from '../atoms'
 import { useGetTopics } from '../../hooks'
+import { useFiltersContext } from '../../context/store/context'
+import { ActionTypes } from '../../context/store/types'
 
 const StyledRadio = styled(Radio)`
   flex-direction: column;
@@ -26,9 +28,16 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
   setTopic,
 }) => {
   const { data, isLoading, isError } = useGetTopics(slug)
+  const { dispatch } = useFiltersContext()
 
   const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTopic(e.target.value)
+    const selectedTopic = e.target.value
+
+    dispatch({
+      type: ActionTypes.SetTopics,
+      payload: { topics: [selectedTopic] },
+    })
+    setTopic(selectedTopic)
   }
 
   if (isLoading) return <SpinnerStyled size="small" role="status" />

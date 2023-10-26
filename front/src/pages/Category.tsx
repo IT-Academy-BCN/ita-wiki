@@ -25,6 +25,8 @@ import {
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
+import { useFiltersContext } from '../context/store/context'
+import { ActionTypes } from '../context/store/types'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -388,10 +390,11 @@ const Category: FC = () => {
   const [topic, setTopic] = useState('todos')
   const [filters, setFilters] = useState<TFilters>({
     slug,
-    resourceTypes: [],
+    // resourceTypes: [],
     status: [],
     topic: topic === 'todos' ? undefined : topic,
   })
+
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
 
   const toggleModal = () => {
@@ -413,14 +416,6 @@ const Category: FC = () => {
     }))
   }, [slug])
 
-  const handleTypesFilter = (selectedTypes: string[]) => {
-    setFilters({ ...filters, resourceTypes: selectedTypes })
-  }
-
-  const handleStatusFilter = (selectedStatus: string[]) => {
-    setFilters({ ...filters, status: selectedStatus })
-  }
-
   const handleAccessModal = () => {
     setIsAccessModalOpen(!isAccessModalOpen)
   }
@@ -432,18 +427,36 @@ const Category: FC = () => {
   const handleLoginModal = () => {
     setIsLoginOpen(!isLoginOpen)
   }
+  const { topics, dispatch } = useFiltersContext()
 
   const handleTopicFilter = (selectedTopic: string) => {
     const filterTopic = selectedTopic === 'todos' ? undefined : selectedTopic
+
     setFilters({ ...filters, topic: filterTopic })
     setTopic(selectedTopic)
+
+    dispatch({
+      type: ActionTypes.SetTopics,
+      payload: { topics: [...topics, selectedTopic] },
+    })
   }
 
-  const handleSelectTopicFilter = (event: ChangeEvent<HTMLSelectElement>) => {
-    const selectedTopic = event.target.value
-    const filterTopic = selectedTopic === 'todos' ? undefined : selectedTopic
-    setFilters({ ...filters, topic: filterTopic })
-    setTopic(selectedTopic)
+  const handleSelectTopicFilter = (
+    e: ChangeEvent<HTMLSelectElement>,
+    item: string
+  ) => {
+    const selectedTopic = e.target.value
+    if (selectedTopic) {
+      dispatch({
+        type: ActionTypes.SetTopics,
+        payload: { topics: [...topics, item] },
+      })
+    } else {
+      dispatch({
+        type: ActionTypes.SetTopics,
+        payload: { topics: topics.filter((el: string) => el !== item) },
+      })
+    }
   }
 
   const handleSortOrder = () => {
@@ -485,7 +498,7 @@ const Category: FC = () => {
               id="topics"
               label="Temas"
               name="topics"
-              onChange={handleSelectTopicFilter}
+              onChange={() => handleSelectTopicFilter}
             />
           </MobileTopicsContainer>
           <ContainerMain>
@@ -505,10 +518,8 @@ const Category: FC = () => {
                   )}
                 </ScrollTopics>
 
-                <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
-                {user && (
-                  <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
-                )}
+                <TypesFilterWidget />
+                {user && <StatusFilterWidget />}
               </FiltersContainer>
               <ResourcesContainer>
                 <TitleResourcesContainer>
@@ -558,7 +569,7 @@ const Category: FC = () => {
                 <ScrollDiv>
                   <ResourceCardList
                     handleAccessModal={handleAccessModal}
-                    filters={filters}
+                    // filters={filters}
                     sortOrder={sortOrder}
                   />
                 </ScrollDiv>
@@ -569,10 +580,8 @@ const Category: FC = () => {
                 data-testid="mobile-filters"
                 className={isFiltersOpen ? 'open' : 'close'}
               >
-                <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
-                {user && (
-                  <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
-                )}
+                <TypesFilterWidget />
+                {user && <StatusFilterWidget />}
                 <CloseFilterButton
                   data-testid="close-filters-button"
                   onClick={handleFiltersClose}

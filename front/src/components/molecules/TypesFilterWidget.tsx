@@ -1,24 +1,24 @@
-import { useState, useEffect, ChangeEvent } from 'react'
+import { useEffect, ChangeEvent } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { CheckBox, Label, Spinner, Text } from '../atoms'
 import { colors, dimensions, FlexBox, font } from '../../styles'
-import { urls } from '../../constants'
+
+import { useFiltersContext } from '../../context/store/context'
+import { ActionTypes } from '../../context/store/types'
+import { getTypes } from '../../helpers/fetchers'
 
 const StyledFlexbox = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
 `
-
 const StyledText = styled(Text)`
   margin-top: ${dimensions.spacing.md};
   margin-bottom: 0.2rem;
 `
-
 const StyledSpinner = styled(Spinner)`
   align-self: center;
   justify-content: center;
 `
-
 const CheckBoxStyled = styled(CheckBox)`
   ${Label} {
     font-weight: ${font.medium};
@@ -27,61 +27,41 @@ const CheckBoxStyled = styled(CheckBox)`
   }
 `
 
-const getTypes = () =>
-  fetch(urls.getTypes, {
-    headers: {
-      Accept: 'application/json',
-    },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error fetching resources: ${res.statusText}`)
-      }
-
-      return res.json() as Promise<TData>
-    })
-    .catch((err) => {
-      throw new Error(`Error fetching resources: ${err.message}`)
-    })
-
-type TTypesFilterWidget = {
-  handleTypesFilter: (selectedTypes: TData) => void
-}
-
 type TData = string[]
-
 type TError = {
   message: string
 }
 
-const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
+const TypesFilterWidget = () => {
   const { isLoading, data, error } = useQuery<TData, TError>({
     queryKey: ['getTypes'],
     queryFn: () => getTypes(),
   })
 
-  const [selectedTypes, setSelectedTypes] = useState<TData>([])
-
-  useEffect(() => {
-    if (data !== undefined) {
-      setSelectedTypes(data)
-      handleTypesFilter(data)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  const { types, dispatch } = useFiltersContext()
 
   const changeSelection = (e: ChangeEvent<HTMLInputElement>, item: string) => {
     if (e.target.checked) {
-      const addTypes = [...selectedTypes]
-      addTypes.push(item)
-      setSelectedTypes(addTypes)
-      return addTypes
+      dispatch({
+        type: ActionTypes.SetTypes,
+        payload: { types: [...types, item] },
+      })
+    } else {
+      dispatch({
+        type: ActionTypes.SetTypes,
+        payload: {
+          types: types.filter((el: string) => el !== item),
+        },
+      })
     }
-
-    const removeTypes = selectedTypes.filter((el: string) => el !== item)
-    setSelectedTypes(removeTypes)
-    return removeTypes
+    return [...types, item]
   }
+
+  useEffect(() => {
+    if (dispatch && data) {
+      dispatch({ type: ActionTypes.SetTypes, payload: { types: data } })
+    }
+  }, [dispatch, data])
 
   if (error) return <p>Ha habido un error...</p>
 
@@ -95,7 +75,7 @@ const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
           id={item}
           label={`${item.slice(0, 1)}${item.slice(1).toLowerCase()}`}
           defaultChecked
-          onChange={(e) => handleTypesFilter(changeSelection(e, item))}
+          onChange={(e) => changeSelection(e, item)}
         />
       ))}
     </StyledFlexbox>

@@ -8,6 +8,7 @@ import CardResource from './CardResource'
 import { TFilters, buildQueryString } from '../../helpers'
 import { useSortByDate } from '../../hooks/useSortByDate'
 import { useAuth } from '../../context/AuthProvider'
+import { useFiltersContext } from '../../context/store/context'
 
 type TTopic = {
   topic: {
@@ -81,7 +82,6 @@ const getResources = async (filters: string) =>
 type SortOrder = 'asc' | 'desc'
 
 type TResourceCardList = {
-  filters: TFilters
   sortOrder: SortOrder
   handleAccessModal: () => void
 }
@@ -91,9 +91,15 @@ type TResources = TResource[]
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
   sortOrder,
-  filters,
 }) => {
   const { user } = useAuth()
+
+  const { types, status } = useFiltersContext()
+
+  const filters: TFilters = {
+    resourceTypes: types,
+    status,
+  }
 
   const { isLoading, data, error } = useQuery<TResources>(
     ['getResources', buildQueryString(filters) || ''],
