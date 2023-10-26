@@ -8,8 +8,6 @@ type HamburgerMenuProps = {
 }
 
 const StyledBurger = styled.button<HamburgerMenuProps>`
-  position: absolute;
-  left: -15px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -19,7 +17,8 @@ const StyledBurger = styled.button<HamburgerMenuProps>`
   cursor: pointer;
   padding: 0;
   z-index: ${({ open }) => (open ? '30' : '10')};
-  margin-left: ${dimensions.spacing.xl};
+  margin: auto;
+  margin-left: ${dimensions.spacing.xxs};
   &:focus {
     outline: none;
   }
