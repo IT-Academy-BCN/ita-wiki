@@ -1,11 +1,5 @@
-type TUserVote = 'up' | 'down' | 'cancel'
+import { TUserVote, TVoteCount } from "../types"
 
-type TVoteCount = {
-  downvote: number
-  upvote: number
-  total: number
-  userVote: number
-}
 
  const getDownvote = (
   currUserVote: number,

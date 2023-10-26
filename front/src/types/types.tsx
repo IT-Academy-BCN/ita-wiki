@@ -132,16 +132,24 @@ export type TCardResource = {
   handleAccessModal: () => void
 }
 
-export type TVoteCountResponse = {
+export type TVoteCounter = {
+  voteCount: TVoteCount
+  resourceId: string
+  handleAccessModal: () => void
+}
+
+export type TVoteCount = {
   downvote: number
   upvote: number
   total: number
   userVote: number
 }
 
+export type TUserVote = 'up' | 'down' | 'cancel'
+
 export type TVoteMutationData = {
   resourceId: string
-  vote: 'up' | 'down' | 'cancel'
+  vote: TUserVote
 }
 export type TError = {
   message: string
