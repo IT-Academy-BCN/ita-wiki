@@ -9,7 +9,6 @@ import { FavoritesIcon } from '../molecules/FavoritesIcon'
 import { useAuth } from '../../context/AuthProvider'
 
 const CardContainerStyled = styled(FlexBox)`
-
   background-color: ${colors.white};
   border-radius: ${dimensions.borderRadius.sm};
   border: 1px solid ${colors.gray.gray4};
@@ -18,12 +17,12 @@ const CardContainerStyled = styled(FlexBox)`
   min-width: 15rem;
   position: relative;
   align-items: flex-start;
-  justify-content:space-between;
+  justify-content: space-between;
 `
 
 const UserWidgets = styled(FlexBox)`
   top: 0;
-  right:0;
+  right: 0;
   padding: 2px;
   background-color: rgba(255, 255, 255, 0.5);
 `
