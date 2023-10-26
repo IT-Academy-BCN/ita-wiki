@@ -48,7 +48,6 @@ const SpinnerStyled = styled(Spinner)`
 `
 
 const StyledFlexBox = styled(FlexBox)`
-
   justify-content: flex-start;
   gap: ${dimensions.spacing.base};
   overflow: scroll;
