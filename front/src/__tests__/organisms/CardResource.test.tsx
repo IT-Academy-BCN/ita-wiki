@@ -31,7 +31,12 @@ const mockCardResource: TCardResource = {
   createdBy: 'Test author name',
   createdAt: '2022-08-09T09:42:25.717Z',
   updatedAt: '2023-07-09T09:42:25.717Z',
-  likes: 124,
+  voteCount: {
+    upvote: 1,
+    downvote: 0,
+    total: 124,
+    userVote: 1,
+  },
   resourceType: 'video',
   topics: [],
   editable: true,

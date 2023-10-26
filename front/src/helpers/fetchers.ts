@@ -5,7 +5,7 @@ import {
   TGetTypes,
   TFavorites,
   TResource,
-  TVoteCountResponse,
+  TVoteCount,
   TVoteMutationData,
 } from '../types'
 
@@ -155,14 +155,12 @@ export const getResourcesByUser = async (categorySlug: string | undefined) => {
     editable: true,
   }))
 }
-export const getVotes = async (
-  resourceId: string
-): Promise<TVoteCountResponse> => {
+export const getVotes = async (resourceId: string): Promise<TVoteCount> => {
   const response = await fetch(`${urls.vote}${resourceId}`)
   if (!response.ok) {
     throw new Error('Error fetching votes')
   }
-  const data = await (response.json() as Promise<TVoteCountResponse>)
+  const data = await (response.json() as Promise<TVoteCount>)
   return data
 }
 export const updateVote = async ({ resourceId, vote }: TVoteMutationData) => {
