@@ -1,5 +1,5 @@
-import { LabelHTMLAttributes } from 'react'
 import styled from 'styled-components'
+import { LabelHTMLAttributes } from 'react'
 import { colors, font } from '../../styles'
 
 const LabelStyled = styled.label`
@@ -8,13 +8,11 @@ const LabelStyled = styled.label`
   font-weight: 700;
   font-family: ${font.fontFamily};
 `
-
 export type TLabel = Omit<LabelHTMLAttributes<HTMLLabelElement>, 'htmlFor'> & {
   text: string
   htmlFor: string
   hiddenLabel?: boolean
 }
-
 function Label({ htmlFor, text = '', hiddenLabel = true, ...rest }: TLabel) {
   return (
     <LabelStyled htmlFor={htmlFor} hidden={hiddenLabel} {...rest}>

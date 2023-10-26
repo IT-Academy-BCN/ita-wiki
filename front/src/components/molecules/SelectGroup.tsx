@@ -12,7 +12,7 @@ const SelectGroupStyled = styled.div`
   }
   width: 100%;
 `
-type TSelectGroup = {
+export type TSelectGroup = {
   id: string
   name: string
   label: string

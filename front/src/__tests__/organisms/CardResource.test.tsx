@@ -1,9 +1,9 @@
 import { vi } from 'vitest'
 import { render, screen } from '../test-utils'
-import type { TCardResource } from '../../components/organisms'
 import CardResource from '../../components/organisms/CardResource'
 import icons from '../../assets/icons'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
+import { TCardResource } from '../../types'
 
 beforeEach(() => {
   vi.mock('../../context/AuthProvider', async () => {

@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import { FC } from 'react'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
-import { urls } from '../../constants'
 import { useAuth } from '../../context/AuthProvider'
+import { useGetVotes } from '../../hooks'
+import { updateVote } from '../../helpers/fetchers'
 
 type ArrowProp = {
   color: string
@@ -19,44 +20,10 @@ const StyledIcon = styled(Icon)<ArrowProp>`
       (name === 'expand_more' && colors.error)};
   }
 `
-
-type TVoteCounter = {
+export type TVoteCounter = {
   totalVotes: number
   resourceId: string
   handleAccessModal: () => void
-}
-
-type TVoteCountResponse = {
-  downvote: number
-  upvote: number
-  total: number
-  userVote: number
-}
-
-type TVoteMutationData = {
-  resourceId: string
-  vote: 'up' | 'down' | 'cancel'
-}
-
-const getVotes = async (resourceId: string): Promise<TVoteCountResponse> => {
-  const response = await fetch(`${urls.vote}${resourceId}`)
-  if (!response.ok) {
-    throw new Error('Error fetching votes')
-  }
-  const data = await (response.json() as Promise<TVoteCountResponse>)
-  return data
-}
-
-const updateVote = async ({ resourceId, vote }: TVoteMutationData) => {
-  const response = await fetch(urls.vote, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ resourceId, vote }),
-  })
-
-  if (!response.ok) {
-    throw new Error('Error fetching votes')
-  }
 }
 
 export const VoteCounter: FC<TVoteCounter> = ({
@@ -66,16 +33,7 @@ export const VoteCounter: FC<TVoteCounter> = ({
 }) => {
   const { user } = useAuth()
 
-  const { data: fetchedVotes, refetch } = useQuery<TVoteCountResponse>(
-    ['votes', resourceId],
-    () => getVotes(resourceId),
-    {
-      onError: () => {
-        // eslint-disable-next-line no-console
-        console.error('Error fetching votes')
-      },
-    }
-  )
+  const { fetchedVotes, refetch } = useGetVotes(resourceId)
 
   const castVote = useMutation({
     mutationFn: updateVote,

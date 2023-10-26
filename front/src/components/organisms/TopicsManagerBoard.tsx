@@ -6,13 +6,10 @@ import { useTranslation } from 'react-i18next'
 import { colors, FlexBox } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import { TopicsEditableItem } from '../molecules'
-import {
-  TTopic,
-  createTopicFetcher,
-  updateTopicFetcher,
-} from '../../helpers/fetchers'
+import { createTopicFetcher, updateTopicFetcher } from '../../helpers/fetchers'
 import { useAuth } from '../../context/AuthProvider'
 import { useGetTopics } from '../../hooks'
+import { TTopic } from '../../types'
 
 const StyledFlexBox = styled(FlexBox)`
   width: 100%;

@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, forwardRef, Ref } from 'react'
+import { forwardRef, InputHTMLAttributes, Ref } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, FlexBox } from '../../styles'
 import Label from './Label'
@@ -39,7 +39,6 @@ export const CheckBoxWrapper = styled(FlexBox)`
     }
   }
 `
-
 type TCheckBox = InputHTMLAttributes<HTMLInputElement> & {
   id: string
   label: string
@@ -49,7 +48,6 @@ type TCheckBox = InputHTMLAttributes<HTMLInputElement> & {
   className?: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
-
 const CheckBox = forwardRef(
   (
     {
