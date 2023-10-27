@@ -1,11 +1,11 @@
 import { FC } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, dimensions, font } from '../../styles'
 import { Spinner } from '../atoms'
 import icons from '../../assets/icons'
-import { urls } from '../../constants'
+import { TCategory, TLinkStyled } from '../../types'
+import { useGetCategories } from '../../hooks'
 
 const ImgStyled = styled.img`
   height: 30px;
@@ -30,9 +30,7 @@ const CategoriesContainerStyled = styled(FlexBox)`
   color: ${colors.gray.gray3};
   min-width: 10rem;
 `
-type TLinkStyled = {
-  active?: boolean
-}
+
 const CategoryStyled = styled.span<TLinkStyled>`
   color: ${({ active }) => (active ? colors.black.black3 : colors.gray.gray3)};
   font-size: ${font.xs};
@@ -66,34 +64,8 @@ const categoryImg: Record<string, string> = {
   Spring: icons.spring, // TODO: Add Spring Icon
 }
 
-type TCategory = {
-  id: string
-  img: string
-  name: string
-  resources: number
-  slug: string
-  topics: number
-}
-
-const getCategories = () =>
-  fetch(urls.getCategories)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(`Error fetching categories: ${res.statusText}`)
-      }
-      return res.json()
-    })
-    .catch((err) => {
-      throw new Error(`Error fetching categories: ${err.message}`)
-    })
-
 export const CategoriesList: FC = () => {
-  // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-  const { isLoading, data, error } = useQuery({
-    queryKey: ['getCategories'],
-    queryFn: getCategories,
-  })
-
+  const { isLoading, error, data } = useGetCategories()
   const { slug } = useParams()
 
   if (isLoading) return <SpinnerStyled size="medium" role="status" />

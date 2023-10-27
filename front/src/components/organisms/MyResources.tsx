@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { useAuth } from '../../context/AuthProvider'
-import { urls } from '../../constants'
 import { Modal } from '../molecules'
 import CardResource from './CardResource'
 import { Title, Spinner, Icon, Text } from '../atoms'
@@ -18,37 +16,8 @@ import {
 import { CardResourceLink } from './CardResourceLink'
 import Login from './Login'
 import Register from './Register'
-
-type TResource = {
-  id: string
-  title: string
-  slug: string
-  description: string
-  url: string
-  resourceType: string
-  createdAt: string
-  updatedAt: string
-  user: {
-    name: string
-    email: string
-  }
-  topics: {
-    topic: {
-      id: string
-      name: string
-      slug: string
-      categoryId: string
-      createdAt: string
-      updatedAt: string
-    }
-  }[]
-  voteCount: {
-    upvote: number
-    downvote: number
-    total: number
-  }
-  editable: boolean
-}
+import { TResource } from '../../types'
+import { useGetResourcesByUser } from '../../hooks'
 
 const TitleContainer = styled(FlexBox)`
   align-items: stretch;
@@ -57,7 +26,7 @@ const TitleContainer = styled(FlexBox)`
     flex-direction: row;
     align-items: center;
     gap: ${dimensions.spacing.xxxs};
-    margin-top: ${dimensions.spacing.xl};
+    margin-top: ${dimensions.spacing.md};
   }
 `
 
@@ -66,7 +35,6 @@ const ResourcesUserStyled = styled(FlexBox)`
   overflow: hidden;
   overflow-x: auto;
   justify-content: flex-start;
-  margin-bottom: ${dimensions.spacing.base};
 
   &::-webkit-scrollbar {
     display: none;
@@ -104,30 +72,6 @@ const MyResourcesCardList = styled(FlexBox)`
 const getWindowMobile = () =>
   window.innerWidth <= parseInt(responsiveSizes.tablet, 10)
 
-const getResourcesByUser = async (categorySlug: string | undefined) => {
-  const response = await fetch(
-    `${urls.getResourcesByUser}?category=${categorySlug}`,
-    {
-      headers: {
-        Accept: 'application/json',
-      },
-    }
-  )
-
-  if (!response.ok) {
-    throw new Error(`Error fetching resources: ${response.statusText}`)
-  }
-
-  const data = await response.json()
-
-  return data.resources.map((resource: TResource) => ({
-    ...resource,
-    editable: true,
-
-    // Agregamos la propiedad editable a cada recurso y la establecemos como true
-  }))
-}
-
 const MyResources = () => {
   const { user } = useAuth()
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
@@ -143,17 +87,10 @@ const MyResources = () => {
 
   const params = useParams<{ slug: string }>()
   const categorySlug: string | undefined = params.slug
-
-  const { isLoading, data, error } = useQuery({
-    queryKey: ['getResourcesByUser', categorySlug],
-    queryFn: () => getResourcesByUser(categorySlug),
-    enabled: !!user, // Enable the query only if there is a logged-in user
-  })
-
+  const { data, isLoading, error } = useGetResourcesByUser(categorySlug)
   const handleRegisterModal = () => {
     setIsRegisterOpen(!isRegisterOpen)
   }
-
   const handleLoginModal = () => {
     setIsLoginOpen(!isLoginOpen)
   }
@@ -209,6 +146,7 @@ const MyResources = () => {
                     resourceType=""
                     topics={[]}
                     editable={resource.editable}
+                    isFavorite={false}
                   />
                 ) : (
                   <CardResourceLink
@@ -224,6 +162,7 @@ const MyResources = () => {
                     resourceType={resource.resourceType}
                     topics={resource.topics}
                     editable={resource.editable}
+                    isFavorite={false}
                   />
                 )}
               </MyResourcesCardList>

@@ -35,7 +35,6 @@ const iconDataTestId = (rest: TObjectWithDataTestId) => {
     dataTestId.charAt(0).toUpperCase() + dataTestId.slice(1)
   return dataTestId ? `icon${upperCaseDataTestId}` : ''
 }
-
 type TInputGroup = {
   id: string
   name: string
@@ -47,7 +46,6 @@ type TInputGroup = {
   iconClick?: () => void
   hiddenLabel?: boolean
 } & TInput
-
 const InputGroup = forwardRef(
   (
     {

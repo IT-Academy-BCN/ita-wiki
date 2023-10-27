@@ -12,8 +12,8 @@ export const resourceGetSchema = resourceSchema
   .extend({
     user: userSchema.pick({
       name: true,
-      email: true,
     }),
     topics: z.array(z.object({ topic: topicSchema })),
     voteCount: voteCountSchema,
+    isFavorite: z.boolean().default(false),
   })

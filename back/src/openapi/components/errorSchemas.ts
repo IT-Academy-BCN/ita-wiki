@@ -4,28 +4,35 @@ import { z } from '../zod'
 export const DniError = registry.register(
   'DniError',
   z.object({
-    message: z.string().openapi({ example: 'DNI already exists' }),
+    message: z.string().openapi({ example: 'dni already exists' }),
   })
 )
 
 export const EmailError = registry.register(
   'EmailError',
   z.object({
-    message: z.string().openapi({ example: 'Email already exists' }),
+    message: z.string().openapi({ example: 'email already exists' }),
+  })
+)
+
+export const InputError = registry.register(
+  'InputError',
+  z.object({
+    message: z.string().openapi({ example: 'Input is not a string' }),
   })
 )
 
 export const MissingTokenError = registry.register(
   'MissingTokenError',
   z.object({
-    error: z.string().openapi({ example: 'Unauthorized: Missing token' }),
+    message: z.string().openapi({ example: 'Missing token' }),
   })
 )
 
 export const InvalidTokenError = registry.register(
   'InvalidTokenError',
   z.object({
-    error: z.string().openapi({ example: 'Token is not valid' }),
+    message: z.string().openapi({ example: 'Token is not valid' }),
   })
 )
 export const ForbiddenError = registry.register(

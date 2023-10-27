@@ -44,7 +44,30 @@ it('renders correctly', () => {
   expect(screen.getByTestId('status-filter')).toBeInTheDocument()
   expect(screen.getByTestId('resource-list')).toBeInTheDocument()
   expect(screen.getByText('Mis recursos')).toBeInTheDocument()
-  expect(screen.getByText('Recursos favoritos')).toBeInTheDocument()
+  expect(screen.getByText('Recursos favorits')).toBeInTheDocument()
+})
+
+it('renders Navbar for logged in users', () => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'Name',
+      avatar: 'Avatar',
+    },
+  } as TAuthContext)
+
+  render(<Category />)
+
+  expect(screen.getByTestId('navbar')).toBeInTheDocument()
+})
+
+it('renders Navbar for unregistered users', () => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: null,
+  } as TAuthContext)
+
+  render(<Category />)
+
+  expect(screen.getByTestId('navbar')).toBeInTheDocument()
 })
 
 it('filters opens and closes correctly', () => {
@@ -95,4 +118,27 @@ it('modal opens and closes correctly when user is logged', async () => {
   await waitFor(() => {
     expect(modalTitle).not.toBeInTheDocument()
   })
+})
+
+it('status filter widget does not appear for users who are not logged in', () => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: null,
+  } as TAuthContext)
+  render(<Category />)
+
+  const statusFilterWidget = screen.queryByTestId('status-filter')
+  expect(statusFilterWidget).not.toBeInTheDocument()
+})
+
+it('status filter widget appears for users who are logged in', () => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'Name',
+      avatar: 'Avatar',
+    },
+  } as TAuthContext)
+  render(<Category />)
+
+  const statusFilterWidget = screen.getByTestId('status-filter')
+  expect(statusFilterWidget).toBeInTheDocument()
 })

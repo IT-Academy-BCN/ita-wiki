@@ -1,7 +1,12 @@
 import { pathRoot } from '../../../routes/routes'
 import { registry } from '../../registry'
-import { resourceSchema } from '../../../schemas'
+import { resourceFavoriteSchema } from '../../../schemas'
 import { z } from '../../zod'
+import {
+  invalidTokenResponse,
+  missingTokenResponse,
+  userNotFoundResponse,
+} from '../../components/responses/authMiddleware'
 
 registry.registerPath({
   method: 'get',
@@ -24,41 +29,12 @@ registry.registerPath({
       description: 'Favorite resources retrieved successfully.',
       content: {
         'application/json': {
-          schema: z.array(resourceSchema),
+          schema: z.array(resourceFavoriteSchema),
         },
       },
     },
-    401: {
-      description: 'Missing token',
-      content: {
-        'application/json': {
-          schema: z.object({
-            error: z
-              .string()
-              .openapi({ example: 'Unauthorized: Missing token' }),
-          }),
-        },
-      },
-    },
-    404: {
-      description: 'User not found',
-      content: {
-        'application/json': {
-          schema: z.object({
-            error: z.string().openapi({ example: 'User not found' }),
-          }),
-        },
-      },
-    },
-    405: {
-      description: 'Invalid token',
-      content: {
-        'application/json': {
-          schema: z.object({
-            error: z.string().openapi({ example: 'Token is not valid' }),
-          }),
-        },
-      },
-    },
+    401: missingTokenResponse,
+    404: userNotFoundResponse,
+    498: invalidTokenResponse,
   },
 })

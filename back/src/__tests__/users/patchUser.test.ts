@@ -5,6 +5,7 @@ import { server, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { authToken } from '../setup'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 let sampleUser: User | null
 
@@ -12,7 +13,7 @@ beforeEach(async () => {
   const existingTestCategory = await prisma.category.findUnique({
     where: { name: 'Testing' },
   })
-  await prisma.user.create({
+  sampleUser = await prisma.user.create({
     data: {
       email: 'sampleUser1@sampleUser.com',
       name: 'sampleUser1',
@@ -40,7 +41,15 @@ describe('Testing user patch endpoint', () => {
   it('Should return error if no token is provided', async () => {
     const response = await supertest(server).patch(`${pathRoot.v1.users}`)
     expect(response.status).toBe(401)
+    expect(response.body.message).toBe('Missing token')
   })
+  it('Check invalid token', async () => {
+    checkInvalidToken(`${pathRoot.v1.users}`, 'patch', {
+      id: sampleUser!.id,
+      role: USER_ROLE.MENTOR,
+    })
+  })
+
   it('Should NOT be able to access if user level is not ADMIN', async () => {
     const response = await supertest(server)
       .patch(`${pathRoot.v1.users}`)
@@ -48,9 +57,6 @@ describe('Testing user patch endpoint', () => {
     expect(response.status).toBe(403)
   })
   it('An ADMIN user should be able to access the endpoint without updating the user', async () => {
-    sampleUser = await prisma.user.findUnique({
-      where: { email: 'sampleUser1@sampleUser.com' },
-    })
     const modifiedUser = {
       id: sampleUser!.id,
       role: USER_ROLE.MENTOR,
@@ -64,9 +70,6 @@ describe('Testing user patch endpoint', () => {
     expect(response.status).toBe(204)
   })
   it('An ADMIN user should be able to update user data', async () => {
-    sampleUser = await prisma.user.findUnique({
-      where: { email: 'sampleUser1@sampleUser.com' },
-    })
     const modifiedUser = {
       id: sampleUser!.id,
       email: 'sampleUser2@sampleUser.com',
@@ -84,9 +87,6 @@ describe('Testing user patch endpoint', () => {
     expect(response.status).toBe(204)
   })
   it('User patch should fail if attempted with duplicate data', async () => {
-    sampleUser = await prisma.user.findUnique({
-      where: { email: 'sampleUser1@sampleUser.com' },
-    })
     const modifiedUser = {
       id: sampleUser!.id,
       name: 'UpdatedSampleUser',
@@ -100,9 +100,6 @@ describe('Testing user patch endpoint', () => {
     expect(response.status).toBe(409)
   })
   it('User patch should fail if attempted with invalid data', async () => {
-    sampleUser = await prisma.user.findUnique({
-      where: { email: 'sampleUser1@sampleUser.com' },
-    })
     const modifiedUser = {
       id: sampleUser!.id,
       name: 'UpdatedSampleUser',

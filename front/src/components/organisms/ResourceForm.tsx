@@ -1,14 +1,17 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import styled from 'styled-components'
-import { ChangeEvent, FC } from 'react'
+import { ChangeEvent, FC, HTMLAttributes } from 'react'
 import { InputGroup, SelectGroup } from '../molecules'
-import { Button, ValidationMessage, Radio } from '../atoms'
-import { FlexBox, dimensions } from '../../styles'
-import { paths, urls } from '../../constants'
+import { Button, ValidationMessage, Radio, Icon, Spinner } from '../atoms'
+import { FlexBox, colors, dimensions } from '../../styles'
+import { reloadPage } from '../../utils/navigation'
+import {
+  createResourceFetcher,
+  updateResourceFetcher,
+} from '../../helpers/fetchers'
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -17,6 +20,23 @@ const ButtonContainerStyled = styled(FlexBox)`
   ${Button} {
     font-weight: 500;
     margin: 0rem;
+  }
+`
+
+type TButton = HTMLAttributes<HTMLParagraphElement> & {
+  backgroundColor?: string
+  padding?: string
+}
+
+const ButtonStyled = styled(Button)<TButton>`
+  margin: ${dimensions.spacing.none};
+  background-color: ${({ backgroundColor }) => backgroundColor};
+  border: 2px solid ${({ backgroundColor }) => backgroundColor};
+  padding: ${({ padding }) => padding};
+  &:hover,
+  &:disabled {
+    background-color: ${({ backgroundColor }) => backgroundColor};
+    border: 2px solid ${({ backgroundColor }) => backgroundColor};
   }
 `
 
@@ -29,11 +49,13 @@ const ResourceFormSchema = z.object({
   title: z
     .string({ required_error: 'Este campo es obligatorio' })
     .min(1, { message: 'Este campo es obligatorio' }),
-  description: z.string().optional(),
+  description: z
+    .string({ required_error: 'Este campo es obligatorio' })
+    .min(1, { message: 'Este campo es obligatorio' }),
   url: z
     .string({ required_error: 'Este campo es obligatorio' })
     .url({ message: 'La URL proporcionada no es válida' }),
-  topics: z.string().refine((val) => val !== 'Options', {
+  topics: z.string().refine((val) => val !== '', {
     message: 'Debe seleccionar al menos un tema',
   }),
   topicId: z
@@ -41,7 +63,6 @@ const ResourceFormSchema = z.object({
     .optional()
     .refine((val) => val !== '', 'Debe seleccionar un tema válido'),
   resourceType: z.string(),
-  userEmail: z.string().optional(),
 })
 
 export type TResourceForm = Omit<
@@ -71,39 +92,6 @@ type TSelectOptions = {
   resourceId?: string
 }
 
-const createResourceFetcher = (resource: object) =>
-  fetch(urls.createResource, {
-    method: 'POST',
-    body: JSON.stringify(resource),
-    headers: {
-      'Content-type': 'application/json',
-    },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('Error al crear el recurso')
-      }
-      return res.status === 204 ? {} : res.json()
-    })
-    // eslint-disable-next-line no-console
-    .catch((error) => console.error(error))
-const updateResourceFetcher = (resource: object) =>
-  fetch(urls.updateResource, {
-    method: 'PATCH',
-    body: JSON.stringify(resource),
-    headers: {
-      'Content-type': 'application/json',
-    },
-  })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('Error al actualizar el recurso')
-      }
-      return res.status === 204 ? {} : res.json()
-    })
-    // eslint-disable-next-line no-console
-    .catch((error) => console.error(error))
-
 const ResourceForm: FC<TSelectOptions> = ({
   selectOptions,
   initialValues,
@@ -119,19 +107,30 @@ const ResourceForm: FC<TSelectOptions> = ({
     resolver: zodResolver(ResourceFormSchema),
     defaultValues: initialValues ?? undefined,
   })
-  const navigate = useNavigate()
+
+  const buttonText = initialValues ? 'Editar' : 'Crear'
+
   const createResource = useMutation(createResourceFetcher, {
     onSuccess: () => {
       reset()
-      navigate(paths.home)
+      reloadPage()
     },
   })
+
+  const { isLoading: isCreateLoading, isSuccess: isCreateSuccess } =
+    createResource
+
   const updateResource = useMutation(updateResourceFetcher, {
     onSuccess: () => {
       reset()
-      navigate(paths.home)
+      reloadPage()
     },
   })
+  const {
+    isLoading: isUpdateResourceLoading,
+    isSuccess: isUpdateResourceSuccess,
+  } = updateResource
+
   const create = handleSubmit(async (data) => {
     const { title, description, url, topics, resourceType } = data
     await createResource.mutateAsync({
@@ -142,6 +141,7 @@ const ResourceForm: FC<TSelectOptions> = ({
       resourceType,
     })
   })
+
   const update = handleSubmit(async (data) => {
     const { title, description, url, topicId, resourceType } = data
 
@@ -161,6 +161,7 @@ const ResourceForm: FC<TSelectOptions> = ({
     const selectedTopic = selectOptions.find(
       (option) => option.value === selectedTopicId
     )
+
     if (selectedTopic) {
       setValue('topics', selectedTopic.label)
       setValue('topicId', selectedTopic.value)
@@ -188,6 +189,9 @@ const ResourceForm: FC<TSelectOptions> = ({
         label="Descripción"
         placeholder="Descripción"
         {...register('description')}
+        error={errors.description && true}
+        validationMessage={errors.description?.message}
+        validationType="error"
       />
       <InputGroup
         hiddenLabel
@@ -219,6 +223,7 @@ const ResourceForm: FC<TSelectOptions> = ({
           { id: 'BLOG', name: 'Blog' },
         ]}
         inputName="resourceType"
+        defaultChecked="VIDEO"
       />
       <FlexErrorStyled align="start">
         {errors?.title ||
@@ -229,7 +234,26 @@ const ResourceForm: FC<TSelectOptions> = ({
         ) : null}
       </FlexErrorStyled>
       <ButtonContainerStyled align="stretch">
-        <Button type="submit">{initialValues ? 'Editar' : 'Crear'}</Button>
+        {isCreateSuccess || isUpdateResourceSuccess ? (
+          <ButtonStyled
+            backgroundColor={colors.success}
+            padding={dimensions.spacing.xs}
+            disabled
+          >
+            <Icon data-testid="done-icon" name="done" />
+          </ButtonStyled>
+        ) : (
+          <Button
+            type="submit"
+            disabled={isCreateLoading || isUpdateResourceLoading}
+          >
+            {isCreateLoading || isUpdateResourceLoading ? (
+              <Spinner size="xsmall" />
+            ) : (
+              buttonText
+            )}
+          </Button>
+        )}
       </ButtonContainerStyled>
     </ResourceFormStyled>
   )

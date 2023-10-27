@@ -8,29 +8,27 @@ import {
 } from '../../components/responses/authMiddleware'
 import { ValidationError } from '../../components/errorSchemas'
 import { voteCountSchema } from '../../../schemas'
+import { resourceId } from '../../components/paramSchemas'
 
 registry.registerPath({
   method: 'get',
   tags: ['vote'],
   path: `${pathRoot.v1.vote}/{resourceId}`,
   description:
-    'Get the vote count for a resource, separeted in total votes, upvotes and downvotes',
-  summary: 'Get the vote count for a resource.',
+    'Retrieve a detailed vote count for a specified resource, including the number of upvotes, downvotes, and the overall vote balance.',
+  summary: 'Fetch detailed vote statistics for a resource.',
   request: {
     params: z.object({
-      resourceId: z.string().cuid().openapi({
-        description: 'ID of the resource to get the vote count',
-      }),
+      resourceId,
     }),
   },
   responses: {
     200: {
-      description: 'Successful operation. Votes are retrieved and summed.',
+      description:
+        'Successfully retrieved detailed vote statistics for the specified resource.',
       content: {
         'application/json': {
-          schema: z.object({
-            voteCount: voteCountSchema,
-          }),
+          schema: voteCountSchema,
         },
       },
     },
@@ -44,6 +42,7 @@ registry.registerPath({
         },
       },
     },
+    498: invalidTokenResponse,
   },
 })
 
@@ -85,7 +84,6 @@ registry.registerPath({
       },
     },
     401: missingTokenResponse,
-    405: invalidTokenResponse,
     404: {
       description: 'User or resource not found',
       content: {
@@ -98,5 +96,6 @@ registry.registerPath({
         },
       },
     },
+    498: invalidTokenResponse,
   },
 })

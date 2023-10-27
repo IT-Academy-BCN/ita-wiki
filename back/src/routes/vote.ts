@@ -1,0 +1,38 @@
+import Router from '@koa/router'
+import { z } from 'zod'
+import { authenticate, getUserFromToken, validate } from '../middleware'
+import { getVote, putVote } from '../controllers'
+import { pathRoot } from './routes'
+
+const voteRouter = new Router()
+
+voteRouter.prefix(pathRoot.v1.vote)
+
+voteRouter.get(
+  '/:resourceId',
+  getUserFromToken,
+  validate(
+    z.object({
+      params: z.object({
+        resourceId: z.string().cuid(),
+      }),
+    })
+  ),
+  getVote
+)
+
+voteRouter.put(
+  '/',
+  authenticate,
+  validate(
+    z.object({
+      body: z.object({
+        resourceId: z.string().cuid(),
+        vote: z.enum(['up', 'down', 'cancel']),
+      }),
+    })
+  ),
+  putVote
+)
+
+export { voteRouter }

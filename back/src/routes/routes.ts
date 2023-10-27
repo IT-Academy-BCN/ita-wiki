@@ -8,5 +8,7 @@ export const pathRoot = {
     vote: '/api/v1/vote',
     types: '/api/v1/types',
     users: '/api/v1/users',
+    favorites: '/api/v1/favorites',
+    seen: '/api/v1/seen',
   },
 }

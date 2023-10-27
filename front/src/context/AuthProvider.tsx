@@ -11,6 +11,8 @@ import { urls } from '../constants'
 type TUser = {
   name: string
   avatar: string
+  email: string
+  role?: 'ADMIN' | 'REGISTERED' | 'MENTOR'
 } | null
 
 export type TAuthContext = {

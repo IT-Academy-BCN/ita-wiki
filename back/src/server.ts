@@ -47,6 +47,8 @@ app.use(Routes.mediaRouter.routes())
 app.use(Routes.voteRouter.routes())
 app.use(Routes.typesRouter.routes())
 app.use(Routes.usersRouter.routes())
+app.use(Routes.favorites.routes())
+app.use(Routes.seenRouter.routes())
 
 // Swagger UI
 app.use(swaggeruiCSPMiddleware)

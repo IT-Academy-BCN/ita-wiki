@@ -1,14 +1,15 @@
 import supertest from 'supertest'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
-import { Topic, User } from '@prisma/client'
+import { Resource, Category, Topic, User } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 describe('Testing resource modify endpoint', () => {
   let testTopic: Topic
-
+  let resource: Resource
   beforeAll(async () => {
     testTopic = (await prisma.topic.findUnique({
       where: { slug: 'testing' },
@@ -18,15 +19,19 @@ describe('Testing resource modify endpoint', () => {
       where: { email: 'testingUser@user.cat' },
     })) as User
 
-    await prisma.resource.create({
+    const category = (await prisma.category.findUnique({
+      where: { slug: 'testing' },
+    })) as Category
+
+    resource = await prisma.resource.create({
       data: {
         title: 'test-patch-resource',
         slug: 'test-patch-resource',
         description: 'Test patch resource',
         url: 'https://test.patch',
         resourceType: 'BLOG',
-        status: 'SEEN',
         userId: user.id,
+        categoryId: category.id,
       },
     })
   })
@@ -41,12 +46,12 @@ describe('Testing resource modify endpoint', () => {
   })
 
   test('resource owner should be the same as userId sending the modify petition', async () => {
-    const resource = await prisma.resource.findUnique({
+    const testResource = await prisma.resource.findUnique({
       where: { slug: 'test-patch-resource' },
     })
 
     const newResource = {
-      id: resource!.id,
+      id: testResource!.id,
     }
 
     const response = await supertest(server)
@@ -104,13 +109,13 @@ describe('Testing resource modify endpoint', () => {
 
   test('should modify a resource with new Title', async () => {
     const newTitle = 'test tres'
-    const resource = await prisma.resource.findUnique({
+    const testresource = await prisma.resource.findUnique({
       where: { slug: 'test-patch-resource' },
       include: { topics: true },
     })
 
     const newResource = {
-      id: resource!.id,
+      id: testresource!.id,
       title: newTitle,
     }
     const response = await supertest(server)
@@ -122,5 +127,18 @@ describe('Testing resource modify endpoint', () => {
     })
     expect(lastResource?.title).toBe(newTitle)
     expect(response.status).toBe(204)
+  })
+  test('Should return error 401 if no token is provided', async () => {
+    const response = await supertest(server)
+      .patch(`${pathRoot.v1.resources}`)
+      .send({ id: resource.id, tittle: 'New tittle' })
+    expect(response.status).toBe(401)
+    expect(response.body.message).toBe('Missing token')
+  })
+  test('Check invalid token', async () => {
+    checkInvalidToken(`${pathRoot.v1.resources}`, 'patch', {
+      id: resource.id,
+      tittle: 'New tittle',
+    })
   })
 })

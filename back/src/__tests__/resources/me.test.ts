@@ -1,13 +1,18 @@
 import supertest from 'supertest'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
+import { Category } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
 import { resourceGetSchema } from '../../schemas'
 import { resourceTestData } from '../mocks/resources'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 beforeAll(async () => {
+  const testCategory = (await prisma.category.findUnique({
+    where: { slug: 'testing' },
+  })) as Category
   const user = await prisma.user.findUnique({
     where: { email: 'testingUser@user.cat' },
   })
@@ -16,6 +21,7 @@ beforeAll(async () => {
     return {
       ...resource,
       userId: user!.id,
+      categoryId: testCategory.id,
     }
   })
   await prisma.resource.createMany({
@@ -33,7 +39,10 @@ describe('Testing resources/me endpoint', () => {
   test('Should return error if no token is provided', async () => {
     const response = await supertest(server).get(`${pathRoot.v1.resources}/me`)
     expect(response.status).toBe(401)
+    expect(response.body.message).toBe('Missing token')
   })
+
+  checkInvalidToken(`${pathRoot.v1.resources}/me`, 'get')
 
   test('User with no resources posted returns empty array.', async () => {
     // User admin has no posted resources

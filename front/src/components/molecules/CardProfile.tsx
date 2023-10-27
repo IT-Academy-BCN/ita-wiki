@@ -15,8 +15,8 @@ const ContentContainer = styled(FlexBox)`
   max-width: 1189px;
   width: 100%;
   border-radius: ${dimensions.borderRadius.sm};
-  transition: all .3s ease;
-  
+  transition: all 0.3s ease;
+
   @media only ${device.Laptop} {
     padding: ${dimensions.spacing.xxl} 49px;
     background-color: ${colors.white};
@@ -64,7 +64,7 @@ const UsernameStyled = styled(Text)`
 const TitleStyled = styled(Title)`
   margin: ${dimensions.spacing.none};
   display: none;
-  
+
   @media only ${device.Laptop} {
     font-size: 30px;
     margin: ${dimensions.spacing.none};
@@ -88,7 +88,7 @@ const ButtonStyled = styled(Button)`
   height: 30px;
   padding-inline: ${dimensions.spacing.xxs};
   padding-block: ${dimensions.spacing.none};
-  gap: .1em;
+  gap: 0.1em;
   position: absolute;
   top: ${dimensions.spacing.base};
   right: ${dimensions.spacing.base};
@@ -126,17 +126,15 @@ const SideCounter = styled(FlexBox)`
     width: auto;
   }
 `
-
 type TCardProfile = {
-  img: string,
-  userName: string,
-  email: string,
-  contributions?: number,  
-  votes?: number,
+  img: string
+  userName: string
+  email: string
+  contributions?: number
+  votes?: number
   favorites?: number
   handleLogOut: () => void
 }
-
 const CardProfile = ({
   img,
   userName,
@@ -144,52 +142,50 @@ const CardProfile = ({
   contributions = 0,
   votes = 0,
   favorites = 0,
-  handleLogOut
-}: TCardProfile) => 
-    <MainContainer>
-      <ContentContainer gap={ `${dimensions.spacing.lg}` }>
+  handleLogOut,
+}: TCardProfile) => (
+  <MainContainer data-testid="card-profile">
+    <ContentContainer gap={`${dimensions.spacing.lg}`}>
+      <TitleStyled as="h1" fontWeight="bold" color={colors.black.black3}>
+        Perfil
+      </TitleStyled>
 
-        <TitleStyled as="h1" fontWeight="bold" color={colors.black.black3}>
-          Perfil
-        </TitleStyled>
+      <InfoContainer>
+        <UserInfoContainer>
+          <UserImage src={img} alt={`${userName}'s portrait`} />
+          <UserInfoWrapper>
+            <UsernameStyled>{userName}</UsernameStyled>
+            <TextStyled>{email}</TextStyled>
+            <ButtonStyled outline onClick={handleLogOut}>
+              Cerrar sesión <img src={icons.logout} alt="logout icon" />
+            </ButtonStyled>
+          </UserInfoWrapper>
+        </UserInfoContainer>
 
-        <InfoContainer>
+        <UserActivityWrapper>
+          <SideCounter>
+            <Counter
+              number={contributions}
+              text="Aportaciones"
+              icon="attach_file"
+            />
+          </SideCounter>
 
-          <UserInfoContainer>
-            <UserImage src={ img } alt={`${userName}'s portrait`} />
-            <UserInfoWrapper>
-              <UsernameStyled>
-                { userName }
-              </UsernameStyled>
-              <TextStyled>
-                { email }
-              </TextStyled>
-              <ButtonStyled outline onClick={ handleLogOut } >
-                  Cerrar sesión 
-                  <img src={ icons.logout } alt='logout icon'/> 
-              </ButtonStyled>
-            </UserInfoWrapper>
-          </UserInfoContainer>
+          <CenteredCounter>
+            <Counter number={votes} text="Votos recibidos" icon="expand_less" />
+          </CenteredCounter>
 
-          <UserActivityWrapper>
-
-            <SideCounter>
-              <Counter number={ contributions } text='Aportaciones' icon='attach_file' />
-            </SideCounter>
-
-            <CenteredCounter>
-              <Counter number={ votes } text='Votos recibidos' icon='expand_less' />
-            </CenteredCounter>
-
-            <SideCounter>
-              <Counter number={ favorites } text='Favoritos guardados' icon='favorite' />
-            </SideCounter>
-
-          </UserActivityWrapper>
-
-        </InfoContainer>
-
-      </ContentContainer>
-    </MainContainer>
+          <SideCounter>
+            <Counter
+              number={favorites}
+              text="Favoritos guardados"
+              icon="favorite"
+            />
+          </SideCounter>
+        </UserActivityWrapper>
+      </InfoContainer>
+    </ContentContainer>
+  </MainContainer>
+)
 
 export { CardProfile }

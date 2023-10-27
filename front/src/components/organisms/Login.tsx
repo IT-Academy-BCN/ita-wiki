@@ -4,10 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
 import { UserLoginSchema } from '@itacademy/schemas'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
 import InputGroup from '../molecules/InputGroup'
 import { Button, Icon, Spinner, Text, Title, ValidationMessage } from '../atoms'
-import { urls } from '../../constants'
 import { dimensions, colors, FlexBox, device } from '../../styles'
+import { loginUserFetcher } from '../../helpers/fetchers'
 
 const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.none};
@@ -73,32 +74,10 @@ type TLogin = {
   handleRegisterModal: () => void
 }
 
-const loginUserFetcher = async (user: object) => {
-  const errorMessage: { [key: number]: string } = {
-    403: 'Usuario en proceso de activación. Por favor, inténtelo más tarde.',
-    404: 'Acceso restringido. Por favor, contacte con el personal de IT Academy.',
-    422: 'Identificador o contraseña incorrectos.',
-  }
-
-  const response = await fetch(urls.logIn, {
-    method: 'POST',
-    body: JSON.stringify(user),
-    headers: { 'Content-Type': 'application/json' },
-  })
-
-  if (
-    !response.ok &&
-    Object.hasOwnProperty.call(errorMessage, response.status)
-  ) {
-    throw new Error(errorMessage[response.status])
-  }
-
-  return response.status === 204 ? null : response.json()
-}
-
 const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
   const [isVisibility, setIsVisibility] = useState(false)
   const [responseError, setResponseError] = useState('')
+  const { t } = useTranslation()
   const {
     register,
     handleSubmit,
@@ -153,7 +132,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
         <InputGroup
           id="dni"
           label="dni"
-          placeholder="DNI o NIE"
+          placeholder={t('DNI')}
           {...register('dni')}
           name="dni"
           error={errors.dni && true}
@@ -165,7 +144,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
           type={isVisibility ? 'text' : 'password'}
           id="password"
           label="password"
-          placeholder="Contraseña"
+          placeholder={t('Password')}
           {...register('password')}
           name="password"
           color={colors.gray.gray4}
@@ -183,7 +162,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
               handleLoginModal()
             }}
           >
-            <Text>Recordar/cambiar contraseña</Text>
+            <Text>{t('recordar/cambiar')}</Text>
           </TextDecorationStyled>
         </FlexBox>
         {isSuccess ? (
@@ -207,7 +186,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
             handleLoginModal()
           }}
         >
-          ¿No tienes cuenta?, crear una
+          {t('no tienes una cuenta?')}
         </TextDecorationStyled>
       </Text>
     </LoginStyled>

@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 import { useLocation, useParams } from 'react-router-dom'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
 import {
   DesktopSideMenu,
@@ -15,7 +14,7 @@ import {
   TopicsRadioWidget,
 } from '../components/organisms'
 import { Button, Icon, Input, Text, Title } from '../components/atoms'
-import { TFilters } from '../helpers'
+
 import {
   AccessModalContent,
   InputGroup,
@@ -25,7 +24,8 @@ import {
   TypesFilterWidget,
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
-import { TGetTopics, getTopics } from '../helpers/fetchers'
+import { useGetTopics } from '../hooks'
+import { TFilters } from '../types'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -47,14 +47,16 @@ const ContainerMain = styled(FlexBox)`
   width: 100%;
   height: 90%;
 
-  @media only ${device.Tablet} {
+  @media ${device.Tablet} {
     display: flex;
-
     flex-direction: row;
-
     align-items: flex-start;
-    gap: ${dimensions.spacing.xl};
+    gap: ${dimensions.spacing.sm};
     justify-content: flex-end;
+  }
+
+  @media ${device.Desktop} {
+    gap: ${dimensions.spacing.xl};
   }
 `
 
@@ -67,13 +69,18 @@ const WiderContainer = styled(FlexBox)`
 const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 2 1 1;
-  background-color: ${colors.white};
   height: 100%;
+  width: 100%;
+  background-color: ${colors.white};
   padding: ${dimensions.spacing.sm} ${dimensions.spacing.xxs};
   border-radius: ${dimensions.borderRadius.base};
 
   @media ${device.Tablet} {
+    flex-direction: row;
+    padding: ${dimensions.spacing.md} ${dimensions.spacing.base};
+  }
+
+  @media ${device.Desktop} {
     flex-direction: row;
     padding: ${dimensions.spacing.md} ${dimensions.spacing.xxxl};
   }
@@ -86,8 +93,16 @@ const FiltersContainer = styled(FlexBox)`
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    flex: 1 2 20rem;
+    flex: 1 2 9rem;
+  }
+
+  @media ${device.Laptop} {
     padding-top: ${dimensions.spacing.xxs};
+    flex: 1 2 28rem;
+  }
+
+  @media ${device.Desktop} {
+    flex: 1 2 34rem;
   }
 `
 
@@ -101,8 +116,7 @@ const ScrollTopics = styled(FlexBox)`
 `
 
 const ResourcesContainer = styled(FlexBox)`
-  padding: ${dimensions.spacing.none} ${dimensions.spacing.xs}
-    ${dimensions.spacing.none} ${dimensions.spacing.xs};
+  padding-left: ${dimensions.spacing.xxxs};
   justify-content: flex-start;
   align-items: flex-start;
   overflow-y: auto;
@@ -112,8 +126,8 @@ const ResourcesContainer = styled(FlexBox)`
   }
 
   @media ${device.Laptop} {
-    flex: 4 1 26rem;
-    padding-left: ${dimensions.spacing.xs};
+    width: 100%;
+    padding-left: ${dimensions.spacing.md};
   }
 `
 
@@ -131,7 +145,9 @@ const SearchBar = styled(InputGroup)`
     display: flex;
     color: ${colors.gray.gray4};
     margin-top: ${dimensions.spacing.xxs};
+    margin-right: 0.08rem;
     width: 40%;
+    max-width: 11rem;
     justify-content: flex-end;
 
     ${FlexBox} {
@@ -165,6 +181,7 @@ const VotesDateContainer = styled(FlexBox)`
     align-items: flex-end;
     direction: row;
     width: 100%;
+    padding-right: ${dimensions.spacing.base};
   }
 `
 
@@ -183,27 +200,43 @@ const ContainerResourcesAside = styled(FlexBox)`
 
   @media ${device.Tablet} {
     display: flex;
-    flex: 1;
     justify-content: flex-start;
     align-items: flex-start;
     align-content: flex-end;
+    gap: ${dimensions.spacing.sm};
+    max-width: 12rem;
+  }
+
+  @media ${device.Laptop} {
+    max-width: 16rem;
+    gap: ${dimensions.spacing.md};
+  }
+
+  @media ${device.Desktop} {
+    max-width: 20rem;
     gap: ${dimensions.spacing.xl};
-    height: 100%;
   }
 `
 
 const ResourcesAside = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
-  flex: 1 2 20rem;
-  min-height: 14rem;
-  max-height: 20rem;
+  flex: 1 2 19rem;
   overflow: hidden;
   overflow-x: auto;
   width: 100%;
   background-color: ${colors.white};
   border-radius: ${dimensions.borderRadius.base};
-  padding: ${dimensions.spacing.none} ${dimensions.spacing.xxl};
+  padding: ${dimensions.spacing.none} ${dimensions.spacing.md};
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media ${device.Laptop} {
+    padding: ${dimensions.spacing.none} ${dimensions.spacing.xs}
+      ${dimensions.spacing.md} ${dimensions.spacing.lg};
+  }
 `
 
 const MobileTopicsContainer = styled(FlexBox)`
@@ -238,7 +271,7 @@ const NewResourceButton = styled(Button)`
     border: 1px dashed ${colors.gray.gray3};
   }
 
-  @media ${device.Tablet} {
+  @media ${device.Mobile} {
     display: none;
   }
 `
@@ -418,32 +451,38 @@ const Category: FC = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
   }
 
-  const { data: fetchedTopics } = useQuery<TGetTopics>(
-    ['getTopics', slug || ''],
-    () => getTopics(slug)
-  )
+  const { data: fetchedTopics } = useGetTopics(slug ?? '')
 
-  const mappedTopics = [
+  const mappedTopicsForFilterWidget = [
     { value: 'todos', label: 'Todos' },
     ...(fetchedTopics?.map((t) => {
       const selectOptions = { id: t.id, value: t.slug, label: t.name }
       return selectOptions
-    }) || []),
+    }) ?? []),
   ]
+
+  const topicsForResourceForm = fetchedTopics?.map((t) => ({
+    id: t.id,
+    value: t.slug,
+    label: t.name,
+  }))
 
   return (
     <>
       <Container direction="row" justify="flex-start" align="start">
         <DesktopSideMenu />
         <WiderContainer>
-          <Navbar toggleModal={toggleModal} />
+          <Navbar
+            toggleModal={toggleModal}
+            handleAccessModal={handleAccessModal}
+          />
           <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
               Temas
             </Title>
             <StyledSelectGroup
               defaultValue={topic}
-              options={mappedTopics}
+              options={mappedTopicsForFilterWidget}
               id="topics"
               label="Temas"
               name="topics"
@@ -466,8 +505,11 @@ const Category: FC = () => {
                     />
                   )}
                 </ScrollTopics>
+
                 <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
-                <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+                {user && (
+                  <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+                )}
               </FiltersContainer>
               <ResourcesContainer>
                 <TitleResourcesContainer>
@@ -529,7 +571,9 @@ const Category: FC = () => {
                 className={isFiltersOpen ? 'open' : 'close'}
               >
                 <TypesFilterWidget handleTypesFilter={handleTypesFilter} />
-                <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+                {user && (
+                  <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
+                )}
                 <CloseFilterButton
                   data-testid="close-filters-button"
                   onClick={handleFiltersClose}
@@ -551,7 +595,7 @@ const Category: FC = () => {
       </Container>
       {/* ==> ADD RESOURCE MODAL */}
       <Modal isOpen={isOpen} toggleModal={toggleModal} title="Nuevo Recurso">
-        <ResourceForm selectOptions={mappedTopics} />
+        <ResourceForm selectOptions={topicsForResourceForm ?? []} />
         <Button outline onClick={toggleModal}>
           Cancelar
         </Button>

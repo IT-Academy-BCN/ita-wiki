@@ -5,6 +5,8 @@ export const urls = {
   createResource: '/api/v1/resources',
   getMe: '/api/v1/auth/me',
   getTopics: '/api/v1/topics',
+  postTopics: '/api/v1/topics',
+  patchTopics: '/api/v1/topics',
   getCategories: '/api/v1/categories',
   getResources: '/api/v1/resources',
   getTypes: '/api/v1/types',
@@ -13,4 +15,5 @@ export const urls = {
   updateResource: '/api/v1/resources',
   vote: '/api/v1/vote/',
   users: '/api/v1/users',
+  favorites: '/api/v1/favorites',
 }

@@ -24,11 +24,11 @@ export const invalidTokenResponse = {
   },
 }
 
-export const userNotFound = {
+export const userNotFoundResponse = {
   description: 'User not found',
   content: {
     'application/json': {
-      schema: NotFoundError.openapi({ example: { message: 'User not found' } }),
+      schema: NotFoundError,
     },
   },
 }

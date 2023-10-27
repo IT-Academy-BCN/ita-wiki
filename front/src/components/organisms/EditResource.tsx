@@ -1,53 +1,38 @@
 import { useState } from 'react'
 import styled from 'styled-components'
-import { useQuery } from '@tanstack/react-query'
 import { FlexBox, colors, dimensions } from '../../styles'
 import ResourceForm from './ResourceForm'
 import { Button } from '../atoms'
 import icons from '../../assets/icons'
-import { urls } from '../../constants'
 import { Modal } from '../molecules/Modal'
+import { TEditResourceProps, TMappedTopics } from '../../types'
+import { useGetTopics } from '../../hooks'
 
-type TTopic = {
-  topic: {
-    id: string
-    name: string
-    slug: string
-    categoryId: string
-    createdAt: string
-    updatedAt: string
-  }
-}
-
-type TEditResourceProps = {
-  description: string
-  id: string
-  title: string
-  url: string
-  resourceType: string
-  topics: TTopic[]
-}
-type TMappedTopics = {
-  id: string
-  name: string
-}
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
   margin: ${dimensions.spacing.xs} 0;
 `
+
 const ButtonStyled = styled(Button)`
   font-weight: 500;
   margin: ${dimensions.spacing.xxxs} ${dimensions.spacing.xl};
   color: ${({ outline }) =>
     outline ? `${colors.gray.gray3}` : `${colors.white}`};
 `
-const StyledSvg = styled.div`
-  position: absolute;
-  top: ${dimensions.spacing.xxs};
-  right: ${dimensions.spacing.xxs};
-  padding: 2px;
-  background-color: rgba(255, 255, 255, 0.5);
+
+const StyledSvg = styled.div<{ isInCardResource: boolean }>`
+  position: ${(props) => (props.isInCardResource ? 'relative' : 'absolute')};
+  top: ${(props) => (props.isInCardResource ? '1px' : '4px')};
+  right: ${(props) => (props.isInCardResource ? '0' : '6px')};
+  background-color: ${(props) =>
+    props.isInCardResource ? 'transparent' : 'rgba(255, 255, 255, 0.5)'};
+  padding: ${(props) => (props.isInCardResource ? '1px' : '2px')};
+
+  > img {
+    cursor: pointer;
+  }
 `
+
 const EditResource = ({
   description,
   id,
@@ -55,19 +40,15 @@ const EditResource = ({
   url,
   resourceType,
   topics,
+  isInCardResource = false,
 }: TEditResourceProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   const openModal = () => {
     setIsModalOpen(true)
   }
-  const getTopics = async () => {
-    const response = await fetch(urls.getTopics)
-    const data = await response.json()
-    return data
-  }
-  const { data: fetchedTopics } = useQuery(['getTopics'], getTopics)
 
+  const { data: fetchedTopics } = useGetTopics()
   const mappedTopics =
     fetchedTopics?.map((topic: TMappedTopics) => ({
       value: topic.id,
@@ -99,7 +80,7 @@ const EditResource = ({
           <ButtonStyled outline>Eliminar</ButtonStyled>
         </ButtonContainerStyled>
       </Modal>
-      <StyledSvg onClick={openModal} style={{ cursor: 'pointer' }}>
+      <StyledSvg onClick={openModal} isInCardResource={isInCardResource}>
         <img src={icons.editPen} alt="Editar recurso" data-testid="edit-icon" />
       </StyledSvg>
     </>

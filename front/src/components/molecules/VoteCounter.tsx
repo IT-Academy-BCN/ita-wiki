@@ -1,80 +1,42 @@
 import styled from 'styled-components'
 import { FC } from 'react'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
-import { urls } from '../../constants'
 import { useAuth } from '../../context/AuthProvider'
+import { useGetVotes } from '../../hooks'
+import { updateVote } from '../../helpers/fetchers'
 
-const StyledIcon = styled(Icon)`
-  color: ${colors.gray.gray3};
+type ArrowProp = {
+  color: string
+}
+
+const StyledIcon = styled(Icon)<ArrowProp>`
+  color: ${({ color }) => color};
+
   &:hover {
     color: ${({ name }) =>
       (name === 'expand_less' && colors.success) ||
       (name === 'expand_more' && colors.error)};
   }
 `
-
-type TVoteCounter = {
-  voteCount: number
+export type TVoteCounter = {
+  totalVotes: number
   resourceId: string
   handleAccessModal: () => void
 }
 
-type TVoteCountResponse = {
-  voteCount: {
-    downvote: number
-    upvote: number
-    total: number
-  }
-}
-
-type TVoteMutationData = {
-  resourceId: string
-  vote: 'up' | 'down' | 'cancel'
-}
-
-const getVotes = async (resourceId: string): Promise<number> => {
-  const response = await fetch(`${urls.vote}${resourceId}`)
-  if (!response.ok) {
-    throw new Error('Error fetching votes')
-  }
-  const data = await (response.json() as Promise<TVoteCountResponse>)
-  return data.voteCount.total
-}
-
-const voteMutation = async ({ resourceId, vote }: TVoteMutationData) => {
-  const response = await fetch(urls.vote, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ resourceId, vote }),
-  })
-
-  if (!response.ok) {
-    throw new Error('Error fetching votes')
-  }
-}
-
 export const VoteCounter: FC<TVoteCounter> = ({
-  voteCount,
+  totalVotes,
   resourceId,
   handleAccessModal,
 }) => {
   const { user } = useAuth()
 
-  const { data = voteCount, refetch } = useQuery<number>(
-    ['votes', resourceId],
-    () => getVotes(resourceId),
-    {
-      enabled: false,
-      onError: () => {
-        // eslint-disable-next-line no-console
-        console.error('Error fetching votes')
-      },
-    }
-  )
-  const newVotation = useMutation({
-    mutationFn: voteMutation,
+  const { fetchedVotes, refetch } = useGetVotes(resourceId)
+
+  const castVote = useMutation({
+    mutationFn: updateVote,
     onSuccess: () => {
       refetch()
     },
@@ -89,7 +51,12 @@ export const VoteCounter: FC<TVoteCounter> = ({
       handleAccessModal()
       return
     }
-    newVotation.mutate({ resourceId, vote })
+
+    if (fetchedVotes?.userVote === 0) {
+      castVote.mutate({ resourceId, vote })
+    } else {
+      castVote.mutate({ resourceId, vote: 'cancel' })
+    }
   }
 
   return (
@@ -97,6 +64,11 @@ export const VoteCounter: FC<TVoteCounter> = ({
       <StyledIcon
         name="expand_less"
         data-testid="increase"
+        color={
+          fetchedVotes !== undefined && fetchedVotes.userVote > 0
+            ? colors.success
+            : colors.gray.gray3
+        }
         onClick={() => handleClick('up')}
       />
       <Text
@@ -104,12 +76,17 @@ export const VoteCounter: FC<TVoteCounter> = ({
         style={{ marginTop: '0', marginBottom: '0' }}
         data-testid="voteTest"
       >
-        {data}
+        {fetchedVotes?.total ?? totalVotes}
       </Text>
       <StyledIcon
         name="expand_more"
         id="decrease"
         data-testid="decrease"
+        color={
+          fetchedVotes !== undefined && fetchedVotes.userVote < 0
+            ? colors.error
+            : colors.gray.gray3
+        }
         onClick={() => handleClick('down')}
       />
     </FlexBox>

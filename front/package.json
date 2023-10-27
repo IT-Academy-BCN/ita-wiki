@@ -15,14 +15,16 @@
     "@itacademy/schemas": "^0.2.0",
     "@tanstack/react-query": "^4.29.5",
     "@tanstack/react-query-devtools": "^4.29.6",
+    "i18next": "^23.5.1",
     "modern-normalize": "1.1.0",
     "qs": "^6.11.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.43.7",
+    "react-i18next": "^13.2.2",
     "react-router-dom": "6.9.0",
     "styled-components": "5.3.9",
-    "zod": "^3.21.4"
+    "zod": "3.22.4"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "4.29.4",

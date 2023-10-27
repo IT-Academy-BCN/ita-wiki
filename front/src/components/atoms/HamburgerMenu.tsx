@@ -2,15 +2,13 @@ import { FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, device } from '../../styles'
 
-type HamburgerMenuProps = {
+type THamburgerMenu = {
   open: boolean
   onClick: () => void
 }
-
-const StyledBurger = styled.button<HamburgerMenuProps>`
+const StyledBurger = styled.button<THamburgerMenu>`
   position: absolute;
-  top: 45%;
-  left: 20px;
+  left: 0;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -55,7 +53,7 @@ const StyledBurger = styled.button<HamburgerMenuProps>`
   }
 `
 
-const HamburgerMenu: FC<HamburgerMenuProps> = ({ open, onClick }) => (
+const HamburgerMenu: FC<THamburgerMenu> = ({ open, onClick }) => (
   <StyledBurger open={open} onClick={onClick} data-testid="hamburger-menu">
     <div data-testid="hamburger-menu-item" />
     <div data-testid="hamburger-menu-item" />

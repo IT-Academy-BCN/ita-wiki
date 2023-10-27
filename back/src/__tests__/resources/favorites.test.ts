@@ -1,11 +1,13 @@
 import supertest from 'supertest'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import jwt, { Secret } from 'jsonwebtoken'
+import { Category } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { resourceTestData } from '../mocks/resources'
 import { pathRoot } from '../../routes/routes'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 const url: string = `${pathRoot.v1.resources}/favorites`
 const categorySlug = 'testing'
@@ -18,6 +20,9 @@ const invalidUserToken = jwt.sign(
 )
 
 beforeAll(async () => {
+  const testCategory = (await prisma.category.findUnique({
+    where: { slug: 'testing' },
+  })) as Category
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,
     user: { connect: { dni: testUserData.user.dni } },
@@ -27,6 +32,7 @@ beforeAll(async () => {
     favorites: {
       create: [{ user: { connect: { dni: testUserData.admin.dni } } }],
     },
+    category: { connect: { id: testCategory.id } },
   }))
 
   await prisma.$transaction(
@@ -46,10 +52,10 @@ afterAll(async () => {
   })
 })
 
-describe.skip('Testing GET resource/favorites/:categorySlug?', () => {
+describe('Testing GET resource/favorites/:categorySlug?', () => {
   test('Should respond 200 status with category param', async () => {
     const response = await supertest(server)
-      .get(`${url}`)
+      .get(`${url}/:${categorySlug}`)
       .set('Cookie', authToken.admin)
     expect(response.status).toBe(200)
   })
@@ -69,16 +75,12 @@ describe.skip('Testing GET resource/favorites/:categorySlug?', () => {
       .set('Cookie', `token=${invalidUserToken}`)
     expect(response.status).toBe(404)
   })
-  test('Should respond 405 status with invalid token', async () => {
-    const response = await supertest(server)
-      .get(`${url}/${categorySlug}`)
-      .set('Cookie', 'token=randomToken')
-    expect(response.status).toBe(405)
-  })
+
+  checkInvalidToken(`${url}/${categorySlug}`, 'get')
 
   test('Should return favorites as an array of objects.', async () => {
     const response = await supertest(server)
-      .get(`${url}/${categorySlug}`)
+      .get(`${url}`)
       .set('Cookie', authToken.admin)
 
     expect(response.body).toBeInstanceOf(Array)
@@ -86,16 +88,19 @@ describe.skip('Testing GET resource/favorites/:categorySlug?', () => {
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          resource: expect.objectContaining({
-            id: expect.any(String),
-            title: expect.any(String),
-            slug: expect.any(String),
-            description: expect.any(String),
-            url: expect.any(String),
-            resourceType: expect.any(String),
-            userId: expect.any(String),
-            createdAt: expect.any(String),
-            updatedAt: expect.any(String),
+          id: expect.any(String),
+          title: expect.any(String),
+          slug: expect.any(String),
+          description: expect.any(String),
+          url: expect.any(String),
+          resourceType: expect.any(String),
+          userId: expect.any(String),
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          voteCount: expect.objectContaining({
+            upvote: expect.any(Number),
+            downvote: expect.any(Number),
+            total: expect.any(Number),
           }),
         }),
       ])

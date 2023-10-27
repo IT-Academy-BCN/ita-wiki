@@ -3,12 +3,16 @@ import { expect, test, describe } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
+import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 describe('Testing GET endpoint', () => {
   test('Should return error if no token is provided', async () => {
     const response = await supertest(server).get(`${pathRoot.v1.users}`)
     expect(response.status).toBe(401)
+    expect(response.body.message).toBe('Missing token')
   })
+
+  checkInvalidToken(`${pathRoot.v1.users}`, 'get')
 
   test('Should return successful response if valid token provided', async () => {
     const response = await supertest(server)
