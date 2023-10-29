@@ -2,10 +2,8 @@ import { useEffect, ChangeEvent } from 'react'
 import styled from 'styled-components'
 import { CheckBox, Label, Spinner, Text } from '../atoms'
 import { colors, dimensions, FlexBox, font } from '../../styles'
-
 import { useFiltersContext } from '../../context/store/context'
 import { ActionTypes } from '../../context/store/types'
-
 import { useGetTypes } from '../../hooks'
 
 const StyledFlexbox = styled(FlexBox)`

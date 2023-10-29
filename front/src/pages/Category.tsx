@@ -391,9 +391,6 @@ const Category: FC = () => {
   const [topic, setTopic] = useState('todos')
   const [filters, setFilters] = useState<TFilters>({
     slug,
-    // resourceTypes: [],
-    status: [],
-    topic: topic === 'todos' ? undefined : topic,
   })
 
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
@@ -410,13 +407,6 @@ const Category: FC = () => {
     setIsFiltersOpen(false)
   }
 
-  useEffect(() => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      slug,
-    }))
-  }, [slug])
-
   const handleAccessModal = () => {
     setIsAccessModalOpen(!isAccessModalOpen)
   }
@@ -428,37 +418,25 @@ const Category: FC = () => {
   const handleLoginModal = () => {
     setIsLoginOpen(!isLoginOpen)
   }
-  const { topics, dispatch } = useFiltersContext()
+  // const { topics, dispatch } = useFiltersContext()
 
-  const handleTopicFilter = (selectedTopic: string) => {
-    const filterTopic = selectedTopic === 'todos' ? undefined : selectedTopic
-
-    setFilters({ ...filters, topic: filterTopic })
-    setTopic(selectedTopic)
-
-    dispatch({
-      type: ActionTypes.SetTopics,
-      payload: { topics: [...topics, selectedTopic] },
-    })
-  }
-
-  const handleSelectTopicFilter = (
-    e: ChangeEvent<HTMLSelectElement>,
-    item: string
-  ) => {
-    const selectedTopic = e.target.value
-    if (selectedTopic) {
-      dispatch({
-        type: ActionTypes.SetTopics,
-        payload: { topics: [...topics, item] },
-      })
-    } else {
-      dispatch({
-        type: ActionTypes.SetTopics,
-        payload: { topics: topics.filter((el: string) => el !== item) },
-      })
-    }
-  }
+  // const handleSelectTopicFilter = (
+  //   e: ChangeEvent<HTMLSelectElement>,
+  //   item: string
+  // ) => {
+  //   const selectedTopic = e.target.value
+  //   if (selectedTopic) {
+  //     dispatch({
+  //       type: ActionTypes.SetTopics,
+  //       payload: { topics: [...topics, item] },
+  //     })
+  //   } else {
+  //     dispatch({
+  //       type: ActionTypes.SetTopics,
+  //       payload: { topics: topics.filter((el: string) => el !== item) },
+  //     })
+  //   }
+  // }
 
   const handleSortOrder = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
@@ -499,7 +477,7 @@ const Category: FC = () => {
               id="topics"
               label="Temas"
               name="topics"
-              onChange={() => handleSelectTopicFilter}
+              // onChange={() => handleSelectTopicFilter}
             />
           </MobileTopicsContainer>
           <ContainerMain>
@@ -513,8 +491,8 @@ const Category: FC = () => {
                   {slug && (
                     <TopicsRadioWidget
                       slug={slug}
-                      topic={topic}
-                      setTopic={handleTopicFilter}
+                      // topic={topic}
+                      // setTopic={handleTopicFilter}
                     />
                   )}
                 </ScrollTopics>

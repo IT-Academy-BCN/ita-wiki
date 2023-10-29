@@ -6,6 +6,8 @@ import CardResource from './CardResource'
 import { useSortByDate } from '../../hooks/useSortByDate'
 import { useAuth } from '../../context/AuthProvider'
 import { useFiltersContext } from '../../context/store/context'
+import { TFilters } from '../../types'
+import { useGetResources } from '../../hooks'
 
 type TTopic = {
   topic: {
@@ -71,19 +73,24 @@ const ResourceCardList: FC<TResourceCardList> = ({
 }) => {
   const { user } = useAuth()
 
-  const { types, status } = useFiltersContext()
+  const { types, status, topics } = useFiltersContext()
 
   const filters: TFilters = {
     resourceTypes: types,
     status,
+    topics,
   }
 
-  const { isLoading, data, error } = useQuery<TResources>(
-    ['getResources', buildQueryString(filters) || ''],
-    () => getResources(buildQueryString(filters) || '')
-  )
+  const { isLoading, data, error } = useGetResources(filters)
 
   const { sortedItems } = useSortByDate<TResource>(data, 'updatedAt', sortOrder)
+
+  // const prueba = sortedItems.map((item) =>
+  //   item.topics.map((topicObj) => topicObj.topic.categoryId)
+  // )
+
+  // console.log('prueba', topics, status, types)
+
   if (error) return <p>Ha habido un error...</p>
   return (
     <StyledFlexBox direction="column" data-testid="resource-list">
