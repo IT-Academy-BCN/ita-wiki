@@ -101,6 +101,7 @@ describe('FavoritesWidget', () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)
+
     queryClient.setQueryData(['getResources'], [resourceNotFavoriteMock])
     const queryData = queryClient.getQueryData(['getResources']) as TResource[]
     const { rerender } = render(
@@ -131,6 +132,37 @@ describe('FavoritesWidget', () => {
       expect(favIconDeselected).toHaveAttribute('title', 'Elimina de favorits')
       expect(favIconDeselected).toHaveAttribute('fill', '1')
       expect(screen.queryByTitle('Afegeix a favorits')).not.toBeInTheDocument()
+    })
+  })
+
+  it('should invalidate favorites queries when resource is changed to favorite', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Name',
+        avatar: 'Avatar',
+        email: 'mail@domain.com',
+      },
+    } as TAuthContext)
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'react',
+    } as Readonly<Params>)
+
+    const spyInvalidate = vi
+      .spyOn(queryClient, 'invalidateQueries')
+      .mockImplementation(() => Promise.resolve())
+
+    render(<FavoritesIcon resourceId="notFavoriteId" isFavorite={false} />)
+
+    const favIconDeselected = screen.getByText('favorite')
+
+    expect(favIconDeselected).toBeInTheDocument()
+
+    expect(favIconDeselected).toHaveAttribute('fill', '0')
+
+    fireEvent.click(favIconDeselected)
+
+    await waitFor(() => {
+      expect(spyInvalidate).toHaveBeenCalled()
     })
   })
 
@@ -181,7 +213,7 @@ describe('FavoritesWidget', () => {
     })
   })
 
-  it('should remove the favorite from getFavorites array when user click changes to remove favorite', async () => {
+  it('should remove the resource from getFavorites array when user removes favorite', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Name',
@@ -209,7 +241,7 @@ describe('FavoritesWidget', () => {
     queryClient.setQueryData(['getResources'], [resourceFavoriteMock])
     const queryData = queryClient.getQueryData(['getResources']) as TResource[]
 
-    const { rerender } = render(
+    render(
       <FavoritesIcon
         resourceId={resourceFavoriteMock.id}
         isFavorite={queryData[0].isFavorite}
@@ -220,28 +252,20 @@ describe('FavoritesWidget', () => {
 
     expect(favIconSelected).toHaveAttribute('fill', '1')
 
+    const previousFavorites = queryClient.getQueryData([
+      'getFavorites',
+    ]) as TFavorites[]
+
+    expect(previousFavorites).toHaveLength(2)
+
     fireEvent.click(favIconSelected)
 
     await waitFor(() => {
-      const queryDataUpdated = queryClient.getQueryData([
-        'getResources',
-      ]) as TResource[]
-      rerender(
-        <FavoritesIcon
-          resourceId={resourceFavoriteMock.id}
-          isFavorite={queryDataUpdated[0].isFavorite}
-        />
-      )
+      const updatedFavorites = queryClient.getQueryData([
+        'getFavorites',
+      ]) as TFavorites[]
 
-      expect(favIconSelected).toHaveAttribute('fill', '0')
-    })
-
-    const updatedFavorites = queryClient.getQueryData([
-      'getFavorites',
-    ]) as TFavorites[]
-    expect(updatedFavorites).not.toContain({
-      id: resourceFavoriteMock.id,
-      isFavorite: true,
+      expect(updatedFavorites).toHaveLength(1)
     })
   })
 

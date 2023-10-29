@@ -21,7 +21,6 @@ export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
         .getQueryCache()
         .findAll(['getResources'])
       const queryKeys = queryCacheGetResources.map((q) => q.queryKey)
-
       queryKeys.forEach((queryKey) => {
         queryClient.setQueryData(
           queryKey,
@@ -38,13 +37,17 @@ export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
         )
       })
 
-      const queryCacheGetFavorites = queryClient
-        .getQueryCache()
-        .findAll(['getFavorites'])
-      const favQueryKeys = queryCacheGetFavorites.map((q) => q.queryKey)
+      if (!isFavorite) {
+        queryClient.invalidateQueries({
+          queryKey: ['getFavorites'],
+        })
+      } else {
+        const queryCacheGetFavorites = queryClient
+          .getQueryCache()
+          .findAll(['getFavorites'])
+        const favQueryKeys = queryCacheGetFavorites.map((q) => q.queryKey)
 
-      favQueryKeys.forEach((favQueryKey) => {
-        if (isFavorite) {
+        favQueryKeys.forEach((favQueryKey) => {
           queryClient.setQueryData(
             favQueryKey,
             (data?: TFavorites[]) => {
@@ -53,19 +56,10 @@ export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
               )
               return newData
             },
-
             { updatedAt: Date.now() }
           )
-        } else if (!isFavorite) {
-          queryClient.invalidateQueries({
-            queryKey: ['getFavorites'],
-          })
-          // queryClient.refetchQueries({
-          //   queryKey: ['getFavorites'],
-          //   type: 'active',
-          // })
-        }
-      })
+        })
+      }
     },
   })
 
