@@ -53,7 +53,7 @@ const CardResource = ({
   createdAt,
   description,
   img,
-  likes,
+  voteCount,
   id,
   title,
   updatedAt,
@@ -66,6 +66,7 @@ const CardResource = ({
   ...rest
 }: TCardResource) => {
   const { user } = useAuth()
+
   return (
     <CardContainerStyled
       data-testid="resource-card"
@@ -92,15 +93,17 @@ const CardResource = ({
           <FavoritesIcon resourceId={id} isFavorite={isFavorite} />
         </UserWidgets>
       ) : null}
-      {Number.isInteger(likes) && (
+
+      {voteCount && (
         <CounterContainerStyled>
           <VoteCounter
-            totalVotes={likes ?? 0}
+            voteCount={voteCount}
             resourceId={id}
             handleAccessModal={handleAccessModal || undefined}
           />
         </CounterContainerStyled>
       )}
+
       <FlexBoxStyled align="start" justify="space-between" gap="4px">
         <ResourceTitleLink description={description} title={title} url={url} />
         <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
