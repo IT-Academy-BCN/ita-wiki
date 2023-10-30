@@ -7,6 +7,7 @@ import { VoteCounter } from '../molecules/VoteCounter'
 import EditResource from './EditResource'
 import { FavoritesIcon } from '../molecules/FavoritesIcon'
 import { useAuth } from '../../context/AuthProvider'
+import { TCardResource } from '../../types'
 
 const CardContainerStyled = styled(FlexBox)`
   background-color: ${colors.white};
@@ -49,39 +50,12 @@ const FlexBoxStyled = styled(FlexBox)`
     margin-top: 2px;
   }
 `
-type TTopic = {
-  topic: {
-    id: string
-    name: string
-    slug: string
-    categoryId: string
-    createdAt: string
-    updatedAt: string
-  }
-}
-export type TCardResource = {
-  createdBy: string
-  createdAt: string
-  description: string
-  img: string | undefined
-  id: string
-  likes?: number
-  title: string
-  updatedAt: string
-  url: string
-  resourceType: string
-  topics: TTopic[]
-  editable: boolean
-  isFavorite: boolean
-  handleAccessModal: () => void
-}
-
 const CardResource = ({
   createdBy,
   createdAt,
   description,
   img,
-  likes,
+  voteCount,
   id,
   title,
   updatedAt,
@@ -94,6 +68,7 @@ const CardResource = ({
   ...rest
 }: TCardResource) => {
   const { user } = useAuth()
+
   return (
     <CardContainerStyled
       data-testid="resource-card"
@@ -133,6 +108,22 @@ const CardResource = ({
           <FavoritesIcon resourceId={id} isFavorite={isFavorite} />
         </UserWidgets>
       ) : null}
+
+      {voteCount && (
+        <CounterContainerStyled>
+          <VoteCounter
+            voteCount={voteCount}
+            resourceId={id}
+            handleAccessModal={handleAccessModal || undefined}
+          />
+        </CounterContainerStyled>
+      )}
+
+      <FlexBoxStyled align="start" justify="space-between" gap="4px">
+        <ResourceTitleLink description={description} title={title} url={url} />
+        <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
+      </FlexBoxStyled>
+
     </CardContainerStyled>
   )
 }

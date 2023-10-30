@@ -68,13 +68,11 @@ const StyledButton = styled.button<TButton>`
         }
     `}
 `
-
 type TButton = ButtonHTMLAttributes<HTMLButtonElement> & {
   secondary?: boolean
   outline?: boolean
   size?: 'small' | 'normal' | 'large'
 }
-
 const Button: FC<TButton> = ({
   type = 'submit',
   secondary = false,

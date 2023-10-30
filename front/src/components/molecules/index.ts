@@ -3,7 +3,7 @@ import { CreateAuthor } from './CreateAuthor'
 import { FavoritesIcon } from './FavoritesIcon'
 import InputGroup from './InputGroup'
 import { Modal } from './Modal'
-import { ResourceTitleLink, TResourceTitleLink } from './ResourceTitleLink'
+import { ResourceTitleLink} from './ResourceTitleLink'
 import { StatusFilterWidget } from './StatusFilterWidget'
 import SelectGroup from './SelectGroup'
 import TextareaGroup from './TextareaGroup'
@@ -13,7 +13,6 @@ import { CardHome } from './CardHome'
 import { SelectLanguage } from './SelectLanguage'
 import { Tooltip } from './Tooltip'
 import { TopicsEditableItem } from './TopicsEditableItem'
-import type { TCardResource } from '../organisms/CardResource'
 import { UserButton } from './UserButton'
 
 export {
@@ -35,4 +34,3 @@ export {
   UserButton,
 }
 
-export type { TResourceTitleLink, TCardResource }
