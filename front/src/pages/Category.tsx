@@ -242,7 +242,7 @@ const MobileTopicsContainer = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
   background-color: ${colors.gray.gray5};
-  padding-right: ${dimensions.spacing.lg};
+  padding-right: ${dimensions.spacing.base};
   padding-left: ${dimensions.spacing.base};
   padding-bottom: ${dimensions.spacing.md};
   padding-top: ${dimensions.spacing.none};
