@@ -28,6 +28,7 @@ export const getTopics = async (slug?: string): Promise<TGetTopics> => {
   const data = await response.json()
   return data
 }
+
 export const createTopicFetcher = (createdTopic: TTopic) =>
   fetch(urls.postTopics, {
     method: 'POST',
@@ -113,11 +114,13 @@ export const favMutation = async (id: string) => {
     throw new Error(`Error updating favorite resource: ${response.statusText}`)
   }
 }
+
 export const getUsers = async () => {
   const response = await fetch(urls.users)
   const data = await response.json()
   return data
 }
+
 export const getResources = async (filters: string) =>
   fetch(`${urls.getResources}?${filters}`, {
     headers: {
@@ -155,6 +158,7 @@ export const getResourcesByUser = async (categorySlug: string | undefined) => {
     editable: true,
   }))
 }
+
 export const getVotes = async (resourceId: string): Promise<TVoteCount> => {
   const response = await fetch(`${urls.vote}${resourceId}`)
   if (!response.ok) {
@@ -163,6 +167,7 @@ export const getVotes = async (resourceId: string): Promise<TVoteCount> => {
   const data = await (response.json() as Promise<TVoteCount>)
   return data
 }
+
 export const updateVote = async ({ resourceId, vote }: TVoteMutationData) => {
   const response = await fetch(urls.vote, {
     method: 'PUT',
@@ -197,6 +202,7 @@ export const loginUserFetcher = async (user: object) => {
 
   return response.status === 204 ? null : response.json()
 }
+
 export const createResourceFetcher = (resource: object) =>
   fetch(urls.createResource, {
     method: 'POST',
