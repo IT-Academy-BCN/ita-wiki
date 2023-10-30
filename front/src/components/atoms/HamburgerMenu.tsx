@@ -8,7 +8,7 @@ type THamburgerMenu = {
 }
 
 
-const StyledBurger = styled.button<HamburgerMenuProps>`
+const StyledBurger = styled.button<THamburgerMenu>`
 
   display: flex;
   flex-direction: column;
