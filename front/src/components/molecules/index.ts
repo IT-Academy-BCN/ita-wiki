@@ -3,7 +3,7 @@ import { CreateAuthor } from './CreateAuthor'
 import { FavoritesIcon } from './FavoritesIcon'
 import InputGroup from './InputGroup'
 import { Modal } from './Modal'
-import { ResourceTitleLink} from './ResourceTitleLink'
+import { ResourceTitleLink } from './ResourceTitleLink'
 import { StatusFilterWidget } from './StatusFilterWidget'
 import SelectGroup from './SelectGroup'
 import TextareaGroup from './TextareaGroup'
@@ -14,6 +14,7 @@ import { SelectLanguage } from './SelectLanguage'
 import { Tooltip } from './Tooltip'
 import { TopicsEditableItem } from './TopicsEditableItem'
 import { UserButton } from './UserButton'
+import { UserProfileResourcesWidget } from './UserProfileResourcesWidget'
 
 export {
   AccessModalContent,
@@ -32,5 +33,5 @@ export {
   Tooltip,
   TopicsEditableItem,
   UserButton,
+  UserProfileResourcesWidget,
 }
-

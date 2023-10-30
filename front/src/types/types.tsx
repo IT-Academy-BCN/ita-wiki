@@ -129,7 +129,7 @@ export type TCardResource = {
   topics: TTopicResource[]
   editable: boolean
   isFavorite: boolean
-  handleAccessModal: () => void
+  handleAccessModal?: () => void
 }
 
 export type TVoteCounter = {
