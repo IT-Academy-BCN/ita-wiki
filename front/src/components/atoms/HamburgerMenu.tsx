@@ -6,20 +6,21 @@ type THamburgerMenu = {
   open: boolean
   onClick: () => void
 }
+
+
 const StyledBurger = styled.button<THamburgerMenu>`
-  position: absolute;
-  left: 0;
+
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  width: 1.8rem;
   height: 2rem;
   background: transparent;
   border: none;
   cursor: pointer;
   padding: 0;
   z-index: ${({ open }) => (open ? '30' : '10')};
-  margin-left: ${dimensions.spacing.xl};
+  margin: auto;
+  margin-left: ${dimensions.spacing.xxs};
   &:focus {
     outline: none;
   }
