@@ -683,6 +683,9 @@ paths:
                         - TUTORIAL
                     userId:
                       type: string
+                    categoryId:
+                      type: string
+                      example: clocr0bi20000h8vwipfbazso
                     createdAt:
                       anyOf:
                         - type: string
@@ -723,6 +726,7 @@ paths:
                     - url
                     - resourceType
                     - userId
+                    - categoryId
                     - createdAt
                     - updatedAt
                     - voteCount
@@ -807,6 +811,9 @@ paths:
                     resourceType:
                       type: string
                       enum: *a2
+                    categoryId:
+                      type: string
+                      example: clocr0bi20000h8vwipfbazso
                     createdAt:
                       anyOf:
                         - type: string
@@ -890,6 +897,7 @@ paths:
                     - slug
                     - url
                     - resourceType
+                    - categoryId
                     - createdAt
                     - updatedAt
                     - user
@@ -949,14 +957,19 @@ paths:
                 resourceType:
                   type: string
                   enum: *a2
+                categoryId:
+                  type: string
+                  example: clocr0bi20000h8vwipfbazso
                 topics:
                   type: array
                   items:
                     type: string
+                    example: clocr0bpv000ah8vwnfvpo24p
               required:
                 - title
                 - url
                 - resourceType
+                - categoryId
                 - topics
       responses:
         "204":
@@ -1096,6 +1109,9 @@ paths:
                   resourceType:
                     type: string
                     enum: *a2
+                  categoryId:
+                    type: string
+                    example: clocr0bi20000h8vwipfbazso
                   createdAt:
                     anyOf:
                       - type: string
@@ -1179,6 +1195,7 @@ paths:
                   - slug
                   - url
                   - resourceType
+                  - categoryId
                   - createdAt
                   - updatedAt
                   - user
@@ -1270,6 +1287,9 @@ paths:
                   resourceType:
                     type: string
                     enum: *a2
+                  categoryId:
+                    type: string
+                    example: clocr0bi20000h8vwipfbazso
                   createdAt:
                     anyOf:
                       - type: string
@@ -1353,6 +1373,7 @@ paths:
                   - slug
                   - url
                   - resourceType
+                  - categoryId
                   - createdAt
                   - updatedAt
                   - user
@@ -1408,6 +1429,9 @@ paths:
                         resourceType:
                           type: string
                           enum: *a2
+                        categoryId:
+                          type: string
+                          example: clocr0bi20000h8vwipfbazso
                         createdAt:
                           anyOf:
                             - type: string
@@ -1491,6 +1515,7 @@ paths:
                         - slug
                         - url
                         - resourceType
+                        - categoryId
                         - createdAt
                         - updatedAt
                         - user

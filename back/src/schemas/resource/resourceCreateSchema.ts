@@ -10,5 +10,7 @@ export const resourceCreateSchema = resourceSchema
     userId: true,
   })
   .extend({
-    topics: z.array(z.string().cuid()), // Son las FK
+    topics: z.array(
+      z.string().cuid().openapi({ example: 'clocr0bpv000ah8vwnfvpo24p' })
+    ), // Son las FK
   })
