@@ -3,8 +3,8 @@ import { z } from '../../openapi/zod'
 const resourceType = ['BLOG', 'VIDEO', 'TUTORIAL'] as const
 const resourceTypeEnum = z.enum(resourceType)
 
-const statusType = ['SEEN', 'NOT_SEEN'] as const
-const statusEnum = z.enum(statusType)
+const status = ['SEEN', 'NOT_SEEN'] as const
+const statusEnum = z.enum(status)
 
 export const resourcesGetParamsSchema = z
   .object({
@@ -51,7 +51,7 @@ export const resourcesGetParamsSchema = z
           schema: {
             type: 'array',
             uniqueItems: true,
-            items: { type: 'string', enum: [...statusType] },
+            items: { type: 'string', enum: [...status] },
           },
         },
         example: 'NOT_SEEN',
