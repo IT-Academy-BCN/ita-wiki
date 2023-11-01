@@ -1,24 +1,18 @@
 import Koa, { Middleware } from 'koa'
-import qs from 'qs'
-import { Prisma, RESOURCE_TYPE, User } from '@prisma/client'
+import { Prisma, User } from '@prisma/client'
 import { prisma } from '../../prisma/client'
 import { transformResourceToAPI } from '../../helpers/transformResourceToAPI'
 import { resourceGetSchema } from '../../schemas'
+import { TResourcesGetParamsSchema } from '../../schemas/resource/resourcesGetParamsSchema'
 
 export const getResources: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User | null
-  const parsedQuery = qs.parse(ctx.querystring, { ignoreQueryPrefix: true })
   const {
     resourceTypes,
     topic: topicId,
     slug,
     status,
-  } = parsedQuery as {
-    resourceTypes?: (keyof typeof RESOURCE_TYPE)[]
-    topic?: string
-    slug?: string
-    status?: 'SEEN' | 'NOT_SEEN'
-  }
+  } = ctx.state.query as TResourcesGetParamsSchema
   let statusCondition: Prisma.Enumerable<Prisma.ResourceWhereInput> = {}
   if (user && status) {
     const viewedFilter = { userId: user.id }

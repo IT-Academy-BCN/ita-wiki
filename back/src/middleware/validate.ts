@@ -1,10 +1,12 @@
 import { Context, Next } from 'koa'
+import qs from 'qs'
 import { z } from 'zod'
 
 const validate = (schema: z.Schema) => async (ctx: Context, next: Next) => {
+  ctx.state.query = qs.parse(ctx.querystring)
   await schema.parse({
     body: ctx.request.body,
-    query: ctx.query,
+    query: ctx.state.query,
     params: ctx.params,
   })
   return next()
