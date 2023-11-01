@@ -14,6 +14,7 @@ import { useAuth } from '../../context/AuthProvider'
 const NavbarStyled = styled(FlexBox)<{ isInCategoryPage: boolean }>`
   background-color: ${({ isInCategoryPage }) =>
     isInCategoryPage ? `${colors.gray.gray5}` : `${colors.white}`};
+
   padding: ${dimensions.spacing.none} 0.5rem;
   justify-content: end;
   align-items: center;
