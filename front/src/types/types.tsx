@@ -159,4 +159,5 @@ export type TResourceTitleLink = {
   description: string
   title: string
   url: string
+  id: string
 }

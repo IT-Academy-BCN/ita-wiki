@@ -48,6 +48,7 @@ const FlexBoxStyled = styled(FlexBox)`
     margin-top: 2px;
   }
 `
+
 const CardResource = ({
   createdBy,
   createdAt,
@@ -105,7 +106,12 @@ const CardResource = ({
       )}
 
       <FlexBoxStyled align="start" justify="space-between" gap="4px">
-        <ResourceTitleLink description={description} title={title} url={url} />
+        <ResourceTitleLink
+          description={description}
+          title={title}
+          url={url}
+          id={id}
+        />
         <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
       </FlexBoxStyled>
     </CardContainerStyled>

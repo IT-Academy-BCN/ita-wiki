@@ -154,6 +154,7 @@ export const MyFavoritesList: FC = () => {
                     url={fav.url}
                     title={fav.title}
                     description={fav.description}
+                    id={fav.id}
                   />
                 )}
               </FavoritesCardList>
