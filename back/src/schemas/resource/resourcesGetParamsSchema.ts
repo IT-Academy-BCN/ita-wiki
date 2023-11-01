@@ -1,7 +1,7 @@
+import { RESOURCE_TYPE } from '@prisma/client'
 import { z } from '../../openapi/zod'
 
-const resourceType = ['BLOG', 'VIDEO', 'TUTORIAL'] as const
-const resourceTypeEnum = z.enum(resourceType)
+const resourceTypeEnum = z.nativeEnum(RESOURCE_TYPE)
 
 const status = ['SEEN', 'NOT_SEEN'] as const
 const statusEnum = z.enum(status)
@@ -27,7 +27,7 @@ export const resourcesGetParamsSchema = z
           schema: {
             type: 'array',
             uniqueItems: true,
-            items: { type: 'string', enum: [...resourceType] },
+            items: { type: 'string', enum: [...Object.values(RESOURCE_TYPE)] },
           },
         },
         example: 'BLOG',
@@ -51,7 +51,7 @@ export const resourcesGetParamsSchema = z
           schema: {
             type: 'array',
             uniqueItems: true,
-            items: { type: 'string', enum: [...status] },
+            items: { type: 'string', enum: [...statusEnum.options] },
           },
         },
         example: 'NOT_SEEN',
