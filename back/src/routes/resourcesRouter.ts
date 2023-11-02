@@ -1,6 +1,6 @@
 import Router from '@koa/router'
 import { z } from 'zod'
-import { authenticate, getUserFromToken, validate } from '../middleware'
+import { authenticate, getUserFromToken, parse, validate } from '../middleware'
 import {
   createResource,
   getResources,
@@ -32,7 +32,14 @@ resourcesRouter.get(
   validate(
     z.object({
       query: resourcesGetParamsSchema,
-    })
+    }),
+    { useQueryString: true, useQsParser: true }
+  ),
+  parse(
+    z.object({
+      query: resourcesGetParamsSchema,
+    }),
+    { useQueryString: true, useQsParser: true }
   ),
   getResources
 )
