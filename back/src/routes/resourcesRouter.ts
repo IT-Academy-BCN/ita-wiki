@@ -29,12 +29,6 @@ resourcesRouter.post(
 resourcesRouter.get(
   '/',
   getUserFromToken,
-  validate(
-    z.object({
-      query: resourcesGetParamsSchema,
-    }),
-    { useQueryString: true, useQsParser: true }
-  ),
   parse(
     z.object({
       query: resourcesGetParamsSchema,
