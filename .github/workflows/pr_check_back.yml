@@ -1,4 +1,4 @@
-name: Backend on Pull Request
+name: pr_check_back
 
 on:
   pull_request:
@@ -41,13 +41,13 @@ jobs:
 
       - name: install dependencies
         run: |
-            cd ${{ github.workspace }}/back
-            npm ci --legacy-peer-deps
+          cd ${{ github.workspace }}/back
+          npm ci --legacy-peer-deps
 
       - name: lint
         run: |
-            cd ${{ github.workspace }}/back
-            npx eslint src --max-warnings 0
+          cd ${{ github.workspace }}/back
+          npx eslint src --max-warnings 0
 
       - name: Set up Prisma
         run: |

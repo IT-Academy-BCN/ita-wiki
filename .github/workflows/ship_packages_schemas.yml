@@ -1,0 +1,33 @@
+name: ship_packages_schemas
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/schemas/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: cd packages/schemas && npm ci
+
+      - name: Build schemas package
+        run: cd packages/schemas && npm run build
+
+      - name: Publish to npm
+        run: cd packages/schemas && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
