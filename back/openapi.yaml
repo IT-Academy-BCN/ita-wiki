@@ -757,31 +757,47 @@ paths:
         are fetched.
       summary: Returns a collection of resources
       parameters:
-        - name: slug
-          in: query
+        - in: query
+          name: slug
+          schema:
+            type: string
+            example: react
           required: false
           description: Slug of the category for which to retrieve resources
           example: react
-        - name: resourceTypes
-          in: query
+        - in: query
+          name: resourceTypes
+          schema:
+            type: array
+            uniqueItems: true
+            items:
+              type: string
+              enum:
+                - BLOG
+                - VIDEO
+                - TUTORIAL
           required: false
           description: Resource types to filter by
-          example:
-            - BLOG
-            - VIDEO
-        - name: topic
-          in: query
-          required: false
+        - in: query
+          name: topic
           schema:
             type: string
+            example: cln2u09xo0037s6wvbf6t9jfg
+          required: false
           description: ID of the topic for which to retrieve resources. If not provided,
             resources for ALL topics are fetched.
-          example: cln2u09xo0037s6wvbf6t9jfg
-        - name: status
-          in: query
+        - in: query
+          name: status
+          schema:
+            type: array
+            uniqueItems: true
+            items:
+              type: string
+              enum:
+                - SEEN
+                - NOT_SEEN
           required: false
           description: Status to filter by
-          example: SEEN
       responses:
         "200":
           description: Sucessful operation
