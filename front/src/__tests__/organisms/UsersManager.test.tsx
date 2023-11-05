@@ -52,7 +52,12 @@ describe('UsersManager component', () => {
     } as TAuthContext)
     render(<UsersManager />)
 
-    expect(screen.getByText('Users Manager')).toBeInTheDocument()
+    expect(screen.getByText("Administrador d'Usuaris")).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        /No tens permisos suficients per accedir al contingut./
+      )
+    ).toBeInTheDocument()
     expect(screen.queryByText('AccountAdmin')).not.toBeInTheDocument()
   })
 
