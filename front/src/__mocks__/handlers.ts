@@ -279,6 +279,9 @@ export const errorHandlers = [
   rest.put(urls.vote, (_, res, ctx) =>
     res(ctx.status(404), ctx.json({ message: 'User or resource not found' }))
   ),
+  rest.post(urls.postStatus, (_, res, ctx) =>
+    res(ctx.status(401), ctx.json({ message: 'User not found' }))
+  ),
 
   rest.get(urls.getResourcesByUser, (req, res, ctx) => {
     const categorySlug = req.url.searchParams.get('category')
