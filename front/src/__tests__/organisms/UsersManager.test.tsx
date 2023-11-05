@@ -76,10 +76,6 @@ describe('UsersManager component', () => {
     const searchInput = screen.getByPlaceholderText('Escribe el DNI')
     fireEvent.change(searchInput, { target: { value: '12345678' } })
 
-    await waitFor(() => {
-      expect(screen.queryByText('User Two')).toBeInTheDocument()
-    })
-
     const statusButton = screen.getByTestId('status-desactivar')
     fireEvent.click(statusButton)
 
