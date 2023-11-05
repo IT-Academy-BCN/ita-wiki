@@ -2,12 +2,12 @@ import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { Text } from '../atoms'
 import { CreateAuthor } from '../molecules/CreateAuthor'
-import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
 import { VoteCounter } from '../molecules/VoteCounter'
 import EditResource from './EditResource'
 import { FavoritesIcon } from '../molecules/FavoritesIcon'
 import { useAuth } from '../../context/AuthProvider'
 import { TCardResource } from '../../types'
+import { ResourceTitleLink } from '../molecules'
 
 const CardContainerStyled = styled(FlexBox)`
   background-color: ${colors.white};

@@ -1,15 +1,19 @@
 import { vi } from 'vitest'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, render, screen } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
+import { fireEvent, screen, render } from '../test-utils'
 import { ResourceTitleLink } from '../../components/molecules'
 import { queryClient } from '../setup'
+import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
 const renderWithQueryClient = (component: React.ReactNode) =>
   render(
     <QueryClientProvider client={queryClient}>{component}</QueryClientProvider>
   )
 
+const user = {
+  name: 'Hola',
+  avatar: 'Adios',
+}
 vi.mock('../../context/AuthProvider', async () => {
   const actual = (await vi.importActual(
     '../../context/AuthProvider'
@@ -27,35 +31,34 @@ describe('ResourceTitleLink', () => {
 
   it('renders correctly', async () => {
     renderWithQueryClient(
-      <BrowserRouter>
-        <ResourceTitleLink
-          description="Test"
-          title="Title Link"
-          url={url}
-          id="test"
-        />
-      </BrowserRouter>
+      <ResourceTitleLink
+        description="Test"
+        title="Title Link"
+        url={url}
+        id="test"
+      />
     )
   })
 
-  it('should opens the link in a new browser tab', () => {
+  it('should opens the link in a new browser tab', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user,
+    } as TAuthContext)
+
     renderWithQueryClient(
-      <BrowserRouter>
-        <ResourceTitleLink
-          description="Test"
-          title="Title Link"
-          url={url}
-          id="test"
-        />
-      </BrowserRouter>
+      <ResourceTitleLink
+        description="Test"
+        title="Title Link"
+        url={url}
+        id="test"
+      />
     )
 
-    fireEvent.click(screen.getByRole('link'))
+    const link = screen.getByTestId('resource-title')
 
-    expect(screen.getByRole('link')).toHaveAttribute('target', '_blank')
-    expect(screen.getByRole('link')).toHaveAttribute(
-      'rel',
-      'noopener noreferrer'
-    )
+    fireEvent.click(link)
+
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
   })
 })
