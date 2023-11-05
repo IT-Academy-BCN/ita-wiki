@@ -280,7 +280,7 @@ export const errorHandlers = [
     res(ctx.status(404), ctx.json({ message: 'User or resource not found' }))
   ),
   rest.post(urls.postStatus, (_, res, ctx) =>
-    res(ctx.status(401), ctx.json({ message: 'User not found' }))
+    res(ctx.status(401), ctx.json({ message: 'Error updating status' }))
   ),
 
   rest.get(urls.getResourcesByUser, (req, res, ctx) => {

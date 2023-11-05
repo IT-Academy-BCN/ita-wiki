@@ -29,17 +29,6 @@ vi.mock('../../context/AuthProvider', async () => {
 describe('ResourceTitleLink', () => {
   const url = 'https://www.youtube.com/watch?v=n5qbzhZUMsY'
 
-  it('renders correctly', async () => {
-    renderWithQueryClient(
-      <ResourceTitleLink
-        description="Test"
-        title="Title Link"
-        url={url}
-        id="test"
-      />
-    )
-  })
-
   it('should opens the link in a new browser tab', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user,
@@ -55,6 +44,7 @@ describe('ResourceTitleLink', () => {
     )
 
     const link = screen.getByTestId('resource-title')
+    expect(link).toBeInTheDocument()
 
     fireEvent.click(link)
 
