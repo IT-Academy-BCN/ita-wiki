@@ -1,5 +1,5 @@
-import { useAuth } from '../../context/AuthProvider'
 import { useTranslation } from 'react-i18next'
+import { useAuth } from '../../context/AuthProvider'
 import { AccountAdmin } from '../../pages/AccountAdim'
 
 const UsersManager = () => {
