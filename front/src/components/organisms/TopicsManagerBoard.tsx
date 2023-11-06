@@ -1,15 +1,14 @@
 import { FC, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { colors, FlexBox } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import { TopicsEditableItem } from '../molecules'
-import { createTopicFetcher, updateTopicFetcher } from '../../helpers/fetchers'
 import { useAuth } from '../../context/AuthProvider'
 import { useGetTopics } from '../../hooks'
 import { TTopic } from '../../types'
+import { useManageTopic } from '../../hooks/useManageTopic'
 
 const StyledFlexBox = styled(FlexBox)`
   width: 100%;
@@ -22,38 +21,20 @@ export const TopicsManagerBoard: FC = () => {
 
   const { t } = useTranslation()
 
-  const [rowStatus, setRowStatus] = useState<string>('available')
+  /* const [rowStatus, setRowStatus] = useState<string>('available') */
 
   const [selectedId, setSelectedId] = useState<string>('')
 
-  const [errorMessage, setErrorMessage] = useState<string>('')
-
   const { data, isLoading, isError, refetch } = useGetTopics(slug as string)
 
-  const updateTopic = useMutation({
-    mutationFn: updateTopicFetcher,
-    onSuccess: async () => {
-      await refetch()
-      if (errorMessage !== '') setErrorMessage('')
-      setRowStatus('available')
-    },
-    onError: (error: Error) => {
-      setErrorMessage(error.message)
-    },
-  })
-
-  const createTopic = useMutation({
-    mutationFn: createTopicFetcher,
-    onSuccess: async () => {
-      await refetch()
-      if (errorMessage !== '') setErrorMessage('')
-      setRowStatus('available')
-    },
-    onError: (error: Error) => {
-      setErrorMessage(error.message)
-    },
-  })
-
+  const {
+    createTopic,
+    errorMessage,
+    rowStatus,
+    updateTopic,
+    setRowStatus,
+    setErrorMessage,
+  } = useManageTopic(refetch)
   if (slug === undefined) {
     return (
       <Text color={`${colors.error}`}>

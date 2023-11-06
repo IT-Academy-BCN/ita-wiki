@@ -16,6 +16,7 @@ import type {
   TGetTypes,
   TUserVote,
   TVoteCount,
+  TForm,
 } from './types'
 
 export type {
@@ -36,4 +37,5 @@ export type {
   TGetTypes,
   TUserVote,
   TVoteCount,
+  TForm,
 }
