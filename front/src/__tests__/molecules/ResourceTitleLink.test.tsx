@@ -55,6 +55,7 @@ describe('ResourceTitleLink', () => {
     fireEvent.click(link)
 
     await waitFor(() => {
+      expect(link).toBeInTheDocument()
       expect(mockUpdateStatus).toHaveBeenCalledWith('test')
     })
 
