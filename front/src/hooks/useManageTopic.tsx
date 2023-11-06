@@ -8,7 +8,7 @@ export const useManageTopic = (refetch: () => void) => {
   const createTopic = useMutation({
     mutationFn: createTopicFetcher,
     onSuccess: async () => {
-      await refetch()
+      refetch()
       if (errorMessage !== '') setErrorMessage('')
       setRowStatus('available')
     },
@@ -19,7 +19,7 @@ export const useManageTopic = (refetch: () => void) => {
   const updateTopic = useMutation({
     mutationFn: updateTopicFetcher,
     onSuccess: async () => {
-      await refetch()
+      refetch()
       if (errorMessage !== '') setErrorMessage('')
       setRowStatus('available')
     },

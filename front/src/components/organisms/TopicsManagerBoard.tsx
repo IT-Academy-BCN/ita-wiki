@@ -21,20 +21,25 @@ export const TopicsManagerBoard: FC = () => {
 
   const { t } = useTranslation()
 
-  /* const [rowStatus, setRowStatus] = useState<string>('available') */
-
   const [selectedId, setSelectedId] = useState<string>('')
 
   const { data, isLoading, isError, refetch } = useGetTopics(slug as string)
-
   const {
     createTopic,
+    updateTopic,
     errorMessage,
     rowStatus,
-    updateTopic,
     setRowStatus,
     setErrorMessage,
-  } = useManageTopic(refetch)
+  } = useManageTopic(async () => {
+    try {
+      await refetch()
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error al refetch: ', error)
+    }
+  })
+
   if (slug === undefined) {
     return (
       <Text color={`${colors.error}`}>
