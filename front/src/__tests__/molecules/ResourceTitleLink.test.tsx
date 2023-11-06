@@ -29,7 +29,7 @@ vi.mock('../../context/AuthProvider', async () => {
 describe('ResourceTitleLink', () => {
   const url = 'https://www.youtube.com/watch?v=n5qbzhZUMsY'
 
-  it('should opens the link in a new browser tab', async () => {
+  it('should open the link in a new browser tab', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user,
     } as TAuthContext)
@@ -45,6 +45,9 @@ describe('ResourceTitleLink', () => {
 
     const link = screen.getByTestId('resource-title')
     expect(link).toBeInTheDocument()
+
+    const title = screen.getByText("Title Link");
+    expect(title).toBeInTheDocument();
 
     fireEvent.click(link)
 
