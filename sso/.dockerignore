@@ -1,0 +1,37 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules/
+pnpm-lock.yaml
+yarn.lock
+src/__tests__
+src/__mocks__
+
+# OS generated files
+.DS_Store
+Thumbs.db
+*.swp
+
+# Editor/IDE specific
+.vscode/
+.idea/
+*.iml
+
+# TypeScript specific
+*.tsbuildinfo
+dist/
+
+# Prisma
+.migrations/
+prisma/dev.db
+prisma/*.lock
+
+# Environment configs
+*.env.local
+*.env.*.local
+*.env.*.debug
+*.env.test.local
+*.env.production.test.local
