@@ -1,19 +1,10 @@
-import { vi } from 'vitest'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, screen, render } from '../test-utils'
+import { expect, vi } from 'vitest'
+import { fireEvent, screen, render, waitFor } from '../test-utils'
 import { ResourceTitleLink } from '../../components/molecules'
-import { queryClient } from '../setup'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
-const renderWithQueryClient = (component: React.ReactNode) =>
-  render(
-    <QueryClientProvider client={queryClient}>{component}</QueryClientProvider>
-  )
+const mockUpdateStatus = vi.fn()
 
-const user = {
-  name: 'Hola',
-  avatar: 'Adios',
-}
 vi.mock('../../context/AuthProvider', async () => {
   const actual = (await vi.importActual(
     '../../context/AuthProvider'
@@ -26,6 +17,21 @@ vi.mock('../../context/AuthProvider', async () => {
   }
 })
 
+vi.mock('../../helpers/fetchers', async () => {
+  const actual = await vi.importActual('../../helpers/fetchers')
+  return {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    ...actual,
+    updateStatus: vi.fn(() => mockUpdateStatus('test')),
+  }
+})
+
+const user = {
+  name: 'Hola',
+  avatar: 'Adios',
+}
+
 describe('ResourceTitleLink', () => {
   const url = 'https://www.youtube.com/watch?v=n5qbzhZUMsY'
 
@@ -34,7 +40,7 @@ describe('ResourceTitleLink', () => {
       user,
     } as TAuthContext)
 
-    renderWithQueryClient(
+    render(
       <ResourceTitleLink
         description="Test"
         title="Title Link"
@@ -46,10 +52,11 @@ describe('ResourceTitleLink', () => {
     const link = screen.getByTestId('resource-title')
     expect(link).toBeInTheDocument()
 
-    const title = screen.getByText("Title Link");
-    expect(title).toBeInTheDocument();
-
     fireEvent.click(link)
+
+    await waitFor(() => {
+      expect(mockUpdateStatus).toHaveBeenCalledWith('test')
+    })
 
     expect(link).toHaveAttribute('target', '_blank')
     expect(link).toHaveAttribute('rel', 'noopener noreferrer')
