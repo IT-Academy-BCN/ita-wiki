@@ -7,6 +7,7 @@ const appConfig = {
 const dbConfig = {
   host: process.env.DB_HOST ?? 'localhost',
   port: process.env.DB_PORT ?? 5432,
+  database: process.env.DB_NAME ?? 'ita_sso',
   user: process.env.DB_USER ?? 'postgres',
   pass: process.env.DB_PASS ?? 'postgres',
   link:

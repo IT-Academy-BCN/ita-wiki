@@ -11,6 +11,7 @@ import * as Routes from './routes'
 // import { openapiFilename, swaggeruiUrl } from './openapi/config'
 // import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
 import { appConfig } from './config/index'
+import { client } from './models/db'
 
 const app = new Koa()
 
@@ -37,13 +38,19 @@ app.use(Routes.userRoutes.routes())
 // generateOpenapiFile()
 // const spec = yamljs.load(openapiFilename)
 // app.use(koaSwagger({ routePrefix: swaggeruiUrl, swaggerOptions: { spec } }))
-
+client
+  .connect()
+  .then(() => {
+    console.log('Connection has been established successfully.')
+    if (process.env.NODE_ENV !== 'test') {
+      app.listen(appConfig.port, () => {
+        // eslint-disable-next-line no-console
+        console.log(`🚀 Server ready at http://localhost:${appConfig.port}`)
+      })
+    }
+  })
+  .catch((error) => console.error('Unable to connect to the database:', error))
 // Only listen if launched from terminal
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(appConfig.port, () => {
-    // eslint-disable-next-line no-console
-    console.log(`🚀 Server ready at http://localhost:${appConfig.port}`)
-  })
-}
+
 export { app }
