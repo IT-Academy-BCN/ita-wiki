@@ -35,7 +35,9 @@ const ResourceTitleLink = ({
     mutationFn: updateStatus,
   })
 
-  const handleClick = () => {
+  const handleClick = async () => {
+    if (!user) return
+
     statusMutation.mutate(id)
   }
 
@@ -45,7 +47,7 @@ const ResourceTitleLink = ({
       target="_blank"
       rel="noopener noreferrer"
       data-testid="resource-title"
-      onClick={user ? handleClick : undefined}
+      onClick={handleClick}
     >
       <Text fontWeight="bold">{title}</Text>
       <Description>{description}</Description>
