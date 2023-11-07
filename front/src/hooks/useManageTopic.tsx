@@ -1,11 +1,12 @@
 import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import { createTopicFetcher, updateTopicFetcher } from '../helpers/fetchers'
+import { useGetTopics } from './useGetTopics'
 
-type Refetch = () => void
-export const useManageTopic = (refetch: Refetch) => {
+export const useManageTopic = () => {
   const [rowStatus, setRowStatus] = useState<string>('available')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const { refetch } = useGetTopics()
   const createTopic = useMutation({
     mutationFn: createTopicFetcher,
     onSuccess: async () => {

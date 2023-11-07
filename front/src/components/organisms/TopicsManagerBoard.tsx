@@ -20,7 +20,7 @@ export const TopicsManagerBoard: FC = () => {
   const { state } = useLocation()
   const { t } = useTranslation()
   const [selectedId, setSelectedId] = useState<string>('')
-  const { data, isLoading, isError, refetch } = useGetTopics(slug as string)
+  const { data, isLoading, isError } = useGetTopics(slug as string)
   const {
     updateTopic,
     createTopic,
@@ -28,7 +28,7 @@ export const TopicsManagerBoard: FC = () => {
     rowStatus,
     setRowStatus,
     setErrorMessage,
-  } = useManageTopic(refetch)
+  } = useManageTopic()
   if (slug === undefined) {
     return (
       <Text color={`${colors.error}`}>
