@@ -189,7 +189,7 @@ export const handlers = [
 
   rest.put(urls.favorites, (_, res, ctx) => res(ctx.status(204))),
 
-  rest.post(`${urls.postStatus}/:id`, (req, res, ctx) => res(ctx.status(204))),
+  rest.post(`${urls.postStatus}/test`, (_, res, ctx) => res(ctx.status(204))),
 
   rest.get(urls.getResourcesByUser, (req, res, ctx) => {
     const categorySlug = req.url.searchParams.get('category')

@@ -16,16 +16,6 @@ vi.mock('../../context/AuthProvider', async () => {
   }
 })
 
-vi.mock('../../helpers/fetchers', async () => {
-  const actual = await vi.importActual('../../helpers/fetchers')
-  return {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    ...actual,
-    updateStatus: vi.fn(),
-  }
-})
-
 const user = {
   name: 'Hola',
   avatar: 'Adios',
