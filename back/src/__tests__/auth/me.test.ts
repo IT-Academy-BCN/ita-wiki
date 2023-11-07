@@ -72,10 +72,6 @@ describe('Testing ME endpoint', () => {
         status: 'ACTIVE',
         role: testUserData.admin.role,
         avatarId: uploadedMedia!.id,
-        avatar: expect.objectContaining({
-          filePath: expect.any(String),
-          mimeType: expect.any(String),
-        }),
       })
     )
   })

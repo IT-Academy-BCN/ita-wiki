@@ -7,7 +7,7 @@ export const userSchema = z.object({
   dni: dniSchema,
   password: z.string().min(8),
   name: z.string().optional(),
-  avatarId: z.string().optional(),
+  avatarId: z.string().optional().nullable(),
   specialization: z.string().openapi({ example: 'specializationId' }),
   status: z.enum(['ACTIVE', 'INACTIVE']),
   role: z.enum(['ADMIN', 'REGISTERED', 'MENTOR']),
