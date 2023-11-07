@@ -12,6 +12,7 @@ import * as Routes from './routes'
 // import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
 import { appConfig } from './config/index'
 import { client } from './models/db'
+import { createUserTable } from './models/userModel'
 
 const app = new Koa()
 
@@ -48,8 +49,11 @@ client
         console.log(`🚀 Server ready at http://localhost:${appConfig.port}`)
       })
     }
+    createUserTable()
   })
-  .catch((error) => console.error('Unable to connect to the database:', error))
+  .catch((error: unknown) =>
+    console.error('Unable to connect to the database:', error)
+  )
 // Only listen if launched from terminal
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
 

@@ -1,8 +1,30 @@
+import 'dotenv/config'
+import z from 'zod'
+
+const appConfigSchema = z.object({
+  port: z.string(),
+  jwtKey: z.string(),
+  jwtExpiration: z.string(),
+})
+
+const dbConfigSchema = z.object({
+  host: z.string(),
+  port: z.string(),
+  database: z.string(),
+  user: z.string(),
+  pass: z.string(),
+  link: z.string(),
+})
+
 const appConfig = {
   port: process.env.PORT ?? 8000,
   jwtKey: process.env.JWT_KEY ?? 'secret',
   jwtExpiration: process.env.JWT_EXPIRATION ?? '14d',
 }
+
+console.log('appConfig', appConfig)
+
+appConfigSchema.parse(appConfig)
 
 const dbConfig = {
   host: process.env.DB_HOST ?? 'localhost',
@@ -14,6 +36,8 @@ const dbConfig = {
     process.env.DB_LINK ??
     'postgres://postgres:postgres@localhost:5432/postgres',
 }
+
+dbConfigSchema.parse(appConfig)
 
 const bcryptConfig = {
   saltRounds: 10,

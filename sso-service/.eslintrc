@@ -10,7 +10,7 @@
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module",
-    "project": "./sso-service/tsconfig.eslint.json"
+    "project": "./tsconfig.eslint.json"
   },
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
