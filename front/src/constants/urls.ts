@@ -17,5 +17,5 @@ export const urls = {
   vote: '/api/v1/vote/',
   users: '/api/v1/users',
   favorites: '/api/v1/favorites',
-  postStatus: '/api/v1/seen/',
+  postStatus: '/api/v1/seen',
 }

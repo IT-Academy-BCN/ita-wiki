@@ -1,9 +1,7 @@
 import { expect, vi } from 'vitest'
-import { fireEvent, screen, render } from '../test-utils'
+import { fireEvent, screen, render, waitFor } from '../test-utils'
 import { ResourceTitleLink } from '../../components/molecules'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
-
-const mockUpdateStatus = vi.fn()
 
 vi.mock('../../context/AuthProvider', async () => {
   const actual = (await vi.importActual(
@@ -16,6 +14,8 @@ vi.mock('../../context/AuthProvider', async () => {
     })),
   }
 })
+
+const mockUpdateStatus = vi.fn()
 
 vi.mock('../../helpers/fetchers', async () => {
   const actual = await vi.importActual('../../helpers/fetchers')
@@ -50,15 +50,13 @@ describe('ResourceTitleLink', () => {
     )
 
     const link = screen.getByTestId('resource-title')
-    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
 
     fireEvent.click(link)
 
-    // await waitFor(() => {
-    //   expect(mockUpdateStatus).toHaveBeenCalledWith('test')
-    // })
-
-    expect(link).toHaveAttribute('target', '_blank')
-    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+    await waitFor(() => {
+      expect(mockUpdateStatus).toHaveBeenCalledWith('test')
+    })
   })
 })
