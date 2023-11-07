@@ -67,7 +67,7 @@ describe('ResourceTitleLink', () => {
     })
   })
 
-  it('should call updateStatus when the user is logged in', async () => {
+  it('should not call updateStatus when the user is not logged in', async () => {
     const spy = vi.spyOn(fetchers, 'updateStatus')
 
     render(<ResourceTitleLink {...resourceTitleProps} />)
