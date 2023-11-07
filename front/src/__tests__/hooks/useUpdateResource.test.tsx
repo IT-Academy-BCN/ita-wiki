@@ -1,9 +1,25 @@
 import { renderHook, act, waitFor } from '@testing-library/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { vi } from 'vitest'
+import { setupServer } from 'msw/node'
 import { useUpdateResource } from '../../hooks'
 import { queryClient } from '../setup'
 import { reloadPage } from '../../utils/navigation'
+import { handlers } from '../../__mocks__/handlers'
+
+const server = setupServer(...handlers)
+beforeEach(() => {
+  server.listen()
+})
+
+afterEach(() => {
+  server.resetHandlers()
+  queryClient.clear()
+})
+
+afterAll(() => {
+  server.close()
+})
 
 describe('useUpdateResource hook', () => {
   const reload = vi.fn(() => reloadPage)

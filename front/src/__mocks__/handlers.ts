@@ -13,7 +13,7 @@ export const handlers = [
   rest.post(urls.postTopics, (req, res, ctx) => res(ctx.status(200), ctx.json({ success: true }))),
 
   rest.patch(urls.patchTopics, (req, res, ctx) => res(ctx.status(200), ctx.json({ success: true }))),
-  
+
   rest.get(urls.getMe, (_, res, ctx) =>
     res(
       ctx.status(200),
@@ -106,7 +106,13 @@ export const handlers = [
       ])
     )
   }),
+  rest.post(urls.createResource, (_, res, ctx) => 
+     res(ctx.status(204))
+  ),
 
+  rest.patch(urls.updateResource, (_, res, ctx) => 
+     res(ctx.status(204))
+  ),
   rest.get(urls.getTypes, (_, res, ctx) =>
     res(
       ctx.status(200),
