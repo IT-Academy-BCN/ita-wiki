@@ -6,7 +6,7 @@ import { useManageTopic } from '../../hooks'
 import { queryClient } from '../setup'
 
 describe('useManageTopic hook', () => {
-  it('should initialize the useManageTopic hook correctly', async () => {
+  it('should initialize the useManageTopic with default values', async () => {
     const refetch = vi.fn()
     const { result } = renderHook(() => useManageTopic(refetch), {
       wrapper: ({ children }) => (
@@ -20,6 +20,8 @@ describe('useManageTopic hook', () => {
     expect(result.current.updateTopic).toBeDefined()
     expect(result.current.rowStatus).toBe('available')
     expect(result.current.errorMessage).toBe('')
+    expect(result.current.setRowStatus).toBeDefined()
+    expect(result.current.setErrorMessage).toBeDefined()
   })
 
   it('should call createTopicFetcher on topic creation', async () => {
