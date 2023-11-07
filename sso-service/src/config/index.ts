@@ -22,8 +22,6 @@ const appConfig = {
   jwtExpiration: process.env.JWT_EXPIRATION ?? '14d',
 }
 
-console.log('appConfig', appConfig)
-
 appConfigSchema.parse(appConfig)
 
 const dbConfig = {
@@ -37,7 +35,7 @@ const dbConfig = {
     'postgres://postgres:postgres@localhost:5432/postgres',
 }
 
-dbConfigSchema.parse(appConfig)
+dbConfigSchema.parse(dbConfig)
 
 const bcryptConfig = {
   saltRounds: 10,
