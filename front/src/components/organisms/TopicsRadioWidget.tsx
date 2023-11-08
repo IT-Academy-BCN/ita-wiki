@@ -23,32 +23,21 @@ const SpinnerStyled = styled(Spinner)`
 export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
   const { data, isLoading, isError } = useGetTopics(slug)
 
-  const { topics, dispatch } = useFiltersContext()
+  const { dispatch } = useFiltersContext()
 
   const onTopicChange = (e: ChangeEvent<HTMLInputElement>, id: string) => {
-    if (e.target.checked) {
-      dispatch({
-        type: ActionTypes.SetTopics,
-        payload: { topics: [...topics, id] },
-      })
-    } else {
-      dispatch({
-        type: ActionTypes.SetTopics,
-        payload: {
-          topics: topics.filter((el: string) => el !== id),
-        },
-      })
-    }
-
-    return [...topics, id]
+    const selectedTopic = id === 'todos' ? undefined : id
+    dispatch({
+      type: ActionTypes.SetTopics,
+      payload: { topics: selectedTopic },
+    })
+    return id
   }
-
-  console.log(topics)
 
   useEffect(() => {
     if (dispatch && data) {
-      const categoryId = data.map((id) => id.categoryId)
-      dispatch({ type: ActionTypes.SetTopics, payload: { topics: categoryId } })
+      const topicId = data.length > 0 ? data[0].id : ''
+      dispatch({ type: ActionTypes.SetTopics, payload: { topics: topicId } })
     }
   }, [dispatch, data])
 
@@ -57,8 +46,14 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug }) => {
 
   return (
     <StyledRadio
-      options={[{ id: 'todos', name: 'Todos' }].concat(
-        data ? data.map((t) => ({ id: t.id, name: t.name })) : []
+      options={[{ id: 'todos', name: 'Todos', categoryId: 'todos' }].concat(
+        data
+          ? data.map((t) => ({
+              id: t.id,
+              name: t.name,
+              categoryId: t.categoryId,
+            }))
+          : []
       )}
       inputName="Topics Radio Filter"
       onChange={(e) => onTopicChange(e, e.target.value)}

@@ -82,8 +82,9 @@ export type TFilters = {
   slug?: string
   resourceTypes?: string[]
   status?: string[]
-  topic?: string
+  topic?: string | undefined
 }
+
 export type TEditResourceProps = {
   description: string
   id: string

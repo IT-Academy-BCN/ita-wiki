@@ -32,7 +32,7 @@ export type TResource = {
 }
 
 export type TInitialState = {
-  topics: string[]
+  topics: string | undefined
   status: string[]
   resources: TResource[]
   types: string[]
@@ -61,7 +61,7 @@ export type ActionMap<M extends { [index: string]: any }> = {
 export const Actions = {
   [ActionTypes.SetResources]: { resources: {} as TResource[] },
   [ActionTypes.SetTypes]: { types: [] as string[] },
-  [ActionTypes.SetTopics]: { topics: [] as string[] },
+  [ActionTypes.SetTopics]: { topics: '' as string | undefined },
   [ActionTypes.SetStatus]: { status: [] as string[] },
 }
 

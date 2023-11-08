@@ -27,7 +27,6 @@ import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
 import { useFiltersContext } from '../context/store/context'
 import { ActionTypes } from '../context/store/types'
-import { TFilters } from '../types'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -388,11 +387,6 @@ const Category: FC = () => {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
 
-  const [topic, setTopic] = useState('todos')
-  const [filters, setFilters] = useState<TFilters>({
-    slug,
-  })
-
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
 
   const toggleModal = () => {
@@ -418,25 +412,28 @@ const Category: FC = () => {
   const handleLoginModal = () => {
     setIsLoginOpen(!isLoginOpen)
   }
-  // const { topics, dispatch } = useFiltersContext()
 
-  // const handleSelectTopicFilter = (
-  //   e: ChangeEvent<HTMLSelectElement>,
-  //   item: string
-  // ) => {
-  //   const selectedTopic = e.target.value
-  //   if (selectedTopic) {
-  //     dispatch({
-  //       type: ActionTypes.SetTopics,
-  //       payload: { topics: [...topics, item] },
-  //     })
-  //   } else {
-  //     dispatch({
-  //       type: ActionTypes.SetTopics,
-  //       payload: { topics: topics.filter((el: string) => el !== item) },
-  //     })
-  //   }
-  // }
+  const { data } = useGetTopics()
+  const { dispatch } = useFiltersContext()
+
+  const handleSelectTopicFilter = (
+    e: ChangeEvent<HTMLSelectElement>,
+    id: string
+  ) => {
+    const selectedTopic = id === 'Todos' ? undefined : id
+    dispatch({
+      type: ActionTypes.SetTopics,
+      payload: { topics: selectedTopic },
+    })
+    return id
+  }
+
+  useEffect(() => {
+    if (dispatch && data) {
+      const topicId = data.length > 0 ? data[0].id : ''
+      dispatch({ type: ActionTypes.SetTopics, payload: { topics: topicId } })
+    }
+  }, [dispatch, data])
 
   const handleSortOrder = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
@@ -472,12 +469,12 @@ const Category: FC = () => {
               Temas
             </Title>
             <StyledSelectGroup
-              defaultValue={topic}
+              defaultValue="todos"
               options={mappedTopicsForFilterWidget}
               id="topics"
               label="Temas"
               name="topics"
-              // onChange={() => handleSelectTopicFilter}
+              onChange={(e) => handleSelectTopicFilter(e, e.target.value)}
             />
           </MobileTopicsContainer>
           <ContainerMain>
@@ -488,13 +485,7 @@ const Category: FC = () => {
                 </Title>
                 <Text fontWeight="bold">Temas</Text>
                 <ScrollTopics>
-                  {slug && (
-                    <TopicsRadioWidget
-                      slug={slug}
-                      // topic={topic}
-                      // setTopic={handleTopicFilter}
-                    />
-                  )}
+                  {slug && <TopicsRadioWidget slug={slug} />}
                 </ScrollTopics>
 
                 <TypesFilterWidget />
@@ -548,7 +539,6 @@ const Category: FC = () => {
                 <ScrollDiv>
                   <ResourceCardList
                     handleAccessModal={handleAccessModal}
-                    // filters={filters}
                     sortOrder={sortOrder}
                   />
                 </ScrollDiv>

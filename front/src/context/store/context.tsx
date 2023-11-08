@@ -14,7 +14,7 @@ const FiltersContext = createContext<TInitialState | undefined>(undefined)
 const defaultFilters: TInitialState = {
   resources: [],
   types: [],
-  topics: [],
+  topics: 'todos',
   status: [],
   dispatch: () => {},
 }

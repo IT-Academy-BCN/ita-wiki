@@ -1,7 +1,13 @@
-
 import { urls } from '../constants'
-import { TTopic, TGetTopics, TGetTypes, TFavorites, TResource, TVoteCountResponse, TVoteMutationData } from '../types'
-
+import {
+  TTopic,
+  TGetTopics,
+  TGetTypes,
+  TFavorites,
+  TResource,
+  TVoteCountResponse,
+  TVoteMutationData,
+} from '../types'
 
 const errorMessageStatus: { [key: number]: string } = {
   401: 'Error 401 - No autorizado',
@@ -12,15 +18,15 @@ const errorMessageStatus: { [key: number]: string } = {
 }
 
 export const getTopics = async (slug?: string): Promise<TGetTopics> => {
-  const url = slug ? `${urls.getTopics}?slug=${slug}` : urls.getTopics;
+  const url = slug ? `${urls.getTopics}?slug=${slug}` : urls.getTopics
 
-  const response = await fetch(url);
+  const response = await fetch(url)
   if (!response.ok) {
-    throw new Error(`Error fetching topics: ${response.statusText}`);
+    throw new Error(`Error fetching topics: ${response.statusText}`)
   }
 
-  const data = await response.json();
-  return data;
+  const data = await response.json()
+  return data
 }
 export const createTopicFetcher = (createdTopic: TTopic) =>
   fetch(urls.postTopics, {
@@ -61,7 +67,7 @@ export const getCategories = async () =>
     .catch((err) => {
       throw new Error(`Error fetching categories: ${err.message}`)
     })
-   
+
 export const getTypes = (): Promise<TGetTypes> =>
   fetch(urls.getTypes, {
     headers: {
@@ -77,7 +83,7 @@ export const getTypes = (): Promise<TGetTypes> =>
     .catch((err) => {
       throw new Error(`Error fetching types: ${err.message}`)
     })
-   
+
 export const getFavorites = async (slug?: string): Promise<TFavorites[]> => {
   const urlFavorites = slug
     ? `${urls.getFavorites}/${slug}`
@@ -129,34 +135,36 @@ export const getResources = async (filters: string) =>
     })
 
 export const getResourcesByUser = async (categorySlug: string | undefined) => {
-      const response = await fetch(
-        `${urls.getResourcesByUser}?category=${categorySlug}`,
-        {
-          headers: {
-            Accept: 'application/json',
-          },
-        }
-      )
-    
-      if (!response.ok) {
-        throw new Error(`Error fetching resources: ${response.statusText}`)
-      }
-    
-      const data = await response.json()
-    
-      return data.resources.map((resource: TResource) => ({
-        ...resource,
-        editable: true,
-      }))
+  const response = await fetch(
+    `${urls.getResourcesByUser}?category=${categorySlug}`,
+    {
+      headers: {
+        Accept: 'application/json',
+      },
     }
-export const getVotes = async (resourceId: string): Promise<TVoteCountResponse> => {
-      const response = await fetch(`${urls.vote}${resourceId}`)
-      if (!response.ok) {
-        throw new Error('Error fetching votes')
-      }
-      const data = await (response.json() as Promise<TVoteCountResponse>)
-      return data
+  )
+
+  if (!response.ok) {
+    throw new Error(`Error fetching resources: ${response.statusText}`)
   }
+
+  const data = await response.json()
+
+  return data.resources.map((resource: TResource) => ({
+    ...resource,
+    editable: true,
+  }))
+}
+export const getVotes = async (
+  resourceId: string
+): Promise<TVoteCountResponse> => {
+  const response = await fetch(`${urls.vote}${resourceId}`)
+  if (!response.ok) {
+    throw new Error('Error fetching votes')
+  }
+  const data = await (response.json() as Promise<TVoteCountResponse>)
+  return data
+}
 export const updateVote = async ({ resourceId, vote }: TVoteMutationData) => {
   const response = await fetch(urls.vote, {
     method: 'PUT',
@@ -176,7 +184,7 @@ export const loginUserFetcher = async (user: object) => {
     422: 'Identificador o contraseña incorrectos.',
   }
 
-   const response = await fetch(urls.logIn, {
+  const response = await fetch(urls.logIn, {
     method: 'POST',
     body: JSON.stringify(user),
     headers: { 'Content-Type': 'application/json' },

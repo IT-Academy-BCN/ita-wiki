@@ -31,7 +31,7 @@ const StatusFilterWidget = () => {
     if (e.target.checked) {
       dispatch({
         type: ActionTypes.SetStatus,
-        payload: { status: [...status, item] },
+        payload: { status: [item] },
       })
     } else {
       dispatch({
@@ -41,7 +41,7 @@ const StatusFilterWidget = () => {
         },
       })
     }
-    return [...status, item]
+    return [item]
   }
 
   useEffect(() => {

@@ -78,18 +78,12 @@ const ResourceCardList: FC<TResourceCardList> = ({
   const filters: TFilters = {
     resourceTypes: types,
     status,
-    topics,
+    topic: topics,
   }
 
   const { isLoading, data, error } = useGetResources(filters)
 
   const { sortedItems } = useSortByDate<TResource>(data, 'updatedAt', sortOrder)
-
-  // const prueba = sortedItems.map((item) =>
-  //   item.topics.map((topicObj) => topicObj.topic.categoryId)
-  // )
-
-  // console.log('prueba', topics, status, types)
 
   if (error) return <p>Ha habido un error...</p>
   return (
