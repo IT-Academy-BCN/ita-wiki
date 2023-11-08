@@ -2,7 +2,7 @@ import { z } from '../../openapi/zod'
 
 export const categorySchema = z.object({
   id: z.string(),
-  name: z.string().openapi({ example: 'React' }),
+  name: z.string().openapi({ example: 'React' }).nonempty(),
   slug: z.string().optional().openapi({ example: 'react' }),
   topics: z.array(
     z.object({

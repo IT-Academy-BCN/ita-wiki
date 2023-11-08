@@ -362,6 +362,7 @@ paths:
               properties:
                 name:
                   type: string
+                  minLength: 1
                   example: React
               required:
                 - name
@@ -426,6 +427,7 @@ paths:
               properties:
                 name:
                   type: string
+                  minLength: 1
                   example: React
               required:
                 - name
