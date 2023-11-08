@@ -248,3 +248,15 @@ export const updateResourceFetcher = (resource: object) =>
     })
     // eslint-disable-next-line no-console
     .catch((error) => console.error(error))
+
+export const updateStatus = async (id: string) => {
+  const response = await fetch(`${urls.postStatus}/${id}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Error updating status')
+  }
+}
