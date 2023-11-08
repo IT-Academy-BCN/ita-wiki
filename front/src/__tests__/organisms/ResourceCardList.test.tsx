@@ -21,7 +21,9 @@ describe('ResourceCardList', () => {
               filters={{ slug: 'resourceTest' }}
               handleAccessModal={handleAccessModal}
               sortOrder="desc"
-              sortOrderByVotes="asc"
+              handleSortByVotes={() => 'desc'}
+              handleSortByDates={() => 'desc'}
+              isSortByVotesActive
             />
           }
         />
@@ -55,7 +57,9 @@ describe('ResourceCardList', () => {
               filters={{ slug: 'emptyResource' }}
               handleAccessModal={handleAccessModal}
               sortOrder="desc"
-              sortOrderByVotes="asc"
+              handleSortByDates={() => 'desc'}
+              handleSortByVotes={() => 'desc'}
+              isSortByVotesActive
             />
           }
         />
@@ -82,7 +86,9 @@ describe('ResourceCardList', () => {
         filters={{ slug: 'emptyResource' }}
         handleAccessModal={handleAccessModal}
         sortOrder="desc"
-        sortOrderByVotes="asc"
+        handleSortByDates={() => 'desc'}
+        handleSortByVotes={() => 'desc'}
+        isSortByVotesActive
       />
     )
 
