@@ -4,6 +4,7 @@ import { render, screen, waitFor } from '../test-utils'
 import { ResourceCardList } from '../../components/organisms'
 import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
+import { FiltersProvider } from '../../context/store/context'
 
 describe('ResourceCardList', () => {
   const handleAccessModal = vi.fn()
@@ -13,18 +14,19 @@ describe('ResourceCardList', () => {
 
   it('renders ResourceCard correctly on success', async () => {
     render(
-      <Routes>
-        <Route
-          path="/category/:slug"
-          element={
-            <ResourceCardList
-              filters={{ slug: 'resourceTest' }}
-              handleAccessModal={handleAccessModal}
-              sortOrder="desc"
-            />
-          }
-        />
-      </Routes>,
+      <FiltersProvider>
+        <Routes>
+          <Route
+            path="/category/:slug"
+            element={
+              <ResourceCardList
+                handleAccessModal={handleAccessModal}
+                sortOrder="desc"
+              />
+            }
+          />
+        </Routes>
+      </FiltersProvider>,
       {
         initialEntries: ['/category/resourceTest'],
       }
@@ -46,18 +48,19 @@ describe('ResourceCardList', () => {
 
   it('renders message when Category does not have Resources', async () => {
     render(
-      <Routes>
-        <Route
-          path="/category/:slug"
-          element={
-            <ResourceCardList
-              filters={{ slug: 'emptyResource' }}
-              handleAccessModal={handleAccessModal}
-              sortOrder="desc"
-            />
-          }
-        />
-      </Routes>,
+      <FiltersProvider>
+        <Routes>
+          <Route
+            path="/category/:slug"
+            element={
+              <ResourceCardList
+                handleAccessModal={handleAccessModal}
+                sortOrder="desc"
+              />
+            }
+          />
+        </Routes>
+      </FiltersProvider>,
       {
         initialEntries: ['/category/emptyResource'],
       }
@@ -76,11 +79,12 @@ describe('ResourceCardList', () => {
   it.skip('renders correctly on error', async () => {
     mswServer.use(...errorHandlers)
     render(
-      <ResourceCardList
-        filters={{ slug: 'emptyResource' }}
-        handleAccessModal={handleAccessModal}
-        sortOrder="desc"
-      />
+      <FiltersProvider>
+        <ResourceCardList
+          handleAccessModal={handleAccessModal}
+          sortOrder="desc"
+        />
+      </FiltersProvider>
     )
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement

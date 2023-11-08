@@ -1,14 +1,15 @@
-import { vi } from 'vitest'
 import { TopicsRadioWidget } from '../../components/organisms'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
+import { FiltersProvider } from '../../context/store/context'
 
 describe('TopicsRadioWidget', () => {
   it('renders correctly on succesfull API call', async () => {
-    const setTopic = vi.fn()
     render(
-      <TopicsRadioWidget slug="react" topic="listas" setTopic={setTopic} />
+      <FiltersProvider>
+        <TopicsRadioWidget slug="react" />
+      </FiltersProvider>
     )
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
@@ -22,9 +23,10 @@ describe('TopicsRadioWidget', () => {
 
   it('renders correctly when there is an error during the fetch', async () => {
     mswServer.use(...errorHandlers)
-    const setTopic = vi.fn()
     render(
-      <TopicsRadioWidget slug="react" topic="invalid" setTopic={setTopic} />
+      <FiltersProvider>
+        <TopicsRadioWidget slug="react" />
+      </FiltersProvider>
     )
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
@@ -37,9 +39,11 @@ describe('TopicsRadioWidget', () => {
   })
 
   it('The user can select another radio option', async () => {
-    const setTopic = vi.fn()
-
-    render(<TopicsRadioWidget slug="react" topic="todos" setTopic={setTopic} />)
+    render(
+      <FiltersProvider>
+        <TopicsRadioWidget slug="react" />
+      </FiltersProvider>
+    )
 
     await waitFor(() => {
       const option1 = screen.getByLabelText(/todos/i)
@@ -49,7 +53,6 @@ describe('TopicsRadioWidget', () => {
       expect(option1).toBeChecked()
 
       fireEvent.click(option3)
-      expect(setTopic).toHaveBeenCalledWith('cli04uxud000609k37w9phejw')
       expect(option2).not.toBeChecked()
       expect(option3).toBeChecked()
     })

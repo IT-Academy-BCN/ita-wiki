@@ -37,14 +37,14 @@ describe('FiltersProvider', () => {
 
     const { result } = renderHook(() => useFiltersContext(), { wrapper })
     act(() => {
-      expect(result.current.topics).toStrictEqual([])
+      expect(result.current.topics).toStrictEqual('todos')
       result.current.dispatch({
         type: ActionTypes.SetTopics,
         payload: {
-          topics: ['topicsTest'],
+          topics: 'topicsTest',
         },
       })
     })
-    expect(result.current.topics).toEqual(['topicsTest'])
+    expect(result.current.topics).toEqual('topicsTest')
   })
 })

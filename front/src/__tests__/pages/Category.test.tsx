@@ -2,6 +2,7 @@ import { expect, vi } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '../test-utils'
 import { Category } from '../../pages'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
+import { FiltersProvider } from '../../context/store/context'
 
 vi.mock('react-router-dom', async () => {
   const actual: Record<number, unknown> = await vi.importActual(
@@ -37,7 +38,11 @@ describe.skip('Resource', () => {
 })
 
 it('renders correctly', () => {
-  render(<Category />)
+  render(
+    <FiltersProvider>
+      <Category />
+    </FiltersProvider>
+  )
 
   expect(screen.getByTestId('filters-container')).toBeInTheDocument()
   expect(screen.getByTestId('types-filter')).toBeInTheDocument()
@@ -55,7 +60,11 @@ it('renders Navbar for logged in users', () => {
     },
   } as TAuthContext)
 
-  render(<Category />)
+  render(
+    <FiltersProvider>
+      <Category />
+    </FiltersProvider>
+  )
 
   expect(screen.getByTestId('navbar')).toBeInTheDocument()
 })
@@ -65,13 +74,21 @@ it('renders Navbar for unregistered users', () => {
     user: null,
   } as TAuthContext)
 
-  render(<Category />)
+  render(
+    <FiltersProvider>
+      <Category />
+    </FiltersProvider>
+  )
 
   expect(screen.getByTestId('navbar')).toBeInTheDocument()
 })
 
 it('filters opens and closes correctly', () => {
-  render(<Category />)
+  render(
+    <FiltersProvider>
+      <Category />
+    </FiltersProvider>
+  )
 
   fireEvent.click(screen.getByTestId('filters-button'))
   expect(screen.getByTestId('mobile-filters')).toBeInTheDocument()
@@ -81,7 +98,11 @@ it('filters opens and closes correctly', () => {
 })
 
 it('create new resource modal opens and closes correctly', () => {
-  render(<Category />)
+  render(
+    <FiltersProvider>
+      <Category />
+    </FiltersProvider>
+  )
 
   fireEvent.click(screen.getByText('+ Crear nuevo recurso'))
   expect(screen.getByText(/Nuevo Recurso/)).toBeInTheDocument()
@@ -92,7 +113,11 @@ it('modal opens and closes correctly when user is not logged', async () => {
     user: null,
   } as TAuthContext)
 
-  render(<Category />)
+  render(
+    <FiltersProvider>
+      <Category />
+    </FiltersProvider>
+  )
 
   fireEvent.click(screen.getByRole('button', { name: '+ Crear nuevo recurso' }))
   const modalTitle = screen.getByRole('heading', {
@@ -107,7 +132,11 @@ it('modal opens and closes correctly when user is not logged', async () => {
 })
 
 it('modal opens and closes correctly when user is logged', async () => {
-  render(<Category />)
+  render(
+    <FiltersProvider>
+      <Category />
+    </FiltersProvider>
+  )
 
   fireEvent.click(screen.getByRole('button', { name: '+ Crear nuevo recurso' }))
   const modalTitle = screen.getByRole('heading', {
@@ -124,7 +153,11 @@ it('status filter widget does not appear for users who are not logged in', () =>
   vi.mocked(useAuth).mockReturnValue({
     user: null,
   } as TAuthContext)
-  render(<Category />)
+  render(
+    <FiltersProvider>
+      <Category />
+    </FiltersProvider>
+  )
 
   const statusFilterWidget = screen.queryByTestId('status-filter')
   expect(statusFilterWidget).not.toBeInTheDocument()
@@ -137,7 +170,11 @@ it('status filter widget appears for users who are logged in', () => {
       avatar: 'Avatar',
     },
   } as TAuthContext)
-  render(<Category />)
+  render(
+    <FiltersProvider>
+      <Category />
+    </FiltersProvider>
+  )
 
   const statusFilterWidget = screen.getByTestId('status-filter')
   expect(statusFilterWidget).toBeInTheDocument()

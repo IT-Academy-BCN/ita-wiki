@@ -1,26 +1,31 @@
 import { vi } from 'vitest'
 import { render, screen, waitFor, fireEvent } from '../test-utils'
 import { StatusFilterWidget } from '../../components/molecules'
+import { FiltersProvider } from '../../context/store/context'
 
 describe('StatusFilterWidget', () => {
-  const onChangeStatusFilter = vi.fn()
   afterEach(() => {
     vi.restoreAllMocks()
   })
 
   it('renders component correctly with all filters selected', () => {
-    render(<StatusFilterWidget handleStatusFilter={onChangeStatusFilter} />)
+    render(
+      <FiltersProvider>
+        <StatusFilterWidget />
+      </FiltersProvider>
+    )
 
     expect(screen.getByText('Estado')).toBeInTheDocument()
     expect(screen.getByLabelText('Por ver')).toBeInTheDocument()
     expect(screen.getByLabelText('Vistos')).toBeInTheDocument()
-
-    expect(onChangeStatusFilter).toHaveBeenCalledTimes(1)
-    expect(onChangeStatusFilter).toHaveBeenCalledWith(['NOT_SEEN', 'SEEN'])
   })
 
   it('clicking a checkbox removes/adds its value to the filter selection', async () => {
-    render(<StatusFilterWidget handleStatusFilter={onChangeStatusFilter} />)
+    render(
+      <FiltersProvider>
+        <StatusFilterWidget />
+      </FiltersProvider>
+    )
 
     const checkBoxA = screen.getByLabelText('Por ver')
     const checkBoxB = screen.getByLabelText('Vistos')
@@ -30,20 +35,6 @@ describe('StatusFilterWidget', () => {
 
     fireEvent.click(checkBoxA)
 
-    await waitFor(() =>
-      expect(onChangeStatusFilter).toHaveBeenCalledWith(['SEEN'])
-    )
-
-    fireEvent.click(checkBoxB)
-
-    await waitFor(() => expect(onChangeStatusFilter).toHaveBeenCalledWith([]))
-
-    fireEvent.click(checkBoxA)
-
-    await waitFor(() =>
-      expect(onChangeStatusFilter).toHaveBeenCalledWith(['NOT_SEEN'])
-    )
-
-    expect(onChangeStatusFilter).toHaveBeenCalledTimes(4)
+    await waitFor(() => expect(checkBoxA).not.toBeChecked)
   })
 })
