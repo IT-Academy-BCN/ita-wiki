@@ -9,7 +9,7 @@ import {
 const initialState: TInitialState = {
   resources: [],
   types: [],
-  topics: [],
+  topics: '',
   status: [],
   dispatch: vi.fn(),
 }
@@ -63,7 +63,7 @@ describe('filters reducer', () => {
     expect(newResourceState).toEqual({
       resources: [resourceTest],
       types: [],
-      topics: [],
+      topics: '',
       status: [],
       dispatch: initialState.dispatch,
     })
@@ -80,7 +80,7 @@ describe('filters reducer', () => {
     expect(newTypeState).toEqual({
       resources: [],
       types: ['TypeTest'],
-      topics: [],
+      topics: '',
       status: [],
       dispatch: initialState.dispatch,
     })
@@ -89,7 +89,7 @@ describe('filters reducer', () => {
   it('Should handle ActionTypes.SetTopics', () => {
     const action: FiltersAction = {
       type: ActionTypes.SetTopics,
-      payload: { topics: ['topicTest'] },
+      payload: { topics: 'topicTest' },
     }
 
     const newTopicState = filtersReducer(initialState, action)
@@ -97,7 +97,7 @@ describe('filters reducer', () => {
     expect(newTopicState).toEqual({
       resources: [],
       types: [],
-      topics: ['topicTest'],
+      topics: 'topicTest',
       status: [],
       dispatch: initialState.dispatch,
     })
@@ -114,7 +114,7 @@ describe('filters reducer', () => {
     expect(newStatusState).toEqual({
       resources: [],
       types: [],
-      topics: [],
+      topics: '',
       status: ['not seen'],
       dispatch: initialState.dispatch,
     })
