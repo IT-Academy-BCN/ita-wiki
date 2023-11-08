@@ -1,8 +1,12 @@
 import { vi } from 'vitest'
+import { rest } from 'msw'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor, fireEvent } from '../test-utils'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { SettingsManager } from '../../components/organisms'
+import { mswServer } from '../setup'
+import { errorHandlers } from '../../__mocks__/handlers'
+import { urls } from '../../constants'
 
 const mockUsers = [
   {
@@ -16,7 +20,7 @@ const mockUsers = [
     updatedAt: '2023-01-01T00:00:00Z',
   },
 ]
-vi.mock('/api/users', () => mockUsers)
+vi.mock('/api/v1/users', () => mockUsers)
 const queryClient = new QueryClient()
 
 const renderWithQueryClient = (component: React.ReactNode) =>
@@ -44,8 +48,11 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+  mswServer.resetHandlers()
   vi.resetAllMocks()
 })
+
+afterAll(() => mswServer.close())
 
 describe('SettingsManager component', () => {
   it('renders Temes and Usuaris tabs correctly for mentor roles or higher', () => {
@@ -61,7 +68,7 @@ describe('SettingsManager component', () => {
     expect(screen.queryByText('Users Manager')).not.toBeInTheDocument()
   })
 
-  it('changes content tab according to click on menu tab', async () => {
+  it('changes content tab according to click on menu tab', () => {
     render(<SettingsManager />)
   
     fireEvent.click(screen.getByText('Usuaris'))
@@ -75,7 +82,7 @@ describe('SettingsManager component', () => {
 })
 
 describe('User Permissions', () => {
-  it('only allows admins to fetch users, and renders an error if the process fails', async () => {
+  it('renders an error when the fetching process fails', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'AdminName',
@@ -83,24 +90,27 @@ describe('User Permissions', () => {
         role: 'ADMIN',
       },
     } as TAuthContext)
+    mswServer.use(...errorHandlers)
+
     render(<SettingsManager />)
-  
+
     fireEvent.click(screen.getByText('Usuaris'))
-    
-    const errorText = await screen.findByText('Error fetching users')
-    expect(errorText).toBeInTheDocument()
+
+    await waitFor(() => {
+      expect(screen.getByText('Error fetching users')).toBeInTheDocument()
+    })
   })
 
-  it('does not allow lower permissions to see the results of the fetching process', async () => {
+  it('shows a message to mentors when they try to visualize the Usuaris content', async () => {
+    mswServer.use(
+      rest.patch(urls.patchTopics, (req, res, ctx) => res(ctx.status(403)))
+    )
     render(<SettingsManager />)
   
     fireEvent.click(screen.getByText('Usuaris'))
     
     await waitFor(() => {
-      const loadingText = screen.queryByText('Loading...')
-      const errorText = screen.queryByText('Error fetching users')
-      expect(loadingText).toBeNull()
-      expect(errorText).toBeNull()
+      expect(screen.getByText('No tens permisos suficients per accedir al contingut.')).toBeInTheDocument()
     })
   })
 
