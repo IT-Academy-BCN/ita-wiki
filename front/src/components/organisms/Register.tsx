@@ -4,8 +4,6 @@ import { UserRegisterSchema } from '@itacademy/schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { useMutation } from '@tanstack/react-query'
-import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
 import {
   Title,
@@ -18,10 +16,10 @@ import {
 } from '../atoms'
 import InputGroup from '../molecules/InputGroup'
 import SelectGroup from '../molecules/SelectGroup'
-import { urls } from '../../constants'
 import { colors, device, dimensions, FlexBox } from '../../styles'
-import { TCategory } from '../../types'
+import { TCategory, TForm } from '../../types'
 import { useGetCategories } from '../../hooks'
+import { useRegister } from '../../hooks/useRegister'
 
 const RegisterStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.sm};
@@ -103,8 +101,6 @@ const TextDecorationStyled = styled.span`
   cursor: pointer;
 `
 
-type TForm = z.infer<typeof UserRegisterSchema>
-
 type TRegister = {
   handleLoginModal: () => void
   handleRegisterModal: () => void
@@ -113,22 +109,8 @@ export function validatePassword(password: string): boolean {
   return /^(?=.*[A-Za-z\d])[A-Za-z\d]{8,}$/.test(password)
 }
 
-const registerNewUser = async (useData: TForm) => {
-  const response = await fetch(urls.register, {
-    method: 'POST',
-    body: JSON.stringify(useData),
-    headers: { 'Content-type': 'application/json' },
-  })
-
-  if (!response.ok)
-    throw new Error(`Error al registrar usuario: ${response.statusText}`)
-
-  return response.status === 204 ? null : response.json()
-}
-
 const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
   const [visibility, setVisibility] = useState(false)
-  const [responseError, setResponseError] = useState('')
   const { t } = useTranslation()
   const {
     register,
@@ -143,20 +125,13 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     label: category.name,
   }))
 
-  const registerUser = useMutation(registerNewUser, {
-    onMutate: () =>
-      new Promise((resolve) => {
-        setTimeout(resolve, 500)
-      }),
-    onSuccess: () => {
-      setTimeout(handleRegisterModal, 2000)
-    },
-    onError: (error: Error) => {
-      setResponseError(error.message)
-    },
-  })
-
-  const { isLoading, isSuccess } = registerUser
+  const {
+    registerUser,
+    responseError,
+    isLoading,
+    isSuccess,
+    setResponseError,
+  } = useRegister(handleRegisterModal)
 
   const onSubmit = handleSubmit(async (userData) => {
     const {

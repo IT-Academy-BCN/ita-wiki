@@ -1,4 +1,4 @@
-import { userSchema } from '../../../schemas'
+import { userGetSchema } from '../../../schemas'
 import { registry } from '../../registry'
 import { z } from '../../zod'
 import { pathRoot } from '../../../routes/routes'
@@ -24,13 +24,7 @@ registry.registerPath({
       description: 'Token is valid and user information is returned.',
       content: {
         'application/json': {
-          schema: userSchema.pick({
-            name: true,
-            dni: true,
-            email: true,
-            role: true,
-            status: true,
-          }),
+          schema: userGetSchema,
         },
       },
     },

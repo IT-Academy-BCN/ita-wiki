@@ -255,6 +255,8 @@ paths:
               schema:
                 type: object
                 properties:
+                  id:
+                    type: string
                   name:
                     type: string
                   dni:
@@ -274,7 +276,11 @@ paths:
                     enum: &a3
                       - ACTIVE
                       - INACTIVE
+                  avatarId:
+                    type: string
+                    nullable: true
                 required:
+                  - id
                   - dni
                   - email
                   - role
@@ -719,6 +725,42 @@ paths:
                         - downvote
                         - total
                         - userVote
+                    topics:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          topic:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              name:
+                                type: string
+                                example: React Props
+                              slug:
+                                type: string
+                                example: react-props
+                              categoryId:
+                                type: string
+                              createdAt:
+                                anyOf:
+                                  - type: string
+                                    format: date-time
+                                  - type: string
+                              updatedAt:
+                                anyOf:
+                                  - type: string
+                                    format: date-time
+                                  - type: string
+                            required:
+                              - id
+                              - name
+                              - categoryId
+                              - createdAt
+                              - updatedAt
+                        required:
+                          - topic
                   required:
                     - id
                     - title
@@ -730,6 +772,7 @@ paths:
                     - createdAt
                     - updatedAt
                     - voteCount
+                    - topics
         "401":
           description: Missing token
           content:
@@ -1828,6 +1871,7 @@ paths:
                       type: string
                     avatarId:
                       type: string
+                      nullable: true
                     specialization:
                       type: string
                       example: specializationId

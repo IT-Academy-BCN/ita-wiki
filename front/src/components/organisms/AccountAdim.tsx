@@ -143,7 +143,7 @@ const AccountAdmin: FC = () => {
         return prevData
       })
     } catch (error) {
-      // eslint-disable-next-line no-console
+      // eslint-disable-next-line no-console 
       console.error(error)
     }
   }
