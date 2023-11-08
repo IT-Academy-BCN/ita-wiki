@@ -73,11 +73,11 @@ describe('SettingsManager component', () => {
   
     fireEvent.click(screen.getByText('Usuaris'))
   
-    expect(screen.queryByText(/No hi ha temes disponibles./)).not.toBeInTheDocument()
+    expect(screen.getByText(/Administrador d'Usuaris/)).toBeInTheDocument()
     
     fireEvent.click(screen.getByText('Temes'))
   
-    expect(screen.queryByText('Users Manager')).not.toBeInTheDocument()
+    expect(screen.getByText(/No hi ha temes disponibles./)).toBeInTheDocument()
   })
 })
 
@@ -114,7 +114,7 @@ describe('User Permissions', () => {
     })
   })
 
-  it('allows admin to update user status when clicking on the status button', async () => {
+  it('allows admin to find users by DNI', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'AdminName',
@@ -124,22 +124,17 @@ describe('User Permissions', () => {
     } as TAuthContext)
     queryClient.setQueryData(['users'], mockUsers)
     renderWithQueryClient(<SettingsManager />)
-
+  
     fireEvent.click(screen.getByText('Usuaris'))
+  
+    const searchInput = screen.getByPlaceholderText('Escribe el DNI')
 
-    const user1 = await screen.findByText('User One')
-    expect(user1).toBeInTheDocument()
-
-    const statusButton = screen.getByTestId('status-desactivar')
-
-    fireEvent.click(statusButton)
+    fireEvent.change(searchInput, { target: { value: '12345678' } })
 
     await waitFor(() =>
-      expect(
-        screen.getByText('Desactivar')
-      ).toBeInTheDocument()
+      expect(screen.getByText('User One')).toBeInTheDocument()
     )
-  })
+  })  
 
   it('does not allow mentors to update user status', async () => {
     render(<SettingsManager />)
