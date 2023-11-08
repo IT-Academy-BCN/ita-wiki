@@ -28,32 +28,38 @@ const StyledText = styled(Text)`
 `
 
 type SortOrder = 'asc' | 'desc'
-type SortOrderByVotes = 'asc' | 'desc'
 
 type TResourceCardList = {
   filters: TFilters
   sortOrder: SortOrder
-  sortOrderByVotes: SortOrderByVotes
   handleAccessModal: () => void
+  handleSortByVotes: () => void
+  handleSortByDates: () => void
+  isSortByVotesActive: boolean
 }
 
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
+  handleSortByVotes,
+  handleSortByDates,
   sortOrder,
-  sortOrderByVotes,
   filters,
+  isSortByVotesActive,
 }) => {
   const { user } = useAuth()
   const { isLoading, data, error } = useGetResources(filters)
   const { sortedItems } = useSortByDate<TResource>(data, 'updatedAt', sortOrder)
-  const { sortedVotes } = useSortByVotes<TResource>(data, sortOrderByVotes)
+  const { sortedVotes } = useSortByVotes<TResource>(data, sortOrder)
+
+  const selectedSortOrder = isSortByVotesActive ? sortedVotes : sortedItems
+
   if (error) return <p>Ha habido un error...</p>
-  
+
   return (
     <StyledFlexBox direction="column" data-testid="resource-list">
       {isLoading && <SpinnerStyled size="medium" role="status" />}
       {data && data?.length > 0 ? (
-        sortedItems?.map && sortedVotes?.map((resource: TResource) => (
+        selectedSortOrder.map((resource: TResource) => (
           <CardResource
             key={resource.id}
             id={resource.id}

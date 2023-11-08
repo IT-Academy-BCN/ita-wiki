@@ -15,11 +15,11 @@ export const useSortByVotes = <T extends { voteCount: TVoteCount }>(
         const votesA = a.voteCount.total
         const votesB = b.voteCount.total
 
-        if (sortOrderByVotes === 'desc') {
+        if (sortOrderByVotes === 'asc') {
           return votesA - votesB
         }
         return votesB - votesA
-      });
+      })
 
       setSortedVotes(sorted)
     }
