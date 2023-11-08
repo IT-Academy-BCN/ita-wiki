@@ -166,40 +166,49 @@ it('sorts resources by date in descending order', () => {
 })
 
 it('sorts resources by votes in ascending order', () => {
-  const resources = [
+  const votes = [
     {
       id: 'resource1',
       title: 'Resource 1',
       voteCount: {
-        total: 5,
+        downvote: 1,
+        upvote: 2,
+        total: 3,
+        userVote: 1,
       },
     },
     {
       id: 'resource2',
       title: 'Resource 2',
       voteCount: {
-        total: 3,
+        downvote: 0,
+        upvote: 0,
+        total: 0,
+        userVote: 0,
       },
     },
     {
       id: 'resource3',
       title: 'Resource 3',
       voteCount: {
+        downvote: 0,
+        upvote: 0,
         total: 7,
+        userVote: 0,
       },
-    }
+    },
   ]
 
   render(<Category />)
 
   fireEvent.click(screen.getByText('Votos'))
 
-  const { result } = renderHook(() => useSortByVotes(resources, 'asc'))
+  const { result } = renderHook(() => useSortByVotes(votes, 'asc'))
   const sortedResources = result.current.sortedVotes
 
-  const voteCounts = sortedResources.map((resource) => resource.voteCount.total)
+  const voteCounts = sortedResources.map((vote) => vote.voteCount.total)
 
-  expect(voteCounts).toEqual([3, 5, 7])
+  expect(voteCounts).toEqual([0, 3, 7])
 })
 
 it('changes Votos and Fecha styles on click', () => {
