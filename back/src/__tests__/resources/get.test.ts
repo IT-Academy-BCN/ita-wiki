@@ -1,6 +1,11 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
-import { RESOURCE_TYPE, Resource, ViewedResource } from '@prisma/client'
+import {
+  Category,
+  RESOURCE_TYPE,
+  Resource,
+  ViewedResource,
+} from '@prisma/client'
 import qs from 'qs'
 import { z } from 'zod'
 import { server, testUserData } from '../globalSetup'
@@ -22,12 +27,16 @@ const votesForResources: ResourceVotes = {
 let createdResources: Resource[] = []
 let viewedResource: ViewedResource
 beforeAll(async () => {
+  const testCategory = (await prisma.category.findUnique({
+    where: { slug: 'testing' },
+  })) as Category
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,
     user: { connect: { dni: testUserData.user.dni } },
     topics: {
       create: [{ topic: { connect: { slug: 'testing' } } }],
     },
+    category: { connect: { id: testCategory.id } },
   }))
   // createMany does not allow nested create on many-to-many relationships as per prisma docs. Therefore individual creates are made.
   await prisma.$transaction(
@@ -119,7 +128,7 @@ describe('Testing resources GET endpoint', () => {
     const categorySlug = 'testing'
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .query({ category: categorySlug })
+      .query({ slug: categorySlug })
 
     expect(response.status).toBe(200)
     expect(response.body.length).toBeGreaterThanOrEqual(1)
@@ -152,7 +161,7 @@ describe('Testing resources GET endpoint', () => {
           qs.stringify({
             topic: topicId,
             resourceTypes: [resourceType],
-            category: categorySlug,
+            slug: categorySlug,
           })
         )
 
@@ -199,7 +208,6 @@ describe('Testing resources GET endpoint', () => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })
   })
-
   it('should retrieve resources not viewed by the user with NOT_SEEN status when logged in', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
@@ -210,6 +218,20 @@ describe('Testing resources GET endpoint', () => {
     expect(viewedResource.resourceId).not.toContain(
       createdResources.map((r) => r.id)
     )
+    response.body.forEach((resource: ResourceGetSchema) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
+    })
+  })
+  it('should retrieve all resources when both SEEN and NOT_SEEN statuses are provided while logged in', async () => {
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.resources}`)
+      .query(
+        qs.stringify({
+          status: ['SEEN', 'NOT_SEEN'],
+        })
+      )
+    expect(response.status).toBe(200)
+    expect(response.body.length).toBe(createdResources.length)
     response.body.forEach((resource: ResourceGetSchema) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })

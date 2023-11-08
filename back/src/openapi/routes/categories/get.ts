@@ -1,6 +1,6 @@
-import { pathRoot } from '../../routes/routes'
-import { registry } from '../registry'
-import { z } from '../zod'
+import { pathRoot } from '../../../routes/routes'
+import { registry } from '../../registry'
+import { z } from '../../zod'
 
 registry.registerPath({
   method: 'get',

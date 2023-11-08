@@ -20,7 +20,6 @@ const sizes = {
 type TSpinner = {
   size?: 'xsmall' | 'small' | 'medium' | 'big'
 }
-
 const Spinner = styled.div.attrs<TSpinner>((props) => ({ size: props?.size })) <TSpinner>`
  ${({ size }) => `
     height: ${size ? sizes[size] : sizes.medium};

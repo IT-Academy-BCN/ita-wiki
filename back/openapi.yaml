@@ -346,6 +346,126 @@ paths:
                     - id
                     - name
                     - slug
+    post:
+      tags:
+        - categories
+      description: Creates a new category. The requestor has to be logged in and with
+        role ADMIN.
+      summary: Creates a new category.
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: React
+              required:
+                - name
+      responses:
+        "204":
+          description: New category created succesfully.
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "403":
+          description: Forbidden. Acces denied.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ForbiddenError"
+                  - example: &a1
+                      message: Access denied. You don't have permissions
+        "498":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
+  "/api/v1/categories/id/{id}":
+    patch:
+      tags:
+        - categories
+      summary: Patch a category by its ID.
+      description: Modifies an existing category. The requestor has to be logged in
+        and with role ADMIN.
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: categoryId
+          schema:
+            type: string
+          required: true
+          description: ID of the category to modify
+          example: clnwzimjp0000h88ktz1ibtq5
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: React
+              required:
+                - name
+      responses:
+        "204":
+          description: Category modified succesfully.
+        "401":
+          description: Missing token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingTokenError"
+        "403":
+          description: Forbidden. Acces denied.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ForbiddenError"
+                  - example: *a1
+        "404":
+          description: Category not found
+        "498":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidTokenError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
   /api/v1/topics:
     get:
       tags:
@@ -437,8 +557,7 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/ForbiddenError"
-                  - example: &a1
-                      message: Access denied. You don't have permissions
+                  - example: *a1
         "498":
           description: Invalid token
           content:
@@ -564,6 +683,9 @@ paths:
                         - TUTORIAL
                     userId:
                       type: string
+                    categoryId:
+                      type: string
+                      example: clocr0bi20000h8vwipfbazso
                     createdAt:
                       anyOf:
                         - type: string
@@ -604,6 +726,7 @@ paths:
                     - url
                     - resourceType
                     - userId
+                    - categoryId
                     - createdAt
                     - updatedAt
                     - voteCount
@@ -634,31 +757,47 @@ paths:
         are fetched.
       summary: Returns a collection of resources
       parameters:
-        - name: slug
-          in: query
+        - in: query
+          name: slug
+          schema:
+            type: string
+            example: react
           required: false
           description: Slug of the category for which to retrieve resources
           example: react
-        - name: resourceTypes
-          in: query
+        - in: query
+          name: resourceTypes
+          schema:
+            type: array
+            uniqueItems: true
+            items:
+              type: string
+              enum:
+                - BLOG
+                - VIDEO
+                - TUTORIAL
           required: false
           description: Resource types to filter by
-          example:
-            - BLOG
-            - VIDEO
-        - name: topic
-          in: query
-          required: false
+        - in: query
+          name: topic
           schema:
             type: string
+            example: cln2u09xo0037s6wvbf6t9jfg
+          required: false
           description: ID of the topic for which to retrieve resources. If not provided,
             resources for ALL topics are fetched.
-          example: cln2u09xo0037s6wvbf6t9jfg
-        - name: status
-          in: query
+        - in: query
+          name: status
+          schema:
+            type: array
+            uniqueItems: true
+            items:
+              type: string
+              enum:
+                - SEEN
+                - NOT_SEEN
           required: false
           description: Status to filter by
-          example: SEEN
       responses:
         "200":
           description: Sucessful operation
@@ -688,6 +827,9 @@ paths:
                     resourceType:
                       type: string
                       enum: *a2
+                    categoryId:
+                      type: string
+                      example: clocr0bi20000h8vwipfbazso
                     createdAt:
                       anyOf:
                         - type: string
@@ -771,6 +913,7 @@ paths:
                     - slug
                     - url
                     - resourceType
+                    - categoryId
                     - createdAt
                     - updatedAt
                     - user
@@ -830,14 +973,19 @@ paths:
                 resourceType:
                   type: string
                   enum: *a2
+                categoryId:
+                  type: string
+                  example: clocr0bi20000h8vwipfbazso
                 topics:
                   type: array
                   items:
                     type: string
+                    example: clocr0bpv000ah8vwnfvpo24p
               required:
                 - title
                 - url
                 - resourceType
+                - categoryId
                 - topics
       responses:
         "204":
@@ -977,6 +1125,9 @@ paths:
                   resourceType:
                     type: string
                     enum: *a2
+                  categoryId:
+                    type: string
+                    example: clocr0bi20000h8vwipfbazso
                   createdAt:
                     anyOf:
                       - type: string
@@ -1060,6 +1211,7 @@ paths:
                   - slug
                   - url
                   - resourceType
+                  - categoryId
                   - createdAt
                   - updatedAt
                   - user
@@ -1151,6 +1303,9 @@ paths:
                   resourceType:
                     type: string
                     enum: *a2
+                  categoryId:
+                    type: string
+                    example: clocr0bi20000h8vwipfbazso
                   createdAt:
                     anyOf:
                       - type: string
@@ -1234,6 +1389,7 @@ paths:
                   - slug
                   - url
                   - resourceType
+                  - categoryId
                   - createdAt
                   - updatedAt
                   - user
@@ -1289,6 +1445,9 @@ paths:
                         resourceType:
                           type: string
                           enum: *a2
+                        categoryId:
+                          type: string
+                          example: clocr0bi20000h8vwipfbazso
                         createdAt:
                           anyOf:
                             - type: string
@@ -1372,6 +1531,7 @@ paths:
                         - slug
                         - url
                         - resourceType
+                        - categoryId
                         - createdAt
                         - updatedAt
                         - user
@@ -1665,6 +1825,8 @@ paths:
                     dni:
                       type: string
                     name:
+                      type: string
+                    avatarId:
                       type: string
                     specialization:
                       type: string

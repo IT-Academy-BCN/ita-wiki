@@ -14,7 +14,7 @@ import {
   TopicsRadioWidget,
 } from '../components/organisms'
 import { Button, Icon, Input, Text, Title } from '../components/atoms'
-import { TFilters } from '../helpers'
+
 import {
   AccessModalContent,
   InputGroup,
@@ -25,6 +25,7 @@ import {
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
+import { TFilters } from '../types'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -242,8 +243,8 @@ const MobileTopicsContainer = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
   background-color: ${colors.gray.gray5};
-  padding-right: ${dimensions.spacing.lg};
-  padding-left: ${dimensions.spacing.lg};
+  padding-right: ${dimensions.spacing.base};
+  padding-left: ${dimensions.spacing.base};
   padding-bottom: ${dimensions.spacing.md};
   padding-top: ${dimensions.spacing.none};
   position: sticky;
