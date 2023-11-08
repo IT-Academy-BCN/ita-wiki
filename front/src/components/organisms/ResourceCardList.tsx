@@ -4,6 +4,7 @@ import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import CardResource from './CardResource'
 import { useSortByDate } from '../../hooks/useSortByDate'
+import { useSortByVotes } from '../../hooks/useSortByVotes'
 import { useAuth } from '../../context/AuthProvider'
 import { TResource, TFilters } from '../../types'
 import { useGetResources } from '../../hooks'
@@ -27,27 +28,32 @@ const StyledText = styled(Text)`
 `
 
 type SortOrder = 'asc' | 'desc'
+type SortOrderByVotes = 'asc' | 'desc'
 
 type TResourceCardList = {
   filters: TFilters
   sortOrder: SortOrder
+  sortOrderByVotes: SortOrderByVotes
   handleAccessModal: () => void
 }
 
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
   sortOrder,
+  sortOrderByVotes,
   filters,
 }) => {
   const { user } = useAuth()
   const { isLoading, data, error } = useGetResources(filters)
   const { sortedItems } = useSortByDate<TResource>(data, 'updatedAt', sortOrder)
+  const { sortedVotes } = useSortByVotes<TResource>(data, sortOrderByVotes)
   if (error) return <p>Ha habido un error...</p>
+  
   return (
     <StyledFlexBox direction="column" data-testid="resource-list">
       {isLoading && <SpinnerStyled size="medium" role="status" />}
       {data && data?.length > 0 ? (
-        sortedItems?.map((resource: TResource) => (
+        sortedItems?.map && sortedVotes?.map((resource: TResource) => (
           <CardResource
             key={resource.id}
             id={resource.id}
