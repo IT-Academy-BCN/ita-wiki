@@ -46,7 +46,7 @@ export type TFavorites = {
   }
   isFavorite: boolean
 }
-export type TUser = {
+export type TUserData = {
   id: string
   email: string
   dni: string
