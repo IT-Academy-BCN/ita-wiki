@@ -2,7 +2,13 @@ import { z } from '../../openapi/zod'
 
 export const resourceSchema = z.object({
   id: z.string().cuid(),
-  title: z.string().openapi({ example: 'My Resource in Javascript' }),
+  title: z
+    .string()
+    .openapi({ example: 'My Resource in Javascript' })
+    .nonempty()
+    .refine((data) => data.trim().length > 2, {
+      message: 'Title must have more than two characters and cannot be empty',
+    }),
   slug: z.string().openapi({ example: 'my-resource-in-javascript' }),
   description: z
     .string()
