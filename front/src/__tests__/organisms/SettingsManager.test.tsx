@@ -77,6 +77,25 @@ describe('SettingsManager component', () => {
   
     expect(screen.getByText(/No hi ha temes disponibles./)).toBeInTheDocument()
   })
+
+  it('filters out tabs that the mentor role is not authorized to view', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'MentorName',
+        avatar: 'MentorAvatar',
+        role: 'MENTOR',
+      },
+    } as TAuthContext)
+  
+    render(<SettingsManager />)
+  
+    const tabs = screen.getAllByRole('button')
+  
+    expect(tabs.length).toBe(1)
+    expect(tabs[0].textContent).toBe('Temes')
+  
+    expect(screen.queryByText('Usuaris')).not.toBeInTheDocument()
+  })
 })
 
 describe('User Permissions', () => {
