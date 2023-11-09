@@ -16,7 +16,7 @@ const tabsData: React.ComponentProps<typeof Tabs> ['tabsData'] = [
     id: 'usersTab',
     title: 'Usuarios',
     tabComponent: <UsersManager />,
-    requiredRole: ['MENTOR', 'ADMIN']
+    requiredRole: ['ADMIN']
   },
 ]
 
@@ -27,8 +27,7 @@ export const SettingsManager: FC = () => {
 
   const tTabsData = tabsData
     .filter((tab) => (
-      (Array.isArray(tab.requiredRole) && tab.requiredRole.includes(user?.role ?? '')) ||
-      tab.id === 'usersTab'
+      (Array.isArray(tab.requiredRole) && tab.requiredRole.includes(user?.role ?? ''))
     ))
     .map((tab) => {
       const modifiedTab = {

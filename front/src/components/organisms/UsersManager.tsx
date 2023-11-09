@@ -11,9 +11,6 @@ const UsersManager = () => {
     <>
       {t('Administrador de Usuarios')}
       {user?.role === 'ADMIN' && <AccountAdmin />}
-      {user?.role === 'MENTOR' && (
-        <p>{t("No tienes permisos suficientes para acceder al contenido.")}</p>
-      )}
     </>
   )
 }
