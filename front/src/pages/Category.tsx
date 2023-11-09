@@ -365,7 +365,15 @@ const CloseFilterButton = styled(Button)`
 `
 
 const StyledDateToggle = styled(Text)`
-  color: ${colors.gray.gray3};
+  color: ${colors.black.black1};
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.96);
+  }
+`
+
+const StyledVotesToggle = styled(Text)`
   cursor: pointer;
 
   &:active {
@@ -386,8 +394,10 @@ const Category: FC = () => {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false)
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
+  const [isSortByVotesActive, setIsSortByVotesActive] = useState(false)
 
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
+  const [selectedOption, setSelectedOption] = useState<'Fecha' | 'Votos'>('Votos')
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
@@ -437,6 +447,14 @@ const Category: FC = () => {
 
   const handleSortOrder = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
+  }
+
+  const handleSortByVotes = () => {
+    setIsSortByVotesActive(true)
+  }
+
+  const handleSortByDates = () => {
+    setIsSortByVotesActive(false)
   }
 
   const { data: fetchedTopics } = useGetTopics(slug ?? '')
@@ -514,14 +532,39 @@ const Category: FC = () => {
                 <VotesDateContainer>
                   <FlexBox direction="row" gap="15px">
                     <FlexBox direction="row">
-                      <Text fontWeight="bold">Votos</Text>
-                      <Icon name="arrow_downward" />
+                      <StyledVotesToggle 
+                        onClick={() => { 
+                          handleSortByVotes()
+                          handleSortOrder()
+                          setSelectedOption('Votos')
+                        }}
+                        >
+                        <Text
+                          fontWeight={selectedOption === 'Votos' ? 'bold' : 'normal'}
+                          >
+                            Votos
+                        </Text>
+                      </StyledVotesToggle>
+                      {selectedOption === 'Votos' && (
+                        sortOrder === 'desc' ? (
+                          <Icon name="arrow_upward" />
+                        ) : (
+                          <Icon name="arrow_downward" />
+                        )
+                      )}
                     </FlexBox>
                     <StyledDateToggle
-                      onClick={handleSortOrder}
-                      color={colors.gray.gray3}
-                    >
-                      Fecha
+                      onClick={() => {
+                        handleSortByDates()
+                        handleSortOrder()
+                        setSelectedOption('Fecha')
+                      }}
+                      >
+                      <Text 
+                        fontWeight={selectedOption === 'Fecha' ? 'bold' : 'normal'}
+                        >
+                          Fecha
+                      </Text>
                     </StyledDateToggle>
                   </FlexBox>
                 </VotesDateContainer>
@@ -540,6 +583,9 @@ const Category: FC = () => {
                   <ResourceCardList
                     handleAccessModal={handleAccessModal}
                     sortOrder={sortOrder}
+                    handleSortByVotes={handleSortByVotes}
+                    handleSortByDates={handleSortByDates}
+                    isSortByVotesActive={isSortByVotesActive}
                   />
                 </ScrollDiv>
               </ResourcesContainer>

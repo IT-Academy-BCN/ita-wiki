@@ -20,6 +20,9 @@
   "Ajustes": "Settings",
   "Cerrar": "Close",
 
+  "Administrador de Usuarios": "Users Manager",
+  "No tienes permisos suficientes para acceder al contenido.": "You don't have the right permissions to access the content.",
+
   "Registre": "Register",
   "DNI": "DNI or NIE",
   "Especialidad": "Specialization",

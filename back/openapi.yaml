@@ -258,6 +258,8 @@ paths:
               schema:
                 type: object
                 properties:
+                  id:
+                    type: string
                   name:
                     type: string
                   dni:
@@ -277,7 +279,11 @@ paths:
                     enum: &a3
                       - ACTIVE
                       - INACTIVE
+                  avatarId:
+                    type: string
+                    nullable: true
                 required:
+                  - id
                   - dni
                   - email
                   - role
@@ -691,6 +697,9 @@ paths:
                         - TUTORIAL
                     userId:
                       type: string
+                    categoryId:
+                      type: string
+                      example: clocr0bi20000h8vwipfbazso
                     createdAt:
                       anyOf:
                         - type: string
@@ -724,6 +733,42 @@ paths:
                         - downvote
                         - total
                         - userVote
+                    topics:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          topic:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              name:
+                                type: string
+                                example: React Props
+                              slug:
+                                type: string
+                                example: react-props
+                              categoryId:
+                                type: string
+                              createdAt:
+                                anyOf:
+                                  - type: string
+                                    format: date-time
+                                  - type: string
+                              updatedAt:
+                                anyOf:
+                                  - type: string
+                                    format: date-time
+                                  - type: string
+                            required:
+                              - id
+                              - name
+                              - categoryId
+                              - createdAt
+                              - updatedAt
+                        required:
+                          - topic
                   required:
                     - id
                     - title
@@ -731,9 +776,11 @@ paths:
                     - url
                     - resourceType
                     - userId
+                    - categoryId
                     - createdAt
                     - updatedAt
                     - voteCount
+                    - topics
         '401':
           description: Missing token
           content:
@@ -762,32 +809,48 @@ paths:
         are fetched.
       summary: Returns a collection of resources
       parameters:
-        - name: slug
-          in: query
+        - in: query
+          name: slug
+          schema:
+            type: string
+            example: react
           required: false
           description: Slug of the category for which to retrieve resources
           example: react
-        - name: resourceTypes
-          in: query
+        - in: query
+          name: resourceTypes
+          schema:
+            type: array
+            uniqueItems: true
+            items:
+              type: string
+              enum:
+                - BLOG
+                - VIDEO
+                - TUTORIAL
           required: false
           description: Resource types to filter by
-          example:
-            - BLOG
-            - VIDEO
-        - name: topic
-          in: query
-          required: false
+        - in: query
+          name: topic
           schema:
             type: string
+            example: cln2u09xo0037s6wvbf6t9jfg
+          required: false
           description:
             ID of the topic for which to retrieve resources. If not provided,
             resources for ALL topics are fetched.
-          example: cln2u09xo0037s6wvbf6t9jfg
-        - name: status
-          in: query
+        - in: query
+          name: status
+          schema:
+            type: array
+            uniqueItems: true
+            items:
+              type: string
+              enum:
+                - SEEN
+                - NOT_SEEN
           required: false
           description: Status to filter by
-          example: SEEN
       responses:
         '200':
           description: Sucessful operation
@@ -817,6 +880,9 @@ paths:
                     resourceType:
                       type: string
                       enum: *a2
+                    categoryId:
+                      type: string
+                      example: clocr0bi20000h8vwipfbazso
                     createdAt:
                       anyOf:
                         - type: string
@@ -900,6 +966,7 @@ paths:
                     - slug
                     - url
                     - resourceType
+                    - categoryId
                     - createdAt
                     - updatedAt
                     - user
@@ -960,14 +1027,19 @@ paths:
                 resourceType:
                   type: string
                   enum: *a2
+                categoryId:
+                  type: string
+                  example: clocr0bi20000h8vwipfbazso
                 topics:
                   type: array
                   items:
                     type: string
+                    example: clocr0bpv000ah8vwnfvpo24p
               required:
                 - title
                 - url
                 - resourceType
+                - categoryId
                 - topics
       responses:
         '204':
@@ -1107,6 +1179,9 @@ paths:
                   resourceType:
                     type: string
                     enum: *a2
+                  categoryId:
+                    type: string
+                    example: clocr0bi20000h8vwipfbazso
                   createdAt:
                     anyOf:
                       - type: string
@@ -1190,6 +1265,7 @@ paths:
                   - slug
                   - url
                   - resourceType
+                  - categoryId
                   - createdAt
                   - updatedAt
                   - user
@@ -1281,6 +1357,9 @@ paths:
                   resourceType:
                     type: string
                     enum: *a2
+                  categoryId:
+                    type: string
+                    example: clocr0bi20000h8vwipfbazso
                   createdAt:
                     anyOf:
                       - type: string
@@ -1364,6 +1443,7 @@ paths:
                   - slug
                   - url
                   - resourceType
+                  - categoryId
                   - createdAt
                   - updatedAt
                   - user
@@ -1419,6 +1499,9 @@ paths:
                         resourceType:
                           type: string
                           enum: *a2
+                        categoryId:
+                          type: string
+                          example: clocr0bi20000h8vwipfbazso
                         createdAt:
                           anyOf:
                             - type: string
@@ -1502,6 +1585,7 @@ paths:
                         - slug
                         - url
                         - resourceType
+                        - categoryId
                         - createdAt
                         - updatedAt
                         - user
@@ -1801,8 +1885,10 @@ paths:
                       type: string
                     name:
                       type: string
+
                     avatarId:
                       type: string
+                      nullable: true
                     specialization:
                       type: string
                       example: specializationId

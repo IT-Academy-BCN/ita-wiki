@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import styled from 'styled-components'
 import { FC } from 'react'
 import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import CardResource from './CardResource'
 import { useSortByDate } from '../../hooks/useSortByDate'
+import { useSortByVotes } from '../../hooks/useSortByVotes'
 import { useAuth } from '../../context/AuthProvider'
 import { useFiltersContext } from '../../context/store/context'
 import { TFilters } from '../../types'
@@ -65,11 +68,17 @@ type SortOrder = 'asc' | 'desc'
 type TResourceCardList = {
   sortOrder: SortOrder
   handleAccessModal: () => void
+  handleSortByVotes: () => void
+  handleSortByDates: () => void
+  isSortByVotesActive: boolean
 }
 
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
+  handleSortByVotes,
+  handleSortByDates,
   sortOrder,
+  isSortByVotesActive,
 }) => {
   const { user } = useAuth()
 
@@ -84,13 +93,17 @@ const ResourceCardList: FC<TResourceCardList> = ({
   const { isLoading, data, error } = useGetResources(filters)
 
   const { sortedItems } = useSortByDate<TResource>(data, 'updatedAt', sortOrder)
+  const { sortedVotes } = useSortByVotes<TResource>(data, sortOrder)
+
+  const selectedSortOrder = isSortByVotesActive ? sortedVotes : sortedItems
 
   if (error) return <p>Ha habido un error...</p>
+
   return (
     <StyledFlexBox direction="column" data-testid="resource-list">
       {isLoading && <SpinnerStyled size="medium" role="status" />}
       {data && data?.length > 0 ? (
-        sortedItems?.map((resource: TResource) => (
+        selectedSortOrder.map((resource: TResource) => (
           <CardResource
             key={resource.id}
             id={resource.id}
@@ -98,7 +111,7 @@ const ResourceCardList: FC<TResourceCardList> = ({
             title={resource.title}
             url={resource.url}
             description={resource.description}
-            likes={resource.voteCount.total}
+            voteCount={resource.voteCount}
             createdBy={resource.user.name}
             createdAt={resource.createdAt}
             updatedAt={resource.updatedAt}

@@ -10,6 +10,10 @@ export const handlers = [
 
   rest.post(urls.createResource, (req, res, ctx) => res(ctx.status(204))),
 
+  rest.post(urls.postTopics, (req, res, ctx) => res(ctx.status(200), ctx.json({ success: true }))),
+
+  rest.patch(urls.patchTopics, (req, res, ctx) => res(ctx.status(200), ctx.json({ success: true }))),
+
   rest.get(urls.getMe, (_, res, ctx) =>
     res(
       ctx.status(200),
@@ -94,14 +98,21 @@ export const handlers = [
           voteCount: {
             upvote: 6,
             downvote: 2,
-            total: 4,
+            total: 1,
             userVote: 1,
           },
+          isFavorite: 'false',
         },
       ])
     )
   }),
+  rest.post(urls.createResource, (_, res, ctx) => 
+     res(ctx.status(204))
+  ),
 
+  rest.patch(urls.updateResource, (_, res, ctx) => 
+     res(ctx.status(204))
+  ),
   rest.get(urls.getTypes, (_, res, ctx) =>
     res(
       ctx.status(200),
@@ -187,6 +198,8 @@ export const handlers = [
   }),
 
   rest.put(urls.favorites, (_, res, ctx) => res(ctx.status(204))),
+
+  rest.post(`${urls.postStatus}/test`, (_, res, ctx) => res(ctx.status(204))),
 
   rest.get(urls.getResourcesByUser, (req, res, ctx) => {
     const categorySlug = req.url.searchParams.get('category')
@@ -275,6 +288,9 @@ export const errorHandlers = [
   ),
   rest.put(urls.vote, (_, res, ctx) =>
     res(ctx.status(404), ctx.json({ message: 'User or resource not found' }))
+  ),
+  rest.post(urls.postStatus, (_, res, ctx) =>
+    res(ctx.status(401), ctx.json({ message: 'Error updating status' }))
   ),
 
   rest.get(urls.getResourcesByUser, (req, res, ctx) => {

@@ -28,16 +28,17 @@ export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
           userId: true,
           categoryId: true,
           topics: { select: { topic: true } },
-          vote: { select: { vote: true } },
+          vote: { select: { vote: true, userId: true } },
         },
       },
     },
   })
 
-  const parsedResources = favorites.map((resource) => {
-    const resourceWithVote = transformResourceToAPI(resource.resource)
-    return resourceFavoriteSchema.parse(resourceWithVote)
-  })
+  const parsedResources = favorites.map((resource) =>
+    resourceFavoriteSchema.parse(
+      transformResourceToAPI(resource.resource, user ? user.id : undefined)
+    )
+  )
 
   ctx.status = 200
   ctx.body = parsedResources

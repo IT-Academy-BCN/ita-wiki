@@ -1,3 +1,6 @@
+import { UserRegisterSchema } from '@itacademy/schemas'
+import { z } from 'zod'
+
 export type TTopic = {
   id?: string
   name: string
@@ -43,7 +46,7 @@ export type TFavorites = {
   }
   isFavorite: boolean
 }
-export type TUser = {
+export type TUserData = {
   id: string
   email: string
   dni: string
@@ -133,16 +136,24 @@ export type TCardResource = {
   handleAccessModal: () => void
 }
 
-export type TVoteCountResponse = {
+export type TVoteCounter = {
+  voteCount: TVoteCount
+  resourceId: string
+  handleAccessModal: () => void
+}
+
+export type TVoteCount = {
   downvote: number
   upvote: number
   total: number
   userVote: number
 }
 
+export type TUserVote = 'up' | 'down' | 'cancel'
+
 export type TVoteMutationData = {
   resourceId: string
-  vote: 'up' | 'down' | 'cancel'
+  vote: TUserVote
 }
 export type TError = {
   message: string
@@ -154,3 +165,4 @@ export type TResourceTitleLink = {
   url: string
   id: string
 }
+export type TForm = z.infer<typeof UserRegisterSchema>

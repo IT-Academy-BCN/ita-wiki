@@ -14,7 +14,6 @@ import {
   responsiveSizes,
 } from '../../styles'
 import { Modal, ResourceTitleLink } from '../molecules'
-import CardResource from './CardResource'
 import Login from './Login'
 import Register from './Register'
 import { TFavorites } from '../../types'
@@ -137,6 +136,7 @@ export const MyFavoritesList: FC = () => {
                   url={fav.url}
                   title={fav.title}
                   description={fav.description}
+                  id={fav.id}
                 />
               </FavoritesCardList>
             ))}

@@ -22,6 +22,9 @@ describe('ResourceCardList', () => {
               <ResourceCardList
                 handleAccessModal={handleAccessModal}
                 sortOrder="desc"
+                handleSortByVotes={() => 'desc'}
+                handleSortByDates={() => 'desc'}
+                isSortByVotesActive
               />
             }
           />
@@ -56,6 +59,9 @@ describe('ResourceCardList', () => {
               <ResourceCardList
                 handleAccessModal={handleAccessModal}
                 sortOrder="desc"
+                handleSortByVotes={() => 'desc'}
+                handleSortByDates={() => 'desc'}
+                isSortByVotesActive
               />
             }
           />
@@ -83,6 +89,9 @@ describe('ResourceCardList', () => {
         <ResourceCardList
           handleAccessModal={handleAccessModal}
           sortOrder="desc"
+          handleSortByVotes={() => 'desc'}
+          handleSortByDates={() => 'desc'}
+          isSortByVotesActive
         />
       </FiltersProvider>
     )

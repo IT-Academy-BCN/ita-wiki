@@ -10,7 +10,7 @@
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module",
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.eslint.json"
   },
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
@@ -19,9 +19,9 @@
     "@typescript-eslint/lines-between-class-members": "off",
     "@typescript-eslint/return-await": "off",
     "import/no-extraneous-dependencies": "warn",
-    "import/order": "error",
+    "import/order": "warn",
     "class-methods-use-this": ["off", { "enforceForClassFields": false }],
-    "no-await-in-loop": "off",
+    "no-await-in-loop": "warn",
     "import/prefer-default-export": "off",
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
     "arrow-body-style": "off",

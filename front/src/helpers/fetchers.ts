@@ -5,8 +5,9 @@ import {
   TGetTypes,
   TFavorites,
   TResource,
-  TVoteCountResponse,
+  TVoteCount,
   TVoteMutationData,
+  TForm,
 } from '../types'
 
 const errorMessageStatus: { [key: number]: string } = {
@@ -28,6 +29,7 @@ export const getTopics = async (slug?: string): Promise<TGetTopics> => {
   const data = await response.json()
   return data
 }
+
 export const createTopicFetcher = (createdTopic: TTopic) =>
   fetch(urls.postTopics, {
     method: 'POST',
@@ -113,11 +115,13 @@ export const favMutation = async (id: string) => {
     throw new Error(`Error updating favorite resource: ${response.statusText}`)
   }
 }
+
 export const getUsers = async () => {
   const response = await fetch(urls.users)
   const data = await response.json()
   return data
 }
+
 export const getResources = async (filters: string) =>
   fetch(`${urls.getResources}?${filters}`, {
     headers: {
@@ -155,14 +159,16 @@ export const getResourcesByUser = async (categorySlug: string | undefined) => {
     editable: true,
   }))
 }
+
 export const getVotes = async (resourceId: string): Promise<TVoteCount> => {
   const response = await fetch(`${urls.vote}${resourceId}`)
   if (!response.ok) {
     throw new Error('Error fetching votes')
   }
-  const data = await (response.json() as Promise<TVoteCountResponse>)
+  const data = await (response.json() as Promise<TVoteCount>)
   return data
 }
+
 export const updateVote = async ({ resourceId, vote }: TVoteMutationData) => {
   const response = await fetch(urls.vote, {
     method: 'PUT',
@@ -194,6 +200,17 @@ export const loginUserFetcher = async (user: object) => {
   ) {
     throw new Error(errorMessage[response.status])
   }
+
+  return response.status === 204 ? null : response.json()
+}
+export const registerUserFetcher = async (useData: TForm) => {
+  const response = await fetch(urls.register, {
+    method: 'POST',
+    body: JSON.stringify(useData),
+    headers: { 'Content-type': 'application/json' },
+  })
+  if (!response.ok)
+    throw new Error(`Error al registrar usuario: ${response.statusText}`)
 
   return response.status === 204 ? null : response.json()
 }
@@ -231,3 +248,15 @@ export const updateResourceFetcher = (resource: object) =>
     })
     // eslint-disable-next-line no-console
     .catch((error) => console.error(error))
+
+export const updateStatus = async (id: string) => {
+  const response = await fetch(`${urls.postStatus}/${id}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Error updating status')
+  }
+}

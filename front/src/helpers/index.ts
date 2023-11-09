@@ -1,2 +1,8 @@
 export { buildQueryString } from './filters'
-export { getCategories, getUsers, getResources , getResourcesByUser} from './fetchers'
+export { updateCachedVoteCount } from './updateCachedVoteCount'
+export {
+  getCategories,
+  getUsers,
+  getResources,
+  getResourcesByUser,
+} from './fetchers'
