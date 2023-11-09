@@ -67,4 +67,4 @@ jobs:
           pm2 stop server-dev || true
 
           # Start the app with PM2 and the specified flag
-          pm2 start --name server-dev dist/server.js 
+          pm2 start --name server-dev dist/src/server.js 
