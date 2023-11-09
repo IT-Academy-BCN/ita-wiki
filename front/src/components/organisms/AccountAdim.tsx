@@ -2,10 +2,10 @@ import styled from 'styled-components'
 import { FC, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
-import { paths, urls } from '../constants'
-import { colors } from '../styles'
-import { TUserData } from '../types'
-import { useGetUsers } from '../hooks/useGetUsers'
+import { paths, urls } from '../../constants'
+import { colors } from '../../styles'
+import { TUserData } from '../../types'
+import { useGetUsers } from '../../hooks/useGetUsers'
 
 const UserListContainer = styled.div`
   padding: 20px;
@@ -143,7 +143,7 @@ const AccountAdmin: FC = () => {
         return prevData
       })
     } catch (error) {
-      // eslint-disable-next-line no-console
+      // eslint-disable-next-line no-console 
       console.error(error)
     }
   }
