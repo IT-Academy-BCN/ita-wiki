@@ -375,7 +375,6 @@ const Category: FC = () => {
     topic: topic === 'todos' ? undefined : topic,
   })
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
-  const [selectedOption, setSelectedOption] = useState<'Fecha' | 'Votos' | null>(null)
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
