@@ -16,8 +16,11 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
         name: true,
       },
     },
-    vote: { select: { vote: true } },
+    vote: { select: { vote: true, userId: true } },
     topics: { select: { topic: true } },
+    favorites: {
+      where: { userId: user.id },
+    },
   }
 
   if (!categorySlug) {
@@ -48,10 +51,22 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
     })
   }
 
-  const parsedResources = resources.map((resource) => {
-    const resourceWithVote = transformResourceToAPI(resource)
-    return resourceGetSchema.parse(resourceWithVote)
+  const resourcesWithFavorites = resources.map((resource) => {
+    let isFavorite: boolean = false
+    if (user !== null)
+      isFavorite = !!resource.favorites.find(
+        (favorite) => favorite.userId === user.id
+      )
+
+    return {
+      ...resource,
+      isFavorite,
+    }
   })
+
+  const parsedResources = resourcesWithFavorites.map((resource) =>
+    resourceGetSchema.parse(transformResourceToAPI(resource, user.id))
+  )
   ctx.status = 200
   ctx.body = { resources: parsedResources }
 }
