@@ -3,11 +3,12 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
 import { UserLoginSchema } from '@itacademy/schemas'
+import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import InputGroup from '../molecules/InputGroup'
 import { Button, Icon, Spinner, Text, Title, ValidationMessage } from '../atoms'
 import { dimensions, colors, FlexBox, device } from '../../styles'
-import { useLogin } from '../../hooks/useLogin'
+import { loginUserFetcher } from '../../helpers/fetchers'
 
 const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.none};
@@ -75,6 +76,7 @@ type TLogin = {
 
 const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
   const [isVisibility, setIsVisibility] = useState(false)
+  const [responseError, setResponseError] = useState('')
   const { t } = useTranslation()
   const {
     register,
@@ -85,7 +87,21 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
     resolver: zodResolver(UserLoginSchema),
   })
 
-  const { loginUser, responseError, isLoading, isSuccess } = useLogin()
+  const loginUser = useMutation(loginUserFetcher, {
+    onMutate: () =>
+      new Promise((resolve) => {
+        setTimeout(resolve, 500)
+      }),
+    onSuccess: () => {
+      setTimeout(() => window.location.reload(), 2000)
+    },
+    onError: (error: Error) => {
+      setResponseError(error.message)
+    },
+  })
+
+  const { isLoading, isSuccess } = loginUser
+
   const onSubmit = handleSubmit(async (data) => {
     const { dni, password } = data
     await loginUser.mutateAsync({

@@ -7,7 +7,6 @@ import {
   TResource,
   TVoteCountResponse,
   TVoteMutationData,
-  TForm,
 } from '../types'
 
 const errorMessageStatus: { [key: number]: string } = {
@@ -198,6 +197,7 @@ export const loginUserFetcher = async (user: object) => {
 
   return response.status === 204 ? null : response.json()
 }
+
 export const createResourceFetcher = (resource: object) =>
   fetch(urls.createResource, {
     method: 'POST',

@@ -1,26 +1,34 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useLocation } from 'react-router-dom'
 import { useMutation } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { ChangeEvent, FC, HTMLAttributes } from 'react'
 import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio, Icon, Spinner } from '../atoms'
 import { FlexBox, colors, dimensions } from '../../styles'
-import { useCreateResource, useUpdateResource } from '../../hooks'
+import { reloadPage } from '../../utils/navigation'
+import {
+  createResourceFetcher,
+  updateResourceFetcher,
+} from '../../helpers/fetchers'
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
   margin: ${dimensions.spacing.xs} 0;
+
   ${Button} {
     font-weight: 500;
     margin: 0rem;
   }
 `
+
 type TButton = HTMLAttributes<HTMLParagraphElement> & {
   backgroundColor?: string
   padding?: string
 }
+
 const ButtonStyled = styled(Button)<TButton>`
   margin: ${dimensions.spacing.none};
   background-color: ${({ backgroundColor }) => backgroundColor};
@@ -32,10 +40,12 @@ const ButtonStyled = styled(Button)<TButton>`
     border: 2px solid ${({ backgroundColor }) => backgroundColor};
   }
 `
+
 const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.xxxs};
   margin-left: 0.2rem;
 `
+
 const ResourceFormSchema = z.object({
   title: z
     .string({ required_error: 'Este campo es obligatorio' })
@@ -55,6 +65,7 @@ const ResourceFormSchema = z.object({
     .refine((val) => val !== '', 'Debe seleccionar un tema válido'),
   resourceType: z.string(),
 })
+
 export type TResourceForm = Omit<
   z.infer<typeof ResourceFormSchema>,
   'topics'
@@ -63,21 +74,25 @@ export type TResourceForm = Omit<
   topicId?: string
   id?: string
 }
+
 const ResourceFormStyled = styled.form`
   ${Radio} {
     margin-top: ${dimensions.spacing.xl};
   }
 `
+
 type TSelectOption = {
   value: string
   label: string
   id?: string
 }
-export type TSelectOptions = {
+
+type TSelectOptions = {
   selectOptions: TSelectOption[]
   initialValues?: Partial<TResourceForm>
   resourceId?: string
 }
+
 const ResourceForm: FC<TSelectOptions> = ({
   selectOptions,
   initialValues,
@@ -87,6 +102,7 @@ const ResourceForm: FC<TSelectOptions> = ({
     register,
     handleSubmit,
     formState: { errors },
+    reset,
     setValue,
   } = useForm<TResourceForm>({
     resolver: zodResolver(ResourceFormSchema),
@@ -94,16 +110,27 @@ const ResourceForm: FC<TSelectOptions> = ({
   })
 
   const buttonText = initialValues ? 'Editar' : 'Crear'
+
+  const createResource = useMutation(createResourceFetcher, {
+    onSuccess: () => {
+      reset()
+      reloadPage()
+    },
+  })
+
+  const { isLoading: isCreateLoading, isSuccess: isCreateSuccess } =
+    createResource
+
+  const updateResource = useMutation(updateResourceFetcher, {
+    onSuccess: () => {
+      reset()
+      reloadPage()
+    },
+  })
   const {
-    isLoading: isCreateLoading,
-    isSuccess: isCreateSuccess,
-    createResource,
-  } = useCreateResource()
-  const {
-    isLoading: isUpdateLoading,
-    isSuccess: isUpdateSuccess,
-    updateResource,
-  } = useUpdateResource()
+    isLoading: isUpdateResourceLoading,
+    isSuccess: isUpdateResourceSuccess,
+  } = updateResource
 
   const create = handleSubmit(async (data) => {
     const { title, description, url, topics, resourceType } = data
@@ -115,8 +142,10 @@ const ResourceForm: FC<TSelectOptions> = ({
       resourceType,
     })
   })
+
   const update = handleSubmit(async (data) => {
     const { title, description, url, topicId, resourceType } = data
+
     const updatedData = {
       id: resourceId,
       title,
@@ -127,11 +156,13 @@ const ResourceForm: FC<TSelectOptions> = ({
     }
     await updateResource.mutateAsync(updatedData)
   })
+
   const handleTopicChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedTopicId = event.target.value
     const selectedTopic = selectOptions.find(
       (option) => option.value === selectedTopicId
     )
+
     if (selectedTopic) {
       setValue('topics', selectedTopic.label)
       setValue('topicId', selectedTopic.value)
@@ -173,6 +204,7 @@ const ResourceForm: FC<TSelectOptions> = ({
         validationMessage={errors.url?.message}
         validationType="error"
       />
+
       <SelectGroup
         id="topics"
         label="Tema"
@@ -183,6 +215,7 @@ const ResourceForm: FC<TSelectOptions> = ({
         validationMessage={errors.topics?.message}
         onChange={handleTopicChange}
       />
+
       <Radio
         {...register('resourceType')}
         options={[
@@ -202,7 +235,7 @@ const ResourceForm: FC<TSelectOptions> = ({
         ) : null}
       </FlexErrorStyled>
       <ButtonContainerStyled align="stretch">
-        {isCreateSuccess || isUpdateSuccess ? (
+        {isCreateSuccess || isUpdateResourceSuccess ? (
           <ButtonStyled
             backgroundColor={colors.success}
             padding={dimensions.spacing.xs}
@@ -211,8 +244,11 @@ const ResourceForm: FC<TSelectOptions> = ({
             <Icon data-testid="done-icon" name="done" />
           </ButtonStyled>
         ) : (
-          <Button type="submit" disabled={isCreateLoading || isUpdateLoading}>
-            {isCreateLoading || isUpdateLoading ? (
+          <Button
+            type="submit"
+            disabled={isCreateLoading || isUpdateResourceLoading}
+          >
+            {isCreateLoading || isUpdateResourceLoading ? (
               <Spinner size="xsmall" />
             ) : (
               buttonText

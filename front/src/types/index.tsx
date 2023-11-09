@@ -15,6 +15,8 @@ import type {
   TVoteMutationData,
   TResourceTitleLink,
   TGetTypes,
+  TUserVote,
+  TVoteCount,
 } from './types'
 
 export type {
@@ -34,4 +36,6 @@ export type {
   TVoteMutationData,
   TResourceTitleLink,
   TGetTypes,
+  TUserVote,
+  TVoteCount,
 }
