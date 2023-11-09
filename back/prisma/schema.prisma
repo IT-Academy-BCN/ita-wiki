@@ -19,7 +19,6 @@ model User {
   role             USER_ROLE        @default(REGISTERED)
   resources        Resource[]
   media            Media[]
-  avatarId         String?          @unique @map("avatar_id")
   favorite         Favorites[]
   viewed           ViewedResource[]
   vote             Vote[]

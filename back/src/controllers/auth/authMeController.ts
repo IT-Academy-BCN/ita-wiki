@@ -1,5 +1,5 @@
 import { Middleware, Context } from 'koa'
-
+import jwt, { Secret } from 'jsonwebtoken'
 import { prisma } from '../../prisma/client'
 
 export const authMeController: Middleware = async (ctx: Context) => {
@@ -14,10 +14,15 @@ export const authMeController: Middleware = async (ctx: Context) => {
       email: true,
       role: true,
       status: true,
-      avatarId: true,
+      role: true,
     },
   })
 
+  if (!user) {
+    ctx.status = 404
+    ctx.body = { error: 'User not found' }
+    return
+  }
   ctx.status = 200
   ctx.body = user
 }
