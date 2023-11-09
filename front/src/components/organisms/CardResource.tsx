@@ -2,12 +2,12 @@ import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { Text } from '../atoms'
 import { CreateAuthor } from '../molecules/CreateAuthor'
-import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
 import { VoteCounter } from '../molecules/VoteCounter'
 import EditResource from './EditResource'
 import { FavoritesIcon } from '../molecules/FavoritesIcon'
 import { useAuth } from '../../context/AuthProvider'
 import { TCardResource } from '../../types'
+import { ResourceTitleLink } from '../molecules'
 
 const CardContainerStyled = styled(FlexBox)`
   background-color: ${colors.white};
@@ -49,12 +49,13 @@ const FlexBoxStyled = styled(FlexBox)`
     margin-top: 2px;
   }
 `
+
 const CardResource = ({
   createdBy,
   createdAt,
   description,
   img,
-  likes,
+  voteCount,
   id,
   title,
   updatedAt,
@@ -67,6 +68,7 @@ const CardResource = ({
   ...rest
 }: TCardResource) => {
   const { user } = useAuth()
+
   return (
     <CardContainerStyled
       data-testid="resource-card"
@@ -87,7 +89,12 @@ const CardResource = ({
       )}
 
       <FlexBoxStyled align="start" justify="space-between" gap="4px">
-        <ResourceTitleLink description={description} title={title} url={url} />
+        <ResourceTitleLink
+          description={description}
+          title={title}
+          url={url}
+          id={id}
+        />
         <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
       </FlexBoxStyled>
 
@@ -108,19 +115,6 @@ const CardResource = ({
           <FavoritesIcon resourceId={id} isFavorite={isFavorite} />
         </UserWidgets>
       ) : null}
-      {Number.isInteger(likes) && (
-        <CounterContainerStyled>
-          <VoteCounter
-            totalVotes={likes ?? 0}
-            resourceId={id}
-            handleAccessModal={handleAccessModal || undefined}
-          />
-        </CounterContainerStyled>
-      )}
-      <FlexBoxStyled align="start" justify="space-between" gap="4px">
-        <ResourceTitleLink description={description} title={title} url={url} />
-        <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
-      </FlexBoxStyled>
     </CardContainerStyled>
   )
 }
