@@ -1,7 +1,6 @@
 export { userSchema } from './users/userSchema'
 export { userLoginSchema } from './users/userLoginSchema'
 export { userRegisterSchema } from './users/userRegisterSchema'
-export { userGetSchema } from './users/userGetSchema'
 export { userPatchSchema } from './users/userPatchSchema'
 export { resourceSchema } from './resource/resourceSchema'
 export { resourceCreateSchema } from './resource/resourceCreateSchema'

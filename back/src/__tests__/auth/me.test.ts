@@ -4,6 +4,7 @@ import { server, testUserData } from '../globalSetup'
 import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
+import { prisma } from '../../prisma/client'
 
 describe('Testing ME endpoint', () => {
   test('Should return error if no token is provided', async () => {
@@ -17,7 +18,6 @@ describe('Testing ME endpoint', () => {
       .set('Cookie', authToken.admin)
 
     expect(response.status).toBe(200)
-    expect(() => userGetSchema.parse(response.body)).not.toThrow()
     expect(response.body).toEqual(
       expect.objectContaining({
         name: testUserData.admin.name,
@@ -25,6 +25,11 @@ describe('Testing ME endpoint', () => {
         email: testUserData.admin.email,
         status: 'ACTIVE',
         role: testUserData.admin.role,
+        avatarId: uploadedMedia!.id,
+        avatar: expect.objectContaining({
+          filePath: expect.any(String),
+          mimeType: expect.any(String),
+        }),
       })
     )
   })

@@ -258,8 +258,6 @@ paths:
               schema:
                 type: object
                 properties:
-                  id:
-                    type: string
                   name:
                     type: string
                   dni:
@@ -279,11 +277,7 @@ paths:
                     enum: &a3
                       - ACTIVE
                       - INACTIVE
-                  avatarId:
-                    type: string
-                    nullable: true
                 required:
-                  - id
                   - dni
                   - email
                   - role
