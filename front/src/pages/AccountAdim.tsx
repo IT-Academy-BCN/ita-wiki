@@ -4,7 +4,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
 import { paths, urls } from '../constants'
 import { colors } from '../styles'
-import { TUserData } from '../types'
+import { TUser } from '../types'
 import { useGetUsers } from '../hooks/useGetUsers'
 
 const UserListContainer = styled.div`
@@ -96,7 +96,7 @@ const AccountAdmin: FC = () => {
     setSearchTerm(event.target.value)
   }
 
-  let filteredUsers: TUserData[] = []
+  let filteredUsers: TUser[] = []
 
   if (!isLoading && users) {
     if (searchTerm.trim() !== '') {
@@ -116,7 +116,7 @@ const AccountAdmin: FC = () => {
     return <div>Error fetching users</div>
   }
 
-  const updateUserStatus = async (user: TUserData) => {
+  const updateUserStatus = async (user: TUser) => {
     try {
       const updatedStatus = user.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
       const updatedUser = {
@@ -134,7 +134,7 @@ const AccountAdmin: FC = () => {
       if (!response.ok) {
         throw new Error('Failed to update user status')
       }
-      queryClient.setQueryData<TUserData[]>(['users'], (prevData) => {
+      queryClient.setQueryData<TUser[]>(['users'], (prevData) => {
         if (prevData) {
           return prevData.map((u) =>
             u.id === updatedUser.id ? { ...u, status: updatedStatus } : u
