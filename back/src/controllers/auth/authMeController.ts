@@ -1,7 +1,5 @@
 import { Middleware, Context } from 'koa'
-
 import { prisma } from '../../prisma/client'
-import { NotFoundError } from '../../helpers/errors'
 
 export const authMeController: Middleware = async (ctx: Context) => {
   const { id } = ctx.user
@@ -20,5 +18,5 @@ export const authMeController: Middleware = async (ctx: Context) => {
   })
 
   ctx.status = 200
-  ctx.body = userAvatar ? userWithAvatar : user
+  ctx.body = user
 }
