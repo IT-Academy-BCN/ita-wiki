@@ -14,6 +14,7 @@ import {
   responsiveSizes,
 } from '../../styles'
 import { Modal, ResourceTitleLink } from '../molecules'
+import CardResource from './CardResource'
 import Login from './Login'
 import Register from './Register'
 import { TFavorites } from '../../types'
@@ -132,12 +133,29 @@ export const MyFavoritesList: FC = () => {
           <FavoritesContainer>
             {data?.map((fav: TFavorites) => (
               <FavoritesCardList key={fav.id}>
-                <ResourceTitleLink
-                  url={fav.url}
-                  title={fav.title}
-                  description={fav.description}
-                  id={fav.id}
-                />
+                {isMobile ? (
+                  <CardResource
+                    createdBy={fav.userId}
+                    createdAt={fav.createdAt}
+                    updatedAt={fav.updatedAt}
+                    description={fav.description}
+                    img=""
+                    id={fav.id}
+                    title={fav.title}
+                    url={fav.url}
+                    handleAccessModal={() => {}}
+                    resourceType=""
+                    topics={[]}
+                    editable={false}
+                    isFavorite={fav.isFavorite}
+                  />
+                ) : (
+                  <ResourceTitleLink
+                    url={fav.url}
+                    title={fav.title}
+                    description={fav.description}
+                  />
+                )}
               </FavoritesCardList>
             ))}
           </FavoritesContainer>
