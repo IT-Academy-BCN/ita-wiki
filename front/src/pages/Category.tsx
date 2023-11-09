@@ -403,7 +403,7 @@ const Category: FC = () => {
     topic: topic === 'todos' ? undefined : topic,
   })
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
-  const [selectedOption, setSelectedOption] = useState<'Fecha' | 'Votos'>('Votos')
+  const [selectedOption, setSelectedOption] = useState<'Fecha' | 'Votos' | null>(null)
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
@@ -586,6 +586,19 @@ const Category: FC = () => {
                           Fecha
                       </Text>
                     </StyledDateToggle>
+                    {selectedOption === 'Fecha' && (
+                      sortOrder === 'desc' ? (
+                        <Icon 
+                          name="arrow_upward"
+                          style={{ marginLeft: '-15px' }}
+                        />
+                      ) : (
+                        <Icon 
+                          name="arrow_downward"
+                          style={{ marginLeft: '-15px' }}
+                        />
+                      )
+                    )}
                   </FlexBox>
                 </VotesDateContainer>
                 <ScrollDiv>
