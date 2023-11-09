@@ -730,42 +730,6 @@ paths:
                         - downvote
                         - total
                         - userVote
-                    topics:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          topic:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                              name:
-                                type: string
-                                example: React Props
-                              slug:
-                                type: string
-                                example: react-props
-                              categoryId:
-                                type: string
-                              createdAt:
-                                anyOf:
-                                  - type: string
-                                    format: date-time
-                                  - type: string
-                              updatedAt:
-                                anyOf:
-                                  - type: string
-                                    format: date-time
-                                  - type: string
-                            required:
-                              - id
-                              - name
-                              - categoryId
-                              - createdAt
-                              - updatedAt
-                        required:
-                          - topic
                   required:
                     - id
                     - title
@@ -776,7 +740,6 @@ paths:
                     - createdAt
                     - updatedAt
                     - voteCount
-                    - topics
         '401':
           description: Missing token
           content:

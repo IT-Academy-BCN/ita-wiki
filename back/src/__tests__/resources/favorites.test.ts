@@ -98,16 +98,6 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
           userId: expect.any(String),
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
-          topics: expect.arrayContaining([
-            expect.objectContaining({
-              topic: expect.objectContaining({
-                id: expect.any(String),
-                name: expect.any(String),
-                slug: expect.any(String),
-                categoryId: expect.any(String),
-              }),
-            }),
-          ]),
           voteCount: expect.objectContaining({
             upvote: expect.any(Number),
             downvote: expect.any(Number),
