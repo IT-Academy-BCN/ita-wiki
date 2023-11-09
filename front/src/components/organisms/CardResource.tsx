@@ -2,12 +2,12 @@ import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { Text } from '../atoms'
 import { CreateAuthor } from '../molecules/CreateAuthor'
+import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
 import { VoteCounter } from '../molecules/VoteCounter'
 import EditResource from './EditResource'
 import { FavoritesIcon } from '../molecules/FavoritesIcon'
 import { useAuth } from '../../context/AuthProvider'
 import { TCardResource } from '../../types'
-import { ResourceTitleLink } from '../molecules'
 
 const CardContainerStyled = styled(FlexBox)`
   background-color: ${colors.white};
@@ -49,7 +49,6 @@ const FlexBoxStyled = styled(FlexBox)`
     margin-top: 2px;
   }
 `
-
 const CardResource = ({
   createdBy,
   createdAt,
@@ -88,12 +87,7 @@ const CardResource = ({
       )}
 
       <FlexBoxStyled align="start" justify="space-between" gap="4px">
-        <ResourceTitleLink
-          description={description}
-          title={title}
-          url={url}
-          id={id}
-        />
+        <ResourceTitleLink description={description} title={title} url={url} />
         <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
       </FlexBoxStyled>
 

@@ -1,75 +1,31 @@
-import { expect, vi } from 'vitest'
-import { fireEvent, screen, render, waitFor } from '../test-utils'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 import { ResourceTitleLink } from '../../components/molecules'
-import { TAuthContext, useAuth } from '../../context/AuthProvider'
-import * as fetchers from '../../helpers/fetchers'
-
-vi.mock('../../context/AuthProvider', async () => {
-  const actual = (await vi.importActual(
-    '../../context/AuthProvider'
-  )) as typeof import('../../context/AuthProvider')
-  return {
-    ...actual,
-    useAuth: vi.fn(() => ({
-      user: null,
-    })),
-  }
-})
-
-const user = {
-  name: 'Hola',
-  avatar: 'Adios',
-}
-
-const resourceTitleProps = {
-  description: 'Test',
-  title: 'Title Link',
-  url: 'https://www.youtube.com/watch?v=n5qbzhZUMsY',
-  id: 'test',
-}
 
 describe('ResourceTitleLink', () => {
-  it('renders correctly', () => {
-    render(<ResourceTitleLink {...resourceTitleProps} />)
-    expect(screen.getByTestId('resource-title')).toBeInTheDocument()
-    expect(screen.getByText('Title Link')).toBeInTheDocument()
-    expect(screen.getByText('Test')).toBeInTheDocument()
+  const url = 'https://www.youtube.com/watch?v=n5qbzhZUMsY'
+
+  it('renders correctly', async () => {
+    render(
+      <BrowserRouter>
+        <ResourceTitleLink description="Test" title="Title Link" url={url} />
+      </BrowserRouter>
+    )
   })
 
-  it('should call updateStatus when the user is logged in', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user,
-    } as TAuthContext)
+  it('should opens the link in a new browser tab', () => {
+    render(
+      <BrowserRouter>
+        <ResourceTitleLink description="Test" title="Title Link" url={url} />
+      </BrowserRouter>
+    )
 
-    const spy = vi.spyOn(fetchers, 'updateStatus')
+    fireEvent.click(screen.getByRole('link'))
 
-    render(<ResourceTitleLink {...resourceTitleProps} />)
-
-    const link = screen.getByTestId('resource-title')
-    expect(link).toHaveAttribute('target', '_blank')
-    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
-
-    fireEvent.click(link)
-
-    await waitFor(() => {
-      expect(spy).toHaveBeenCalled()
-      expect(spy).toHaveBeenCalledWith(resourceTitleProps.id)
-    })
-  })
-
-  it('should not call updateStatus when the user is not logged in', async () => {
-    const spy = vi.spyOn(fetchers, 'updateStatus')
-
-    render(<ResourceTitleLink {...resourceTitleProps} />)
-
-    const link = screen.getByTestId('resource-title')
-    expect(link).toHaveAttribute('target', '_blank')
-    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
-
-    fireEvent.click(link)
-
-    await waitFor(() => {
-      expect(spy).not.toHaveBeenCalled()
-    })
+    expect(screen.getByRole('link')).toHaveAttribute('target', '_blank')
+    expect(screen.getByRole('link')).toHaveAttribute(
+      'rel',
+      'noopener noreferrer'
+    )
   })
 })

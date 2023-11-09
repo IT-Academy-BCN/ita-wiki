@@ -133,29 +133,11 @@ export const MyFavoritesList: FC = () => {
           <FavoritesContainer>
             {data?.map((fav: TFavorites) => (
               <FavoritesCardList key={fav.id}>
-                {isMobile ? (
-                  <CardResource
-                    createdBy={fav.userId}
-                    createdAt={fav.createdAt}
-                    updatedAt={fav.updatedAt}
-                    description={fav.description}
-                    img=""
-                    id={fav.id}
-                    title={fav.title}
-                    url={fav.url}
-                    handleAccessModal={() => {}}
-                    resourceType=""
-                    topics={[]}
-                    editable={false}
-                    isFavorite={fav.isFavorite}
-                  />
-                ) : (
-                  <ResourceTitleLink
-                    url={fav.url}
-                    title={fav.title}
-                    description={fav.description}
-                  />
-                )}
+                <ResourceTitleLink
+                  url={fav.url}
+                  title={fav.title}
+                  description={fav.description}
+                />
               </FavoritesCardList>
             ))}
           </FavoritesContainer>
