@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import styled from 'styled-components'
 import { FC } from 'react'
 import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import CardResource from './CardResource'
 import { useSortByDate } from '../../hooks/useSortByDate'
+import { useSortByVotes } from '../../hooks/useSortByVotes'
 import { useAuth } from '../../context/AuthProvider'
 import { TResource, TFilters } from '../../types'
 import { useGetResources } from '../../hooks'
@@ -32,22 +35,33 @@ type TResourceCardList = {
   filters: TFilters
   sortOrder: SortOrder
   handleAccessModal: () => void
+  handleSortByVotes: () => void
+  handleSortByDates: () => void
+  isSortByVotesActive: boolean
 }
 
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
+  handleSortByVotes,
+  handleSortByDates,
   sortOrder,
   filters,
+  isSortByVotesActive,
 }) => {
   const { user } = useAuth()
   const { isLoading, data, error } = useGetResources(filters)
   const { sortedItems } = useSortByDate<TResource>(data, 'updatedAt', sortOrder)
+  const { sortedVotes } = useSortByVotes<TResource>(data, sortOrder)
+
+  const selectedSortOrder = isSortByVotesActive ? sortedVotes : sortedItems
+
   if (error) return <p>Ha habido un error...</p>
+
   return (
     <StyledFlexBox direction="column" data-testid="resource-list">
       {isLoading && <SpinnerStyled size="medium" role="status" />}
       {data && data?.length > 0 ? (
-        sortedItems?.map((resource: TResource) => (
+        selectedSortOrder.map((resource: TResource) => (
           <CardResource
             key={resource.id}
             id={resource.id}
