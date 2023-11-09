@@ -85,7 +85,7 @@ While we encourage collaboration and support among team members, it's important 
 
 ```
 {
-    "eslint.workingDirectories": ["front", "back", "sso-service"]
+    "eslint.workingDirectories": ["front", "back"]
 }
 ```
 
