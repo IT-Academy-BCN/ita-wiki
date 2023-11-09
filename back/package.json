@@ -17,8 +17,7 @@
     "prisma:migrate": "prisma migrate dev --name init",
     "prisma:migrate:reset": "prisma migrate reset --force",
     "test": "vitest --no-threads",
-    "up": "cd ../scripts && ./up.sh && cd ../back && npm run prisma:migrate:reset",
-    "start:prod": "prisma migrate deploy && node dist/server.js"
+    "up": "cd ../scripts && ./up.sh && cd ../back && npm run prisma:migrate:reset"
   },
   "devDependencies": {
     "@types/bcrypt": "5.0.0",

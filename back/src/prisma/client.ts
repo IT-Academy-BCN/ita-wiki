@@ -20,7 +20,6 @@ prisma.$use(async (params, next) => {
     } else if (params.action === 'createMany') {
       // eslint-disable-next-line no-param-reassign, no-restricted-syntax
       for (const user of params.args.data) {
-        // eslint-disable-next-line no-await-in-loop
         user.password = await hashPassword(user.password)
       }
     }

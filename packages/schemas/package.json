@@ -1,6 +1,6 @@
 {
   "name": "@itacademy/schemas",
-  "version": "0.2.1",
+  "version": "0.2.0",
   "description": "Zod schemas for BE and FE.",
   "main": "./dist/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/IT-Academy-BCN/ita-wiki/tree/main/packages/schemas#readme",
   "peerDependencies": {
-    "zod": "^3.22.4"
+    "zod": "3.21.4"
   },
   "devDependencies": {
     "@types/node": "18.15.11",

@@ -4,23 +4,15 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2020",
     "module": "nodenext",
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node",
     "outDir": "dist",
-    "sourceMap": false,
+    "sourceMap": true,
     "experimentalDecorators": true,
     "noUnusedLocals": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "coverage",
-    "vite.config.ts",
-    "src/__tests__",
-    "src/__mocks__",
-    "prisma/**/*.ts"
-  ]
+  "include": ["src/**/*.ts", "prisma/**/*.ts", "vitest.config.ts"],
+  "exclude": ["node_modules", "dist", "coverage"]
 }
