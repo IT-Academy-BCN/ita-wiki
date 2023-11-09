@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useLocation } from 'react-router-dom'
+import { useMutation } from '@tanstack/react-query'
 import styled from 'styled-components'
 import { ChangeEvent, FC, HTMLAttributes } from 'react'
 import { InputGroup, SelectGroup } from '../molecules'
@@ -93,8 +93,6 @@ const ResourceForm: FC<TSelectOptions> = ({
     defaultValues: initialValues ?? undefined,
   })
 
-  const { state } = useLocation()
-
   const buttonText = initialValues ? 'Editar' : 'Crear'
   const {
     isLoading: isCreateLoading,
@@ -115,7 +113,6 @@ const ResourceForm: FC<TSelectOptions> = ({
       url,
       topics: [topics],
       resourceType,
-      categoryId: `${state.id}`,
     })
   })
   const update = handleSubmit(async (data) => {
