@@ -120,12 +120,7 @@ export type TCardResource = {
   description: string
   img: string | undefined
   id: string
-  voteCount?: {
-    upvote: number
-    downvote: number
-    total: number
-    userVote: number
-  }
+  likes?: number
   title: string
   updatedAt: string
   url: string
@@ -136,24 +131,16 @@ export type TCardResource = {
   handleAccessModal: () => void
 }
 
-export type TVoteCounter = {
-  voteCount: TVoteCount
-  resourceId: string
-  handleAccessModal: () => void
-}
-
-export type TVoteCount = {
+export type TVoteCountResponse = {
   downvote: number
   upvote: number
   total: number
   userVote: number
 }
 
-export type TUserVote = 'up' | 'down' | 'cancel'
-
 export type TVoteMutationData = {
   resourceId: string
-  vote: TUserVote
+  vote: 'up' | 'down' | 'cancel'
 }
 export type TError = {
   message: string

@@ -5,7 +5,7 @@ import {
   TGetTypes,
   TFavorites,
   TResource,
-  TVoteCount,
+  TVoteCountResponse,
   TVoteMutationData,
   TForm,
 } from '../types'
@@ -159,13 +159,14 @@ export const getResourcesByUser = async (categorySlug: string | undefined) => {
     editable: true,
   }))
 }
-
-export const getVotes = async (resourceId: string): Promise<TVoteCount> => {
+export const getVotes = async (
+  resourceId: string
+): Promise<TVoteCountResponse> => {
   const response = await fetch(`${urls.vote}${resourceId}`)
   if (!response.ok) {
     throw new Error('Error fetching votes')
   }
-  const data = await (response.json() as Promise<TVoteCount>)
+  const data = await (response.json() as Promise<TVoteCountResponse>)
   return data
 }
 
@@ -210,7 +211,7 @@ export const registerUserFetcher = async (useData: TForm) => {
     headers: { 'Content-type': 'application/json' },
   })
   if (!response.ok)
-  throw new Error(`Error al registrar usuario: ${response.statusText}`)
+    throw new Error(`Error al registrar usuario: ${response.statusText}`)
 
   return response.status === 204 ? null : response.json()
 }

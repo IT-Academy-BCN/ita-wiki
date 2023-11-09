@@ -1,11 +1,10 @@
 import styled from 'styled-components'
 import { FC } from 'react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
 import { useAuth } from '../../context/AuthProvider'
-import { TResource } from '../../context/store/types'
-import { updateCachedVoteCount } from '../../helpers'
+import { useGetVotes } from '../../hooks'
 import { updateVote } from '../../helpers/fetchers'
 
 type ArrowProp = {
@@ -21,53 +20,25 @@ const StyledIcon = styled(Icon)<ArrowProp>`
       (name === 'expand_more' && colors.error)};
   }
 `
-
-type TVoteCounter = {
-  voteCount: TVoteCount
+export type TVoteCounter = {
+  totalVotes: number
   resourceId: string
   handleAccessModal: () => void
 }
 
-type TVoteCount = {
-  downvote: number
-  upvote: number
-  total: number
-  userVote: number
-}
-
-type TUserVote = 'up' | 'down' | 'cancel'
-
 export const VoteCounter: FC<TVoteCounter> = ({
-  voteCount,
+  totalVotes,
   resourceId,
   handleAccessModal,
 }) => {
   const { user } = useAuth()
-  const queryClient = useQueryClient()
+
+  const { fetchedVotes, refetch } = useGetVotes(resourceId)
 
   const castVote = useMutation({
     mutationFn: updateVote,
-    onSuccess: (_, { vote }) => {
-      const queryCacheGetResources = queryClient
-        .getQueryCache()
-        .findAll(['getResources'])
-      const queryKeys = queryCacheGetResources.map((q) => q.queryKey)
-
-      for (let i = 0; i < queryKeys.length; i += 1) {
-        const queryKey = queryKeys[i]
-
-        queryClient.setQueryData(queryKey, (data?: TResource[]) => {
-          const newData = data?.map((resource) => {
-            if (resource.id !== resourceId) return resource
-            const newVoteCount = updateCachedVoteCount(resource.voteCount, vote)
-            return {
-              ...resource,
-              voteCount: newVoteCount,
-            }
-          })
-          return newData
-        })
-      }
+    onSuccess: () => {
+      refetch()
     },
     onError: () => {
       // eslint-disable-next-line no-console
@@ -75,19 +46,16 @@ export const VoteCounter: FC<TVoteCounter> = ({
     },
   })
 
-  const handleClick = (vote: TUserVote) => {
+  const handleClick = (vote: 'up' | 'down' | 'cancel') => {
     if (!user) {
       handleAccessModal()
       return
     }
 
-    if (
-      (voteCount.userVote === 1 && vote === 'up') ||
-      (voteCount.userVote === -1 && vote === 'down')
-    ) {
-      castVote.mutate({ resourceId, vote: 'cancel' })
-    } else {
+    if (fetchedVotes?.userVote === 0) {
       castVote.mutate({ resourceId, vote })
+    } else {
+      castVote.mutate({ resourceId, vote: 'cancel' })
     }
   }
 
@@ -96,7 +64,11 @@ export const VoteCounter: FC<TVoteCounter> = ({
       <StyledIcon
         name="expand_less"
         data-testid="increase"
-        color={voteCount.userVote > 0 ? colors.success : colors.gray.gray3}
+        color={
+          fetchedVotes !== undefined && fetchedVotes.userVote > 0
+            ? colors.success
+            : colors.gray.gray3
+        }
         onClick={() => handleClick('up')}
       />
       <Text
@@ -104,13 +76,17 @@ export const VoteCounter: FC<TVoteCounter> = ({
         style={{ marginTop: '0', marginBottom: '0' }}
         data-testid="voteTest"
       >
-        {voteCount.total}
+        {fetchedVotes?.total ?? totalVotes}
       </Text>
       <StyledIcon
         name="expand_more"
         id="decrease"
         data-testid="decrease"
-        color={voteCount.userVote < 0 ? colors.error : colors.gray.gray3}
+        color={
+          fetchedVotes !== undefined && fetchedVotes.userVote < 0
+            ? colors.error
+            : colors.gray.gray3
+        }
         onClick={() => handleClick('down')}
       />
     </FlexBox>

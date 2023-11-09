@@ -11,12 +11,10 @@ import type {
   TTopicResource,
   TEditResourceProps,
   TMappedTopics,
+  TVoteCountResponse,
   TVoteMutationData,
   TResourceTitleLink,
   TGetTypes,
-  TUserVote,
-  TVoteCount,
-  TForm,
 } from './types'
 
 export type {
@@ -32,10 +30,8 @@ export type {
   TTopicResource,
   TEditResourceProps,
   TMappedTopics,
+  TVoteCountResponse,
   TVoteMutationData,
   TResourceTitleLink,
   TGetTypes,
-  TUserVote,
-  TVoteCount,
-  TForm,
 }
