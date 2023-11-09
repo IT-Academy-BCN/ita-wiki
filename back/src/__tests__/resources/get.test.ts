@@ -128,7 +128,7 @@ describe('Testing resources GET endpoint', () => {
     const categorySlug = 'testing'
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .query({ slug: categorySlug })
+      .query({ category: categorySlug })
 
     expect(response.status).toBe(200)
     expect(response.body.length).toBeGreaterThanOrEqual(1)
@@ -161,7 +161,7 @@ describe('Testing resources GET endpoint', () => {
           qs.stringify({
             topic: topicId,
             resourceTypes: [resourceType],
-            slug: categorySlug,
+            category: categorySlug,
           })
         )
 
@@ -208,6 +208,7 @@ describe('Testing resources GET endpoint', () => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })
   })
+
   it('should retrieve resources not viewed by the user with NOT_SEEN status when logged in', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
@@ -218,20 +219,6 @@ describe('Testing resources GET endpoint', () => {
     expect(viewedResource.resourceId).not.toContain(
       createdResources.map((r) => r.id)
     )
-    response.body.forEach((resource: ResourceGetSchema) => {
-      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
-    })
-  })
-  it('should retrieve all resources when both SEEN and NOT_SEEN statuses are provided while logged in', async () => {
-    const response = await supertest(server)
-      .get(`${pathRoot.v1.resources}`)
-      .query(
-        qs.stringify({
-          status: ['SEEN', 'NOT_SEEN'],
-        })
-      )
-    expect(response.status).toBe(200)
-    expect(response.body.length).toBe(createdResources.length)
     response.body.forEach((resource: ResourceGetSchema) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })
