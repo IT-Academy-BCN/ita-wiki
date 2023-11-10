@@ -108,12 +108,14 @@ describe('User Permissions', () => {
       },
     } as TAuthContext)
     render(<SettingsManager />)
+
+    expect(screen.queryByRole('button', { name: 'Temes' })).toBeInTheDocument()
   
     fireEvent.click(screen.getByText('Temes'))
     
     expect(screen.getByText(/No hi ha temes disponibles./)).toBeInTheDocument()
   
-    expect(screen.queryByText('Usuaris')).not.toBeInTheDocument()
+    expect(screen.queryByText('Usuaris')).toBeNull()
   })
 
   it('allows admin to find users by DNI', async () => {
