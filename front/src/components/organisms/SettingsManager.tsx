@@ -26,9 +26,12 @@ export const SettingsManager: FC = () => {
   const { t } = useTranslation()
 
   const tTabsData = tabsData
-    .filter((tab) => (
-      (Array.isArray(tab.requiredRole) && tab.requiredRole.includes(user?.role ?? ''))
-    ))
+    .filter((tab) => {
+      if (tab.id === 'usersTab') {
+        return user?.role === 'ADMIN'
+      }
+      return Array.isArray(tab.requiredRole) && tab.requiredRole.some((role) => role === user?.role)
+    })
     .map((tab) => {
       const modifiedTab = {
         id: tab.id,
