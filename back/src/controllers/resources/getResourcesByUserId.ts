@@ -6,9 +6,9 @@ import { resourceGetSchema } from '../../schemas'
 
 export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User
-  const categorySlug = ctx.query.categorySlug?.toString()
+  const categorySlug = ctx.query.categorySlug as string | undefined
 
-  let resources
+  let resources = []
 
   const include = {
     user: {
@@ -19,7 +19,7 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
     vote: { select: { vote: true, userId: true } },
     topics: { select: { topic: true } },
     favorites: {
-      where: { userId: user.id },
+      where: { userId: user ? user.id : undefined },
     },
   }
 
@@ -67,6 +67,7 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
   const parsedResources = resourcesWithFavorites.map((resource) =>
     resourceGetSchema.parse(transformResourceToAPI(resource, user.id))
   )
+
   ctx.status = 200
-  ctx.body = { resources: parsedResources }
+  ctx.body = parsedResources
 }
