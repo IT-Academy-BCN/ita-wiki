@@ -2,7 +2,7 @@ import { registry } from '../../registry'
 import { z } from '../../zod'
 import { pathRoot } from '../../../routes/routes'
 import { resourceGetSchema, resourcesGetParamsSchema } from '../../../schemas'
-import { ValidationError } from '../../components/errorSchemas'
+import { ZodValidationError } from '../../components/errorSchemas'
 import { invalidTokenResponse } from '../../components/responses/authMiddleware'
 
 registry.registerPath({
@@ -28,7 +28,7 @@ registry.registerPath({
       description: 'Validation error',
       content: {
         'application/json': {
-          schema: ValidationError.openapi({
+          schema: ZodValidationError.openapi({
             example: {
               message: [
                 {

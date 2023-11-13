@@ -1,6 +1,6 @@
 import { registry } from '../../registry'
 import { z } from '../../zod'
-import { NotFoundError, ValidationError } from '../../components/errorSchemas'
+import { NotFoundError, ZodValidationError } from '../../components/errorSchemas'
 import { pathRoot } from '../../../routes/routes'
 import { resourceGetSchema } from '../../../schemas'
 import { resourceId } from '../../components/paramSchemas'
@@ -30,7 +30,7 @@ registry.registerPath({
       description: 'Validation error',
       content: {
         'application/json': {
-          schema: ValidationError.openapi({
+          schema: ZodValidationError.openapi({
             example: {
               message: [
                 {

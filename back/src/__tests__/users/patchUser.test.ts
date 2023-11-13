@@ -6,6 +6,7 @@ import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { authToken } from '../setup'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
+import { userPatchSchema } from '../../schemas'
 
 let sampleUser: User | null
 
@@ -77,8 +78,10 @@ describe('Testing user patch endpoint', () => {
       dni: '88888888X',
       password: 'UpdatedSamplePassword1',
       status: USER_STATUS.INACTIVE,
-      updatedAt: new Date(),
+      updatedAt: new Date().toISOString(),
     }
+    userPatchSchema.parse(modifiedUser)
+    expect(userPatchSchema.safeParse(modifiedUser).success).toBeTruthy()
     const response = await supertest(server)
       .patch(`${pathRoot.v1.users}`)
       .set('Cookie', authToken.admin)

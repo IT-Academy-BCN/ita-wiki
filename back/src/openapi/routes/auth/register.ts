@@ -4,7 +4,7 @@ import { z } from '../../zod'
 import {
   DniError,
   EmailError,
-  ValidationError,
+  ZodValidationError,
 } from '../../components/errorSchemas'
 import { pathRoot } from '../../../routes/routes'
 
@@ -32,7 +32,7 @@ registry.registerPath({
       description: 'Invalid input',
       content: {
         'application/json': {
-          schema: z.union([ValidationError, DniError, EmailError]),
+          schema: z.union([ZodValidationError, DniError, EmailError]),
         },
       },
     },

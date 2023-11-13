@@ -1,7 +1,7 @@
 import { userLoginSchema } from '../../../schemas'
 import { registry } from '../../registry'
 import { z } from '../../zod'
-import { ValidationError } from '../../components/errorSchemas'
+import { ZodValidationError } from '../../components/errorSchemas'
 import { setCookieHeader } from '../../components/setCookieHeader'
 import { pathRoot } from '../../../routes/routes'
 import { userNotFoundResponse } from '../../components/responses/authMiddleware'
@@ -30,7 +30,7 @@ registry.registerPath({
       description: 'Zod validation error',
       content: {
         'application/json': {
-          schema: ValidationError,
+          schema: ZodValidationError,
         },
       },
     },
