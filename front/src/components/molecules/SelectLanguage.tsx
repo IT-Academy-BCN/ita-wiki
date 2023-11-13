@@ -6,8 +6,6 @@ import { colors, device, font } from '../../styles'
 type Language = 'es' | 'cat' | 'en'
 
 const DropdownLang = styled.select<{ selectedLanguage: Language }>`
-  display: block;
-  flex-grow: 0;
   font-size: ${font.base};
   border: none;
   border-radius: 20%;
