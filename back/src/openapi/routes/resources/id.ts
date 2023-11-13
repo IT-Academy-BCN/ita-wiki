@@ -1,6 +1,9 @@
 import { registry } from '../../registry'
 import { z } from '../../zod'
-import { NotFoundError, ZodValidationError } from '../../components/errorSchemas'
+import {
+  NotFoundError,
+  ZodValidationError,
+} from '../../components/errorSchemas'
 import { pathRoot } from '../../../routes/routes'
 import { resourceGetSchema } from '../../../schemas'
 import { resourceId } from '../../components/paramSchemas'

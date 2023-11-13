@@ -1,10 +1,12 @@
 import { userLoginSchema } from '../../../schemas'
 import { registry } from '../../registry'
 import { z } from '../../zod'
-import { ZodValidationError } from '../../components/errorSchemas'
 import { setCookieHeader } from '../../components/setCookieHeader'
 import { pathRoot } from '../../../routes/routes'
-import { userNotFoundResponse } from '../../components/responses/authMiddleware'
+import {
+  userNotFoundResponse,
+  zodValidationErrorResponse,
+} from '../../components/responses/authMiddleware'
 
 registry.registerPath({
   method: 'post',
@@ -26,14 +28,7 @@ registry.registerPath({
       description: 'The user has been authenticated',
       headers: { 'Set-Cookie': setCookieHeader.ref },
     },
-    400: {
-      description: 'Zod validation error',
-      content: {
-        'application/json': {
-          schema: ZodValidationError,
-        },
-      },
-    },
+    400: zodValidationErrorResponse,
     404: userNotFoundResponse,
     422: {
       description: 'Invalid password',

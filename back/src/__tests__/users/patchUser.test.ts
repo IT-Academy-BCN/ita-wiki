@@ -80,7 +80,6 @@ describe('Testing user patch endpoint', () => {
       status: USER_STATUS.INACTIVE,
       updatedAt: new Date().toISOString(),
     }
-    userPatchSchema.parse(modifiedUser)
     expect(userPatchSchema.safeParse(modifiedUser).success).toBeTruthy()
     const response = await supertest(server)
       .patch(`${pathRoot.v1.users}`)
