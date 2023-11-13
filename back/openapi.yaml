@@ -870,6 +870,8 @@ paths:
                     resourceType:
                       type: string
                       enum: *a2
+                    userId:
+                      type: string
                     categoryId:
                       type: string
                       example: clocr0bi20000h8vwipfbazso
@@ -956,6 +958,7 @@ paths:
                     - slug
                     - url
                     - resourceType
+                    - userId
                     - categoryId
                     - createdAt
                     - updatedAt
@@ -1168,6 +1171,8 @@ paths:
                   resourceType:
                     type: string
                     enum: *a2
+                  userId:
+                    type: string
                   categoryId:
                     type: string
                     example: clocr0bi20000h8vwipfbazso
@@ -1254,6 +1259,7 @@ paths:
                   - slug
                   - url
                   - resourceType
+                  - userId
                   - categoryId
                   - createdAt
                   - updatedAt
@@ -1346,6 +1352,8 @@ paths:
                   resourceType:
                     type: string
                     enum: *a2
+                  userId:
+                    type: string
                   categoryId:
                     type: string
                     example: clocr0bi20000h8vwipfbazso
@@ -1432,6 +1440,7 @@ paths:
                   - slug
                   - url
                   - resourceType
+                  - userId
                   - categoryId
                   - createdAt
                   - updatedAt
@@ -1452,10 +1461,19 @@ paths:
     get:
       tags:
         - resources
-      description: Returns all the posted resources by a logged in user.
       summary: Get resources by logged in user
+      description: Returns all the posted resources by a logged in user. In addition,
+        if categorySlug query provided, returns only the resources posted in
+        that category.
       security:
         - cookieAuth: []
+      parameters:
+        - in: query
+          name: categorySlug
+          schema:
+            type: string
+            example: react
+          required: false
       responses:
         "200":
           description: All resources posted by user are returned.
@@ -1488,6 +1506,8 @@ paths:
                         resourceType:
                           type: string
                           enum: *a2
+                        userId:
+                          type: string
                         categoryId:
                           type: string
                           example: clocr0bi20000h8vwipfbazso
@@ -1574,6 +1594,7 @@ paths:
                         - slug
                         - url
                         - resourceType
+                        - userId
                         - categoryId
                         - createdAt
                         - updatedAt
