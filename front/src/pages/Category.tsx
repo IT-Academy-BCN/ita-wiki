@@ -243,7 +243,7 @@ const MobileTopicsContainer = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
   background-color: ${colors.gray.gray5};
-  padding-right: ${dimensions.spacing.base};
+  padding-right: ${dimensions.spacing.xs};
   padding-left: ${dimensions.spacing.base};
   padding-bottom: ${dimensions.spacing.md};
   padding-top: ${dimensions.spacing.none};
@@ -252,7 +252,6 @@ const MobileTopicsContainer = styled(FlexBox)`
   z-index: 1;
   height: 100%;
   width: 100%;
-
   @media ${device.Tablet} {
     display: none;
   }
@@ -403,7 +402,9 @@ const Category: FC = () => {
     topic: topic === 'todos' ? undefined : topic,
   })
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
-  const [selectedOption, setSelectedOption] = useState<'Fecha' | 'Votos'>('Votos')
+  const [selectedOption, setSelectedOption] = useState<'Fecha' | 'Votos'>(
+    'Votos'
+  )
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
@@ -552,26 +553,27 @@ const Category: FC = () => {
                 <VotesDateContainer>
                   <FlexBox direction="row" gap="15px">
                     <FlexBox direction="row">
-                      <StyledVotesToggle 
-                        onClick={() => { 
+                      <StyledVotesToggle
+                        onClick={() => {
                           handleSortByVotes()
                           handleSortOrder()
                           setSelectedOption('Votos')
                         }}
-                        >
+                      >
                         <Text
-                          fontWeight={selectedOption === 'Votos' ? 'bold' : 'normal'}
-                          >
-                            Votos
+                          fontWeight={
+                            selectedOption === 'Votos' ? 'bold' : 'normal'
+                          }
+                        >
+                          Votos
                         </Text>
                       </StyledVotesToggle>
-                      {selectedOption === 'Votos' && (
-                        sortOrder === 'desc' ? (
+                      {selectedOption === 'Votos' &&
+                        (sortOrder === 'desc' ? (
                           <Icon name="arrow_upward" />
                         ) : (
                           <Icon name="arrow_downward" />
-                        )
-                      )}
+                        ))}
                     </FlexBox>
                     <StyledDateToggle
                       onClick={() => {
@@ -579,11 +581,13 @@ const Category: FC = () => {
                         handleSortOrder()
                         setSelectedOption('Fecha')
                       }}
+                    >
+                      <Text
+                        fontWeight={
+                          selectedOption === 'Fecha' ? 'bold' : 'normal'
+                        }
                       >
-                      <Text 
-                        fontWeight={selectedOption === 'Fecha' ? 'bold' : 'normal'}
-                        >
-                          Fecha
+                        Fecha
                       </Text>
                     </StyledDateToggle>
                   </FlexBox>

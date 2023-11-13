@@ -5,14 +5,18 @@ import { colors, device, font } from '../../styles'
 
 type Language = 'es' | 'cat' | 'en'
 
-const DropdownLang = styled.select`
+const DropdownLang = styled.select<{ selectedLanguage: Language }>`
+  display: block;
+  flex-grow: 0;
   font-size: ${font.base};
   border: none;
   border-radius: 20%;
   font-weight: ${font.regular};
   color: ${colors.black.black1};
-  background-color: transparent;
-  margin-right: 1rem;
+  background-color: ${colors.white};
+  height: 40px;
+  width: ${({ selectedLanguage }) =>
+    selectedLanguage === 'cat' ? '60px' : '46px'};
   &:hover {
     cursor: pointer;
   }
@@ -24,7 +28,9 @@ const DropdownLang = styled.select`
     margin: 0;
     padding: 0.47rem;
     color: ${colors.gray.gray3};
-  } 
+    width: ${({ selectedLanguage }) =>
+      selectedLanguage === 'cat' ? '69px' : '55px'};
+  }
 `
 
 export const SelectLanguage: React.FC = () => {
@@ -45,12 +51,14 @@ export const SelectLanguage: React.FC = () => {
   }
 
   return (
-    <div>
-      <DropdownLang value={selectedLanguage} onChange={handleLanguageChange}>
-        <option value="cat">CAT</option>
-        <option value="es">ES</option>
-        <option value="en">EN</option>
-      </DropdownLang>
-    </div>
+    <DropdownLang
+      selectedLanguage={selectedLanguage as Language}
+      value={selectedLanguage}
+      onChange={handleLanguageChange}
+    >
+      <option value="cat">CAT</option>
+      <option value="es">ES</option>
+      <option value="en">EN</option>
+    </DropdownLang>
   )
 }
