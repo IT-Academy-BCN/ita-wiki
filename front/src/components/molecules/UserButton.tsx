@@ -13,12 +13,13 @@ import { paths } from '../../constants'
 const AvatarImage = styled.img`
   padding: 1px;
   height: 40px;
-  width: 48px;
+  width: 40px;
   border-radius: 50%;
   background-color: ${colors.white};
   cursor: pointer;
   @media only ${device.Tablet} {
     border-radius: 20%;
+    width: 48px;
   }
 `
 
