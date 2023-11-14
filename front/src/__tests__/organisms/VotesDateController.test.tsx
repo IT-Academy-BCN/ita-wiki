@@ -1,7 +1,14 @@
+import { vi } from 'vitest'
+import { Routes, Route } from 'react-router-dom'
 import { render, renderHook, screen, fireEvent } from '../test-utils'
-import { Category } from '../../pages'
+import { VotesDateController } from '../../components/organisms'
 import { useSortByDate } from '../../hooks/useSortByDate'
 import { useSortByVotes } from '../../hooks/useSortByVotes'
+
+const mockHandleSortOrder = vi.fn()
+const mockHandleSortByVotes = vi.fn()
+const mockHandleSortByDates = vi.fn()
+
 
 describe('VotesDate component', () => {
   it('sorts resources by date in descending order', () => {
@@ -10,8 +17,25 @@ describe('VotesDate component', () => {
       { id: 2, date: '2023-10-30' },
       { id: 3, date: '2023-10-28' }
     ]
-  
-    render(<Category />)
+
+    render(
+      <Routes>
+        <Route
+          path="/category/:slug"
+          element={
+            <VotesDateController
+              sortOrder='desc'
+              handleSortOrder={mockHandleSortOrder}
+              handleSortByVotes={mockHandleSortByVotes}
+              handleSortByDates={mockHandleSortByDates}
+            />
+          }
+        />
+      </Routes>,
+      {
+        initialEntries: ['/category/react'],
+      }
+    )
   
     fireEvent.click(screen.getByText('Data'))
   
@@ -58,7 +82,24 @@ describe('VotesDate component', () => {
       },
     ]
   
-    render(<Category />)
+    render(
+      <Routes>
+        <Route
+          path="/category/:slug"
+          element={
+            <VotesDateController
+              sortOrder='desc'
+              handleSortOrder={mockHandleSortOrder}
+              handleSortByVotes={mockHandleSortByVotes}
+              handleSortByDates={mockHandleSortByDates}
+            />
+          }
+        />
+      </Routes>,
+      {
+        initialEntries: ['/category/react'],
+      }
+    )
   
     fireEvent.click(screen.getByText('Vots'))
   
@@ -71,17 +112,24 @@ describe('VotesDate component', () => {
   })
   
   it('changes Votos and Fecha styles on click', () => {
-    render(<Category />)
+    render(
+      <VotesDateController
+        sortOrder='desc'
+        handleSortOrder={mockHandleSortOrder}
+        handleSortByVotes={mockHandleSortByVotes}
+        handleSortByDates={mockHandleSortByDates}
+      />)
   
-    const sortVotesButton = screen.getByText('Vots')
-    const sortDatesButton = screen.getByText('Data')
-  
-    fireEvent.click(sortVotesButton)
+    fireEvent.click(screen.getByText('Vots'))
   
     expect(screen.getByText('Vots')).toHaveStyle('font-weight: bold')
+    expect(screen.getByText('Data')).toHaveStyle('font-weight: normal')
+    expect(mockHandleSortByVotes).toHaveBeenCalled()
   
-    fireEvent.click(sortDatesButton)
+    fireEvent.click(screen.getByText('Data'))
   
     expect(screen.getByText('Data')).toHaveStyle('font-weight: bold')
+    expect(screen.getByText('Vots')).toHaveStyle('font-weight: normal')
+    expect(mockHandleSortByDates).toHaveBeenCalled()
   })
 })
