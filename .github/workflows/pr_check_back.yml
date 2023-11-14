@@ -8,7 +8,7 @@ on:
       - "back/**"
 
 jobs:
-  backend:
+  pr_check_back:
     runs-on: ubuntu-latest
 
     services:
@@ -24,12 +24,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js
-        uses: actions/setup-node@v3
         with:
-          node-version: "18"
-          cache: "npm"
-          cache-dependency-path: back/package-lock.json
+          fetch-depth: 0
 
       - name: Check package.json version
         run: ./scripts/check_version.sh back/package.json
@@ -38,6 +34,13 @@ jobs:
       - name: Check CHANGELOG.md has been updated
         run: ./scripts/check_changelog.sh back/CHANGELOG.md
         shell: bash
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: back/package-lock.json
 
       - name: Cache Node.js modules
         uses: actions/cache@v3
