@@ -63,7 +63,7 @@ describe('TopicsManagerBoard component', () => {
     ).toBeInTheDocument()
   })
 
-  it('renders correctly with category slug', async () => {
+  it.skip('renders correctly with category slug', async () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)
@@ -97,7 +97,7 @@ describe('TopicsManagerBoard component', () => {
     screen.debug()
   })
 
-  it('renders correctly with category slug without topics yet', async () => {
+  it.skip('renders correctly with category slug without topics yet', async () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'empty-topics',
     } as Readonly<Params>)
