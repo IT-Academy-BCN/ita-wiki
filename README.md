@@ -92,3 +92,23 @@ While we encourage collaboration and support among team members, it's important 
 The code above allows the ESLint VSCode extension to properly find each ESLint project configuration file. This will help ensure that you're following the project's coding standards and guidelines as you contribute to the project.
 
 With this guide, we hope you feel better prepared to contribute to our project. Remember, don't hesitate to ask questions and reach out for support if needed. We're excited to have you on board and look forward to your contributions!
+
+## Deployment
+
+Deployments are managed by the developers. The project is deployed on a development environment and a production environment. The development environment is used for testing and debugging, while the production environment is used for the final product.
+
+### Versioning
+
+We use <a href="https://semver.org/">Semantic Versioning</a> for versioning. It is the responsibility of the developers to update the version number in the package.json file of the respective apps (front and back).
+
+### Changes
+
+Changes are documented in the CHANGELOG.md file of the respective apps (front and back).
+
+### Development environment
+
+To deploy the development environment, follow these steps:
+
+1. Go to github actions and select the Deploy script.
+2. Write down the version you wish to deploy `1.12.4` and select the environment `dev` or `prod`.
+3. Click run on the dropdown menu.

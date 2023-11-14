@@ -1,4 +1,4 @@
-name: Backend on Pull Request
+name: pr_check_back
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ on:
       - "back/**"
 
 jobs:
-  backend:
+  pr_check_back:
     runs-on: ubuntu-latest
 
     services:
@@ -24,6 +24,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Check package.json version
+        run: ./scripts/check_version.sh back/package.json
+        shell: bash
+
+      - name: Check CHANGELOG.md has been updated
+        run: ./scripts/check_changelog.sh back/CHANGELOG.md
+        shell: bash
+
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
@@ -34,20 +45,20 @@ jobs:
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
-          path: ${{ github.workspace }}/front/node_modules
+          path: ${{ github.workspace }}/back/node_modules
           key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
 
       - name: install dependencies
         run: |
-            cd ${{ github.workspace }}/back
-            npm ci --legacy-peer-deps
+          cd ${{ github.workspace }}/back
+          npm ci --legacy-peer-deps
 
       - name: lint
         run: |
-            cd ${{ github.workspace }}/back
-            npx eslint src --max-warnings 0
+          cd ${{ github.workspace }}/back
+          npx eslint src --max-warnings 0
 
       - name: Set up Prisma
         run: |
