@@ -31,10 +31,18 @@ jobs:
           cache: "npm"
           cache-dependency-path: back/package-lock.json
 
+      - name: Check package.json version
+        run: ./scripts/check_version.sh back/package.json
+        shell: bash
+
+      - name: Check CHANGELOG.md has been updated
+        run: ./scripts/check_changelog.sh back/CHANGELOG.md
+        shell: bash
+
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
-          path: ${{ github.workspace }}/front/node_modules
+          path: ${{ github.workspace }}/back/node_modules
           key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
