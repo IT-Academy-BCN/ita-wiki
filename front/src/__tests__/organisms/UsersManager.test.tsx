@@ -17,7 +17,7 @@ const mockUsers = [
   }
 ]
 
-vi.mock('/api/users', () => mockUsers)
+vi.mock('/api/v1/users', () => mockUsers)
 const queryClient = new QueryClient()
 
 const renderWithQueryClient = (component: React.ReactNode) =>
@@ -42,7 +42,7 @@ afterEach(() => {
 })
 
 describe('UsersManager component', () => {
-  it('renders for mentor roles and does not allow editing', () => {
+  it('does not render for mentor roles', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'MentorName',
@@ -51,17 +51,12 @@ describe('UsersManager component', () => {
       },
     } as TAuthContext)
     render(<UsersManager />)
-
-    expect(screen.getByText("Administrador d'Usuaris")).toBeInTheDocument()
-    expect(
-      screen.getByText(
-        /No tens permisos suficients per accedir al contingut./
-      )
-    ).toBeInTheDocument()
+    
+    expect(screen.queryByText('Users Manager')).not.toBeInTheDocument()
     expect(screen.queryByText('AccountAdmin')).not.toBeInTheDocument()
   })
 
-  it('renders for admin roles and allows editing', async () => {
+  it('renders correctly for admin roles and allows editing', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'AdminName',

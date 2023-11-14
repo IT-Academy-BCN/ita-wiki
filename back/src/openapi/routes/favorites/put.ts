@@ -8,7 +8,7 @@ import {
   userNotFoundResponse,
 } from '../../components/responses/authMiddleware'
 import { favoritePutSchema } from '../../../schemas/favorites/favoritePutSchema'
-import { InputError, ValidationError } from '../../components/errorSchemas'
+import { InputError, ZodValidationError } from '../../components/errorSchemas'
 
 registry.registerPath({
   method: 'put',
@@ -34,7 +34,7 @@ registry.registerPath({
       description: 'Invalid input',
       content: {
         'application/json': {
-          schema: z.union([ValidationError, InputError]),
+          schema: z.union([ZodValidationError, InputError]),
         },
       },
     },

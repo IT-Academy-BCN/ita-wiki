@@ -66,8 +66,10 @@ export function transformResourceToAPI(
   userId?: string
 ): TResourceWithVoteCount {
   const voteCount = calculateVoteCount(resource.vote, userId)
+
   return {
     ...resource,
+    userId: resource.userId,
     voteCount,
   }
 }

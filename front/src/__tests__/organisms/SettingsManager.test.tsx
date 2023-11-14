@@ -1,12 +1,10 @@
 import { vi } from 'vitest'
-import { rest } from 'msw'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor, fireEvent } from '../test-utils'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { SettingsManager } from '../../components/organisms'
 import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
-import { urls } from '../../constants'
 
 const mockUsers = [
   {
@@ -40,9 +38,9 @@ beforeEach(() => {
   })
   vi.mocked(useAuth).mockReturnValue({
     user: {
-      name: 'MentorName',
-      avatar: 'MentorAvatar',
-      role: 'MENTOR',
+      name: 'AdminName',
+      avatar: 'AdminAvatar',
+      role: 'ADMIN',
     },
   } as TAuthContext)
 })
@@ -55,7 +53,7 @@ afterEach(() => {
 afterAll(() => mswServer.close())
 
 describe('SettingsManager component', () => {
-  it('renders Temes and Usuaris tabs correctly for mentor roles or higher', () => {
+  it('renders Temes and Usuaris tabs correctly for admin role', () => {
     render(<SettingsManager />)
 
     expect(screen.getByText('Temes')).toBeInTheDocument()
@@ -79,49 +77,48 @@ describe('SettingsManager component', () => {
   
     expect(screen.getByText(/No hi ha temes disponibles./)).toBeInTheDocument()
   })
+
+  it('filters out tabs that the mentor role is not authorized to view', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'MentorName',
+        avatar: 'MentorAvatar',
+        role: 'MENTOR',
+      },
+    } as TAuthContext)
+  
+    render(<SettingsManager />)
+  
+    const tabs = screen.getAllByRole('button')
+  
+    expect(tabs.length).toBe(1)
+    expect(tabs[0].textContent).toBe('Temes')
+  
+    expect(screen.queryByText('Usuaris')).not.toBeInTheDocument()
+  })
 })
 
 describe('User Permissions', () => {
-  it('renders an error when the fetching process fails', async () => {
+  it('renders Temes for mentors, but does not allow them to visualize Usuaris tab', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
-        name: 'AdminName',
-        avatar: 'AdminAvatar',
-        role: 'ADMIN',
+        name: 'MentorName',
+        avatar: 'MentorAvatar',
+        role: 'MENTOR',
       },
     } as TAuthContext)
-    mswServer.use(...errorHandlers)
-
     render(<SettingsManager />)
 
-    fireEvent.click(screen.getByText('Usuaris'))
-
-    await waitFor(() => {
-      expect(screen.getByText('Error fetching users')).toBeInTheDocument()
-    })
-  })
-
-  it('shows a message to mentors when they try to visualize the Usuaris content', async () => {
-    mswServer.use(
-      rest.patch(urls.patchTopics, (req, res, ctx) => res(ctx.status(403)))
-    )
-    render(<SettingsManager />)
+    expect(screen.queryByRole('button', { name: 'Temes' })).toBeInTheDocument()
   
-    fireEvent.click(screen.getByText('Usuaris'))
+    fireEvent.click(screen.getByText('Temes'))
     
-    await waitFor(() => {
-      expect(screen.getByText('No tens permisos suficients per accedir al contingut.')).toBeInTheDocument()
-    })
+    expect(screen.getByText(/No hi ha temes disponibles./)).toBeInTheDocument()
+  
+    expect(screen.queryByText('Usuaris')).toBeNull()
   })
 
   it('allows admin to find users by DNI', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'AdminName',
-        avatar: 'AdminAvatar',
-        role: 'ADMIN',
-      },
-    } as TAuthContext)
     queryClient.setQueryData(['users'], mockUsers)
     renderWithQueryClient(<SettingsManager />)
   
@@ -136,12 +133,15 @@ describe('User Permissions', () => {
     )
   })  
 
-  it('does not allow mentors to update user status', async () => {
+  it('renders an error when the fetching process fails', async () => {
+    mswServer.use(...errorHandlers)
+
     render(<SettingsManager />)
+
     fireEvent.click(screen.getByText('Usuaris'))
 
     await waitFor(() => {
-      expect(screen.queryByTestId('status-desactivar')).toBeNull()
+      expect(screen.getByText('Error fetching users')).toBeInTheDocument()
     })
   })
 })

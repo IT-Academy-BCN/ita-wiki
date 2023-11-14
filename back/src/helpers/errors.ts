@@ -14,8 +14,8 @@ class DefaultError extends Error {
 
 class ValidationError {
   public status: number
-  public message: ZodIssue[]
-  constructor(message: ZodIssue[]) {
+  public message: ZodIssue[] | string
+  constructor(message: ZodIssue[] | string) {
     this.status = 400
     this.message = message
   }

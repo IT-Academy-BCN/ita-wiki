@@ -2,6 +2,7 @@ import {
   InvalidTokenError,
   MissingTokenError,
   NotFoundError,
+  ZodValidationError,
 } from '../errorSchemas'
 
 // Responses for when the authMiddlware intervenes.
@@ -29,6 +30,15 @@ export const userNotFoundResponse = {
   content: {
     'application/json': {
       schema: NotFoundError,
+    },
+  },
+}
+
+export const zodValidationErrorResponse = {
+  description: 'Zod validation error',
+  content: {
+    'application/json': {
+      schema: ZodValidationError,
     },
   },
 }
