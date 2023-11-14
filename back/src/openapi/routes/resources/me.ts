@@ -13,8 +13,14 @@ registry.registerPath({
   method: 'get',
   tags: ['resources'],
   path: `${pathRoot.v1.resources}/me`,
-  description: 'Returns all the posted resources by a logged in user.',
   summary: 'Get resources by logged in user',
+  description:
+    'Returns all the posted resources by a logged in user. In addition, if categorySlug query provided, returns only the resources posted in that category.',
+  request: {
+    query: z.object({
+      categorySlug: z.string().optional().openapi({ example: 'react' }),
+    }),
+  },
   security: [{ [cookieAuth.name]: [] }],
   responses: {
     200: {

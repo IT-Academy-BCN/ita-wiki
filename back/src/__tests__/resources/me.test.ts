@@ -83,8 +83,8 @@ describe('Testing resources/me endpoint', () => {
       .set('Cookie', authToken.admin)
 
     expect(response.status).toBe(200)
-    expect(response.body.resources).toBeInstanceOf(Array)
-    expect(response.body.resources.length).toBe(0)
+    expect(response.body).toBeInstanceOf(Array)
+    expect(response.body.length).toBe(0)
   })
 
   it('Should return resources from user', async () => {
@@ -94,9 +94,9 @@ describe('Testing resources/me endpoint', () => {
       .set('Cookie', authToken.user)
 
     expect(response.status).toBe(200)
-    expect(response.body.resources).toBeInstanceOf(Array)
-    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-    response.body.resources.forEach((resource: any) => {
+    expect(response.body).toBeInstanceOf(Array)
+    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    response.body.forEach((resource: any) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })
   })
@@ -108,18 +108,21 @@ describe('Testing resources/me endpoint', () => {
       .set('Cookie', authToken.user)
       .query({ testCategorySlug })
     expect(response.status).toBe(200)
-    expect(response.body.resources).toBeInstanceOf(Array)
-    expect(response.body.resources.length).toBeGreaterThanOrEqual(1)
-    response.body.resources.forEach((resource: any) => {
+    expect(response.body).toBeInstanceOf(Array)
+    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    response.body.forEach((resource: any) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })
   })
 
   it('If the user voted and favorited one of its own created resources, it should be reflected on the response object', async () => {
+    const user = await prisma.user.findUnique({
+      where: { email: testUserData.user.email },
+    })
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}/me`)
       .set('Cookie', authToken.user)
-    expect(response.body.resources).toEqual(
+    expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
           voteCount: expect.objectContaining({
@@ -129,6 +132,7 @@ describe('Testing resources/me endpoint', () => {
             userVote: 1,
           }),
           isFavorite: true,
+          userId: user!.id,
         }),
       ])
     )

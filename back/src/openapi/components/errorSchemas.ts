@@ -49,7 +49,7 @@ export const NotFoundError = registry.register(
   })
 )
 
-export const ValidationError = registry.register(
+export const ZodValidationError = registry.register(
   'ValidationError',
   z.object({
     message: z.array(
