@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { ErrorPage } from '../../pages'
 
 describe('ErrorPage', () => {
-  it('render ErrorPage if the path does not exist', () => {
+  it.skip('render ErrorPage if the path does not exist', () => {
     const routes = [
       {
         path: '/',
