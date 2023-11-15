@@ -362,7 +362,7 @@ paths:
               properties:
                 name:
                   type: string
-                  minLength: 1
+                  minLength: 2
                   example: React
               required:
                 - name
@@ -427,7 +427,7 @@ paths:
               properties:
                 name:
                   type: string
-                  minLength: 1
+                  minLength: 2
                   example: React
               required:
                 - name
@@ -502,7 +502,6 @@ paths:
                       type: string
                     name:
                       type: string
-                      minLength: 1
                       example: React Props
                     slug:
                       type: string
@@ -538,7 +537,6 @@ paths:
               properties:
                 name:
                   type: string
-                  minLength: 1
                   example: React Props
                 categoryId:
                   type: string
@@ -667,7 +665,7 @@ paths:
                       type: string
                     title:
                       type: string
-                      minLength: 1
+                      minLength: 2
                       example: My Resource in Javascript
                     slug:
                       type: string
@@ -801,7 +799,7 @@ paths:
                       type: string
                     title:
                       type: string
-                      minLength: 1
+                      minLength: 2
                       example: My Resource in Javascript
                     slug:
                       type: string
@@ -847,7 +845,6 @@ paths:
                                 type: string
                               name:
                                 type: string
-                                minLength: 1
                                 example: React Props
                               slug:
                                 type: string
@@ -952,7 +949,7 @@ paths:
               properties:
                 title:
                   type: string
-                  minLength: 1
+                  minLength: 2
                   example: My Resource in Javascript
                 description:
                   type: string
@@ -1011,6 +1008,7 @@ paths:
                   type: string
                 title:
                   type: string
+                  minLength: 2
                 description:
                   type: string
                 url:
@@ -1102,7 +1100,7 @@ paths:
                     type: string
                   title:
                     type: string
-                    minLength: 1
+                    minLength: 2
                     example: My Resource in Javascript
                   slug:
                     type: string
@@ -1148,7 +1146,6 @@ paths:
                               type: string
                             name:
                               type: string
-                              minLength: 1
                               example: React Props
                             slug:
                               type: string
@@ -1282,7 +1279,7 @@ paths:
                     type: string
                   title:
                     type: string
-                    minLength: 1
+                    minLength: 2
                     example: My Resource in Javascript
                   slug:
                     type: string
@@ -1328,7 +1325,6 @@ paths:
                               type: string
                             name:
                               type: string
-                              minLength: 1
                               example: React Props
                             slug:
                               type: string
@@ -1426,7 +1422,7 @@ paths:
                           type: string
                         title:
                           type: string
-                          minLength: 1
+                          minLength: 2
                           example: My Resource in Javascript
                         slug:
                           type: string
@@ -1472,7 +1468,6 @@ paths:
                                     type: string
                                   name:
                                     type: string
-                                    minLength: 1
                                     example: React Props
                                   slug:
                                     type: string

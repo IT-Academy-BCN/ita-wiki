@@ -6,15 +6,9 @@ export const resourcePatchSchema = z
     id: z.string(),
     title: z
       .string()
-      .optional()
-      .refine(
-        (data) =>
-          data === undefined || (data.trim().length > 2 && data.trim() !== ''),
-        {
-          message:
-            'Title must have more than two characters and cannot be empty',
-        }
-      ),
+      .trim()
+      .min(2, 'resource title should have more than 2 letters')
+      .optional(),
     description: z.string().optional(),
     url: z.string().optional(),
     topicId: z.string().optional(),

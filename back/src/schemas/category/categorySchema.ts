@@ -5,10 +5,7 @@ export const categorySchema = z.object({
   name: z
     .string()
     .openapi({ example: 'React' })
-    .nonempty()
-    .refine((data) => data.trim().length > 2, {
-      message: 'Name must have more than two characters and cannot be empty',
-    }),
+    .min(2, 'category name must ahve more than 2 letters'),
   slug: z.string().optional().openapi({ example: 'react' }),
   topics: z.array(
     z.object({

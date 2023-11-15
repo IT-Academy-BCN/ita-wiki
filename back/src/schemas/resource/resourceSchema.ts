@@ -5,10 +5,7 @@ export const resourceSchema = z.object({
   title: z
     .string()
     .openapi({ example: 'My Resource in Javascript' })
-    .nonempty()
-    .refine((data) => data.trim().length > 2, {
-      message: 'Title must have more than two characters and cannot be empty',
-    }),
+    .min(2, 'category name must have more than 2 letters'),
   slug: z.string().openapi({ example: 'my-resource-in-javascript' }),
   description: z
     .string()
