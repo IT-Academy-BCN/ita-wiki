@@ -67,6 +67,7 @@ client
     }
   })
   .catch((error: unknown) =>
+    // eslint-disable-next-line no-console
     console.error('Unable to connect to the database:', error)
   )
 
