@@ -96,7 +96,7 @@ const AccountAdmin: FC = () => {
     setSearchTerm(event.target.value)
   }
 
-  let filteredUsers: TUserData[] = []
+  let filteredUsers: TUserData[] | null = null
 
   if (!isLoading && users) {
     if (searchTerm.trim() !== '') {
@@ -143,7 +143,7 @@ const AccountAdmin: FC = () => {
         return prevData
       })
     } catch (error) {
-      // eslint-disable-next-line no-console 
+      // eslint-disable-next-line no-console
       console.error(error)
     }
   }
@@ -173,31 +173,33 @@ const AccountAdmin: FC = () => {
           </tr>
         </TableHead>
         <TableBody>
-          {filteredUsers.map((user) => (
-            <TableRow key={user.id}>
-              <TableCellNames>{user.name}</TableCellNames>
-              <TableCell>{user.dni}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.status}</TableCell>
-              <TableCell>
-                {user.status === 'ACTIVE' ? (
-                  <DeactivateBtn
-                    data-testid="status-desactivar"
-                    onClick={() => updateUserStatus(user)}
-                  >
-                    Desactivar
-                  </DeactivateBtn>
-                ) : (
-                  <ActivateBtn
-                    data-testid="status-activar"
-                    onClick={() => updateUserStatus(user)}
-                  >
-                    Activar
-                  </ActivateBtn>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
+          {filteredUsers
+            ? filteredUsers.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCellNames>{user.name}</TableCellNames>
+                  <TableCell>{user.dni}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.status}</TableCell>
+                  <TableCell>
+                    {user.status === 'ACTIVE' ? (
+                      <DeactivateBtn
+                        data-testid="status-desactivar"
+                        onClick={() => updateUserStatus(user)}
+                      >
+                        Desactivar
+                      </DeactivateBtn>
+                    ) : (
+                      <ActivateBtn
+                        data-testid="status-activar"
+                        onClick={() => updateUserStatus(user)}
+                      >
+                        Activar
+                      </ActivateBtn>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))
+            : 'Error'}
         </TableBody>
       </Table>
     </UserListContainer>
