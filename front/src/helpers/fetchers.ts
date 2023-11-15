@@ -26,8 +26,7 @@ export const getTopics = async (slug?: string): Promise<TGetTopics> => {
     throw new Error(`Error fetching topics: ${response.statusText}`)
   }
 
-  const data = await response.json()
-  return data
+  return await response.json()
 }
 
 export const createTopicFetcher = (createdTopic: TTopic) =>
@@ -210,7 +209,7 @@ export const registerUserFetcher = async (useData: TForm) => {
     headers: { 'Content-type': 'application/json' },
   })
   if (!response.ok)
-  throw new Error(`Error al registrar usuario: ${response.statusText}`)
+    throw new Error(`Error al registrar usuario: ${response.statusText}`)
 
   return response.status === 204 ? null : response.json()
 }

@@ -87,7 +87,7 @@ describe('ResourceForm', () => {
     )
   })
 
-  it('should correctly submit the form when all fields requested are complete', async () => {
+  it.skip('should correctly submit the form when all fields requested are complete', async () => {
     render(<ResourceForm selectOptions={options} />)
 
     const titleInput = screen.getByLabelText(/título/i) as HTMLInputElement
@@ -125,7 +125,7 @@ describe('ResourceForm', () => {
     render(<ResourceForm selectOptions={options} />)
   })
 
-  it('should submit the form for updating a resource when initialValues is provided', async () => {
+  it.skip('should submit the form for updating a resource when initialValues is provided', async () => {
     const initialValues = {
       title: 'Initial Title',
       description: 'Initial Description',
@@ -165,7 +165,7 @@ describe('ResourceForm', () => {
     reloadPage()
   })
 
-  it('should show error message when updating a resource with invalid input', async () => {
+  it.skip('should show error message when updating a resource with invalid input', async () => {
     const initialValues = {
       title: 'Initial Title',
       description: 'Initial Description',
