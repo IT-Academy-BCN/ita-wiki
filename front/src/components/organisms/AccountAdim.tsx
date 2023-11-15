@@ -98,19 +98,13 @@ const AccountAdmin: FC = () => {
 
   let filteredUsers: TUserData[] | null = null
 
-  if (!isLoading) {
-    if (isError) {
-      filteredUsers = null // Handle error message here
-    } else if (users) {
-      if (searchTerm.trim() !== '') {
-        filteredUsers = users.filter((user) =>
-          user.dni.includes(searchTerm.trim())
-        )
-      } else {
-        filteredUsers = users
-      }
+  if (!isLoading && users) {
+    if (searchTerm.trim() !== '') {
+      filteredUsers = users.filter((user) =>
+        user.dni.includes(searchTerm.trim())
+      )
     } else {
-      filteredUsers = null // Handle no users data scenario
+      filteredUsers = users
     }
   }
 
