@@ -1,9 +1,9 @@
 import { expect, vi } from 'vitest'
 import { render, renderHook, screen, fireEvent, waitFor } from '../test-utils'
 import { Category } from '../../pages'
-import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { useSortByDate } from '../../hooks/useSortByDate'
 import { useSortByVotes } from '../../hooks/useSortByVotes'
+import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
 vi.mock('react-router-dom', async () => {
   const actual: Record<number, unknown> = await vi.importActual(
@@ -149,11 +149,12 @@ it('sorts resources by date in descending order', () => {
   const items = [
     { id: 1, date: '2023-11-01' },
     { id: 2, date: '2023-10-30' },
-    { id: 3, date: '2023-10-28' }
+    { id: 3, date: '2023-10-28' },
   ]
+
   render(<Category />)
 
-  fireEvent.click(screen.getByText('Data'))
+  fireEvent.click(screen.getByText(/Data/i))
 
   const { result } = renderHook(() => useSortByDate(items, 'date', 'desc'))
 
@@ -197,9 +198,10 @@ it('sorts resources by votes in ascending order', () => {
       },
     },
   ]
+
   render(<Category />)
 
-  fireEvent.click(screen.getByText('Vots'))
+  fireEvent.click(screen.getByText(/Vots/i))
 
   const { result } = renderHook(() => useSortByVotes(votes, 'asc'))
   const sortedResources = result.current.sortedVotes

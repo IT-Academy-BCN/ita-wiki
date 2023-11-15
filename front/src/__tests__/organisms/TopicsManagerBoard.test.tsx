@@ -63,7 +63,7 @@ describe('TopicsManagerBoard component', () => {
     ).toBeInTheDocument()
   })
 
-  it.skip('renders correctly with category slug', async () => {
+  it('renders correctly with category slug', async () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)
@@ -93,11 +93,9 @@ describe('TopicsManagerBoard component', () => {
       expect(screen.getByText('Listas')).toBeInTheDocument()
       expect(screen.getByText('Renderizado condicional')).toBeInTheDocument()
     })
-
-    screen.debug()
   })
 
-  it.skip('renders correctly with category slug without topics yet', async () => {
+  it('renders correctly with category slug without topics yet', async () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'empty-topics',
     } as Readonly<Params>)
@@ -134,7 +132,6 @@ describe('TopicsManagerBoard component', () => {
         screen.queryByRole('button', { name: 'Esborra el tema' })
       ).not.toBeInTheDocument()
     })
-    screen.debug()
   })
 
   it('renders an error with an invalid slug', async () => {
