@@ -41,10 +41,31 @@ export const testUserData = {
 }
 
 export async function setup() {
+  await client.query('DROP TABLE IF EXISTS users CASCADE')
+  await client.query(`
+    CREATE OR REPLACE FUNCTION TRIGGER_SET_TIMESTAMP() RETURNS TRIGGER AS $$ BEGIN NEW.updated_at := NOW();
+    RETURN NEW;
+    END;
+    $$LANGUAGE plpgsql;
+    
+    CREATE TABLE IF NOT EXISTS users (
+        id VARCHAR (50) PRIMARY KEY,
+        dni VARCHAR(25) UNIQUE NOT NULL,
+        email VARCHAR (255) UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        user_meta JSON NOT NULL,
+        created_at TIMESTAMPTZ DEFAULT NOW (),
+        updated_at TIMESTAMPTZ
+    );
+    
+    CREATE TRIGGER set_timestamp BEFORE
+    UPDATE ON users FOR EACH ROW EXECUTE FUNCTION trigger_set_timestamp();
+`)
+
   // Cleanup database
   await client.query('DELETE FROM users')
-  // Create required test data
 
+  // Create required test data
   Object.values(testUserData).forEach(async (user) => {
     const query = `
       INSERT INTO users (id, dni, email, password, user_meta)
