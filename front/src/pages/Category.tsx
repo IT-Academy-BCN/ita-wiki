@@ -133,6 +133,7 @@ const ResourcesContainer = styled(FlexBox)`
 
 const TitleResourcesContainer = styled(FlexBox)`
   justify-content: space-between;
+  align-items: flex-start;
   flex-direction: row;
   width: 100%;
   padding: ${dimensions.spacing.none};
@@ -170,6 +171,25 @@ const SearchBar = styled(InputGroup)`
       color: ${colors.gray.gray3};
     }
   }
+`
+
+const SearchContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`
+
+const InputSearchBar = styled.div`
+  display: flex;
+  height: ${dimensions.spacing.lg};
+`
+
+const InputSearch = styled.input`
+  width: 60%;
+  margin-right: ${dimensions.spacing.xxxs};
+  border-radius: ${dimensions.borderRadius.base};
+  border: 1px solid ${colors.gray.gray3};
+  padding: ${dimensions.spacing.xs};
 `
 
 const VotesDateContainer = styled(FlexBox)`
@@ -300,6 +320,18 @@ const FilterButton = styled(Button)`
     display: none;
   }
 `
+const CancelSearchButton = styled(Button)`
+  color: ${colors.gray.gray3};
+  background-color: ${colors.white};
+  border: 1px solid ${colors.gray.gray3};
+  width: fit-content;
+  padding: ${dimensions.spacing.xs} ${dimensions.spacing.xs};
+
+  &:hover {
+    background-color: ${colors.white};
+    border: 1px solid ${colors.primary};
+  }
+`
 
 const slideInAnimation = keyframes`
   0% {
@@ -403,7 +435,12 @@ const Category: FC = () => {
     topic: topic === 'todos' ? undefined : topic,
   })
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
-  const [selectedOption, setSelectedOption] = useState<'Fecha' | 'Votos'>('Votos')
+  const [selectedOption, setSelectedOption] = useState<'Fecha' | 'Votos'>(
+    'Votos'
+  )
+  const [isSearch, setIsSearch] = useState<boolean>(false)
+  const [searchValue, setSearchValue] = useState<string | null>(null)
+  console.log(searchValue)
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
@@ -469,6 +506,10 @@ const Category: FC = () => {
     setIsSortByVotesActive(false)
   }
 
+  const toggleSearch = () => {
+    setIsSearch(!isSearch)
+  }
+
   const { data: fetchedTopics } = useGetTopics(slug ?? '')
 
   const mappedTopicsForFilterWidget = [
@@ -531,17 +572,44 @@ const Category: FC = () => {
               </FiltersContainer>
               <ResourcesContainer>
                 <TitleResourcesContainer>
-                  <Title as="h2" fontWeight="bold">
-                    Recursos de {state?.name}
-                  </Title>
-                  <SearchBar
-                    data-testid="inputGroupSearch"
-                    label="searchResource"
-                    name="searchResource"
-                    placeholder="Buscar recurso"
-                    id="searchResource"
-                    icon="search"
-                  />
+                  {isSearch ? (
+                    <SearchContainer>
+                      <Title as="h2" fontWeight="bold">
+                        Buscar recurso
+                      </Title>
+                      <InputSearchBar>
+                        <InputSearch
+                          type="text"
+                          onChange={(e) => setSearchValue(e.target.value)}
+                        />
+                        <CancelSearchButton onClick={toggleSearch}>
+                          X
+                        </CancelSearchButton>
+                      </InputSearchBar>
+                      {searchValue !== null && searchValue !== '' ? (
+                        <span style={{ marginTop: '20px', fontWeight: 'bold' }}>
+                          Mostrando {sortOrder.length} resultados para "
+                          {searchValue}"
+                        </span>
+                      ) : null}
+                    </SearchContainer>
+                  ) : (
+                    <>
+                      <Title as="h2" fontWeight="bold">
+                        Recursos de {state?.name}
+                      </Title>
+                      <SearchBar
+                        data-testid="inputGroupSearch"
+                        label="searchResource"
+                        name="searchResource"
+                        placeholder="Buscar recurso"
+                        id="searchResource"
+                        icon="search"
+                        onClick={toggleSearch}
+                      />
+                    </>
+                  )}
+
                   <FilterButton
                     data-testid="filters-button"
                     onClick={handleFiltersOpen}
@@ -552,26 +620,27 @@ const Category: FC = () => {
                 <VotesDateContainer>
                   <FlexBox direction="row" gap="15px">
                     <FlexBox direction="row">
-                      <StyledVotesToggle 
-                        onClick={() => { 
+                      <StyledVotesToggle
+                        onClick={() => {
                           handleSortByVotes()
                           handleSortOrder()
                           setSelectedOption('Votos')
                         }}
-                        >
+                      >
                         <Text
-                          fontWeight={selectedOption === 'Votos' ? 'bold' : 'normal'}
-                          >
-                            Votos
+                          fontWeight={
+                            selectedOption === 'Votos' ? 'bold' : 'normal'
+                          }
+                        >
+                          Votos
                         </Text>
                       </StyledVotesToggle>
-                      {selectedOption === 'Votos' && (
-                        sortOrder === 'desc' ? (
+                      {selectedOption === 'Votos' &&
+                        (sortOrder === 'desc' ? (
                           <Icon name="arrow_upward" />
                         ) : (
                           <Icon name="arrow_downward" />
-                        )
-                      )}
+                        ))}
                     </FlexBox>
                     <StyledDateToggle
                       onClick={() => {
@@ -579,11 +648,13 @@ const Category: FC = () => {
                         handleSortOrder()
                         setSelectedOption('Fecha')
                       }}
+                    >
+                      <Text
+                        fontWeight={
+                          selectedOption === 'Fecha' ? 'bold' : 'normal'
+                        }
                       >
-                      <Text 
-                        fontWeight={selectedOption === 'Fecha' ? 'bold' : 'normal'}
-                        >
-                          Fecha
+                        Fecha
                       </Text>
                     </StyledDateToggle>
                   </FlexBox>
