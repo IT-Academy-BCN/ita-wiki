@@ -17,17 +17,19 @@ const VotesDateContainer = styled(FlexBox)`
   }
 `;
 
-const StyledVotesToggle = styled(Text)`
+const StyledVotesToggle = styled.div`
   cursor: pointer;
+  display: inline;
 
   &:active {
     transform: scale(0.96);
   }
 `;
 
-const StyledDateToggle = styled(Text)`
+const StyledDateToggle = styled.div`
   color: ${colors.black.black1};
   cursor: pointer;
+  display: inline;
 
   &:active {
     transform: scale(0.96);
