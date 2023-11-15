@@ -76,7 +76,7 @@ describe('Register', () => {
     await waitFor(() => {
       expect(
         screen.getByText(
-          /La contrasenya ha de tenir almenys 8 caràcters i contenir només lletres i números/i
+          /La contrasenya ha de contenir només lletres i números, mínim 8 caràcters, un número, una majúscula i una minúscula/i
         )
       ).toBeInTheDocument()
     })
@@ -84,7 +84,11 @@ describe('Register', () => {
 })
 describe('validatePassword', () => {
   it('returns true for a valid password', () => {
-    const validPasswords = ['Password123', 'AnotherValid123', '12345678']
+    const validPasswords = [
+      'Password123',
+      'AnotherValid123',
+      'MYpasswordIs123456',
+    ]
     validPasswords.forEach((password) => {
       expect(validatePassword(password)).toBe(true)
     })
@@ -94,6 +98,55 @@ describe('validatePassword', () => {
     const invalidPasswords = ['short', 'no123', 'With@Symbol', '']
     invalidPasswords.forEach((password) => {
       expect(validatePassword(password)).toBe(false)
+    })
+  })
+
+  it('shows an error message for invalid confirmation password when it does not match', async () => {
+    const handleLoginModal = vi.fn()
+    const handleRegisterModal = vi.fn()
+    render(
+      <Register
+        handleLoginModal={handleLoginModal}
+        handleRegisterModal={handleRegisterModal}
+      />
+    )
+
+    await userEvent.type(screen.getByLabelText('password'), 'abcD/?123')
+    await userEvent.type(screen.getByLabelText('confirmPassword'), 'abcD/?')
+
+    await userEvent.click(screen.getByTestId('accept'))
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/La contrasenya ha de coincidir/i)
+      ).toBeInTheDocument()
+    })
+  })
+
+  it('shows an error message for invalid field when not filled as required', async () => {
+    const handleLoginModal = vi.fn()
+    const handleRegisterModal = vi.fn()
+    render(
+      <Register
+        handleLoginModal={handleLoginModal}
+        handleRegisterModal={handleRegisterModal}
+      />
+    )
+
+    await userEvent.type(screen.getByLabelText('dni'), 'c')
+    await userEvent.type(screen.getByTestId('email'), 's')
+    await userEvent.type(screen.getByTestId('name'), 'f')
+    await userEvent.selectOptions(
+      screen.getByLabelText('specialization'),
+      'Especialitat'
+    )
+
+    await waitFor(() => {
+      const errorMessages = screen.getAllByText(/Aquest camp és obligatori/i)
+
+      errorMessages.forEach((errorMsg) => {
+        expect(errorMsg).toBeInTheDocument()
+      })
     })
   })
 })

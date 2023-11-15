@@ -19,6 +19,7 @@
   "Menú": "Menú",
   "Ajustes": "Ajustes",
   "Cerrar": "Cerrar",
+  "camp obligatori": "Este campo es obligatorio",
 
   "Administrador de Usuarios": "Administrador de Usuarios",
 
@@ -27,7 +28,8 @@
   "Especialidad": "Especialidad",
   "Password": "Contraseña",
   "repetirpassword": "Repetir contraseña",
-  "password error": "La contraseña debe tener al menos 8 caracteres y contener solo letras y números",
+  "password error": "La contraseña debe contener solo letras y números, mínimo 8 caracteres, un número, una mayúscula y una minúscula",
+  "confirmPasswordError": "Las contraseñas deben coincidir",
   "acepto": "Acepto",
   "terminos legales": "términos legales",
   "tienes una cuenta?": "¿Tienes una cuenta?, entrar",

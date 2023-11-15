@@ -106,7 +106,9 @@ type TRegister = {
   handleRegisterModal: () => void
 }
 export function validatePassword(password: string): boolean {
-  return /^(?=.*[A-Za-z\d])[A-Za-z\d]{8,}$/.test(password)
+  return /^(?=[a-zA-Z0-9]{8,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d).*/.test(
+    password
+  )
 }
 
 const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
@@ -182,8 +184,8 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             label="dni"
             type="text"
             placeholder={t('DNI')}
-            error={errors.dni && true}
-            validationMessage={errors.dni?.message}
+            error={!!errors.dni}
+            validationMessage={errors.dni?.message && t('camp obligatori')}
             validationType="error"
             {...register('dni')}
             onBlur={() => {
@@ -198,8 +200,8 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             label="email"
             type="email"
             placeholder="Email"
-            error={errors.email && true}
-            validationMessage={errors.email?.message}
+            error={!!errors.email}
+            validationMessage={errors.email?.message && t('camp obligatori')}
             validationType="error"
             {...register('email')}
             onBlur={() => {
@@ -214,8 +216,8 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             label="name"
             type="text"
             placeholder="Username"
-            error={errors.name && true}
-            validationMessage={errors.name?.message}
+            error={!!errors.name}
+            validationMessage={errors.name?.message && t('camp obligatori')}
             validationType="error"
             {...register('name')}
             onBlur={() => {
@@ -230,14 +232,8 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             label="password"
             type={visibility ? 'text' : 'password'}
             placeholder={t('Password')}
-            error={
-              errors.password &&
-              'La contraseña debe tener al menos 8 caracteres y contener solo letras y números'
-            }
-            validationMessage={
-              errors.password?.message &&
-              'La contraseña debe tener al menos 8 caracteres y contener solo letras y números'
-            }
+            error={!!errors.password}
+            validationMessage={errors.password?.message && t('password error')}
             validationType="error"
             color={colors.gray.gray4}
             icon={visibility ? 'visibility' : 'visibility_off'}
@@ -258,8 +254,10 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             icon={visibility ? 'visibility' : 'visibility_off'}
             iconClick={() => setVisibility(!visibility)}
             color={colors.gray.gray4}
-            error={errors.confirmPassword && true}
-            validationMessage={errors.confirmPassword?.message}
+            error={!!errors.confirmPassword}
+            validationMessage={
+              errors.confirmPassword?.message && t('confirmPasswordError')
+            }
             validationType="error"
             {...register('confirmPassword')}
             onBlur={() => {
@@ -273,9 +271,11 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             id="specialization"
             label="specialization"
             placeholder={t('Especialidad')}
-            error={errors.specialization && true}
+            error={!!errors.specialization}
             options={categoriesMap}
-            validationMessage={errors.specialization?.message}
+            validationMessage={
+              errors.specialization?.message && t('camp obligatori')
+            }
             {...register('specialization')}
             onBlur={() => {
               trigger('specialization')

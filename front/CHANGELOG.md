@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.2] - 2023-11-22
+
+### Fixed
+
+- Fix register error message.
+
 ## [0.4.1] - 2023-11-21
 
 ### Fixed
