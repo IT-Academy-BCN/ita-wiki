@@ -7,6 +7,7 @@ import { useAuth } from '../../context/AuthProvider'
 import { TResource } from '../../context/store/types'
 import { updateCachedVoteCount } from '../../helpers'
 import { updateVote } from '../../helpers/fetchers'
+import { TVoteCount } from '../../types'
 
 type ArrowProp = {
   color: string
@@ -26,13 +27,7 @@ type TVoteCounter = {
   voteCount: TVoteCount
   resourceId: string
   handleAccessModal: () => void
-}
-
-type TVoteCount = {
-  downvote: number
-  upvote: number
-  total: number
-  userVote: number
+  fromProfile?: boolean
 }
 
 type TUserVote = 'up' | 'down' | 'cancel'
@@ -41,6 +36,7 @@ export const VoteCounter: FC<TVoteCounter> = ({
   voteCount,
   resourceId,
   handleAccessModal,
+  fromProfile,
 }) => {
   const { user } = useAuth()
   const queryClient = useQueryClient()
@@ -51,7 +47,23 @@ export const VoteCounter: FC<TVoteCounter> = ({
       const queryCacheGetResources = queryClient
         .getQueryCache()
         .findAll(['getResources'])
-      const queryKeys = queryCacheGetResources.map((q) => q.queryKey)
+
+      const queryCacheGetResourcesByUser = queryClient
+        .getQueryCache()
+        .findAll(['getResourcesByUser'])
+
+      const queryCacheGetFavorites = queryClient
+        .getQueryCache()
+        .findAll(['getFavorites'])
+
+      const allQueryKeys = !fromProfile
+        ? queryCacheGetResources
+        : queryCacheGetResources.concat(
+            queryCacheGetResourcesByUser,
+            queryCacheGetFavorites
+          )
+
+      const queryKeys = allQueryKeys.map((q) => q.queryKey)
 
       for (let i = 0; i < queryKeys.length; i += 1) {
         const queryKey = queryKeys[i]

@@ -137,15 +137,16 @@ export const getResources = async (filters: string) =>
       throw new Error(`Error fetching resources: ${err.message}`)
     })
 
-export const getResourcesByUser = async (categorySlug: string | undefined) => {
-  const response = await fetch(
-    `${urls.getResourcesByUser}?category=${categorySlug}`,
-    {
-      headers: {
-        Accept: 'application/json',
-      },
-    }
-  )
+export const getResourcesByUser = async (slug: string | undefined) => {
+  const urlResourcesByUser = slug
+    ? `${urls.getResourcesByUser}?categorySlug=${slug}`
+    : `${urls.getResourcesByUser}`
+
+  const response = await fetch(urlResourcesByUser, {
+    headers: {
+      Accept: 'application/json',
+    },
+  })
 
   if (!response.ok) {
     throw new Error(`Error fetching resources: ${response.statusText}`)
@@ -153,9 +154,8 @@ export const getResourcesByUser = async (categorySlug: string | undefined) => {
 
   const data = await response.json()
 
-  return data.resources.map((resource: TResource) => ({
+  return data.map((resource: TResource) => ({
     ...resource,
-    editable: true,
   }))
 }
 

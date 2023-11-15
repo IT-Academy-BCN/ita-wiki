@@ -14,7 +14,6 @@ import { SelectLanguage } from './SelectLanguage'
 import { Tooltip } from './Tooltip'
 import { TopicsEditableItem } from './TopicsEditableItem'
 import { UserButton } from './UserButton'
-import { UserProfileResourcesWidget } from './UserProfileResourcesWidget'
 
 export {
   AccessModalContent,
@@ -33,5 +32,4 @@ export {
   Tooltip,
   TopicsEditableItem,
   UserButton,
-  UserProfileResourcesWidget,
 }

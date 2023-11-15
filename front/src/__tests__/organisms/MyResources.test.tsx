@@ -1,123 +1,103 @@
-import { setupServer } from 'msw/node'
 import { vi } from 'vitest'
+import { useParams, Params } from 'react-router-dom'
+import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { render, screen, waitFor } from '../test-utils'
 import { MyResources } from '../../components/organisms'
-import { TAuthContext, useAuth } from '../../context/AuthProvider'
-import { handlers, errorHandlers } from '../../__mocks__/handlers'
+import { errorHandlers } from '../../__mocks__/handlers'
+import { mswServer } from '../setup'
 
-const server = setupServer(...handlers)
-
-beforeAll(() => server.listen())
+beforeEach(() => {
+  vi.mock('../../context/AuthProvider', async () => {
+    const actual: Record<number, unknown> = await vi.importActual(
+      '../../context/AuthProvider'
+    )
+    return {
+      ...actual,
+      useAuth: vi.fn(),
+    }
+  })
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'Hola',
+      avatar: 'Adios',
+    },
+  } as unknown as TAuthContext)
+  vi.mock('react-router-dom', async () => {
+    const actual: Record<number, unknown> = await vi.importActual(
+      'react-router-dom'
+    )
+    return {
+      ...actual,
+      useParams: vi.fn(),
+    }
+  })
+  vi.mocked(useParams).mockReturnValue({
+    slug: 'react',
+  } as Readonly<Params>)
+})
 
 afterEach(() => {
-  server.resetHandlers()
+  mswServer.resetHandlers()
   vi.resetAllMocks()
 })
-afterAll(() => server.close())
 
-describe('MyResources', () => {
-  beforeEach(() => {
-    vi.mock('../../context/AuthProvider', async () => {
-      const actual = await vi.importActual('../../context/AuthProvider')
-      return {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        ...actual,
-        useAuth: vi.fn(),
-      }
-    })
-  })
-  it('renders MyResources component', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Hola',
-        avatar: 'Adios',
-      },
-    } as TAuthContext)
+afterAll(() => mswServer.close())
 
+describe('MyResources component', () => {
+  it('renders correctly', async () => {
     render(<MyResources />)
 
-    expect(screen.queryByTestId('title')).toBeInTheDocument()
+    const spinnerComponent = screen.getByRole('status') as HTMLDivElement
+
+    expect(screen.getByTestId('title')).toBeInTheDocument()
+
+    await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
+    await waitFor(() =>
+      expect(screen.getByText('My React resource title')).toBeInTheDocument()
+    )
+    expect(screen.getByAltText('Edita el recurs')).toBeInTheDocument()
   })
 
-  it('shows error message if resources request fails', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Hola',
-        avatar: 'Adios',
-      },
-    } as TAuthContext)
-
-    server.use(...errorHandlers)
-
-    render(<MyResources />)
-  })
-
-  it('shows error message if user is not logged', async () => {
+  it('shows message if user is not logged', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: null,
     } as TAuthContext)
 
-    server.use(...errorHandlers)
-
     render(<MyResources />)
+    expect(screen.getByTestId('no-user')).toBeInTheDocument()
   })
 
-  it('receives data when API call returns 200 and the user has no resources', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Hola',
-        avatar: 'Adios',
-      },
-    } as TAuthContext)
-
+  it('shows no resources message when the user has no resources for a category', async () => {
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'emptySlug',
+    } as Readonly<Params>)
     render(<MyResources />)
+
+    const spinnerComponent = screen.getByRole('status') as HTMLDivElement
+    await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
+
+    await waitFor(() =>
+      expect(screen.getByText('No has publicat cap recurs')).toBeInTheDocument()
+    )
+    expect(
+      screen.queryByText('Alguna cosa ha anat malament...')
+    ).not.toBeInTheDocument()
   })
 
   it('shows correct title when resizes to mobile', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Hola',
-        avatar: 'Adios',
-      },
-    } as TAuthContext)
-
     global.innerWidth = 600
     render(<MyResources />)
 
     const title = screen.getByTestId('main-title')
-    expect(title).toHaveTextContent('Tus recursos')
+    expect(title).toHaveTextContent('Els teus recursos')
   })
 
   it('shows correct title when resizes to laptop', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Hola',
-        avatar: 'Adios',
-      },
-    } as TAuthContext)
-
     global.innerWidth = 1024
     render(<MyResources />)
 
     const title = screen.getByTestId('main-title')
-    expect(title).toHaveTextContent('Mis recursos')
-  })
-
-  it('shows cards when resizes to mobile', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Hola',
-        avatar: 'Adios',
-      },
-    } as TAuthContext)
-
-    global.innerWidth = 600
-    render(<MyResources />)
-
-    await waitFor(() => {
-      expect(screen.queryByTestId('resource-card')).toBeInTheDocument()
-    })
+    expect(title).toHaveTextContent('Els meus recursos')
   })
 
   it('shows ResourceTitleLink when resizes to laptop', async () => {
@@ -126,13 +106,28 @@ describe('MyResources', () => {
         name: 'Hola',
         avatar: 'Adios',
       },
-    } as TAuthContext)
+    } as unknown as TAuthContext)
 
     global.innerWidth = 1024
     render(<MyResources />)
 
     await waitFor(() => {
       expect(screen.queryByTestId('resource-title')).toBeInTheDocument()
+    })
+  })
+
+  it('renders correctly on error', async () => {
+    mswServer.use(...errorHandlers)
+
+    render(<MyResources />)
+    const spinnerComponent = screen.getByRole('status') as HTMLDivElement
+
+    await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Alguna cosa ha anat malament...')
+      ).toBeInTheDocument()
     })
   })
 })

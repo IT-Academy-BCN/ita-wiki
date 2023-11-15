@@ -92,7 +92,11 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
   }
 
   const location = useLocation()
-  const shouldRenderIcons = useMemo(() => location.pathname !== '/', [location])
+
+  const shouldRenderIcons = useMemo(() => {
+    const excludedPaths = ['/', '/profile']
+    return !excludedPaths.includes(location.pathname)
+  }, [location])
 
   return (
     <>

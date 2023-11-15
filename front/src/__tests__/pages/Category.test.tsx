@@ -19,7 +19,7 @@ beforeEach(() => {
       name: 'Name',
       avatar: 'Avatar',
     },
-  } as TAuthContext)
+  } as unknown as TAuthContext)
 })
 
 describe.skip('Resource', () => {
@@ -43,7 +43,7 @@ it('renders correctly', () => {
   expect(screen.getByTestId('types-filter')).toBeInTheDocument()
   expect(screen.getByTestId('status-filter')).toBeInTheDocument()
   expect(screen.getByTestId('resource-list')).toBeInTheDocument()
-  expect(screen.getByText('Mis recursos')).toBeInTheDocument()
+  expect(screen.getByText('Els meus recursos')).toBeInTheDocument()
   expect(screen.getByText('Recursos favorits')).toBeInTheDocument()
 })
 
@@ -53,7 +53,7 @@ it('renders Navbar for logged in users', () => {
       name: 'Name',
       avatar: 'Avatar',
     },
-  } as TAuthContext)
+  } as unknown as TAuthContext)
 
   render(<Category />)
 
@@ -136,7 +136,7 @@ it('status filter widget appears for users who are logged in', () => {
       name: 'Name',
       avatar: 'Avatar',
     },
-  } as TAuthContext)
+  } as unknown as TAuthContext)
   render(<Category />)
 
   const statusFilterWidget = screen.getByTestId('status-filter')

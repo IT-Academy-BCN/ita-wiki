@@ -1,9 +1,9 @@
+import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../context/AuthProvider'
 import { Modal } from '../molecules'
-import CardResource from './CardResource'
 import { Title, Spinner, Icon, Text } from '../atoms'
 import {
   FlexBox,
@@ -74,9 +74,12 @@ const getWindowMobile = () =>
 
 const MyResources = () => {
   const { user } = useAuth()
+  const { slug } = useParams()
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(getWindowMobile())
+  const { t } = useTranslation()
+  const { data, isLoading, isError } = useGetResourcesByUser(slug)
 
   useEffect(() => {
     const handleSize = () => {
@@ -85,9 +88,6 @@ const MyResources = () => {
     window.addEventListener('resize', handleSize)
   }, [isMobile])
 
-  const params = useParams<{ slug: string }>()
-  const categorySlug: string | undefined = params.slug
-  const { data, isLoading, error } = useGetResourcesByUser(categorySlug)
   const handleRegisterModal = () => {
     setIsRegisterOpen(!isRegisterOpen)
   }
@@ -100,77 +100,62 @@ const MyResources = () => {
       <TitleContainer data-testid="main-title">
         {isMobile ? (
           <Title as="h3" fontWeight="bold">
-            Tus recursos
+            {t('Tus recursos')}
           </Title>
         ) : (
           <>
             <Icon name="menu_book" fill={0} />
             <Title as="h2" fontWeight="bold" data-testid="title">
-              Mis recursos
+              {t('Mis recursos')}
             </Title>
           </>
         )}
       </TitleContainer>
       {!user && (
-        <StyledText color={colors.gray.gray3}>
+        <StyledText color={colors.gray.gray3} data-testid="no-user">
           <TextDecorationStyled onClick={handleRegisterModal}>
-            Regístrate
+            {t('Regístrate')}
           </TextDecorationStyled>
-          {` o `}
+          {t(' o ')}
           <TextDecorationStyled onClick={handleLoginModal}>
-            inicia sesión
+            {t('inicia sesión')}
           </TextDecorationStyled>
-          {` para añadir recursos favoritos`}
+          {t(' para añadir recursos favoritos')}
         </StyledText>
       )}
 
-      {isLoading && user && <Spinner size="medium" />}
+      {isLoading && user && <Spinner size="medium" role="status" />}
 
-      {!isLoading &&
-        !error &&
-        (data && data.length > 0 ? (
+      {data &&
+        (data.length > 0 ? (
           <ResourcesUserStyled>
             {data.map((resource: TResource) => (
               <MyResourcesCardList key={resource.id}>
-                {isMobile ? (
-                  <CardResource
-                    createdBy={resource.user.name}
-                    createdAt={resource.createdAt}
-                    updatedAt={resource.updatedAt}
-                    description={resource.description}
-                    img=""
-                    id={resource.id}
-                    title={resource.title}
-                    url={resource.url}
-                    handleAccessModal={() => {}}
-                    resourceType=""
-                    topics={[]}
-                    editable={resource.editable}
-                    isFavorite={false}
-                  />
-                ) : (
-                  <CardResourceLink
-                    createdBy={resource.user.name}
-                    createdAt={resource.createdAt}
-                    updatedAt={resource.updatedAt}
-                    description={resource.description}
-                    img=""
-                    id={resource.id}
-                    title={resource.title}
-                    url={resource.url}
-                    handleAccessModal={() => {}}
-                    resourceType={resource.resourceType}
-                    topics={resource.topics}
-                    editable={resource.editable}
-                    isFavorite={false}
-                  />
-                )}
+                <CardResourceLink
+                  createdBy={resource?.userId ?? ''}
+                  createdAt={resource.createdAt}
+                  updatedAt={resource.updatedAt}
+                  description={resource.description}
+                  img=""
+                  id={resource.id}
+                  title={resource.title}
+                  url={resource.url}
+                  handleAccessModal={() => {}}
+                  resourceType={resource.resourceType}
+                  topics={resource.topics}
+                  editable
+                  isFavorite={false}
+                />
               </MyResourcesCardList>
             ))}
           </ResourcesUserStyled>
         ) : (
-          <Text color={colors.gray.gray4}>No has subido ningún recurso</Text>
+          <Text color={colors.gray.gray4}>
+            {t('No has subido ningún recurso')}
+          </Text>
         ))}
+
+      {isError && user && !isLoading ? <p>{t('Algo ha ido mal...')}</p> : null}
 
       <Modal
         isOpen={isLoginOpen || isRegisterOpen}

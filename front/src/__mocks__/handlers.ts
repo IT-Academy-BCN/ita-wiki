@@ -126,6 +126,7 @@ export const handlers = [
           updatedAt: '12/12/2012',
           status: 'NOT_SEEN',
           voteCount: {
+            userVote: 0,
             upvote: 3,
             downvote: 0,
             total: 3,
@@ -144,6 +145,7 @@ export const handlers = [
           updatedAt: '12/12/2012',
           status: 'NOT_SEEN',
           voteCount: {
+            userVote: 0,
             upvote: 3,
             downvote: 0,
             total: 3,
@@ -173,6 +175,7 @@ export const handlers = [
             updatedAt: '12/12/2012',
             status: 'NOT_SEEN',
             voteCount: {
+              userVote: 0,
               upvote: 3,
               downvote: 0,
               total: 3,
@@ -190,26 +193,16 @@ export const handlers = [
   rest.put(urls.favorites, (_, res, ctx) => res(ctx.status(204))),
 
   rest.get(urls.getResourcesByUser, (req, res, ctx) => {
-    const categorySlug = req.url.searchParams.get('category')
-    if (categorySlug === 'emptyResource') {
+    const slug = req.url.searchParams.get('categorySlug')
+    if (slug === 'react') {
       return res(
         ctx.status(200),
         ctx.json([
           {
-            resources: [],
-          },
-        ])
-      )
-    }
-    return res(
-      ctx.status(200),
-      ctx.json({
-        resources: [
-          {
             id: 'resourceId',
-            title: 'Resource title',
+            title: 'My React resource title',
             slug: 'react',
-            description: 'Resource description',
+            description: 'My React resource description',
             url: 'https://reactjs.org/',
             user: {
               name: 'string',
@@ -226,13 +219,51 @@ export const handlers = [
               },
             ],
             voteCount: {
+              userVote: 0,
               upvote: 10,
               downvote: 2,
               total: 8,
             },
+            favorite: false,
           },
-        ],
-      })
+        ])
+      )
+    }
+    if (slug === 'emptySlug') {
+      return res(ctx.status(200), ctx.json([]))
+    }
+    return res(
+      ctx.status(200),
+      ctx.json([
+        {
+          id: 'resourceId',
+          title: 'My resource title without slug',
+          slug: 'react',
+          description: 'My resource description',
+          url: 'https://reactjs.org/',
+          user: {
+            name: 'string',
+            email: 'user@example.cat',
+          },
+          topics: [
+            {
+              topic: {
+                id: 'topicId1',
+                name: 'Topic 1',
+                slug: 'topic-1',
+                categoryId: 'categoryId1',
+              },
+            },
+          ],
+          voteCount: {
+            userVote: 0,
+            upvote: 10,
+            downvote: 2,
+            total: 8,
+          },
+          favorite: false,
+        },
+      ])
     )
   }),
   ...voteHandlers,
@@ -271,6 +302,10 @@ export const errorHandlers = [
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 
+  rest.get(urls.getFavorites, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
   rest.put(urls.vote, (_, res, ctx) =>
     res(ctx.status(401), ctx.json({ message: 'User not found' }))
   ),
@@ -278,8 +313,12 @@ export const errorHandlers = [
     res(ctx.status(404), ctx.json({ message: 'User or resource not found' }))
   ),
 
+  rest.get(urls.getResourcesByUser, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
   rest.get(urls.getResourcesByUser, (req, res, ctx) => {
-    const categorySlug = req.url.searchParams.get('category')
+    const categorySlug = req.url.searchParams.get('slug')
 
     if (categorySlug === 'errorCase') {
       return res(
@@ -287,6 +326,7 @@ export const errorHandlers = [
         ctx.json({ message: 'Internal server error' })
       )
     }
+
     return res(ctx.status(401), ctx.json({ message: 'User not found' }))
   }),
   ...voteErrorHandlers,

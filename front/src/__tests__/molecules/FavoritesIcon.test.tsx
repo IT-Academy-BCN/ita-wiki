@@ -27,6 +27,13 @@ beforeEach(() => {
       useAuth: vi.fn(),
     }
   })
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'TestName',
+      avatar: 'TestAvatar',
+      role: 'REGISTERED',
+    },
+  } as unknown as TAuthContext)
   vi.mock('react-router-dom', async () => {
     const actual: Record<number, unknown> = await vi.importActual(
       'react-router-dom'
@@ -44,14 +51,7 @@ afterEach(() => {
 })
 
 describe('FavoritesWidget', () => {
-  it('renders component correctly', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatar: 'Avatar',
-        email: 'mail@domain.com',
-      },
-    } as TAuthContext)
+  it('renders component correctly with slug', async () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)
@@ -67,14 +67,23 @@ describe('FavoritesWidget', () => {
     })
   })
 
+  it('renders component correctly without slug', async () => {
+    vi.mocked(useParams).mockReturnValue({
+      slug: undefined,
+    } as Readonly<Params>)
+
+    render(<FavoritesIcon resourceId="notFavoriteId" isFavorite={false} />)
+
+    await waitFor(() => {
+      const favIconDeselected = screen.getByText('favorite')
+      expect(favIconDeselected).toBeInTheDocument()
+      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a favorits')
+      expect(favIconDeselected).toHaveAttribute('fill', '0')
+      expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
+    })
+  })
+
   it('renders component correctly when resource is favorite', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatar: 'Avatar',
-        email: 'mail@domain.com',
-      },
-    } as TAuthContext)
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)
@@ -91,15 +100,8 @@ describe('FavoritesWidget', () => {
   })
 
   it('should change to favorite when user clicks on it', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatar: 'Avatar',
-        email: 'mail@domain.com',
-      },
-    } as TAuthContext)
     vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
+      slug: undefined,
     } as Readonly<Params>)
 
     queryClient.setQueryData(['getResources'], [resourceNotFavoriteMock])
@@ -136,13 +138,6 @@ describe('FavoritesWidget', () => {
   })
 
   it('should invalidate favorites queries when resource is changed to favorite', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatar: 'Avatar',
-        email: 'mail@domain.com',
-      },
-    } as TAuthContext)
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)
@@ -162,121 +157,137 @@ describe('FavoritesWidget', () => {
     fireEvent.click(favIconDeselected)
 
     await waitFor(() => {
-      expect(spyInvalidate).toHaveBeenCalled()
+      expect(spyInvalidate).toHaveBeenCalledWith({
+        queryKey: ['getFavorites'],
+      })
+      expect(spyInvalidate).not.toHaveBeenCalledWith({
+        queryKey: ['getResourcesByUser'],
+      })
     })
   })
+})
 
-  it('should change to not favorite when user clicks on it', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatar: 'Avatar',
-        email: 'mail@domain.com',
-      },
-    } as TAuthContext)
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-    queryClient.setQueryData(['getResources'], [resourceFavoriteMock])
-    const queryData = queryClient.getQueryData(['getResources']) as TResource[]
+it('should change to not favorite when user clicks on it', async () => {
+  queryClient.setQueryData(['getResources'], [resourceFavoriteMock])
+  const queryData = queryClient.getQueryData(['getResources']) as TResource[]
 
-    const { rerender } = render(
+  const { rerender } = render(
+    <FavoritesIcon
+      resourceId={resourceFavoriteMock.id}
+      isFavorite={queryData[0].isFavorite}
+    />
+  )
+
+  const favIconSelected = screen.getByText('favorite')
+
+  expect(favIconSelected).toBeInTheDocument()
+  expect(favIconSelected).toHaveAttribute('title', 'Elimina de favorits')
+  expect(favIconSelected).toHaveAttribute('fill', '1')
+  expect(screen.queryByTitle('Afegeix a favorits')).not.toBeInTheDocument()
+
+  fireEvent.click(favIconSelected)
+
+  await waitFor(() => {
+    const queryDataUpdated = queryClient.getQueryData([
+      'getResources',
+    ]) as TResource[]
+    rerender(
       <FavoritesIcon
         resourceId={resourceFavoriteMock.id}
-        isFavorite={queryData[0].isFavorite}
+        isFavorite={queryDataUpdated[0].isFavorite}
       />
     )
 
-    const favIconSelected = screen.getByText('favorite')
-
-    expect(favIconSelected).toBeInTheDocument()
-    expect(favIconSelected).toHaveAttribute('title', 'Elimina de favorits')
-    expect(favIconSelected).toHaveAttribute('fill', '1')
-    expect(screen.queryByTitle('Afegeix a favorits')).not.toBeInTheDocument()
-
-    fireEvent.click(favIconSelected)
-
-    await waitFor(() => {
-      const queryDataUpdated = queryClient.getQueryData([
-        'getResources',
-      ]) as TResource[]
-      rerender(
-        <FavoritesIcon
-          resourceId={resourceFavoriteMock.id}
-          isFavorite={queryDataUpdated[0].isFavorite}
-        />
-      )
-
-      expect(favIconSelected).toHaveAttribute('title', 'Afegeix a favorits')
-      expect(favIconSelected).toHaveAttribute('fill', '0')
-      expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
-    })
+    expect(favIconSelected).toHaveAttribute('title', 'Afegeix a favorits')
+    expect(favIconSelected).toHaveAttribute('fill', '0')
+    expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
   })
+})
 
-  it('should remove the resource from getFavorites array when user removes favorite', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatar: 'Avatar',
-        email: 'mail@domain.com',
+it('should remove the resource from getFavorites array when user removes favorite', async () => {
+  queryClient.setQueryData(
+    ['getFavorites'],
+    [
+      {
+        id: resourceFavoriteMock.id,
+        isFavorite: true,
       },
-    } as TAuthContext)
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
+      {
+        id: 'anotherFavoriteId',
+        isFavorite: true,
+      },
+    ]
+  )
+  queryClient.setQueryData(['getResources'], [resourceFavoriteMock])
+  const queryData = queryClient.getQueryData(['getResources']) as TResource[]
 
-    queryClient.setQueryData(
-      ['getFavorites'],
-      [
-        {
-          id: resourceFavoriteMock.id,
-          isFavorite: true,
-        },
-        {
-          id: 'anotherFavoriteId',
-          isFavorite: true,
-        },
-      ]
-    )
-    queryClient.setQueryData(['getResources'], [resourceFavoriteMock])
-    const queryData = queryClient.getQueryData(['getResources']) as TResource[]
+  render(
+    <FavoritesIcon
+      resourceId={resourceFavoriteMock.id}
+      isFavorite={queryData[0].isFavorite}
+    />
+  )
 
-    render(
-      <FavoritesIcon
-        resourceId={resourceFavoriteMock.id}
-        isFavorite={queryData[0].isFavorite}
-      />
-    )
+  const favIconSelected = screen.getByText('favorite')
 
-    const favIconSelected = screen.getByText('favorite')
+  expect(favIconSelected).toHaveAttribute('fill', '1')
 
-    expect(favIconSelected).toHaveAttribute('fill', '1')
+  const previousFavorites = queryClient.getQueryData([
+    'getFavorites',
+  ]) as TFavorites[]
 
-    const previousFavorites = queryClient.getQueryData([
+  expect(previousFavorites).toHaveLength(2)
+
+  fireEvent.click(favIconSelected)
+
+  await waitFor(() => {
+    const updatedFavorites = queryClient.getQueryData([
       'getFavorites',
     ]) as TFavorites[]
 
-    expect(previousFavorites).toHaveLength(2)
+    expect(updatedFavorites).toHaveLength(1)
+  })
+})
 
-    fireEvent.click(favIconSelected)
+it('should update cache in resources/me when rendered in Profile page', async () => {
+  queryClient.setQueryData(['getResourcesByUser'], [resourceNotFavoriteMock])
+  const queryResourcesByUser = queryClient.getQueryData([
+    'getResourcesByUser',
+  ]) as TResource[]
+  const { rerender } = render(
+    <FavoritesIcon
+      resourceId={resourceNotFavoriteMock.id}
+      isFavorite={queryResourcesByUser[0].isFavorite}
+      fromProfile
+    />
+  )
 
-    await waitFor(() => {
-      const updatedFavorites = queryClient.getQueryData([
-        'getFavorites',
-      ]) as TFavorites[]
+  const favIconUnselected = screen.getByText('favorite')
 
-      expect(updatedFavorites).toHaveLength(1)
-    })
+  expect(favIconUnselected).toBeInTheDocument()
+
+  expect(favIconUnselected).toHaveAttribute('fill', '0')
+
+  fireEvent.click(favIconUnselected)
+
+  await waitFor(() => {
+    const queryResourcesByUserUpdated = queryClient.getQueryData([
+      'getResourcesByUser',
+    ]) as TResource[]
+    rerender(
+      <FavoritesIcon
+        resourceId={resourceNotFavoriteMock.id}
+        isFavorite={queryResourcesByUserUpdated[0].isFavorite}
+        fromProfile
+      />
+    )
+
+    expect(favIconUnselected).toHaveAttribute('title', 'Elimina de favorits')
+    expect(favIconUnselected).toHaveAttribute('fill', '1')
+    expect(screen.queryByTitle('Afegeix a favorits')).not.toBeInTheDocument()
   })
 
   it('renders correctly on error (fav icon does not change)', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatar: 'Avatar',
-        email: 'mail@domain.com',
-      },
-    } as TAuthContext)
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)

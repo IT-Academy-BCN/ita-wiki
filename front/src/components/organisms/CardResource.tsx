@@ -63,6 +63,7 @@ const CardResource = ({
   topics,
   isFavorite,
   handleAccessModal,
+  fromProfile,
   ...rest
 }: TCardResource) => {
   const { user } = useAuth()
@@ -90,7 +91,11 @@ const CardResource = ({
               {...rest}
             />
           )}
-          <FavoritesIcon resourceId={id} isFavorite={isFavorite} />
+          <FavoritesIcon
+            resourceId={id}
+            isFavorite={isFavorite}
+            fromProfile={fromProfile}
+          />
         </UserWidgets>
       ) : null}
 
@@ -99,7 +104,8 @@ const CardResource = ({
           <VoteCounter
             voteCount={voteCount}
             resourceId={id}
-            handleAccessModal={handleAccessModal || undefined}
+            handleAccessModal={handleAccessModal}
+            fromProfile={fromProfile}
           />
         </CounterContainerStyled>
       )}
