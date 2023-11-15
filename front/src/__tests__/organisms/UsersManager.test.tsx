@@ -14,7 +14,7 @@ const mockUsers = [
     role: 'user',
     createdAt: '2023-01-01T00:00:00Z',
     updatedAt: '2023-01-01T00:00:00Z',
-  }
+  },
 ]
 
 vi.mock('/api/v1/users', () => mockUsers)
@@ -51,7 +51,7 @@ describe('UsersManager component', () => {
       },
     } as TAuthContext)
     render(<UsersManager />)
-    
+
     expect(screen.queryByText('Users Manager')).not.toBeInTheDocument()
     expect(screen.queryByText('AccountAdmin')).not.toBeInTheDocument()
   })

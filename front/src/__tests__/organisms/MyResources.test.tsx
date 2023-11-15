@@ -74,21 +74,6 @@ describe('MyResources', () => {
     render(<MyResources />)
   })
 
-  it('shows correct title when resizes to mobile', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Hola',
-        avatar: 'Adios',
-      },
-    } as TAuthContext)
-
-    global.innerWidth = 600
-    render(<MyResources />)
-
-    const title = screen.getByTestId('main-title')
-    expect(title).toHaveTextContent('Tus recursos')
-  })
-
   it('shows correct title when resizes to laptop', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {

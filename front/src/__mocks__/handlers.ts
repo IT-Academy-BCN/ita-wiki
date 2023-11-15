@@ -10,9 +10,37 @@ export const handlers = [
 
   rest.post(urls.createResource, (req, res, ctx) => res(ctx.status(204))),
 
-  rest.post(urls.postTopics, (req, res, ctx) => res(ctx.status(200), ctx.json({ success: true }))),
+  rest.post(urls.postTopics, (req, res, ctx) =>
+    res(ctx.status(200), ctx.json({ success: true }))
+  ),
 
-  rest.patch(urls.patchTopics, (req, res, ctx) => res(ctx.status(200), ctx.json({ success: true }))),
+  rest.patch(urls.patchTopics, (req, res, ctx) =>
+    res(ctx.status(200), ctx.json({ success: true }))
+  ),
+
+  rest.patch(urls.users, (req, res, ctx) =>
+    res(ctx.status(200), ctx.json({ success: true }))
+  ),
+
+  rest.get(urls.users, (_, res, ctx) =>
+    res(
+      ctx.status(200),
+      ctx.json([
+        {
+          id: 'testId',
+          email: 'usertest@example.cat',
+          dni: '12345678L',
+          name: 'Test Name',
+          avatarId: 'testAvatar.jpg',
+          specialization: 'react',
+          status: 'ACTIVE',
+          role: 'REGISTERED',
+          createdAt: '2023-11-15T15:36:02.234Z',
+          updatedAt: '2023-11-15T15:36:02.234Z',
+        },
+      ])
+    )
+  ),
 
   rest.get(urls.getMe, (_, res, ctx) =>
     res(
@@ -42,7 +70,6 @@ export const handlers = [
     )
   ),
 
-  // eslint-disable-next-line consistent-return
   rest.get(urls.getTopics, (req, res, ctx) => {
     const slug = req.url.searchParams.get('slug')
     if (slug === 'react') {
@@ -73,6 +100,7 @@ export const handlers = [
         ctx.json({ message: 'No category found with this slug' })
       )
     }
+    return res(ctx.status(200), ctx.json(undefined))
   }),
 
   rest.get(urls.getResources, (req, res, ctx) => {
@@ -106,13 +134,9 @@ export const handlers = [
       ])
     )
   }),
-  rest.post(urls.createResource, (_, res, ctx) => 
-     res(ctx.status(204))
-  ),
+  rest.post(urls.createResource, (_, res, ctx) => res(ctx.status(204))),
 
-  rest.patch(urls.updateResource, (_, res, ctx) => 
-     res(ctx.status(204))
-  ),
+  rest.patch(urls.updateResource, (_, res, ctx) => res(ctx.status(204))),
   rest.get(urls.getTypes, (_, res, ctx) =>
     res(
       ctx.status(200),
@@ -304,5 +328,10 @@ export const errorHandlers = [
     }
     return res(ctx.status(401), ctx.json({ message: 'User not found' }))
   }),
+
+  rest.get(urls.users, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
   ...voteErrorHandlers,
 ]
