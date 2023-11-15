@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.1.1] - 2023-11-15
+## [0.1.2] - 2023-11-16
 
 ### Changed
 
@@ -12,6 +12,12 @@ All notable changes to this project will be documented in this file.
 
 - Fixed 'Votos' & 'Fecha' visual inconsistencies (arrow icon asc/desc, initial state).
 - Incorporated missing translations.
+
+## [0.1.1] - 2023-11-15
+
+### Fixed
+
+- Various bug fixes in tests.
 
 ## [0.1.0] - 2023-11-14
 
