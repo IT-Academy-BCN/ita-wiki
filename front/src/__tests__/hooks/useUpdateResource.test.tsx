@@ -4,19 +4,9 @@ import { vi } from 'vitest'
 import { useUpdateResource } from '../../hooks'
 import { queryClient } from '../setup'
 import { reloadPage } from '../../utils/navigation'
-import { mswServer } from '../setup'
-
-beforeEach(() => {
-  mswServer.listen()
-})
 
 afterEach(() => {
-  mswServer.resetHandlers()
   queryClient.clear()
-})
-
-afterAll(() => {
-  mswServer.close()
 })
 
 describe('useUpdateResource hook', () => {

@@ -26,7 +26,8 @@ export const getTopics = async (slug?: string): Promise<TGetTopics> => {
     throw new Error(`Error fetching topics: ${response.statusText}`)
   }
 
-  return await response.json()
+  const data = await response.json()
+  return data
 }
 
 export const createTopicFetcher = (createdTopic: TTopic) =>
