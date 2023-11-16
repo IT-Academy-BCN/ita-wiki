@@ -509,7 +509,7 @@ const Category: FC = () => {
     setIsSearch(!isSearch)
   }
 
-  const handleSelectedSortOrderChange = (selectedSortOrder: any) => {
+  const handleSelectedSortOrderChange = (selectedSortOrder: Array<TResource>) => {
     setSelectedSortOrderValue(selectedSortOrder)
   }
 
