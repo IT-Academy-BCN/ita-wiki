@@ -38,12 +38,14 @@ type TResourceCardList = {
   handleSortByVotes: () => void
   handleSortByDates: () => void
   isSortByVotesActive: boolean
+  onSelectedSortOrderChange: (selectedSortOrder: TResource[]) => void
 }
 
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
   handleSortByVotes,
   handleSortByDates,
+  onSelectedSortOrderChange,
   sortOrder,
   filters,
   isSortByVotesActive,
@@ -56,6 +58,10 @@ const ResourceCardList: FC<TResourceCardList> = ({
   const selectedSortOrder = isSortByVotesActive ? sortedVotes : sortedItems
 
   if (error) return <p>Ha habido un error...</p>
+
+  if (onSelectedSortOrderChange) {
+    onSelectedSortOrderChange(selectedSortOrder);
+  }
 
   return (
     <StyledFlexBox direction="column" data-testid="resource-list">

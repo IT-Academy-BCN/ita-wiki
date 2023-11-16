@@ -185,11 +185,11 @@ const InputSearchBar = styled.div`
 `
 
 const InputSearch = styled.input`
-  width: 60%;
+  width: 100%;
   margin-right: ${dimensions.spacing.xxxs};
   border-radius: ${dimensions.borderRadius.base};
   border: 1px solid ${colors.gray.gray3};
-  padding: ${dimensions.spacing.xs};
+  padding: ${dimensions.spacing.base};
 `
 
 const VotesDateContainer = styled(FlexBox)`
@@ -325,7 +325,7 @@ const CancelSearchButton = styled(Button)`
   background-color: ${colors.white};
   border: 1px solid ${colors.gray.gray3};
   width: fit-content;
-  padding: ${dimensions.spacing.xs} ${dimensions.spacing.xs};
+  padding: ${dimensions.spacing.base} ${dimensions.spacing.xs};
 
   &:hover {
     background-color: ${colors.white};
@@ -440,7 +440,8 @@ const Category: FC = () => {
   )
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string | null>(null)
-  console.log(searchValue)
+  const [selectedSortOrderValue, setSelectedSortOrderValue] = useState([]);
+
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
@@ -509,6 +510,10 @@ const Category: FC = () => {
   const toggleSearch = () => {
     setIsSearch(!isSearch)
   }
+
+  const handleSelectedSortOrderChange = (selectedSortOrder:any) => {
+    setSelectedSortOrderValue(selectedSortOrder);
+  };
 
   const { data: fetchedTopics } = useGetTopics(slug ?? '')
 
@@ -588,7 +593,7 @@ const Category: FC = () => {
                       </InputSearchBar>
                       {searchValue !== null && searchValue !== '' ? (
                         <span style={{ marginTop: '20px', fontWeight: 'bold' }}>
-                          Mostrando {sortOrder.length} resultados para "
+                          Mostrando {selectedSortOrderValue.length} resultados para "
                           {searchValue}"
                         </span>
                       ) : null}
@@ -678,6 +683,7 @@ const Category: FC = () => {
                     handleSortByVotes={handleSortByVotes}
                     handleSortByDates={handleSortByDates}
                     isSortByVotesActive={isSortByVotesActive}
+                    onSelectedSortOrderChange={handleSelectedSortOrderChange}
                   />
                 </ScrollDiv>
               </ResourcesContainer>
