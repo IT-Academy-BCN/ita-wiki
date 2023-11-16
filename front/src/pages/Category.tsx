@@ -26,7 +26,7 @@ import {
 import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
 import { TFilters } from '../types'
-import { Resource } from 'i18next'
+
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
