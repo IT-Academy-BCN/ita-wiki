@@ -38,7 +38,7 @@ type TResourceCardList = {
   handleSortByVotes: () => void
   handleSortByDates: () => void
   isSortByVotesActive: boolean
-  onSelectedSortOrderChange: (selectedSortOrder: TResource[]) => void
+  onSelectedSortOrderChange: (selectedSortOrder: Array<TResource>) => void
 }
 
 const ResourceCardList: FC<TResourceCardList> = ({

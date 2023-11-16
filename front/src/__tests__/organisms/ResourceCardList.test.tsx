@@ -24,6 +24,7 @@ describe('ResourceCardList', () => {
               handleSortByVotes={() => 'desc'}
               handleSortByDates={() => 'desc'}
               isSortByVotesActive
+              onSelectedSortOrderChange={() => ''}
             />
           }
         />
@@ -60,6 +61,7 @@ describe('ResourceCardList', () => {
               handleSortByDates={() => 'desc'}
               handleSortByVotes={() => 'desc'}
               isSortByVotesActive
+              onSelectedSortOrderChange={() => ''}
             />
           }
         />
@@ -89,6 +91,7 @@ describe('ResourceCardList', () => {
         handleSortByDates={() => 'desc'}
         handleSortByVotes={() => 'desc'}
         isSortByVotesActive
+        onSelectedSortOrderChange={() => ''}
       />
     )
 
