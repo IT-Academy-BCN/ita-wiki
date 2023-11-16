@@ -26,7 +26,6 @@ import {
 import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
 import { TFilters } from '../types'
-import { any } from 'prop-types'
 import { Resource } from 'i18next'
 
 const Container = styled(FlexBox)`
@@ -441,7 +440,7 @@ const Category: FC = () => {
   )
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string | null>(null)
-  const [selectedSortOrderValue, setSelectedSortOrderValue] = useState<Array<Resource>>([])
+  const [selectedSortOrderValue, setSelectedSortOrderValue] = useState([])
 
 
   const toggleModal = () => {
@@ -592,7 +591,7 @@ const Category: FC = () => {
                           X
                         </CancelSearchButton>
                       </InputSearchBar>
-                      {searchValue !== null && searchValue !== '' ? (
+                      {searchValue !== null && searchValue !== "" ? (
                         <span style={{ marginTop: '20px', fontWeight: 'bold' }}>
                           Mostrando {selectedSortOrderValue.length} resultados para "
                           {searchValue}"
