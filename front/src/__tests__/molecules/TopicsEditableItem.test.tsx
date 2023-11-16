@@ -212,7 +212,7 @@ describe('TopicsEditableItem component', () => {
     )
   })
 
-  it.skip('editing confirm button throws an error if topic name is empty', async () => {
+  it('editing confirm button throws an error if topic name is empty', async () => {
     render(
       <TopicsEditableItem
         id="testTopicId"
