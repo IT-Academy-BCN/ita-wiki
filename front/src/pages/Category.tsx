@@ -27,7 +27,6 @@ import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
 import { TFilters } from '../types'
 
-
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
   width: 100%;
@@ -442,7 +441,6 @@ const Category: FC = () => {
   const [searchValue, setSearchValue] = useState<string | null>(null)
   const [selectedSortOrderValue, setSelectedSortOrderValue] = useState([])
 
-
   const toggleModal = () => {
     setIsOpen(!isOpen)
   }
@@ -511,9 +509,9 @@ const Category: FC = () => {
     setIsSearch(!isSearch)
   }
 
-  const handleSelectedSortOrderChange = (selectedSortOrder:any) => {
-    setSelectedSortOrderValue(selectedSortOrder);
-  };
+  const handleSelectedSortOrderChange = (selectedSortOrder: any) => {
+    setSelectedSortOrderValue(selectedSortOrder)
+  }
 
   const { data: fetchedTopics } = useGetTopics(slug ?? '')
 
@@ -591,10 +589,11 @@ const Category: FC = () => {
                           X
                         </CancelSearchButton>
                       </InputSearchBar>
-                      {searchValue !== null && searchValue !== "" ? (
+                      {searchValue !== null && searchValue !== '' ? (
                         <span style={{ marginTop: '20px', fontWeight: 'bold' }}>
-                          Mostrando {selectedSortOrderValue.length} resultados para "
-                          {searchValue}"
+                          Mostrando {selectedSortOrderValue.length} resultados
+                          para &quot;
+                          {searchValue}&quot;
                         </span>
                       ) : null}
                     </SearchContainer>
