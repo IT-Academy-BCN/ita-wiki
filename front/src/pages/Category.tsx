@@ -25,7 +25,7 @@ import {
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
-import { TFilters } from '../types'
+import { TFilters, TResource } from '../types'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -439,7 +439,7 @@ const Category: FC = () => {
   )
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string | null>(null)
-  const [selectedSortOrderValue, setSelectedSortOrderValue] = useState([])
+  const [selectedSortOrderValue, setSelectedSortOrderValue] = useState<TResource[]>([])
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
