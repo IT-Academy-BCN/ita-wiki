@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2023-11-16
+
+### Added
+
+- Implement search bar resources UI.
+  
 ## [0.1.1] - 2023-11-15
 
 ### Fixed
