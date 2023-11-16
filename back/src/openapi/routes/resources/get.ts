@@ -2,8 +2,10 @@ import { registry } from '../../registry'
 import { z } from '../../zod'
 import { pathRoot } from '../../../routes/routes'
 import { resourceGetSchema, resourcesGetParamsSchema } from '../../../schemas'
-import { ValidationError } from '../../components/errorSchemas'
-import { invalidTokenResponse } from '../../components/responses/authMiddleware'
+import {
+  invalidTokenResponse,
+  zodValidationErrorResponse,
+} from '../../components/responses/authMiddleware'
 
 registry.registerPath({
   method: 'get',
@@ -24,27 +26,7 @@ registry.registerPath({
         },
       },
     },
-    400: {
-      description: 'Validation error',
-      content: {
-        'application/json': {
-          schema: ValidationError.openapi({
-            example: {
-              message: [
-                {
-                  code: 'invalid_enum_value',
-                  received: 'BLO',
-                  options: ['BLOG', 'VIDEO', 'TUTORIAL'],
-                  path: ['query', 'resourceType'],
-                  message:
-                    "Invalid enum value. Expected 'BLOG' | 'VIDEO' | 'TUTORIAL', received 'BLO'",
-                },
-              ],
-            },
-          }),
-        },
-      },
-    },
+    400: zodValidationErrorResponse,
     498: invalidTokenResponse,
   },
 })

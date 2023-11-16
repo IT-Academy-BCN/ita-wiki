@@ -4,16 +4,11 @@ import { userSchema } from '../users/userSchema'
 import { voteCountSchema } from '../voteCountSchema'
 import { resourceSchema } from './resourceSchema'
 
-export const resourceGetSchema = resourceSchema
-  .omit({
-    userId: true,
-    topics: true,
-  })
-  .extend({
-    user: userSchema.pick({
-      name: true,
-    }),
-    topics: z.array(z.object({ topic: topicSchema })),
-    voteCount: voteCountSchema,
-    isFavorite: z.boolean().default(false),
-  })
+export const resourceGetSchema = resourceSchema.extend({
+  user: userSchema.pick({
+    name: true,
+  }),
+  topics: z.array(z.object({ topic: topicSchema })),
+  voteCount: voteCountSchema,
+  isFavorite: z.boolean().default(false),
+})

@@ -6,7 +6,7 @@ import {
   invalidTokenResponse,
   missingTokenResponse,
 } from '../../components/responses/authMiddleware'
-import { ValidationError } from '../../components/errorSchemas'
+import { ZodValidationError } from '../../components/errorSchemas'
 import { voteCountSchema } from '../../../schemas'
 import { resourceId } from '../../components/paramSchemas'
 
@@ -79,7 +79,7 @@ registry.registerPath({
         'Validation error. Either resourceId or vote are not correct',
       content: {
         'application/json': {
-          schema: ValidationError,
+          schema: ZodValidationError,
         },
       },
     },

@@ -1,0 +1,94 @@
+name: pr_check_back
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "back/**"
+
+jobs:
+  pr_check_back:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14.1
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        ports:
+          - 10911:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Check package.json version
+        run: ./scripts/check_version.sh back/package.json
+        shell: bash
+
+      - name: Check CHANGELOG.md has been updated
+        run: ./scripts/check_changelog.sh back/CHANGELOG.md
+        shell: bash
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: back/package-lock.json
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/back/node_modules
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+
+      - name: install dependencies
+        run: |
+          cd ${{ github.workspace }}/back
+          npm ci --legacy-peer-deps
+
+      - name: lint
+        run: |
+          cd ${{ github.workspace }}/back
+          npx eslint src --max-warnings 0
+
+      - name: Set up Prisma
+        run: |
+          cd ${{ github.workspace }}/back
+          npx prisma generate
+
+      - name: Run migrations
+        run: |
+          cd ${{ github.workspace }}/back
+          npx prisma migrate deploy
+
+      - name: Seed the database
+        run: |
+          cd ${{ github.workspace }}/back
+          npx prisma db seed
+
+      - name: test
+        run: |
+          cd ${{ github.workspace }}/back
+          npm run test -- --coverage
+
+      - name: build
+        run: |
+          cd ${{ github.workspace }}/back
+          npm run build
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: back
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

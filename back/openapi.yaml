@@ -870,6 +870,8 @@ paths:
                     resourceType:
                       type: string
                       enum: *a2
+                    userId:
+                      type: string
                     categoryId:
                       type: string
                       example: clocr0bi20000h8vwipfbazso
@@ -956,6 +958,7 @@ paths:
                     - slug
                     - url
                     - resourceType
+                    - userId
                     - categoryId
                     - createdAt
                     - updatedAt
@@ -1168,6 +1171,8 @@ paths:
                   resourceType:
                     type: string
                     enum: *a2
+                  userId:
+                    type: string
                   categoryId:
                     type: string
                     example: clocr0bi20000h8vwipfbazso
@@ -1254,6 +1259,7 @@ paths:
                   - slug
                   - url
                   - resourceType
+                  - userId
                   - categoryId
                   - createdAt
                   - updatedAt
@@ -1346,6 +1352,8 @@ paths:
                   resourceType:
                     type: string
                     enum: *a2
+                  userId:
+                    type: string
                   categoryId:
                     type: string
                     example: clocr0bi20000h8vwipfbazso
@@ -1432,6 +1440,7 @@ paths:
                   - slug
                   - url
                   - resourceType
+                  - userId
                   - categoryId
                   - createdAt
                   - updatedAt
@@ -1452,10 +1461,19 @@ paths:
     get:
       tags:
         - resources
-      description: Returns all the posted resources by a logged in user.
       summary: Get resources by logged in user
+      description: Returns all the posted resources by a logged in user. In addition,
+        if categorySlug query provided, returns only the resources posted in
+        that category.
       security:
         - cookieAuth: []
+      parameters:
+        - in: query
+          name: categorySlug
+          schema:
+            type: string
+            example: react
+          required: false
       responses:
         "200":
           description: All resources posted by user are returned.
@@ -1488,6 +1506,8 @@ paths:
                         resourceType:
                           type: string
                           enum: *a2
+                        userId:
+                          type: string
                         categoryId:
                           type: string
                           example: clocr0bi20000h8vwipfbazso
@@ -1574,6 +1594,7 @@ paths:
                         - slug
                         - url
                         - resourceType
+                        - userId
                         - categoryId
                         - createdAt
                         - updatedAt
@@ -1936,6 +1957,9 @@ paths:
       security:
         - cookieAuth: []
       requestBody:
+        required: true
+        description: Updates an existing user. The ID is mandatory, and all other fields
+          are optional. Provide only the fields that need to be updated.
         content:
           application/json:
             schema:
@@ -1952,34 +1976,34 @@ paths:
                 password:
                   type: string
                   minLength: 8
-                  pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*$
                 name:
                   type: string
                 status:
                   type: string
-                  enum:
-                    - ACTIVE
-                    - INACTIVE
+                  enum: *a3
                 role:
                   type: string
-                  enum:
-                    - ADMIN
-                    - REGISTERED
-                    - MENTOR
-                specialization:
-                  type: string
+                  enum: *a4
                 createdAt:
                   type: string
                   format: date-time
                 updatedAt:
                   type: string
                   format: date-time
+                specializationId:
+                  type: string
               required:
                 - id
               additionalProperties: false
       responses:
         "204":
           description: User has been modified
+        "400":
+          description: Zod validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
         "401":
           description: Missing token
           content:
