@@ -580,12 +580,13 @@ const Category: FC = () => {
                       <Title as="h2" fontWeight="bold">
                         Buscar recurso
                       </Title>
-                      <InputSearchBar>
+                      <InputSearchBar >
                         <InputSearch
                           type="text"
+                          data-testid="inputSearch"
                           onChange={(e) => setSearchValue(e.target.value)}
                         />
-                        <CancelSearchButton onClick={toggleSearch}>
+                        <CancelSearchButton onClick={toggleSearch} data-testid="cancelSearchButton">
                           X
                         </CancelSearchButton>
                       </InputSearchBar>

@@ -225,3 +225,18 @@ it('changes Votos and Fecha styles on click', () => {
 
   expect(screen.getByText('Fecha')).toHaveStyle('font-weight: bold')
 })
+
+describe('Category component tests', () => {
+  test('Input appears when search icon is clicked', async () => {
+    const { getByTestId, queryByText } = render(<Category />);
+    
+    const searchIcon = getByTestId('inputGroupSearch');
+
+    expect(searchIcon).toBeInTheDocument();
+
+    fireEvent.click(searchIcon);
+
+    const inputSearch = getByTestId('inputSearch');
+    expect(inputSearch).toBeInTheDocument();
+  })
+})
