@@ -228,7 +228,7 @@ it('changes Votos and Fecha styles on click', () => {
 
 describe('Category component tests', () => {
   test('Input appears when search icon is clicked', async () => {
-    const { getByTestId, queryByText } = render(<Category />);
+    const { getByTestId } = render(<Category />);
     
     const searchIcon = getByTestId('inputGroupSearch');
 
