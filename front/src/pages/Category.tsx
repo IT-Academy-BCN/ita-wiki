@@ -1,6 +1,7 @@
 import styled, { keyframes } from 'styled-components'
 import { useLocation, useParams } from 'react-router-dom'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
 import {
   DesktopSideMenu,
@@ -26,7 +27,6 @@ import {
 import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
 import { TFilters, TResource } from '../types'
-import { useTranslation } from 'react-i18next'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -526,16 +526,16 @@ const Category: FC = () => {
 
   const mappedTopicsForFilterWidget = [
     { value: 'todos', label: 'Todos' },
-    ...(fetchedTopics?.map((t) => {
-      const selectOptions = { id: t.id, value: t.slug, label: t.name }
+    ...(fetchedTopics?.map((tp) => {
+      const selectOptions = { id: tp.id, value: tp.slug, label: tp.name }
       return selectOptions
     }) ?? []),
   ]
 
-  const topicsForResourceForm = fetchedTopics?.map((t) => ({
-    id: t.id,
-    value: t.slug,
-    label: t.name,
+  const topicsForResourceForm = fetchedTopics?.map((tp) => ({
+    id: tp.id,
+    value: tp.slug,
+    label: tp.name,
   }))
 
   return (
