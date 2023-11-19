@@ -86,7 +86,7 @@ it('create new resource modal opens and closes correctly', () => {
   render(<Category />)
 
   fireEvent.click(screen.getByText('+ Crear nou recurs'))
-  expect(screen.getByText(/Nou recurs/)).toBeInTheDocument()
+  expect(screen.getByText(/Nou Recurs/)).toBeInTheDocument()
 })
 
 it('modal opens and closes correctly when user is not logged', async () => {
