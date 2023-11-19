@@ -26,6 +26,7 @@ import {
 import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
 import { TFilters, TResource } from '../types'
+import { useTranslation } from 'react-i18next'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -176,20 +177,27 @@ const SearchBar = styled(InputGroup)`
 const SearchContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 100%;  
 `
 
 const InputSearchBar = styled.div`
-  display: flex;
-  height: ${dimensions.spacing.lg};
+  display: none;
+
+  @media ${device.Tablet} {
+    display: flex;
+    height: ${dimensions.spacing.lg};
+  }
 `
 
 const InputSearch = styled.input`
+  
+  @media ${device.Tablet} {
   width: 100%;
   margin-right: ${dimensions.spacing.xxxs};
   border-radius: ${dimensions.borderRadius.base};
   border: 1px solid ${colors.gray.gray3};
   padding: ${dimensions.spacing.base};
+  }
 `
 
 const VotesDateContainer = styled(FlexBox)`
@@ -440,6 +448,7 @@ const Category: FC = () => {
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string | null>(null)
   const [selectedSortOrderValue, setSelectedSortOrderValue] = useState<TResource[]>([])
+  const { t } = useTranslation()
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
@@ -540,7 +549,7 @@ const Category: FC = () => {
           />
           <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
-              Temas
+              {t('Temas')}
             </Title>
             <StyledSelectGroup
               defaultValue={topic}
@@ -555,9 +564,9 @@ const Category: FC = () => {
             <MainContainer as="main">
               <FiltersContainer data-testid="filters-container">
                 <Title as="h2" fontWeight="bold">
-                  Filtros
+                  {t('Filtros')}
                 </Title>
-                <Text fontWeight="bold">Temas</Text>
+                <Text fontWeight="bold">{t('Temas')}</Text>
                 <ScrollTopics>
                   {slug && (
                     <TopicsRadioWidget
@@ -578,7 +587,7 @@ const Category: FC = () => {
                   {isSearch ? (
                     <SearchContainer>
                       <Title as="h2" fontWeight="bold">
-                        Buscar recurso
+                        {t('Buscar recurso')}
                       </Title>
                       <InputSearchBar >
                         <InputSearch
@@ -592,8 +601,7 @@ const Category: FC = () => {
                       </InputSearchBar>
                       {searchValue !== null && searchValue !== '' ? (
                         <span style={{ marginTop: '20px', fontWeight: 'bold' }}>
-                          Mostrando {selectedSortOrderValue.length} resultados
-                          para &quot;
+                          {t('Mostrando')} {selectedSortOrderValue.length} {t('resultados para')} &quot;
                           {searchValue}&quot;
                         </span>
                       ) : null}
@@ -601,13 +609,13 @@ const Category: FC = () => {
                   ) : (
                     <>
                       <Title as="h2" fontWeight="bold">
-                        Recursos de {state?.name}
+                        {t('Recursos de')} {state?.name}
                       </Title>
                       <SearchBar
                         data-testid="inputGroupSearch"
                         label="searchResource"
                         name="searchResource"
-                        placeholder="Buscar recurso"
+                        placeholder={t("Buscar recurso")}
                         id="searchResource"
                         icon="search"
                         onClick={toggleSearch}
@@ -619,7 +627,7 @@ const Category: FC = () => {
                     data-testid="filters-button"
                     onClick={handleFiltersOpen}
                   >
-                    Filtrar
+                    {t('Filtrar')}
                   </FilterButton>
                 </TitleResourcesContainer>
                 <VotesDateContainer>
@@ -637,7 +645,7 @@ const Category: FC = () => {
                             selectedOption === 'Votos' ? 'bold' : 'normal'
                           }
                         >
-                          Votos
+                          {t('Votos')}
                         </Text>
                       </StyledVotesToggle>
                       {selectedOption === 'Votos' &&
@@ -659,7 +667,7 @@ const Category: FC = () => {
                           selectedOption === 'Fecha' ? 'bold' : 'normal'
                         }
                       >
-                        Fecha
+                        {t('Fecha')}
                       </Text>
                     </StyledDateToggle>
                   </FlexBox>
@@ -672,7 +680,7 @@ const Category: FC = () => {
                         : () => handleAccessModal()
                     }
                   >
-                    + Crear nuevo recurso
+                    + {t('Crear nuevo recurso')}
                   </NewResourceButton>
                 </ScrollDiv>
                 <ScrollDiv>
@@ -701,7 +709,7 @@ const Category: FC = () => {
                   data-testid="close-filters-button"
                   onClick={handleFiltersClose}
                 >
-                  Cerrar
+                  {t('Cerrar')}
                 </CloseFilterButton>
               </MobileFiltersContainer>
             )}
@@ -717,10 +725,10 @@ const Category: FC = () => {
         </WiderContainer>
       </Container>
       {/* ==> ADD RESOURCE MODAL */}
-      <Modal isOpen={isOpen} toggleModal={toggleModal} title="Nuevo Recurso">
+      <Modal isOpen={isOpen} toggleModal={toggleModal} title={t('Nuevo Recurso')}>
         <ResourceForm selectOptions={topicsForResourceForm ?? []} />
         <Button outline onClick={toggleModal}>
-          Cancelar
+          {t('Cancelar')}
         </Button>
       </Modal>
       {/* RESTRICTED ACCES MODAL */}

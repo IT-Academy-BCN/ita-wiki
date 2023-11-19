@@ -70,5 +70,20 @@
   "Error 403 - Acceso denegado": "Access denied. You do not have the necessary permissions to perform the operation.",
   "Error 404 - No se puede guardar": "Error saving to database. Please try again and if the error persists, contact the administrator.",
   "Error 405 - Id de usuario inválido": "Invalid user ID.",
-  "Error 500 - Error bbdd": "Database error. Please try again later."
+  "Error 500 - Error bbdd": "Database error. Please try again later.",
+
+  "Buscar recurso":"Search resource",
+  "Mostrando":"Showing",
+  "resultados para":"results for",
+  "Recursos de":"Resources of",
+
+  "Filtros":"Filters",
+  "Filtrar":"Filter",
+  "Votos":"Votes",
+  "Fecha":"Date",
+  "Crear nuevo recurso":"Create new resource",
+
+  "Nuevo Recurso":"New Resource",
+  "Título":"Title",
+  "Descripción":"Description"
 }

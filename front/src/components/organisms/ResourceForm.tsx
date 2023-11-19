@@ -8,6 +8,7 @@ import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio, Icon, Spinner } from '../atoms'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { useCreateResource, useUpdateResource } from '../../hooks'
+import { useTranslation } from 'react-i18next'
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -140,6 +141,9 @@ const ResourceForm: FC<TSelectOptions> = ({
       setValue('topicId', selectedTopic.value)
     }
   }
+  
+  const { t } = useTranslation()
+
   return (
     <ResourceFormStyled
       onSubmit={initialValues ? update : create}
@@ -149,7 +153,7 @@ const ResourceForm: FC<TSelectOptions> = ({
         hiddenLabel
         id="title"
         label="Título"
-        placeholder="Título"
+        placeholder={t('Título')}
         {...register('title')}
         data-testid="resourceTitle"
         error={errors.title && true}
@@ -160,7 +164,7 @@ const ResourceForm: FC<TSelectOptions> = ({
         hiddenLabel
         id="description"
         label="Descripción"
-        placeholder="Descripción"
+        placeholder={t('Descripción')}
         {...register('description')}
         error={errors.description && true}
         validationMessage={errors.description?.message}
