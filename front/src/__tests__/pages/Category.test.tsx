@@ -85,8 +85,8 @@ it('filters opens and closes correctly', () => {
 it('create new resource modal opens and closes correctly', () => {
   render(<Category />)
 
-  fireEvent.click(screen.getByText('+ Crear nuevo recurso'))
-  expect(screen.getByText(/Nuevo Recurso/)).toBeInTheDocument()
+  fireEvent.click(screen.getByText('+ Crear nou recurs'))
+  expect(screen.getByText(/Nou recurs/)).toBeInTheDocument()
 })
 
 it('modal opens and closes correctly when user is not logged', async () => {
@@ -96,7 +96,7 @@ it('modal opens and closes correctly when user is not logged', async () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByRole('button', { name: '+ Crear nuevo recurso' }))
+  fireEvent.click(screen.getByRole('button', { name: '+ Crear nou recurs' }))
   const modalTitle = screen.getByRole('heading', {
     name: /acceso restringido/i,
   })
@@ -111,9 +111,9 @@ it('modal opens and closes correctly when user is not logged', async () => {
 it('modal opens and closes correctly when user is logged', async () => {
   render(<Category />)
 
-  fireEvent.click(screen.getByRole('button', { name: '+ Crear nuevo recurso' }))
+  fireEvent.click(screen.getByRole('button', { name: '+ Crear nou recurs' }))
   const modalTitle = screen.getByRole('heading', {
-    name: /nuevo recurso/i,
+    name: /nou recurs/i,
   })
   expect(modalTitle).toBeInTheDocument()
   fireEvent.keyDown(document, { key: 'Escape' })

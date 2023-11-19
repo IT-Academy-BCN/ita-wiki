@@ -645,7 +645,7 @@ const Category: FC = () => {
                             selectedOption === 'Votos' ? 'bold' : 'normal'
                           }
                         >
-                          {t('Votos')}
+                          Votos
                         </Text>
                       </StyledVotesToggle>
                       {selectedOption === 'Votos' &&
@@ -667,7 +667,7 @@ const Category: FC = () => {
                           selectedOption === 'Fecha' ? 'bold' : 'normal'
                         }
                       >
-                        {t('Fecha')}
+                       Fecha
                       </Text>
                     </StyledDateToggle>
                   </FlexBox>
