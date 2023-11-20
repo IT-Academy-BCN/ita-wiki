@@ -48,6 +48,7 @@ app.use(errorMiddleware)
 
 // Routes
 app.use(Routes.authRoutes.routes())
+app.use(Routes.userRoutes.routes())
 app.use(Routes.tokenRoutes.routes())
 
 // Swagger UI

@@ -1,4 +1,4 @@
-import { userSchema } from './userSchema'
+import { userSchema } from '../userSchema'
 import { z } from '../../openapi/zod'
 
 export const loginSchema = userSchema.pick({ dni: true, password: true })
