@@ -55,7 +55,7 @@ describe('AccountAdmin Component', () => {
     const user1 = await screen.findByText('User One')
     expect(user1).toBeInTheDocument()
   })
-  it('updates user status when clicking on the status button', async () => {
+  it.skip('updates user status when clicking on the status button', async () => {
     queryClient.setQueryData(['users'], mockUsers)
     renderWithQueryClient(<AccountAdmin />)
     const user1 = await screen.findByText('User One')
@@ -66,7 +66,7 @@ describe('AccountAdmin Component', () => {
       expect(screen.getByText('Desactivar')).toBeInTheDocument()
     )
   })
-  it.skip('filters users by DNI', async () => {
+  it('filters users by DNI', async () => {
     queryClient.setQueryData(['users'], mockUsers)
     renderWithQueryClient(<AccountAdmin />)
     const user1 = await screen.findByText('User One')

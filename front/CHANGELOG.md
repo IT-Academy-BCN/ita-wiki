@@ -8,6 +8,16 @@ All notable changes to this project will be documented in this file.
 
 - Implement search bar resources UI.
   
+### Changed
+
+- Refactored votes/dates logic into a single component (VotesDateController).
+
+### Fixed
+
+- Fixed 'Votos' & 'Fecha' visual inconsistencies (arrow icon asc/desc, initial state).
+- Incorporated missing translations.
+
+
 ## [0.1.1] - 2023-11-15
 
 ### Fixed
