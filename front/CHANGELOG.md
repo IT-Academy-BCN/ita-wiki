@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.2] - 2023-11-20
+
+### Added
+
+- MyResources translations
+
+### Fixed
+
+- Fix myResources and getResourcesByUser bug.
+
 ## [0.2.1] - 2023-11-16
 
 ### Changed
