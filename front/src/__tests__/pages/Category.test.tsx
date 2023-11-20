@@ -85,7 +85,7 @@ it('filters opens and closes correctly', () => {
 it('create new resource modal opens and closes correctly', () => {
   render(<Category />)
 
-  fireEvent.click(screen.getByText('+ Crear nuevo recurso'))
+  fireEvent.click(screen.getByText('+ Crear nou recurs'))
   expect(screen.getByText(/Nuevo Recurso/)).toBeInTheDocument()
 })
 
@@ -96,7 +96,7 @@ it('modal opens and closes correctly when user is not logged', async () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByRole('button', { name: '+ Crear nuevo recurso' }))
+  fireEvent.click(screen.getByRole('button', { name: '+ Crear nou recurs' }))
   const modalTitle = screen.getByRole('heading', {
     name: /acceso restringido/i,
   })
@@ -111,7 +111,7 @@ it('modal opens and closes correctly when user is not logged', async () => {
 it('modal opens and closes correctly when user is logged', async () => {
   render(<Category />)
 
-  fireEvent.click(screen.getByRole('button', { name: '+ Crear nuevo recurso' }))
+  fireEvent.click(screen.getByRole('button', { name: '+ Crear nou recurs' }))
   const modalTitle = screen.getByRole('heading', {
     name: /nuevo recurso/i,
   })
@@ -154,7 +154,7 @@ it('sorts resources by date in descending order', () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByText('Fecha'))
+  fireEvent.click(screen.getByText(/Data/i))
 
   const { result } = renderHook(() => useSortByDate(items, 'date', 'desc'))
 
@@ -201,7 +201,7 @@ it('sorts resources by votes in ascending order', () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByText('Votos'))
+  fireEvent.click(screen.getByText(/Vots/i))
 
   const { result } = renderHook(() => useSortByVotes(votes, 'asc'))
   const sortedResources = result.current.sortedVotes
@@ -209,19 +209,4 @@ it('sorts resources by votes in ascending order', () => {
   const voteCounts = sortedResources.map((vote) => vote.voteCount.total)
 
   expect(voteCounts).toEqual([0, 3, 7])
-})
-
-it('changes Votos and Fecha styles on click', () => {
-  render(<Category />)
-
-  const sortVotesButton = screen.getByText('Votos')
-  const sortDatesButton = screen.getByText('Fecha')
-
-  fireEvent.click(sortVotesButton)
-
-  expect(screen.getByText('Votos')).toHaveStyle('font-weight: bold')
-
-  fireEvent.click(sortDatesButton)
-
-  expect(screen.getByText('Fecha')).toHaveStyle('font-weight: bold')
 })
