@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../context/AuthProvider'
 import { Modal } from '../molecules'
 import CardResource from './CardResource'
@@ -77,6 +78,7 @@ const MyResources = () => {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(getWindowMobile())
+  const { t } = useTranslation()
 
   useEffect(() => {
     const handleSize = () => {
@@ -100,13 +102,13 @@ const MyResources = () => {
       <TitleContainer data-testid="main-title">
         {isMobile ? (
           <Title as="h3" fontWeight="bold">
-            Tus recursos
+            {t('Tus recursos')}
           </Title>
         ) : (
           <>
             <Icon name="menu_book" fill={0} />
             <Title as="h2" fontWeight="bold" data-testid="title">
-              Mis recursos
+              {t('Mis recursos')}
             </Title>
           </>
         )}
@@ -114,13 +116,13 @@ const MyResources = () => {
       {!user && (
         <StyledText color={colors.gray.gray3}>
           <TextDecorationStyled onClick={handleRegisterModal}>
-            Regístrate
+            {t('Regístrate')}
           </TextDecorationStyled>
-          {` o `}
+          {t(' o ')}
           <TextDecorationStyled onClick={handleLoginModal}>
-            inicia sesión
+            {t('inicia sesión')}
           </TextDecorationStyled>
-          {` para añadir recursos favoritos`}
+          {t(' para añadir recursos favoritos')}
         </StyledText>
       )}
 
@@ -169,7 +171,9 @@ const MyResources = () => {
             ))}
           </ResourcesUserStyled>
         ) : (
-          <Text color={colors.gray.gray4}>No has subido ningún recurso</Text>
+          <Text color={colors.gray.gray4}>
+            {t('No has subido ningún recurso')}
+          </Text>
         ))}
 
       <Modal
