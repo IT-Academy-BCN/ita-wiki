@@ -14,6 +14,7 @@ import { TopicsManagerBoard } from './TopicsManagerBoard'
 import { TopicsRadioWidget } from './TopicsRadioWidget'
 import type { TResourceForm } from './ResourceForm'
 import { UserAccessHome } from './UserAccessHome'
+import { VotesDateController } from './VotesDateController'
 
 export {
   CardResourceLink,
@@ -31,6 +32,7 @@ export {
   TopicsManagerBoard,
   TopicsRadioWidget,
   UserAccessHome,
+  VotesDateController,
 }
 
 export type { TResourceForm}
