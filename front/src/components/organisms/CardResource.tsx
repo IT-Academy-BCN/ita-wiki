@@ -85,6 +85,7 @@ const CardResource = ({
             voteCount={voteCount}
             resourceId={id}
             handleAccessModal={handleAccessModal || undefined}
+            fromProfile={fromProfile}
           />
         </CounterContainerStyled>
       )}

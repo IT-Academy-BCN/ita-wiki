@@ -27,7 +27,7 @@ import {
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
-import { TFilters } from '../types'
+import { TFilters, TSortOrder } from '../types'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -351,8 +351,6 @@ const CloseFilterButton = styled(Button)`
   }
 `
 
-type SortOrder = 'asc' | 'desc'
-
 const Category: FC = () => {
   const { slug } = useParams()
   const { state } = useLocation()
@@ -374,7 +372,7 @@ const Category: FC = () => {
     status: [],
     topic: topic === 'todos' ? undefined : topic,
   })
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
+  const [sortOrder, setSortOrder] = useState<TSortOrder>('desc')
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
@@ -482,9 +480,9 @@ const Category: FC = () => {
             <MainContainer as="main">
               <FiltersContainer data-testid="filters-container">
                 <Title as="h2" fontWeight="bold">
-                {translation('Filtros')}
+                  {translation('Filtros')}
                 </Title>
-                <Text fontWeight="bold">{translation("Temas")}</Text>
+                <Text fontWeight="bold">{translation('Temas')}</Text>
                 <ScrollTopics>
                   {slug && (
                     <TopicsRadioWidget
@@ -503,7 +501,7 @@ const Category: FC = () => {
               <ResourcesContainer>
                 <TitleResourcesContainer>
                   <Title as="h2" fontWeight="bold">
-                  {translation('Recursos de', { name: state?.name })}
+                    {translation('Recursos de', { name: state?.name })}
                   </Title>
                   <SearchBar
                     data-testid="inputGroupSearch"
@@ -579,7 +577,7 @@ const Category: FC = () => {
       <Modal isOpen={isOpen} toggleModal={toggleModal} title="Nuevo Recurso">
         <ResourceForm selectOptions={topicsForResourceForm ?? []} />
         <Button outline onClick={toggleModal}>
-        {translation('Cancelar')}
+          {translation('Cancelar')}
         </Button>
       </Modal>
       {/* RESTRICTED ACCES MODAL */}

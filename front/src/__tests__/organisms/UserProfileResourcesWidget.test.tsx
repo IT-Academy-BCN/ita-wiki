@@ -1,6 +1,7 @@
 import { vi } from 'vitest'
-import { render, screen } from '../test-utils'
+import { render, renderHook, screen, fireEvent } from '../test-utils'
 import { UserProfileResourcesWidget } from '../../components/organisms'
+import { useSortByDate, useSortByVotes } from '../../hooks'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
 const arrayFavs = [
@@ -12,8 +13,8 @@ const arrayFavs = [
     url: 'https://tutorials.cat/learn/javascript',
     resourceType: 'VIDEO',
     userId: 'userId',
-    createdAt: '11/11/2011',
-    updatedAt: '12/12/2012',
+    createdAt: '2021-09-28',
+    updatedAt: '2022-09-12',
     status: 'NOT_SEEN',
     voteCount: {
       userVote: 0,
@@ -42,14 +43,14 @@ const arrayFavs = [
     url: 'https://tutorials.cat/learn/',
     resourceType: 'VIDEO',
     userId: 'userId',
-    createdAt: '11/11/2011',
-    updatedAt: '12/12/2012',
+    createdAt: '2023-12-11',
+    updatedAt: '2023-12-12',
     status: 'NOT_SEEN',
     voteCount: {
       userVote: 0,
-      upvote: 3,
+      upvote: 4,
       downvote: 0,
-      total: 3,
+      total: 4,
     },
     topics: [
       {
@@ -137,6 +138,7 @@ describe('UserProfileResourcesWidget component', () => {
     expect(screen.getByText(/test title mobile/i)).toBeInTheDocument()
 
     expect(screen.queryByText(/vots/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/data/i)).not.toBeInTheDocument()
 
     expect(screen.getByText(/no has publicat cap recurs/i)).toBeInTheDocument()
 
@@ -159,6 +161,7 @@ describe('UserProfileResourcesWidget component', () => {
     expect(screen.getByText(/test title fav mobile/i)).toBeInTheDocument()
 
     expect(screen.queryByText(/vots/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/data/i)).not.toBeInTheDocument()
 
     expect(screen.getByText(/no hi ha recursos favorits/i)).toBeInTheDocument()
   })
@@ -179,6 +182,7 @@ describe('UserProfileResourcesWidget component', () => {
     expect(screen.getByRole('status')).toBeInTheDocument()
 
     expect(screen.queryByText(/vots/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/data/i)).not.toBeInTheDocument()
 
     expect(
       screen.queryByText(/no hi ha recursos favorits/i)
@@ -199,6 +203,7 @@ describe('UserProfileResourcesWidget component', () => {
     expect(screen.getByText(/recursos favorits/i)).toBeInTheDocument()
 
     expect(screen.getByText(/vots/i)).toBeInTheDocument()
+    expect(screen.getByText(/data/i)).toBeInTheDocument()
 
     expect(screen.getByText('My favorite title')).toBeInTheDocument()
 
@@ -234,6 +239,9 @@ describe('UserProfileResourcesWidget component', () => {
 
     expect(screen.getByText(/test title mobile/i)).toBeInTheDocument()
 
+    expect(screen.getByText(/vots/i)).toBeInTheDocument()
+    expect(screen.getByText(/data/i)).toBeInTheDocument()
+
     expect(screen.getByText('My resource title')).toBeInTheDocument()
 
     expect(screen.getByText('Resource description')).toBeInTheDocument()
@@ -253,6 +261,108 @@ describe('UserProfileResourcesWidget component', () => {
   })
 })
 
+it('sorts resources by date in descending order', () => {
+  render(
+    <UserProfileResourcesWidget
+      title="Test title"
+      titleMobile="Test title mobile"
+      resourcesArray={arrayFavs}
+      isLoading={false}
+      isError={false}
+    />
+  )
+
+  fireEvent.click(screen.getByText(/data/i))
+
+  const { result } = renderHook(() =>
+    useSortByDate(arrayFavs, 'updatedAt', 'desc')
+  )
+
+  expect(result.current.sortedItems).toEqual([
+    {
+      id: 'secondFavoriteId',
+      title: 'My favorite title 2',
+      slug: 'my-favorite-two',
+      description: 'Favorite description two',
+      url: 'https://tutorials.cat/learn/',
+      resourceType: 'VIDEO',
+      userId: 'userId',
+      createdAt: '2023-12-11',
+      updatedAt: '2023-12-12',
+      status: 'NOT_SEEN',
+      voteCount: {
+        userVote: 0,
+        upvote: 4,
+        downvote: 0,
+        total: 4,
+      },
+      topics: [
+        {
+          topic: {
+            id: 'topicId',
+            name: 'topic Name',
+            slug: 'topicSlug',
+            categoryId: 'categoryId',
+            createdAt: 'date',
+            updatedAt: 'update',
+          },
+        },
+      ],
+    },
+    {
+      id: 'favoriteId',
+      title: 'My favorite title',
+      slug: 'my-favorite',
+      description: 'Favorite description',
+      url: 'https://tutorials.cat/learn/javascript',
+      resourceType: 'VIDEO',
+      userId: 'userId',
+      createdAt: '2021-09-28',
+      updatedAt: '2022-09-12',
+      status: 'NOT_SEEN',
+      voteCount: {
+        userVote: 0,
+        upvote: 3,
+        downvote: 0,
+        total: 3,
+      },
+      topics: [
+        {
+          topic: {
+            id: 'topicId',
+            name: 'topic Name',
+            slug: 'topicSlug',
+            categoryId: 'categoryId',
+            createdAt: 'date',
+            updatedAt: 'update',
+          },
+        },
+      ],
+    },
+  ])
+})
+
+it('sorts resources by votes in descending order', () => {
+  render(
+    <UserProfileResourcesWidget
+      title="Test title"
+      titleMobile="Test title mobile"
+      resourcesArray={arrayFavs}
+      isLoading={false}
+      isError={false}
+    />
+  )
+
+  fireEvent.click(screen.getByText(/Vots/i))
+
+  const { result } = renderHook(() => useSortByVotes(arrayFavs, 'desc'))
+  const sortedResources = result.current.sortedVotes
+
+  const voteCounts = sortedResources.map((vote) => vote.voteCount.total)
+
+  expect(voteCounts).toEqual([4, 3])
+})
+
 it('renders error message when there is an error', () => {
   render(
     <UserProfileResourcesWidget
@@ -265,6 +375,9 @@ it('renders error message when there is an error', () => {
   )
 
   expect(screen.getByText(/test title fav mobile/i)).toBeInTheDocument()
+
+  expect(screen.queryByText(/vots/i)).not.toBeInTheDocument()
+  expect(screen.queryByText(/data/i)).not.toBeInTheDocument()
 
   expect(
     screen.getByText(/alguna cosa ha anat malament.../i)

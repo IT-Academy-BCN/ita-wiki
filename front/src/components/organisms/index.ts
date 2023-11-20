@@ -14,8 +14,8 @@ import { TopicsManagerBoard } from './TopicsManagerBoard'
 import { TopicsRadioWidget } from './TopicsRadioWidget'
 import type { TResourceForm } from './ResourceForm'
 import { UserAccessHome } from './UserAccessHome'
-import { VotesDateController } from './VotesDateController'
 import { UserProfileResourcesWidget } from './UserProfileResourcesWidget'
+import { VotesDateController } from './VotesDateController'
 
 export {
   CardResourceLink,

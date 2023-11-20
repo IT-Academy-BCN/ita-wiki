@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1] - 2023-11-20
+
+### Added
+
+- Resources and favorites widgets to User Profile
+
+### Changed
+
+- User Profile UI
+- SortOrder type to avoid repetitions
+
+### Fixed
+
+- My Resources widget in Category page
+
 ## [0.2.1] - 2023-11-16
 
 ### Changed

@@ -1,10 +1,13 @@
 import styled from 'styled-components'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { TFavorites, TResource } from '../../types'
+import { useSortByDate, useSortByVotes } from '../../hooks'
+import { TFavorites, TResource, TSortOrder } from '../../types'
 import CardResource from './CardResource'
+import { VotesDateController } from './VotesDateController'
 import { useAuth } from '../../context/AuthProvider'
 import { colors, dimensions, device, FlexBox } from '../../styles'
-import { Icon, Spinner, Text, Title } from '../atoms'
+import { Spinner, Title } from '../atoms'
 
 type TResourcesWidget = {
   title: string
@@ -43,15 +46,6 @@ const WidgetContainer = styled(FlexBox)`
 const TitleContainer = styled(FlexBox)`
   align-items: stretch;
   align-self: flex-start;
-`
-
-const SortContainer = styled(FlexBox)`
-  display: none;
-  @media only ${device.Tablet} {
-    display: flex;
-    width: 100%;
-    align-items: flex-end;
-  }
 `
 
 const CardsList = styled(FlexBox)`
@@ -104,6 +98,32 @@ export const UserProfileResourcesWidget = ({
   const { user } = useAuth()
   const { t } = useTranslation()
 
+  const [sortOrder, setSortOrder] = useState<TSortOrder>('desc')
+  const [isSortByVotesActive, setIsSortByVotesActive] = useState(false)
+  const handleSortOrder = () => {
+    setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
+  }
+
+  const handleSortByVotes = () => {
+    setIsSortByVotesActive(true)
+  }
+
+  const handleSortByDates = () => {
+    setIsSortByVotesActive(false)
+  }
+
+  const { sortedItems } = useSortByDate<TResource | TFavorites>(
+    resourcesArray,
+    'updatedAt',
+    sortOrder
+  )
+  const { sortedVotes } = useSortByVotes<TResource | TFavorites>(
+    resourcesArray,
+    sortOrder
+  )
+
+  const selectedSortOrder = isSortByVotesActive ? sortedVotes : sortedItems
+
   return (
     <WidgetContainer justify="flex-start">
       <TitleContainer data-testid="title">
@@ -125,17 +145,14 @@ export const UserProfileResourcesWidget = ({
         !isError &&
         (resourcesArray?.length > 0 ? (
           <>
-            <SortContainer>
-              <FlexBox direction="row" gap="15px">
-                <FlexBox direction="row">
-                  <Text fontWeight="bold">Vots</Text>
-                  <Icon name="arrow_downward" />
-                </FlexBox>
-                <div color={colors.gray.gray3}>Data</div>
-              </FlexBox>
-            </SortContainer>
+            <VotesDateController
+              sortOrder={sortOrder}
+              handleSortOrder={handleSortOrder}
+              handleSortByVotes={handleSortByVotes}
+              handleSortByDates={handleSortByDates}
+            />
             <CardsList gap={`${dimensions.spacing.xs}`} justify="flex-start">
-              {resourcesArray?.map((resource) => (
+              {selectedSortOrder?.map((resource) => (
                 <CardResource
                   key={resource.id}
                   id={resource.id}
