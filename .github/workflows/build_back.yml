@@ -1,17 +1,14 @@
 name: build_back
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-    types:
-      - closed
     paths:
       - "back/**"
 
 jobs:
   build_and_deploy:
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
@@ -37,3 +34,23 @@ jobs:
           context: back
           push: true
           tags: kevinmamaqi/ita-wiki-back:v${{ steps.version.outputs.version }}
+
+      - name: Update version
+        run: |
+          git config --global user.name "ITA Wiki bot"
+          git config --global user.email "bot@itawiki.com"
+          version=$(grep 'back:' -A 1 ./config/dev.yml | grep version | awk '{print $2}')
+          sed -i "/back:/!b;n;c\  version: \${{ steps.version.outputs.version }}" ./config/dev.yml
+          git add ./config/dev.yml
+          git commit -m "Bump back image to v${{ steps.version.outputs.version }}"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          title: "Bump back image version to v${{ steps.version.outputs.version }}"
+          commit-message: "Bump back image version to v${{ steps.version.outputs.version }}"
+          branch: "bump-back-to-v${{ steps.version.outputs.version }}"
+          delete-branch: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          assignees: ${{ github.actor }}

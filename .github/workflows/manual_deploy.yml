@@ -18,6 +18,7 @@ on:
         options:
           - front
           - back
+          - sso
       version:
         description: "Version"
         required: true
@@ -30,9 +31,12 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v3
 
-      - name: Grab version
-        id: version
-        run: echo "::set-output name=version::$(jq -r '.version' ${{ inputs.service }}/package.json)"
+      - name: Update Configuration
+        run: |
+          FILE="./config/${{ inputs.environment }}/${{ inputs.service }}.yml"
+          echo "Updating $FILE with version ${{ inputs.version }}"
+          echo "${{ inputs.service }}:" > $FILE
+          echo "  version: ${{ inputs.version }}" >> $FILE
 
       - name: Deploy
         uses: peter-evans/create-pull-request@v3
