@@ -33,17 +33,17 @@ type TResourceCardList = {
   filters: TFilters
   sortOrder: SortOrder
   handleAccessModal: () => void
+  handleSortByVotes: () => void
+  handleSortByDates: () => void
   isSortByVotesActive: boolean
   onSelectedSortOrderChange: (selectedSortOrder: Array<TResource>) => void
 }
 
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
-
   handleSortByVotes,
   handleSortByDates,
   onSelectedSortOrderChange,
-
   sortOrder,
   filters,
   isSortByVotesActive,

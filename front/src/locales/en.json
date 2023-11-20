@@ -72,7 +72,7 @@
   "Filtrar": "Sort",
   "Votos": "Votes",
   "Fecha": "Date",
-  "+ Crear nuevo recurso": "+ Create new resource",
+
 
   "Error 401 - No autorizado": "Unauthorized operation. User login required.",
   "Error 403 - Acceso denegado": "Access denied. You do not have the necessary permissions to perform the operation.",
@@ -80,15 +80,9 @@
   "Error 405 - Id de usuario inválido": "Invalid user ID.",
   "Error 500 - Error bbdd": "Database error. Please try again later.",
 
-  "Buscar recurso":"Search resource",
+
   "Mostrando":"Showing",
   "resultados para":"results for",
-  "Recursos de":"Resources of",
-
-  "Filtros":"Filters",
-  "Filtrar":"Filter",
-  "Crear nuevo recurso":"Create new resource",
-
   "Nuevo Recurso":"New Resource",
   "Título":"Title",
   "Descripción":"Description"

@@ -1,6 +1,5 @@
 import styled, { keyframes } from 'styled-components'
 import { useLocation, useParams } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
@@ -14,8 +13,7 @@ import {
   ResourceCardList,
   ResourceForm,
   TopicsRadioWidget,
-  VotesDateController,
-} from '../components/organisms'
+  } from '../components/organisms'
 import { Button, Icon, Input, Text, Title } from '../components/atoms'
 
 import {
@@ -215,7 +213,6 @@ const VotesDateContainer = styled(FlexBox)`
   }
 `
 
-
 const ScrollDiv = styled(FlexBox)`
   overflow: hidden;
   overflow-x: auto;
@@ -405,14 +402,30 @@ const CloseFilterButton = styled(Button)`
   }
 `
 
+const StyledDateToggle = styled(Text)`
+  color: ${colors.black.black1};
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.96);
+  }
+`
+
+const StyledVotesToggle = styled(Text)`
+  cursor: pointer;
+
+  &:active {
+    transform: scale(0.96);
+  }
+`
+
 type SortOrder = 'asc' | 'desc'
 
 const Category: FC = () => {
   const { slug } = useParams()
   const { state } = useLocation()
   const { user } = useAuth()
-  const { t: translation } = useTranslation()
-
+  
   //  ==> MODAL STATES
   const [isOpen, setIsOpen] = useState(false)
   const [isAccessModalOpen, setIsAccessModalOpen] = useState(false)
@@ -429,7 +442,6 @@ const Category: FC = () => {
     topic: topic === 'todos' ? undefined : topic,
   })
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
-
   const [selectedOption, setSelectedOption] = useState<'Fecha' | 'Votos'>(
     'Votos'
   )
@@ -437,7 +449,6 @@ const Category: FC = () => {
   const [searchValue, setSearchValue] = useState<string | null>(null)
   const [selectedSortOrderValue, setSelectedSortOrderValue] = useState<TResource[]>([])
   const { t } = useTranslation()
-
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
@@ -538,9 +549,7 @@ const Category: FC = () => {
           />
           <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
-
               {t('Temas')}
-
             </Title>
             <StyledSelectGroup
               defaultValue={topic}
@@ -555,11 +564,9 @@ const Category: FC = () => {
             <MainContainer as="main">
               <FiltersContainer data-testid="filters-container">
                 <Title as="h2" fontWeight="bold">
-
                   {t('Filtros')}
                 </Title>
                 <Text fontWeight="bold">{t('Temas')}</Text>
-
                 <ScrollTopics>
                   {slug && (
                     <TopicsRadioWidget
@@ -665,7 +672,6 @@ const Category: FC = () => {
                     </StyledDateToggle>
                   </FlexBox>
                 </VotesDateContainer>
-
                 <ScrollDiv>
                   <NewResourceButton
                     onClick={
@@ -674,9 +680,7 @@ const Category: FC = () => {
                         : () => handleAccessModal()
                     }
                   >
-
                     + {t('Crear nuevo recurso')}
-
                   </NewResourceButton>
                 </ScrollDiv>
                 <ScrollDiv>
@@ -684,6 +688,8 @@ const Category: FC = () => {
                     handleAccessModal={handleAccessModal}
                     filters={filters}
                     sortOrder={sortOrder}
+                    handleSortByVotes={handleSortByVotes}
+                    handleSortByDates={handleSortByDates}
                     isSortByVotesActive={isSortByVotesActive}
                     onSelectedSortOrderChange={handleSelectedSortOrderChange}
                   />
@@ -703,9 +709,7 @@ const Category: FC = () => {
                   data-testid="close-filters-button"
                   onClick={handleFiltersClose}
                 >
-
                   {t('Cerrar')}
-
                 </CloseFilterButton>
               </MobileFiltersContainer>
             )}
@@ -724,9 +728,7 @@ const Category: FC = () => {
       <Modal isOpen={isOpen} toggleModal={toggleModal} title={t('Nuevo Recurso')}>
         <ResourceForm selectOptions={topicsForResourceForm ?? []} />
         <Button outline onClick={toggleModal}>
-
           {t('Cancelar')}
-
         </Button>
       </Modal>
       {/* RESTRICTED ACCES MODAL */}

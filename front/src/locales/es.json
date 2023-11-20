@@ -72,7 +72,6 @@
   "Filtrar": "Filtrar",
   "Votos": "Votos",
   "Fecha": "Fecha",
-  "+ Crear nuevo recurso": "+ Crear nuevo recurso",
 
   "Error 401 - No autorizado": "Operación no autorizada. Es necesario iniciar sesión de usuario.",
   "Error 403 - Acceso denegado": "Acceso denegado. No tienes los permisos necesarios para realizar la operación.",
@@ -80,15 +79,11 @@
   "Error 405 - Id de usuario inválido": "Identificador de usuario no válido.",
   "Error 500 - Error bbdd": "Error en la base de datos. Por favor, inténtalo más tarde.",
 
-  "Buscar recurso":"Buscar recurso",
   "Mostrando":"Mostrando",
   "resultados para":"resultados para",
-  "Recursos de":"Recursos de",
 
-  "Filtros":"Filtros",
-  "Filtrar":"Filtrar",
+
   "Crear nuevo recurso":"Crear nuevo recurso",
-
   "Nuevo Recurso":"Nuevo Recurso",
   "Título":"Título",
   "Descripción":"Descripción"

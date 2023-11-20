@@ -72,7 +72,7 @@
   "Filtrar": "Filtrar",
   "Votos": "Vots",
   "Fecha": "Data",
-  "+ Crear nuevo recurso": "+ Crear nou recurs",
+
 
   "Error 401 - No autorizado": "Operació no autoritzada. És necessari iniciar sessió d'usuari.",
   "Error 403 - Acceso denegado": "Accés denegat. No tens els permisos necessaris per realitzar l'operació.",
@@ -80,13 +80,9 @@
   "Error 405 - Id de usuario inválido": "Identificador d'usuari no vàlid.",
   "Error 500 - Error bbdd": "Error en la base de dades. Per favor, intenta-ho més tard.",
 
-  "Buscar recurso":"Buscar recurs",
+
   "Mostrando":"Mostrant",
   "resultados para":"resultats per",
-  "Recursos de":"Recursos de",
-
-  "Filtros":"Filtres",
-  "Filtrar":"Filtrar",
   "Crear nuevo recurso":"Crear nou recurs",
 
   "Nuevo Recurso":"Nou Recurs",
