@@ -156,7 +156,7 @@ it('sorts resources by date in descending order', () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByText(/Data/i))
+  fireEvent.click(screen.getByText(/Fecha/i))
 
   const { result } = renderHook(() => useSortByDate(items, 'date', 'desc'))
 
@@ -203,7 +203,7 @@ it('sorts resources by votes in ascending order', () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByText(/Vots/i))
+  fireEvent.click(screen.getByText(/Votos/i))
 
   const { result } = renderHook(() => useSortByVotes(votes, 'asc'))
   const sortedResources = result.current.sortedVotes
