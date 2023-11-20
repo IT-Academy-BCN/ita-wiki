@@ -114,9 +114,9 @@ beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Hola',
-      avatar: 'Adios',
+      avatarId: 'Adios',
     },
-  } as unknown as TAuthContext)
+  } as TAuthContext)
 })
 
 afterEach(() => {

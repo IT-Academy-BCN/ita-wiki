@@ -7,7 +7,7 @@ import { TFavorites, TResource } from '../../types'
 
 const user = {
   name: 'Hola',
-  avatar: 'Adios',
+  avatarId: 'Adios',
 }
 
 const resourceMock = {
@@ -133,7 +133,7 @@ describe('Vote counter molecule', () => {
   it('can vote when the user is logged in', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user,
-    } as unknown as TAuthContext)
+    } as TAuthContext)
     queryClient.setQueryData(['getResources'], [resourceMock])
     const queryData = queryClient.getQueryData(['getResources']) as TResource[]
 
@@ -172,7 +172,7 @@ describe('Vote counter molecule', () => {
   it('should update vote cache in favorites when rendered in Profile page', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user,
-    } as unknown as TAuthContext)
+    } as TAuthContext)
 
     queryClient.setQueryData(['getFavorites'], [resourceFavMock])
     const queryFavData = queryClient.getQueryData([
@@ -211,7 +211,7 @@ describe('Vote counter molecule', () => {
   it('can vote when the user is logged in', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user,
-    } as unknown as TAuthContext)
+    } as TAuthContext)
     queryClient.setQueryData(['getResourcesByUser'], [resourceMock])
     const queryResourcesByUser = queryClient.getQueryData([
       'getResourcesByUser',

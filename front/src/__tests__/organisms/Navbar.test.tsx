@@ -27,10 +27,10 @@ beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'TestName',
-      avatar: 'TestAvatar',
+      avatarId: 'TestAvatar',
       role: 'REGISTERED',
     },
-  } as unknown as TAuthContext)
+  } as TAuthContext)
   vi.mock('react-router-dom', async () => {
     const actual: Record<number, unknown> = await vi.importActual(
       'react-router-dom'
@@ -185,7 +185,7 @@ describe('Navbar', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'TestName',
-        avatar: 'TestAvatar',
+        avatarId: 'TestAvatar',
         role: 'MENTOR',
       },
     } as TAuthContext)

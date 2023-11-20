@@ -19,9 +19,9 @@ beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Name',
-      avatar: 'Avatar',
+      avatarId: 'Avatar',
     },
-  } as unknown as TAuthContext)
+  } as TAuthContext)
 })
 
 describe.skip('Resource', () => {
@@ -53,9 +53,9 @@ it('renders Navbar for logged in users', () => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Name',
-      avatar: 'Avatar',
+      avatarId: 'Avatar',
     },
-  } as unknown as TAuthContext)
+  } as TAuthContext)
 
   render(<Category />)
 
@@ -136,9 +136,9 @@ it('status filter widget appears for users who are logged in', () => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Name',
-      avatar: 'Avatar',
+      avatarId: 'Avatar',
     },
-  } as unknown as TAuthContext)
+  } as TAuthContext)
   render(<Category />)
 
   const statusFilterWidget = screen.getByTestId('status-filter')

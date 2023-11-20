@@ -19,11 +19,15 @@ describe('AuthProvider', () => {
     const { result } = renderHook(() => useAuth(), { wrapper })
     expect(result.current.user).toBe(null)
     act(() => {
-      result.current.setUser({ name: 'John', avatar: 'avatar', email: 'email' })
+      result.current.setUser({
+        name: 'John',
+        avatarId: 'avatar',
+        email: 'email',
+      })
     })
     expect(result.current.user).toEqual({
       name: 'John',
-      avatar: 'avatar',
+      avatarId: 'avatar',
       email: 'email',
     })
   })

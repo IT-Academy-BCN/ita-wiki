@@ -19,9 +19,9 @@ beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Hola',
-      avatar: 'Adios',
+      avatarId: 'Adios',
     },
-  } as unknown as TAuthContext)
+  } as TAuthContext)
   vi.mock('react-router-dom', async () => {
     const actual: Record<number, unknown> = await vi.importActual(
       'react-router-dom'
@@ -96,9 +96,9 @@ describe('MyResources component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Hola',
-        avatar: 'Adios',
+        avatarId: 'Adios',
       },
-    } as unknown as TAuthContext)
+    } as TAuthContext)
 
     global.innerWidth = 1024
     render(<MyResources />)

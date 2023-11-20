@@ -18,10 +18,10 @@ beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'User Test Name',
-      avatar: 'Adios',
+      avatarId: 'Adios',
       email: 'mail@test.com',
     },
-  } as unknown as TAuthContext)
+  } as TAuthContext)
 })
 
 afterEach(() => {
