@@ -153,8 +153,8 @@ export const getResourcesByUser = async (categorySlug: string | undefined) => {
   }
 
   const data = await response.json()
-
-  return data.resources.map((resource: TResource) => ({
+ 
+  return data.map((resource: TResource) => ({
     ...resource,
     editable: true,
   }))

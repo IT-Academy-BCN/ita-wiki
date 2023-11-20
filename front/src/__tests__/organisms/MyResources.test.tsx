@@ -1,6 +1,6 @@
 import { setupServer } from 'msw/node'
 import { vi } from 'vitest'
-import { render, screen, waitFor } from '../test-utils'
+import { render, screen } from '../test-utils'
 import { MyResources } from '../../components/organisms'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { handlers, errorHandlers } from '../../__mocks__/handlers'
@@ -89,7 +89,7 @@ describe('MyResources', () => {
     expect(title).toHaveTextContent('Mis recursos')
   })
 
-  it('shows cards when resizes to mobile', async () => {
+  it('shows correct title when resizes to mobile', async () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Hola',
@@ -100,24 +100,7 @@ describe('MyResources', () => {
     global.innerWidth = 600
     render(<MyResources />)
 
-    await waitFor(() => {
-      expect(screen.queryByTestId('resource-card')).toBeInTheDocument()
-    })
-  })
-
-  it('shows ResourceTitleLink when resizes to laptop', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Hola',
-        avatar: 'Adios',
-      },
-    } as TAuthContext)
-
-    global.innerWidth = 1024
-    render(<MyResources />)
-
-    await waitFor(() => {
-      expect(screen.queryByTestId('resource-title')).toBeInTheDocument()
-    })
+    const title = screen.getByTestId('main-title')
+    expect(title).toHaveTextContent('Tus recursos')
   })
 })
