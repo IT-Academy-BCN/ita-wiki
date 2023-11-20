@@ -12,6 +12,7 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
     topic: topicId,
     slug,
     status,
+    search,
   } = ctx.query as TResourcesGetParamsSchema
   let statusCondition: Prisma.Enumerable<Prisma.ResourceWhereInput> = {}
   if (user && status) {
@@ -30,6 +31,12 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
     },
     resourceType: { in: resourceTypes },
     ...statusCondition,
+    ...(search && {
+      OR: [
+        { title: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+      ],
+    }),
   }
   const voteSelect =
     ctx.user !== null ? { userId: true, vote: true } : { vote: true }
