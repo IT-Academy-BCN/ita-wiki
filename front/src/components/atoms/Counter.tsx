@@ -89,26 +89,3 @@ const Counter: FC<TCounter> = ({ number, text, icon, isError }) => {
   )
 }
 export default Counter
-
-// //    {isError && <ErrorStyled>n/d</ErrorStyled>}
-//       {(!isError && number === 0 || number) ? (
-//         <CounterStyled data-testid={text}>{number}</CounterStyled>
-//       ) : (
-//         <Spinner
-//           size="xsmall"
-//           role="status"
-//           style={{ marginTop: '6px', marginBottom: '10px' }}
-//         />
-//       )}
-
-// //   {isError && <ErrorStyled>n/d</ErrorStyled>}
-//       {!isError && (number === 0 || number) && (
-//         <CounterStyled data-testid={text}>{number}</CounterStyled>
-//       )}
-//       {!isError && number === undefined && (
-//         <Spinner
-//           size="xsmall"
-//           role="status"
-//           style={{ marginTop: '6px', marginBottom: '10px' }}
-//         />
-//       )}
