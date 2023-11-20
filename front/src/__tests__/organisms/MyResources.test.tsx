@@ -85,8 +85,8 @@ describe('MyResources', () => {
     global.innerWidth = 1024
     render(<MyResources />)
 
-    const title = screen.getByTestId('main-title')
-    expect(title).toHaveTextContent('Mis recursos')
+    const title = screen.getByTestId('title')
+    expect(title).toHaveTextContent('Els meus recursos')
   })
 
   it('shows correct title when resizes to mobile', async () => {
@@ -101,6 +101,6 @@ describe('MyResources', () => {
     render(<MyResources />)
 
     const title = screen.getByTestId('main-title')
-    expect(title).toHaveTextContent('Tus recursos')
+    expect(title).toHaveTextContent('Els teus recursos')
   })
 })
