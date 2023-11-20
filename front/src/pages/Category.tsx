@@ -688,8 +688,6 @@ const Category: FC = () => {
                     handleAccessModal={handleAccessModal}
                     filters={filters}
                     sortOrder={sortOrder}
-                    handleSortByVotes={handleSortByVotes}
-                    handleSortByDates={handleSortByDates}
                     isSortByVotesActive={isSortByVotesActive}
                     onSelectedSortOrderChange={handleSelectedSortOrderChange}
                   />

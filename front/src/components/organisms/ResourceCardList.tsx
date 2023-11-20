@@ -33,8 +33,6 @@ type TResourceCardList = {
   filters: TFilters
   sortOrder: SortOrder
   handleAccessModal: () => void
-  handleSortByVotes: ()=>void
-  handleSortByDates: ()=>void
   isSortByVotesActive: boolean
   onSelectedSortOrderChange: (selectedSortOrder: Array<TResource>) => void
 }
