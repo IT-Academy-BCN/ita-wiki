@@ -1,7 +1,6 @@
 import { vi } from 'vitest'
 import { render, screen } from '../test-utils'
 import CardResource from '../../components/organisms/CardResource'
-import icons from '../../assets/icons'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { TCardResource } from '../../types'
 
@@ -27,7 +26,7 @@ const mockCardResource: TCardResource = {
   title: 'Test resource title',
   description: 'Test resource description 12345',
   url: 'https://www.google.com',
-  img: icons.profileAvatar,
+  img: 'profileAvatar.jpg',
   createdBy: 'Test author name',
   createdAt: '2022-08-09T09:42:25.717Z',
   updatedAt: '2023-07-09T09:42:25.717Z',
@@ -61,8 +60,8 @@ describe('CardResource component', () => {
   it('renders correctly when user is logged in', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
-        name: 'Hola',
-        avatar: 'Adios',
+        name: 'Test author name',
+        avatar: 'profileAvatar.jpg',
       },
     } as TAuthContext)
     render(<CardResource {...mockCardResource} />)

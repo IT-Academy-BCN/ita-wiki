@@ -5,6 +5,7 @@ export const favoritePutSchema = resourceSchema.omit({
   slug: true,
   url: true,
   resourceType: true,
+  categoryId: true,
   status: true,
   description: true,
   createdAt: true,

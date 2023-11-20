@@ -6,6 +6,7 @@ import { cookieAuth } from '../../components/cookieAuth'
 import {
   invalidTokenResponse,
   missingTokenResponse,
+  zodValidationErrorResponse,
 } from '../../components/responses/authMiddleware'
 import { deniedAccessResponse } from '../../components/responses/authorize'
 
@@ -18,6 +19,10 @@ registry.registerPath({
   security: [{ [cookieAuth.name]: [] }],
   request: {
     body: {
+      required: true,
+      description:
+        'Updates an existing user. The ID is mandatory, and all other fields are optional. Provide only the fields that need to be updated.',
+
       content: {
         'application/json': {
           schema: userPatchSchema,
@@ -29,6 +34,7 @@ registry.registerPath({
     204: {
       description: 'User has been modified',
     },
+    400: zodValidationErrorResponse,
     401: missingTokenResponse,
     403: deniedAccessResponse,
     404: {

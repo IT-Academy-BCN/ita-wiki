@@ -93,8 +93,6 @@ describe('TopicsManagerBoard component', () => {
       expect(screen.getByText('Listas')).toBeInTheDocument()
       expect(screen.getByText('Renderizado condicional')).toBeInTheDocument()
     })
-
-    screen.debug()
   })
 
   it('renders correctly with category slug without topics yet', async () => {
@@ -134,7 +132,6 @@ describe('TopicsManagerBoard component', () => {
         screen.queryByRole('button', { name: 'Esborra el tema' })
       ).not.toBeInTheDocument()
     })
-    screen.debug()
   })
 
   it('renders an error with an invalid slug', async () => {

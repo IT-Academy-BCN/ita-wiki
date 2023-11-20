@@ -1,3 +1,6 @@
+import { UserRegisterSchema } from '@itacademy/schemas'
+import { z } from 'zod'
+
 export type TTopic = {
   id?: string
   name: string
@@ -48,7 +51,7 @@ export type TFavorites = {
   }
   topics: TTopicResource[]
 }
-export type TUser = {
+export type TUserData = {
   id: string
   email: string
   dni: string
@@ -167,4 +170,6 @@ export type TResourceTitleLink = {
   description: string
   title: string
   url: string
+  id: string
 }
+export type TForm = z.infer<typeof UserRegisterSchema>

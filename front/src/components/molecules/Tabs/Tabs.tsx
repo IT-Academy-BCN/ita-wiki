@@ -25,11 +25,17 @@ const TabMenuNav = styled.ul`
 `
 
 type TTabsData = {
+  id?: string
   title: string
   tabComponent: ReactElement
+  requiredRole?: string[]
 }
 
-const Tabs = ({ tabsData }: { tabsData: TTabsData[] }) => {
+type TTabsProp = {
+  tabsData: TTabsData[]
+}
+
+const Tabs = ({ tabsData }: TTabsProp) => {
   const [activeTab, setActiveTab] = useState(0)
 
   return (

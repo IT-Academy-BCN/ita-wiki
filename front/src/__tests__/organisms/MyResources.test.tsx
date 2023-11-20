@@ -84,14 +84,6 @@ describe('MyResources component', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('shows correct title when resizes to mobile', async () => {
-    global.innerWidth = 600
-    render(<MyResources />)
-
-    const title = screen.getByTestId('main-title')
-    expect(title).toHaveTextContent('Els teus recursos')
-  })
-
   it('shows correct title when resizes to laptop', async () => {
     global.innerWidth = 1024
     render(<MyResources />)

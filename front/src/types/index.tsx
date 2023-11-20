@@ -2,7 +2,7 @@ import type {
   TFavorites,
   TGetTopics,
   TTopic,
-  TUser,
+  TUserData,
   TFilters,
   TResource,
   TCategory,
@@ -16,13 +16,14 @@ import type {
   TGetTypes,
   TUserVote,
   TVoteCount,
+  TForm,
 } from './types'
 
 export type {
   TFavorites,
   TGetTopics,
   TTopic,
-  TUser,
+  TUserData,
   TFilters,
   TResource,
   TCategory,
@@ -36,4 +37,5 @@ export type {
   TGetTypes,
   TUserVote,
   TVoteCount,
+  TForm,
 }

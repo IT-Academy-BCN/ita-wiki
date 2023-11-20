@@ -20,6 +20,8 @@
   "Ajustes": "Settings",
   "Cerrar": "Close",
 
+  "Administrador de Usuarios": "Users Manager",
+
   "Registre": "Register",
   "DNI": "DNI or NIE",
   "Especialidad": "Specialization",
@@ -43,7 +45,7 @@
   "inicia sesión": "log in",
   " para añadir recursos favoritos": " to add favorite resources",
   "No tienes recursos favoritos": "There are no favorite resources",
-  "Algo ha ido mal...": "Something gone wrong...",
+  "Algo ha ido mal...": "Something went wrong...",
   "Mis recursos": "My resources",
   "Tus recursos": "Your resources",
   "No has subido ningún recurso": "You do not have resources",
@@ -67,6 +69,14 @@
   "Cancelar": "Cancel",
   "Borrar tema": "Delete topic",
   "No es posible borrar el tema.": "The topic cannot be deleted.",
+
+  "Filtros": "Filters",
+  "Recursos de": "Resources for",
+  "Buscar recurso": "Find resource",
+  "Filtrar": "Sort",
+  "Votos": "Votes",
+  "Fecha": "Date",
+  "+ Crear nuevo recurso": "+ Create new resource",
 
   "Error 401 - No autorizado": "Unauthorized operation. User login required.",
   "Error 403 - Acceso denegado": "Access denied. You do not have the necessary permissions to perform the operation.",

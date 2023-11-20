@@ -2,6 +2,7 @@
 import { Context, Next } from 'koa'
 import { ZodError } from 'zod'
 import { JsonWebTokenError } from 'jsonwebtoken'
+import { Prisma } from '@prisma/client'
 import {
   DuplicateError,
   InvalidToken,
@@ -23,6 +24,8 @@ const errorMiddleware = async (ctx: Context, next: Next) => {
     } else if (error.code === 'P2002') {
       const resourceName = error.meta.target[0] || 'Resource'
       error = new DuplicateError(resourceName)
+    } else if (error instanceof Prisma.PrismaClientValidationError) {
+      error = new ValidationError('Invalid data input')
     }
     ctx.status = error.status || 500
     ctx.body = {

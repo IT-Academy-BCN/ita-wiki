@@ -20,6 +20,8 @@
   "Ajustes": "Ajustaments",
   "Cerrar": "Tanca",
 
+  "Administrador de Usuarios": "Administrador d'Usuaris",
+
   "Registre": "Registre",
   "DNI": "DNI o NIE",
   "Especialidad": "Especialitat",
@@ -67,6 +69,14 @@
   "Cancelar": "Cancel·la",
   "Borrar tema": "Esborra el tema",
   "No es posible borrar el tema.": "No és possible esborrar el tema.",
+
+  "Filtros": "Filtres",
+  "Recursos de": "Recursos de",
+  "Buscar recurso": "Buscar recurs",
+  "Filtrar": "Filtrar",
+  "Votos": "Vots",
+  "Fecha": "Data",
+  "+ Crear nuevo recurso": "+ Crear nou recurs",
 
   "Error 401 - No autorizado": "Operació no autoritzada. És necessari iniciar sessió d'usuari.",
   "Error 403 - Acceso denegado": "Accés denegat. No tens els permisos necessaris per realitzar l'operació.",

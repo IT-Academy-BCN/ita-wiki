@@ -6,9 +6,9 @@ import { resourceGetSchema } from '../../schemas'
 
 export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User
-  const categorySlug = ctx.query.categorySlug?.toString()
+  const categorySlug = ctx.query.categorySlug as string | undefined
 
-  let resources
+  let resources = []
 
   const include = {
     user: {
@@ -16,8 +16,11 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
         name: true,
       },
     },
-    vote: { select: { vote: true } },
+    vote: { select: { vote: true, userId: true } },
     topics: { select: { topic: true } },
+    favorites: {
+      where: { userId: user ? user.id : undefined },
+    },
   }
 
   if (!categorySlug) {
@@ -48,10 +51,23 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
     })
   }
 
-  const parsedResources = resources.map((resource) => {
-    const resourceWithVote = transformResourceToAPI(resource)
-    return resourceGetSchema.parse(resourceWithVote)
+  const resourcesWithFavorites = resources.map((resource) => {
+    let isFavorite: boolean = false
+    if (user !== null)
+      isFavorite = !!resource.favorites.find(
+        (favorite) => favorite.userId === user.id
+      )
+
+    return {
+      ...resource,
+      isFavorite,
+    }
   })
+
+  const parsedResources = resourcesWithFavorites.map((resource) =>
+    resourceGetSchema.parse(transformResourceToAPI(resource, user.id))
+  )
+
   ctx.status = 200
-  ctx.body = { resources: parsedResources }
+  ctx.body = parsedResources
 }

@@ -7,6 +7,7 @@ import {
   TResource,
   TVoteCount,
   TVoteMutationData,
+  TForm,
 } from '../types'
 
 const errorMessageStatus: { [key: number]: string } = {
@@ -202,6 +203,17 @@ export const loginUserFetcher = async (user: object) => {
 
   return response.status === 204 ? null : response.json()
 }
+export const registerUserFetcher = async (useData: TForm) => {
+  const response = await fetch(urls.register, {
+    method: 'POST',
+    body: JSON.stringify(useData),
+    headers: { 'Content-type': 'application/json' },
+  })
+  if (!response.ok)
+    throw new Error(`Error al registrar usuario: ${response.statusText}`)
+
+  return response.status === 204 ? null : response.json()
+}
 
 export const createResourceFetcher = (resource: object) =>
   fetch(urls.createResource, {
@@ -236,3 +248,15 @@ export const updateResourceFetcher = (resource: object) =>
     })
     // eslint-disable-next-line no-console
     .catch((error) => console.error(error))
+
+export const updateStatus = async (id: string) => {
+  const response = await fetch(`${urls.postStatus}/${id}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id }),
+  })
+
+  if (!response.ok) {
+    throw new Error('Error updating status')
+  }
+}

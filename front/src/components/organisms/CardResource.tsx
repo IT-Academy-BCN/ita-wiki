@@ -2,12 +2,12 @@ import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { Text } from '../atoms'
 import { CreateAuthor } from '../molecules/CreateAuthor'
-import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
 import { VoteCounter } from '../molecules/VoteCounter'
 import EditResource from './EditResource'
 import { FavoritesIcon } from '../molecules/FavoritesIcon'
 import { useAuth } from '../../context/AuthProvider'
 import { TCardResource } from '../../types'
+import { ResourceTitleLink } from '../molecules'
 
 const CardContainerStyled = styled(FlexBox)`
   background-color: ${colors.white};
@@ -17,10 +17,10 @@ const CardContainerStyled = styled(FlexBox)`
   width: 100%;
   min-width: 15rem;
   position: relative;
+  align-items: flex-start;
 `
 
 const UserWidgets = styled(FlexBox)`
-  position: absolute;
   top: ${dimensions.spacing.xxxs};
   right: ${dimensions.spacing.xxs};
   padding: 2px;
@@ -28,7 +28,7 @@ const UserWidgets = styled(FlexBox)`
 `
 
 const CounterContainerStyled = styled(FlexBox)`
-  margin: 0 ${dimensions.spacing.xs};
+  margin: 0 ${dimensions.spacing.xs} 0 0;
   align-self: flex-start;
 
   ${Text} {
@@ -38,6 +38,7 @@ const CounterContainerStyled = styled(FlexBox)`
 
 const FlexBoxStyled = styled(FlexBox)`
   height: 100%;
+  width: 100%;
 
   ${FlexBox} {
     gap: 2px;
@@ -48,6 +49,7 @@ const FlexBoxStyled = styled(FlexBox)`
     margin-top: 2px;
   }
 `
+
 const CardResource = ({
   createdBy,
   createdAt,
@@ -77,6 +79,26 @@ const CardResource = ({
       id={id}
       {...rest}
     >
+      {voteCount && (
+        <CounterContainerStyled>
+          <VoteCounter
+            voteCount={voteCount}
+            resourceId={id}
+            handleAccessModal={handleAccessModal || undefined}
+          />
+        </CounterContainerStyled>
+      )}
+
+      <FlexBoxStyled align="start" justify="space-between" gap="4px">
+        <ResourceTitleLink
+          description={description}
+          title={title}
+          url={url}
+          id={id}
+        />
+        <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
+      </FlexBoxStyled>
+
       {user ? (
         <UserWidgets direction="row" gap="0.5rem">
           {editable && (
@@ -98,22 +120,6 @@ const CardResource = ({
           />
         </UserWidgets>
       ) : null}
-
-      {voteCount && (
-        <CounterContainerStyled>
-          <VoteCounter
-            voteCount={voteCount}
-            resourceId={id}
-            handleAccessModal={handleAccessModal}
-            fromProfile={fromProfile}
-          />
-        </CounterContainerStyled>
-      )}
-
-      <FlexBoxStyled align="start" justify="space-between" gap="4px">
-        <ResourceTitleLink description={description} title={title} url={url} />
-        <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
-      </FlexBoxStyled>
     </CardContainerStyled>
   )
 }

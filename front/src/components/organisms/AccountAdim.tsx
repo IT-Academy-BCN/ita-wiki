@@ -2,10 +2,10 @@ import styled from 'styled-components'
 import { FC, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
-import { paths, urls } from '../constants'
-import { colors } from '../styles'
-import { TUser } from '../types'
-import { useGetUsers } from '../hooks/useGetUsers'
+import { paths, urls } from '../../constants'
+import { colors } from '../../styles'
+import { TUserData } from '../../types'
+import { useGetUsers } from '../../hooks/useGetUsers'
 
 const UserListContainer = styled.div`
   padding: 20px;
@@ -96,7 +96,7 @@ const AccountAdmin: FC = () => {
     setSearchTerm(event.target.value)
   }
 
-  let filteredUsers: TUser[] = []
+  let filteredUsers: TUserData[] | null = null
 
   if (!isLoading && users) {
     if (searchTerm.trim() !== '') {
@@ -116,7 +116,7 @@ const AccountAdmin: FC = () => {
     return <div>Error fetching users</div>
   }
 
-  const updateUserStatus = async (user: TUser) => {
+  const updateUserStatus = async (user: TUserData) => {
     try {
       const updatedStatus = user.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
       const updatedUser = {
@@ -134,7 +134,7 @@ const AccountAdmin: FC = () => {
       if (!response.ok) {
         throw new Error('Failed to update user status')
       }
-      queryClient.setQueryData<TUser[]>(['users'], (prevData) => {
+      queryClient.setQueryData<TUserData[]>(['users'], (prevData) => {
         if (prevData) {
           return prevData.map((u) =>
             u.id === updatedUser.id ? { ...u, status: updatedStatus } : u
@@ -173,31 +173,33 @@ const AccountAdmin: FC = () => {
           </tr>
         </TableHead>
         <TableBody>
-          {filteredUsers.map((user) => (
-            <TableRow key={user.id}>
-              <TableCellNames>{user.name}</TableCellNames>
-              <TableCell>{user.dni}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.status}</TableCell>
-              <TableCell>
-                {user.status === 'ACTIVE' ? (
-                  <DeactivateBtn
-                    data-testid="status-desactivar"
-                    onClick={() => updateUserStatus(user)}
-                  >
-                    Desactivar
-                  </DeactivateBtn>
-                ) : (
-                  <ActivateBtn
-                    data-testid="status-activar"
-                    onClick={() => updateUserStatus(user)}
-                  >
-                    Activar
-                  </ActivateBtn>
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
+          {filteredUsers
+            ? filteredUsers.map((user) => (
+                <TableRow key={user.id}>
+                  <TableCellNames>{user.name}</TableCellNames>
+                  <TableCell>{user.dni}</TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.status}</TableCell>
+                  <TableCell>
+                    {user.status === 'ACTIVE' ? (
+                      <DeactivateBtn
+                        data-testid="status-desactivar"
+                        onClick={() => updateUserStatus(user)}
+                      >
+                        Desactivar
+                      </DeactivateBtn>
+                    ) : (
+                      <ActivateBtn
+                        data-testid="status-activar"
+                        onClick={() => updateUserStatus(user)}
+                      >
+                        Activar
+                      </ActivateBtn>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))
+            : 'Error'}
         </TableBody>
       </Table>
     </UserListContainer>
