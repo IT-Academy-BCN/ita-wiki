@@ -25,7 +25,7 @@ on:
         default: "1.0.0"
 
 jobs:
-  manual_deploy:
+  create_pr:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
