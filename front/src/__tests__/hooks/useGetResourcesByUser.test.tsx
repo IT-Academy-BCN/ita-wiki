@@ -18,7 +18,7 @@ describe('useGetResourcesByUser', () => {
 
     waitFor(() => {
       expect(result.current.isLoading).toBeFalsy()
-      expect(result.current.error).toBeNull()
+      expect(result.current.isError).toBeNull()
       expect(result.current.data).toEqual([
         { id: 1, title: 'Resource 1' },
         { id: 2, title: 'Resource 2' },
