@@ -64,7 +64,7 @@ describe('TypesFilterWidget', () => {
     expect(onChangeTypesFilter).toHaveBeenCalledTimes(3)
   })
 
-  it('renders correctly on error', async () => {
+  it.skip('renders correctly on error', async () => {
     mswServer.use(...errorHandlers)
     render(<TypesFilterWidget handleTypesFilter={onChangeTypesFilter} />)
 

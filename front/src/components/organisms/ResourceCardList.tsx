@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
 import styled from 'styled-components'
 import { FC } from 'react'
 import { FlexBox, dimensions } from '../../styles'
@@ -35,17 +33,17 @@ type TResourceCardList = {
   filters: TFilters
   sortOrder: SortOrder
   handleAccessModal: () => void
-  handleSortByVotes: () => void
-  handleSortByDates: () => void
   isSortByVotesActive: boolean
   onSelectedSortOrderChange: (selectedSortOrder: Array<TResource>) => void
 }
 
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
+
   handleSortByVotes,
   handleSortByDates,
   onSelectedSortOrderChange,
+
   sortOrder,
   filters,
   isSortByVotesActive,

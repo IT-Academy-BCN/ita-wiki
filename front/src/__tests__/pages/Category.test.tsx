@@ -86,7 +86,9 @@ it('create new resource modal opens and closes correctly', () => {
   render(<Category />)
 
   fireEvent.click(screen.getByText('+ Crear nou recurs'))
+
   expect(screen.getByText(/Nou Recurs/)).toBeInTheDocument()
+
 })
 
 it('modal opens and closes correctly when user is not logged', async () => {
@@ -154,7 +156,7 @@ it('sorts resources by date in descending order', () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByText('Fecha'))
+  fireEvent.click(screen.getByText(/Data/i))
 
   const { result } = renderHook(() => useSortByDate(items, 'date', 'desc'))
 
@@ -201,7 +203,7 @@ it('sorts resources by votes in ascending order', () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByText('Votos'))
+  fireEvent.click(screen.getByText(/Vots/i))
 
   const { result } = renderHook(() => useSortByVotes(votes, 'asc'))
   const sortedResources = result.current.sortedVotes
@@ -210,6 +212,7 @@ it('sorts resources by votes in ascending order', () => {
 
   expect(voteCounts).toEqual([0, 3, 7])
 })
+
 
 it('changes Votos and Fecha styles on click', () => {
   render(<Category />)
