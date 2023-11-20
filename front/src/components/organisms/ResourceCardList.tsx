@@ -41,8 +41,6 @@ type TResourceCardList = {
 
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
-  handleSortByVotes,
-  handleSortByDates,
   onSelectedSortOrderChange,
   sortOrder,
   filters,
