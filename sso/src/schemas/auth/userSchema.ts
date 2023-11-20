@@ -1,5 +1,5 @@
-import { z } from '../openapi/zod'
-import { dniSchema } from './dniSchema'
+import { z } from '../../openapi/zod'
+import { dniSchema } from '../dniSchema'
 
 export const userSchema = z.object({
   id: z.string().cuid(),
@@ -9,11 +9,3 @@ export const userSchema = z.object({
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 })
-
-export const registerSchema = userSchema.pick({
-  dni: true,
-  email: true,
-  password: true,
-})
-
-export type UserRegister = z.infer<typeof userSchema>
