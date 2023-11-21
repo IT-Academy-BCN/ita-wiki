@@ -34,6 +34,7 @@
   "recordar/cambiar": "Recordar/cambiar contraseña",
   "no tienes una cuenta?": "¿No tienes una cuenta?, crear una",
 
+  "Editar recurso": "Editar recurso",
   "Eliminar de favoritos": "Eliminar de favoritos",
   "Añadir a favoritos": "Añadir a favoritos",
 
@@ -45,6 +46,9 @@
   "para añadir recursos favoritos": " para añadir recursos favoritos",
   "No tienes recursos favoritos": "No tienes recursos favoritos",
   "Algo ha ido mal...": "Algo ha ido mal...",
+  "Mis recursos": "Mis recursos",
+  "Tus recursos": "Tus recursos",
+  "No has subido ningún recurso": "No has subido ningún recurso",
 
   "Temas": "Temas",
   "Usuarios": "Usuarios",
@@ -78,5 +82,13 @@
   "Error 403 - Acceso denegado": "Acceso denegado. No tienes los permisos necesarios para realizar la operación.",
   "Error 404 - No se puede guardar": "Error al guardar en la base de datos. Por favor, inténtalo de nuevo y si el error persiste, contacta con el administrador.",
   "Error 405 - Id de usuario inválido": "Identificador de usuario no válido.",
-  "Error 500 - Error bbdd": "Error en la base de datos. Por favor, inténtalo más tarde."
+  "Error 500 - Error bbdd": "Error en la base de datos. Por favor, inténtalo más tarde.",
+
+  "Volver": "Volver",
+  "Cerrar sesión": "Cerrar sesión",
+  "Sin imagen de usuario": "Sin imagen de usuario",
+  "Aportaciones": "Aportaciones",
+  "Votos recibidos": "Votos recibidos",
+  "Favoritos guardados": "Favoritos guardados",
+  "n/d": "n/d"
 }

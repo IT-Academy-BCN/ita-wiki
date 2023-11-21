@@ -56,7 +56,7 @@ export const UserButton: React.FC = () => {
       {user && (
         <AvatarImage
           data-testid="avatarImageUser"
-          src={user.avatar ? user.avatar : userAvatar}
+          src={user.avatarId ? user.avatarId : userAvatar}
           alt="Avatar"
           ref={avatarRef}
           onClick={handleProfileAccess}

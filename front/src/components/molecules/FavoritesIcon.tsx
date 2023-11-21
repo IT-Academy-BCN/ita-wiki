@@ -8,9 +8,14 @@ import { TFavorites, TResource } from '../../types'
 type TResourceFav = {
   resourceId: string
   isFavorite: boolean
+  fromProfile?: boolean
 }
 
-export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
+export const FavoritesIcon = ({
+  resourceId,
+  isFavorite,
+  fromProfile,
+}: TResourceFav) => {
   const queryClient = useQueryClient()
   const { t } = useTranslation()
 
@@ -20,7 +25,17 @@ export const FavoritesIcon = ({ resourceId, isFavorite }: TResourceFav) => {
       const queryCacheGetResources = queryClient
         .getQueryCache()
         .findAll(['getResources'])
-      const queryKeys = queryCacheGetResources.map((q) => q.queryKey)
+
+      const queryCacheGetResourcesByUser = queryClient
+        .getQueryCache()
+        .findAll(['getResourcesByUser'])
+
+      const allQueryKeys = !fromProfile
+        ? queryCacheGetResources
+        : queryCacheGetResources.concat(queryCacheGetResourcesByUser)
+
+      const queryKeys = allQueryKeys.map((q) => q.queryKey)
+
       queryKeys.forEach((queryKey) => {
         queryClient.setQueryData(
           queryKey,

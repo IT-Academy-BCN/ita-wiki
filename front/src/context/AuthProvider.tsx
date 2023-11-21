@@ -9,9 +9,10 @@ import React, {
 import { urls } from '../constants'
 
 type TUser = {
+  id?: string
   name: string
-  avatar: string
-  email: string
+  avatarId: string
+  email?: string
   role?: 'ADMIN' | 'REGISTERED' | 'MENTOR'
 } | null
 

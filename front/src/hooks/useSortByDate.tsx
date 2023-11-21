@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
-
-type SortOrder = 'asc' | 'desc'
+import { TSortOrder } from '../types'
 
 export const useSortByDate = <T extends Record<string, unknown>>(
   items: T[] | undefined,
   sortBy: keyof T,
-  sortOrder: SortOrder = 'desc'
+  sortOrder: TSortOrder = 'desc'
 ) => {
   const [sortedItems, setSortedItems] = useState<T[]>([])
 

@@ -34,6 +34,7 @@
   "recordar/cambiar": "Remember/change password",
   "no tienes una cuenta?": "Don't have an account?, create one",
 
+  "Editar recurso": "Edit resource",
   "Eliminar de favoritos": "Remove from favorites",
   "Añadir a favoritos": "Add to favorites",
 
@@ -45,6 +46,9 @@
   " para añadir recursos favoritos": " to add favorite resources",
   "No tienes recursos favoritos": "There are no favorite resources",
   "Algo ha ido mal...": "Something went wrong...",
+  "Mis recursos": "My resources",
+  "Tus recursos": "Your resources",
+  "No has subido ningún recurso": "You do not have resources",
 
   "Temas": "Topics",
   "Usuarios": "Users",
@@ -78,5 +82,13 @@
   "Error 403 - Acceso denegado": "Access denied. You do not have the necessary permissions to perform the operation.",
   "Error 404 - No se puede guardar": "Error saving to database. Please try again and if the error persists, contact the administrator.",
   "Error 405 - Id de usuario inválido": "Invalid user ID.",
-  "Error 500 - Error bbdd": "Database error. Please try again later."
+  "Error 500 - Error bbdd": "Database error. Please try again later.",
+
+  "Volver": "Back",
+  "Cerrar sesión": "Logout",
+  "Sin imagen de usuario": "No user image",
+  "Aportaciones": "Contributions",
+  "Votos recibidos": "Votes received",
+  "Favoritos guardados": "Saved favorites",
+  "n/d": "n/a"
 }
