@@ -28,7 +28,7 @@ import {
 import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
 
-import { TFilters, TResource, TSortOrder } from '../types'
+import { TFilters, TResource} from '../types'
 
 
 const Container = styled(FlexBox)`
