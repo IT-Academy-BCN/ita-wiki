@@ -841,6 +841,14 @@ paths:
                 - NOT_SEEN
           required: false
           description: Status to filter by
+        - in: query
+          name: search
+          schema:
+            type: string
+            minLength: 2
+          required: false
+          description: Search query to filter by
+          example: tailwind
       responses:
         "200":
           description: Sucessful operation
@@ -967,25 +975,11 @@ paths:
                     - voteCount
                     - isFavorite
         "400":
-          description: Validation error
+          description: Zod validation error
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/ValidationError"
-                  - example:
-                      message:
-                        - code: invalid_enum_value
-                          received: BLO
-                          options:
-                            - BLOG
-                            - VIDEO
-                            - TUTORIAL
-                          path:
-                            - query
-                            - resourceType
-                          message: Invalid enum value. Expected 'BLOG' | 'VIDEO' | 'TUTORIAL', received
-                            'BLO'
+                $ref: "#/components/schemas/ValidationError"
         "498":
           description: Invalid token
           content:
