@@ -100,7 +100,7 @@ describe('ResourceForm', () => {
     })
 
     fireEvent.change(screen.getByLabelText(/url/i), {
-      target: { value: 'https://dev.itadirectory.eurecatacademy.org/' },
+      target: { value: 'https://dev.itawiki.eurecatacademy.org/' },
     })
 
     const temaSelect = screen.getByLabelText(/tema/i) as HTMLSelectElement

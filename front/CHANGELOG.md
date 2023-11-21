@@ -2,7 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.3.1] - 2023-11-20
+## [0.4.0] - 2023-11-21
+
+### Changed
+
+- Updated api url to itawiki
+
+### Added
+
+- Laravel logo to Categories list
+- Category name to Category page (translation and test)
+
+## [0.3.0] - 2023-11-20
 
 ### Added
 
