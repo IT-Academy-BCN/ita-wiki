@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.1] - 2023-11-21
+
+### Fixed
+
+- Updated border-radius to use fixed values from dimensions.
+
 ## [0.4.0] - 2023-11-21
 
 ### Changed
