@@ -13,6 +13,7 @@ import {
   ResourceCardList,
   ResourceForm,
   TopicsRadioWidget,
+  VotesDateController
   } from '../components/organisms'
 import { Button, Icon, Input, Text, Title } from '../components/atoms'
 
@@ -630,48 +631,12 @@ const Category: FC = () => {
                     {t('Filtrar')}
                   </FilterButton>
                 </TitleResourcesContainer>
-                <VotesDateContainer>
-                  <FlexBox direction="row" gap="15px">
-                    <FlexBox direction="row">
-                      <StyledVotesToggle
-                        onClick={() => {
-                          handleSortByVotes()
-                          handleSortOrder()
-                          setSelectedOption('Votos')
-                        }}
-                      >
-                        <Text
-                          fontWeight={
-                            selectedOption === 'Votos' ? 'bold' : 'normal'
-                          }
-                        >
-                          Votos
-                        </Text>
-                      </StyledVotesToggle>
-                      {selectedOption === 'Votos' &&
-                        (sortOrder === 'desc' ? (
-                          <Icon name="arrow_upward" />
-                        ) : (
-                          <Icon name="arrow_downward" />
-                        ))}
-                    </FlexBox>
-                    <StyledDateToggle
-                      onClick={() => {
-                        handleSortByDates()
-                        handleSortOrder()
-                        setSelectedOption('Fecha')
-                      }}
-                    >
-                      <Text
-                        fontWeight={
-                          selectedOption === 'Fecha' ? 'bold' : 'normal'
-                        }
-                      >
-                       Fecha
-                      </Text>
-                    </StyledDateToggle>
-                  </FlexBox>
-                </VotesDateContainer>
+                <VotesDateController
+                  sortOrder={sortOrder}
+                  handleSortOrder={handleSortOrder}
+                  handleSortByVotes={handleSortByVotes}
+                  handleSortByDates={handleSortByDates}
+                />
                 <ScrollDiv>
                   <NewResourceButton
                     onClick={
