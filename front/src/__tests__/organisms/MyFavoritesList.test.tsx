@@ -16,6 +16,12 @@ beforeEach(() => {
       useAuth: vi.fn(),
     }
   })
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'TestName',
+      avatarId: 'TestAvatar',
+    },
+  } as TAuthContext)
   vi.mock('react-router-dom', async () => {
     const actual: Record<number, unknown> = await vi.importActual(
       'react-router-dom'
@@ -36,12 +42,6 @@ afterAll(() => mswServer.close())
 
 describe('MyFavoritesList', () => {
   it('renders correctly', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'TestName',
-        avatar: 'TestAvatar',
-      },
-    } as TAuthContext)
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)
@@ -72,12 +72,6 @@ describe('MyFavoritesList', () => {
   })
 
   it('shows no favorites message when the user has no favorite resources for a category', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'TestName',
-        avatar: 'TestAvatar',
-      },
-    } as TAuthContext)
     vi.mocked(useParams).mockReturnValue({
       slug: 'slugWithoutFavs',
     } as Readonly<Params>)
@@ -97,12 +91,6 @@ describe('MyFavoritesList', () => {
 
   it('shows correct title when resize to mobile', async () => {
     global.innerWidth = 600
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'TestName',
-        avatar: 'TestAvatar',
-      },
-    } as TAuthContext)
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)
@@ -115,12 +103,6 @@ describe('MyFavoritesList', () => {
 
   it('shows correct title when resize to desktop', async () => {
     global.innerWidth = 1024
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'TestName',
-        avatar: 'TestAvatar',
-      },
-    } as TAuthContext)
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)
@@ -132,12 +114,6 @@ describe('MyFavoritesList', () => {
   })
 
   it('renders correctly on error', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'TestName',
-        avatar: 'TestAvatar',
-      },
-    } as TAuthContext)
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)

@@ -19,7 +19,7 @@ beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Name',
-      avatar: 'Avatar',
+      avatarId: 'Avatar',
     },
   } as TAuthContext)
 })
@@ -45,7 +45,7 @@ it('renders correctly', () => {
   expect(screen.getByTestId('types-filter')).toBeInTheDocument()
   expect(screen.getByTestId('status-filter')).toBeInTheDocument()
   expect(screen.getByTestId('resource-list')).toBeInTheDocument()
-  expect(screen.getByText('Mis recursos')).toBeInTheDocument()
+  expect(screen.getByText('Els meus recursos')).toBeInTheDocument()
   expect(screen.getByText('Recursos favorits')).toBeInTheDocument()
 })
 
@@ -53,7 +53,7 @@ it('renders Navbar for logged in users', () => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Name',
-      avatar: 'Avatar',
+      avatarId: 'Avatar',
     },
   } as TAuthContext)
 
@@ -138,7 +138,7 @@ it('status filter widget appears for users who are logged in', () => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Name',
-      avatar: 'Avatar',
+      avatarId: 'Avatar',
     },
   } as TAuthContext)
   render(<Category />)

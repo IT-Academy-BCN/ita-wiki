@@ -7,12 +7,8 @@ import { TResourcesGetParamsSchema } from '../../schemas/resource/resourcesGetPa
 
 export const getResources: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User | null
-  const {
-    resourceTypes,
-    topic: topicId,
-    slug,
-    status,
-  } = ctx.query as TResourcesGetParamsSchema
+  const { resourceTypes, topics, slug, status } =
+    ctx.query as TResourcesGetParamsSchema
   let statusCondition: Prisma.Enumerable<Prisma.ResourceWhereInput> = {}
   if (user && status) {
     const viewedFilter = { userId: user.id }
@@ -25,7 +21,7 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
   const where: Prisma.ResourceWhereInput = {
     topics: {
       some: {
-        topic: { category: { slug }, id: topicId },
+        topic: { category: { slug }, id: { in: topics } },
       },
     },
     resourceType: { in: resourceTypes },

@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
-import { TVoteCount } from '../types'
-
-type SortOrderByVotes = 'desc' | 'asc'
+import { TVoteCount, TSortOrder } from '../types'
 
 export const useSortByVotes = <T extends { voteCount: TVoteCount }>(
   votes: T[] | undefined,
-  sortOrderByVotes: SortOrderByVotes = 'desc'
+  sortOrderByVotes: TSortOrder = 'desc'
 ) => {
   const [sortedVotes, setSortedVotes] = useState<T[]>([])
 

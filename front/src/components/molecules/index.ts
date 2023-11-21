@@ -3,7 +3,7 @@ import { CreateAuthor } from './CreateAuthor'
 import { FavoritesIcon } from './FavoritesIcon'
 import InputGroup from './InputGroup'
 import { Modal } from './Modal'
-import { ResourceTitleLink} from './ResourceTitleLink'
+import { ResourceTitleLink } from './ResourceTitleLink'
 import { StatusFilterWidget } from './StatusFilterWidget'
 import SelectGroup from './SelectGroup'
 import TextareaGroup from './TextareaGroup'
@@ -33,4 +33,3 @@ export {
   TopicsEditableItem,
   UserButton,
 }
-

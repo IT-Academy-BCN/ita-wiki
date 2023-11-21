@@ -1,7 +1,7 @@
-import { FC, useState } from 'react' 
-import styled from 'styled-components' 
+import { FC, useState } from 'react'
+import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { FlexBox, colors, device, dimensions  } from '../../styles'
+import { FlexBox, colors, device, dimensions } from '../../styles'
 import { Icon, Text } from '../atoms'
 
 const VotesDateContainer = styled(FlexBox)`
@@ -15,7 +15,7 @@ const VotesDateContainer = styled(FlexBox)`
     width: 100%;
     padding-right: ${dimensions.spacing.base};
   }
-`;
+`
 
 const StyledVotesToggle = styled.div`
   cursor: pointer;
@@ -24,7 +24,7 @@ const StyledVotesToggle = styled.div`
   &:active {
     transform: scale(0.96);
   }
-`;
+`
 
 const StyledDateToggle = styled.div`
   color: ${colors.black.black1};
@@ -34,11 +34,11 @@ const StyledDateToggle = styled.div`
   &:active {
     transform: scale(0.96);
   }
-`;
+`
 
 type TVotesDate = {
   sortOrder: string
-  handleSortOrder: () => void 
+  handleSortOrder: () => void
   handleSortByVotes: () => void
   handleSortByDates: () => void
 }
@@ -47,18 +47,20 @@ const VotesDateController: FC<TVotesDate> = ({
   sortOrder,
   handleSortOrder,
   handleSortByVotes,
-  handleSortByDates
-}) => {  
+  handleSortByDates,
+}) => {
   const { t } = useTranslation()
 
-  const [selectedOption, setSelectedOption] = useState<'Fecha' | 'Votos' | null>(null)
+  const [selectedOption, setSelectedOption] = useState<
+    'Fecha' | 'Votos' | null
+  >(null)
 
   return (
     <VotesDateContainer>
       <FlexBox direction="row" gap="15px">
         <FlexBox direction="row">
-          <StyledVotesToggle 
-            onClick={() => { 
+          <StyledVotesToggle
+            onClick={() => {
               handleSortByVotes()
               handleSortOrder()
               setSelectedOption('Votos')
@@ -68,42 +70,39 @@ const VotesDateController: FC<TVotesDate> = ({
               {t('Votos')}
             </Text>
           </StyledVotesToggle>
-          {selectedOption === 'Votos' && (
-            sortOrder === 'desc' ? (
+          {selectedOption === 'Votos' &&
+            (sortOrder === 'desc' ? (
               <Icon name="arrow_upward" />
             ) : (
               <Icon name="arrow_downward" />
-            )
-          )}
+            ))}
         </FlexBox>
         <StyledDateToggle
-          onClick={() => { 
+          onClick={() => {
             handleSortByDates()
             handleSortOrder()
             setSelectedOption('Fecha')
           }}
         >
-          <Text 
-            fontWeight={selectedOption === 'Fecha' ? 'bold' : 'normal'}>
+          <Text fontWeight={selectedOption === 'Fecha' ? 'bold' : 'normal'}>
             {t('Fecha')}
           </Text>
         </StyledDateToggle>
-        {selectedOption === 'Fecha' && (
-          sortOrder === 'desc' ? (
-            <Icon 
-                name="arrow_upward" 
-                style={{ marginLeft: '-15px' }}
+        {selectedOption === 'Fecha' &&
+          (sortOrder === 'desc' ? (
+            <Icon
+              name="arrow_upward"
+              style={{ marginLeft: '-15px', marginRight: '-5px' }}
             />
           ) : (
-            <Icon 
-                name="arrow_downward" 
-                style={{ marginLeft: '-15px' }} 
+            <Icon
+              name="arrow_downward"
+              style={{ marginLeft: '-15px', marginRight: '-5px' }}
             />
-          )
-        )}
+          ))}
       </FlexBox>
     </VotesDateContainer>
-  ) 
+  )
 }
 
 export { VotesDateController }

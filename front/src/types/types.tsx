@@ -36,15 +36,20 @@ export type TFavorites = {
   url: string
   resourceType: string
   userId: string
+  user?: {
+    name: string
+    email: string
+  }
   createdAt: string
   updatedAt: string
-  status: 'NOT_SEEN' | 'SEEN'
+  status: string
   voteCount: {
     upvote: number
     downvote: number
     total: number
+    userVote: number
   }
-  isFavorite: boolean
+  topics: TTopicResource[]
 }
 export type TUserData = {
   id: string
@@ -65,7 +70,8 @@ export type TResource = {
   url: string
   createdAt: string
   updatedAt: string
-  user: {
+  userId?: string
+  user?: {
     name: string
     email: string
   }
@@ -133,12 +139,14 @@ export type TCardResource = {
   editable: boolean
   isFavorite: boolean
   handleAccessModal: () => void
+  fromProfile?: boolean
 }
 
 export type TVoteCounter = {
   voteCount: TVoteCount
   resourceId: string
   handleAccessModal: () => void
+  fromProfile?: boolean
 }
 
 export type TVoteCount = {
@@ -164,4 +172,7 @@ export type TResourceTitleLink = {
   url: string
   id: string
 }
+
+export type TSortOrder = 'asc' | 'desc'
+
 export type TForm = z.infer<typeof UserRegisterSchema>

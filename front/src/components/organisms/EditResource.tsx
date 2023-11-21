@@ -1,7 +1,8 @@
-import { useState } from 'react'
 import styled from 'styled-components'
-import { FlexBox, colors, dimensions } from '../../styles'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import ResourceForm from './ResourceForm'
+import { FlexBox, colors, dimensions } from '../../styles'
 import { Button } from '../atoms'
 import icons from '../../assets/icons'
 import { Modal } from '../molecules/Modal'
@@ -42,6 +43,7 @@ const EditResource = ({
   topics,
   isInCardResource = false,
 }: TEditResourceProps) => {
+  const { t } = useTranslation()
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   const openModal = () => {
@@ -61,7 +63,7 @@ const EditResource = ({
       <Modal
         isOpen={isModalOpen}
         toggleModal={() => setIsModalOpen(false)}
-        title="Editar Recurso"
+        title={t('Editar recurso')}
         data-testid="modal"
       >
         <ResourceForm
@@ -81,7 +83,11 @@ const EditResource = ({
         </ButtonContainerStyled>
       </Modal>
       <StyledSvg onClick={openModal} isInCardResource={isInCardResource}>
-        <img src={icons.editPen} alt="Editar recurso" data-testid="edit-icon" />
+        <img
+          src={icons.editPen}
+          alt={t('Editar recurso')}
+          data-testid="edit-icon"
+        />
       </StyledSvg>
     </>
   )

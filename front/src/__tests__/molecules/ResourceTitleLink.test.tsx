@@ -18,7 +18,7 @@ vi.mock('../../context/AuthProvider', async () => {
 
 const user = {
   name: 'Hola',
-  avatar: 'Adios',
+  avatarId: 'Adios',
 }
 
 const resourceTitleProps = {
