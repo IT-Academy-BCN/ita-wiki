@@ -584,7 +584,7 @@ const Category: FC = () => {
                   ) : (
                     <>
                       <Title as="h2" fontWeight="bold">
-                        {t('Recursos de')} {state?.name}
+                        {t('Recursos de')} {name: state?.name}
                       </Title>
                       <SearchBar
                         data-testid="inputGroupSearch"

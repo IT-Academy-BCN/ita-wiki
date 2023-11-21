@@ -71,7 +71,7 @@
   "No es posible borrar el tema.": "The topic cannot be deleted.",
 
   "Filtros": "Filters",
-  "Recursos de": "Resources for",
+  "Recursos de (category)": "{{name}} resources",
   "Buscar recurso": "Find resource",
   "Filtrar": "Sort",
   "Votos": "Votes",

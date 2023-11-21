@@ -2,13 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.4.0] - 2023-11-21
+## [0.4.1] - 2023-11-21
 
 ### Added
 
 - New resource search bar UI implementation
 
 ## [0.3.1] - 2023-11-20
+
+### Changed
+
+- Updated api url to itawiki
+
+### Added
+
+- Laravel logo to Categories list
+- Category name to Category page (translation and test)
+
+## [0.3.0] - 2023-11-20
 
 ### Added
 

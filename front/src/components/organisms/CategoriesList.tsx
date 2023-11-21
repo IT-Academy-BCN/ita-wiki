@@ -62,6 +62,7 @@ const categoryImg: Record<string, string> = {
   Python: icons.python, // TODO: Add Python Icon
   React: icons.react, // TODO: Add React Icon
   Spring: icons.spring, // TODO: Add Spring Icon
+  Laravel: icons.laravel, // TODO: Add Spring Icon
 }
 
 export const CategoriesList: FC = () => {

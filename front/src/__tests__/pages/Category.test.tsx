@@ -1,18 +1,29 @@
 import { expect, vi } from 'vitest'
+import { useLocation } from 'react-router-dom'
 import { render, renderHook, screen, fireEvent, waitFor } from '../test-utils'
 import { Category } from '../../pages'
 import { useSortByDate } from '../../hooks/useSortByDate'
 import { useSortByVotes } from '../../hooks/useSortByVotes'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
-vi.mock('react-router-dom', async () => {
-  const actual: Record<number, unknown> = await vi.importActual(
-    'react-router-dom'
-  )
-  return {
-    ...actual,
-    useParams: () => ({ categoryId: 1 }),
-  }
+beforeEach(() => {
+  vi.mock('react-router-dom', async () => {
+    const actual: Record<number, unknown> = await vi.importActual(
+      'react-router-dom'
+    )
+    return {
+      ...actual,
+      useParams: () => ({ categoryId: 1 }),
+      useLocation: vi.fn(),
+    }
+  })
+  vi.mocked(useLocation).mockReturnValue({
+    pathname: '',
+    search: '',
+    hash: '',
+    key: '',
+    state: { name: 'React', id: 1 },
+  })
 })
 
 beforeEach(() => {
@@ -45,6 +56,7 @@ it('renders correctly', () => {
   expect(screen.getByTestId('types-filter')).toBeInTheDocument()
   expect(screen.getByTestId('status-filter')).toBeInTheDocument()
   expect(screen.getByTestId('resource-list')).toBeInTheDocument()
+  expect(screen.getByText('Recursos de React')).toBeInTheDocument()
   expect(screen.getByText('Els meus recursos')).toBeInTheDocument()
   expect(screen.getByText('Recursos favorits')).toBeInTheDocument()
 })
