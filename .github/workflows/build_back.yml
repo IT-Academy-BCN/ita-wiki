@@ -39,9 +39,9 @@ jobs:
         run: |
           git config --global user.name "ITA Wiki bot"
           git config --global user.email "bot@itawiki.com"
-          version=$(grep 'back:' -A 1 ./config/dev.yml | grep version | awk '{print $2}')
-          sed -i "/back:/!b;n;c\  version: \${{ steps.version.outputs.version }}" ./config/dev.yml
-          git add ./config/dev.yml
+          version=$(grep version: ./config/dev/back.yml | awk '{print $2}')
+          sed -i "s/version: $version/version: ${{ steps.version.outputs.version }}/" ./config/dev/back.yml
+          git add ./config/dev/back.yml
           git commit -m "Bump back image to v${{ steps.version.outputs.version }}"
 
       - name: Create Pull Request
