@@ -39,8 +39,8 @@ jobs:
         run: |
           git config --global user.name "ITA Wiki bot"
           git config --global user.email "bot@itawiki.com"
-          version=$(grep 'front:' -A 1 ./config/dev.yml | grep version | awk '{print $2}')
-          sed -i "/front:/!b;n;c\  version: \${{ steps.version.outputs.version }}" ./config/dev.yml
+          version=$(grep version: ./config/dev/front.yml | awk '{print $2}')
+          sed -i "s/version: $version/version: ${{ steps.version.outputs.version }}/" ./config/dev/front.yml
           git add ./config/dev.yml
           git commit -m "Bump front image to v${{ steps.version.outputs.version }}"
 
