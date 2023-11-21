@@ -11,8 +11,8 @@ Welcome to the IT-Academy-BCN's Wiki GitHub repository! We're glad to have you o
 Quicklinks:
 
 - <a href="https://www.figma.com/file/DynJHHUlOiqx3F5h9dtvAW/Projectes-IT-Academy?type=design&node-id=0-1&mode=design&t=8cMyQZFllwXaCZe5-0">Visual design</a>.
-- <a href="https://dev.api.itadirectory.eurecatacademy.org/api/v1/api-docs">Swagger docs</a>.
-- <a href="https://dev.itadirectory.eurecatacademy.org/">Demo front dev</a>.
+- <a href="https://dev.api.itawiki.eurecatacademy.org/api/v1/api-docs">Swagger docs</a>.
+- <a href="https://dev.itawiki.eurecatacademy.org/">Demo front dev</a>.
 
 ### Important procedures and meetings
 
