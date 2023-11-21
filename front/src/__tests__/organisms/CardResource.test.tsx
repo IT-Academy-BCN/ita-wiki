@@ -61,7 +61,7 @@ describe('CardResource component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Test author name',
-        avatar: 'profileAvatar.jpg',
+        avatarId: 'profileAvatar.jpg',
       },
     } as TAuthContext)
     render(<CardResource {...mockCardResource} />)
@@ -82,7 +82,7 @@ describe('CardResource component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Hola',
-        avatar: 'Adios',
+        avatarId: 'Adios',
       },
     } as TAuthContext)
     render(<CardResource {...mockCardResource} editable={false} />)

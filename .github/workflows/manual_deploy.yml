@@ -1,0 +1,51 @@
+name: manual_deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target Environment"
+        required: true
+        default: "dev"
+        type: choice
+        options:
+          - dev
+          - prod
+      service:
+        description: "Service"
+        required: true
+        type: choice
+        options:
+          - front
+          - back
+          - sso
+      version:
+        description: "Version"
+        required: true
+        default: "1.0.0"
+
+jobs:
+  create_pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Update Configuration
+        run: |
+          FILE="./config/${{ inputs.environment }}/${{ inputs.service }}.yml"
+          echo "Updating $FILE with version ${{ inputs.version }}"
+          echo "${{ inputs.service }}:" > $FILE
+          echo "  version: ${{ inputs.version }}" >> $FILE
+
+      - name: Deploy
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Bump ${{ inputs.service }} image version to v${{ inputs.version }}"
+          title: "Bump ${{ inputs.service }} version to v${{ inputs.version }}"
+          body: "This PR updates the ${{ inputs.service }} version in the ${{ inputs.environment }} environment to ${{ inputs.version }}."
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          assignees: ${{ github.actor }}
+          branch: "bump-${{ inputs.service }}-to-v${{ inputs.version }}"
+          delete-branch: true

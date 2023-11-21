@@ -27,7 +27,9 @@ import {
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
-import { TFilters, TResource } from '../types'
+
+import { TFilters, TResource, TSortOrder } from '../types'
+
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -403,25 +405,6 @@ const CloseFilterButton = styled(Button)`
   }
 `
 
-const StyledDateToggle = styled(Text)`
-  color: ${colors.black.black1};
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.96);
-  }
-`
-
-const StyledVotesToggle = styled(Text)`
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.96);
-  }
-`
-
-type SortOrder = 'asc' | 'desc'
-
 const Category: FC = () => {
   const { slug } = useParams()
   const { state } = useLocation()
@@ -442,14 +425,12 @@ const Category: FC = () => {
     status: [],
     topic: topic === 'todos' ? undefined : topic,
   })
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
-  const [selectedOption, setSelectedOption] = useState<'Fecha' | 'Votos'>(
-    'Votos'
-  )
+
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string | null>(null)
   const [selectedSortOrderValue, setSelectedSortOrderValue] = useState<TResource[]>([])
   const { t } = useTranslation()
+
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
@@ -565,9 +546,11 @@ const Category: FC = () => {
             <MainContainer as="main">
               <FiltersContainer data-testid="filters-container">
                 <Title as="h2" fontWeight="bold">
+
                   {t('Filtros')}
                 </Title>
                 <Text fontWeight="bold">{t('Temas')}</Text>
+
                 <ScrollTopics>
                   {slug && (
                     <TopicsRadioWidget
@@ -585,6 +568,7 @@ const Category: FC = () => {
               </FiltersContainer>
               <ResourcesContainer>
                 <TitleResourcesContainer>
+
                   {isSearch ? (
                     <SearchContainer>
                       <Title as="h2" fontWeight="bold">
@@ -691,7 +675,9 @@ const Category: FC = () => {
       <Modal isOpen={isOpen} toggleModal={toggleModal} title={t('Nuevo Recurso')}>
         <ResourceForm selectOptions={topicsForResourceForm ?? []} />
         <Button outline onClick={toggleModal}>
+
           {t('Cancelar')}
+
         </Button>
       </Modal>
       {/* RESTRICTED ACCES MODAL */}

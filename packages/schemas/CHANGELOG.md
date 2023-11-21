@@ -2,13 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.2.0] - 2023-11-20
+## [0.2.2] - 2023-11-16
 
-### Changed
+### Fixed
 
-- Modify resources get controller to accept an array of topicIds.
+- Fix password validation and error-message.
 
-## [0.1.0] - 2023-11-14
+## [0.2.1] - 2023-11-16
 
 ### Added
 

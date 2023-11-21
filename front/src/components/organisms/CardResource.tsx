@@ -21,7 +21,6 @@ const CardContainerStyled = styled(FlexBox)`
 `
 
 const UserWidgets = styled(FlexBox)`
-  
   top: ${dimensions.spacing.xxxs};
   right: ${dimensions.spacing.xxs};
   padding: 2px;
@@ -66,6 +65,7 @@ const CardResource = ({
   topics,
   isFavorite,
   handleAccessModal,
+  fromProfile,
   ...rest
 }: TCardResource) => {
   const { user } = useAuth()
@@ -79,22 +79,27 @@ const CardResource = ({
       id={id}
       {...rest}
     >
-
       {voteCount && (
         <CounterContainerStyled>
           <VoteCounter
             voteCount={voteCount}
             resourceId={id}
             handleAccessModal={handleAccessModal || undefined}
+            fromProfile={fromProfile}
           />
         </CounterContainerStyled>
       )}
 
       <FlexBoxStyled align="start" justify="space-between" gap="4px">
-        <ResourceTitleLink description={description} title={title} url={url} id={id}/>
+        <ResourceTitleLink
+          description={description}
+          title={title}
+          url={url}
+          id={id}
+        />
         <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
       </FlexBoxStyled>
-      
+
       {user ? (
         <UserWidgets direction="row" gap="0.5rem">
           {editable && (
@@ -109,10 +114,13 @@ const CardResource = ({
               {...rest}
             />
           )}
-          <FavoritesIcon resourceId={id} isFavorite={isFavorite} />
+          <FavoritesIcon
+            resourceId={id}
+            isFavorite={isFavorite}
+            fromProfile={fromProfile}
+          />
         </UserWidgets>
       ) : null}
-
     </CardContainerStyled>
   )
 }

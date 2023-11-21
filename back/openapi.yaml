@@ -822,13 +822,13 @@ paths:
           required: false
           description: Resource types to filter by
         - in: query
-          name: topic
+          name: topics
           schema:
-            type: string
-            example: cln2u09xo0037s6wvbf6t9jfg
+            type: array
+            items:
+              type: string
+              example: cln2u09xo0037s6wvbf6t9jfg
           required: false
-          description: ID of the topic for which to retrieve resources. If not provided,
-            resources for ALL topics are fetched.
         - in: query
           name: status
           schema:

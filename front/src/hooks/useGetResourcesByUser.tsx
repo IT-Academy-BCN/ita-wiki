@@ -5,10 +5,10 @@ import { useAuth } from '../context/AuthProvider'
 
 export const useGetResourcesByUser = (categorySlug?: string) => {
   const { user } = useAuth()
-  const { isLoading, error, data } = useQuery<TResource[]>({
+  const { isLoading, isError, data } = useQuery<TResource[]>({
     queryKey: ['getResourcesByUser', categorySlug],
     queryFn: () => getResourcesByUser(categorySlug),
     enabled: !!user,
   })
-  return { isLoading, error, data }
+  return { isLoading, isError, data }
 }
