@@ -201,19 +201,6 @@ const InputSearch = styled.input`
   }
 `
 
-const VotesDateContainer = styled(FlexBox)`
-  display: none;
-
-  @media ${device.Tablet} {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    direction: row;
-    width: 100%;
-    padding-right: ${dimensions.spacing.base};
-  }
-`
-
 const ScrollDiv = styled(FlexBox)`
   overflow: hidden;
   overflow-x: auto;
@@ -403,23 +390,6 @@ const CloseFilterButton = styled(Button)`
   }
 `
 
-const StyledDateToggle = styled(Text)`
-  color: ${colors.black.black1};
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.96);
-  }
-`
-
-const StyledVotesToggle = styled(Text)`
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.96);
-  }
-`
-
 type SortOrder = 'asc' | 'desc'
 
 const Category: FC = () => {
@@ -443,9 +413,7 @@ const Category: FC = () => {
     topic: topic === 'todos' ? undefined : topic,
   })
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
-  const [selectedOption, setSelectedOption] = useState<'Fecha' | 'Votos'>(
-    'Votos'
-  )
+  
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string | null>(null)
   const [selectedSortOrderValue, setSelectedSortOrderValue] = useState<TResource[]>([])
