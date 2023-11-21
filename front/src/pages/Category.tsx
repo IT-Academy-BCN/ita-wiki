@@ -501,7 +501,9 @@ const Category: FC = () => {
               <ResourcesContainer>
                 <TitleResourcesContainer>
                   <Title as="h2" fontWeight="bold">
-                    {translation('Recursos de', { name: state?.name })}
+                    {translation('Recursos de (category)', {
+                      name: state?.name,
+                    })}
                   </Title>
                   <SearchBar
                     data-testid="inputGroupSearch"
