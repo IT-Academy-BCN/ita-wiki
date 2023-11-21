@@ -35,3 +35,5 @@ jobs:
           script: |
             echo "Deploying Back Version: ${{ steps.versions.outputs.back_version }}"
             echo "Deploying Front Version: ${{ steps.versions.outputs.front_version }}"
+            cd ${{ secrets.WIKI_PATH }}/dev
+            bash deploy.sh back ${{ steps.versions.outputs.back_version }} ${{ steps.versions.outputs.front_version }}
