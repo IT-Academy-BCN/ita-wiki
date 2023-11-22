@@ -33,7 +33,7 @@ jobs:
         with:
           context: sso
           push: true
-          tags: kevinmamaqi/ita-wiki-sso:v${{ steps.version.outputs.version }}
+          tags: kevinmamaqi/ita-sso:v${{ steps.version.outputs.version }}
 
       - name: Update version
         run: |
