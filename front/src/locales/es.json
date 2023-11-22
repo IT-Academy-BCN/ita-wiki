@@ -71,7 +71,7 @@
   "No es posible borrar el tema.": "No es posible borrar el tema.",
 
   "Filtros": "Filtros",
-  "Recursos de (category)": "Recursos de {{name}}",
+  "Recursos de": "Recursos de",
   "Buscar recurso": "Buscar recurso",
   "Filtrar": "Filtrar",
   "Votos": "Votos",
@@ -90,5 +90,8 @@
   "Aportaciones": "Aportaciones",
   "Votos recibidos": "Votos recibidos",
   "Favoritos guardados": "Favoritos guardados",
-  "n/d": "n/d"
+  "n/d": "n/d",
+
+  "Mostrando":"Mostrando",
+  "resultados para":"resultados para"
 }

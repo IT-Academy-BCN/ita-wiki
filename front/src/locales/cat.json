@@ -71,7 +71,7 @@
   "No es posible borrar el tema.": "No és possible esborrar el tema.",
 
   "Filtros": "Filtres",
-  "Recursos de (category)": "Recursos de {{name}}",
+  "Recursos de": "Recursos de",
   "Buscar recurso": "Buscar recurs",
   "Filtrar": "Filtrar",
   "Votos": "Vots",
@@ -90,5 +90,8 @@
   "Aportaciones": "Aportacions",
   "Votos recibidos": "Vots rebuts",
   "Favoritos guardados": "Favorits guardats",
-  "n/d": "n/d"
+  "n/d": "n/d",
+
+  "Mostrando":"Mostrant",
+  "resultados para":"resultat per"
 }

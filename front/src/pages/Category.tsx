@@ -1,7 +1,7 @@
 import styled, { keyframes } from 'styled-components'
 import { useLocation, useParams } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
 import {
   DesktopSideMenu,
@@ -27,7 +27,8 @@ import {
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
-import { TFilters, TSortOrder } from '../types'
+
+import { TFilters, TResource } from '../types'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -135,6 +136,7 @@ const ResourcesContainer = styled(FlexBox)`
 
 const TitleResourcesContainer = styled(FlexBox)`
   justify-content: space-between;
+  align-items: flex-start;
   flex-direction: row;
   width: 100%;
   padding: ${dimensions.spacing.none};
@@ -171,6 +173,31 @@ const SearchBar = styled(InputGroup)`
       scale: 1.8;
       color: ${colors.gray.gray3};
     }
+  }
+`
+
+const SearchContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`
+
+const InputSearchBar = styled.div`
+  display: none;
+
+  @media ${device.Tablet} {
+    display: flex;
+    height: ${dimensions.spacing.lg};
+  }
+`
+
+const InputSearch = styled.input`
+  @media ${device.Tablet} {
+    width: 100%;
+    margin-right: ${dimensions.spacing.xxxs};
+    border-radius: ${dimensions.borderRadius.base};
+    border: 1px solid ${colors.gray.gray3};
+    padding: ${dimensions.spacing.base};
   }
 `
 
@@ -288,6 +315,18 @@ const FilterButton = styled(Button)`
     display: none;
   }
 `
+const CancelSearchButton = styled(Button)`
+  color: ${colors.gray.gray3};
+  background-color: ${colors.white};
+  border: 1px solid ${colors.gray.gray3};
+  width: fit-content;
+  padding: ${dimensions.spacing.base} ${dimensions.spacing.xs};
+
+  &:hover {
+    background-color: ${colors.white};
+    border: 1px solid ${colors.primary};
+  }
+`
 
 const slideInAnimation = keyframes`
   0% {
@@ -351,11 +390,12 @@ const CloseFilterButton = styled(Button)`
   }
 `
 
+type SortOrder = 'asc' | 'desc'
+
 const Category: FC = () => {
   const { slug } = useParams()
   const { state } = useLocation()
   const { user } = useAuth()
-  const { t: translation } = useTranslation()
 
   //  ==> MODAL STATES
   const [isOpen, setIsOpen] = useState(false)
@@ -372,7 +412,14 @@ const Category: FC = () => {
     status: [],
     topic: topic === 'todos' ? undefined : topic,
   })
-  const [sortOrder, setSortOrder] = useState<TSortOrder>('desc')
+
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
+  const [isSearch, setIsSearch] = useState<boolean>(false)
+  const [searchValue, setSearchValue] = useState<string | null>(null)
+  const [selectedSortOrderValue, setSelectedSortOrderValue] = useState<
+    TResource[]
+  >([])
+  const { t } = useTranslation()
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
@@ -438,20 +485,30 @@ const Category: FC = () => {
     setIsSortByVotesActive(false)
   }
 
+  const toggleSearch = () => {
+    setIsSearch(!isSearch)
+  }
+
+  const handleSelectedSortOrderChange = (
+    selectedSortOrder: Array<TResource>
+  ) => {
+    setSelectedSortOrderValue(selectedSortOrder)
+  }
+
   const { data: fetchedTopics } = useGetTopics(slug ?? '')
 
   const mappedTopicsForFilterWidget = [
     { value: 'todos', label: 'Todos' },
-    ...(fetchedTopics?.map((t) => {
-      const selectOptions = { id: t.id, value: t.slug, label: t.name }
+    ...(fetchedTopics?.map((tp) => {
+      const selectOptions = { id: tp.id, value: tp.slug, label: tp.name }
       return selectOptions
     }) ?? []),
   ]
 
-  const topicsForResourceForm = fetchedTopics?.map((t) => ({
-    id: t.id,
-    value: t.slug,
-    label: t.name,
+  const topicsForResourceForm = fetchedTopics?.map((tp) => ({
+    id: tp.id,
+    value: tp.slug,
+    label: tp.name,
   }))
 
   return (
@@ -465,7 +522,7 @@ const Category: FC = () => {
           />
           <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
-              {translation('Temas')}
+              {t('Temas')}
             </Title>
             <StyledSelectGroup
               defaultValue={topic}
@@ -480,9 +537,10 @@ const Category: FC = () => {
             <MainContainer as="main">
               <FiltersContainer data-testid="filters-container">
                 <Title as="h2" fontWeight="bold">
-                  {translation('Filtros')}
+                  {t('Filtros')}
                 </Title>
-                <Text fontWeight="bold">{translation('Temas')}</Text>
+                <Text fontWeight="bold">{t('Temas')}</Text>
+
                 <ScrollTopics>
                   {slug && (
                     <TopicsRadioWidget
@@ -500,24 +558,54 @@ const Category: FC = () => {
               </FiltersContainer>
               <ResourcesContainer>
                 <TitleResourcesContainer>
-                  <Title as="h2" fontWeight="bold">
-                    {translation('Recursos de (category)', {
-                      name: state?.name,
-                    })}
-                  </Title>
-                  <SearchBar
-                    data-testid="inputGroupSearch"
-                    label="searchResource"
-                    name="searchResource"
-                    placeholder={translation('Buscar recurso')}
-                    id="searchResource"
-                    icon="search"
-                  />
+                  {isSearch ? (
+                    <SearchContainer>
+                      <Title as="h2" fontWeight="bold">
+                        {t('Buscar recurso')}
+                      </Title>
+                      <InputSearchBar>
+                        <InputSearch
+                          type="text"
+                          data-testid="inputSearch"
+                          onChange={(e) => setSearchValue(e.target.value)}
+                        />
+                        <CancelSearchButton
+                          onClick={toggleSearch}
+                          data-testid="cancelSearchButton"
+                        >
+                          X
+                        </CancelSearchButton>
+                      </InputSearchBar>
+                      {searchValue !== null && searchValue !== '' ? (
+                        <span style={{ marginTop: '20px', fontWeight: 'bold' }}>
+                          {t('Mostrando')} {selectedSortOrderValue.length}{' '}
+                          {t('resultados para')} &quot;
+                          {searchValue}&quot;
+                        </span>
+                      ) : null}
+                    </SearchContainer>
+                  ) : (
+                    <>
+                      <Title as="h2" fontWeight="bold">
+                        {t('Recursos de')} {state?.name}
+                      </Title>
+                      <SearchBar
+                        data-testid="inputGroupSearch"
+                        label="searchResource"
+                        name="searchResource"
+                        placeholder={t('Buscar recurso')}
+                        id="searchResource"
+                        icon="search"
+                        onClick={toggleSearch}
+                      />
+                    </>
+                  )}
+
                   <FilterButton
                     data-testid="filters-button"
                     onClick={handleFiltersOpen}
                   >
-                    {translation('Filtrar')}
+                    {t('Filtrar')}
                   </FilterButton>
                 </TitleResourcesContainer>
                 <VotesDateController
@@ -534,7 +622,9 @@ const Category: FC = () => {
                         : () => handleAccessModal()
                     }
                   >
-                    {translation('+ Crear nuevo recurso')}
+                    <span data-testid="new-resource-text">
+                      + {t('Crear nuevo recurso')}
+                    </span>
                   </NewResourceButton>
                 </ScrollDiv>
                 <ScrollDiv>
@@ -543,6 +633,7 @@ const Category: FC = () => {
                     filters={filters}
                     sortOrder={sortOrder}
                     isSortByVotesActive={isSortByVotesActive}
+                    onSelectedSortOrderChange={handleSelectedSortOrderChange}
                   />
                 </ScrollDiv>
               </ResourcesContainer>
@@ -560,7 +651,7 @@ const Category: FC = () => {
                   data-testid="close-filters-button"
                   onClick={handleFiltersClose}
                 >
-                  {translation('Cerrar')}
+                  {t('Cerrar')}
                 </CloseFilterButton>
               </MobileFiltersContainer>
             )}
@@ -576,10 +667,14 @@ const Category: FC = () => {
         </WiderContainer>
       </Container>
       {/* ==> ADD RESOURCE MODAL */}
-      <Modal isOpen={isOpen} toggleModal={toggleModal} title="Nuevo Recurso">
+      <Modal
+        isOpen={isOpen}
+        toggleModal={toggleModal}
+        title={t('Nuevo Recurso')}
+      >
         <ResourceForm selectOptions={topicsForResourceForm ?? []} />
         <Button outline onClick={toggleModal}>
-          {translation('Cancelar')}
+          {t('Cancelar')}
         </Button>
       </Modal>
       {/* RESTRICTED ACCES MODAL */}
