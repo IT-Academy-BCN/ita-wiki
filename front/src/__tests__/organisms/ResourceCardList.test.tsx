@@ -22,6 +22,7 @@ describe('ResourceCardList', () => {
               handleAccessModal={handleAccessModal}
               sortOrder="desc"
               isSortByVotesActive
+              onSelectedSortOrderChange={() => ''}
             />
           }
         />
@@ -56,6 +57,7 @@ describe('ResourceCardList', () => {
               handleAccessModal={handleAccessModal}
               sortOrder="desc"
               isSortByVotesActive
+              onSelectedSortOrderChange={() => ''}
             />
           }
         />
@@ -83,6 +85,7 @@ describe('ResourceCardList', () => {
         handleAccessModal={handleAccessModal}
         sortOrder="desc"
         isSortByVotesActive
+        onSelectedSortOrderChange={() => ''}
       />
     )
 
