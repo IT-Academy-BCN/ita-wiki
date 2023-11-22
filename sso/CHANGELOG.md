@@ -1,7 +1,11 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-## [1.1.2] - 2023-11-20
+## [1.2.0] - 2023-11-22
+
+### Changed
+
+- Updated "users" table to "user"
 
 ### Testing
 

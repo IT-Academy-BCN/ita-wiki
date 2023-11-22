@@ -7,7 +7,7 @@ import { generateToken } from '../../utils/auth'
 export const loginController: Middleware = async (ctx: Context) => {
   const { dni, password } = ctx.request.body
   const userResult = await client.query(
-    'SELECT id, password FROM users WHERE dni = $1',
+    'SELECT id, password FROM "user" WHERE dni = $1',
     [dni]
   )
 
