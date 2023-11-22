@@ -28,7 +28,7 @@ import {
 import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
 
-import { TFilters, TResource } from '../types'
+import { TFilters, TResource, TSortOrder } from '../types'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -390,8 +390,6 @@ const CloseFilterButton = styled(Button)`
   }
 `
 
-type SortOrder = 'asc' | 'desc'
-
 const Category: FC = () => {
   const { slug } = useParams()
   const { state } = useLocation()
@@ -413,7 +411,7 @@ const Category: FC = () => {
     topic: topic === 'todos' ? undefined : topic,
   })
 
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
+  const [sortOrder, setSortOrder] = useState<TSortOrder>('desc')
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string | null>(null)
   const [selectedSortOrderValue, setSelectedSortOrderValue] = useState<
