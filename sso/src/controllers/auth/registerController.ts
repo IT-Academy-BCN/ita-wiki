@@ -1,5 +1,5 @@
 import { Context, Middleware } from 'koa'
-import { UserRegister } from '../../schemas/userSchema'
+import { UserRegister } from '../../schemas/auth/registerSchema'
 import { client } from '../../models/db'
 import { hashPassword } from '../../utils/passwordHash'
 import { generateId } from '../../utils/cuidGenerator'
