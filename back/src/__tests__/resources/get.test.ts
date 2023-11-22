@@ -301,6 +301,18 @@ describe('Testing resources GET endpoint', () => {
       }
     })
   })
+  it('should display all resources containing a query search string in title or description', async () => {
+    const search = 'blog'
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.resources}`)
+      .query({ search })
+    expect(response.status).toBe(200)
+    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    response.body.forEach((resource: ResourceGetSchema) => {
+      expect(resource.title.toLowerCase()).toContain(search)
+      expect(resource.description!.toLowerCase()).toContain(search)
+    })
+  })
 
   checkInvalidToken(`${pathRoot.v1.resources}`, 'get')
 })

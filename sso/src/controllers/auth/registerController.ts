@@ -1,5 +1,5 @@
 import { Context, Middleware } from 'koa'
-import { UserRegister } from '../../schemas/userSchema'
+import { UserRegister } from '../../schemas/auth/registerSchema'
 import { client } from '../../models/db'
 import { hashPassword } from '../../utils/passwordHash'
 import { generateId } from '../../utils/cuidGenerator'
@@ -10,7 +10,7 @@ export const registerController: Middleware = async (ctx: Context) => {
   const id = generateId()
 
   const query = {
-    text: 'INSERT INTO users(id, dni, email, password, user_meta) VALUES($1, $2, $3, $4, $5)',
+    text: 'INSERT INTO "user"(id, dni, email, password, user_meta) VALUES($1, $2, $3, $4, $5)',
     values: [id, dni, email, hashedPassword, '{}'],
   }
 
