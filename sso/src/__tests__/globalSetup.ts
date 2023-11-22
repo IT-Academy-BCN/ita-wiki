@@ -44,22 +44,22 @@ export async function setup() {
   await client.query('DROP TABLE IF EXISTS "user" CASCADE')
   await client.query(`
   CREATE OR REPLACE FUNCTION TRIGGER_SET_TIMESTAMP() RETURNS TRIGGER AS $$ BEGIN NEW.updated_at := NOW();
-  RETURN NEW;
-  END;
-  $$LANGUAGE plpgsql;
-  
-  CREATE TABLE IF NOT EXISTS "user" (
-      id VARCHAR (50) PRIMARY KEY,
-      dni VARCHAR(25) UNIQUE NOT NULL,
-      email VARCHAR (255) UNIQUE NOT NULL,
-      password TEXT NOT NULL,
-      user_meta JSONB NOT NULL DEFAULT '{}',
-      created_at TIMESTAMPTZ DEFAULT NOW (),
-      updated_at TIMESTAMPTZ
-  );
-  
-  CREATE TRIGGER set_timestamp BEFORE
-  UPDATE ON "user" FOR EACH ROW EXECUTE FUNCTION trigger_set_timestamp();
+RETURN NEW;
+END;
+$$LANGUAGE plpgsql;
+
+CREATE TABLE IF NOT EXISTS "user" (
+    id TEXT PRIMARY KEY,
+    dni VARCHAR(25) UNIQUE NOT NULL,
+    email VARCHAR (255) UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    user_meta JSONB NOT NULL DEFAULT '{}',
+    created_at TIMESTAMPTZ DEFAULT NOW (),
+    updated_at TIMESTAMPTZ
+);
+
+CREATE TRIGGER set_timestamp BEFORE
+UPDATE ON "user" FOR EACH ROW EXECUTE FUNCTION trigger_set_timestamp();
 `)
 
   // Cleanup database
