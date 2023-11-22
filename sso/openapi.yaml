@@ -81,13 +81,21 @@ components:
               - message
       required:
         - message
+    InvalidCredentialsError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Invalid Credentials
+      required:
+        - message
   parameters: {}
 paths:
   /api/v1/auth/login:
     post:
       tags:
         - auth
-      description: Takes a DNI and a password and returns a session cookie
+      description: Takes a DNI and a password and returns authToken and refreshToken
       summary: Logs in a user
       requestBody:
         content:
@@ -186,6 +194,51 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ValidationError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
+  /api/v1/tokens/validate:
+    post:
+      tags:
+        - token
+      description: Validates a given authentication token.
+      summary: Validate a Token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                authToken:
+                  type: string
+                  minLength: 1
+              required:
+                - authToken
+              additionalProperties: false
+      responses:
+        "204":
+          description: The token is valid
+        "400":
+          description: Zod validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        "401":
+          description: Invalid Credentials error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidCredentialsError"
         "500":
           description: Other error
           content:

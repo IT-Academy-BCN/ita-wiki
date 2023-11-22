@@ -39,13 +39,7 @@ export const testUserData = {
     user_meta: {},
   },
 }
-export const authToken = { admin: '', mentor: '', user: '', inactiveUser: '' }
-export const refreshToken = {
-  admin: '',
-  mentor: '',
-  user: '',
-  inactiveUser: '',
-}
+
 export async function setup() {
   await client.query('DROP TABLE IF EXISTS users CASCADE')
   await client.query(`

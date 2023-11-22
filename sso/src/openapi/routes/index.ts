@@ -1,2 +1,3 @@
-import './login'
-import './register'
+import './auth/login'
+import './auth/register'
+import './token/validate'
