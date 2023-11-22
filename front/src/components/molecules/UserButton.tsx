@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import { useAuth } from '../../context/AuthProvider'
-import { colors, device } from '../../styles'
+import { colors, device, dimensions } from '../../styles'
 import userAvatar from '../../assets/icons/profile-avatar.svg'
 import defaultAvatar from '../../assets/icons/user.svg'
 import Login from '../organisms/Login'
@@ -14,11 +14,11 @@ const AvatarImage = styled.img`
   padding: 1px;
   height: 40px;
   width: 40px;
-  border-radius: 50%;
+  border-radius: ${dimensions.borderRadius.sm};
   background-color: ${colors.white};
   cursor: pointer;
   @media only ${device.Tablet} {
-    border-radius: 20%;
+    border-radius: ${dimensions.borderRadius.base};
     width: 48px;
   }
 `
@@ -56,7 +56,7 @@ export const UserButton: React.FC = () => {
       {user && (
         <AvatarImage
           data-testid="avatarImageUser"
-          src={user.avatar ? user.avatar : userAvatar}
+          src={user.avatarId ? user.avatarId : userAvatar}
           alt="Avatar"
           ref={avatarRef}
           onClick={handleProfileAccess}

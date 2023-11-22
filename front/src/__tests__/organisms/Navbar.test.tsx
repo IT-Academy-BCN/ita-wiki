@@ -1,11 +1,18 @@
 import { expect, vi } from 'vitest'
-import { Routes, Route } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { Navbar } from '../../components/organisms/Navbar'
 import { render, screen, fireEvent, waitFor } from '../test-utils'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
 const toggleModalMock = vi.fn()
 const handleAccessModalMock = vi.fn()
+
+const defaultLocation = {
+  search: '',
+  hash: '',
+  key: '',
+  state: '',
+}
 
 beforeEach(() => {
   vi.mock('../../context/AuthProvider', async () => {
@@ -20,10 +27,23 @@ beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'TestName',
-      avatar: 'TestAvatar',
+      avatarId: 'TestAvatar',
       role: 'REGISTERED',
     },
   } as TAuthContext)
+  vi.mock('react-router-dom', async () => {
+    const actual: Record<number, unknown> = await vi.importActual(
+      'react-router-dom'
+    )
+    return {
+      ...actual,
+      useLocation: vi.fn(),
+    }
+  })
+  vi.mocked(useLocation).mockReturnValue({
+    ...defaultLocation,
+    pathname: '/',
+  }) as unknown as Location
 })
 
 afterEach(() => {
@@ -31,10 +51,10 @@ afterEach(() => {
 })
 
 describe('Navbar', () => {
-  vi.mocked(useAuth).mockReturnValue({
-    user: null,
-  } as TAuthContext)
   it('renders Navbar component correctly', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+    } as TAuthContext)
     render(<Navbar />)
 
     const menuButton = screen.getByTestId('hamburger-menu')
@@ -50,22 +70,28 @@ describe('Navbar', () => {
     fireEvent.click(menuButton)
     expect(menuItems).toHaveStyle('transform: translateX(-100%)')
 
-    const settingsButton = screen.queryByTestId('settings-button')
+    const newPostButton = screen.queryByTestId('new-post-button')
+    expect(newPostButton).not.toBeInTheDocument()
 
+    const settingsButton = screen.queryByTestId('settings-button')
     expect(settingsButton).not.toBeInTheDocument()
   })
 
   it('changes language using the language dropdown in the Navbar', () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: null,
-    } as TAuthContext)
+    vi.mocked(useLocation).mockReturnValue({
+      ...defaultLocation,
+      pathname: '/category/react',
+    }) as unknown as Location
     render(<Navbar />)
 
     expect(screen.getByText('CAT')).toBeInTheDocument()
+    expect(screen.getByText('EN')).toBeInTheDocument()
 
-    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'es' } })
+    expect(screen.getByTitle('Afegeix un recurs')).toBeInTheDocument()
 
-    expect(screen.getByText('ES')).toBeInTheDocument()
+    fireEvent.change(screen.getByRole('combobox'), { target: { value: 'en' } })
+
+    expect(screen.getByTitle('Add resource')).toBeInTheDocument()
   })
 
   it('does not render new-post-button nor access-modal on the Homepage', () => {
@@ -78,36 +104,44 @@ describe('Navbar', () => {
     expect(accessModal).not.toBeInTheDocument()
   })
 
-  it('renders Navbar items on non-homepage pages', () => {
-    render(
-      <Routes>
-        <Route path="/category/:slug" element={<Navbar />} />
-      </Routes>,
-      {
-        initialEntries: ['/category/react'],
-      }
-    )
+  it('does not render new-post-button nor access-modal on the Profile', () => {
+    vi.mocked(useLocation).mockReturnValue({
+      ...defaultLocation,
+      pathname: '/profile',
+    }) as unknown as Location
+    render(<Navbar />)
+
+    const newPostButton = screen.queryByTestId('new-post-button')
+    expect(newPostButton).not.toBeInTheDocument()
+
+    const accessModal = screen.queryByTestId('access-modal')
+    expect(accessModal).not.toBeInTheDocument()
+  })
+
+  it('renders Navbar items on Category page', () => {
+    vi.mocked(useLocation).mockReturnValue({
+      ...defaultLocation,
+      pathname: '/category/react',
+    }) as unknown as Location
+    render(<Navbar />)
 
     const menuItems = screen.queryAllByRole('button')
     expect(menuItems.length).toBeGreaterThan(0)
+
+    const newPostButton = screen.getByTestId('new-post-button')
+    expect(newPostButton).toBeInTheDocument()
   })
 
   it('displays the "Añadir recursos" modal if the user is logged in', async () => {
+    vi.mocked(useLocation).mockReturnValue({
+      ...defaultLocation,
+      pathname: '/category/react',
+    }) as unknown as Location
     render(
-      <Routes>
-        <Route
-          path="/category/:slug"
-          element={
-            <Navbar
-              toggleModal={toggleModalMock}
-              handleAccessModal={handleAccessModalMock}
-            />
-          }
-        />
-      </Routes>,
-      {
-        initialEntries: ['/category/react'],
-      }
+      <Navbar
+        toggleModal={toggleModalMock}
+        handleAccessModal={handleAccessModalMock}
+      />
     )
 
     const addButton = screen.getByTestId('new-post-button')
@@ -121,21 +155,15 @@ describe('Navbar', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: null,
     } as TAuthContext)
+    vi.mocked(useLocation).mockReturnValue({
+      ...defaultLocation,
+      pathname: '/category/react',
+    }) as unknown as Location
     render(
-      <Routes>
-        <Route
-          path="/category/:slug"
-          element={
-            <Navbar
-              toggleModal={toggleModalMock}
-              handleAccessModal={handleAccessModalMock}
-            />
-          }
-        />
-      </Routes>,
-      {
-        initialEntries: ['/category/react'],
-      }
+      <Navbar
+        toggleModal={toggleModalMock}
+        handleAccessModal={handleAccessModalMock}
+      />
     )
 
     const addButton = screen.getByTestId('new-post-button')
@@ -146,13 +174,6 @@ describe('Navbar', () => {
   })
 
   it('should not render Settings button when user is a student', () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'TestName',
-        avatar: 'TestAvatar',
-        role: 'REGISTERED',
-      },
-    } as TAuthContext)
     render(<Navbar />)
 
     const settingsButton = screen.queryByTestId('settings-button')
@@ -164,10 +185,11 @@ describe('Navbar', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'TestName',
-        avatar: 'TestAvatar',
+        avatarId: 'TestAvatar',
         role: 'MENTOR',
       },
     } as TAuthContext)
+
     render(<Navbar />)
 
     const settingsButton = screen.getByTestId('settings-button')
@@ -175,6 +197,6 @@ describe('Navbar', () => {
     expect(settingsButton).toBeInTheDocument()
 
     fireEvent.click(settingsButton)
-    await waitFor(() => expect(screen.getByText('Ajustes')).toBeVisible())
+    await waitFor(() => expect(screen.getByText('Settings')).toBeVisible())
   })
 })

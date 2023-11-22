@@ -33,7 +33,7 @@ const DNISchema = z
     return false;
   }, { message: "Formato DNI/NIE incorrecto" });
 
-const passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+const passRegex = /^(?=[a-zA-Z0-9]{8,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d]).*/;
 
 export const UserRegisterSchema = z
   .object({
@@ -53,7 +53,7 @@ export const UserRegisterSchema = z
       .min(8, { message: "La contraseña debe tener mínimo 8 caracteres" })
       .regex(new RegExp(passRegex), {
         message:
-          "La contraseña debe contener al menos un número, mayúsculas y minúsculas",
+          "La contraseña debe contener solo letras y números, mínimo 8 caracteres, un número, una mayúscula y una minúscula",
       }),
     confirmPassword: z
       .string()

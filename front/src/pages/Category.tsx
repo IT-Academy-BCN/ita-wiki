@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components'
 import { useLocation, useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
 import {
@@ -12,6 +13,7 @@ import {
   ResourceCardList,
   ResourceForm,
   TopicsRadioWidget,
+  VotesDateController,
 } from '../components/organisms'
 import { Button, Icon, Input, Text, Title } from '../components/atoms'
 
@@ -25,7 +27,7 @@ import {
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
-import { TFilters } from '../types'
+import { TFilters, TSortOrder } from '../types'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -169,19 +171,6 @@ const SearchBar = styled(InputGroup)`
       scale: 1.8;
       color: ${colors.gray.gray3};
     }
-  }
-`
-
-const VotesDateContainer = styled(FlexBox)`
-  display: none;
-
-  @media ${device.Tablet} {
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    direction: row;
-    width: 100%;
-    padding-right: ${dimensions.spacing.base};
   }
 `
 
@@ -362,29 +351,11 @@ const CloseFilterButton = styled(Button)`
   }
 `
 
-const StyledDateToggle = styled(Text)`
-  color: ${colors.black.black1};
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.96);
-  }
-`
-
-const StyledVotesToggle = styled(Text)`
-  cursor: pointer;
-
-  &:active {
-    transform: scale(0.96);
-  }
-`
-
-type SortOrder = 'asc' | 'desc'
-
 const Category: FC = () => {
   const { slug } = useParams()
   const { state } = useLocation()
   const { user } = useAuth()
+  const { t: translation } = useTranslation()
 
   //  ==> MODAL STATES
   const [isOpen, setIsOpen] = useState(false)
@@ -401,10 +372,7 @@ const Category: FC = () => {
     status: [],
     topic: topic === 'todos' ? undefined : topic,
   })
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc')
-  const [selectedOption, setSelectedOption] = useState<'Fecha' | 'Votos'>(
-    'Votos'
-  )
+  const [sortOrder, setSortOrder] = useState<TSortOrder>('desc')
 
   const toggleModal = () => {
     setIsOpen(!isOpen)
@@ -497,7 +465,7 @@ const Category: FC = () => {
           />
           <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
-              Temas
+              {translation('Temas')}
             </Title>
             <StyledSelectGroup
               defaultValue={topic}
@@ -512,9 +480,9 @@ const Category: FC = () => {
             <MainContainer as="main">
               <FiltersContainer data-testid="filters-container">
                 <Title as="h2" fontWeight="bold">
-                  Filtros
+                  {translation('Filtros')}
                 </Title>
-                <Text fontWeight="bold">Temas</Text>
+                <Text fontWeight="bold">{translation('Temas')}</Text>
                 <ScrollTopics>
                   {slug && (
                     <TopicsRadioWidget
@@ -533,13 +501,15 @@ const Category: FC = () => {
               <ResourcesContainer>
                 <TitleResourcesContainer>
                   <Title as="h2" fontWeight="bold">
-                    Recursos de {state?.name}
+                    {translation('Recursos de (category)', {
+                      name: state?.name,
+                    })}
                   </Title>
                   <SearchBar
                     data-testid="inputGroupSearch"
                     label="searchResource"
                     name="searchResource"
-                    placeholder="Buscar recurso"
+                    placeholder={translation('Buscar recurso')}
                     id="searchResource"
                     icon="search"
                   />
@@ -547,51 +517,15 @@ const Category: FC = () => {
                     data-testid="filters-button"
                     onClick={handleFiltersOpen}
                   >
-                    Filtrar
+                    {translation('Filtrar')}
                   </FilterButton>
                 </TitleResourcesContainer>
-                <VotesDateContainer>
-                  <FlexBox direction="row" gap="15px">
-                    <FlexBox direction="row">
-                      <StyledVotesToggle
-                        onClick={() => {
-                          handleSortByVotes()
-                          handleSortOrder()
-                          setSelectedOption('Votos')
-                        }}
-                      >
-                        <Text
-                          fontWeight={
-                            selectedOption === 'Votos' ? 'bold' : 'normal'
-                          }
-                        >
-                          Votos
-                        </Text>
-                      </StyledVotesToggle>
-                      {selectedOption === 'Votos' &&
-                        (sortOrder === 'desc' ? (
-                          <Icon name="arrow_upward" />
-                        ) : (
-                          <Icon name="arrow_downward" />
-                        ))}
-                    </FlexBox>
-                    <StyledDateToggle
-                      onClick={() => {
-                        handleSortByDates()
-                        handleSortOrder()
-                        setSelectedOption('Fecha')
-                      }}
-                    >
-                      <Text
-                        fontWeight={
-                          selectedOption === 'Fecha' ? 'bold' : 'normal'
-                        }
-                      >
-                        Fecha
-                      </Text>
-                    </StyledDateToggle>
-                  </FlexBox>
-                </VotesDateContainer>
+                <VotesDateController
+                  sortOrder={sortOrder}
+                  handleSortOrder={handleSortOrder}
+                  handleSortByVotes={handleSortByVotes}
+                  handleSortByDates={handleSortByDates}
+                />
                 <ScrollDiv>
                   <NewResourceButton
                     onClick={
@@ -600,7 +534,7 @@ const Category: FC = () => {
                         : () => handleAccessModal()
                     }
                   >
-                    + Crear nuevo recurso
+                    {translation('+ Crear nuevo recurso')}
                   </NewResourceButton>
                 </ScrollDiv>
                 <ScrollDiv>
@@ -608,8 +542,6 @@ const Category: FC = () => {
                     handleAccessModal={handleAccessModal}
                     filters={filters}
                     sortOrder={sortOrder}
-                    handleSortByVotes={handleSortByVotes}
-                    handleSortByDates={handleSortByDates}
                     isSortByVotesActive={isSortByVotesActive}
                   />
                 </ScrollDiv>
@@ -628,7 +560,7 @@ const Category: FC = () => {
                   data-testid="close-filters-button"
                   onClick={handleFiltersClose}
                 >
-                  Cerrar
+                  {translation('Cerrar')}
                 </CloseFilterButton>
               </MobileFiltersContainer>
             )}
@@ -647,7 +579,7 @@ const Category: FC = () => {
       <Modal isOpen={isOpen} toggleModal={toggleModal} title="Nuevo Recurso">
         <ResourceForm selectOptions={topicsForResourceForm ?? []} />
         <Button outline onClick={toggleModal}>
-          Cancelar
+          {translation('Cancelar')}
         </Button>
       </Modal>
       {/* RESTRICTED ACCES MODAL */}

@@ -43,7 +43,7 @@ describe('TopicsManagerBoard component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Name',
-        avatar: 'Avatar',
+        avatarId: 'Avatar',
         role: 'MENTOR',
       },
     } as TAuthContext)
@@ -77,7 +77,7 @@ describe('TopicsManagerBoard component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Name',
-        avatar: 'Avatar',
+        avatarId: 'Avatar',
         role: 'MENTOR',
       },
     } as TAuthContext)
@@ -109,7 +109,7 @@ describe('TopicsManagerBoard component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Name',
-        avatar: 'Avatar',
+        avatarId: 'Avatar',
         role: 'MENTOR',
       },
     } as TAuthContext)
@@ -148,7 +148,7 @@ describe('TopicsManagerBoard component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Name',
-        avatar: 'Avatar',
+        avatarId: 'Avatar',
         role: 'MENTOR',
       },
     } as TAuthContext)
@@ -202,7 +202,7 @@ describe('TopicsManagerBoard component', () => {
       state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
     }) as unknown as Location
     vi.mocked(useAuth).mockReturnValue({
-      user: { name: 'Name', avatar: 'Avatar', role: 'REGISTERED' },
+      user: { name: 'Name', avatarId: 'Avatar', role: 'REGISTERED' },
     } as TAuthContext)
     mswServer.use(
       rest.patch(urls.patchTopics, (req, res, ctx) => res(ctx.status(403)))
@@ -245,7 +245,7 @@ describe('TopicsManagerBoard component', () => {
       state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
     }) as unknown as Location
     vi.mocked(useAuth).mockReturnValue({
-      user: { name: 'Name', avatar: 'Avatar', role: 'MENTOR' },
+      user: { name: 'Name', avatarId: 'Avatar', role: 'MENTOR' },
     } as TAuthContext)
     mswServer.use(
       rest.patch(urls.patchTopics, (req, res, ctx) => res(ctx.status(500)))
@@ -290,7 +290,7 @@ describe('TopicsManagerBoard component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Name',
-        avatar: 'Avatar',
+        avatarId: 'Avatar',
         role: 'MENTOR',
       },
     } as TAuthContext)

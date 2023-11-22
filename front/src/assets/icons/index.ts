@@ -7,6 +7,7 @@ import editPen from './edit-pen.svg'
 import itLogo from './it-logo.png'
 import java from './java.svg'
 import javascript from './javascript.svg'
+import laravel from './laravel.svg'
 import lockDynamic from './lock-dynamic-color.svg'
 import newFolder from './new-folder-dynamic-color.svg'
 import node from './nodejs-logo.svg'
@@ -31,6 +32,7 @@ const icons = {
   itLogo,
   java,
   javascript,
+  laravel,
   lockDynamic,
   newFolder,
   node,

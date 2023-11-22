@@ -102,7 +102,7 @@ describe('Testing resources GET endpoint', () => {
 
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .query({ topic: topicId })
+      .query(qs.stringify({ topics: [topicId] }))
 
     expect(response.status).toBe(200)
     expect(response.body.length).toBeGreaterThanOrEqual(1)
@@ -118,7 +118,7 @@ describe('Testing resources GET endpoint', () => {
     const topicName = 'This topic does not exist'
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .query({ topic: topicName })
+      .query(qs.stringify({ topics: [topicName] }))
 
     expect(response.status).toBe(200)
     expect(response.body.length).toBe(0)
@@ -159,7 +159,7 @@ describe('Testing resources GET endpoint', () => {
         .get(`${pathRoot.v1.resources}`)
         .query(
           qs.stringify({
-            topic: topicId,
+            topics: [topicId],
             resourceTypes: [resourceType],
             slug: categorySlug,
           })
@@ -299,6 +299,18 @@ describe('Testing resources GET endpoint', () => {
       if (resource.isFavorite === true) {
         expect(resource.id).toBe(testFavoriteResource!.resourceId)
       }
+    })
+  })
+  it('should display all resources containing a query search string in title or description', async () => {
+    const search = 'blog'
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.resources}`)
+      .query({ search })
+    expect(response.status).toBe(200)
+    expect(response.body.length).toBeGreaterThanOrEqual(1)
+    response.body.forEach((resource: ResourceGetSchema) => {
+      expect(resource.title.toLowerCase()).toContain(search)
+      expect(resource.description!.toLowerCase()).toContain(search)
     })
   })
 

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
 import styled from 'styled-components'
 import { FC } from 'react'
 import { FlexBox, dimensions } from '../../styles'
@@ -8,7 +6,7 @@ import CardResource from './CardResource'
 import { useSortByDate } from '../../hooks/useSortByDate'
 import { useSortByVotes } from '../../hooks/useSortByVotes'
 import { useAuth } from '../../context/AuthProvider'
-import { TResource, TFilters } from '../../types'
+import { TResource, TFilters, TSortOrder } from '../../types'
 import { useGetResources } from '../../hooks'
 
 const SpinnerStyled = styled(Spinner)`
@@ -29,21 +27,15 @@ const StyledText = styled(Text)`
   margin: 2rem;
 `
 
-type SortOrder = 'asc' | 'desc'
-
 type TResourceCardList = {
   filters: TFilters
-  sortOrder: SortOrder
+  sortOrder: TSortOrder
   handleAccessModal: () => void
-  handleSortByVotes: () => void
-  handleSortByDates: () => void
   isSortByVotesActive: boolean
 }
 
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
-  handleSortByVotes,
-  handleSortByDates,
   sortOrder,
   filters,
   isSortByVotesActive,
@@ -70,12 +62,16 @@ const ResourceCardList: FC<TResourceCardList> = ({
             url={resource.url}
             description={resource.description}
             voteCount={resource.voteCount}
-            createdBy={resource.user.name}
+            createdBy={resource.user ? resource.user.name : ''}
             createdAt={resource.createdAt}
             updatedAt={resource.updatedAt}
             handleAccessModal={handleAccessModal}
             isFavorite={user ? resource.isFavorite : false}
-            editable={user?.name === resource.user.name}
+            editable={
+              resource.user
+                ? user?.name === resource.user.name
+                : user?.id === resource.userId
+            }
             resourceType={resource.resourceType}
             topics={resource.topics}
           />

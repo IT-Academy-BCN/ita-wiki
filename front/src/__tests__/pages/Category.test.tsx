@@ -1,25 +1,36 @@
 import { expect, vi } from 'vitest'
+import { useLocation } from 'react-router-dom'
 import { render, renderHook, screen, fireEvent, waitFor } from '../test-utils'
 import { Category } from '../../pages'
 import { useSortByDate } from '../../hooks/useSortByDate'
 import { useSortByVotes } from '../../hooks/useSortByVotes'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
-vi.mock('react-router-dom', async () => {
-  const actual: Record<number, unknown> = await vi.importActual(
-    'react-router-dom'
-  )
-  return {
-    ...actual,
-    useParams: () => ({ categoryId: 1 }),
-  }
+beforeEach(() => {
+  vi.mock('react-router-dom', async () => {
+    const actual: Record<number, unknown> = await vi.importActual(
+      'react-router-dom'
+    )
+    return {
+      ...actual,
+      useParams: () => ({ categoryId: 1 }),
+      useLocation: vi.fn(),
+    }
+  })
+  vi.mocked(useLocation).mockReturnValue({
+    pathname: '',
+    search: '',
+    hash: '',
+    key: '',
+    state: { name: 'React', id: 1 },
+  })
 })
 
 beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Name',
-      avatar: 'Avatar',
+      avatarId: 'Avatar',
     },
   } as TAuthContext)
 })
@@ -45,7 +56,8 @@ it('renders correctly', () => {
   expect(screen.getByTestId('types-filter')).toBeInTheDocument()
   expect(screen.getByTestId('status-filter')).toBeInTheDocument()
   expect(screen.getByTestId('resource-list')).toBeInTheDocument()
-  expect(screen.getByText('Mis recursos')).toBeInTheDocument()
+  expect(screen.getByText('Recursos de React')).toBeInTheDocument()
+  expect(screen.getByText('Els meus recursos')).toBeInTheDocument()
   expect(screen.getByText('Recursos favorits')).toBeInTheDocument()
 })
 
@@ -53,7 +65,7 @@ it('renders Navbar for logged in users', () => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Name',
-      avatar: 'Avatar',
+      avatarId: 'Avatar',
     },
   } as TAuthContext)
 
@@ -85,7 +97,7 @@ it('filters opens and closes correctly', () => {
 it('create new resource modal opens and closes correctly', () => {
   render(<Category />)
 
-  fireEvent.click(screen.getByText('+ Crear nuevo recurso'))
+  fireEvent.click(screen.getByText('+ Crear nou recurs'))
   expect(screen.getByText(/Nuevo Recurso/)).toBeInTheDocument()
 })
 
@@ -96,7 +108,7 @@ it('modal opens and closes correctly when user is not logged', async () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByRole('button', { name: '+ Crear nuevo recurso' }))
+  fireEvent.click(screen.getByRole('button', { name: '+ Crear nou recurs' }))
   const modalTitle = screen.getByRole('heading', {
     name: /acceso restringido/i,
   })
@@ -111,7 +123,7 @@ it('modal opens and closes correctly when user is not logged', async () => {
 it('modal opens and closes correctly when user is logged', async () => {
   render(<Category />)
 
-  fireEvent.click(screen.getByRole('button', { name: '+ Crear nuevo recurso' }))
+  fireEvent.click(screen.getByRole('button', { name: '+ Crear nou recurs' }))
   const modalTitle = screen.getByRole('heading', {
     name: /nuevo recurso/i,
   })
@@ -136,7 +148,7 @@ it('status filter widget appears for users who are logged in', () => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Name',
-      avatar: 'Avatar',
+      avatarId: 'Avatar',
     },
   } as TAuthContext)
   render(<Category />)
@@ -154,7 +166,7 @@ it('sorts resources by date in descending order', () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByText('Fecha'))
+  fireEvent.click(screen.getByText(/Data/i))
 
   const { result } = renderHook(() => useSortByDate(items, 'date', 'desc'))
 
@@ -201,7 +213,7 @@ it('sorts resources by votes in ascending order', () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByText('Votos'))
+  fireEvent.click(screen.getByText(/Vots/i))
 
   const { result } = renderHook(() => useSortByVotes(votes, 'asc'))
   const sortedResources = result.current.sortedVotes
@@ -209,19 +221,4 @@ it('sorts resources by votes in ascending order', () => {
   const voteCounts = sortedResources.map((vote) => vote.voteCount.total)
 
   expect(voteCounts).toEqual([0, 3, 7])
-})
-
-it('changes Votos and Fecha styles on click', () => {
-  render(<Category />)
-
-  const sortVotesButton = screen.getByText('Votos')
-  const sortDatesButton = screen.getByText('Fecha')
-
-  fireEvent.click(sortVotesButton)
-
-  expect(screen.getByText('Votos')).toHaveStyle('font-weight: bold')
-
-  fireEvent.click(sortDatesButton)
-
-  expect(screen.getByText('Fecha')).toHaveStyle('font-weight: bold')
 })
