@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { colors, device, font } from '../../styles'
+import { colors, device, dimensions, font } from '../../styles'
 
 type Language = 'es' | 'cat' | 'en'
 
 const DropdownLang = styled.select<{ selectedLanguage: Language }>`
   font-size: ${font.base};
   border: none;
-  border-radius: 20%;
+  border-radius: ${dimensions.borderRadius.base};
   font-weight: ${font.regular};
   color: ${colors.black.black1};
   background-color: ${colors.white};

@@ -37,7 +37,7 @@ const IconStyled = styled.div`
   padding: 6px;
   width: 3rem;
   height: ${dimensions.spacing.xxl};
-  border-radius: 20%;
+  border-radius: ${dimensions.borderRadius.base};
   background-color: ${colors.white};
   justify-content: center;
   align-items: center;
