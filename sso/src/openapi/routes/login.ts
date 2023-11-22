@@ -1,8 +1,6 @@
 import { pathRoot } from '../../routes/routes'
-import {
-  loginResponseSchema,
-  loginSchema,
-} from '../../schemas/auth/loginSchema'
+import { loginSchema } from '../../schemas/auth/loginSchema'
+import { tokenSchema } from '../../schemas/token/tokenSchema'
 import {
   invalidPasswordResponse,
   userNotFoundResponse,
@@ -30,7 +28,7 @@ registry.registerPath({
       description: 'The user has been authenticated',
       content: {
         'application/json': {
-          schema: loginResponseSchema,
+          schema: tokenSchema,
         },
       },
     },

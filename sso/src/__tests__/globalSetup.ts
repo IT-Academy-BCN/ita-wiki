@@ -39,7 +39,13 @@ export const testUserData = {
     user_meta: {},
   },
 }
-
+export const authToken = { admin: '', mentor: '', user: '', inactiveUser: '' }
+export const refreshToken = {
+  admin: '',
+  mentor: '',
+  user: '',
+  inactiveUser: '',
+}
 export async function setup() {
   await client.query('DROP TABLE IF EXISTS users CASCADE')
   await client.query(`
@@ -66,7 +72,7 @@ export async function setup() {
   await client.query('DELETE FROM users')
 
   // Create required test data
-  Object.values(testUserData).forEach(async (user) => {
+  const userCreationPromises = Object.values(testUserData).map(async (user) => {
     const query = `
       INSERT INTO users (id, dni, email, password, user_meta)
       VALUES ($1, $2, $3, $4, $5)
@@ -80,6 +86,8 @@ export async function setup() {
       user.user_meta,
     ])
   })
+
+  await Promise.all(userCreationPromises)
 }
 
 export async function teardown() {

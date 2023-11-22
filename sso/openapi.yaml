@@ -113,8 +113,10 @@ paths:
                 properties:
                   authToken:
                     type: string
+                    minLength: 1
                   refreshToken:
                     type: string
+                    minLength: 1
                 required:
                   - authToken
                   - refreshToken
