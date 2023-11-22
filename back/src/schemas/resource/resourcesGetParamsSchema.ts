@@ -57,6 +57,16 @@ export const resourcesGetParamsSchema = z
         },
         example: 'NOT_SEEN',
       }),
+    search: z
+      .string()
+      .min(2, 'Search query must be at least 2 characters long')
+      .optional()
+      .openapi({
+        param: {
+          description: 'Search query to filter by',
+          example: 'tailwind',
+        },
+      }),
   })
   .strict()
 

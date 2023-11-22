@@ -1,20 +1,19 @@
-import { pathRoot } from '../../routes/routes'
-import {
-  loginResponseSchema,
-  loginSchema,
-} from '../../schemas/auth/loginSchema'
+import { pathRoot } from '../../../routes/routes'
+import { loginSchema } from '../../../schemas/auth/loginSchema'
+import { tokenSchema } from '../../../schemas/token/tokenSchema'
 import {
   invalidPasswordResponse,
   userNotFoundResponse,
   zodValidationResponse,
-} from '../components/responses'
-import { registry } from '../registry'
+} from '../../components/responses'
+import { registry } from '../../registry'
 
 registry.registerPath({
   method: 'post',
   tags: ['auth'],
   path: `${pathRoot.v1.auth}/login`,
-  description: 'Takes a DNI and a password and returns a session cookie',
+  description:
+    'Takes a DNI and a password and returns authToken and refreshToken',
   summary: 'Logs in a user',
   request: {
     body: {
@@ -30,7 +29,7 @@ registry.registerPath({
       description: 'The user has been authenticated',
       content: {
         'application/json': {
-          schema: loginResponseSchema,
+          schema: tokenSchema,
         },
       },
     },

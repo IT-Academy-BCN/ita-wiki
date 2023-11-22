@@ -41,7 +41,7 @@ jobs:
           git config --global user.email "bot@itawiki.com"
           version=$(grep version: ./config/dev/front.yml | awk '{print $2}')
           sed -i "s/version: $version/version: ${{ steps.version.outputs.version }}/" ./config/dev/front.yml
-          git add ./config/dev.yml
+          git add ./config/dev/front.yml
           git commit -m "Bump front image to v${{ steps.version.outputs.version }}"
 
       - name: Create Pull Request
