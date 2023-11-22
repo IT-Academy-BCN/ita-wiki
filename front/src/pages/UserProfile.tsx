@@ -80,7 +80,7 @@ export const UserProfile: FC = () => {
     if (resourcesData) {
       const newVotes = resourcesData
         .map(({ voteCount }: TResource) => voteCount.total)
-        .reduce((a: number, b: number) => a + b)
+        .reduce((a: number, b: number) => a + b, 0)
       setVotes(newVotes)
     }
   }, [resourcesData])
