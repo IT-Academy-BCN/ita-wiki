@@ -59,6 +59,16 @@
   "No tienes permiso de acceso": "No tienes los permisos necesarios para acceder a este contenido.",
   "Ha habido un error...": "Ha habido un error...",
 
+  "Lista de usuarios": "Lista de usuarios",
+  "Buscar por DNI:": "Buscar por DNI:",
+  "Introduce el DNI": "Introduce el DNI",
+  "Nombre": "Nombre",
+  "Email": "Email",
+  "Estado": "Estado",
+  "Cambiar estado": "Cambiar estado",
+  "Desactivar": "Desactivar",
+  "Activar": "Activar",
+
   "+ Crear nuevo tema": "+ Crear nuevo tema",
   "Nombre del tema": "Nombre del tema",
   "Nombre del nuevo tema": "Nombre del nuevo tema",

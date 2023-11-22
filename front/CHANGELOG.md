@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.3] - 2023-11-23
+
+### Fixed
+
+- Adjusted the general styles of the AdminAccount table.
+- Updated translations accordingly.
+- Relocated AccountAdmin.test from the "pages" directory to "/components/organisms".
+
+## [0.4.2] - 2023-11-22
+
+### Fixed
+
+- User Profile bug when user has no resources.
+
+## [0.4.1] - 2023-11-21
+
+### Fixed
+
+- Updated border-radius to use fixed values from dimensions.
+
 ## [0.4.0] - 2023-11-21
 
 ### Changed
