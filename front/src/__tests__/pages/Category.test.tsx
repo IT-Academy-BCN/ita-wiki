@@ -5,6 +5,7 @@ import { Category } from '../../pages'
 import { useSortByDate } from '../../hooks/useSortByDate'
 import { useSortByVotes } from '../../hooks/useSortByVotes'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
+
 beforeEach(() => {
   vi.mock('react-router-dom', async () => {
     const actual: Record<number, unknown> = await vi.importActual(
