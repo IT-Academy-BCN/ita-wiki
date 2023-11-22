@@ -1,5 +1,6 @@
 import { z } from '../zod'
 import {
+  InvalidCredentials,
   InvalidTokenError,
   MissingTokenError,
   NotFoundError,
@@ -51,6 +52,14 @@ export const invalidPasswordResponse = {
       schema: z.object({
         message: z.string().openapi({ example: 'Invalid password' }),
       }),
+    },
+  },
+}
+export const InvalidCredentialsResponse = {
+  description: 'Invalid Credentials error',
+  content: {
+    'application/json': {
+      schema: InvalidCredentials,
     },
   },
 }

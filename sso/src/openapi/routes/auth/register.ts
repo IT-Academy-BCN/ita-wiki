@@ -1,8 +1,8 @@
 import z from 'zod'
-import { pathRoot } from '../../routes/routes'
-import { zodValidationResponse } from '../components/responses'
-import { registry } from '../registry'
-import { registerSchema } from '../../schemas'
+import { pathRoot } from '../../../routes/routes'
+import { registerSchema } from '../../../schemas'
+import { zodValidationResponse } from '../../components/responses'
+import { registry } from '../../registry'
 
 registry.registerPath({
   method: 'post',

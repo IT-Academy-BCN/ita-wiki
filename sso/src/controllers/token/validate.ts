@@ -1,9 +1,10 @@
 import { Context, Middleware } from 'koa'
 import { InvalidCredentials } from '../../utils/errors'
 import { verifyToken } from '../../utils/auth'
+import { ValidateSchema } from '../../schemas/token/validateSchema'
 
-export const checkToken: Middleware = async (ctx: Context) => {
-  const { authToken } = ctx.request.body
+export const validate: Middleware = async (ctx: Context) => {
+  const { authToken } = ctx.request.body as ValidateSchema
 
   if (!authToken) {
     throw new InvalidCredentials()
