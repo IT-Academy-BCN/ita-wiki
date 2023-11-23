@@ -61,6 +61,16 @@
   "No tienes permiso de acceso": "No tens els permisos necessaris per accedir a aquest contingut.",
   "Ha habido un error...": "Hi ha hagut un error...",
 
+  "Lista de usuarios": "Llista d'usuaris",
+  "Buscar por DNI:": "Cerca per DNI:",
+  "Introduce el DNI": "Introdueix el DNI",
+  "Nombre": "Nom",
+  "Email": "Correu",
+  "Estado": "Estat",
+  "Cambiar estado": "Canviar estat",
+  "Desactivar": "Desactivar",
+  "Activar": "Activar",
+
   "+ Crear nuevo tema": "+ Crea un nou tema",
   "Nombre del tema": "Nom del tema",
   "Nombre del nuevo tema": "Nom del tema nou",
