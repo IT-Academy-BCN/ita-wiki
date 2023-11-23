@@ -88,7 +88,7 @@
   "Filtrar": "Filtrar",
   "Votos": "Vots",
   "Fecha": "Data",
-  "+ Crear nuevo recurso": "+ Crear nou recurs",
+  "Crear nuevo recurso": "Crear nou recurs",
 
   "Error 401 - No autorizado": "Operació no autoritzada. És necessari iniciar sessió d'usuari.",
   "Error 403 - Acceso denegado": "Accés denegat. No tens els permisos necessaris per realitzar l'operació.",
@@ -102,5 +102,9 @@
   "Aportaciones": "Aportacions",
   "Votos recibidos": "Vots rebuts",
   "Favoritos guardados": "Favorits guardats",
-  "n/d": "n/d"
+  "n/d": "n/d",
+
+  "Mostrando":"Mostrant",
+  "resultados para":"resultat per",
+  "Nuevo Recurso":"Nou recurs"
 }
