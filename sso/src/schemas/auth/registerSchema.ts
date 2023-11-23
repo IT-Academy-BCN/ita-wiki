@@ -6,6 +6,7 @@ export const registerSchema = userSchema
   .pick({
     dni: true,
     email: true,
+    itineraryId: true,
   })
   .extend({
     // accept: z.literal<boolean>(true),

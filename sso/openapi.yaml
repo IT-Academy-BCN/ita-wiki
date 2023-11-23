@@ -172,6 +172,8 @@ paths:
                   minLength: 1
                   format: email
                   example: user@example.cat
+                itineraryId:
+                  type: string
                 password:
                   type: string
                   minLength: 8
@@ -183,6 +185,7 @@ paths:
               required:
                 - dni
                 - email
+                - itineraryId
                 - password
                 - confirmPassword
       responses:
@@ -194,6 +197,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ValidationError"
+        "422":
+          description: Invalid itinerary ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Invalid itinerary
+                required:
+                  - message
         "500":
           description: Other error
           content:
@@ -251,3 +266,31 @@ paths:
                     example: Database error
                 required:
                   - message
+  /api/v1/itinerary:
+    get:
+      tags:
+        - itinerary
+      description: Fetches all available itineraries
+      summary: Get all itineraries
+      responses:
+        "200":
+          description: List of all itineraries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                      example: Frontend Angular
+                    slug:
+                      type: string
+                      example: frontend-angular
+                  required:
+                    - id
+                    - name
+                    - slug

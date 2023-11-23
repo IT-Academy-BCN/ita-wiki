@@ -3,6 +3,7 @@ import { Context, Next } from 'koa'
 import { ZodError } from 'zod'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import {
+  InvalidParamError,
   InvalidToken,
   UnauthorizedError,
   ValidationError,
@@ -18,7 +19,8 @@ const errorMiddleware = async (ctx: Context, next: Next) => {
       error = new UnauthorizedError('refresh_token')
     } else if (error instanceof JsonWebTokenError) {
       error = new InvalidToken()
-      ctx.cookies.set('token', null, { expires: new Date(0), overwrite: true })
+    } else if (error.code === '23503') {
+      error = new InvalidParamError(error.constraint.split('_')[1])
     }
     ctx.status = error.status || 500
     ctx.body = {
