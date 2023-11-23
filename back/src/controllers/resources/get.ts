@@ -31,12 +31,13 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
     },
     resourceType: { in: resourceTypes },
     ...statusCondition,
-    ...(search && {
-      OR: [
-        { title: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
-      ],
-    }),
+    ...(search &&
+      search.trim().length >= 2 && {
+        OR: [
+          { title: { contains: search, mode: 'insensitive' } },
+          { description: { contains: search, mode: 'insensitive' } },
+        ],
+      }),
   }
   const voteSelect =
     ctx.user !== null ? { userId: true, vote: true } : { vote: true }
