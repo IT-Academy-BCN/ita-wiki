@@ -47,18 +47,9 @@ All notable changes to this project will be documented in this file.
 
 - My Resources widget in Category page
 
-## [0.3.0] - 2023-11-16
-
-## Added
-
-- New resource search bar UI implementation
 
 ## [0.2.1] - 2023-11-16
 
-
-### Added
-
-- Implement search bar resources UI.
   
 ### Changed
 
