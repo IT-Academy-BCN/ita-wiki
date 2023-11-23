@@ -56,3 +56,9 @@ export const ValidationError = registry.register(
     ),
   })
 )
+export const InvalidCredentials = registry.register(
+  'InvalidCredentialsError',
+  z.object({
+    message: z.string().openapi({ example: 'Invalid Credentials' }),
+  })
+)

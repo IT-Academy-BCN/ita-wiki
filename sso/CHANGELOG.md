@@ -1,7 +1,21 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.2.0] - 2023-11-22
 
+### Changed
+
+- Updated "users" table to "user"
+
+### Testing
+
+- Added tests for POST validate token.
+
+### Documentation
+
+- Swagger endpoint for POST validate token.
+- Updated description for POST login user.
+  
 ## [1.1.1] - 2023-11-20
 
 ### Added
