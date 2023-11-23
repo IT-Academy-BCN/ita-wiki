@@ -67,13 +67,13 @@ describe('UsersManager component', () => {
     queryClient.setQueryData(['users'], mockUsers)
     renderWithQueryClient(<UsersManager />)
 
-    expect(screen.getByText('Lista de usuarios')).toBeInTheDocument()
+    expect(screen.getByText("Llista d'usuaris")).toBeInTheDocument()
     expect(screen.queryByText('Error fetching users')).toBeNull()
 
     const user2 = screen.getByText('User Two')
     expect(user2).toBeInTheDocument()
 
-    const searchInput = screen.getByPlaceholderText('Escribe el DNI')
+    const searchInput = screen.getByPlaceholderText('Introdueix el DNI')
     fireEvent.change(searchInput, { target: { value: '12345678' } })
 
     const statusButton = screen.getByTestId('status-desactivar')

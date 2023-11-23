@@ -5,7 +5,7 @@ import { pathRoot } from '../../routes/routes'
 import { client } from '../../models/db'
 
 afterAll(async () => {
-  await client.query('DELETE FROM users WHERE dni = $1 AND email = $2', [
+  await client.query('DELETE FROM "user" WHERE dni = $1 AND email = $2', [
     '11111111Q',
     'example@example.com',
   ])
@@ -36,7 +36,7 @@ describe('Testing registration endpoint', () => {
         })
       expect(response.status).toBe(500)
       expect(response.body.message).toContain(
-        'duplicate key value violates unique constraint "users_dni_key"'
+        'duplicate key value violates unique constraint "user_dni_key"'
       )
     })
 
@@ -52,7 +52,7 @@ describe('Testing registration endpoint', () => {
 
       expect(response.status).toBe(500)
       expect(response.body.message).toBe(
-        'duplicate key value violates unique constraint "users_email_key"'
+        'duplicate key value violates unique constraint "user_email_key"'
       )
     })
   })

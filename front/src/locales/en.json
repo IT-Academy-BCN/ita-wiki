@@ -19,6 +19,7 @@
   "Menú": "Menu",
   "Ajustes": "Settings",
   "Cerrar": "Close",
+  "camp obligatori": "This field is required",
 
   "Administrador de Usuarios": "Users Manager",
 
@@ -27,7 +28,8 @@
   "Especialidad": "Specialization",
   "Password": "Password",
   "repetirpassword": "Confirm password",
-  "password error": "Password must have at least 8 characters and contain only letters and numbers",
+  "password error": "Password must contain only letters and numbers, at least 8 characters, a number, an uppercase letter and a lowercase letter",
+  "confirmPasswordError": "Passwords must match",
   "acepto": "Accept",
   "terminos legales": "legal terms",
   "tienes una cuenta?": "Do you have an account?, log in",
@@ -58,6 +60,16 @@
   "Temas de (category)": "{{name}} topics",
   "No tienes permiso de acceso": "You do not have the necessary permissions to access this content.",
   "Ha habido un error...": "An error has occurred.",
+
+  "Lista de usuarios": "Users list",
+  "Buscar por DNI:": "Search by DNI:",
+  "Introduce el DNI": "Enter DNI",
+  "Nombre": "Name",
+  "Email": "Email",
+  "Estado": "Status",
+  "Cambiar estado": "Change status",
+  "Desactivar": "Deactivate",
+  "Activar": "Activate",
 
   "+ Crear nuevo tema": "+ Create new topic",
   "Nombre del tema": "Topic name",

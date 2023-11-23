@@ -2,7 +2,7 @@ import supertest from 'supertest'
 import { expect, it, describe } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
-import { loginResponseSchema } from '../../schemas/auth/loginSchema'
+import { tokenSchema } from '../../schemas/token/tokenSchema'
 
 describe('Testing authentication endpoint', () => {
   it('should succeed with correct credentials', async () => {
@@ -14,7 +14,7 @@ describe('Testing authentication endpoint', () => {
       })
     expect(response.status).toBe(200)
 
-    expect(loginResponseSchema.safeParse(response.body).success).toBeTruthy()
+    expect(tokenSchema.safeParse(response.body).success).toBeTruthy()
   })
 
   it('should fail with incorrect password', async () => {

@@ -1,14 +1,13 @@
 import styled from 'styled-components'
 import { FC, useState } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
-import { paths, urls } from '../../constants'
-import { colors } from '../../styles'
+import { useTranslation } from 'react-i18next'
+import { urls } from '../../constants'
+import { colors, device } from '../../styles'
 import { TUserData } from '../../types'
 import { useGetUsers } from '../../hooks/useGetUsers'
 
 const UserListContainer = styled.div`
-  padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,10 +15,15 @@ const UserListContainer = styled.div`
 `
 
 const Table = styled.table`
-  width: 70%;
   padding: 10px;
   box-shadow: 0px 0px 12px rgb(0, 0, 0, 0.1);
   border-collapse: collapse;
+  width: 112%;
+  table-layout: fixed;
+  
+  @media ${device.Laptop} {
+    width: 100%;
+  }
 `
 
 const TableHead = styled.thead`
@@ -36,58 +40,74 @@ const TableRow = styled.tr`
   border-bottom: 2px dotted rgb(0, 0, 0, 0.1);
 `
 const TableCellNames = styled.td`
-  padding: 10px 10px 10px 20px;
+  padding: 5px 5px 5px 10px;
+  margin: 0;
+  word-wrap: break-word;
+  font-size: 14px;
 `
 
 const TableCell = styled.td`
-  padding: 10px;
+  padding: 5px 5px 5px 0px;
   text-align: center;
+  word-wrap: break-word;
+  font-size: 14px;
 `
 const SearchInput = styled.input`
   margin-left: 10px;
   margin-bottom: 20px;
+  border-radius: 5px;
 `
 const ActivateBtn = styled.button`
   background-color: rgb(39, 174, 96, 0.6);
   border: 1px solid rgb(0, 0, 0, 0.5);
   border-radius: 5px;
-  padding: 10px;
-  width: 100px;
+  max-width: 93px;
+  padding: 5.5px;
+  font-size: 13.2px;
 
   &:hover {
     cursor: pointer;
     background-color: ${colors.success};
+  }
+
+  @media only ${device.Desktop} {
+    min-width: 100px;
+    padding: 12px;
+  }
+
+  @media only ${device.Tablet} {
+    width: 65px;
+    margin: 0 -2px 0 -7px;
+    padding: 7.5px;
   }
 `
 const DeactivateBtn = styled.button`
   background-color: rgb(226, 170, 59, 0.6);
   border: 1px solid rgb(0, 0, 0, 0.5);
   border-radius: 5px;
-  padding: 10px;
-  width: 100px;
+  max-width: 93px;
+  padding: 5.5px;
+  font-size: 13.2px;
 
   &:hover {
     cursor: pointer;
     background-color: ${colors.warning};
   }
-`
 
-const HomeBtn = styled.button`
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  border: 1px solid rgb(0, 0, 0, 0.5);
-  border-radius: 5px;
-  padding: 10px;
+  @media only ${device.Desktop} {
+    min-width: 100px;
+    padding: 12px;
+  }
 
-  &:hover {
-    cursor: pointer;
-    background-color: rgb(0, 0, 0, 0.1);
-    box-shadow: 0px 0px 5px rgb(0, 0, 0, 0.1);
+  @media only ${device.Tablet} {
+    width: 70px;
+    margin: 0 -1px 0 -7px;
+    padding: 7.5px;
   }
 `
 
 const AccountAdmin: FC = () => {
+  const { t } = useTranslation()
   const { isLoading, isError, data: users } = useGetUsers()
   const queryClient = useQueryClient()
   const [searchTerm, setSearchTerm] = useState('')
@@ -150,26 +170,23 @@ const AccountAdmin: FC = () => {
 
   return (
     <UserListContainer>
-      <Link to={paths.home}>
-        <HomeBtn>Volver</HomeBtn>
-      </Link>
-      <h1>Lista de usuarios</h1>
-      <p>Buscar por DNI:</p>
+      <h1>{t('Lista de usuarios')}</h1>
+      <p>{t('Buscar por DNI:')}</p>
       <SearchInput
         type="text"
         id="search"
         value={searchTerm}
         onChange={handleSearchChange}
-        placeholder="Escribe el DNI"
+        placeholder={t("Introduce el DNI")}
       />
       <Table>
         <TableHead>
           <tr>
-            <TableHeader>Nombre</TableHeader>
-            <TableHeader>DNI</TableHeader>
-            <TableHeader>Email</TableHeader>
-            <TableHeader>Estado</TableHeader>
-            <TableHeader>Cambiar estado</TableHeader>
+            <TableHeader>{t('Nombre')}</TableHeader>
+            <TableHeader>{t('DNI')}</TableHeader>
+            <TableHeader>{t('Email')}</TableHeader>
+            <TableHeader>{t('Estado')}</TableHeader>
+            <TableHeader>{t('Cambiar estado')}</TableHeader>
           </tr>
         </TableHead>
         <TableBody>
@@ -186,14 +203,14 @@ const AccountAdmin: FC = () => {
                         data-testid="status-desactivar"
                         onClick={() => updateUserStatus(user)}
                       >
-                        Desactivar
+                        {t('Desactivar')}
                       </DeactivateBtn>
                     ) : (
                       <ActivateBtn
                         data-testid="status-activar"
                         onClick={() => updateUserStatus(user)}
                       >
-                        Activar
+                        {t('Activar')}
                       </ActivateBtn>
                     )}
                   </TableCell>

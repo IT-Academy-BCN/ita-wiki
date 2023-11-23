@@ -19,6 +19,7 @@
   "Menú": "Menú",
   "Ajustes": "Ajustes",
   "Cerrar": "Cerrar",
+  "camp obligatori": "Este campo es obligatorio",
 
   "Administrador de Usuarios": "Administrador de Usuarios",
 
@@ -27,7 +28,8 @@
   "Especialidad": "Especialidad",
   "Password": "Contraseña",
   "repetirpassword": "Repetir contraseña",
-  "password error": "La contraseña debe tener al menos 8 caracteres y contener solo letras y números",
+  "password error": "La contraseña debe contener solo letras y números, mínimo 8 caracteres, un número, una mayúscula y una minúscula",
+  "confirmPasswordError": "Las contraseñas deben coincidir",
   "acepto": "Acepto",
   "terminos legales": "términos legales",
   "tienes una cuenta?": "¿Tienes una cuenta?, entrar",
@@ -58,6 +60,16 @@
   "Temas de (category)": "Temas de {{name}}",
   "No tienes permiso de acceso": "No tienes los permisos necesarios para acceder a este contenido.",
   "Ha habido un error...": "Ha habido un error...",
+
+  "Lista de usuarios": "Lista de usuarios",
+  "Buscar por DNI:": "Buscar por DNI:",
+  "Introduce el DNI": "Introduce el DNI",
+  "Nombre": "Nombre",
+  "Email": "Email",
+  "Estado": "Estado",
+  "Cambiar estado": "Cambiar estado",
+  "Desactivar": "Desactivar",
+  "Activar": "Activar",
 
   "+ Crear nuevo tema": "+ Crear nuevo tema",
   "Nombre del tema": "Nombre del tema",

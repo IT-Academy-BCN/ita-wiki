@@ -1,9 +1,8 @@
 import Router from '@koa/router'
-import { z } from 'zod'
 import { loginController, logoutController } from '../controllers/auth'
 import { pathRoot } from './routes'
+import { z } from '../openapi/zod'
 import { validate } from '../middleware/validate'
-import { checkToken } from '../controllers/auth/checkToken'
 import { registerController } from '../controllers/auth/registerController'
 import { loginSchema, registerSchema } from '../schemas'
 
@@ -22,7 +21,5 @@ authRoutes.post(
   validate(z.object({ body: loginSchema })),
   loginController
 )
-
-authRoutes.post('/check-token', checkToken)
 
 authRoutes.get('/logout', logoutController)
