@@ -17,7 +17,7 @@ import {
 import InputGroup from '../molecules/InputGroup'
 import SelectGroup from '../molecules/SelectGroup'
 import { colors, device, dimensions, FlexBox } from '../../styles'
-import { TCategory, TForm } from '../../types'
+import { TCategory, TRegisterForm } from '../../types'
 import { useGetCategories } from '../../hooks'
 import { useRegister } from '../../hooks/useRegister'
 
@@ -105,9 +105,6 @@ type TRegister = {
   handleLoginModal: () => void
   handleRegisterModal: () => void
 }
-export function validatePassword(password: string): boolean {
-  return /^(?=.*[A-Za-z\d])[A-Za-z\d]{8,}$/.test(password)
-}
 
 const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
   const [visibility, setVisibility] = useState(false)
@@ -117,7 +114,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     handleSubmit,
     formState: { errors },
     trigger,
-  } = useForm<TForm>({ resolver: zodResolver(UserRegisterSchema) })
+  } = useForm<TRegisterForm>({ resolver: zodResolver(UserRegisterSchema) })
 
   const { data } = useGetCategories()
   const categoriesMap = data?.map((category: TCategory) => ({
@@ -125,13 +122,8 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     label: category.name,
   }))
 
-  const {
-    registerUser,
-    responseError,
-    isLoading,
-    isSuccess,
-    setResponseError,
-  } = useRegister(handleRegisterModal)
+  const { registerUser, error, isLoading, isSuccess } =
+    useRegister(handleRegisterModal)
 
   const onSubmit = handleSubmit(async (userData) => {
     const {
@@ -147,10 +139,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     const selectedCategory = categoriesMap.find(
       (category: { label: string }) => category.label === specialization
     )
-    if (!validatePassword(password)) {
-      setResponseError(t('password error'))
-      return
-    }
+
     if (selectedCategory && password === confirmPassword && accept) {
       await registerUser.mutateAsync({
         email,
@@ -169,9 +158,9 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
       <TitleStyled as="h1" fontWeight="bold">
         {t('Registre')}
       </TitleStyled>
-      {responseError && (
+      {!!error && (
         <FlexErrorStyled align="start">
-          <ValidationMessage color="error" text={responseError} />
+          <ValidationMessage color="error" text={error?.message ?? ''} />
         </FlexErrorStyled>
       )}
       <FormStyled onSubmit={onSubmit}>
@@ -182,8 +171,8 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             label="dni"
             type="text"
             placeholder={t('DNI')}
-            error={errors.dni && true}
-            validationMessage={errors.dni?.message}
+            error={!!errors.dni}
+            validationMessage={errors.dni?.message && t('camp obligatori')}
             validationType="error"
             {...register('dni')}
             onBlur={() => {
@@ -198,8 +187,8 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             label="email"
             type="email"
             placeholder="Email"
-            error={errors.email && true}
-            validationMessage={errors.email?.message}
+            error={!!errors.email}
+            validationMessage={errors.email?.message && t('camp obligatori')}
             validationType="error"
             {...register('email')}
             onBlur={() => {
@@ -214,8 +203,8 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             label="name"
             type="text"
             placeholder="Username"
-            error={errors.name && true}
-            validationMessage={errors.name?.message}
+            error={!!errors.name}
+            validationMessage={errors.name?.message && t('camp obligatori')}
             validationType="error"
             {...register('name')}
             onBlur={() => {
@@ -230,14 +219,8 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             label="password"
             type={visibility ? 'text' : 'password'}
             placeholder={t('Password')}
-            error={
-              errors.password &&
-              'La contraseña debe tener al menos 8 caracteres y contener solo letras y números'
-            }
-            validationMessage={
-              errors.password?.message &&
-              'La contraseña debe tener al menos 8 caracteres y contener solo letras y números'
-            }
+            error={!!errors.password}
+            validationMessage={errors.password?.message && t('password error')}
             validationType="error"
             color={colors.gray.gray4}
             icon={visibility ? 'visibility' : 'visibility_off'}
@@ -258,8 +241,10 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             icon={visibility ? 'visibility' : 'visibility_off'}
             iconClick={() => setVisibility(!visibility)}
             color={colors.gray.gray4}
-            error={errors.confirmPassword && true}
-            validationMessage={errors.confirmPassword?.message}
+            error={!!errors.confirmPassword}
+            validationMessage={
+              errors.confirmPassword?.message && t('confirmPasswordError')
+            }
             validationType="error"
             {...register('confirmPassword')}
             onBlur={() => {
@@ -273,9 +258,11 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             id="specialization"
             label="specialization"
             placeholder={t('Especialidad')}
-            error={errors.specialization && true}
+            error={!!errors.specialization}
             options={categoriesMap}
-            validationMessage={errors.specialization?.message}
+            validationMessage={
+              errors.specialization?.message && t('camp obligatori')
+            }
             {...register('specialization')}
             onBlur={() => {
               trigger('specialization')
@@ -323,6 +310,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
       </FormStyled>
       <Text fontWeight="bold">
         <TextDecorationStyled
+          data-testid="haveAnAccountLink"
           onClick={() => {
             handleLoginModal()
             handleRegisterModal()

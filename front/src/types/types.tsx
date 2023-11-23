@@ -175,4 +175,4 @@ export type TResourceTitleLink = {
 
 export type TSortOrder = 'asc' | 'desc'
 
-export type TForm = z.infer<typeof UserRegisterSchema>
+export type TRegisterForm = z.infer<typeof UserRegisterSchema>

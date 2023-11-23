@@ -2,13 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.4.3] - 2023-11-23
+## [0.4.4] - 2023-11-23
 
 ### Fixed
 
 - Adjusted the general styles of the AdminAccount table.
 - Updated translations accordingly.
 - Relocated AccountAdmin.test from the "pages" directory to "/components/organisms".
+
+## [0.4.3] - 2023-11-23
+
+### Fixed
+
+- Fix register error message.
 
 ## [0.4.2] - 2023-11-22
 

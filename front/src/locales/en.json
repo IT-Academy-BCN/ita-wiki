@@ -19,6 +19,7 @@
   "Menú": "Menu",
   "Ajustes": "Settings",
   "Cerrar": "Close",
+  "camp obligatori": "This field is required",
 
   "Administrador de Usuarios": "Users Manager",
 
@@ -27,7 +28,8 @@
   "Especialidad": "Specialization",
   "Password": "Password",
   "repetirpassword": "Confirm password",
-  "password error": "Password must have at least 8 characters and contain only letters and numbers",
+  "password error": "Password must contain only letters and numbers, at least 8 characters, a number, an uppercase letter and a lowercase letter",
+  "confirmPasswordError": "Passwords must match",
   "acepto": "Accept",
   "terminos legales": "legal terms",
   "tienes una cuenta?": "Do you have an account?, log in",
