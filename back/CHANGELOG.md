@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1] - 2023-11-23
+
+### Changed
+
+- Modified GET resources endpoint to admit one optional topic string (topicId).
+
 ## [0.3.0] - 2023-11-21
 
 ### Changed
