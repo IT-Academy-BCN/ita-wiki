@@ -19,6 +19,7 @@
   "Menú": "Menú",
   "Ajustes": "Ajustaments",
   "Cerrar": "Tanca",
+  "camp obligatori": "Aquest camp és obligatori",
 
   "Administrador de Usuarios": "Administrador d'Usuaris",
 
@@ -27,7 +28,8 @@
   "Especialidad": "Especialitat",
   "Password": "Contrasenya",
   "repetirpassword": "Repetir contrasenya",
-  "password error": "La contrasenya ha de tenir almenys 8 caràcters i contenir només lletres i números",
+  "password error": "La contrasenya ha de contenir només lletres i números, mínim 8 caràcters, un número, una majúscula i una minúscula",
+  "confirmPasswordError": "La contrasenya ha de coincidir",
   "acepto": "Accepto",
   "terminos legales": "termes legals",
   "tienes una cuenta?": "Tens un compte?, entra",

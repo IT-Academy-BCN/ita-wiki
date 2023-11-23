@@ -7,7 +7,7 @@ import {
   TResource,
   TVoteCount,
   TVoteMutationData,
-  TForm,
+  TRegisterForm,
 } from '../types'
 
 const errorMessageStatus: { [key: number]: string } = {
@@ -203,16 +203,26 @@ export const loginUserFetcher = async (user: object) => {
 
   return response.status === 204 ? null : response.json()
 }
-export const registerUserFetcher = async (useData: TForm) => {
+export const registerUserFetcher = async (useData: TRegisterForm) => {
   const response = await fetch(urls.register, {
     method: 'POST',
     body: JSON.stringify(useData),
     headers: { 'Content-type': 'application/json' },
   })
   if (!response.ok)
-    throw new Error(`Error al registrar usuario: ${response.statusText}`)
+    throw new Error(
+      `Error al registrar usuario: ${response.statusText} (Status: ${response.status})`
+    )
 
-  return response.status === 204 ? null : response.json()
+  if (response.status === 204) {
+    return null
+  }
+
+  try {
+    return await response.json()
+  } catch (error) {
+    throw new Error('Error parsing JSON response from server')
+  }
 }
 
 export const createResourceFetcher = (resource: object) =>
