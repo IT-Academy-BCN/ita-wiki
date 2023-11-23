@@ -1,6 +1,25 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+
+## [1.3.0] - 2023-11-23
+
+### Added
+
+- 'itinerary' table and update 'user' table schema
+- itineraryId to userSchema and registerController
+- InvalidParamError to catch foreign_key error
+
+### Testing
+
+- Added tests for GET itinerary.
+- Updated test for POST register.
+
+### Documentation
+
+- Swagger endpoint for GET itinerary.
+- Updated error response for POST register user.
+  
 ## [1.2.0] - 2023-11-22
 
 ### Changed
