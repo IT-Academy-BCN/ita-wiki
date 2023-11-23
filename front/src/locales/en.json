@@ -61,6 +61,16 @@
   "No tienes permiso de acceso": "You do not have the necessary permissions to access this content.",
   "Ha habido un error...": "An error has occurred.",
 
+  "Lista de usuarios": "Users list",
+  "Buscar por DNI:": "Search by DNI:",
+  "Introduce el DNI": "Enter DNI",
+  "Nombre": "Name",
+  "Email": "Email",
+  "Estado": "Status",
+  "Cambiar estado": "Change status",
+  "Desactivar": "Deactivate",
+  "Activar": "Activate",
+
   "+ Crear nuevo tema": "+ Create new topic",
   "Nombre del tema": "Topic name",
   "Nombre del nuevo tema": "New topic name",

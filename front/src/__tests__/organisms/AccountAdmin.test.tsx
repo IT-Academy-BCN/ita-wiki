@@ -71,7 +71,7 @@ describe('AccountAdmin Component', () => {
     renderWithQueryClient(<AccountAdmin />)
     const user1 = await screen.findByText('User One')
     expect(user1).toBeInTheDocument()
-    const searchInput = screen.getByPlaceholderText('Escribe el DNI')
+    const searchInput = screen.getByPlaceholderText('Introdueix el DNI')
     fireEvent.change(searchInput, { target: { value: '12345678' } })
     await waitFor(() =>
       expect(screen.getByText('Test Name')).toBeInTheDocument()
