@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.2] - 2023-11-23
+
+### Changed
+
+- Modified GET resources controller so search query param only is applied when it is 2 or more chars long.
+
 ## [0.3.1] - 2023-11-23
 
 ### Changed
