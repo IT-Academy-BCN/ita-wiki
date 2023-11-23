@@ -17,7 +17,7 @@ import type {
   TUserVote,
   TVoteCount,
   TSortOrder,
-  TForm,
+  TRegisterForm,
 } from './types'
 
 export type {
@@ -39,5 +39,5 @@ export type {
   TUserVote,
   TVoteCount,
   TSortOrder,
-  TForm,
+  TRegisterForm,
 }

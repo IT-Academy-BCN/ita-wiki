@@ -17,7 +17,7 @@ import {
 import InputGroup from '../molecules/InputGroup'
 import SelectGroup from '../molecules/SelectGroup'
 import { colors, device, dimensions, FlexBox } from '../../styles'
-import { TCategory, TForm } from '../../types'
+import { TCategory, TRegisterForm } from '../../types'
 import { useGetCategories } from '../../hooks'
 import { useRegister } from '../../hooks/useRegister'
 
@@ -105,11 +105,6 @@ type TRegister = {
   handleLoginModal: () => void
   handleRegisterModal: () => void
 }
-export function validatePassword(password: string): boolean {
-  return /^(?=[a-zA-Z0-9]{8,}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d).*/.test(
-    password
-  )
-}
 
 const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
   const [visibility, setVisibility] = useState(false)
@@ -119,7 +114,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     handleSubmit,
     formState: { errors },
     trigger,
-  } = useForm<TForm>({ resolver: zodResolver(UserRegisterSchema) })
+  } = useForm<TRegisterForm>({ resolver: zodResolver(UserRegisterSchema) })
 
   const { data } = useGetCategories()
   const categoriesMap = data?.map((category: TCategory) => ({
@@ -127,13 +122,8 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     label: category.name,
   }))
 
-  const {
-    registerUser,
-    responseError,
-    isLoading,
-    isSuccess,
-    setResponseError,
-  } = useRegister(handleRegisterModal)
+  const { registerUser, error, isLoading, isSuccess } =
+    useRegister(handleRegisterModal)
 
   const onSubmit = handleSubmit(async (userData) => {
     const {
@@ -149,10 +139,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     const selectedCategory = categoriesMap.find(
       (category: { label: string }) => category.label === specialization
     )
-    if (!validatePassword(password)) {
-      setResponseError(t('password error'))
-      return
-    }
+
     if (selectedCategory && password === confirmPassword && accept) {
       await registerUser.mutateAsync({
         email,
@@ -171,9 +158,9 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
       <TitleStyled as="h1" fontWeight="bold">
         {t('Registre')}
       </TitleStyled>
-      {responseError && (
+      {!!error && (
         <FlexErrorStyled align="start">
-          <ValidationMessage color="error" text={responseError} />
+          <ValidationMessage color="error" text={error?.message ?? ''} />
         </FlexErrorStyled>
       )}
       <FormStyled onSubmit={onSubmit}>
@@ -323,6 +310,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
       </FormStyled>
       <Text fontWeight="bold">
         <TextDecorationStyled
+          data-testid="haveAnAccountLink"
           onClick={() => {
             handleLoginModal()
             handleRegisterModal()

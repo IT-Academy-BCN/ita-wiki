@@ -2,11 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.4.2] - 2023-11-22
+## [0.4.3] - 2023-11-23
 
 ### Fixed
 
 - Fix register error message.
+
+## [0.4.2] - 2023-11-22
+
+### Fixed
+
+- User Profile bug when user has no resources.
 
 ## [0.4.1] - 2023-11-21
 
