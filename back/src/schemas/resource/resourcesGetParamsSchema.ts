@@ -32,16 +32,15 @@ export const resourcesGetParamsSchema = z
         },
         example: 'BLOG',
       }),
-    topics: z
-      .array(
-        z.string().openapi({
-          param: {
-            description:
-              'Array of topic IDs for which to retrieve resources. If not provided, resources for ALL topics are fetched.',
-          },
-          example: 'cln2u09xo0037s6wvbf6t9jfg',
-        })
-      )
+    topic: z
+      .string()
+      .openapi({
+        param: {
+          description:
+            'ID string of the topic for which to retrieve resources. If not provided, resources for ALL topics are fetched.',
+        },
+        example: 'cln2u09xo0037s6wvbf6t9jfg',
+      })
       .optional(),
     status: z
       .union([statusEnum, z.array(statusEnum)])

@@ -102,7 +102,7 @@ describe('Testing resources GET endpoint', () => {
 
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .query(qs.stringify({ topics: [topicId] }))
+      .query(qs.stringify({ topic: topicId }))
 
     expect(response.status).toBe(200)
     expect(response.body.length).toBeGreaterThanOrEqual(1)
@@ -114,11 +114,10 @@ describe('Testing resources GET endpoint', () => {
     })
   })
 
-  it('should fail without a valid topic name', async () => {
-    const topicName = 'This topic does not exist'
+  it('should not return any resource if non-valid topic id provided', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .query(qs.stringify({ topics: [topicName] }))
+      .query(qs.stringify({ topic: 'notValidTopicId' }))
 
     expect(response.status).toBe(200)
     expect(response.body.length).toBe(0)
@@ -159,7 +158,7 @@ describe('Testing resources GET endpoint', () => {
         .get(`${pathRoot.v1.resources}`)
         .query(
           qs.stringify({
-            topics: [topicId],
+            topic: topicId,
             resourceTypes: [resourceType],
             slug: categorySlug,
           })
