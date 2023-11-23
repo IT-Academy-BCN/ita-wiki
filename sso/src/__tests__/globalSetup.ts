@@ -70,14 +70,14 @@ export async function setup() {
   CREATE TRIGGER set_timestamp BEFORE
   UPDATE ON "user" FOR EACH ROW EXECUTE FUNCTION trigger_set_timestamp();
   
-  CREATE TABLE IF NOT EXISTS "itinerary" (
-      id TEXT PRIMARY KEY,
-      name TEXT UNIQUE NOT NULL,
-      slug TEXT UNIQUE NOT NULL
+  CREATE TABLE IF NOT EXISTS itinerary (
+    id TEXT PRIMARY KEY,
+    name TEXT UNIQUE NOT NULL,
+    slug TEXT UNIQUE NOT NULL
   );
-  
+
   ALTER TABLE "user"
-  ADD COLUMN itinerary_id TEXT REFERENCES "itinerary"(id);
+  ADD COLUMN itinerary_id TEXT NOT NULL REFERENCES itinerary(id);
 `)
 
   // Cleanup database
@@ -85,18 +85,22 @@ export async function setup() {
 
   // Create required test data
 
-  const [userItineraryId, mentorItineraryId, inactiveUserItineraryId] =
-    await Promise.all(
-      itinerariesData.map(async (itinerary) => {
-        const itineraryId = generateId()
-        const query = `
+  const [
+    userItineraryId,
+    mentorItineraryId,
+    inactiveUserItineraryId,
+    adminUserItineraryId,
+  ] = await Promise.all(
+    itinerariesData.map(async (itinerary) => {
+      const itineraryId = generateId()
+      const query = `
         INSERT INTO "itinerary" (id, name, slug)
         VALUES ($1, $2, $3)
         ON CONFLICT (slug) DO NOTHING;`
-        await client.query(query, [itineraryId, itinerary.name, itinerary.slug])
-        return itineraryId
-      })
-    )
+      await client.query(query, [itineraryId, itinerary.name, itinerary.slug])
+      return itineraryId
+    })
+  )
 
   // Create users with itinerary assignments
   const userCreationPromises = Object.values(testUserData).map(async (user) => {
@@ -107,6 +111,8 @@ export async function setup() {
       itineraryId = mentorItineraryId
     } else if (user.email === 'testingInactiveUser@user.cat') {
       itineraryId = inactiveUserItineraryId
+    } else if (user.email === 'testingAdmin@user.cat') {
+      itineraryId = adminUserItineraryId
     }
 
     const query = `
