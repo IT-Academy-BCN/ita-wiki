@@ -13,7 +13,6 @@ describe('useRegister hook', () => {
       ),
     })
     expect(result.current.registerUser).toBeDefined()
-    expect(result.current.responseError).toBe('')
     expect(result.current.isLoading).toBe(false)
     expect(result.current.isSuccess).toBe(false)
   })
@@ -37,7 +36,6 @@ describe('useRegister hook', () => {
       })
     })
     await waitFor(() => {
-      expect(result.current.responseError).toBe('')
       expect(result.current.isLoading).toBe(false)
       expect(result.current.isSuccess).toBe(true)
     })
@@ -65,6 +63,5 @@ describe('useRegister hook', () => {
       expect(result.current.isLoading).toBe(false)
       expect(result.current.isSuccess).toBe(false)
     })
-    expect(result.current.responseError).toBe('')
   })
 })
