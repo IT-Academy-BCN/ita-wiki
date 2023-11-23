@@ -76,7 +76,7 @@
   "Filtrar": "Sort",
   "Votos": "Votes",
   "Fecha": "Date",
-  "+ Crear nuevo recurso": "+ Create new resource",
+  "Crear nuevo recurso": "Create new resource",
 
   "Error 401 - No autorizado": "Unauthorized operation. User login required.",
   "Error 403 - Acceso denegado": "Access denied. You do not have the necessary permissions to perform the operation.",
@@ -93,5 +93,6 @@
   "n/d": "n/a",
 
   "Mostrando":"Showing",
-  "resultados para":"results for"
+  "resultados para":"results for",
+  "Nuevo Recurso":"New resource"
 }

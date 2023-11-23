@@ -76,7 +76,7 @@
   "Filtrar": "Filtrar",
   "Votos": "Votos",
   "Fecha": "Fecha",
-  "+ Crear nuevo recurso": "+ Crear nuevo recurso",
+  "Crear nuevo recurso": "Crear nuevo recurso",
 
   "Error 401 - No autorizado": "Operación no autorizada. Es necesario iniciar sesión de usuario.",
   "Error 403 - Acceso denegado": "Acceso denegado. No tienes los permisos necesarios para realizar la operación.",
@@ -93,5 +93,7 @@
   "n/d": "n/d",
 
   "Mostrando":"Mostrando",
-  "resultados para":"resultados para"
+  "resultados para":"resultados para",
+  "Nuevo Recurso":"Nuevo recurso"
+
 }

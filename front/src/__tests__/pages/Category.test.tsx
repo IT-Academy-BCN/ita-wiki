@@ -90,7 +90,7 @@ it('modal opens when clicking on the "Crear nuevo recurso" button', async () => 
   fireEvent.click(createButtonText);
 
   await waitFor(() => {
-    const modalTitle = screen.getByText('Nuevo Recurso'); 
+    const modalTitle = screen.getByText('Nou recurs'); 
     expect(modalTitle).toBeInTheDocument();
   })
 })
@@ -115,7 +115,7 @@ it('modal opens and closes correctly when user is logged', async () => {
   render(<Category />);
   fireEvent.click(screen.getByTestId('new-resource-text'))
   const modalTitle = screen.getByRole('heading', {
-    name: /Nuevo Recurso/i,
+    name: /Nou recurs/i,
   });
   expect(modalTitle).toBeInTheDocument();
   fireEvent.keyDown(document, { key: 'Escape' });
