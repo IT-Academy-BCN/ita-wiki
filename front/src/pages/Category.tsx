@@ -610,6 +610,7 @@ const Category: FC = () => {
                 </TitleResourcesContainer>
                 <VotesDateController
                   sortOrder={sortOrder}
+                  filters={filters}
                   handleSortOrder={handleSortOrder}
                   handleSortByVotes={handleSortByVotes}
                   handleSortByDates={handleSortByDates}

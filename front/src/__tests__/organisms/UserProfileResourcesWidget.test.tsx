@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { render, renderHook, screen, fireEvent } from '../test-utils'
+import { render, renderHook, screen, fireEvent, waitFor } from '../test-utils'
 import { UserProfileResourcesWidget } from '../../components/organisms'
 import { useSortByDate, useSortByVotes } from '../../hooks'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
@@ -189,7 +189,7 @@ describe('UserProfileResourcesWidget component', () => {
     ).not.toBeInTheDocument()
   })
 
-  it('renders correctly with a favorite resources array', () => {
+  it('renders correctly with a favorite resources array', async () => {
     render(
       <UserProfileResourcesWidget
         title="Recursos favorits"
@@ -202,8 +202,10 @@ describe('UserProfileResourcesWidget component', () => {
 
     expect(screen.getByText(/recursos favorits/i)).toBeInTheDocument()
 
-    expect(screen.getByText(/vots/i)).toBeInTheDocument()
-    expect(screen.getByText(/data/i)).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText(/vots/i)).toBeInTheDocument()
+      expect(screen.getByText(/data/i)).toBeInTheDocument()
+    })
 
     expect(screen.getByText('My favorite title')).toBeInTheDocument()
 
@@ -226,7 +228,7 @@ describe('UserProfileResourcesWidget component', () => {
     })
   })
 
-  it("renders correctly with a user's resources array", () => {
+  it("renders correctly with a user's resources array", async () => {
     render(
       <UserProfileResourcesWidget
         title="Test title"
@@ -239,8 +241,10 @@ describe('UserProfileResourcesWidget component', () => {
 
     expect(screen.getByText(/test title mobile/i)).toBeInTheDocument()
 
-    expect(screen.getByText(/vots/i)).toBeInTheDocument()
-    expect(screen.getByText(/data/i)).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText(/vots/i)).toBeInTheDocument()
+      expect(screen.getByText(/data/i)).toBeInTheDocument()
+    })
 
     expect(screen.getByText('My resource title')).toBeInTheDocument()
 
@@ -261,7 +265,7 @@ describe('UserProfileResourcesWidget component', () => {
   })
 })
 
-it('sorts resources by date in descending order', () => {
+it('sorts resources by date in descending order', async () => {
   render(
     <UserProfileResourcesWidget
       title="Test title"
@@ -272,7 +276,10 @@ it('sorts resources by date in descending order', () => {
     />
   )
 
-  fireEvent.click(screen.getByText(/data/i))
+  await waitFor(() => {
+    expect(screen.getByText(/data/i)).toBeInTheDocument()
+    fireEvent.click(screen.getByText(/data/i))
+  })
 
   const { result } = renderHook(() =>
     useSortByDate(arrayFavs, 'updatedAt', 'desc')
@@ -342,7 +349,7 @@ it('sorts resources by date in descending order', () => {
   ])
 })
 
-it('sorts resources by votes in descending order', () => {
+it('sorts resources by votes in descending order', async () => {
   render(
     <UserProfileResourcesWidget
       title="Test title"
@@ -353,7 +360,10 @@ it('sorts resources by votes in descending order', () => {
     />
   )
 
-  fireEvent.click(screen.getByText(/Vots/i))
+  await waitFor(() => {
+    expect(screen.getByText(/vots/i)).toBeInTheDocument()
+    fireEvent.click(screen.getByText(/vots/i))
+  })
 
   const { result } = renderHook(() => useSortByVotes(arrayFavs, 'desc'))
   const sortedResources = result.current.sortedVotes

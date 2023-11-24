@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useSortByDate, useSortByVotes } from '../../hooks'
-import { TFavorites, TResource, TSortOrder } from '../../types'
+import { TFavorites, TFilters, TResource, TSortOrder } from '../../types'
 import CardResource from './CardResource'
 import { VotesDateController } from './VotesDateController'
 import { useAuth } from '../../context/AuthProvider'
@@ -100,6 +100,8 @@ export const UserProfileResourcesWidget = ({
 
   const [sortOrder, setSortOrder] = useState<TSortOrder>('desc')
   const [isSortByVotesActive, setIsSortByVotesActive] = useState(false)
+  const [filters] = useState<TFilters>({})
+  
   const handleSortOrder = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
   }
@@ -147,6 +149,7 @@ export const UserProfileResourcesWidget = ({
           <>
             <VotesDateController
               sortOrder={sortOrder}
+              filters={filters}
               handleSortOrder={handleSortOrder}
               handleSortByVotes={handleSortByVotes}
               handleSortByDates={handleSortByDates}

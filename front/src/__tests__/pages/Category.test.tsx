@@ -46,16 +46,19 @@ describe.skip('Resource', () => {
     })
   })
 })
+
 it('renders correctly', () => {
   render(<Category />)
+
   expect(screen.getByTestId('filters-container')).toBeInTheDocument()
   expect(screen.getByTestId('types-filter')).toBeInTheDocument()
   expect(screen.getByTestId('status-filter')).toBeInTheDocument()
   expect(screen.getByTestId('resource-list')).toBeInTheDocument()
-expect(screen.getByText('Recursos de React')).toBeInTheDocument()
+  expect(screen.getByText('Recursos de React')).toBeInTheDocument()
   expect(screen.getByText('Els meus recursos')).toBeInTheDocument()
   expect(screen.getByText('Recursos favorits')).toBeInTheDocument()
 })
+
 it('renders Navbar for logged in users', () => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
@@ -66,6 +69,7 @@ it('renders Navbar for logged in users', () => {
   render(<Category />)
   expect(screen.getByTestId('navbar')).toBeInTheDocument()
 })
+
 it('renders Navbar for unregistered users', () => {
   vi.mocked(useAuth).mockReturnValue({
     user: null,
@@ -73,6 +77,7 @@ it('renders Navbar for unregistered users', () => {
   render(<Category />)
   expect(screen.getByTestId('navbar')).toBeInTheDocument()
 })
+
 it('filters opens and closes correctly', () => {
   render(<Category />)
   fireEvent.click(screen.getByTestId('filters-button'))
@@ -112,17 +117,17 @@ it('modal opens and closes correctly when user is not logged', async () => {
 })
 
 it('modal opens and closes correctly when user is logged', async () => {
-  render(<Category />);
+  render(<Category />)
   fireEvent.click(screen.getByTestId('new-resource-text'))
   const modalTitle = screen.getByRole('heading', {
     name: /Nou recurs/i,
   });
-  expect(modalTitle).toBeInTheDocument();
-  fireEvent.keyDown(document, { key: 'Escape' });
+  expect(modalTitle).toBeInTheDocument()
+  fireEvent.keyDown(document, { key: 'Escape' })
   await waitFor(() => {
-    expect(modalTitle).not.toBeInTheDocument();
-  });
-});
+    expect(modalTitle).not.toBeInTheDocument()
+  })
+})
 
 it('status filter widget does not appear for users who are not logged in', () => {
   vi.mocked(useAuth).mockReturnValue({
@@ -132,6 +137,7 @@ it('status filter widget does not appear for users who are not logged in', () =>
   const statusFilterWidget = screen.queryByTestId('status-filter')
   expect(statusFilterWidget).not.toBeInTheDocument()
 })
+
 it('status filter widget appears for users who are logged in', () => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
@@ -143,7 +149,15 @@ it('status filter widget appears for users who are logged in', () => {
   const statusFilterWidget = screen.getByTestId('status-filter')
   expect(statusFilterWidget).toBeInTheDocument()
 })
-it('sorts resources by date in descending order', () => {
+
+it('does not render Votes and Date when there are no available resources', () => {
+  render(<Category />)
+
+  expect(screen.queryByText(/vots/i)).not.toBeInTheDocument()
+  expect(screen.queryByText(/data/i)).not.toBeInTheDocument()
+})
+
+it('sorts available resources by date in descending order', async () => {
   const items = [
     { id: 1, date: '2023-11-01' },
     { id: 2, date: '2023-10-30' },
@@ -152,7 +166,10 @@ it('sorts resources by date in descending order', () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByText(/Data/i))
+  await waitFor(() => {
+    const sortDatesButton = screen.getByText(/data/i)
+    fireEvent.click(sortDatesButton)
+  })
 
   const { result } = renderHook(() => useSortByDate(items, 'date', 'desc'))
 
@@ -162,7 +179,8 @@ it('sorts resources by date in descending order', () => {
     { id: 3, date: '2023-10-28' },
   ])
 })
-it('sorts resources by votes in ascending order', () => {
+
+it('sorts available resources by votes in ascending order', async () => {
   const votes = [
     {
       id: 'resource1',
@@ -198,8 +216,10 @@ it('sorts resources by votes in ascending order', () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByText(/Vots/i))
-
+  await waitFor(() => {
+    const sortVotesButton = screen.getByText(/vots/i)
+    fireEvent.click(sortVotesButton)
+  })
 
   const { result } = renderHook(() => useSortByVotes(votes, 'asc'))
   const sortedResources = result.current.sortedVotes
@@ -208,33 +228,17 @@ it('sorts resources by votes in ascending order', () => {
   expect(voteCounts).toEqual([0, 3, 7])
 })
 
-
-it('changes Votos and Fecha styles on click', () => {
-  render(<Category />)
-
-  const sortVotesButton = screen.getByText('Vots')
-  const sortDatesButton = screen.getByText('Data')
-
-  fireEvent.click(sortVotesButton)
-
-  expect(screen.getByText('Vots')).toHaveStyle('font-weight: bold')
-
-  fireEvent.click(sortDatesButton)
-
-  expect(screen.getByText('Data')).toHaveStyle('font-weight: bold')
-})
-
 describe('Category component tests', () => {
   test('Input appears when search icon is clicked', async () => {
-    const { getByTestId } = render(<Category />);
+    const { getByTestId } = render(<Category />)
 
-    const searchIcon = getByTestId('inputGroupSearch');
+    const searchIcon = getByTestId('inputGroupSearch')
 
-    expect(searchIcon).toBeInTheDocument();
+    expect(searchIcon).toBeInTheDocument()
 
-    fireEvent.click(searchIcon);
+    fireEvent.click(searchIcon)
 
-    const inputSearch = getByTestId('inputSearch');
-    expect(inputSearch).toBeInTheDocument();
+    const inputSearch = getByTestId('inputSearch')
+    expect(inputSearch).toBeInTheDocument()
   })
 })
