@@ -100,7 +100,6 @@ export const UserProfileResourcesWidget = ({
 
   const [sortOrder, setSortOrder] = useState<TSortOrder>('desc')
   const [isSortByVotesActive, setIsSortByVotesActive] = useState(false)
-  const [filters] = useState<TFilters>({})
   
   const handleSortOrder = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
@@ -149,7 +148,6 @@ export const UserProfileResourcesWidget = ({
           <>
             <VotesDateController
               sortOrder={sortOrder}
-              filters={filters}
               handleSortOrder={handleSortOrder}
               handleSortByVotes={handleSortByVotes}
               handleSortByDates={handleSortByDates}

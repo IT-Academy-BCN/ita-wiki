@@ -40,7 +40,7 @@ const StyledDateToggle = styled.div`
 
 type TVotesDate = {
   sortOrder: string
-  filters: TFilters
+  filters?: TFilters
   handleSortOrder: () => void
   handleSortByVotes: () => void
   handleSortByDates: () => void
