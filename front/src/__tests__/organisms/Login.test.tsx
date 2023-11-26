@@ -52,7 +52,7 @@ describe('Login', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText(/Identificador o contraseña incorrectos/i)
+        screen.getByText(/Identificador o contrasenya invàlid/i)
       ).toBeInTheDocument()
     })
   })

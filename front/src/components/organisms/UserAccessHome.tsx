@@ -6,6 +6,7 @@ import { Button, Text } from '../atoms'
 import Login from './Login'
 import Register from './Register'
 import { Modal } from '../molecules/Modal'
+import { TINDEX } from '../../locales/translationIndex'
 
 const StyledText = styled(Text)`
   margin: ${dimensions.spacing.sm} ${dimensions.spacing.none}
@@ -45,14 +46,14 @@ export const UserAccessHome: FC = () => {
     <>
       <FlexBox>
         <StyledText color={`${colors.gray.gray3}`} fontSize={`${font.base}`}>
-          {t("Registra't")}
+          {t(TINDEX.SIGNUP)}
         </StyledText>
         <ButtonContainerStyled direction="column">
           <ButtonStyled outline onClick={handleLoginModal}>
-            {t('EntrarBtn')}
+            {t(TINDEX.LOGIN_BTN)}
           </ButtonStyled>
           <ButtonStyled onClick={handleRegisterModal}>
-            {t('RegistrarmeBtn')}
+            {t(TINDEX.SIGNUP_BTN)}
           </ButtonStyled>
         </ButtonContainerStyled>
       </FlexBox>

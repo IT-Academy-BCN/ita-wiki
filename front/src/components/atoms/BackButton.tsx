@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Icon } from '.'
 import { font, device, dimensions } from '../../styles'
+import { TINDEX } from '../../locales/translationIndex'
 
 const ButtonStyled = styled.button`
   margin-left: 0;
@@ -52,7 +53,7 @@ export const BackButton: FC<TButton> = () => {
         wght={700}
         style={{ fontSize: `${font.base}` }}
       />
-      {t('Volver')}
+      {t(TINDEX.BACK)}
     </ButtonStyled>
   )
 }

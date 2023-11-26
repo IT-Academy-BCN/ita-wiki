@@ -10,6 +10,7 @@ import { CategoriesList } from './CategoriesList'
 import { Modal } from '../molecules/Modal'
 import { SettingsManager } from './SettingsManager'
 import { useAuth } from '../../context/AuthProvider'
+import { TINDEX } from '../../locales/translationIndex'
 
 const NavbarStyled = styled(FlexBox)<{ isInCategoryPage: boolean }>`
   background-color: ${({ isInCategoryPage }) =>
@@ -110,7 +111,7 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
           open={isMenuOpen}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           data-testid="hamburger-menu"
-          aria-label={t('Menú')}
+          aria-label={t(TINDEX.MENU)}
         />
         {shouldRenderIcons && (
           <AddButton
@@ -122,8 +123,8 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
                 handleAccessModal?.()
               }
             }}
-            title={t('Añadir recurso')}
-            aria-label={t('Añadir recurso')}
+            title={t(TINDEX.ADD_RESOURCE)}
+            aria-label={t(TINDEX.ADD_RESOURCE)}
             role="button"
           >
             <Icon name="add" color={colors.gray.gray3} />
@@ -134,8 +135,8 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
           <IconStyled
             data-testid="settings-button"
             onClick={() => handleSettingsModal()}
-            title={t('Configuración')}
-            aria-label={t('Configuración')}
+            title={t(TINDEX.SETTINGS)}
+            aria-label={t(TINDEX.SETTINGS)}
             role="button"
           >
             <Icon name="settings" color={colors.gray.gray3} />
@@ -147,14 +148,14 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
         </MenuItems>
       </NavbarStyled>
       <Modal
-        title={t('Ajustes')}
+        title={t(TINDEX.ADJUSTMENTS)}
         isOpen={isSettingsOpen}
         toggleModal={() => setIsSettingsOpen(false)}
       >
         {isSettingsOpen && <SettingsManager />}
         <FlexBox>
           <StyledButton onClick={() => setIsSettingsOpen(false)}>
-            {t('Cerrar')}
+            {t(TINDEX.CLOSE)}
           </StyledButton>
         </FlexBox>
       </Modal>

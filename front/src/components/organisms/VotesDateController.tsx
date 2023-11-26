@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { FlexBox, colors, device, dimensions } from '../../styles'
 import { Icon, Text } from '../atoms'
+import { TINDEX } from '../../locales/translationIndex'
 
 const VotesDateContainer = styled(FlexBox)`
   display: none;
@@ -67,7 +68,7 @@ const VotesDateController: FC<TVotesDate> = ({
             }}
           >
             <Text fontWeight={selectedOption === 'Votos' ? 'bold' : 'normal'}>
-              {t('Votos')}
+              {t(TINDEX.VOTES)}
             </Text>
           </StyledVotesToggle>
           {selectedOption === 'Votos' &&
@@ -85,7 +86,7 @@ const VotesDateController: FC<TVotesDate> = ({
           }}
         >
           <Text fontWeight={selectedOption === 'Fecha' ? 'bold' : 'normal'}>
-            {t('Fecha')}
+            {t(TINDEX.DATE)}
           </Text>
         </StyledDateToggle>
         {selectedOption === 'Fecha' &&

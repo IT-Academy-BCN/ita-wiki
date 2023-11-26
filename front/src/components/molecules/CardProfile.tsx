@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Text, Button, Counter, UserImage } from '../atoms'
 import { FlexBox, colors, font, dimensions, device } from '../../styles'
 import icons from '../../assets/icons'
+import { TINDEX } from '../../locales/translationIndex'
 
 const ContentContainer = styled(FlexBox)`
   width: 90%;
@@ -147,13 +148,13 @@ export const CardProfile = ({
       <UserInfoContainer direction="column" justify="flex-start">
         <UserImage
           src={img}
-          alt={img === '' ? t('Sin imagen de usuario') : `${userName}`}
+          alt={img === '' ? t(TINDEX.NO_USER_IMAGE) : `${userName}`}
         />
         <UserInfoWrapper>
           <UsernameStyled as="h1">{userName}</UsernameStyled>
           <TextStyled>{email}</TextStyled>
           <ButtonStyled outline onClick={handleLogOut}>
-            {t('Cerrar sesión')} <img src={icons.logout} alt="logout icon" />
+            {t(TINDEX.LOGOUT)} <img src={icons.logout} alt="logout icon" />
           </ButtonStyled>
         </UserInfoWrapper>
       </UserInfoContainer>
@@ -161,7 +162,7 @@ export const CardProfile = ({
         <SideCounter>
           <Counter
             number={contributions}
-            text={t('Aportaciones')}
+            text={t(TINDEX.CONTRIBUTIONS)}
             icon="attach_file"
             isError={resourcesError}
           />
@@ -169,7 +170,7 @@ export const CardProfile = ({
         <CenteredCounter>
           <Counter
             number={votes}
-            text={t('Votos recibidos')}
+            text={t(TINDEX.VOTES_RECEIVED)}
             icon="expand_less"
             isError={resourcesError}
           />
@@ -177,7 +178,7 @@ export const CardProfile = ({
         <SideCounter>
           <Counter
             number={favorites}
-            text={t('Favoritos guardados')}
+            text={t(TINDEX.SAVED_FAV)}
             icon="favorite"
             isError={favsError}
           />

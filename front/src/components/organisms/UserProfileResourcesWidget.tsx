@@ -8,6 +8,7 @@ import { VotesDateController } from './VotesDateController'
 import { useAuth } from '../../context/AuthProvider'
 import { colors, dimensions, device, FlexBox } from '../../styles'
 import { Spinner, Title } from '../atoms'
+import { TINDEX } from '../../locales/translationIndex'
 
 type TResourcesWidget = {
   title: string
@@ -182,14 +183,14 @@ export const UserProfileResourcesWidget = ({
           </>
         ) : (
           <StyledFlexbox>
-            {title === t('Recursos favoritos')
-              ? t('No tienes recursos favoritos')
-              : t('No has subido ningún recurso')}
+            {title === t(TINDEX.FAV_RESOURCES)
+              ? t(TINDEX.NO_FAV_RESOURCES)
+              : t(TINDEX.NO_RESOURCES)}
           </StyledFlexbox>
         ))}
 
       {isError && !isLoading ? (
-        <StyledFlexbox>{t('Algo ha ido mal...')}</StyledFlexbox>
+        <StyledFlexbox>{t(TINDEX.SOMETHING_WENT_WRONG)}</StyledFlexbox>
       ) : null}
     </WidgetContainer>
   )

@@ -4,6 +4,7 @@ import { Icon } from '../atoms'
 import { colors } from '../../styles'
 import { favMutation } from '../../helpers/fetchers'
 import { TFavorites, TResource } from '../../types'
+import { TINDEX } from '../../locales/translationIndex'
 
 type TResourceFav = {
   resourceId: string
@@ -88,10 +89,8 @@ export const FavoritesIcon = ({
       onClick={() => handleFavorite(resourceId)}
       fill={isFavorite ? 1 : 0}
       color={`${colors.gray.gray3}`}
-      aria-label={
-        isFavorite ? t('Eliminar de favoritos') : t('Añadir a favoritos')
-      }
-      title={isFavorite ? t('Eliminar de favoritos') : t('Añadir a favoritos')}
+      aria-label={isFavorite ? t(TINDEX.REMOVE_FAV) : t(TINDEX.ADD_FAV)}
+      title={isFavorite ? t(TINDEX.REMOVE_FAV) : t(TINDEX.ADD_FAV)}
     />
   )
 }

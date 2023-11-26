@@ -18,6 +18,7 @@ import Login from './Login'
 import Register from './Register'
 import { TResource } from '../../types'
 import { useGetResourcesByUser } from '../../hooks'
+import { TINDEX } from '../../locales/translationIndex'
 
 const TitleContainer = styled(FlexBox)`
   align-items: stretch;
@@ -100,13 +101,13 @@ const MyResources = () => {
       <TitleContainer data-testid="main-title">
         {isMobile ? (
           <Title as="h3" fontWeight="bold">
-            {t('Tus recursos')}
+            {t(TINDEX.YOUR_RESOURCES)}
           </Title>
         ) : (
           <>
             <Icon name="menu_book" fill={0} />
             <Title as="h2" fontWeight="bold" data-testid="title">
-              {t('Mis recursos')}
+              {t(TINDEX.MY_RESOURCES)}
             </Title>
           </>
         )}
@@ -114,13 +115,13 @@ const MyResources = () => {
       {!user && (
         <StyledText color={colors.gray.gray3} data-testid="no-user">
           <TextDecorationStyled onClick={handleRegisterModal}>
-            {t('Regístrate')}
+            {t(TINDEX.REGISTER_TITLE)}
           </TextDecorationStyled>
-          {t(' o ')}
+          {t(TINDEX.OR)}
           <TextDecorationStyled onClick={handleLoginModal}>
-            {t('inicia sesión')}
+            {t(TINDEX.LOGIN)}
           </TextDecorationStyled>
-          {t(' para añadir recursos favoritos')}
+          {t(TINDEX.TO_ADD_FAV_RESOURCES)}
         </StyledText>
       )}
 
@@ -150,12 +151,12 @@ const MyResources = () => {
             ))}
           </ResourcesUserStyled>
         ) : (
-          <Text color={colors.gray.gray4}>
-            {t('No has subido ningún recurso')}
-          </Text>
+          <Text color={colors.gray.gray4}>{t(TINDEX.NO_RESOURCES)}</Text>
         ))}
 
-      {isError && user && !isLoading ? <p>{t('Algo ha ido mal...')}</p> : null}
+      {isError && user && !isLoading ? (
+        <p>{t(TINDEX.SOMETHING_WENT_WRONG)}</p>
+      ) : null}
 
       <Modal
         isOpen={isLoginOpen || isRegisterOpen}

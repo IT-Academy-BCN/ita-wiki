@@ -3,6 +3,7 @@ import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import icons from '../assets/icons'
 import { FlexBox, colors, device, dimensions, font } from '../styles'
+import { TINDEX } from '../locales/translationIndex'
 import { CardHome } from '../components/molecules'
 import {
   DesktopSideMenu,
@@ -130,7 +131,7 @@ const Home: FC = () => {
         >
           <MainContent>
             <StyledTitle as="h1" fontWeight="bold">
-              {t('Benvinguts')}
+              {t(TINDEX.WELCOME)}
             </StyledTitle>
             {!user && <UserAccessHome />}
             <FlexBox>
@@ -138,7 +139,7 @@ const Home: FC = () => {
                 color={`${colors.gray.gray3}`}
                 fontSize={`${font.base}`}
               >
-                {t('Funcionalitats')}
+                {t(TINDEX.FUNCTIONALITIES)}
               </StyledText>
               <ResponsiveFlexBox direction="column" gap="1rem">
                 {cardHomeContent.map((content) => (

@@ -12,6 +12,7 @@ import { BackButton } from '../components/atoms/BackButton'
 import { TResource } from '../types'
 import { FlexBox, colors, dimensions, device, responsiveSizes } from '../styles'
 import { Navbar, UserProfileResourcesWidget } from '../components/organisms'
+import { TINDEX } from '../locales/translationIndex'
 
 const Container = styled(FlexBox)`
   width: 100%;
@@ -116,15 +117,15 @@ export const UserProfile: FC = () => {
         direction="column-reverse"
       >
         <UserProfileResourcesWidget
-          title={t('Mis recursos')}
-          titleMobile={t('Tus recursos')}
+          title={t(TINDEX.MY_RESOURCES)}
+          titleMobile={t(TINDEX.YOUR_RESOURCES)}
           resourcesArray={resourcesData ?? []}
           isLoading={resourcesLoading}
           isError={resourcesError}
         />
         <UserProfileResourcesWidget
-          title={t('Recursos favoritos')}
-          titleMobile={t('Recursos que te gustan')}
+          title={t(TINDEX.FAV_RESOURCES)}
+          titleMobile={t(TINDEX.LIKE_RESOURCES)}
           resourcesArray={favoritesData ?? undefined}
           isLoading={favsLoading}
           isError={favsError}
