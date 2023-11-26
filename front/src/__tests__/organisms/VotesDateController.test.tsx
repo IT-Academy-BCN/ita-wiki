@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '../test-utils'
+import { render, screen, fireEvent } from '../test-utils'
 import { VotesDateController } from '../../components/organisms'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
@@ -30,34 +30,15 @@ afterEach(() => {
 })
 
 describe('VotesDate component', () => {
-  it('does not render when there are no resources', () => {
-    render(<VotesDateController
-      sortOrder='desc'
-      filters={{ slug: '', resourceTypes: [], status: [] }}
-      handleSortOrder={mockHandleSortOrder}
-      handleSortByVotes={mockHandleSortByVotes}
-      handleSortByDates={mockHandleSortByDates}
-    />)
-  
-    expect(screen.queryByText(/vots/i)).not.toBeInTheDocument()
-    expect(screen.queryByText(/data/i)).not.toBeInTheDocument()
-  })
-
-  it('changes Votos and Fecha styles on click', async () => {
+  it('changes Votos and Fecha styles on click', () => {
     render(
       <VotesDateController
         sortOrder='desc'
-        filters={{ slug: 'resourceTest', resourceTypes: ['type1', 'type2'], status: [] }}
         handleSortOrder={mockHandleSortOrder}
         handleSortByVotes={mockHandleSortByVotes}
         handleSortByDates={mockHandleSortByDates}
       />
     )
-
-    await waitFor(() => {
-      expect(screen.getByText(/vots/i)).toBeInTheDocument()
-      expect(screen.getByText(/data/i)).toBeInTheDocument()
-    })
 
     fireEvent.click(screen.getByText(/vots/i))
 

@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { FlexBox, colors, device, dimensions } from '../../styles'
 import { Icon, Text } from '../atoms'
-import { useGetResources } from '../../hooks'
-import { TFilters } from '../../types'
 
 const VotesDateContainer = styled(FlexBox)`
   display: none;
@@ -40,7 +38,6 @@ const StyledDateToggle = styled.div`
 
 type TVotesDate = {
   sortOrder: string
-  filters?: TFilters
   handleSortOrder: () => void
   handleSortByVotes: () => void
   handleSortByDates: () => void
@@ -48,58 +45,63 @@ type TVotesDate = {
 
 const VotesDateController: FC<TVotesDate> = ({
   sortOrder,
-  filters,
   handleSortOrder,
   handleSortByVotes,
   handleSortByDates,
 }) => {
   const { t } = useTranslation()
 
-  const { data } = useGetResources(filters)
-
   const [selectedOption, setSelectedOption] = useState<
     'Fecha' | 'Votos' | null
   >(null)
 
   return (
-    data && data?.length > 0 ? (
-      <VotesDateContainer>
-        <FlexBox direction="row" gap="15px">
-          <FlexBox direction="row">
-            <StyledVotesToggle
-              onClick={() => {
-                handleSortByVotes()
-                handleSortOrder()
-                setSelectedOption('Votos')
-              }}
-            >
-              <Text fontWeight={selectedOption === 'Votos' ? 'bold' : 'normal'}>
-                {t('Votos')}
-              </Text>
-            </StyledVotesToggle>
-            {selectedOption === 'Votos' &&
-              (sortOrder === 'desc' ? <Icon name="arrow_upward" /> : <Icon name="arrow_downward" />)}
-          </FlexBox>
-          <StyledDateToggle
+    <VotesDateContainer>
+      <FlexBox direction="row" gap="15px">
+        <FlexBox direction="row">
+          <StyledVotesToggle
             onClick={() => {
-              handleSortByDates()
+              handleSortByVotes()
               handleSortOrder()
-              setSelectedOption('Fecha')
+              setSelectedOption('Votos')
             }}
           >
-            <Text fontWeight={selectedOption === 'Fecha' ? 'bold' : 'normal'}>
-              {t('Fecha')}
+            <Text fontWeight={selectedOption === 'Votos' ? 'bold' : 'normal'}>
+              {t('Votos')}
             </Text>
-          </StyledDateToggle>
-          {selectedOption === 'Fecha' &&
+          </StyledVotesToggle>
+          {selectedOption === 'Votos' &&
             (sortOrder === 'desc' ? (
-              <Icon name="arrow_upward" style={{ marginLeft: '-15px', marginRight: '-5px' }} />
+              <Icon name="arrow_upward" />
             ) : (
-              <Icon name="arrow_downward" style={{ marginLeft: '-15px', marginRight: '-5px' }} />
+              <Icon name="arrow_downward" />
             ))}
         </FlexBox>
-      </VotesDateContainer>
-    ) : null 
+        <StyledDateToggle
+          onClick={() => {
+            handleSortByDates()
+            handleSortOrder()
+            setSelectedOption('Fecha')
+          }}
+        >
+          <Text fontWeight={selectedOption === 'Fecha' ? 'bold' : 'normal'}>
+            {t('Fecha')}
+          </Text>
+        </StyledDateToggle>
+        {selectedOption === 'Fecha' &&
+          (sortOrder === 'desc' ? (
+            <Icon
+              name="arrow_upward"
+              style={{ marginLeft: '-15px', marginRight: '-5px' }}
+            />
+          ) : (
+            <Icon
+              name="arrow_downward"
+              style={{ marginLeft: '-15px', marginRight: '-5px' }}
+            />
+          ))}
+      </FlexBox>
+    </VotesDateContainer>
   )
 }
 
