@@ -227,7 +227,7 @@ describe('TopicsManagerBoard component', () => {
     await waitFor(() =>
       expect(
         screen.getByText(
-          "Accés denegat. No tens els permisos necessaris per realitzar l'operació."
+          /Accés denegat. No tens els permisos necessaris per realitzar l'operació./i
         )
       ).toBeInTheDocument()
     )
@@ -270,7 +270,7 @@ describe('TopicsManagerBoard component', () => {
     await waitFor(() =>
       expect(
         screen.getByText(
-          'Error en la base de dades. Per favor, intenta-ho més tard.'
+          /Error en la base de dades. Per favor, intenta-ho més tard./i
         )
       ).toBeInTheDocument()
     )

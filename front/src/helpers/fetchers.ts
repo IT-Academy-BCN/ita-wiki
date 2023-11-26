@@ -1,4 +1,5 @@
 import { urls } from '../constants'
+import { TINDEX } from '../locales/translationIndex'
 import {
   TTopic,
   TGetTopics,
@@ -11,11 +12,11 @@ import {
 } from '../types'
 
 const errorMessageStatus: { [key: number]: string } = {
-  401: 'Error 401 - No autorizado',
-  403: 'Error 403 - Acceso denegado',
-  404: 'Error 404 - No se puede guardar',
-  405: 'Error 405 - Id de usuario inválido',
-  500: 'Error 500 - Error bbdd',
+  401: `${TINDEX.UNAUTHORIZED_OPERATION_401}`,
+  403: `${TINDEX.ACCESS_DENIED_403}`,
+  404: `${TINDEX.SAVING_ERROR_404}`,
+  405: `${TINDEX.INVALID_USER_ID_405}`,
+  500: `${TINDEX.DB_ERROR_500}`,
 }
 
 export const getTopics = async (slug?: string): Promise<TGetTopics> => {
@@ -30,7 +31,7 @@ export const getTopics = async (slug?: string): Promise<TGetTopics> => {
   return data
 }
 
-export const createTopicFetcher = (createdTopic: TTopic) =>
+export const createTopicFetcher = (createdTopic: TTopic) => {
   fetch(urls.postTopics, {
     method: 'POST',
     body: JSON.stringify(createdTopic),
@@ -43,6 +44,7 @@ export const createTopicFetcher = (createdTopic: TTopic) =>
     }
     return res.status === 204 ? {} : res.json()
   })
+}
 
 export const updateTopicFetcher = (updatedTopic: TTopic) =>
   fetch(urls.patchTopics, {

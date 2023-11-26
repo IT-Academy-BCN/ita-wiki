@@ -19,13 +19,18 @@
   "Menú": "Menú",
   "Ajustes": "Ajustes",
   "Cerrar": "Cerrar",
-  "camp obligatori": "Este campo es obligatorio",
 
-  "Administrador de Usuarios": "Administrador de Usuarios",
+  "LOGIN_invalid_id_password": "Identificador o contraseña inválida",
+  "LOGIN_restricted_access": "Acceso restringido. Por favor, contacte con el personal de IT Academy",
 
-  "Registre": "Registro",
-  "DNI": "DNI o NIE",
-  "Especialidad": "Especialidad",
+  "REGISTER": "Registro",
+  "REGISTER_REQUIRED_FIELD": "Este campo es obligatorio",
+  "REGISTER_legal_terms_error": "Es necesario aceptar los términos legales",
+
+  "USERS_MANAGER": "Administrador de Usuarios",
+
+  "DNI_NIE": "DNI o NIE",
+  "SPECIALIZATION": "Especialidad",
   "Password": "Contraseña",
   "repetirpassword": "Repetir contraseña",
   "password error": "La contraseña debe contener solo letras y números, mínimo 8 caracteres, un número, una mayúscula y una minúscula",
@@ -104,8 +109,7 @@
   "Favoritos guardados": "Favoritos guardados",
   "n/d": "n/d",
 
-  "Mostrando":"Mostrando",
-  "resultados para":"resultados para",
-  "Nuevo Recurso":"Nuevo recurso"
-
+  "Mostrando": "Mostrando",
+  "resultados para": "resultados para",
+  "Nuevo Recurso": "Nuevo recurso"
 }

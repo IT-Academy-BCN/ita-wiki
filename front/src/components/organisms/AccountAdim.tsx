@@ -6,6 +6,7 @@ import { urls } from '../../constants'
 import { colors, device } from '../../styles'
 import { TUserData } from '../../types'
 import { useGetUsers } from '../../hooks/useGetUsers'
+import { TINDEX } from '../../locales/translationIndex'
 
 const UserListContainer = styled.div`
   display: flex;
@@ -20,7 +21,7 @@ const Table = styled.table`
   border-collapse: collapse;
   width: 112%;
   table-layout: fixed;
-  
+
   @media ${device.Laptop} {
     width: 100%;
   }
@@ -170,23 +171,23 @@ const AccountAdmin: FC = () => {
 
   return (
     <UserListContainer>
-      <h1>{t('Lista de usuarios')}</h1>
-      <p>{t('Buscar por DNI:')}</p>
+      <h1>{t(TINDEX.USER_LIST)}</h1>
+      <p>{t(TINDEX.SEARCH_BY_DNI)}</p>
       <SearchInput
         type="text"
         id="search"
         value={searchTerm}
         onChange={handleSearchChange}
-        placeholder={t("Introduce el DNI")}
+        placeholder={t(TINDEX.ENTER_DNI)}
       />
       <Table>
         <TableHead>
           <tr>
-            <TableHeader>{t('Nombre')}</TableHeader>
-            <TableHeader>{t('DNI')}</TableHeader>
-            <TableHeader>{t('Email')}</TableHeader>
-            <TableHeader>{t('Estado')}</TableHeader>
-            <TableHeader>{t('Cambiar estado')}</TableHeader>
+            <TableHeader>{t(TINDEX.NAME)}</TableHeader>
+            <TableHeader>{t(TINDEX.DNI_NIE)}</TableHeader>
+            <TableHeader>{t(TINDEX.EMAIL)}</TableHeader>
+            <TableHeader>{t(TINDEX.STATUS)}</TableHeader>
+            <TableHeader>{t(TINDEX.CHANGE_STATUS)}</TableHeader>
           </tr>
         </TableHead>
         <TableBody>
@@ -203,14 +204,14 @@ const AccountAdmin: FC = () => {
                         data-testid="status-desactivar"
                         onClick={() => updateUserStatus(user)}
                       >
-                        {t('Desactivar')}
+                        {t(TINDEX.DEACTIVATE)}
                       </DeactivateBtn>
                     ) : (
                       <ActivateBtn
                         data-testid="status-activar"
                         onClick={() => updateUserStatus(user)}
                       >
-                        {t('Activar')}
+                        {t(TINDEX.ACTIVATE)}
                       </ActivateBtn>
                     )}
                   </TableCell>

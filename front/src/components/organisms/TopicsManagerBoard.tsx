@@ -9,6 +9,7 @@ import { useAuth } from '../../context/AuthProvider'
 import { useGetTopics } from '../../hooks'
 import { TTopic } from '../../types'
 import { useManageTopic } from '../../hooks/useManageTopic'
+import { TINDEX } from '../../locales/translationIndex'
 
 const StyledFlexBox = styled(FlexBox)`
   width: 100%;
@@ -32,8 +33,8 @@ export const TopicsManagerBoard: FC = () => {
   if (slug === undefined) {
     return (
       <Text color={`${colors.error}`}>
-        {t('No hay temas disponibles.')} <br />
-        {t('Accede desde una categoría para ver o gestionar sus temas.')}
+        {t(TINDEX.NO_TOPICS_AVAILABLE)} <br />
+        {t(TINDEX.ACCESS_CATEGORY_MANAGE_TOPICS)}
       </Text>
     )
   }
@@ -72,14 +73,14 @@ export const TopicsManagerBoard: FC = () => {
   }
 
   if (isLoading) return <Spinner size="small" role="status" />
-  if (isError) return <p>{t('Ha habido un error...')}</p>
+  if (isError) return <p>{t(TINDEX.ERROR_OCCURRED)}</p>
 
   return (
     <>
       {user ? (
         <StyledFlexBox>
           <Text fontWeight="bold">
-            {t('Temas de (category)', { name: state?.name })}
+            {t(TINDEX.CATEGORY_TOPICS, { name: state?.name })}
           </Text>
           {data
             ?.concat([
@@ -104,7 +105,7 @@ export const TopicsManagerBoard: FC = () => {
             .reverse()}
         </StyledFlexBox>
       ) : (
-        <Text>{t('No tienes permiso de acceso')}</Text>
+        <Text>{t(TINDEX.NO_PERMISSIONS_TO_ACCESS)}</Text>
       )}
       <br />
       <Text color={`${colors.error}`}>{t(errorMessage)}</Text>

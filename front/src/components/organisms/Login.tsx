@@ -8,6 +8,7 @@ import InputGroup from '../molecules/InputGroup'
 import { Button, Icon, Spinner, Text, Title, ValidationMessage } from '../atoms'
 import { dimensions, colors, FlexBox, device } from '../../styles'
 import { useLogin } from '../../hooks/useLogin'
+import { TINDEX } from '../../locales/translationIndex'
 
 const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.none};
@@ -101,14 +102,17 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
       </TitleStyled>
       {responseError && (
         <FlexErrorStyled align="start">
-          <ValidationMessage color="error" text={responseError} />
+          <ValidationMessage
+            color="error"
+            text={responseError && t(TINDEX.RESTRICTED_ACCESS)}
+          />
         </FlexErrorStyled>
       )}
       {(errors.dni || errors.password) && (
         <FlexErrorStyled align="start">
           <ValidationMessage
             color="error"
-            text="Identificador o contraseña incorrectos"
+            text={t(TINDEX.INVALID_ID_PASSWORD)}
           />
         </FlexErrorStyled>
       )}
@@ -116,10 +120,10 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
         <InputGroup
           id="dni"
           label="dni"
-          placeholder={t('DNI')}
+          placeholder={t(TINDEX.DNI_NIE)}
           {...register('dni')}
           name="dni"
-          error={errors.dni && true}
+          error={!!errors.dni}
           onBlur={() => {
             trigger('dni')
           }}
@@ -128,13 +132,13 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
           type={isVisibility ? 'text' : 'password'}
           id="password"
           label="password"
-          placeholder={t('Password')}
+          placeholder={t(TINDEX.PASSWORD)}
           {...register('password')}
           name="password"
           color={colors.gray.gray4}
           iconClick={() => setIsVisibility(!isVisibility)}
           icon="visibility_off"
-          error={errors.password && true}
+          error={!!errors.password}
           onBlur={() => {
             trigger('password')
           }}
@@ -146,7 +150,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
               handleLoginModal()
             }}
           >
-            <Text>{t('recordar/cambiar')}</Text>
+            <Text>{t(TINDEX.CHANGE_PASSWORD)}</Text>
           </TextDecorationStyled>
         </FlexBox>
         {isSuccess ? (
@@ -170,7 +174,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
             handleLoginModal()
           }}
         >
-          {t('no tienes una cuenta?')}
+          {t(TINDEX.DONT_HAVE_ACCOUNT)}
         </TextDecorationStyled>
       </Text>
     </LoginStyled>

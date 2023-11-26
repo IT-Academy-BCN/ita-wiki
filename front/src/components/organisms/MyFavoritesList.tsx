@@ -17,6 +17,7 @@ import { Modal, ResourceTitleLink } from '../molecules'
 import Login from './Login'
 import Register from './Register'
 import { TFavorites } from '../../types'
+import { TINDEX } from '../../locales/translationIndex'
 
 const TitleContainer = styled(FlexBox)`
   align-items: stretch;
@@ -101,13 +102,13 @@ export const MyFavoritesList: FC = () => {
       <TitleContainer data-testid="title">
         {isMobile ? (
           <Title as="h3" fontWeight="bold">
-            {t('Recursos que te gustan')}
+            {t(TINDEX.LIKE_RESOURCES)}
           </Title>
         ) : (
           <>
             <Icon name="favorite" fill={0} />
             <Title as="h2" fontWeight="bold">
-              {t('Recursos favoritos')}
+              {t(TINDEX.FAV_RESOURCES)}
             </Title>
           </>
         )}
@@ -115,13 +116,13 @@ export const MyFavoritesList: FC = () => {
       {!user && (
         <StyledText data-testid="no-user">
           <TextDecorationStyled onClick={handleRegisterModal}>
-            {t('Regístrate')}
+            {t(TINDEX.REGISTER_TITLE)}
           </TextDecorationStyled>
-          {t(' o ')}
+          {t(TINDEX.OR)}
           <TextDecorationStyled onClick={handleLoginModal}>
-            {t('inicia sesión')}
+            {t(TINDEX.LOGIN)}
           </TextDecorationStyled>
-          {t(' para añadir recursos favoritos')}
+          {t(TINDEX.TO_ADD_FAV_RESOURCES)}
         </StyledText>
       )}
 
@@ -142,10 +143,12 @@ export const MyFavoritesList: FC = () => {
             ))}
           </FavoritesContainer>
         ) : (
-          <StyledText>{t('No tienes recursos favoritos')}</StyledText>
+          <StyledText>{t(TINDEX.NO_FAV_RESOURCES)}</StyledText>
         ))}
 
-      {isError && user && !isLoading ? <p>{t('Algo ha ido mal...')}</p> : null}
+      {isError && user && !isLoading ? (
+        <p>{t(TINDEX.SOMETHING_WENT_WRONG)}</p>
+      ) : null}
 
       <Modal
         isOpen={isLoginOpen || isRegisterOpen}

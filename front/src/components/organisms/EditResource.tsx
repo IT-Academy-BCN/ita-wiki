@@ -8,6 +8,7 @@ import icons from '../../assets/icons'
 import { Modal } from '../molecules/Modal'
 import { TEditResourceProps, TMappedTopics } from '../../types'
 import { useGetTopics } from '../../hooks'
+import { TINDEX } from '../../locales/translationIndex'
 
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -63,7 +64,7 @@ const EditResource = ({
       <Modal
         isOpen={isModalOpen}
         toggleModal={() => setIsModalOpen(false)}
-        title={t('Editar recurso')}
+        title={t(TINDEX.EDIT_RESOURCE)}
         data-testid="modal"
       >
         <ResourceForm
@@ -85,7 +86,7 @@ const EditResource = ({
       <StyledSvg onClick={openModal} isInCardResource={isInCardResource}>
         <img
           src={icons.editPen}
-          alt={t('Editar recurso')}
+          alt={t(TINDEX.EDIT_RESOURCE)}
           data-testid="edit-icon"
         />
       </StyledSvg>

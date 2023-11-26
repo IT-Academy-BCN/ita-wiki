@@ -39,9 +39,10 @@ describe('Counter', () => {
   })
 
   it('renders not available text if there is an error with data', () => {
-    render(<Counter number={undefined} text="Comments" icon="test" isError />)
+    render(<Counter text="Comments" icon="test" isError />)
 
-    expect(screen.getByText('n/d')).toBeInTheDocument()
+    const textNA = screen.getByText('n/d')
+    expect(textNA).toBeInTheDocument()
     const text = screen.getByText(/comments/i)
     expect(text).toBeInTheDocument()
     const icon = screen.getByText(/test/i)

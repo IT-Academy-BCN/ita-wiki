@@ -19,13 +19,16 @@
   "Menú": "Menu",
   "Ajustes": "Settings",
   "Cerrar": "Close",
-  "camp obligatori": "This field is required",
+  "REGISTER_REQUIRED_FIELD": "This field is required",
 
-  "Administrador de Usuarios": "Users Manager",
+  "LOGIN_invalid_id_password": "Invalid ID or password",
+  "LOGIN_restricted_access": "Restricted access. Please contact IT Academy staff",
+  "REGISTER_legal_terms_error": "Must accept legal terms",
+  "USERS_MANAGER": "Users Manager",
 
-  "Registre": "Register",
-  "DNI": "DNI or NIE",
-  "Especialidad": "Specialization",
+  "REGISTER": "Register",
+  "DNI_NIE": "DNI or NIE",
+  "SPECIALIZATION": "Specialization",
   "Password": "Password",
   "repetirpassword": "Confirm password",
   "password error": "Password must contain only letters and numbers, at least 8 characters, a number, an uppercase letter and a lowercase letter",
@@ -104,7 +107,7 @@
   "Favoritos guardados": "Saved favorites",
   "n/d": "n/a",
 
-  "Mostrando":"Showing",
-  "resultados para":"results for",
-  "Nuevo Recurso":"New resource"
+  "Mostrando": "Showing",
+  "resultados para": "results for",
+  "Nuevo Recurso": "New resource"
 }

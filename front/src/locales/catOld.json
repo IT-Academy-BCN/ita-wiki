@@ -19,13 +19,15 @@
   "Menú": "Menú",
   "Ajustes": "Ajustaments",
   "Cerrar": "Tanca",
-  "camp obligatori": "Aquest camp és obligatori",
+  "REGISTER_REQUIRED_FIELD": "Aquest camp és obligatori",
 
-  "Administrador de Usuarios": "Administrador d'Usuaris",
-
-  "Registre": "Registre",
-  "DNI": "DNI o NIE",
-  "Especialidad": "Especialitat",
+  "LOGIN_invalid_id_password": "Identificador o contrasenya invàlid",
+  "LOGIN_restricted_access": "Accés restringit. Si us plau, contacteu amb el personal d'IT Academy",
+  "REGISTER_legal_terms_error": "És necessari acceptar els termes legals",
+  "USERS_MANAGER": "Administrador d'Usuaris",
+  "REGISTER": "Registre",
+  "DNI_NIE": "DNI o NIE",
+  "SPECIALIZATION": "Especialitat",
   "Password": "Contrasenya",
   "repetirpassword": "Repetir contrasenya",
   "password error": "La contrasenya ha de contenir només lletres i números, mínim 8 caràcters, un número, una majúscula i una minúscula",
@@ -104,7 +106,7 @@
   "Favoritos guardados": "Favorits guardats",
   "n/d": "n/d",
 
-  "Mostrando":"Mostrant",
-  "resultados para":"resultat per",
-  "Nuevo Recurso":"Nou recurs"
+  "Mostrando": "Mostrant",
+  "resultados para": "resultat per",
+  "Nuevo Recurso": "Nou recurs"
 }

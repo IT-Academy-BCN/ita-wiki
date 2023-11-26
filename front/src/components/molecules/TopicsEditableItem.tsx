@@ -5,6 +5,7 @@ import { colors, dimensions, FlexBox, font } from '../../styles'
 import { Button, Icon, Input, Text } from '../atoms'
 import icons from '../../assets/icons'
 import { TTopic } from '../../types'
+import { TINDEX } from '../../locales/translationIndex'
 
 const Container = styled.div<{ isDisabled: boolean }>`
   pointer-events: ${(props) => (props.isDisabled ? 'none' : 'auto')};
@@ -98,7 +99,7 @@ const AvailableMode = ({ id, name, handleRowStatus }: TTopicAvailable) => {
             handleRowStatus('editing', id)
           }}
         >
-          {t('+ Crear nuevo tema')}
+          {t(TINDEX.CREATE_NEW_TOPIC)}
         </StyledText>
       </StyledFlexBox>
     )
@@ -119,16 +120,16 @@ const AvailableMode = ({ id, name, handleRowStatus }: TTopicAvailable) => {
           }}
           data-testid={`edit${id}`}
         >
-          {t('Editar')}
+          {t(TINDEX.EDIT)}
         </TextButton>
         <DeleteButton
           outline
-          title={t('Borrar tema')}
+          title={t(TINDEX.DELETE_TOPIC)}
           onClick={() => {
             handleRowStatus('deleting', id)
           }}
         >
-          <img src={icons.deleteIcon} alt={t('Borrar tema')} />
+          <img src={icons.deleteIcon} alt={t(TINDEX.DELETE_TOPIC)} />
         </DeleteButton>
       </FlexBoxRow>
     </StyledFlexBox>
@@ -153,7 +154,7 @@ export const TopicsEditableItem = ({
         : ''
 
     if (topicNameRef.current?.value === '') {
-      handleErrorMessage(t('Por favor, no dejes vacío el nombre del tema.'))
+      handleErrorMessage(t(TINDEX.TOPIC_NAME_REQUIRED))
       return
     }
 
@@ -180,7 +181,7 @@ export const TopicsEditableItem = ({
     // TODO: Delete topic when DELETE endpoint exists
     // eslint-disable-next-line no-console
     console.log('Deleting:', idToDelete)
-    handleErrorMessage(t('No es posible borrar el tema.'))
+    handleErrorMessage(t(TINDEX.CANNOT_DELETE_TOPIC))
   }
 
   const setAvailable = () => {
@@ -203,8 +204,8 @@ export const TopicsEditableItem = ({
           <StyledInput
             placeholder={
               id === 'newTopic'
-                ? t('Nombre del nuevo tema')
-                : t('Nombre del tema')
+                ? t(TINDEX.NEW_TOPIC_NAME)
+                : t(TINDEX.TOPIC_NAME)
             }
             defaultValue={name}
             ref={topicNameRef}
@@ -214,8 +215,8 @@ export const TopicsEditableItem = ({
           <FlexBoxRow direction="row" gap={`${dimensions.spacing.xxxs}`}>
             <StyledButton
               outline
-              aria-label={t('Confirmar edición')}
-              title={t('Confirmar edición')}
+              aria-label={t(TINDEX.CONFIRM_EDITION)}
+              title={t(TINDEX.CONFIRM_EDITION)}
               onClick={() => {
                 editTopic(id)
               }}
@@ -225,8 +226,8 @@ export const TopicsEditableItem = ({
             </StyledButton>
             <StyledButton
               outline
-              aria-label={t('Cancelar edición')}
-              title={t('Cancelar edición')}
+              aria-label={t(TINDEX.CANCEL_EDITION)}
+              title={t(TINDEX.CANCEL_EDITION)}
               onClick={() => {
                 setAvailable()
               }}
@@ -251,16 +252,16 @@ export const TopicsEditableItem = ({
                 setAvailable()
               }}
             >
-              {t('Cancelar')}
+              {t(TINDEX.CANCEL)}
             </TextButton>
             <DeleteButton
               outline
-              title={t('Borrar tema')}
+              title={t(TINDEX.DELETE_TOPIC)}
               onClick={() => {
                 deleteTopic(id)
               }}
             >
-              <img src={icons.deleteIcon} alt={t('Borrar tema')} />
+              <img src={icons.deleteIcon} alt={t(TINDEX.DELETE_TOPIC)} />
             </DeleteButton>
           </FlexBoxRow>
         </StyledFlexBox>

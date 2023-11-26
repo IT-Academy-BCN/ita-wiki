@@ -29,6 +29,7 @@ import { useAuth } from '../context/AuthProvider'
 import { useGetTopics } from '../hooks'
 
 import { TFilters, TResource, TSortOrder } from '../types'
+import { TINDEX } from '../locales/translationIndex'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -520,7 +521,7 @@ const Category: FC = () => {
           />
           <MobileTopicsContainer>
             <Title as="h2" fontWeight="bold">
-              {t('Temas')}
+              {t(TINDEX.TOPICS)}
             </Title>
             <StyledSelectGroup
               defaultValue={topic}
@@ -535,9 +536,9 @@ const Category: FC = () => {
             <MainContainer as="main">
               <FiltersContainer data-testid="filters-container">
                 <Title as="h2" fontWeight="bold">
-                  {t('Filtros')}
+                  {t(TINDEX.FILTERS)}
                 </Title>
-                <Text fontWeight="bold">{t('Temas')}</Text>
+                <Text fontWeight="bold">{t(TINDEX.TOPICS)}</Text>
 
                 <ScrollTopics>
                   {slug && (
@@ -559,7 +560,7 @@ const Category: FC = () => {
                   {isSearch ? (
                     <SearchContainer>
                       <Title as="h2" fontWeight="bold">
-                        {t('Buscar recurso')}
+                        {t(TINDEX.FIND_RESOURCE)}
                       </Title>
                       <InputSearchBar>
                         <InputSearch
@@ -576,8 +577,8 @@ const Category: FC = () => {
                       </InputSearchBar>
                       {searchValue !== null && searchValue !== '' ? (
                         <span style={{ marginTop: '20px', fontWeight: 'bold' }}>
-                          {t('Mostrando')} {selectedSortOrderValue.length}{' '}
-                          {t('resultados para')} &quot;
+                          {t(TINDEX.SHOWING)} {selectedSortOrderValue.length}{' '}
+                          {t(TINDEX.RESULTS_FOR)} &quot;
                           {searchValue}&quot;
                         </span>
                       ) : null}
@@ -585,7 +586,7 @@ const Category: FC = () => {
                   ) : (
                     <>
                       <Title as="h2" fontWeight="bold">
-                        {t('Recursos de (category)', {
+                        {t(TINDEX.CATEGORY_RESOURCES, {
                           name: state?.name,
                         })}
                       </Title>
@@ -593,7 +594,7 @@ const Category: FC = () => {
                         data-testid="inputGroupSearch"
                         label="searchResource"
                         name="searchResource"
-                        placeholder={t('Buscar recurso')}
+                        placeholder={t(TINDEX.FIND_RESOURCE)}
                         id="searchResource"
                         icon="search"
                         onClick={toggleSearch}
@@ -605,7 +606,7 @@ const Category: FC = () => {
                     data-testid="filters-button"
                     onClick={handleFiltersOpen}
                   >
-                    {t('Filtrar')}
+                    {t(TINDEX.FILTER)}
                   </FilterButton>
                 </TitleResourcesContainer>
                 <VotesDateController
@@ -623,7 +624,7 @@ const Category: FC = () => {
                     }
                   >
                     <span data-testid="new-resource-text">
-                      + {t('Crear nuevo recurso')}
+                      + {t(TINDEX.CREATE_NEW_RESOURCE)}
                     </span>
                   </NewResourceButton>
                 </ScrollDiv>
@@ -651,7 +652,7 @@ const Category: FC = () => {
                   data-testid="close-filters-button"
                   onClick={handleFiltersClose}
                 >
-                  {t('Cerrar')}
+                  {t(TINDEX.CLOSE)}
                 </CloseFilterButton>
               </MobileFiltersContainer>
             )}
@@ -670,11 +671,11 @@ const Category: FC = () => {
       <Modal
         isOpen={isOpen}
         toggleModal={toggleModal}
-        title={t('Nuevo Recurso')}
+        title={t(TINDEX.NEW_RESOURCE)}
       >
         <ResourceForm selectOptions={topicsForResourceForm ?? []} />
         <Button outline onClick={toggleModal}>
-          {t('Cancelar')}
+          {t(TINDEX.CANCEL)}
         </Button>
       </Modal>
       {/* RESTRICTED ACCES MODAL */}

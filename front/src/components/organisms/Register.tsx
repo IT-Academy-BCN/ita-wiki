@@ -20,6 +20,7 @@ import { colors, device, dimensions, FlexBox } from '../../styles'
 import { TCategory, TRegisterForm } from '../../types'
 import { useGetCategories } from '../../hooks'
 import { useRegister } from '../../hooks/useRegister'
+import { TINDEX } from '../../locales/translationIndex'
 
 const RegisterStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.sm};
@@ -156,7 +157,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
   return (
     <RegisterStyled>
       <TitleStyled as="h1" fontWeight="bold">
-        {t('Registre')}
+        {t(TINDEX.REGISTER)}
       </TitleStyled>
       {!!error && (
         <FlexErrorStyled align="start">
@@ -170,9 +171,9 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             id="dni"
             label="dni"
             type="text"
-            placeholder={t('DNI')}
+            placeholder={t(TINDEX.DNI_NIE)}
             error={!!errors.dni}
-            validationMessage={errors.dni?.message && t('camp obligatori')}
+            validationMessage={errors.dni?.message && t(TINDEX.REQUIRED_FIELD)}
             validationType="error"
             {...register('dni')}
             onBlur={() => {
@@ -188,7 +189,9 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             type="email"
             placeholder="Email"
             error={!!errors.email}
-            validationMessage={errors.email?.message && t('camp obligatori')}
+            validationMessage={
+              errors.email?.message && t(TINDEX.REQUIRED_FIELD)
+            }
             validationType="error"
             {...register('email')}
             onBlur={() => {
@@ -204,7 +207,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             type="text"
             placeholder="Username"
             error={!!errors.name}
-            validationMessage={errors.name?.message && t('camp obligatori')}
+            validationMessage={errors.name?.message && t(TINDEX.REQUIRED_FIELD)}
             validationType="error"
             {...register('name')}
             onBlur={() => {
@@ -218,9 +221,11 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             id="password"
             label="password"
             type={visibility ? 'text' : 'password'}
-            placeholder={t('Password')}
+            placeholder={t(TINDEX.PASSWORD)}
             error={!!errors.password}
-            validationMessage={errors.password?.message && t('password error')}
+            validationMessage={
+              errors.password?.message && t(TINDEX.PASSWORD_ERROR)
+            }
             validationType="error"
             color={colors.gray.gray4}
             icon={visibility ? 'visibility' : 'visibility_off'}
@@ -237,13 +242,14 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             id="confirmPassword"
             label="confirmPassword"
             type={visibility ? 'text' : 'password'}
-            placeholder={t('repetirpassword')}
+            placeholder={t(TINDEX.CONFIRM_PASSWORD)}
             icon={visibility ? 'visibility' : 'visibility_off'}
             iconClick={() => setVisibility(!visibility)}
             color={colors.gray.gray4}
             error={!!errors.confirmPassword}
             validationMessage={
-              errors.confirmPassword?.message && t('confirmPasswordError')
+              errors.confirmPassword?.message &&
+              t(TINDEX.CONFIRM_PASSWORD_ERROR)
             }
             validationType="error"
             {...register('confirmPassword')}
@@ -257,11 +263,11 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             data-testid="specialization"
             id="specialization"
             label="specialization"
-            placeholder={t('Especialidad')}
+            placeholder={t(TINDEX.SPECIALIZATION)}
             error={!!errors.specialization}
             options={categoriesMap}
             validationMessage={
-              errors.specialization?.message && t('camp obligatori')
+              errors.specialization?.message && t(TINDEX.REQUIRED_FIELD)
             }
             {...register('specialization')}
             onBlur={() => {
@@ -279,15 +285,18 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
               {...register('accept')}
             />
             <TextStyled as="label" htmlFor="accept">
-              {t('acepto')}{' '}
+              {t(TINDEX.ACCEPT)}{' '}
               <LegalTermsLinkStyled to="#">
-                {t('terminos legales')}
+                {t(TINDEX.LEGAL_TERMS)}
               </LegalTermsLinkStyled>
             </TextStyled>
           </FlexBox>
           {errors.accept && (
             <FlexBox align="start">
-              <ValidationMessage color="error" text={errors.accept?.message} />
+              <ValidationMessage
+                color="error"
+                text={errors.accept?.message && t(TINDEX.LEGAL_TERMS_ERROR)}
+              />
             </FlexBox>
           )}
         </GridAreaStyled>
@@ -303,7 +312,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             </ButtonStyled>
           ) : (
             <Button disabled={isLoading} data-testid="submitButton">
-              {isLoading ? <Spinner size="xsmall" /> : t('RegistrarmeBtn')}
+              {isLoading ? <Spinner size="xsmall" /> : t(TINDEX.SIGNUP_BTN)}
             </Button>
           )}
         </GridAreaStyled>
@@ -316,7 +325,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             handleRegisterModal()
           }}
         >
-          {t('tienes una cuenta?')}
+          {t(TINDEX.HAVE_ACCOUNT)}
         </TextDecorationStyled>
       </Text>
     </RegisterStyled>
