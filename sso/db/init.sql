@@ -15,3 +15,12 @@ CREATE TABLE IF NOT EXISTS "user" (
 
 CREATE TRIGGER set_timestamp BEFORE
 UPDATE ON "user" FOR EACH ROW EXECUTE FUNCTION trigger_set_timestamp();
+
+CREATE TABLE IF NOT EXISTS itinerary (
+    id TEXT PRIMARY KEY,
+    name TEXT UNIQUE NOT NULL,
+    slug TEXT UNIQUE NOT NULL
+);
+
+ALTER TABLE "user"
+ADD COLUMN itinerary_id TEXT NOT NULL REFERENCES itinerary(id);

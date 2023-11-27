@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.2] - 2023-11-27
+
+### Update
+
+- Updated the category icons in the side menu
+
+  
+## [0.5.1] - 2023-11-24
+
+### Fixed
+
+- Disabled VotesDateController when no resources are available.
+- Translated error message for Category page details without resources.
+- Updated tests according to new changes.
 
 ## [0.5.0] - 2023-11-23
 

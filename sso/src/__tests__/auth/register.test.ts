@@ -1,9 +1,15 @@
 import supertest from 'supertest'
-import { expect, it, describe, afterAll } from 'vitest'
+import { expect, it, describe, afterAll, beforeAll } from 'vitest'
 import { server } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { client } from '../../models/db'
 
+let itineraryId: string = ''
+beforeAll(async () => {
+  const { rows } = await client.query('SELECT id FROM "itinerary" LIMIT 1')
+  const [id] = rows
+  itineraryId = id.id
+})
 afterAll(async () => {
   await client.query('DELETE FROM "user" WHERE dni = $1 AND email = $2', [
     '11111111Q',
@@ -20,6 +26,7 @@ describe('Testing registration endpoint', () => {
         email: 'example@example.com',
         password: 'password1',
         confirmPassword: 'password1',
+        itineraryId,
       })
     expect(response.status).toBe(204)
   })
@@ -33,6 +40,7 @@ describe('Testing registration endpoint', () => {
           email: 'anotherexample@example.com',
           password: 'password1',
           confirmPassword: 'password1',
+          itineraryId,
         })
       expect(response.status).toBe(500)
       expect(response.body.message).toContain(
@@ -48,6 +56,7 @@ describe('Testing registration endpoint', () => {
           email: 'testingUser@user.cat',
           password: 'password1',
           confirmPassword: 'password1',
+          itineraryId,
         })
 
       expect(response.status).toBe(500)
@@ -65,6 +74,7 @@ describe('Testing registration endpoint', () => {
           email: 'example2@example.com',
           password: 'password1',
           confirmPassword: 'password1',
+          itineraryId,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
@@ -78,6 +88,7 @@ describe('Testing registration endpoint', () => {
           dni: '45632452c',
           password: 'password1',
           confirmPassword: 'password1',
+          itineraryId,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
@@ -91,6 +102,7 @@ describe('Testing registration endpoint', () => {
           dni: '45632452c',
           email: 'example2@example.com',
           confirmPassword: 'password1',
+          itineraryId,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
@@ -104,10 +116,24 @@ describe('Testing registration endpoint', () => {
           dni: '45632452c',
           email: 'example2@example.com',
           password: 'password1',
+          itineraryId,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
       expect(response.body.message[0].path).toContain('confirmPassword')
+    })
+    it('should fail with missing required fields: itineraryId', async () => {
+      const response = await supertest(server)
+        .post(`${pathRoot.v1.auth}/register`)
+        .send({
+          dni: '45632452c',
+          email: 'example2@example.com',
+          password: 'password1',
+          confirmPassword: 'password1',
+        })
+      expect(response.status).toBe(400)
+      expect(response.body.message[0].message).toBe('Required')
+      expect(response.body.message[0].path).toContain('itineraryId')
     })
   })
 
@@ -120,6 +146,7 @@ describe('Testing registration endpoint', () => {
           email: 'example2@example.com',
           password: 'password1',
           confirmPassword: 'password1',
+          itineraryId,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].validation).toBe('regex')
@@ -134,6 +161,7 @@ describe('Testing registration endpoint', () => {
           email: 'notAValidEmail',
           password: 'password1',
           confirmPassword: 'password1',
+          itineraryId,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].validation).toBe('email')
@@ -148,6 +176,7 @@ describe('Testing registration endpoint', () => {
           email: 'example2@example.com',
           password: 'pswd1',
           confirmPassword: 'pswd1',
+          itineraryId,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].path).toContain('password')
@@ -162,6 +191,7 @@ describe('Testing registration endpoint', () => {
           email: 'example2@example.com',
           password: 'password',
           confirmPassword: 'password',
+          itineraryId,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].validation).toBe('regex')
@@ -176,6 +206,7 @@ describe('Testing registration endpoint', () => {
           email: 'example2@example.com',
           password: 'password1?',
           confirmPassword: 'password1?',
+          itineraryId,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].validation).toBe('regex')
@@ -189,10 +220,24 @@ describe('Testing registration endpoint', () => {
           email: 'example2@example.com',
           password: 'password1',
           confirmPassword: 'password2',
+          itineraryId,
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Passwords must match')
       expect(response.body.message[0].path).toContain('confirmPassword')
+    })
+    it('should fail with non existing itineraryId', async () => {
+      const response = await supertest(server)
+        .post(`${pathRoot.v1.auth}/register`)
+        .send({
+          dni: '45632452c',
+          email: 'example2@example.com',
+          password: 'password1',
+          confirmPassword: 'password1',
+          itineraryId: 'clpb25e1l000008jr7j505s0o',
+        })
+      expect(response.status).toBe(422)
+      expect(response.body.message).toBe('Invalid itinerary')
     })
   })
 })

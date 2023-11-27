@@ -60,7 +60,11 @@ class MissingParamError extends DefaultError {
     super(422, `Missing ${parameter}`)
   }
 }
-
+class InvalidParamError extends DefaultError {
+  constructor(parameter: string) {
+    super(422, `Invalid ${parameter}`)
+  }
+}
 class InvalidToken extends DefaultError {
   constructor(message: string = 'Token is not valid') {
     super(498, `${message}`)
@@ -77,5 +81,6 @@ export {
   DuplicateError,
   UnsupportedMediaType,
   MissingParamError,
+  InvalidParamError,
   InvalidToken,
 }

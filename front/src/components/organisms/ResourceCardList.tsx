@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import CardResource from './CardResource'
@@ -44,12 +45,10 @@ const ResourceCardList: FC<TResourceCardList> = ({
   resourcesLoading,
 }) => {
   const { user } = useAuth()
-  const { sortedItems } = useSortByDate<TResource>(
-    resourcesData,
-    'updatedAt',
-    sortOrder
-  )
-  const { sortedVotes } = useSortByVotes<TResource>(resourcesData, sortOrder)
+  const { t } = useTranslation()
+  const { isLoading, data, error } = useGetResources(filters)
+  const { sortedItems } = useSortByDate<TResource>(data, 'updatedAt', sortOrder)
+  const { sortedVotes } = useSortByVotes<TResource>(data, sortOrder)
 
   const selectedSortOrder = isSortByVotesActive ? sortedVotes : sortedItems
 
@@ -85,10 +84,10 @@ const ResourceCardList: FC<TResourceCardList> = ({
       ) : (
         <FlexBox>
           <StyledText data-testid="emptyResource">
-            ¡Vaya! :/
+            {t('¡Vaya! :/')}
             <br />
             <br />
-            Todavía no hay recursos de este tipo.
+            {t('Todavía no hay recursos de este tipo.')}
           </StyledText>
         </FlexBox>
       )}

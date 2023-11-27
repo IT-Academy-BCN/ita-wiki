@@ -1,7 +1,10 @@
 import z from 'zod'
 import { pathRoot } from '../../../routes/routes'
 import { registerSchema } from '../../../schemas'
-import { zodValidationResponse } from '../../components/responses'
+import {
+  invalidItineraryResponse,
+  zodValidationResponse,
+} from '../../components/responses'
 import { registry } from '../../registry'
 
 registry.registerPath({
@@ -25,6 +28,7 @@ registry.registerPath({
       description: 'The user has been registered.',
     },
     400: zodValidationResponse,
+    422: invalidItineraryResponse,
     500: {
       description: 'Other error',
       content: {

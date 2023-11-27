@@ -8,4 +8,5 @@ export const userSchema = z.object({
   password: z.string().min(8),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
+  itineraryId: z.string().cuid2(),
 })

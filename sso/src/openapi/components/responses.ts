@@ -63,3 +63,14 @@ export const InvalidCredentialsResponse = {
     },
   },
 }
+
+export const invalidItineraryResponse = {
+  description: 'Invalid itinerary ID',
+  content: {
+    'application/json': {
+      schema: z.object({
+        message: z.string().openapi({ example: 'Invalid itinerary' }),
+      }),
+    },
+  },
+}

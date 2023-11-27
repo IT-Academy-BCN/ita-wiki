@@ -547,12 +547,14 @@ const Category: FC = () => {
                     {t('Filtrar')}
                   </FilterButton>
                 </TitleResourcesContainer>
-                <VotesDateController
-                  sortOrder={sortOrder}
-                  handleSortOrder={handleSortOrder}
-                  handleSortByVotes={handleSortByVotes}
-                  handleSortByDates={handleSortByDates}
-                />
+                {selectedSortOrderValue?.length > 0 && (
+                  <VotesDateController
+                    sortOrder={sortOrder}
+                    handleSortOrder={handleSortOrder}
+                    handleSortByVotes={handleSortByVotes}
+                    handleSortByDates={handleSortByDates}
+                  />
+                )}
                 <ScrollDiv>
                   <NewResourceButton
                     isSearch={isSearch}
