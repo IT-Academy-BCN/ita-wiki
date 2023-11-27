@@ -64,7 +64,9 @@ const ResourceCardList: FC<TResourceCardList> = ({
 
   return (
     <StyledFlexBox direction="column" data-testid="resource-list">
-      {resourcesLoading && <SpinnerStyled size="medium" role="status" />}
+      {resourcesLoading && (
+        <SpinnerStyled size="medium" as="output" data-testid="spinner" />
+      )}
       {resourcesData && resourcesData?.length > 0 ? (
         selectedSortOrder.map((resource: TResource) => (
           <CardResource

@@ -92,7 +92,7 @@ export type TFilters = {
   resourceTypes?: string[]
   status?: string[]
   topic?: string
-  search?: string | undefined
+  search?: string
 }
 export type TEditResourceProps = {
   description: string

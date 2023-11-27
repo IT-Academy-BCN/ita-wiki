@@ -47,7 +47,7 @@ describe('ResourceCardList', () => {
               sortOrder="desc"
               isSortByVotesActive
               onSelectedSortOrderChange={() => ''}
-              resourcesError={null}
+              resourcesError={undefined}
               resourcesLoading
               resourcesData={mockedResourcesData}
             />
@@ -59,7 +59,7 @@ describe('ResourceCardList', () => {
       }
     )
 
-    const spinnerComponent = screen.getByRole('status') as HTMLDivElement
+    const spinnerComponent = screen.queryByTestId('spinner') as HTMLDivElement
     expect(spinnerComponent).toBeInTheDocument()
     await waitFor(() => {
       expect(spinnerComponent).toBeInTheDocument()
@@ -86,7 +86,7 @@ describe('ResourceCardList', () => {
               sortOrder="desc"
               isSortByVotesActive
               onSelectedSortOrderChange={() => ''}
-              resourcesError={null}
+              resourcesError={undefined}
               resourcesLoading
               resourcesData={[]}
             />
@@ -98,7 +98,7 @@ describe('ResourceCardList', () => {
       }
     )
 
-    const spinnerComponent = screen.getByRole('status') as HTMLDivElement
+    const spinnerComponent = screen.queryByTestId('spinner') as HTMLDivElement
 
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
@@ -116,13 +116,13 @@ describe('ResourceCardList', () => {
         sortOrder="desc"
         isSortByVotesActive
         onSelectedSortOrderChange={() => ''}
-        resourcesError={null}
+        resourcesError={new Error('Ha habido un error...')}
         resourcesLoading
         resourcesData={[]}
       />
     )
 
-    const spinnerComponent = screen.getByRole('status') as HTMLDivElement
+    const spinnerComponent = screen.queryByTestId('spinner') as HTMLDivElement
 
     await waitFor(() => {
       expect(spinnerComponent).toBeInTheDocument()

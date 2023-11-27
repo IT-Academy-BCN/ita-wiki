@@ -114,10 +114,10 @@ const Search: React.FC<TSearch> = ({
           <InputSearch
             type="text"
             data-testid="inputSearch"
-            value={searchValue || ''}
+            value={searchValue ?? ''}
             onChange={handleChange}
             placeholder={isSearchError ? t('searchErrorMessage') : ''}
-            isError={!!(isSearchError && (searchValue || '').length === 1)}
+            isError={!!(isSearchError && (searchValue ?? '').length === 1)}
             autoFocus
           />
 

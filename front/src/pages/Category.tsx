@@ -386,7 +386,7 @@ const Category: FC = () => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       slug,
-      search: searchValue || undefined,
+      search: searchValue ?? undefined,
     }))
   }, [searchValue, slug])
 
@@ -396,9 +396,9 @@ const Category: FC = () => {
 
     setFilters((prevFilters) => ({
       ...prevFilters,
-      search: isError ? undefined : value || undefined,
+      search: isError ? undefined : value ?? undefined,
     }))
-    setSearchValue(value || '')
+    setSearchValue(value ?? '')
   }, [])
 
   const toggleSearch = () => {
