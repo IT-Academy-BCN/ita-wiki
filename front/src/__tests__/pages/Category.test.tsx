@@ -25,7 +25,6 @@ beforeEach(() => {
     state: { name: 'React', id: 1 },
   })
 })
-
 beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
@@ -34,7 +33,6 @@ beforeEach(() => {
     },
   } as TAuthContext)
 })
-
 describe.skip('Resource', () => {
   beforeEach(() => {
     vi.mock('../../context/AuthProvider', async () => {
@@ -68,9 +66,7 @@ it('renders Navbar for logged in users', () => {
       avatarId: 'Avatar',
     },
   } as TAuthContext)
-
   render(<Category />)
-
   expect(screen.getByTestId('navbar')).toBeInTheDocument()
 })
 
@@ -78,55 +74,54 @@ it('renders Navbar for unregistered users', () => {
   vi.mocked(useAuth).mockReturnValue({
     user: null,
   } as TAuthContext)
-
   render(<Category />)
-
   expect(screen.getByTestId('navbar')).toBeInTheDocument()
 })
 
 it('filters opens and closes correctly', () => {
   render(<Category />)
-
   fireEvent.click(screen.getByTestId('filters-button'))
   expect(screen.getByTestId('mobile-filters')).toBeInTheDocument()
-
   fireEvent.click(screen.getByTestId('close-filters-button'))
   expect(screen.queryByTestId('mobile-filters')).not.toBeInTheDocument()
 })
 
-it('create new resource modal opens and closes correctly', () => {
-  render(<Category />)
+it('modal opens when clicking on the "Crear nuevo recurso" button', async () => {
+  render(<Category />);
 
-  fireEvent.click(screen.getByText('+ Crear nou recurs'))
-  expect(screen.getByText(/Nuevo Recurso/)).toBeInTheDocument()
+  const createButtonText = screen.getByTestId('new-resource-text');
+  expect(createButtonText).toBeInTheDocument();
+
+  fireEvent.click(createButtonText);
+
+  await waitFor(() => {
+    const modalTitle = screen.getByText('Nou recurs'); 
+    expect(modalTitle).toBeInTheDocument();
+  })
 })
 
 it('modal opens and closes correctly when user is not logged', async () => {
   vi.mocked(useAuth).mockReturnValue({
     user: null,
-  } as TAuthContext)
-
-  render(<Category />)
-
-  fireEvent.click(screen.getByRole('button', { name: '+ Crear nou recurs' }))
+  } as TAuthContext);
+  render(<Category />);
+  fireEvent.click(screen.getByTestId('new-resource-text')); 
   const modalTitle = screen.getByRole('heading', {
     name: /acceso restringido/i,
-  })
-
-  expect(modalTitle).toBeInTheDocument()
-  fireEvent.keyDown(document, { key: 'Escape' })
+  });
+  expect(modalTitle).toBeInTheDocument();
+  fireEvent.keyDown(document, { key: 'Escape' });
   await waitFor(() => {
-    expect(modalTitle).not.toBeInTheDocument()
+    expect(modalTitle).not.toBeInTheDocument();
   })
 })
 
 it('modal opens and closes correctly when user is logged', async () => {
   render(<Category />)
-
-  fireEvent.click(screen.getByRole('button', { name: '+ Crear nou recurs' }))
+  fireEvent.click(screen.getByTestId('new-resource-text'))
   const modalTitle = screen.getByRole('heading', {
-    name: /nuevo recurso/i,
-  })
+    name: /Nou recurs/i,
+  });
   expect(modalTitle).toBeInTheDocument()
   fireEvent.keyDown(document, { key: 'Escape' })
   await waitFor(() => {
@@ -139,7 +134,6 @@ it('status filter widget does not appear for users who are not logged in', () =>
     user: null,
   } as TAuthContext)
   render(<Category />)
-
   const statusFilterWidget = screen.queryByTestId('status-filter')
   expect(statusFilterWidget).not.toBeInTheDocument()
 })
@@ -152,12 +146,18 @@ it('status filter widget appears for users who are logged in', () => {
     },
   } as TAuthContext)
   render(<Category />)
-
   const statusFilterWidget = screen.getByTestId('status-filter')
   expect(statusFilterWidget).toBeInTheDocument()
 })
 
-it('sorts resources by date in descending order', () => {
+it('does not render Votes and Date when there are no available resources', () => {
+  render(<Category />)
+
+  expect(screen.queryByText(/vots/i)).not.toBeInTheDocument()
+  expect(screen.queryByText(/data/i)).not.toBeInTheDocument()
+})
+
+it('sorts available resources by date in descending order', async () => {
   const items = [
     { id: 1, date: '2023-11-01' },
     { id: 2, date: '2023-10-30' },
@@ -166,7 +166,10 @@ it('sorts resources by date in descending order', () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByText(/Data/i))
+  await waitFor(() => {
+    const sortDatesButton = screen.getByText(/data/i)
+    fireEvent.click(sortDatesButton)
+  })
 
   const { result } = renderHook(() => useSortByDate(items, 'date', 'desc'))
 
@@ -177,7 +180,7 @@ it('sorts resources by date in descending order', () => {
   ])
 })
 
-it('sorts resources by votes in ascending order', () => {
+it('sorts available resources by votes in ascending order', async () => {
   const votes = [
     {
       id: 'resource1',
@@ -213,12 +216,29 @@ it('sorts resources by votes in ascending order', () => {
 
   render(<Category />)
 
-  fireEvent.click(screen.getByText(/Vots/i))
+  await waitFor(() => {
+    const sortVotesButton = screen.getByText(/vots/i)
+    fireEvent.click(sortVotesButton)
+  })
 
   const { result } = renderHook(() => useSortByVotes(votes, 'asc'))
   const sortedResources = result.current.sortedVotes
-
   const voteCounts = sortedResources.map((vote) => vote.voteCount.total)
 
   expect(voteCounts).toEqual([0, 3, 7])
+})
+
+describe('Category component tests', () => {
+  test('Input appears when search icon is clicked', async () => {
+    const { getByTestId } = render(<Category />)
+
+    const searchIcon = getByTestId('inputGroupSearch')
+
+    expect(searchIcon).toBeInTheDocument()
+
+    fireEvent.click(searchIcon)
+
+    const inputSearch = getByTestId('inputSearch')
+    expect(inputSearch).toBeInTheDocument()
+  })
 })

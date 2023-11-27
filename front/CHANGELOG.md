@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.2] - 2023-11-27
+
+### Update
+
+- Updated the category icons in the side menu
+
+  
+## [0.5.1] - 2023-11-24
+
+### Fixed
+
+- Disabled VotesDateController when no resources are available.
+- Translated error message for Category page details without resources.
+- Updated tests according to new changes.
+
+## [0.5.0] - 2023-11-23
+
+### Added
+
+- New resource search bar UI implementation
+
 ## [0.4.4] - 2023-11-23
 
 ### Fixed
@@ -9,6 +30,7 @@ All notable changes to this project will be documented in this file.
 - Adjusted the general styles of the AdminAccount table.
 - Updated translations accordingly.
 - Relocated AccountAdmin.test from the "pages" directory to "/components/organisms".
+
 
 ## [0.4.3] - 2023-11-23
 
@@ -54,8 +76,10 @@ All notable changes to this project will be documented in this file.
 
 - My Resources widget in Category page
 
+
 ## [0.2.1] - 2023-11-16
 
+  
 ### Changed
 
 - Refactored votes/dates logic into a single component (VotesDateController).
@@ -64,6 +88,7 @@ All notable changes to this project will be documented in this file.
 
 - Fixed 'Votos' & 'Fecha' visual inconsistencies (arrow icon asc/desc, initial state).
 - Incorporated missing translations.
+
 
 ## [0.1.1] - 2023-11-15
 

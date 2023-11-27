@@ -845,7 +845,6 @@ paths:
           name: search
           schema:
             type: string
-            minLength: 2
           required: false
           description: Search query to filter by
           example: tailwind

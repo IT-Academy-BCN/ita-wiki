@@ -312,6 +312,14 @@ describe('Testing resources GET endpoint', () => {
       expect(resource.description!.toLowerCase()).toContain(search)
     })
   })
+  it('should display all resources if a query search string is less than 2 chars long', async () => {
+    const search = 'b'
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.resources}`)
+      .query({ slug: 'testing', search })
+    expect(response.status).toBe(200)
+    expect(response.body.length).toBeGreaterThanOrEqual(3)
+  })
 
   checkInvalidToken(`${pathRoot.v1.resources}`, 'get')
 })

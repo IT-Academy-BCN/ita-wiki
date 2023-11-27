@@ -100,6 +100,7 @@ export const UserProfileResourcesWidget = ({
 
   const [sortOrder, setSortOrder] = useState<TSortOrder>('desc')
   const [isSortByVotesActive, setIsSortByVotesActive] = useState(false)
+  
   const handleSortOrder = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
   }

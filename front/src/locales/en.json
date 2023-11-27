@@ -83,12 +83,15 @@
   "No es posible borrar el tema.": "The topic cannot be deleted.",
 
   "Filtros": "Filters",
-  "Recursos de (category)": "{{name}} resources",
+  "Recursos de (category)": "Resources of {{name}}",
   "Buscar recurso": "Find resource",
   "Filtrar": "Sort",
   "Votos": "Votes",
   "Fecha": "Date",
-  "+ Crear nuevo recurso": "+ Create new resource",
+  "Crear nuevo recurso": "Create new resource",
+
+  "¡Vaya! :/": "Oops! :/",
+  "Todavía no hay recursos de este tipo.": "There are no available resources of this kind yet.",
 
   "Error 401 - No autorizado": "Unauthorized operation. User login required.",
   "Error 403 - Acceso denegado": "Access denied. You do not have the necessary permissions to perform the operation.",
@@ -102,5 +105,9 @@
   "Aportaciones": "Contributions",
   "Votos recibidos": "Votes received",
   "Favoritos guardados": "Saved favorites",
-  "n/d": "n/a"
+  "n/d": "n/a",
+
+  "Mostrando":"Showing",
+  "resultados para":"results for",
+  "Nuevo Recurso":"New resource"
 }

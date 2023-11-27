@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FlexBox, dimensions } from '../../styles'
 import { Spinner, Text } from '../atoms'
 import CardResource from './CardResource'
@@ -32,15 +33,18 @@ type TResourceCardList = {
   sortOrder: TSortOrder
   handleAccessModal: () => void
   isSortByVotesActive: boolean
+  onSelectedSortOrderChange: (selectedSortOrder: Array<TResource>) => void
 }
 
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
+  onSelectedSortOrderChange,
   sortOrder,
   filters,
   isSortByVotesActive,
 }) => {
   const { user } = useAuth()
+  const { t } = useTranslation()
   const { isLoading, data, error } = useGetResources(filters)
   const { sortedItems } = useSortByDate<TResource>(data, 'updatedAt', sortOrder)
   const { sortedVotes } = useSortByVotes<TResource>(data, sortOrder)
@@ -48,6 +52,10 @@ const ResourceCardList: FC<TResourceCardList> = ({
   const selectedSortOrder = isSortByVotesActive ? sortedVotes : sortedItems
 
   if (error) return <p>Ha habido un error...</p>
+
+  if (onSelectedSortOrderChange) {
+    onSelectedSortOrderChange(selectedSortOrder);
+  }
 
   return (
     <StyledFlexBox direction="column" data-testid="resource-list">
@@ -79,10 +87,10 @@ const ResourceCardList: FC<TResourceCardList> = ({
       ) : (
         <FlexBox>
           <StyledText data-testid="emptyResource">
-            ¡Vaya! :/
+            {t('¡Vaya! :/')}
             <br />
             <br />
-            Todavía no hay recursos de este tipo.
+            {t('Todavía no hay recursos de este tipo.')}
           </StyledText>
         </FlexBox>
       )}
