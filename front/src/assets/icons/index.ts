@@ -4,7 +4,7 @@ import chevronDown from './chevron-down.svg'
 import dataScience from './data-science.svg'
 import deleteIcon from './delete-icon.svg'
 import editPen from './edit-pen.svg'
-import itLogo from './it-logo.png'
+import itLogo from './it-logo.svg'
 import java from './java.svg'
 import javascript from './javascript.svg'
 import laravel from './laravel.svg'
@@ -21,6 +21,7 @@ import thumbUp from './thumb-up-dynamic-color.svg'
 import vue from './vue.svg'
 import logout from './logout.svg'
 import user from './user.svg'
+import bbdd from './bbdd.svg'
 
 const icons = {
   angular,
@@ -46,6 +47,7 @@ const icons = {
   thumbUp,
   logout,
   user,
+  bbdd,
 }
 
 export default icons
