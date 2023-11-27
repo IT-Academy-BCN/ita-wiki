@@ -138,7 +138,7 @@ const AccountAdmin: FC = () => {
     changeUserStatus.mutate(updatedUser)
   }
 
-  if (isLoading) return <Spinner size="small" role="status" />
+  if (isLoading) return <Spinner size="medium" role="status" />
   if (isError) return <p>{t('Ha habido un error...')}</p>
 
   return (
