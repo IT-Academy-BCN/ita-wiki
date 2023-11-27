@@ -11,9 +11,9 @@ describe('StatusFilterWidget', () => {
   it('renders component correctly with all filters selected', () => {
     render(<StatusFilterWidget handleStatusFilter={onChangeStatusFilter} />)
 
-    expect(screen.getByText('Estado')).toBeInTheDocument()
-    expect(screen.getByLabelText('Por ver')).toBeInTheDocument()
-    expect(screen.getByLabelText('Vistos')).toBeInTheDocument()
+    expect(screen.getByText(/estat/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/pendents/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/vistos/i)).toBeInTheDocument()
 
     expect(onChangeStatusFilter).toHaveBeenCalledTimes(1)
     expect(onChangeStatusFilter).toHaveBeenCalledWith(['NOT_SEEN', 'SEEN'])
@@ -22,8 +22,8 @@ describe('StatusFilterWidget', () => {
   it('clicking a checkbox removes/adds its value to the filter selection', async () => {
     render(<StatusFilterWidget handleStatusFilter={onChangeStatusFilter} />)
 
-    const checkBoxA = screen.getByLabelText('Por ver')
-    const checkBoxB = screen.getByLabelText('Vistos')
+    const checkBoxA = screen.getByLabelText(/pendents/i)
+    const checkBoxB = screen.getByLabelText(/vistos/i)
 
     expect(checkBoxA).toBeChecked()
     expect(checkBoxB).toBeChecked()

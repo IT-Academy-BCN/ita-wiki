@@ -1,5 +1,6 @@
 import { useState, useEffect, ChangeEvent } from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { CheckBox, Label, Spinner, Text } from '../atoms'
 import { colors, dimensions, FlexBox, font } from '../../styles'
 import { TGetTypes, TTypesFilterWidget } from '../../types/types'
@@ -30,6 +31,8 @@ const CheckBoxStyled = styled(CheckBox)`
 const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
   const { isLoading, data, error } = useGetTypes()
 
+  const { t } = useTranslation()
+
   const [selectedTypes, setSelectedTypes] = useState<TGetTypes>([])
 
   useEffect(() => {
@@ -57,7 +60,7 @@ const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
 
   return (
     <StyledFlexbox direction="column" align="start" data-testid="types-filter">
-      <StyledText fontWeight="bold">Tipo</StyledText>
+      <StyledText fontWeight="bold">{t('Tipo')}</StyledText>
       {isLoading && <StyledSpinner size="small" role="status" />}
       {data?.map((item: string) => (
         <CheckBoxStyled

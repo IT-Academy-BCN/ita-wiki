@@ -17,7 +17,7 @@ describe('TypesFilterWidget', () => {
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
-      expect(screen.getByText('Tipo')).toBeInTheDocument()
+      expect(screen.getByText(/format/i)).toBeInTheDocument()
       expect(screen.getByLabelText('Test type 1')).toBeInTheDocument()
       expect(screen.getByLabelText('Test type 2')).toBeInTheDocument()
       expect(screen.getByLabelText('Test type 3')).toBeInTheDocument()

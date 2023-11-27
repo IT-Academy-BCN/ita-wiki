@@ -20,11 +20,11 @@ describe('AccessModalContent', () => {
       />
     )
     expect(screen.getByAltText('Lock Dynamic Icon')).toBeInTheDocument()
-    expect(screen.getByText('Acceso restringido')).toBeInTheDocument()
+    expect(screen.getByText(/accés restringit/i)).toBeInTheDocument()
     expect(
-      screen.getByRole('button', { name: 'Registrarme' })
+      screen.getByRole('button', { name: /registrar-me/i })
     ).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Entrar' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /entrar/i })).toBeInTheDocument()
   })
 
   it('should open Register modal when clicking the "Registrarme" button', async () => {
@@ -36,7 +36,7 @@ describe('AccessModalContent', () => {
       />
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Registrarme' }))
+    fireEvent.click(screen.getByRole('button', { name: /registrar-me/i }))
 
     await waitFor(() => {
       expect(handleAccessModal).toHaveBeenCalled()
@@ -54,7 +54,7 @@ describe('AccessModalContent', () => {
       />
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Entrar' }))
+    fireEvent.click(screen.getByRole('button', { name: /entrar/i }))
 
     await waitFor(() => {
       expect(handleAccessModal).toHaveBeenCalled()
