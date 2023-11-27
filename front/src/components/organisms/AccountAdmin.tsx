@@ -1,11 +1,10 @@
 import styled from 'styled-components'
 import { FC, useState } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { urls } from '../../constants'
 import { colors, device } from '../../styles'
 import { TUserData } from '../../types'
-import { useGetUsers } from '../../hooks/useGetUsers'
+import { useGetUsers, useUpdateUserStatus } from '../../hooks'
+import { Spinner } from '../atoms'
 
 const UserListContainer = styled.div`
   display: flex;
@@ -20,7 +19,7 @@ const Table = styled.table`
   border-collapse: collapse;
   width: 112%;
   table-layout: fixed;
-  
+
   @media ${device.Laptop} {
     width: 100%;
   }
@@ -109,7 +108,6 @@ const DeactivateBtn = styled.button`
 const AccountAdmin: FC = () => {
   const { t } = useTranslation()
   const { isLoading, isError, data: users } = useGetUsers()
-  const queryClient = useQueryClient()
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,45 +126,20 @@ const AccountAdmin: FC = () => {
     }
   }
 
-  if (isLoading) {
-    return <div>Loading...</div>
-  }
+  const { changeUserStatus } = useUpdateUserStatus()
 
-  if (isError) {
-    return <div>Error fetching users</div>
-  }
-
-  const updateUserStatus = async (user: TUserData) => {
-    try {
-      const updatedStatus = user.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
-      const updatedUser = {
-        ...user,
-        status: updatedStatus,
-      }
-
-      const response = await fetch(urls.users, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedUser),
-      })
-      if (!response.ok) {
-        throw new Error('Failed to update user status')
-      }
-      queryClient.setQueryData<TUserData[]>(['users'], (prevData) => {
-        if (prevData) {
-          return prevData.map((u) =>
-            u.id === updatedUser.id ? { ...u, status: updatedStatus } : u
-          )
-        }
-        return prevData
-      })
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error)
+  const updateUserStatus = (user: TUserData) => {
+    const updatedStatus = user.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
+    const updatedUser = {
+      id: user.id,
+      status: updatedStatus,
     }
+
+    changeUserStatus.mutate(updatedUser)
   }
+
+  if (isLoading) return <Spinner size="small" role="status" />
+  if (isError) return <p>{t('Ha habido un error...')}</p>
 
   return (
     <UserListContainer>
@@ -177,7 +150,7 @@ const AccountAdmin: FC = () => {
         id="search"
         value={searchTerm}
         onChange={handleSearchChange}
-        placeholder={t("Introduce el DNI")}
+        placeholder={t('Introduce el DNI')}
       />
       <Table>
         <TableHead>
@@ -216,7 +189,7 @@ const AccountAdmin: FC = () => {
                   </TableCell>
                 </TableRow>
               ))
-            : 'Error'}
+            : null}
         </TableBody>
       </Table>
     </UserListContainer>
