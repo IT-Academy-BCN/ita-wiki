@@ -53,7 +53,7 @@ const AddButton = styled(IconStyled)`
 `
 const SearchButton = styled(IconStyled)`
   display: flex;
-  @media ${device.Mobile} {
+  @media ${device.Tablet} {
     display: none;
   }
 `

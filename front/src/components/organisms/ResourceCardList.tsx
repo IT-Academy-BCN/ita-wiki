@@ -34,9 +34,11 @@ type TResourceCardList = {
   resourcesData: TResource[] | undefined
   resourcesError: Error | unknown
   resourcesLoading: boolean
+  onSelectedSortOrderChange: (selectedSortOrder: Array<TResource>) => void
 }
 
 const ResourceCardList: FC<TResourceCardList> = ({
+  onSelectedSortOrderChange,
   handleAccessModal,
   sortOrder,
   isSortByVotesActive,
@@ -46,13 +48,19 @@ const ResourceCardList: FC<TResourceCardList> = ({
 }) => {
   const { user } = useAuth()
   const { t } = useTranslation()
-  const { isLoading, data, error } = useGetResources(filters)
-  const { sortedItems } = useSortByDate<TResource>(data, 'updatedAt', sortOrder)
-  const { sortedVotes } = useSortByVotes<TResource>(data, sortOrder)
+  const { sortedItems } = useSortByDate<TResource>(
+    resourcesData,
+    'updatedAt',
+    sortOrder
+  )
+  const { sortedVotes } = useSortByVotes<TResource>(resourcesData, sortOrder)
 
   const selectedSortOrder = isSortByVotesActive ? sortedVotes : sortedItems
 
   if (resourcesError) return <p>Ha habido un error...</p>
+  if (onSelectedSortOrderChange) {
+    onSelectedSortOrderChange(selectedSortOrder)
+  }
 
   return (
     <StyledFlexBox direction="column" data-testid="resource-list">

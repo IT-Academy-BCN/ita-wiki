@@ -25,7 +25,7 @@ import {
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
 import { useGetResources, useGetTopics } from '../hooks'
-import { TFilters, TSortOrder } from '../types'
+import { TFilters, TResource, TSortOrder } from '../types'
 import { FlexBox, colors, device, dimensions, responsiveSizes } from '../styles'
 
 const Container = styled(FlexBox)`
@@ -215,7 +215,9 @@ const MobileTopicsContainer = styled(MobileContainer)<{ isSearch: boolean }>`
     display: none;
   }
 `
-const MobileSearchContainer = styled(MobileContainer)<{ isSearch: boolean }>`
+const MobileSearchContainer = styled(MobileContainer)<{
+  isSearch: boolean
+}>`
   display: ${({ isSearch }) => (isSearch ? 'flex' : 'none')};
   @media ${device.Tablet} {
     display: none;
@@ -362,6 +364,9 @@ const Category: FC = () => {
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string | null>('')
   const [isSearchError, setIsSearchError] = useState<boolean>(false)
+  const [selectedSortOrderValue, setSelectedSortOrderValue] = useState<
+    TResource[]
+  >([])
   const [isMobile, setIsMobile] = useState(getWindowIsMobile())
   const { t } = useTranslation()
 
@@ -453,6 +458,11 @@ const Category: FC = () => {
   const handleSortByDates = () => {
     setIsSortByVotesActive(false)
   }
+  const handleSelectedSortOrderChange = (
+    selectedSortOrder: Array<TResource>
+  ) => {
+    setSelectedSortOrderValue(selectedSortOrder)
+  }
 
   const { data: fetchedTopics } = useGetTopics(slug ?? '')
 
@@ -493,7 +503,10 @@ const Category: FC = () => {
               onChange={handleSelectTopicFilter}
             />
           </MobileTopicsContainer>
-          <MobileSearchContainer isSearch={isSearch}>
+          <MobileSearchContainer
+            isSearch={isSearch}
+            data-testid="mobile-search-component"
+          >
             <Search
               searchValue={searchValue}
               toggleSearch={toggleSearch}
@@ -577,6 +590,7 @@ const Category: FC = () => {
                     resourcesData={resourcesData}
                     resourcesError={resourcesError}
                     resourcesLoading={resourcesLoading}
+                    onSelectedSortOrderChange={handleSelectedSortOrderChange}
                   />
                 </ScrollDiv>
               </ResourcesContainer>

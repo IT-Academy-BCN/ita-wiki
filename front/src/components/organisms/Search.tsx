@@ -27,7 +27,6 @@ const SearchBar = styled(InputGroup)`
     width: 40%;
     max-width: 11rem;
     justify-content: flex-end;
-
     ${FlexBox} {
       justify-content: flex-start;
     }
@@ -105,7 +104,6 @@ const Search: React.FC<TSearch> = ({
     toggleSearch()
     handleSearch('')
   }
-  const searchErrorMessage = 'Al menos 2 caracteres'
   if (isSearch) {
     return (
       <SearchContainer>
@@ -118,7 +116,7 @@ const Search: React.FC<TSearch> = ({
             data-testid="inputSearch"
             value={searchValue || ''}
             onChange={handleChange}
-            placeholder={isSearchError ? t(searchErrorMessage) : ''}
+            placeholder={isSearchError ? t('searchErrorMessage') : ''}
             isError={!!(isSearchError && (searchValue || '').length === 1)}
             autoFocus
           />
@@ -147,7 +145,7 @@ const Search: React.FC<TSearch> = ({
         })}
       </Title>
       <SearchBar
-        data-testid="inputGroupSearch"
+        data-testid="searchBar"
         label="searchResource"
         name="searchResource"
         placeholder={t('Buscar recurso')}

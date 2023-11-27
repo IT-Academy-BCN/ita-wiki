@@ -4,25 +4,52 @@ import { render, screen, waitFor } from '../test-utils'
 import { ResourceCardList } from '../../components/organisms'
 import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
+import { TResource } from '../../types'
 
 describe('ResourceCardList', () => {
   const handleAccessModal = vi.fn()
   afterEach(() => {
-    vi.restoreAllMocks()
+    afterEach(() => {
+      vi.restoreAllMocks()
+      mswServer.resetHandlers()
+    })
   })
 
   it('renders ResourceCard correctly on success', async () => {
+    const mockedResourcesData: TResource[] = [
+      {
+        id: '1',
+        title: 'Resource Test',
+        slug: 'resource-test',
+        description: 'Resource test description',
+        url: 'http://www.example.com/resourceTest',
+        createdAt: '2023-01-01T12:00:00Z',
+        updatedAt: '2023-01-02T12:00:00Z',
+        voteCount: {
+          upvote: 5,
+          downvote: 2,
+          total: 3,
+          userVote: 1,
+        },
+        resourceType: 'Tipo 1',
+        topics: [],
+        isFavorite: true,
+        editable: true,
+      },
+    ]
     render(
       <Routes>
         <Route
           path="/category/:slug"
           element={
             <ResourceCardList
-              filters={{ slug: 'resourceTest' }}
               handleAccessModal={handleAccessModal}
               sortOrder="desc"
               isSortByVotesActive
               onSelectedSortOrderChange={() => ''}
+              resourcesError={null}
+              resourcesLoading
+              resourcesData={mockedResourcesData}
             />
           }
         />
@@ -34,13 +61,15 @@ describe('ResourceCardList', () => {
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
     expect(spinnerComponent).toBeInTheDocument()
-    await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
+    await waitFor(() => {
+      expect(spinnerComponent).toBeInTheDocument()
+    })
 
     await waitFor(() => {
       expect(screen.getByText('Resource Test')).toBeInTheDocument()
       expect(screen.getByRole('link')).toHaveAttribute(
         'href',
-        'http://www.google.com'
+        'http://www.example.com/resourceTest'
       )
       expect(screen.queryByTestId('emptyResource')).not.toBeInTheDocument()
     })
@@ -53,11 +82,13 @@ describe('ResourceCardList', () => {
           path="/category/:slug"
           element={
             <ResourceCardList
-              filters={{ slug: 'emptyResource' }}
               handleAccessModal={handleAccessModal}
               sortOrder="desc"
               isSortByVotesActive
               onSelectedSortOrderChange={() => ''}
+              resourcesError={null}
+              resourcesLoading
+              resourcesData={[]}
             />
           }
         />
@@ -81,11 +112,13 @@ describe('ResourceCardList', () => {
     mswServer.use(...errorHandlers)
     render(
       <ResourceCardList
-        filters={{ slug: 'emptyResource' }}
         handleAccessModal={handleAccessModal}
         sortOrder="desc"
         isSortByVotesActive
         onSelectedSortOrderChange={() => ''}
+        resourcesError={null}
+        resourcesLoading
+        resourcesData={[]}
       />
     )
 
