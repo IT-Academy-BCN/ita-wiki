@@ -90,6 +90,9 @@
   "Fecha": "Data",
   "Crear nuevo recurso": "Crear nou recurs",
 
+  "¡Vaya! :/": "Vaja! :/",
+  "Todavía no hay recursos de este tipo.": "Encara no hi ha recursos d'aquest tipus.",
+
   "Error 401 - No autorizado": "Operació no autoritzada. És necessari iniciar sessió d'usuari.",
   "Error 403 - Acceso denegado": "Accés denegat. No tens els permisos necessaris per realitzar l'operació.",
   "Error 404 - No se puede guardar": "Error en desar a la base de dades. Si us plau, torna a intentar-ho i si l'error persisteix, contacta amb l'administrador.",
