@@ -6,8 +6,7 @@ import CardResource from './CardResource'
 import { useSortByDate } from '../../hooks/useSortByDate'
 import { useSortByVotes } from '../../hooks/useSortByVotes'
 import { useAuth } from '../../context/AuthProvider'
-import { TResource, TFilters, TSortOrder } from '../../types'
-import { useGetResources } from '../../hooks'
+import { TResource, TSortOrder } from '../../types'
 
 const SpinnerStyled = styled(Spinner)`
   align-self: center;
@@ -28,37 +27,38 @@ const StyledText = styled(Text)`
 `
 
 type TResourceCardList = {
-  filters: TFilters
   sortOrder: TSortOrder
   handleAccessModal: () => void
   isSortByVotesActive: boolean
-  onSelectedSortOrderChange: (selectedSortOrder: Array<TResource>) => void
+  resourcesData: TResource[] | undefined
+  resourcesError: Error | unknown
+  resourcesLoading: boolean
 }
 
 const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
-  onSelectedSortOrderChange,
   sortOrder,
-  filters,
   isSortByVotesActive,
+  resourcesData,
+  resourcesError,
+  resourcesLoading,
 }) => {
   const { user } = useAuth()
-  const { isLoading, data, error } = useGetResources(filters)
-  const { sortedItems } = useSortByDate<TResource>(data, 'updatedAt', sortOrder)
-  const { sortedVotes } = useSortByVotes<TResource>(data, sortOrder)
+  const { sortedItems } = useSortByDate<TResource>(
+    resourcesData,
+    'updatedAt',
+    sortOrder
+  )
+  const { sortedVotes } = useSortByVotes<TResource>(resourcesData, sortOrder)
 
   const selectedSortOrder = isSortByVotesActive ? sortedVotes : sortedItems
 
-  if (error) return <p>Ha habido un error...</p>
-
-  if (onSelectedSortOrderChange) {
-    onSelectedSortOrderChange(selectedSortOrder);
-  }
+  if (resourcesError) return <p>Ha habido un error...</p>
 
   return (
     <StyledFlexBox direction="column" data-testid="resource-list">
-      {isLoading && <SpinnerStyled size="medium" role="status" />}
-      {data && data?.length > 0 ? (
+      {resourcesLoading && <SpinnerStyled size="medium" role="status" />}
+      {resourcesData && resourcesData?.length > 0 ? (
         selectedSortOrder.map((resource: TResource) => (
           <CardResource
             key={resource.id}

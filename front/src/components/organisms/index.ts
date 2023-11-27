@@ -16,6 +16,7 @@ import type { TResourceForm } from './ResourceForm'
 import { UserAccessHome } from './UserAccessHome'
 import { UserProfileResourcesWidget } from './UserProfileResourcesWidget'
 import { VotesDateController } from './VotesDateController'
+import { Search } from './Search'
 
 export {
   CardResourceLink,
@@ -35,6 +36,7 @@ export {
   UserAccessHome,
   UserProfileResourcesWidget,
   VotesDateController,
+  Search,
 }
 
 export type { TResourceForm }

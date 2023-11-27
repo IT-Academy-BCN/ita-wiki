@@ -14,7 +14,7 @@ const DropdownLang = styled.select<{ selectedLanguage: Language }>`
   background-color: ${colors.white};
   height: 40px;
   width: ${({ selectedLanguage }) =>
-    selectedLanguage === 'cat' ? '60px' : '46px'};
+    selectedLanguage === 'cat' ? '62px' : '46px'};
   &:hover {
     cursor: pointer;
   }

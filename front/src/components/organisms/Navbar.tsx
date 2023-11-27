@@ -51,7 +51,12 @@ const AddButton = styled(IconStyled)`
     display: flex;
   }
 `
-
+const SearchButton = styled(IconStyled)`
+  display: flex;
+  @media ${device.Mobile} {
+    display: none;
+  }
+`
 const MenuItems = styled(FlexBox)<{ open: boolean }>`
   flex-direction: column;
   background-color: ${colors.white};
@@ -80,8 +85,13 @@ const StyledButton = styled(Button)`
 type TNavbar = {
   toggleModal?: () => void
   handleAccessModal?: () => void
+  toggleSearch?: () => void
 }
-export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
+export const Navbar = ({
+  toggleModal,
+  handleAccessModal,
+  toggleSearch,
+}: TNavbar) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
 
@@ -129,6 +139,9 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
             <Icon name="add" color={colors.gray.gray3} />
           </AddButton>
         )}
+        <SearchButton data-testid="search-button" onClick={toggleSearch}>
+          <Icon name="search" color={colors.gray.gray3} />
+        </SearchButton>
         <SelectLanguage />
         {user && user.role !== 'REGISTERED' ? (
           <IconStyled
@@ -141,6 +154,7 @@ export const Navbar = ({ toggleModal, handleAccessModal }: TNavbar) => {
             <Icon name="settings" color={colors.gray.gray3} />
           </IconStyled>
         ) : null}
+
         <UserButton />
         <MenuItems open={isMenuOpen} data-testid="menu-items">
           <CategoriesList />

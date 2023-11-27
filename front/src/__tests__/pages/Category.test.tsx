@@ -52,7 +52,7 @@ it('renders correctly', () => {
   expect(screen.getByTestId('types-filter')).toBeInTheDocument()
   expect(screen.getByTestId('status-filter')).toBeInTheDocument()
   expect(screen.getByTestId('resource-list')).toBeInTheDocument()
-expect(screen.getByText('Recursos de React')).toBeInTheDocument()
+  expect(screen.getByText('Recursos de React')).toBeInTheDocument()
   expect(screen.getByText('Els meus recursos')).toBeInTheDocument()
   expect(screen.getByText('Recursos favorits')).toBeInTheDocument()
 })
@@ -82,47 +82,47 @@ it('filters opens and closes correctly', () => {
 })
 
 it('modal opens when clicking on the "Crear nuevo recurso" button', async () => {
-  render(<Category />);
+  render(<Category />)
 
-  const createButtonText = screen.getByTestId('new-resource-text');
-  expect(createButtonText).toBeInTheDocument();
+  const createButtonText = screen.getByTestId('new-resource-text')
+  expect(createButtonText).toBeInTheDocument()
 
-  fireEvent.click(createButtonText);
+  fireEvent.click(createButtonText)
 
   await waitFor(() => {
-    const modalTitle = screen.getByText('Nou recurs'); 
-    expect(modalTitle).toBeInTheDocument();
+    const modalTitle = screen.getByText('Nou recurs')
+    expect(modalTitle).toBeInTheDocument()
   })
 })
 
 it('modal opens and closes correctly when user is not logged', async () => {
   vi.mocked(useAuth).mockReturnValue({
     user: null,
-  } as TAuthContext);
-  render(<Category />);
-  fireEvent.click(screen.getByTestId('new-resource-text')); 
+  } as TAuthContext)
+  render(<Category />)
+  fireEvent.click(screen.getByTestId('new-resource-text'))
   const modalTitle = screen.getByRole('heading', {
     name: /acceso restringido/i,
-  });
-  expect(modalTitle).toBeInTheDocument();
-  fireEvent.keyDown(document, { key: 'Escape' });
+  })
+  expect(modalTitle).toBeInTheDocument()
+  fireEvent.keyDown(document, { key: 'Escape' })
   await waitFor(() => {
-    expect(modalTitle).not.toBeInTheDocument();
+    expect(modalTitle).not.toBeInTheDocument()
   })
 })
 
 it('modal opens and closes correctly when user is logged', async () => {
-  render(<Category />);
+  render(<Category />)
   fireEvent.click(screen.getByTestId('new-resource-text'))
   const modalTitle = screen.getByRole('heading', {
     name: /Nou recurs/i,
-  });
-  expect(modalTitle).toBeInTheDocument();
-  fireEvent.keyDown(document, { key: 'Escape' });
+  })
+  expect(modalTitle).toBeInTheDocument()
+  fireEvent.keyDown(document, { key: 'Escape' })
   await waitFor(() => {
-    expect(modalTitle).not.toBeInTheDocument();
-  });
-});
+    expect(modalTitle).not.toBeInTheDocument()
+  })
+})
 
 it('status filter widget does not appear for users who are not logged in', () => {
   vi.mocked(useAuth).mockReturnValue({
@@ -200,14 +200,12 @@ it('sorts resources by votes in ascending order', () => {
 
   fireEvent.click(screen.getByText(/Vots/i))
 
-
   const { result } = renderHook(() => useSortByVotes(votes, 'asc'))
   const sortedResources = result.current.sortedVotes
   const voteCounts = sortedResources.map((vote) => vote.voteCount.total)
 
   expect(voteCounts).toEqual([0, 3, 7])
 })
-
 
 it('changes Votos and Fecha styles on click', () => {
   render(<Category />)
@@ -222,19 +220,4 @@ it('changes Votos and Fecha styles on click', () => {
   fireEvent.click(sortDatesButton)
 
   expect(screen.getByText('Data')).toHaveStyle('font-weight: bold')
-})
-
-describe('Category component tests', () => {
-  test('Input appears when search icon is clicked', async () => {
-    const { getByTestId } = render(<Category />);
-
-    const searchIcon = getByTestId('inputGroupSearch');
-
-    expect(searchIcon).toBeInTheDocument();
-
-    fireEvent.click(searchIcon);
-
-    const inputSearch = getByTestId('inputSearch');
-    expect(inputSearch).toBeInTheDocument();
-  })
 })
