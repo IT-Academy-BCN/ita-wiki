@@ -224,14 +224,14 @@ const MobileSearchContainer = styled(MobileContainer)<{
   }
 `
 
-const NewResourceButton = styled(Button)<{ isSearch: boolean }>`
-  display: ${({ isSearch }) => (isSearch ? 'none' : 'flex')};
+const NewResourceButton = styled(Button)`
+  display: flex;
   border-radius: ${dimensions.borderRadius.sm};
   padding: ${dimensions.spacing.md};
   color: ${colors.gray.gray3};
   background-color: ${colors.white};
   border: 1px dashed ${colors.gray.gray3};
-  margin: ${dimensions.spacing.xs} ${dimensions.spacing.none};
+  margin-bottom: ${dimensions.spacing.xs};
 
   &:hover {
     background-color: ${colors.white};
@@ -251,12 +251,13 @@ const StyledSelectGroup = styled(SelectGroup)`
   }
 `
 
-const FilterButton = styled(Button)<{ isMobile: boolean; isSearch: boolean }>`
+const FilterButton = styled(Button)`
   color: ${colors.black.black1};
   background-color: ${colors.white};
   border: 2px solid ${colors.gray.gray3};
   width: fit-content;
   padding: ${dimensions.spacing.xs} ${dimensions.spacing.lg};
+  margin-bottom: ${dimensions.spacing.xs};
 
   &:hover {
     background-color: ${colors.white};
@@ -266,13 +267,8 @@ const FilterButton = styled(Button)<{ isMobile: boolean; isSearch: boolean }>`
   @media ${device.Tablet} {
     display: none;
   }
-  ${({ isMobile, isSearch }) =>
-    isMobile &&
-    isSearch &&
-    `
-    margin-bottom: ${dimensions.spacing.xs}
-  `}
 `
+
 const slideInAnimation = keyframes`
   0% {
     transform: translateY(100%);
@@ -554,8 +550,6 @@ const Category: FC = () => {
                   <FilterButton
                     data-testid="filters-button"
                     onClick={handleFiltersOpen}
-                    isMobile={isMobile}
-                    isSearch={isSearch}
                   >
                     {t('Filtrar')}
                   </FilterButton>
@@ -569,18 +563,19 @@ const Category: FC = () => {
                   />
                 )}
                 <ScrollDiv>
-                  <NewResourceButton
-                    isSearch={isSearch}
-                    onClick={
-                      user
-                        ? () => setIsOpen(!isOpen)
-                        : () => handleAccessModal()
-                    }
-                  >
-                    <span data-testid="new-resource-text">
-                      + {t('Crear nuevo recurso')}
-                    </span>
-                  </NewResourceButton>
+                  {!isSearch && (
+                    <NewResourceButton
+                      onClick={
+                        user
+                          ? () => setIsOpen(!isOpen)
+                          : () => handleAccessModal()
+                      }
+                    >
+                      <span data-testid="new-resource-text">
+                        + {t('Crear nuevo recurso')}
+                      </span>
+                    </NewResourceButton>
+                  )}
                 </ScrollDiv>
                 <ScrollDiv>
                   <ResourceCardList
