@@ -95,9 +95,19 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
           description: expect.any(String),
           url: expect.any(String),
           resourceType: expect.any(String),
-          userId: expect.any(String),
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
+          user: expect.objectContaining({
+            name: expect.any(String),
+            avatarId: null,
+          }),
+          isAuthor: expect.any(Boolean),
+          voteCount: expect.objectContaining({
+            upvote: expect.any(Number),
+            downvote: expect.any(Number),
+            total: expect.any(Number),
+            userVote: expect.any(Number),
+          }),
           topics: expect.arrayContaining([
             expect.objectContaining({
               topic: expect.objectContaining({
@@ -105,15 +115,11 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
                 name: expect.any(String),
                 slug: expect.any(String),
                 categoryId: expect.any(String),
+                createdAt: expect.any(String),
+                updatedAt: expect.any(String),
               }),
             }),
           ]),
-          voteCount: expect.objectContaining({
-            upvote: expect.any(Number),
-            downvote: expect.any(Number),
-            total: expect.any(Number),
-            userVote: expect.any(Number),
-          }),
         }),
       ])
     )
