@@ -2,13 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.3] - 2023-11-27
+
+### Fixed
+
+- Fix patch to update user status
+- Convert fetch to mutation and create a hook
+- Fix file name spelling to AccountAdmin
+- Update tests accordingly
+
 ## [0.5.2] - 2023-11-27
 
 ### Update
 
 - Updated the category icons in the side menu
 
-  
 ## [0.5.1] - 2023-11-24
 
 ### Fixed
@@ -30,7 +38,6 @@ All notable changes to this project will be documented in this file.
 - Adjusted the general styles of the AdminAccount table.
 - Updated translations accordingly.
 - Relocated AccountAdmin.test from the "pages" directory to "/components/organisms".
-
 
 ## [0.4.3] - 2023-11-23
 
@@ -76,10 +83,8 @@ All notable changes to this project will be documented in this file.
 
 - My Resources widget in Category page
 
-
 ## [0.2.1] - 2023-11-16
 
-  
 ### Changed
 
 - Refactored votes/dates logic into a single component (VotesDateController).
@@ -88,7 +93,6 @@ All notable changes to this project will be documented in this file.
 
 - Fixed 'Votos' & 'Fecha' visual inconsistencies (arrow icon asc/desc, initial state).
 - Incorporated missing translations.
-
 
 ## [0.1.1] - 2023-11-15
 
