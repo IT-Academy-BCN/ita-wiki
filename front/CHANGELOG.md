@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.3] - 2023-11-28
+
+### Update
+
+- Add favicon to browser tab and remove unused icons
+
+
+## [0.6.2] - 2023-11-28
+
+### Fixed
+
+- Width and height of resources aside in Category page
+
+
 ## [0.6.1] - 2023-11-28
 
 ### Fixed
