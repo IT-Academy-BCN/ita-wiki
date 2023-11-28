@@ -66,11 +66,11 @@ describe('ResourceForm', () => {
     }) as unknown as Location
     render(<ResourceForm selectOptions={options} />)
 
-    expect(screen.getByLabelText(/título/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/descripción/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/títol/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/descripció/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/url/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/video/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/curso/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/curs/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/blog/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/tema/i)).toBeInTheDocument()
   })
@@ -78,7 +78,7 @@ describe('ResourceForm', () => {
   it('should show error message when form input is invalid', async () => {
     render(<ResourceForm selectOptions={options} />)
 
-    fireEvent.change(screen.getByLabelText(/título/i), {
+    fireEvent.change(screen.getByLabelText(/títol/i), {
       target: { value: '' },
     })
     fireEvent.click(screen.getByText(/crear/i))
@@ -90,12 +90,12 @@ describe('ResourceForm', () => {
   it.skip('should correctly submit the form when all fields requested are complete', async () => {
     render(<ResourceForm selectOptions={options} />)
 
-    const titleInput = screen.getByLabelText(/título/i) as HTMLInputElement
+    const titleInput = screen.getByLabelText(/títol/i) as HTMLInputElement
 
     fireEvent.change(titleInput, { target: { value: 'TEST TITLE' } })
     expect(titleInput.value).toBe('TEST TITLE')
 
-    fireEvent.change(screen.getByLabelText(/descripción/i), {
+    fireEvent.change(screen.getByLabelText(/descripció/i), {
       target: { value: 'TESTING DESCRIPTION' },
     })
 
@@ -144,12 +144,12 @@ describe('ResourceForm', () => {
         resourceId={resourceId}
       />
     )
-    const titleInput = screen.getByLabelText(/título/i) as HTMLInputElement
+    const titleInput = screen.getByLabelText(/títol/i) as HTMLInputElement
 
     fireEvent.change(titleInput, { target: { value: 'Updated Title' } })
     expect(titleInput.value).toBe('Updated Title')
 
-    fireEvent.change(screen.getByLabelText(/descripción/i), {
+    fireEvent.change(screen.getByLabelText(/descripció/i), {
       target: { value: 'Updated Description' },
     })
 
@@ -185,7 +185,7 @@ describe('ResourceForm', () => {
       />
     )
 
-    fireEvent.change(screen.getByLabelText(/título/i), {
+    fireEvent.change(screen.getByLabelText(/títol/i), {
       target: { value: '' },
     })
     fireEvent.click(screen.getByText(/editar/i))

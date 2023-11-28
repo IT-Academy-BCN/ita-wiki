@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.4] - 2023-11-28
+
+### Fixed
+
+- Implemented multilingual corrections.
+- Added necessary translations, including updates to `AccessModalContent`.
+- Updated tests accordingly.
+
 ## [0.5.3] - 2023-11-27
 
 ### Fixed

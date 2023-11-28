@@ -36,6 +36,11 @@
   "recordar/cambiar": "Recordar/cambiar contraseña",
   "no tienes una cuenta?": "¿No tienes una cuenta?, crear una",
 
+  "Acceso restringido": "Acceso restringido",
+  "Regístrate para subir o votar contenido": "Regístrate para subir o votar contenido",
+  "Registrarme": "Registrarme",
+  "Entrar": "Entrar",
+
   "Editar recurso": "Editar recurso",
   "Eliminar de favoritos": "Eliminar de favoritos",
   "Añadir a favoritos": "Añadir a favoritos",
@@ -89,6 +94,18 @@
   "Votos": "Votos",
   "Fecha": "Fecha",
   "Crear nuevo recurso": "Crear nuevo recurso",
+
+  "Crear": "Crear",
+  "Título": "Título",
+  "Descripción": "Descripción",
+  "Opciones": "Opciones",
+  "Tema": "Tema",
+  "Curso": "Curso",
+
+  "Todos": "Todos",
+  "Por ver": "Por ver",
+  "Vistos": "Vistos",
+  "Tipo": "Tipo",
 
   "¡Vaya! :/": "¡Vaya! :/",
   "Todavía no hay recursos de este tipo.": "Todavía no hay recursos de este tipo.",

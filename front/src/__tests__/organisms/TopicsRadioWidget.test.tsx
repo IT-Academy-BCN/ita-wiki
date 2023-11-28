@@ -42,7 +42,7 @@ describe('TopicsRadioWidget', () => {
     render(<TopicsRadioWidget slug="react" topic="todos" setTopic={setTopic} />)
 
     await waitFor(() => {
-      const option1 = screen.getByLabelText(/todos/i)
+      const option1 = screen.getByLabelText(/tots/i)
       const option2 = screen.getByLabelText(/listas/i)
       const option3 = screen.getByLabelText(/renderizado condicional/i)
 

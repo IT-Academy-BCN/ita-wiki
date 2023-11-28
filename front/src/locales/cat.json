@@ -1,5 +1,5 @@
 {
-  "Benvinguts": "Benvinguts a la wiki de la IT Academy!",
+  "Benvinguts": "Et donem la benvinguda a la wiki de la IT Academy!",
   "Registra't": "Registra't o inicia sessió per poder pujar i votar recursos",
   "RegistrarmeBtn": "Registrar-me",
   "EntrarBtn": "Entrar",
@@ -35,6 +35,11 @@
   "tienes una cuenta?": "Tens un compte?, entra",
   "recordar/cambiar": "Recordar/canviar la contrasenya",
   "no tienes una cuenta?": "No tens un compte?, crea'n un",
+
+  "Acceso restringido": "Accés restringit",
+  "Regístrate para subir o votar contenido": "Registra't per pujar o votar contingut",
+  "Registrarme": "Registrar-me",
+  "Entrar": "Entrar",
 
   "Editar recurso": "Edita el recurs",
   "Eliminar de favoritos": "Elimina de favorits",
@@ -90,6 +95,18 @@
   "Fecha": "Data",
   "Crear nuevo recurso": "Crear nou recurs",
 
+  "Crear": "Crear",
+  "Título": "Títol",
+  "Descripción": "Descripció",
+  "Opciones": "Opcions",
+  "Tema": "Tema",
+  "Curso": "Curs",
+
+  "Todos": "Tots",
+  "Por ver": "Pendents",
+  "Vistos": "Vistos",
+  "Tipo": "Format",
+
   "¡Vaya! :/": "Vaja! :/",
   "Todavía no hay recursos de este tipo.": "Encara no hi ha recursos d'aquest tipus.",
 
@@ -104,7 +121,7 @@
   "Sin imagen de usuario": "Sense imatge d'usuari",
   "Aportaciones": "Aportacions",
   "Votos recibidos": "Vots rebuts",
-  "Favoritos guardados": "Favorits guardats",
+  "Favoritos guardados": "Recursos preferits",
   "n/d": "n/d",
 
   "Mostrando":"Mostrant",

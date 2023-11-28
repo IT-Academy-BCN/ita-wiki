@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { ChangeEvent, FC, HTMLAttributes } from 'react'
+import { useTranslation } from 'react-i18next'
 import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio, Icon, Spinner } from '../atoms'
 import { FlexBox, colors, dimensions } from '../../styles'
@@ -95,7 +96,9 @@ const ResourceForm: FC<TSelectOptions> = ({
 
   const { state } = useLocation()
 
-  const buttonText = initialValues ? 'Editar' : 'Crear'
+  const { t } = useTranslation()
+
+  const buttonText = initialValues ? t('Editar') : t('Crear')
   const {
     isLoading: isCreateLoading,
     isSuccess: isCreateSuccess,
@@ -148,8 +151,8 @@ const ResourceForm: FC<TSelectOptions> = ({
       <InputGroup
         hiddenLabel
         id="title"
-        label="Título"
-        placeholder="Título"
+        label={t('Título')}
+        placeholder={t('Título')}
         {...register('title')}
         data-testid="resourceTitle"
         error={errors.title && true}
@@ -159,8 +162,8 @@ const ResourceForm: FC<TSelectOptions> = ({
       <InputGroup
         hiddenLabel
         id="description"
-        label="Descripción"
-        placeholder="Descripción"
+        label={t('Descripción')}
+        placeholder={t('Descripción')}
         {...register('description')}
         error={errors.description && true}
         validationMessage={errors.description?.message}
@@ -178,7 +181,7 @@ const ResourceForm: FC<TSelectOptions> = ({
       />
       <SelectGroup
         id="topics"
-        label="Tema"
+        label={t('Tema')}
         options={selectOptions}
         {...register('topics')}
         defaultValue={initialValues?.topicId}
@@ -190,7 +193,7 @@ const ResourceForm: FC<TSelectOptions> = ({
         {...register('resourceType')}
         options={[
           { id: 'VIDEO', name: 'Video' },
-          { id: 'TUTORIAL', name: 'Curso' },
+          { id: 'TUTORIAL', name: t('Curso') },
           { id: 'BLOG', name: 'Blog' },
         ]}
         inputName="resourceType"

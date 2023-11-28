@@ -27,7 +27,7 @@ describe('Home page', () => {
 
     expect(screen.getByText(/Vota els recursos/i)).toBeInTheDocument()
     expect(
-      screen.getByText(/Benvinguts a la wiki de la IT Academy!/)
+      screen.getByText(/Et donem la benvinguda a la wiki de la IT Academy!/)
     ).toBeInTheDocument()
     expect(
       screen.getByText(
