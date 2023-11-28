@@ -61,9 +61,9 @@ describe('FavoritesWidget', () => {
     await waitFor(() => {
       const favIconDeselected = screen.getByText('favorite')
       expect(favIconDeselected).toBeInTheDocument()
-      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a favorits')
+      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
       expect(favIconDeselected).toHaveAttribute('fill', '0')
-      expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
+      expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
     })
   })
 
@@ -77,9 +77,9 @@ describe('FavoritesWidget', () => {
     await waitFor(() => {
       const favIconDeselected = screen.getByText('favorite')
       expect(favIconDeselected).toBeInTheDocument()
-      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a favorits')
+      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
       expect(favIconDeselected).toHaveAttribute('fill', '0')
-      expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
+      expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
     })
   })
 
@@ -93,9 +93,9 @@ describe('FavoritesWidget', () => {
     await waitFor(() => {
       const favIconSelected = screen.getByText('favorite')
       expect(favIconSelected).toBeInTheDocument()
-      expect(favIconSelected).toHaveAttribute('title', 'Elimina de favorits')
+      expect(favIconSelected).toHaveAttribute('title', 'Elimina de preferits')
       expect(favIconSelected).toHaveAttribute('fill', '1')
-      expect(screen.queryByTitle('Afegeix a favorits')).not.toBeInTheDocument()
+      expect(screen.queryByTitle('Afegeix a preferits')).not.toBeInTheDocument()
     })
   })
 
@@ -116,9 +116,9 @@ describe('FavoritesWidget', () => {
     const favIconDeselected = screen.getByText('favorite')
 
     expect(favIconDeselected).toBeInTheDocument()
-    expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a favorits')
+    expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
     expect(favIconDeselected).toHaveAttribute('fill', '0')
-    expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
+    expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
 
     fireEvent.click(favIconDeselected)
     await waitFor(() => {
@@ -131,9 +131,9 @@ describe('FavoritesWidget', () => {
           isFavorite={queryDataUpdated[0].isFavorite}
         />
       )
-      expect(favIconDeselected).toHaveAttribute('title', 'Elimina de favorits')
+      expect(favIconDeselected).toHaveAttribute('title', 'Elimina de preferits')
       expect(favIconDeselected).toHaveAttribute('fill', '1')
-      expect(screen.queryByTitle('Afegeix a favorits')).not.toBeInTheDocument()
+      expect(screen.queryByTitle('Afegeix a preferits')).not.toBeInTheDocument()
     })
   })
 
@@ -181,9 +181,9 @@ it('should change to not favorite when user clicks on it', async () => {
   const favIconSelected = screen.getByText('favorite')
 
   expect(favIconSelected).toBeInTheDocument()
-  expect(favIconSelected).toHaveAttribute('title', 'Elimina de favorits')
+  expect(favIconSelected).toHaveAttribute('title', 'Elimina de preferits')
   expect(favIconSelected).toHaveAttribute('fill', '1')
-  expect(screen.queryByTitle('Afegeix a favorits')).not.toBeInTheDocument()
+  expect(screen.queryByTitle('Afegeix a preferits')).not.toBeInTheDocument()
 
   fireEvent.click(favIconSelected)
 
@@ -198,9 +198,9 @@ it('should change to not favorite when user clicks on it', async () => {
       />
     )
 
-    expect(favIconSelected).toHaveAttribute('title', 'Afegeix a favorits')
+    expect(favIconSelected).toHaveAttribute('title', 'Afegeix a preferits')
     expect(favIconSelected).toHaveAttribute('fill', '0')
-    expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
+    expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
   })
 })
 
@@ -282,9 +282,9 @@ it('should update cache in resources/me when rendered in Profile page', async ()
       />
     )
 
-    expect(favIconUnselected).toHaveAttribute('title', 'Elimina de favorits')
+    expect(favIconUnselected).toHaveAttribute('title', 'Elimina de preferits')
     expect(favIconUnselected).toHaveAttribute('fill', '1')
-    expect(screen.queryByTitle('Afegeix a favorits')).not.toBeInTheDocument()
+    expect(screen.queryByTitle('Afegeix a preferits')).not.toBeInTheDocument()
   })
 
   it('renders correctly on error (fav icon does not change)', async () => {
@@ -298,16 +298,16 @@ it('should update cache in resources/me when rendered in Profile page', async ()
 
     const favIconDeselected = screen.getByText('favorite')
     expect(favIconDeselected).toBeInTheDocument()
-    expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a favorits')
+    expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
     expect(favIconDeselected).toHaveAttribute('fill', '0')
-    expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
+    expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
 
     fireEvent.click(favIconDeselected)
 
     await waitFor(() => {
-      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a favorits')
+      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
       expect(favIconDeselected).toHaveAttribute('fill', '0')
-      expect(screen.queryByTitle('Elimina de favorits')).not.toBeInTheDocument()
+      expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
     })
   })
 })

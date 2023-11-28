@@ -32,6 +32,11 @@ const StyledSvg = styled.div<{ isInCardResource: boolean }>`
 
   > img {
     cursor: pointer;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 `
 

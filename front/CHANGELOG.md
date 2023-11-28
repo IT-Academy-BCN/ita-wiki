@@ -2,13 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.4] - 2023-11-28
+
+### Update
+
+- Incorporated new hover effects.
+
+### Fixed
+
+- Implemented Catalan corrections (eg. use "preferits" instead of "favorits").
+- Updated tests according to new changes.
+
 
 ## [0.6.3] - 2023-11-28
 
 ### Update
 
 - Add favicon to browser tab and remove unused icons
-
 
 
 ## [0.6.2] - 2023-11-28
