@@ -25,20 +25,13 @@ const categories: Tcategories[] = [
   },
   {
     id: 3,
-    img: icons.vue,
-    category: 'Vue',
-    resources: 32,
-    topics: 8,
-  },
-  {
-    id: 4,
     img: icons.javascript,
     category: 'Javascript',
     resources: 44,
     topics: 3,
   },
   {
-    id: 5,
+    id: 4,
     img: icons.dataScience,
     category: 'Data Science',
     resources: 23,

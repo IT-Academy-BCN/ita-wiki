@@ -60,8 +60,6 @@ const categoryImg: Record<string, string> = {
   Node: icons.node, // TODO: Add Node Icon
   'Fullstack PHP': icons.php, // TODO: Add PHP Icon
   React: icons.react, // TODO: Add React Icon
-  Spring: icons.spring, // TODO: Add Spring Icon
-  Laravel: icons.laravel, // TODO: Add Spring Icon
   BBDD: icons.bbdd, // TODO: Add BBDD Icon
 }
 
