@@ -1,5 +1,6 @@
 import { SelectHTMLAttributes, forwardRef } from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { colors, dimensions, font } from '../../styles'
 
 const SelectStyled = styled.select<TSelect>`
@@ -27,17 +28,18 @@ type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
   error?: boolean | string
   placeholder?: string
 }
-const Select = forwardRef<HTMLSelectElement, TSelect>(
-  (
-    {
-      options = [],
-      error = false,
-      placeholder = 'Options',
-      defaultValue = '',
-      ...rest
-    },
-    ref
-  ) => (
+const Select = forwardRef<HTMLSelectElement, TSelect>((props, ref) => {
+  const { t } = useTranslation()
+
+  const {
+    options = [],
+    error = false,
+    placeholder = t('Opciones'),
+    defaultValue = '',
+    ...rest
+  } = props
+  
+  return (
     <SelectStyled error={error} ref={ref} defaultValue={defaultValue} {...rest}>
       <option value="" disabled>
         {placeholder}
@@ -49,6 +51,6 @@ const Select = forwardRef<HTMLSelectElement, TSelect>(
       ))}
     </SelectStyled>
   )
-)
+})
 
 export { Select, type TSelect }

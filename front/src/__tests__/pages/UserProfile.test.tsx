@@ -54,7 +54,7 @@ describe('UserProfile', () => {
     )
 
     await waitFor(() =>
-      expect(screen.getByTestId(/favorits guardats/i)).toHaveTextContent('2')
+      expect(screen.getByTestId(/recursos preferits/i)).toHaveTextContent('2')
     )
 
     await waitFor(() =>

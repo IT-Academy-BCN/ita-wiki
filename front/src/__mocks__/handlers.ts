@@ -18,9 +18,7 @@ export const handlers = [
     res(ctx.status(200), ctx.json({ success: true }))
   ),
 
-  rest.patch(urls.users, (req, res, ctx) =>
-    res(ctx.status(200), ctx.json({ success: true }))
-  ),
+  rest.patch(urls.users, (req, res, ctx) => res(ctx.status(204))),
 
   rest.get(urls.users, (_, res, ctx) =>
     res(
@@ -370,6 +368,10 @@ export const errorHandlers = [
   }),
 
   rest.get(urls.users, (_, res, ctx) =>
+    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  ),
+
+  rest.patch(urls.users, (_, res, ctx) =>
     res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
   ),
 

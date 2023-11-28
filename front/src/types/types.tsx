@@ -62,6 +62,11 @@ export type TUserData = {
   updatedAt: string
 }
 
+export type TUserUpdatedStatus = {
+  id: string
+  status: string
+}
+
 export type TResource = {
   id: string
   title: string
@@ -92,6 +97,7 @@ export type TFilters = {
   resourceTypes?: string[]
   status?: string[]
   topic?: string
+  search?: string
 }
 export type TEditResourceProps = {
   description: string

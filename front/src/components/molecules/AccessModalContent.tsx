@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { Button, Text, Title } from '../atoms'
 import { FlexBox, colors, dimensions, font } from '../../styles'
 import img from '../../assets/icons/lock-dynamic-color.svg'
@@ -32,41 +33,46 @@ type TAccessModal = {
   handleLoginModal: () => void
   handleRegisterModal: () => void
 }
+
 const AccessModalContent = ({
   handleAccessModal,
   handleLoginModal,
   handleRegisterModal,
-}: TAccessModal) => (
-  <FlexBox>
-    <ImageStyled>
-      <img src={img} alt="Lock Dynamic Icon" />
-    </ImageStyled>
-    <FlexBoxStyled>
-      <Title as="h1" fontWeight="bold" color={colors.black.black3}>
-        Acceso restringido
-      </Title>
-      <StyledText>Regístrate para subir o votar contenido</StyledText>
-    </FlexBoxStyled>
-    <ButtonContainerStyled>
-      <ButtonStyled
-        onClick={() => {
-          handleRegisterModal()
-          handleAccessModal()
-        }}
-      >
-        Registrarme
-      </ButtonStyled>
-      <ButtonStyled
-        outline
-        onClick={() => {
-          handleLoginModal()
-          handleAccessModal()
-        }}
-      >
-        Entrar
-      </ButtonStyled>
-    </ButtonContainerStyled>
-  </FlexBox>
-)
+}: TAccessModal) => {
+  const { t } = useTranslation()
+
+  return (
+    <FlexBox>
+      <ImageStyled>
+        <img src={img} alt="Lock Dynamic Icon" />
+      </ImageStyled>
+      <FlexBoxStyled>
+        <Title as="h1" fontWeight="bold" color={colors.black.black3}>
+          {t('Acceso restringido')}
+        </Title>
+        <StyledText>{t('Regístrate para subir o votar contenido')}</StyledText>
+      </FlexBoxStyled>
+      <ButtonContainerStyled>
+        <ButtonStyled
+          onClick={() => {
+            handleRegisterModal()
+            handleAccessModal()
+          }}
+        >
+          {t('Registrarme')}
+        </ButtonStyled>
+        <ButtonStyled
+          outline
+          onClick={() => {
+            handleLoginModal();
+            handleAccessModal();
+          }}
+        >
+          {t('Entrar')}
+        </ButtonStyled>
+      </ButtonContainerStyled>
+    </FlexBox>
+  )
+}
 
 export { AccessModalContent }

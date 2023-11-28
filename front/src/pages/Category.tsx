@@ -1,8 +1,7 @@
-import styled, { keyframes } from 'styled-components'
-import { useLocation, useParams } from 'react-router-dom'
-import { ChangeEvent, FC, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FlexBox, colors, device, dimensions, font } from '../styles'
+import styled, { keyframes } from 'styled-components'
 import {
   DesktopSideMenu,
   Login,
@@ -12,23 +11,22 @@ import {
   Register,
   ResourceCardList,
   ResourceForm,
+  Search,
   TopicsRadioWidget,
   VotesDateController,
 } from '../components/organisms'
-import { Button, Icon, Input, Text, Title } from '../components/atoms'
-
+import { Button, Text, Title } from '../components/atoms'
 import {
   AccessModalContent,
-  InputGroup,
   Modal,
   SelectGroup,
   StatusFilterWidget,
   TypesFilterWidget,
 } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
-import { useGetTopics } from '../hooks'
-
+import { useGetResources, useGetTopics } from '../hooks'
 import { TFilters, TResource, TSortOrder } from '../types'
+import { FlexBox, colors, device, dimensions, responsiveSizes } from '../styles'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -146,65 +144,6 @@ const TitleResourcesContainer = styled(FlexBox)`
   padding: ${dimensions.spacing.none};
 `
 
-const SearchBar = styled(InputGroup)`
-  display: none;
-
-  @media ${device.Tablet} {
-    display: flex;
-    color: ${colors.gray.gray4};
-    margin-top: ${dimensions.spacing.xxs};
-    margin-right: 0.08rem;
-    width: 40%;
-    max-width: 11rem;
-    justify-content: flex-end;
-
-    ${FlexBox} {
-      justify-content: flex-start;
-    }
-
-    ${Input} {
-      padding: ${dimensions.spacing.base};
-      padding-left: 2.8rem;
-      font-size: ${font.xs};
-      font-weight: ${font.regular};
-      border: none;
-      text-align: right;
-    }
-
-    ${Icon} {
-      padding-left: 0.8rem;
-      font-size: ${font.base};
-      scale: 1.8;
-      color: ${colors.gray.gray3};
-    }
-  }
-`
-
-const SearchContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`
-
-const InputSearchBar = styled.div`
-  display: none;
-
-  @media ${device.Tablet} {
-    display: flex;
-    height: ${dimensions.spacing.lg};
-  }
-`
-
-const InputSearch = styled.input`
-  @media ${device.Tablet} {
-    width: 100%;
-    margin-right: ${dimensions.spacing.xxxs};
-    border-radius: ${dimensions.borderRadius.base};
-    border: 1px solid ${colors.gray.gray3};
-    padding: ${dimensions.spacing.base};
-  }
-`
-
 const ScrollDiv = styled(FlexBox)`
   overflow: hidden;
   overflow-x: auto;
@@ -266,15 +205,12 @@ const ResourcesAside = styled(FlexBox)`
       ${dimensions.spacing.xl} ${dimensions.spacing.lg};
   }
 `
-
-const MobileTopicsContainer = styled(FlexBox)`
+const MobileContainer = styled(FlexBox)`
   justify-content: flex-start;
   align-items: flex-start;
   background-color: ${colors.gray.gray5};
-  padding-right: ${dimensions.spacing.xs};
-  padding-left: ${dimensions.spacing.base};
-  padding-bottom: ${dimensions.spacing.md};
-  padding-top: ${dimensions.spacing.none};
+  padding: ${dimensions.spacing.none} ${dimensions.spacing.xs}
+    ${dimensions.spacing.md} ${dimensions.spacing.base};
   position: sticky;
   top: 0;
   z-index: 1;
@@ -285,13 +221,29 @@ const MobileTopicsContainer = styled(FlexBox)`
   }
 `
 
+const MobileTopicsContainer = styled(MobileContainer)<{ isSearch: boolean }>`
+  display: ${({ isSearch }) => (isSearch ? 'none' : 'flex')};
+  @media ${device.Tablet} {
+    display: none;
+  }
+`
+const MobileSearchContainer = styled(MobileContainer)<{
+  isSearch: boolean
+}>`
+  display: ${({ isSearch }) => (isSearch ? 'flex' : 'none')};
+  @media ${device.Tablet} {
+    display: none;
+  }
+`
+
 const NewResourceButton = styled(Button)`
+  display: flex;
   border-radius: ${dimensions.borderRadius.sm};
   padding: ${dimensions.spacing.md};
   color: ${colors.gray.gray3};
   background-color: ${colors.white};
   border: 1px dashed ${colors.gray.gray3};
-  margin: ${dimensions.spacing.xs} ${dimensions.spacing.none};
+  margin-bottom: ${dimensions.spacing.xs};
 
   &:hover {
     background-color: ${colors.white};
@@ -317,6 +269,7 @@ const FilterButton = styled(Button)`
   border: 2px solid ${colors.gray.gray3};
   width: fit-content;
   padding: ${dimensions.spacing.xs} ${dimensions.spacing.lg};
+  margin-bottom: ${dimensions.spacing.xs};
 
   &:hover {
     background-color: ${colors.white};
@@ -325,18 +278,6 @@ const FilterButton = styled(Button)`
 
   @media ${device.Tablet} {
     display: none;
-  }
-`
-const CancelSearchButton = styled(Button)`
-  color: ${colors.gray.gray3};
-  background-color: ${colors.white};
-  border: 1px solid ${colors.gray.gray3};
-  width: fit-content;
-  padding: ${dimensions.spacing.base} ${dimensions.spacing.xs};
-
-  &:hover {
-    background-color: ${colors.white};
-    border: 1px solid ${colors.primary};
   }
 `
 
@@ -373,7 +314,6 @@ const MobileFiltersContainer = styled.div`
   border-top-left-radius: ${dimensions.borderRadius.sm};
   border-top-right-radius: ${dimensions.borderRadius.sm};
   box-shadow: ${dimensions.spacing.none} -0.2rem ${dimensions.spacing.base} ${colors.gray.gray3};
-
   &.open {
     transform: translateY(100%);
     animation: ${slideInAnimation} 1s forwards;
@@ -401,10 +341,11 @@ const CloseFilterButton = styled(Button)`
     border: none;
   }
 `
+const getWindowIsMobile = () =>
+  window.innerWidth <= parseInt(responsiveSizes.tablet, 10)
 
 const Category: FC = () => {
   const { slug } = useParams()
-  const { state } = useLocation()
   const { user } = useAuth()
 
   //  ==> MODAL STATES
@@ -422,13 +363,19 @@ const Category: FC = () => {
     status: [],
     topic: topic === 'todos' ? undefined : topic,
   })
-
+  const {
+    data: resourcesData,
+    isLoading: resourcesLoading,
+    error: resourcesError,
+  } = useGetResources(filters)
   const [sortOrder, setSortOrder] = useState<TSortOrder>('desc')
   const [isSearch, setIsSearch] = useState<boolean>(false)
-  const [searchValue, setSearchValue] = useState<string | null>(null)
+  const [searchValue, setSearchValue] = useState<string | null>('')
+  const [isSearchError, setIsSearchError] = useState<boolean>(false)
   const [selectedSortOrderValue, setSelectedSortOrderValue] = useState<
     TResource[]
   >([])
+  const [isMobile, setIsMobile] = useState(getWindowIsMobile())
   const { t } = useTranslation()
 
   const toggleModal = () => {
@@ -447,9 +394,34 @@ const Category: FC = () => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       slug,
+      search: searchValue ?? undefined,
     }))
-  }, [slug])
+  }, [searchValue, slug])
 
+  const handleSearch = useCallback((value: string | null) => {
+    const isError = value !== null && value.length < 2
+    setIsSearchError(isError)
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      search: isError ? undefined : value ?? undefined,
+    }))
+    setSearchValue(value ?? '')
+  }, [])
+
+  const toggleSearch = () => {
+    setIsSearch(!isSearch)
+    if (isSearch) {
+      setSearchValue(null)
+      setIsSearchError(false)
+    }
+  }
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(getWindowIsMobile())
+    }
+    window.addEventListener('resize', handleResize)
+  }, [isMobile])
   const handleTypesFilter = (selectedTypes: string[]) => {
     setFilters({ ...filters, resourceTypes: selectedTypes })
   }
@@ -494,11 +466,6 @@ const Category: FC = () => {
   const handleSortByDates = () => {
     setIsSortByVotesActive(false)
   }
-
-  const toggleSearch = () => {
-    setIsSearch(!isSearch)
-  }
-
   const handleSelectedSortOrderChange = (
     selectedSortOrder: Array<TResource>
   ) => {
@@ -529,8 +496,9 @@ const Category: FC = () => {
           <Navbar
             toggleModal={toggleModal}
             handleAccessModal={handleAccessModal}
+            toggleSearch={toggleSearch}
           />
-          <MobileTopicsContainer>
+          <MobileTopicsContainer isSearch={isSearch}>
             <Title as="h2" fontWeight="bold">
               {t('Temas')}
             </Title>
@@ -543,6 +511,19 @@ const Category: FC = () => {
               onChange={handleSelectTopicFilter}
             />
           </MobileTopicsContainer>
+          <MobileSearchContainer
+            isSearch={isSearch}
+            data-testid="mobile-search-component"
+          >
+            <Search
+              searchValue={searchValue}
+              toggleSearch={toggleSearch}
+              isSearchError={isSearchError}
+              isSearch={isSearch}
+              resourcesData={resourcesData}
+              handleSearch={handleSearch}
+            />
+          </MobileSearchContainer>
           <ContainerMain>
             <MainContainer as="main">
               <FiltersContainer data-testid="filters-container">
@@ -568,51 +549,16 @@ const Category: FC = () => {
               </FiltersContainer>
               <ResourcesContainer>
                 <TitleResourcesContainer>
-                  {isSearch ? (
-                    <SearchContainer>
-                      <Title as="h2" fontWeight="bold">
-                        {t('Buscar recurso')}
-                      </Title>
-                      <InputSearchBar>
-                        <InputSearch
-                          type="text"
-                          data-testid="inputSearch"
-                          onChange={(e) => setSearchValue(e.target.value)}
-                        />
-                        <CancelSearchButton
-                          onClick={toggleSearch}
-                          data-testid="cancelSearchButton"
-                        >
-                          X
-                        </CancelSearchButton>
-                      </InputSearchBar>
-                      {searchValue !== null && searchValue !== '' ? (
-                        <span style={{ marginTop: '20px', fontWeight: 'bold' }}>
-                          {t('Mostrando')} {selectedSortOrderValue.length}{' '}
-                          {t('resultados para')} &quot;
-                          {searchValue}&quot;
-                        </span>
-                      ) : null}
-                    </SearchContainer>
-                  ) : (
-                    <>
-                      <Title as="h2" fontWeight="bold">
-                        {t('Recursos de (category)', {
-                          name: state?.name,
-                        })}
-                      </Title>
-                      <SearchBar
-                        data-testid="inputGroupSearch"
-                        label="searchResource"
-                        name="searchResource"
-                        placeholder={t('Buscar recurso')}
-                        id="searchResource"
-                        icon="search"
-                        onClick={toggleSearch}
-                      />
-                    </>
+                  {!isMobile && (
+                    <Search
+                      searchValue={searchValue}
+                      toggleSearch={toggleSearch}
+                      isSearchError={isSearchError}
+                      isSearch={isSearch}
+                      resourcesData={resourcesData}
+                      handleSearch={handleSearch}
+                    />
                   )}
-
                   <FilterButton
                     data-testid="filters-button"
                     onClick={handleFiltersOpen}
@@ -629,24 +575,28 @@ const Category: FC = () => {
                   />
                 )}
                 <ScrollDiv>
-                  <NewResourceButton
-                    onClick={
-                      user
-                        ? () => setIsOpen(!isOpen)
-                        : () => handleAccessModal()
-                    }
-                  >
-                    <span data-testid="new-resource-text">
-                      + {t('Crear nuevo recurso')}
-                    </span>
-                  </NewResourceButton>
+                  {!isSearch && (
+                    <NewResourceButton
+                      onClick={
+                        user
+                          ? () => setIsOpen(!isOpen)
+                          : () => handleAccessModal()
+                      }
+                    >
+                      <span data-testid="new-resource-text">
+                        + {t('Crear nuevo recurso')}
+                      </span>
+                    </NewResourceButton>
+                  )}
                 </ScrollDiv>
                 <ScrollDiv>
                   <ResourceCardList
                     handleAccessModal={handleAccessModal}
-                    filters={filters}
                     sortOrder={sortOrder}
                     isSortByVotesActive={isSortByVotesActive}
+                    resourcesData={resourcesData}
+                    resourcesError={resourcesError}
+                    resourcesLoading={resourcesLoading}
                     onSelectedSortOrderChange={handleSelectedSortOrderChange}
                   />
                 </ScrollDiv>
