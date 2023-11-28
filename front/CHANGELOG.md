@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.0] - 2023-11-27
+
+### Added
+
+- Implemented search by name query and filters
+- Created Search component
+
+### Update
+
+- Updated Navbar to allow search on mobile devices according Figma design
+- Updated tests
+
 ## [0.5.4] - 2023-11-28
 
 ### Fixed

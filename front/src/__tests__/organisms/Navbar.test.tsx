@@ -199,4 +199,24 @@ describe('Navbar', () => {
     fireEvent.click(settingsButton)
     await waitFor(() => expect(screen.getByText('Settings')).toBeVisible())
   })
+  it('toggles search bar on click', () => {
+    vi.mocked(useLocation).mockReturnValue({
+      ...defaultLocation,
+      pathname: '/',
+    }) as unknown as Location
+
+    const toggleSearchMock = vi.fn()
+
+    render(<Navbar toggleSearch={toggleSearchMock} />)
+
+    const searchButton = screen.getByTestId('search-button')
+
+    expect(toggleSearchMock).not.toHaveBeenCalled()
+
+    fireEvent.click(searchButton)
+    expect(toggleSearchMock).toHaveBeenCalledTimes(1)
+
+    fireEvent.click(searchButton)
+    expect(toggleSearchMock).toHaveBeenCalledTimes(2)
+  })
 })

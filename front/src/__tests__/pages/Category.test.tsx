@@ -50,11 +50,16 @@ describe.skip('Resource', () => {
 it('renders correctly', () => {
   render(<Category />)
 
+  const resourceTitleElements = screen.getAllByText('Recursos de React')
+  expect(resourceTitleElements.length).toBeGreaterThan(0)
+  resourceTitleElements.forEach((element) => {
+    expect(element).toBeInTheDocument()
+  })
+
   expect(screen.getByTestId('filters-container')).toBeInTheDocument()
   expect(screen.getByTestId('types-filter')).toBeInTheDocument()
   expect(screen.getByTestId('status-filter')).toBeInTheDocument()
   expect(screen.getByTestId('resource-list')).toBeInTheDocument()
-  expect(screen.getByText('Recursos de React')).toBeInTheDocument()
   expect(screen.getByText('Els meus recursos')).toBeInTheDocument()
   expect(screen.getByText('Recursos favorits')).toBeInTheDocument()
 })
@@ -87,32 +92,32 @@ it('filters opens and closes correctly', () => {
 })
 
 it('modal opens when clicking on the "Crear nuevo recurso" button', async () => {
-  render(<Category />);
+  render(<Category />)
 
-  const createButtonText = screen.getByTestId('new-resource-text');
-  expect(createButtonText).toBeInTheDocument();
+  const createButtonText = screen.getByTestId('new-resource-text')
+  expect(createButtonText).toBeInTheDocument()
 
-  fireEvent.click(createButtonText);
+  fireEvent.click(createButtonText)
 
   await waitFor(() => {
-    const modalTitle = screen.getByText('Nou recurs'); 
-    expect(modalTitle).toBeInTheDocument();
+    const modalTitle = screen.getByText('Nou recurs')
+    expect(modalTitle).toBeInTheDocument()
   })
 })
 
 it('modal opens and closes correctly when user is not logged', async () => {
   vi.mocked(useAuth).mockReturnValue({
     user: null,
-  } as TAuthContext);
-  render(<Category />);
-  fireEvent.click(screen.getByTestId('new-resource-text')); 
+  } as TAuthContext)
+  render(<Category />)
+  fireEvent.click(screen.getByTestId('new-resource-text'))
   const modalTitle = screen.getByRole('heading', {
     name: /accés restringit/i,
   });
   expect(modalTitle).toBeInTheDocument();
   fireEvent.keyDown(document, { key: 'Escape' });
   await waitFor(() => {
-    expect(modalTitle).not.toBeInTheDocument();
+    expect(modalTitle).not.toBeInTheDocument()
   })
 })
 
@@ -121,7 +126,7 @@ it('modal opens and closes correctly when user is logged', async () => {
   fireEvent.click(screen.getByTestId('new-resource-text'))
   const modalTitle = screen.getByRole('heading', {
     name: /Nou recurs/i,
-  });
+  })
   expect(modalTitle).toBeInTheDocument()
   fireEvent.keyDown(document, { key: 'Escape' })
   await waitFor(() => {
@@ -227,18 +232,23 @@ it('sorts available resources by votes in ascending order', async () => {
 
   expect(voteCounts).toEqual([0, 3, 7])
 })
+it('renders the search component correctly', () => {
+  render(<Category />)
+  const searchComponent = screen.getByTestId('mobile-search-component')
+  expect(searchComponent).toBeInTheDocument()
+})
+it('updates filters when search value changes', async () => {
+  render(<Category />)
 
-describe('Category component tests', () => {
-  test('Input appears when search icon is clicked', async () => {
-    const { getByTestId } = render(<Category />)
-
-    const searchIcon = getByTestId('inputGroupSearch')
-
-    expect(searchIcon).toBeInTheDocument()
-
-    fireEvent.click(searchIcon)
-
-    const inputSearch = getByTestId('inputSearch')
-    expect(inputSearch).toBeInTheDocument()
+  await waitFor(() => {
+    expect(screen.getByTestId('search-button')).toBeInTheDocument()
+  })
+  const searchInput = screen.queryAllByPlaceholderText('Buscar recurs')
+  const searchBar = searchInput[0]
+  fireEvent.change(searchBar, { target: { value: 'React' } })
+  await waitFor(() => {
+    expect(searchBar).toHaveValue('React')
+    expect(screen.getByTestId('search-button')).toBeInTheDocument()
+    expect(screen.getByTestId('search-button')).toHaveTextContent('search')
   })
 })
