@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useGetFavorites } from '../../hooks/useGetFavorites'
-import { Icon, Title, Spinner, Text } from '../atoms'
+import { Title, Spinner, Text } from '../atoms'
 import { useAuth } from '../../context/AuthProvider'
 import {
   FlexBox,
@@ -22,10 +22,8 @@ const TitleContainer = styled(FlexBox)`
   align-items: stretch;
 
   @media only ${device.Tablet} {
-    flex-direction: row;
-    align-items: center;
-    gap: ${dimensions.spacing.xxxs};
     margin-top: ${dimensions.spacing.md};
+    margin-bottom: ${dimensions.spacing.xs};
   }
 `
 
@@ -33,7 +31,6 @@ const FavoritesContainer = styled(FlexBox)`
   flex-direction: row;
   overflow: hidden;
   overflow-x: auto;
-  justify-content: flex-start;
 
   &::-webkit-scrollbar {
     display: none;
@@ -41,23 +38,24 @@ const FavoritesContainer = styled(FlexBox)`
 
   @media only ${device.Tablet} {
     flex-direction: column;
+    justify-content: flex-start;
     align-items: flex-start;
     overflow: hidden;
     overflow-y: auto;
+    gap: 0.5rem;
   }
 `
 
 const FavoritesCardList = styled(FlexBox)`
-  margin-right: ${dimensions.spacing.xxs};
-
   @media only ${device.Tablet} {
-    margin-right: ${dimensions.spacing.none};
+    padding-bottom: 0.7rem;
   }
 `
 
 const StyledText = styled(Text)`
   color: ${colors.gray.gray3};
   font-weight: ${font.regular};
+  line-height: 1.3;
 
   @media only ${device.Tablet} {
     color: ${colors.gray.gray4};
@@ -104,12 +102,9 @@ export const MyFavoritesList: FC = () => {
             {t('Recursos que te gustan')}
           </Title>
         ) : (
-          <>
-            <Icon name="favorite" fill={0} />
-            <Title as="h2" fontWeight="bold">
-              {t('Recursos favoritos')}
-            </Title>
-          </>
+          <Title as="h2" fontWeight="bold">
+            {t('Recursos favoritos')}
+          </Title>
         )}
       </TitleContainer>
       {!user && (
