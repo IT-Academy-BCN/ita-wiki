@@ -62,6 +62,11 @@ export type TUserData = {
   updatedAt: string
 }
 
+export type TUserUpdatedStatus = {
+  id: string
+  status: string
+}
+
 export type TResource = {
   id: string
   title: string

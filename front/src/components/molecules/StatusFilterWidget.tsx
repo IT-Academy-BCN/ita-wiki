@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { CheckBox, Label, Text } from '../atoms'
 import { colors, dimensions, FlexBox, font } from '../../styles'
 
@@ -27,6 +28,8 @@ type Props = {
 }
 
 const StatusFilterWidget = ({ handleStatusFilter }: Props) => {
+  const { t } = useTranslation()
+
   const [selectedStatus, setSelectedStatus] = useState<string[]>(statusData)
 
   useEffect(() => {
@@ -49,12 +52,12 @@ const StatusFilterWidget = ({ handleStatusFilter }: Props) => {
 
   return (
     <StyledFlexbox direction="column" align="start" data-testid="status-filter">
-      <StyledText fontWeight="bold">Estado</StyledText>
+      <StyledText fontWeight="bold"> {t('Estado')} </StyledText>
       {statusData.map((item: string) => (
         <CheckBoxStyled
           key={item}
           id={item}
-          label={item === 'SEEN' ? 'Vistos' : 'Por ver'}
+          label={item === 'SEEN' ? t('Vistos') : t('Por ver')}
           defaultChecked
           onChange={(e) => handleStatusFilter(changeSelection(e, item))}
         />

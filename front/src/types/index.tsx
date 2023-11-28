@@ -18,6 +18,7 @@ import type {
   TVoteCount,
   TSortOrder,
   TRegisterForm,
+  TUserUpdatedStatus,
 } from './types'
 
 export type {
@@ -40,4 +41,5 @@ export type {
   TVoteCount,
   TSortOrder,
   TRegisterForm,
+  TUserUpdatedStatus,
 }

@@ -39,8 +39,8 @@ describe('CardProfile', () => {
     expect(screen.getByTestId(/vots rebuts/i)).toHaveTextContent('23')
     expect(screen.getByText(/vots rebuts/i)).toBeInTheDocument()
 
-    expect(screen.getByTestId(/favorits guardats/i)).toHaveTextContent('15')
-    expect(screen.getByText(/favorits guardats/i)).toBeInTheDocument()
+    expect(screen.getByTestId(/recursos preferits/i)).toHaveTextContent('15')
+    expect(screen.getByText(/recursos preferits/i)).toBeInTheDocument()
   })
   it('renders correctly server errors', () => {
     render(
@@ -67,6 +67,6 @@ describe('CardProfile', () => {
     expect(screen.getByText(/vots rebuts/i)).toBeInTheDocument()
 
     expect(screen.queryByText(15)).not.toBeInTheDocument()
-    expect(screen.getByText(/favorits guardats/i)).toBeInTheDocument()
+    expect(screen.getByText(/recursos preferits/i)).toBeInTheDocument()
   })
 })

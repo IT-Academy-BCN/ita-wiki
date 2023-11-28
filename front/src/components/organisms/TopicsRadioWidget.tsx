@@ -1,5 +1,6 @@
 import { FC } from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { dimensions } from '../../styles'
 import { Radio, Spinner } from '../atoms'
 import { useGetTopics } from '../../hooks'
@@ -26,6 +27,8 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
   setTopic,
 }) => {
   const { data, isLoading, isError } = useGetTopics(slug)
+  
+  const { t } = useTranslation()
 
   const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTopic(e.target.value)
@@ -36,8 +39,8 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
 
   return (
     <StyledRadio
-      options={[{ id: 'todos', name: 'Todos' }].concat(
-        data ? data.map((t) => ({ id: t.id, name: t.name })) : []
+      options={[{ id: 'todos', name: t('Todos') }].concat(
+        data ? data.map((ts) => ({ id: ts.id, name: ts.name })) : []
       )}
       inputName="Topics Radio Filter"
       onChange={onTopicChange}

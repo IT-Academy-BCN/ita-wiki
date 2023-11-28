@@ -1,3 +1,4 @@
+import { AccountAdmin } from './AccountAdmin'
 import { CardResourceLink } from './CardResourceLink'
 import { CategoriesList } from './CategoriesList'
 import { DesktopSideMenu } from './DesktopSideMenu'
@@ -19,6 +20,7 @@ import { VotesDateController } from './VotesDateController'
 import { Search } from './Search'
 
 export {
+  AccountAdmin,
   CardResourceLink,
   CategoriesList,
   DesktopSideMenu,

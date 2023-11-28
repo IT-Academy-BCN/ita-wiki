@@ -14,6 +14,23 @@ All notable changes to this project will be documented in this file.
 - Updated Navbar to allow search on mobile devices according Figma design
 - Updated tests
 
+## [0.5.4] - 2023-11-28
+
+### Fixed
+
+- Implemented multilingual corrections.
+- Added necessary translations, including updates to `AccessModalContent`.
+- Updated tests accordingly.
+
+## [0.5.3] - 2023-11-27
+
+### Fixed
+
+- Fix patch to update user status
+- Convert fetch to mutation and create a hook
+- Fix file name spelling to AccountAdmin
+- Update tests accordingly
+
 ## [0.5.2] - 2023-11-27
 
 ### Update

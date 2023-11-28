@@ -36,6 +36,11 @@
   "recordar/cambiar": "Remember/change password",
   "no tienes una cuenta?": "Don't have an account?, create one",
 
+  "Acceso restringido": "Restricted access",
+  "Regístrate para subir o votar contenido": "Sign up to upload or vote on content",
+  "Registrarme": "Sign up",
+  "Entrar": "Login",
+
   "Editar recurso": "Edit resource",
   "Eliminar de favoritos": "Remove from favorites",
   "Añadir a favoritos": "Add to favorites",
@@ -90,6 +95,18 @@
   "Fecha": "Date",
   "Crear nuevo recurso": "Create new resource",
   "searchErrorMessage": "Enter at least 2 characters",
+
+  "Crear": "Create",
+  "Título": "Title",
+  "Descripción": "Description",
+  "Opciones": "Options",
+  "Tema": "Topic",
+  "Curso": "Course",
+
+  "Todos": "All",
+  "Por ver": "To be seen",
+  "Vistos": "Seen",
+  "Tipo": "Type",
 
   "¡Vaya! :/": "Oops! :/",
   "Todavía no hay recursos de este tipo.": "There are no available resources of this kind yet.",
