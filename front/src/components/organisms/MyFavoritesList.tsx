@@ -22,11 +22,8 @@ const TitleContainer = styled(FlexBox)`
   align-items: stretch;
 
   @media only ${device.Tablet} {
-    flex-direction: row;
-    align-items: center;
-    // gap: ${dimensions.spacing.xxxs};
     margin-top: ${dimensions.spacing.md};
-    margin-bottom: ${dimensions.spacing.xxxs};
+    margin-bottom: ${dimensions.spacing.xs};
   }
 `
 
@@ -45,24 +42,20 @@ const FavoritesContainer = styled(FlexBox)`
     align-items: flex-start;
     overflow: hidden;
     overflow-y: auto;
-    // gap: ${dimensions.spacing.xxxs};
-    gap: 0.35rem;
+    gap: 0.5rem;
   }
 `
 
 const FavoritesCardList = styled(FlexBox)`
-  margin-right: ${dimensions.spacing.xxs};
-
   @media only ${device.Tablet} {
-    margin-right: ${dimensions.spacing.none};
-    //padding-top: 0;
-    padding-bottom: 0.25rem;
+    padding-bottom: 0.7rem;
   }
 `
 
 const StyledText = styled(Text)`
   color: ${colors.gray.gray3};
   font-weight: ${font.regular};
+  line-height: 1.3;
 
   @media only ${device.Tablet} {
     color: ${colors.gray.gray4};
@@ -109,11 +102,9 @@ export const MyFavoritesList: FC = () => {
             {t('Recursos que te gustan')}
           </Title>
         ) : (
-          <>
-            <Title as="h2" fontWeight="bold">
-              {t('Recursos favoritos')}
-            </Title>
-          </>
+          <Title as="h2" fontWeight="bold">
+            {t('Recursos favoritos')}
+          </Title>
         )}
       </TitleContainer>
       {!user && (

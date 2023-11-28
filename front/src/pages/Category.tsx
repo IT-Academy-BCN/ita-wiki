@@ -82,7 +82,7 @@ const MainContainer = styled.div`
 
   @media ${device.Tablet} {
     flex-direction: row;
-    padding: ${dimensions.spacing.md} ${dimensions.spacing.base};
+    padding: ${dimensions.spacing.md} ${dimensions.spacing.xxs};
   }
 
   @media ${device.Desktop} {
@@ -163,20 +163,17 @@ const ContainerResourcesAside = styled(FlexBox)`
     align-content: flex-end;
     gap: ${dimensions.spacing.xs};
     height: 100%;
-    min-width: 10rem;
-    max-width: 16rem;
-    //flex: 1 1 22rem;
+    flex: 1 1 22rem;
   }
 
   @media ${device.Laptop} {
-    width: 24rem;
-    //max-width: 27rem;
     gap: ${dimensions.spacing.md};
+    flex: 1 1 24rem;
   }
 
   @media ${device.Desktop} {
-    width: 27rem;
     gap: ${dimensions.spacing.xl};
+    flex: 1 1 27rem;
   }
 `
 
@@ -187,8 +184,7 @@ const ResourcesAside = styled(FlexBox)`
   overflow: hidden;
   overflow-x: auto;
   width: 100%;
-  //@background-color: ${colors.white};
-  background-color: tomato;
+  background-color: ${colors.white};
   border-radius: ${dimensions.borderRadius.base};
 
   &::-webkit-scrollbar {

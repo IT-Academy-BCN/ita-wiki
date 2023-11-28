@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { FlexBox, colors, dimensions, font } from '../../styles'
+import { FlexBox, colors, device, dimensions, font } from '../../styles'
 import { Spinner } from '../atoms'
 import icons from '../../assets/icons'
 import { TCategory, TLinkStyled } from '../../types'
@@ -24,11 +24,13 @@ const LinkCategory = styled(Link)`
 `
 
 const CategoriesContainerStyled = styled(FlexBox)`
-  /* padding-left: ${dimensions.spacing.xxs}; */
-  margin-right: ${dimensions.spacing.sm};
   align-items: flex-start;
   color: ${colors.gray.gray3};
   min-width: 10rem;
+
+  @media ${device.Laptop} {
+    margin-right: ${dimensions.spacing.sm};
+  }
 `
 
 const CategoryStyled = styled.span<TLinkStyled>`

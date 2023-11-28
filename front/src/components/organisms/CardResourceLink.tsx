@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { FlexBox, colors, device, dimensions } from '../../styles'
+import { FlexBox, dimensions } from '../../styles'
 import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
 import EditResource from './EditResource'
 import { TCardResource } from '../../types'
