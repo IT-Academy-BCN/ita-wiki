@@ -74,7 +74,7 @@ describe('CardResource component', () => {
 
     const editIcon = screen.getByTestId('edit-icon')
     expect(editIcon).toBeInTheDocument()
-    const favIcon = screen.getByTitle('Afegeix a favorits')
+    const favIcon = screen.getByTitle('Afegeix a preferits')
     expect(favIcon).toBeInTheDocument()
   })
 
@@ -95,7 +95,7 @@ describe('CardResource component', () => {
 
     const editIcon = screen.queryByTestId('edit-icon')
     expect(editIcon).not.toBeInTheDocument()
-    const favIcon = screen.getByTitle('Afegeix a favorits')
+    const favIcon = screen.getByTitle('Afegeix a preferits')
     expect(favIcon).toBeInTheDocument()
   })
 })

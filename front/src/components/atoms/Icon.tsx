@@ -7,6 +7,11 @@ const IconStyled = styled.span<TIcon>`
     'opsz' ${({ opsz }) => opsz};
   color: ${({ color }) => color};
   cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `
 type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
   name: string
