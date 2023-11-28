@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { FlexBox, colors, dimensions, font } from '../../styles'
+import { FlexBox, colors, device, dimensions, font } from '../../styles'
 import { Spinner } from '../atoms'
 import icons from '../../assets/icons'
 import { TCategory, TLinkStyled } from '../../types'
@@ -24,11 +24,13 @@ const LinkCategory = styled(Link)`
 `
 
 const CategoriesContainerStyled = styled(FlexBox)`
-  /* padding-left: ${dimensions.spacing.xxs}; */
-  margin-right: ${dimensions.spacing.sm};
   align-items: flex-start;
   color: ${colors.gray.gray3};
   min-width: 10rem;
+
+  @media ${device.Laptop} {
+    margin-right: ${dimensions.spacing.sm};
+  }
 `
 
 const CategoryStyled = styled.span<TLinkStyled>`
@@ -38,9 +40,11 @@ const CategoryStyled = styled.span<TLinkStyled>`
   font-family: ${font.fontFamily};
   margin-top: ${dimensions.spacing.lg};
   cursor: pointer;
+  transition: transform 0.3s ease;
 
-  :hover {
+  &:hover {
     color: ${({ active }) => (active ? colors.black.black3 : colors.primary)};
+    transform: scale(1.05);
   }
 
   &::before {
@@ -60,8 +64,6 @@ const categoryImg: Record<string, string> = {
   Node: icons.node, // TODO: Add Node Icon
   'Fullstack PHP': icons.php, // TODO: Add PHP Icon
   React: icons.react, // TODO: Add React Icon
-  Spring: icons.spring, // TODO: Add Spring Icon
-  Laravel: icons.laravel, // TODO: Add Spring Icon
   BBDD: icons.bbdd, // TODO: Add BBDD Icon
 }
 

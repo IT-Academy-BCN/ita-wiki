@@ -52,8 +52,12 @@ const ContainerMain = styled(FlexBox)`
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    gap: ${dimensions.spacing.sm};
+    gap: ${dimensions.spacing.xs};
     justify-content: flex-end;
+  }
+
+  @media ${device.Laptop} {
+    gap: ${dimensions.spacing.md};
   }
 
   @media ${device.Desktop} {
@@ -78,7 +82,7 @@ const MainContainer = styled.div`
 
   @media ${device.Tablet} {
     flex-direction: row;
-    padding: ${dimensions.spacing.md} ${dimensions.spacing.base};
+    padding: ${dimensions.spacing.md} ${dimensions.spacing.xxs};
   }
 
   @media ${device.Desktop} {
@@ -152,24 +156,24 @@ const ScrollDiv = styled(FlexBox)`
 
 const ContainerResourcesAside = styled(FlexBox)`
   display: none;
-
   @media ${device.Tablet} {
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     align-content: flex-end;
-    gap: ${dimensions.spacing.sm};
-    max-width: 12rem;
+    gap: ${dimensions.spacing.xs};
+    height: 100%;
+    flex: 1 1 22rem;
   }
 
   @media ${device.Laptop} {
-    max-width: 16rem;
     gap: ${dimensions.spacing.md};
+    flex: 1 1 24rem;
   }
 
   @media ${device.Desktop} {
-    max-width: 20rem;
     gap: ${dimensions.spacing.xl};
+    flex: 1 1 27rem;
   }
 `
 
@@ -182,15 +186,19 @@ const ResourcesAside = styled(FlexBox)`
   width: 100%;
   background-color: ${colors.white};
   border-radius: ${dimensions.borderRadius.base};
-  padding: ${dimensions.spacing.none} ${dimensions.spacing.md};
 
   &::-webkit-scrollbar {
     display: none;
   }
 
+  @media ${device.Tablet} {
+    padding: ${dimensions.spacing.none} ${dimensions.spacing.xs}
+      ${dimensions.spacing.xl} ${dimensions.spacing.xs};
+  }
+
   @media ${device.Laptop} {
     padding: ${dimensions.spacing.none} ${dimensions.spacing.xs}
-      ${dimensions.spacing.md} ${dimensions.spacing.lg};
+      ${dimensions.spacing.xl} ${dimensions.spacing.lg};
   }
 `
 const MobileContainer = styled(FlexBox)`
@@ -254,14 +262,14 @@ const StyledSelectGroup = styled(SelectGroup)`
 const FilterButton = styled(Button)`
   color: ${colors.black.black1};
   background-color: ${colors.white};
-  border: 2px solid ${colors.gray.gray3};
+  border: 1.5px solid ${colors.gray.gray3};
   width: fit-content;
   padding: ${dimensions.spacing.xs} ${dimensions.spacing.lg};
   margin-bottom: ${dimensions.spacing.xs};
 
   &:hover {
     background-color: ${colors.white};
-    border: 2px solid ${colors.gray.gray3};
+    border: 1.5px solid ${colors.primary};
   }
 
   @media ${device.Tablet} {

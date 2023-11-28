@@ -20,6 +20,12 @@ const VotesDateContainer = styled(FlexBox)`
 const StyledVotesToggle = styled.div`
   cursor: pointer;
   display: inline;
+  color: ${colors.black.black3};
+
+  &:hover {
+    transform: scale(1.05);
+    color: ${colors.black.black1};
+  }
 
   &:active {
     transform: scale(0.96);
@@ -27,9 +33,14 @@ const StyledVotesToggle = styled.div`
 `
 
 const StyledDateToggle = styled.div`
-  color: ${colors.black.black1};
   cursor: pointer;
   display: inline;
+  color: ${colors.black.black3};
+
+  &:hover {
+    transform: scale(1.05);
+    color: ${colors.black.black1};
+  }
 
   &:active {
     transform: scale(0.96);
