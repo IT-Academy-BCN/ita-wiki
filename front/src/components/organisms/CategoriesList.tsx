@@ -24,7 +24,7 @@ const LinkCategory = styled(Link)`
 `
 
 const CategoriesContainerStyled = styled(FlexBox)`
-  padding-left: ${dimensions.spacing.xxs};
+  /* padding-left: ${dimensions.spacing.xxs}; */
   margin-right: ${dimensions.spacing.sm};
   align-items: flex-start;
   color: ${colors.gray.gray3};
@@ -58,12 +58,11 @@ const categoryImg: Record<string, string> = {
   Java: icons.java, // TODO: Add Java Icon
   Javascript: icons.javascript, // TODO: Add Javascript Icon
   Node: icons.node, // TODO: Add Node Icon
-  PHP: icons.php, // TODO: Add PHP Icon
-  Python: icons.python, // TODO: Add Python Icon
+  'Fullstack PHP': icons.php, // TODO: Add PHP Icon
   React: icons.react, // TODO: Add React Icon
   Spring: icons.spring, // TODO: Add Spring Icon
   Laravel: icons.laravel, // TODO: Add Spring Icon
-  BBDD:icons.bbdd, // TODO: Add BBDD Icon
+  BBDD: icons.bbdd, // TODO: Add BBDD Icon
 }
 
 export const CategoriesList: FC = () => {

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.1] - 2023-11-28
+
+### Fixed
+
+- Logo and categories
+
 ## [0.6.0] - 2023-11-27
 
 ### Added
