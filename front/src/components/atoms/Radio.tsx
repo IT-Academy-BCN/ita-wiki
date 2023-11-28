@@ -49,20 +49,28 @@ const Radio = forwardRef(
     ref: Ref<HTMLInputElement>
   ) => (
     <RadioStyled {...rest} direction="row">
-      {options?.map(({ id, name }) => (
-        <FlexBox direction="row" key={id}>
-          <input
-            type="radio"
-            id={id}
-            value={id}
-            name={inputName}
-            ref={ref}
-            defaultChecked={defaultChecked === id}
-            onChange={onChange}
-          />
-          <Label htmlFor={id} text={name} hiddenLabel={hiddenLabel} />
-        </FlexBox>
-      ))}
+      {options?.map(({ id, name }) => {
+        const randomID = Math.round(Math.random() * 10000)
+
+        return (
+          <FlexBox direction="row" key={id}>
+            <input
+              type="radio"
+              id={`${id + randomID}`}
+              value={id}
+              name={inputName}
+              ref={ref}
+              defaultChecked={defaultChecked === id}
+              onChange={onChange}
+            />
+            <Label
+              htmlFor={`${id + randomID}`}
+              text={name}
+              hiddenLabel={hiddenLabel}
+            />
+          </FlexBox>
+        )
+      })}
     </RadioStyled>
   )
 )
