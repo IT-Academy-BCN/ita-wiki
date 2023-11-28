@@ -56,7 +56,7 @@ const EditResource = ({
       value: topic.id,
       label: topic.name,
     })) ?? []
-  const initialTopicId = topics && topics.length > 0 ? topics[0].topic.id : ''
+  const initialTopicId = topics[0].topic.id ?? ''
 
   return (
     <>
