@@ -8,6 +8,7 @@ import {
   TVoteCount,
   TVoteMutationData,
   TRegisterForm,
+  TUserUpdatedStatus,
 } from '../types'
 
 const errorMessageStatus: { [key: number]: string } = {
@@ -118,6 +119,9 @@ export const favMutation = async (id: string) => {
 
 export const getUsers = async () => {
   const response = await fetch(urls.users)
+  if (!response.ok) {
+    throw new Error(`Error fetching users`)
+  }
   const data = await response.json()
   return data
 }
@@ -269,4 +273,18 @@ export const updateStatus = async (id: string) => {
   if (!response.ok) {
     throw new Error('Error updating status')
   }
+}
+
+export const patchUserStatus = async (updatedUser: TUserUpdatedStatus) => {
+  const response = await fetch(urls.users, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updatedUser),
+  })
+  if (!response.ok) {
+    throw new Error('Failed to update user status')
+  }
+  return response.status === 204 ? {} : response.json()
 }
