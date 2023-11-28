@@ -22,12 +22,13 @@ const ButtonStyled = styled(Button)`
 `
 
 const StyledSvg = styled.div<{ isInCardResource: boolean }>`
-  position: ${(props) => (props.isInCardResource ? 'relative' : 'absolute')};
-  top: ${(props) => (props.isInCardResource ? '1px' : '4px')};
-  right: ${(props) => (props.isInCardResource ? '0' : '6px')};
+  position: relative;
+  top: ${(props) => (props.isInCardResource ? '1px' : '2px')};
+  right: ${(props) => (props.isInCardResource ? '0' : '1px')};
   background-color: ${(props) =>
     props.isInCardResource ? 'transparent' : 'rgba(255, 255, 255, 0.5)'};
   padding: ${(props) => (props.isInCardResource ? '1px' : '2px')};
+  margin-left: ${(props) => (props.isInCardResource ? '0' : '3px')};
 
   > img {
     cursor: pointer;

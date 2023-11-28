@@ -1,14 +1,11 @@
 import styled from 'styled-components'
-import { FlexBox, colors, dimensions } from '../../styles'
+import { FlexBox, colors, device, dimensions } from '../../styles'
 import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
 import EditResource from './EditResource'
 import { TCardResource } from '../../types'
 
 const CardContainerStyled = styled(FlexBox)`
-  background-color: ${colors.white};
   width: 100%;
-  min-width: 17rem;
-  position: relative;
   margin-top: ${dimensions.spacing.xxs};
 `
 
@@ -16,10 +13,11 @@ export const CardResourceLink = ({ editable, ...rest }: TCardResource) => (
   <CardContainerStyled
     data-testid="resource-card"
     direction="row"
-    align="center"
-    justify="flex-start"
+    align="start"
+    justify="space-between"
     {...rest}
   >
+    <ResourceTitleLink {...rest} />
     {editable && (
       <EditResource
         {...rest}
@@ -27,6 +25,5 @@ export const CardResourceLink = ({ editable, ...rest }: TCardResource) => (
         topics={rest.topics}
       />
     )}
-    <ResourceTitleLink {...rest} />
   </CardContainerStyled>
 )

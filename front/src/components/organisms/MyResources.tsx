@@ -27,6 +27,7 @@ const TitleContainer = styled(FlexBox)`
     align-items: center;
     gap: ${dimensions.spacing.xxxs};
     margin-top: ${dimensions.spacing.md};
+    margin-bottom: ${dimensions.spacing.xs};
   }
 `
 
@@ -62,6 +63,8 @@ const TextDecorationStyled = styled.span`
 `
 
 const MyResourcesCardList = styled(FlexBox)`
+  //"wsbora"
+  width: 100%;
   margin-right: ${dimensions.spacing.xxs};
 
   @media only ${device.Tablet} {
@@ -104,7 +107,6 @@ const MyResources = () => {
           </Title>
         ) : (
           <>
-            <Icon name="menu_book" fill={0} />
             <Title as="h2" fontWeight="bold" data-testid="title">
               {t('Mis recursos')}
             </Title>

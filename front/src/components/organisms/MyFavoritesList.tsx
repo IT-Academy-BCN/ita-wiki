@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useGetFavorites } from '../../hooks/useGetFavorites'
-import { Icon, Title, Spinner, Text } from '../atoms'
+import { Title, Spinner, Text } from '../atoms'
 import { useAuth } from '../../context/AuthProvider'
 import {
   FlexBox,
@@ -24,8 +24,9 @@ const TitleContainer = styled(FlexBox)`
   @media only ${device.Tablet} {
     flex-direction: row;
     align-items: center;
-    gap: ${dimensions.spacing.xxxs};
+    // gap: ${dimensions.spacing.xxxs};
     margin-top: ${dimensions.spacing.md};
+    margin-bottom: ${dimensions.spacing.xxxs};
   }
 `
 
@@ -33,7 +34,6 @@ const FavoritesContainer = styled(FlexBox)`
   flex-direction: row;
   overflow: hidden;
   overflow-x: auto;
-  justify-content: flex-start;
 
   &::-webkit-scrollbar {
     display: none;
@@ -41,9 +41,12 @@ const FavoritesContainer = styled(FlexBox)`
 
   @media only ${device.Tablet} {
     flex-direction: column;
+    justify-content: flex-start;
     align-items: flex-start;
     overflow: hidden;
     overflow-y: auto;
+    // gap: ${dimensions.spacing.xxxs};
+    gap: 0.35rem;
   }
 `
 
@@ -52,6 +55,8 @@ const FavoritesCardList = styled(FlexBox)`
 
   @media only ${device.Tablet} {
     margin-right: ${dimensions.spacing.none};
+    //padding-top: 0;
+    padding-bottom: 0.25rem;
   }
 `
 
@@ -105,7 +110,6 @@ export const MyFavoritesList: FC = () => {
           </Title>
         ) : (
           <>
-            <Icon name="favorite" fill={0} />
             <Title as="h2" fontWeight="bold">
               {t('Recursos favoritos')}
             </Title>
