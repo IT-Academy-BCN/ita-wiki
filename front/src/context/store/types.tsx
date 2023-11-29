@@ -1,35 +1,4 @@
-export type TResource = {
-  id: string
-  title: string
-  slug: string
-  description: string
-  url: string
-  resourceType: string
-  createdAt: string
-  updatedAt: string
-  user: {
-    name: string
-    email: string
-  }
-  topics: {
-    topic: {
-      id: string
-      name: string
-      slug: string
-      categoryId: string
-      createdAt: string
-      updatedAt: string
-    }
-  }[]
-  voteCount: {
-    upvote: number
-    downvote: number
-    total: number
-    userVote: number
-  }
-  editable: boolean
-  isFavorite: boolean
-}
+import { TResource } from '../../types'
 
 export type TInitialState = {
   topics: string[]

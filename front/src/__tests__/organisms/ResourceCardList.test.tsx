@@ -25,6 +25,10 @@ describe('ResourceCardList', () => {
         url: 'http://www.example.com/resourceTest',
         createdAt: '2023-01-01T12:00:00Z',
         updatedAt: '2023-01-02T12:00:00Z',
+        user: {
+          name: 'Author Name',
+          avatarId: 'avatar.jpg',
+        },
         voteCount: {
           upvote: 5,
           downvote: 2,
@@ -34,7 +38,6 @@ describe('ResourceCardList', () => {
         resourceType: 'Tipo 1',
         topics: [],
         isFavorite: true,
-        editable: true,
       },
     ]
     render(

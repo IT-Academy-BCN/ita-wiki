@@ -27,7 +27,7 @@ describe('filters reducer', () => {
       updatedAt: 'string',
       user: {
         name: 'string',
-        email: 'user@example.cat',
+        avatarId: 'avatar.jpg',
       },
       topics: [
         {
@@ -47,7 +47,6 @@ describe('filters reducer', () => {
         total: 12,
         userVote: 1,
       },
-      editable: true,
       isFavorite: false,
     }
 
