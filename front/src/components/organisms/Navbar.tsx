@@ -167,7 +167,7 @@ export const Navbar = ({
       >
         {isSettingsOpen && <SettingsManager />}
         <FlexBox>
-          <StyledButton onClick={() => setIsSettingsOpen(false)}>
+          <StyledButton outline onClick={() => setIsSettingsOpen(false)}>
             {t('Cerrar')}
           </StyledButton>
         </FlexBox>

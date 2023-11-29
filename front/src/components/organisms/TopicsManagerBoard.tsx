@@ -21,6 +21,7 @@ export const TopicsManagerBoard: FC = () => {
   const { t } = useTranslation()
   const [selectedId, setSelectedId] = useState<string>('')
   const { data, isLoading, isError } = useGetTopics(slug as string)
+
   const {
     updateTopic,
     createTopic,
@@ -73,7 +74,7 @@ export const TopicsManagerBoard: FC = () => {
 
   if (isLoading) return <Spinner size="small" role="status" />
   if (isError) return <p>{t('Ha habido un error...')}</p>
-
+  console.log('TOPICS LIST', data)
   return (
     <>
       {user ? (
