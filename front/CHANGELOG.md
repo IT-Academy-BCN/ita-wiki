@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.8] - 2023-11-29
+
+### Fixed
+
+- Fixed topics list updating on create and update topics
+- Update ManageTopics hook to update cache in mutations
+- Changed modal close button style to outline
+
 ## [0.6.7] - 2023-11-29
 
 ### Fixed

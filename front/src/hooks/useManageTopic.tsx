@@ -1,16 +1,19 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import { createTopicFetcher, updateTopicFetcher } from '../helpers/fetchers'
-import { useGetTopics } from './useGetTopics'
+import { TGetTopics } from '../types'
 
 export const useManageTopic = () => {
   const [rowStatus, setRowStatus] = useState<string>('available')
   const [errorMessage, setErrorMessage] = useState<string>('')
-  const { refetch } = useGetTopics()
+  const queryClient = useQueryClient()
+
   const createTopic = useMutation({
     mutationFn: createTopicFetcher,
     onSuccess: async () => {
-      refetch()
+      queryClient.invalidateQueries({
+        queryKey: ['getTopics'],
+      })
       if (errorMessage !== '') setErrorMessage('')
       setRowStatus('available')
     },
@@ -20,8 +23,25 @@ export const useManageTopic = () => {
   })
   const updateTopic = useMutation({
     mutationFn: updateTopicFetcher,
+    onMutate: (updatedTopic) => {
+      const queryCacheGetTopics = queryClient
+        .getQueryCache()
+        .findAll(['getTopics'])
+      const queryKeys = queryCacheGetTopics.map((q) => q.queryKey)
+      queryKeys.forEach((queryKey) => {
+        queryClient.setQueryData<TGetTopics>(queryKey, (prevData) => {
+          if (prevData) {
+            return prevData?.map((topic) =>
+              topic.id === updatedTopic.id
+                ? { ...topic, name: updatedTopic.name }
+                : topic
+            )
+          }
+          return prevData
+        })
+      })
+    },
     onSuccess: async () => {
-      refetch()
       if (errorMessage !== '') setErrorMessage('')
       setRowStatus('available')
     },
