@@ -167,6 +167,7 @@ const ResourceForm: FC<TSelectOptions> = ({
       <InputGroup
         hiddenLabel
         id="description"
+        data-testid="resourceDescription"
         label={t('Descripción')}
         placeholder={t('Descripción')}
         {...register('description')}
@@ -178,6 +179,7 @@ const ResourceForm: FC<TSelectOptions> = ({
         hiddenLabel
         id="url"
         label="URL"
+        data-testid="resourceUrl"
         placeholder="URL"
         {...register('url')}
         error={errors.url && true}
@@ -188,6 +190,7 @@ const ResourceForm: FC<TSelectOptions> = ({
         id="topics"
         label={t('Tema')}
         options={selectOptions}
+        data-testid="resourceTopic"
         {...register('topics')}
         defaultValue={initialTopicLabel ?? ''}
         error={!!errors.topics}
@@ -202,6 +205,7 @@ const ResourceForm: FC<TSelectOptions> = ({
           { id: 'BLOG', name: 'Blog' },
         ]}
         inputName="resourceType"
+        data-testid="resourceType"
       />
       <FlexErrorStyled align="start">
         {errors?.title ||
@@ -221,7 +225,11 @@ const ResourceForm: FC<TSelectOptions> = ({
             <Icon data-testid="done-icon" name="done" />
           </ButtonStyled>
         ) : (
-          <Button type="submit" disabled={isCreateLoading || isUpdateLoading}>
+          <Button
+            type="submit"
+            data-testid="submit-button"
+            disabled={isCreateLoading || isUpdateLoading}
+          >
             {isCreateLoading || isUpdateLoading ? (
               <Spinner size="xsmall" />
             ) : (
