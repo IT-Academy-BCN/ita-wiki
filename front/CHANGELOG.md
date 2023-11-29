@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.7] - 2023-11-29
+
+### Fixed
+
+- Filtered topics on edit resource by slug
+
 ## [0.6.6] - 2023-11-29
 
 ### Fixed
