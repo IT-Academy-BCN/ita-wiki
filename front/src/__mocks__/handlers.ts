@@ -153,17 +153,32 @@ export const handlers = [
           description: 'Favorite description',
           url: 'https://tutorials.cat/learn/javascript',
           resourceType: 'VIDEO',
-          userId: 'userId',
+          categoryId: 'clp80tq24000008ju72hsfyf1',
           createdAt: '11/11/2011',
           updatedAt: '12/12/2012',
-          status: 'NOT_SEEN',
+          user: {
+            name: 'Author Name',
+            avatarId: 'avatar.jpg',
+          },
+          isAuthor: false,
           voteCount: {
             userVote: 0,
             upvote: 3,
             downvote: 0,
             total: 3,
           },
-          isFavorite: 'true',
+          topics: [
+            {
+              topic: {
+                id: 'topicId',
+                name: 'topic Name',
+                slug: 'topicSlug',
+                categoryId: 'categoryId',
+                createdAt: 'date',
+                updatedAt: 'update',
+              },
+            },
+          ],
         },
         {
           id: 'secondFavoriteId',
@@ -172,17 +187,32 @@ export const handlers = [
           description: 'Favorite description two',
           url: 'https://tutorials.cat/learn/',
           resourceType: 'VIDEO',
-          userId: 'userId',
+          categoryId: 'clp80tq24000008ju72hsfyf1',
           createdAt: '11/11/2011',
           updatedAt: '12/12/2012',
-          status: 'NOT_SEEN',
+          user: {
+            name: 'Author Test Name',
+            avatarId: 'avatar2.jpg',
+          },
+          isAuthor: false,
           voteCount: {
             userVote: 0,
             upvote: 3,
             downvote: 0,
             total: 3,
           },
-          isFavorite: 'true',
+          topics: [
+            {
+              topic: {
+                id: 'topicId',
+                name: 'topic Name',
+                slug: 'topicSlug',
+                categoryId: 'categoryId',
+                createdAt: 'date',
+                updatedAt: 'update',
+              },
+            },
+          ],
         },
       ])
     )

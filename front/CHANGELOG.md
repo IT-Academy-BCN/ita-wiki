@@ -2,11 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.6] - 2023-11-29
+## [0.6.7] - 2023-11-29
 
 ### Fixed
 
 - Filtered topics on edit resource by slug
+
+## [0.6.6] - 2023-11-29
+
+### Fixed
+
+- Adapt UserProfileresourcesWidget to updated endpoint
+- Fixed favorites type
+- Updated tests accordingly
 
 ## [0.6.5] - 2023-11-29
 
