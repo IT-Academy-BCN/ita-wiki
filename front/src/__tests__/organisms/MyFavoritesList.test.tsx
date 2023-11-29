@@ -82,7 +82,7 @@ describe('MyFavoritesList', () => {
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() =>
-      expect(screen.getByText('No hi ha recursos favorits')).toBeInTheDocument()
+      expect(screen.getByText('No hi ha recursos preferits')).toBeInTheDocument()
     )
     expect(
       screen.queryByText('Alguna cosa ha anat malament...')
@@ -110,7 +110,7 @@ describe('MyFavoritesList', () => {
     render(<MyFavoritesList />)
 
     const titleElement = screen.getByTestId('title')
-    expect(titleElement).toHaveTextContent('Recursos favorits')
+    expect(titleElement).toHaveTextContent('Recursos preferits')
   })
 
   it('renders correctly on error', async () => {

@@ -262,14 +262,14 @@ const StyledSelectGroup = styled(SelectGroup)`
 const FilterButton = styled(Button)`
   color: ${colors.black.black1};
   background-color: ${colors.white};
-  border: 2px solid ${colors.gray.gray3};
+  border: 1.5px solid ${colors.gray.gray3};
   width: fit-content;
   padding: ${dimensions.spacing.xs} ${dimensions.spacing.lg};
   margin-bottom: ${dimensions.spacing.xs};
 
   &:hover {
     background-color: ${colors.white};
-    border: 2px solid ${colors.gray.gray3};
+    border: 1.5px solid ${colors.primary};
   }
 
   @media ${device.Tablet} {

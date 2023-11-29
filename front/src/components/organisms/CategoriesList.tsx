@@ -40,9 +40,11 @@ const CategoryStyled = styled.span<TLinkStyled>`
   font-family: ${font.fontFamily};
   margin-top: ${dimensions.spacing.lg};
   cursor: pointer;
+  transition: transform 0.3s ease;
 
-  :hover {
+  &:hover {
     color: ${({ active }) => (active ? colors.black.black3 : colors.primary)};
+    transform: scale(1.05);
   }
 
   &::before {

@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.5] - 2023-11-29
+
+### Fixed
+
+- Fixed missing topic and ResourceType initial values from resource when editing
+- TyesFiltersWidget inconsistency with resourceType name
+- Edit resource topic bug.
+
+## [0.6.4] - 2023-11-28
+
+### Update
+
+- Incorporated new hover effects.
+
+### Fixed
+
+- Implemented Catalan corrections (eg. use "preferits" instead of "favorits").
+- Updated tests according to new changes.
 
 ## [0.6.3] - 2023-11-28
 
@@ -9,15 +27,11 @@ All notable changes to this project will be documented in this file.
 
 - Add favicon to browser tab and remove unused icons
 
-
-
 ## [0.6.2] - 2023-11-28
 
 ### Fixed
 
 - Width and height of resources aside in Category page
-
-
 
 ## [0.6.1] - 2023-11-28
 

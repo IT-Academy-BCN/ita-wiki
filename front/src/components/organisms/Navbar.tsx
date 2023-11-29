@@ -43,6 +43,11 @@ const IconStyled = styled.div`
   align-items: center;
   cursor: pointer;
   display: flex;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.03);
+  }
 `
 
 const AddButton = styled(IconStyled)`

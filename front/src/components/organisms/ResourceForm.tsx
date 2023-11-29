@@ -93,7 +93,6 @@ const ResourceForm: FC<TSelectOptions> = ({
     resolver: zodResolver(ResourceFormSchema),
     defaultValues: initialValues ?? undefined,
   })
-
   const { state } = useLocation()
 
   const { t } = useTranslation()
@@ -123,26 +122,32 @@ const ResourceForm: FC<TSelectOptions> = ({
   })
   const update = handleSubmit(async (data) => {
     const { title, description, url, topicId, resourceType } = data
+
     const updatedData = {
       id: resourceId,
       title,
       description,
       url,
-      topicId: topicId ?? initialValues?.topicId ?? '',
+      topicId: topicId ?? initialValues?.topicId,
       resourceType,
     }
     await updateResource.mutateAsync(updatedData)
   })
+
   const handleTopicChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedTopicId = event.target.value
     const selectedTopic = selectOptions.find(
-      (option) => option.value === selectedTopicId
+      (option) => option.label === selectedTopicId
     )
     if (selectedTopic) {
       setValue('topics', selectedTopic.label)
       setValue('topicId', selectedTopic.value)
     }
   }
+  const initialTopicLabel = selectOptions.find(
+    (option) => option.value === initialValues?.topicId
+  )?.label
+
   return (
     <ResourceFormStyled
       onSubmit={initialValues ? update : create}
@@ -162,6 +167,7 @@ const ResourceForm: FC<TSelectOptions> = ({
       <InputGroup
         hiddenLabel
         id="description"
+        data-testid="resourceDescription"
         label={t('Descripción')}
         placeholder={t('Descripción')}
         {...register('description')}
@@ -173,6 +179,7 @@ const ResourceForm: FC<TSelectOptions> = ({
         hiddenLabel
         id="url"
         label="URL"
+        data-testid="resourceUrl"
         placeholder="URL"
         {...register('url')}
         error={errors.url && true}
@@ -183,8 +190,9 @@ const ResourceForm: FC<TSelectOptions> = ({
         id="topics"
         label={t('Tema')}
         options={selectOptions}
+        data-testid="resourceTopic"
         {...register('topics')}
-        defaultValue={initialValues?.topicId}
+        defaultValue={initialTopicLabel ?? ''}
         error={!!errors.topics}
         validationMessage={errors.topics?.message}
         onChange={handleTopicChange}
@@ -197,7 +205,7 @@ const ResourceForm: FC<TSelectOptions> = ({
           { id: 'BLOG', name: 'Blog' },
         ]}
         inputName="resourceType"
-        defaultChecked="VIDEO"
+        data-testid="resourceType"
       />
       <FlexErrorStyled align="start">
         {errors?.title ||
@@ -217,7 +225,11 @@ const ResourceForm: FC<TSelectOptions> = ({
             <Icon data-testid="done-icon" name="done" />
           </ButtonStyled>
         ) : (
-          <Button type="submit" disabled={isCreateLoading || isUpdateLoading}>
+          <Button
+            type="submit"
+            data-testid="submit-button"
+            disabled={isCreateLoading || isUpdateLoading}
+          >
             {isCreateLoading || isUpdateLoading ? (
               <Spinner size="xsmall" />
             ) : (
