@@ -12,10 +12,14 @@ const arrayFavs = [
     description: 'Favorite description',
     url: 'https://tutorials.cat/learn/javascript',
     resourceType: 'VIDEO',
-    userId: 'userId',
+    categoryId: 'clp80tq24000008ju72hsfyf1',
     createdAt: '2021-09-28',
     updatedAt: '2022-09-12',
-    status: 'NOT_SEEN',
+    user: {
+      name: 'Author Name',
+      avatarId: 'avatar.jpg',
+    },
+    isAuthor: false,
     voteCount: {
       userVote: 0,
       upvote: 3,
@@ -42,10 +46,14 @@ const arrayFavs = [
     description: 'Favorite description two',
     url: 'https://tutorials.cat/learn/',
     resourceType: 'VIDEO',
-    userId: 'userId',
+    categoryId: 'clp80tq24000008ju72hsfyf1',
     createdAt: '2023-12-11',
     updatedAt: '2023-12-12',
-    status: 'NOT_SEEN',
+    user: {
+      name: 'Author Test Name',
+      avatarId: 'avatar2.jpg',
+    },
+    isAuthor: false,
     voteCount: {
       userVote: 0,
       upvote: 4,
@@ -75,10 +83,12 @@ const arrayResources = [
     description: 'Resource description',
     url: 'https://tutorials.cat/learn/javascript',
     resourceType: 'VIDEO',
-    userId: 'userId',
     createdAt: '11/11/2011',
     updatedAt: '12/12/2012',
-    status: 'NOT_SEEN',
+    user: {
+      name: 'My Name',
+      avatarId: 'myavatar.jpg',
+    },
     voteCount: {
       userVote: 0,
       upvote: 3,
@@ -164,6 +174,10 @@ describe('UserProfileResourcesWidget component', () => {
     expect(screen.queryByText(/data/i)).not.toBeInTheDocument()
 
     expect(screen.getByText(/no hi ha recursos preferits/i)).toBeInTheDocument()
+
+    expect(
+      screen.queryByText(/no has publicat cap recurs/i)
+    ).not.toBeInTheDocument()
   })
 
   it('renders spinner when is loading', () => {
@@ -213,6 +227,10 @@ describe('UserProfileResourcesWidget component', () => {
 
     expect(screen.getByText('Favorite description two')).toBeInTheDocument()
 
+    expect(screen.getByText(/author name/i)).toBeInTheDocument()
+
+    expect(screen.getByText(/author test name/i)).toBeInTheDocument()
+
     expect(
       screen.queryByText(/no hi ha recursos preferits/i)
     ).not.toBeInTheDocument()
@@ -224,6 +242,8 @@ describe('UserProfileResourcesWidget component', () => {
     favIcons.forEach((favIcon) => {
       expect(favIcon).toHaveAttribute('title', 'Elimina de preferits')
     })
+
+    expect(screen.queryByAltText('Edita el recurs')).not.toBeInTheDocument()
   })
 
   it("renders correctly with a user's resources array", () => {
@@ -286,10 +306,14 @@ it('sorts resources by date in descending order', () => {
       description: 'Favorite description two',
       url: 'https://tutorials.cat/learn/',
       resourceType: 'VIDEO',
-      userId: 'userId',
+      categoryId: 'clp80tq24000008ju72hsfyf1',
       createdAt: '2023-12-11',
       updatedAt: '2023-12-12',
-      status: 'NOT_SEEN',
+      user: {
+        name: 'Author Test Name',
+        avatarId: 'avatar2.jpg',
+      },
+      isAuthor: false,
       voteCount: {
         userVote: 0,
         upvote: 4,
@@ -316,10 +340,14 @@ it('sorts resources by date in descending order', () => {
       description: 'Favorite description',
       url: 'https://tutorials.cat/learn/javascript',
       resourceType: 'VIDEO',
-      userId: 'userId',
+      categoryId: 'clp80tq24000008ju72hsfyf1',
       createdAt: '2021-09-28',
       updatedAt: '2022-09-12',
-      status: 'NOT_SEEN',
+      user: {
+        name: 'Author Name',
+        avatarId: 'avatar.jpg',
+      },
+      isAuthor: false,
       voteCount: {
         userVote: 0,
         upvote: 3,

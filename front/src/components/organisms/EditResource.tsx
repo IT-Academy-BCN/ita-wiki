@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 import ResourceForm from './ResourceForm'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { Button } from '../atoms'
@@ -50,13 +51,12 @@ const EditResource = ({
   isInCardResource = false,
 }: TEditResourceProps) => {
   const { t } = useTranslation()
+  const { slug } = useParams()
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-
   const openModal = () => {
     setIsModalOpen(true)
   }
-
-  const { data: fetchedTopics } = useGetTopics()
+  const { data: fetchedTopics } = useGetTopics(slug)
   const mappedTopics =
     fetchedTopics?.map((topic: TMappedTopics) => ({
       value: topic.id,

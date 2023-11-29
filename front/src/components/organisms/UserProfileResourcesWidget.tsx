@@ -5,7 +5,6 @@ import { useSortByDate, useSortByVotes } from '../../hooks'
 import { TFavorites, TResource, TSortOrder } from '../../types'
 import CardResource from './CardResource'
 import { VotesDateController } from './VotesDateController'
-import { useAuth } from '../../context/AuthProvider'
 import { colors, dimensions, device, FlexBox } from '../../styles'
 import { Spinner, Title } from '../atoms'
 
@@ -95,12 +94,11 @@ export const UserProfileResourcesWidget = ({
   isLoading,
   isError,
 }: TResourcesWidget) => {
-  const { user } = useAuth()
   const { t } = useTranslation()
 
   const [sortOrder, setSortOrder] = useState<TSortOrder>('desc')
   const [isSortByVotesActive, setIsSortByVotesActive] = useState(false)
-  
+
   const handleSortOrder = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
   }
@@ -157,7 +155,7 @@ export const UserProfileResourcesWidget = ({
                 <CardResource
                   key={resource.id}
                   id={resource.id}
-                  img=""
+                  img={resource.user?.avatarId ?? ''}
                   title={resource.title}
                   url={resource.url}
                   description={resource.description}
@@ -168,11 +166,7 @@ export const UserProfileResourcesWidget = ({
                   isFavorite={
                     'isFavorite' in resource ? resource.isFavorite : true
                   }
-                  editable={
-                    'isFavorite' in resource
-                      ? true
-                      : user?.id === resource.userId
-                  }
+                  editable={'isFavorite' in resource ? true : resource.isAuthor}
                   resourceType={resource.resourceType}
                   topics={resource.topics}
                   handleAccessModal={() => {}}
