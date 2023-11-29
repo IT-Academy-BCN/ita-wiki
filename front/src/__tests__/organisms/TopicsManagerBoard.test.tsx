@@ -241,59 +241,6 @@ describe('TopicsManagerBoard component', () => {
     )
   })
 
-  it.only('updates topics list on create topic', async () => {
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
-    vi.mocked(useAuth).mockReturnValue({
-      user: { name: 'Name', avatarId: 'Avatar', role: 'MENTOR' },
-    } as TAuthContext)
-
-    const spyInvalidate = vi
-      .spyOn(queryClient, 'invalidateQueries')
-      .mockImplementation(() => Promise.resolve())
-
-    render(<TopicsManagerBoard />)
-
-    await waitFor(() => {
-      const textCreateNewTopic = screen.getByText('+ Crea un nou tema')
-      expect(textCreateNewTopic).toBeInTheDocument()
-      fireEvent.click(textCreateNewTopic)
-    })
-
-    await userEvent.type(
-      screen.getByPlaceholderText('Nom del tema nou'),
-      'New topic created'
-    )
-    screen.debug()
-    fireEvent.click(
-      screen.getByRole('button', {
-        name: "Confirma l'edició",
-      })
-    )
-    // This line is added to invalidate the query cache
-    queryClient.invalidateQueries({
-      queryKey: ['getTopics'],
-    })
-    await waitFor(async () => {
-      expect(spyInvalidate).toHaveBeenCalledWith({
-        queryKey: ['getTopics'],
-      })
-      // queryClient.getQueryData(['getTopics'])
-      // renderWithQueryClient(<TopicsManagerBoard />)
-      // await waitFor(() => {
-      //   expect(screen.getByText(/new topic created/i)).toBeInTheDocument()
-      // })
-    })
-  })
-
   it('updates topics list on update topic', async () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',

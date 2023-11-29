@@ -19,23 +19,6 @@ const errorMessageStatus: { [key: number]: string } = {
   500: 'Error 500 - Error bbdd',
 }
 
-export const getTopicsByCategoryId = async (
-  categoryId?: string
-): Promise<TGetTopics> => {
-  console.log('fetch', categoryId)
-  const url = categoryId
-    ? `${urls.getTopics}?categoryId=${categoryId}`
-    : urls.getTopics
-
-  const response = await fetch(url)
-  if (!response.ok) {
-    throw new Error(`Error fetching topics: ${response.statusText}`)
-  }
-
-  const data = await response.json()
-  return data
-}
-
 export const getTopics = async (slug?: string): Promise<TGetTopics> => {
   const url = slug ? `${urls.getTopics}?slug=${slug}` : urls.getTopics
 
