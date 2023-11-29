@@ -18,7 +18,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.6.6] - 2023-11-29
 
-## Fixed
+### Fixed
 
 - Adapt UserProfileresourcesWidget to updated endpoint
 - Fixed favorites type
