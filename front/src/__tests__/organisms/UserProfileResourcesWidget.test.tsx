@@ -153,14 +153,14 @@ describe('UserProfileResourcesWidget component', () => {
     expect(screen.getByText(/no has publicat cap recurs/i)).toBeInTheDocument()
 
     expect(
-      screen.queryByText(/no hi ha recursos favorits/i)
+      screen.queryByText(/no hi ha recursos preferits/i)
     ).not.toBeInTheDocument()
   })
 
   it('renders an empty favorite resources array', () => {
     render(
       <UserProfileResourcesWidget
-        title="Recursos favorits"
+        title="Recursos preferits"
         titleMobile="Test title fav mobile"
         resourcesArray={[]}
         isLoading={false}
@@ -173,7 +173,7 @@ describe('UserProfileResourcesWidget component', () => {
     expect(screen.queryByText(/vots/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/data/i)).not.toBeInTheDocument()
 
-    expect(screen.getByText(/no hi ha recursos favorits/i)).toBeInTheDocument()
+    expect(screen.getByText(/no hi ha recursos preferits/i)).toBeInTheDocument()
 
     expect(
       screen.queryByText(/no has publicat cap recurs/i)
@@ -183,7 +183,7 @@ describe('UserProfileResourcesWidget component', () => {
   it('renders spinner when is loading', () => {
     render(
       <UserProfileResourcesWidget
-        title="Recursos favorits"
+        title="Recursos preferits"
         titleMobile="Test title fav mobile"
         resourcesArray={undefined}
         isLoading
@@ -199,14 +199,14 @@ describe('UserProfileResourcesWidget component', () => {
     expect(screen.queryByText(/data/i)).not.toBeInTheDocument()
 
     expect(
-      screen.queryByText(/no hi ha recursos favorits/i)
+      screen.queryByText(/no hi ha recursos preferits/i)
     ).not.toBeInTheDocument()
   })
 
   it('renders correctly with a favorite resources array', () => {
     render(
       <UserProfileResourcesWidget
-        title="Recursos favorits"
+        title="Recursos preferits"
         titleMobile="Test title mobile"
         resourcesArray={arrayFavs}
         isLoading={false}
@@ -214,7 +214,7 @@ describe('UserProfileResourcesWidget component', () => {
       />
     )
 
-    expect(screen.getByText(/recursos favorits/i)).toBeInTheDocument()
+    expect(screen.getByText(/recursos preferits/i)).toBeInTheDocument()
 
     expect(screen.getByText(/vots/i)).toBeInTheDocument()
     expect(screen.getByText(/data/i)).toBeInTheDocument()
@@ -232,7 +232,7 @@ describe('UserProfileResourcesWidget component', () => {
     expect(screen.getByText(/author test name/i)).toBeInTheDocument()
 
     expect(
-      screen.queryByText(/no hi ha recursos favorits/i)
+      screen.queryByText(/no hi ha recursos preferits/i)
     ).not.toBeInTheDocument()
 
     const favIcons = screen.getAllByText('favorite')
@@ -240,7 +240,7 @@ describe('UserProfileResourcesWidget component', () => {
     expect(favIcons).toHaveLength(2)
 
     favIcons.forEach((favIcon) => {
-      expect(favIcon).toHaveAttribute('title', 'Elimina de favorits')
+      expect(favIcon).toHaveAttribute('title', 'Elimina de preferits')
     })
 
     expect(screen.queryByAltText('Edita el recurs')).not.toBeInTheDocument()
@@ -272,7 +272,7 @@ describe('UserProfileResourcesWidget component', () => {
 
     expect(screen.getByText('favorite')).toHaveAttribute(
       'title',
-      'Afegeix a favorits'
+      'Afegeix a preferits'
     )
 
     expect(
@@ -394,7 +394,7 @@ it('sorts resources by votes in descending order', () => {
 it('renders error message when there is an error', () => {
   render(
     <UserProfileResourcesWidget
-      title="Recursos favorits"
+      title="Recursos preferits"
       titleMobile="Test title fav mobile"
       resourcesArray={undefined}
       isLoading={false}
@@ -414,6 +414,6 @@ it('renders error message when there is an error', () => {
   expect(screen.queryByRole('status')).not.toBeInTheDocument()
 
   expect(
-    screen.queryByText(/no hi ha recursos favorits/i)
+    screen.queryByText(/no hi ha recursos preferits/i)
   ).not.toBeInTheDocument()
 })
