@@ -4,10 +4,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
 import { useAuth } from '../../context/AuthProvider'
-import { TResource } from '../../context/store/types'
 import { updateCachedVoteCount } from '../../helpers'
 import { updateVote } from '../../helpers/fetchers'
-import { TVoteCount } from '../../types'
+import { TResource, TVoteCount } from '../../types'
 
 type ArrowProp = {
   color: string

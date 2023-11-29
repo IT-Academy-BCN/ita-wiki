@@ -91,7 +91,6 @@ export type TResource = {
   resourceType: string
   topics: TTopicResource[]
   isFavorite: boolean
-  // editable?: boolean
 }
 
 export type TFilters = {
