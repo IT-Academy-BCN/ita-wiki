@@ -40,9 +40,11 @@ const CategoryStyled = styled.span<TLinkStyled>`
   font-family: ${font.fontFamily};
   margin-top: ${dimensions.spacing.lg};
   cursor: pointer;
+  transition: transform 0.3s ease;
 
-  :hover {
+  &:hover {
     color: ${({ active }) => (active ? colors.black.black3 : colors.primary)};
+    transform: scale(1.05);
   }
 
   &::before {
@@ -62,8 +64,6 @@ const categoryImg: Record<string, string> = {
   Node: icons.node, // TODO: Add Node Icon
   'Fullstack PHP': icons.php, // TODO: Add PHP Icon
   React: icons.react, // TODO: Add React Icon
-  Spring: icons.spring, // TODO: Add Spring Icon
-  Laravel: icons.laravel, // TODO: Add Spring Icon
   BBDD: icons.bbdd, // TODO: Add BBDD Icon
 }
 

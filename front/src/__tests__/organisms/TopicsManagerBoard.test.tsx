@@ -1,4 +1,5 @@
 import { vi } from 'vitest'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { rest } from 'msw'
 import { useParams, Params, useLocation } from 'react-router-dom'
 import userEvent from '@testing-library/user-event'
@@ -34,6 +35,13 @@ beforeEach(() => {
 afterEach(() => {
   vi.restoreAllMocks()
 })
+
+const queryClient = new QueryClient()
+
+const renderWithQueryClient = (component: React.ReactNode) =>
+  render(
+    <QueryClientProvider client={queryClient}>{component}</QueryClientProvider>
+  )
 
 describe('TopicsManagerBoard component', () => {
   it('renders correctly without category slug', () => {
@@ -231,6 +239,44 @@ describe('TopicsManagerBoard component', () => {
         )
       ).toBeInTheDocument()
     )
+  })
+
+  it('updates topics list on update topic', async () => {
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'react',
+    } as Readonly<Params>)
+    vi.mocked(useLocation).mockReturnValue({
+      pathname: '',
+      search: '',
+      hash: '',
+      key: '',
+      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
+    }) as unknown as Location
+    vi.mocked(useAuth).mockReturnValue({
+      user: { name: 'Name', avatarId: 'Avatar', role: 'MENTOR' },
+    } as TAuthContext)
+
+    render(<TopicsManagerBoard />)
+
+    await waitFor(() => {
+      const editButton = screen.getByTestId('editcli04v2l0000008mq5pwx7w5j')
+      expect(screen.getByText('Listas')).toBeInTheDocument()
+      expect(editButton).toBeInTheDocument()
+      fireEvent.click(editButton)
+    })
+
+    await userEvent.type(screen.getByDisplayValue('Listas'), 'Listas edited')
+
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: "Confirma l'edició",
+      })
+    )
+    await waitFor(async () => {
+      queryClient.getQueryData(['getTopics'])
+      renderWithQueryClient(<TopicsManagerBoard />)
+      expect(screen.getByText(/listas edited/i)).toBeInTheDocument()
+    })
   })
 
   it('shows error message on update topic in case of server error (error 500)', async () => {

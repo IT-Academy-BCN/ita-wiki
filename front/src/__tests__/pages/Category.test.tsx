@@ -61,7 +61,7 @@ it('renders correctly', () => {
   expect(screen.getByTestId('status-filter')).toBeInTheDocument()
   expect(screen.getByTestId('resource-list')).toBeInTheDocument()
   expect(screen.getByText('Els meus recursos')).toBeInTheDocument()
-  expect(screen.getByText('Recursos favorits')).toBeInTheDocument()
+  expect(screen.getByText('Recursos preferits')).toBeInTheDocument()
 })
 
 it('renders Navbar for logged in users', () => {

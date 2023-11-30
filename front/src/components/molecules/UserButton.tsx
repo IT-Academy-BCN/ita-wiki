@@ -17,6 +17,12 @@ const AvatarImage = styled.img`
   border-radius: ${dimensions.borderRadius.sm};
   background-color: ${colors.white};
   cursor: pointer;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.03);
+  }
+
   @media only ${device.Tablet} {
     border-radius: ${dimensions.borderRadius.base};
     width: 48px;
