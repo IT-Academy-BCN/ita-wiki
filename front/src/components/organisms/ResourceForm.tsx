@@ -56,7 +56,7 @@ const ResourceFormSchema = z.object({
     .refine((val) => val !== '', 'Debe seleccionar un tema válido'),
   resourceType: z.string(),
 })
-export type TResourceForm = Omit<
+export type TInitialValues = Omit<
   z.infer<typeof ResourceFormSchema>,
   'topics'
 > & {
@@ -74,12 +74,12 @@ type TSelectOption = {
   label: string
   id?: string
 }
-export type TSelectOptions = {
+export type TResourceForm = {
   selectOptions: TSelectOption[]
-  initialValues?: Partial<TResourceForm>
+  initialValues?: Partial<TInitialValues>
   resourceId?: string
 }
-const ResourceForm: FC<TSelectOptions> = ({
+const ResourceForm: FC<TResourceForm> = ({
   selectOptions,
   initialValues,
   resourceId,
@@ -89,7 +89,7 @@ const ResourceForm: FC<TSelectOptions> = ({
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm<TResourceForm>({
+  } = useForm<TInitialValues>({
     resolver: zodResolver(ResourceFormSchema),
     defaultValues: initialValues ?? undefined,
   })
