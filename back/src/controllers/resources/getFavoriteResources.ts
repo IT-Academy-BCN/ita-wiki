@@ -30,18 +30,16 @@ export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
           categoryId: true,
           topics: { select: { topic: true } },
           vote: { select: { vote: true, userId: true } },
-        },
-      },
-      user: {
-        select: {
-          name: true,
-          avatarId: true,
+          user: {
+            select: {
+              name: true,
+              avatarId: true,
+            },
+          },
         },
       },
     },
   })
-
-  // console.log('favorites: ', favorites)
 
   const favoritesWithIsAuthor = favorites.map((fav) => {
     const isAuthor = fav.resource.userId === user.id
@@ -51,10 +49,6 @@ export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
   const parsedResources = favoritesWithIsAuthor.map((resource) =>
     resourceFavoriteSchema.parse({
       ...transformResourceToAPI(resource.resource, user ? user.id : undefined),
-      user: {
-        name: resource.user.name,
-        avatarId: resource.user.avatarId,
-      },
       isAuthor: resource.resource.isAuthor,
     })
   )

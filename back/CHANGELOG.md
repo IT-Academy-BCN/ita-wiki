@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.4] - 2023-11-29
+
+### Changed
+
+- Modified GET Favorites query so the nested user object returned with each favorite resource, specifies the name and avatarId of the author of each resource.
+
 ## [0.3.3] - 2023-11-28
 
 ### Changed
