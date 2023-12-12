@@ -53,7 +53,7 @@ describe('Register', () => {
     )
     await userEvent.selectOptions(
       screen.getByLabelText('specialization'),
-      'React'
+      'Frontend Angular'
     )
     await userEvent.click(screen.getByTestId('accept'))
 
@@ -86,7 +86,7 @@ describe('Register', () => {
         screen.getByText(/La contrasenya ha de coincidir/i)
       ).toBeInTheDocument()
       expect(
-        screen.getByText(/Es necesario aceptar los términos legales/i)
+        screen.getByText(/És necessari acceptar els termes legals/i)
       ).toBeInTheDocument()
       expect(
         screen.getByText(

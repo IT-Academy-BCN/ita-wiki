@@ -17,9 +17,9 @@ import {
 import InputGroup from '../molecules/InputGroup'
 import SelectGroup from '../molecules/SelectGroup'
 import { colors, device, dimensions, FlexBox } from '../../styles'
-import { TCategory, TRegisterForm } from '../../types'
-import { useGetCategories } from '../../hooks'
+import { TItinerary, TRegisterForm } from '../../types'
 import { useRegister } from '../../hooks/useRegister'
+import { useGetItineraries } from '../../hooks'
 
 const RegisterStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.sm};
@@ -116,10 +116,10 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     trigger,
   } = useForm<TRegisterForm>({ resolver: zodResolver(UserRegisterSchema) })
 
-  const { data } = useGetCategories()
-  const categoriesMap = data?.map((category: TCategory) => ({
-    value: category.id,
-    label: category.name,
+  const { data } = useGetItineraries()
+  const itinerariesMap = data?.map((itinerary: TItinerary) => ({
+    value: itinerary.id,
+    label: itinerary.name,
   }))
 
   const { registerUser, error, isLoading, isSuccess } =
@@ -136,8 +136,8 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
       accept,
     } = userData
 
-    const selectedCategory = categoriesMap.find(
-      (category: { label: string }) => category.label === specialization
+    const selectedCategory = itinerariesMap?.find(
+      (itinerary: { label: string }) => itinerary.label === specialization
     )
 
     if (selectedCategory && password === confirmPassword && accept) {
@@ -259,7 +259,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             label="specialization"
             placeholder={t('Especialidad')}
             error={!!errors.specialization}
-            options={categoriesMap}
+            options={itinerariesMap}
             validationMessage={
               errors.specialization?.message && t('camp obligatori')
             }
@@ -287,7 +287,10 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
           </FlexBox>
           {errors.accept && (
             <FlexBox align="start">
-              <ValidationMessage color="error" text={errors.accept?.message} />
+              <ValidationMessage
+                color="error"
+                text={errors.accept?.message && t('error terminos legales')}
+              />
             </FlexBox>
           )}
         </GridAreaStyled>

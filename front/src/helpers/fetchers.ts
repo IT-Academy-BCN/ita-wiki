@@ -87,6 +87,18 @@ export const getTypes = (): Promise<TGetTypes> =>
       throw new Error(`Error fetching types: ${err.message}`)
     })
 
+export const getItineraries = async () =>
+  fetch(urls.getItineraries)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error fetching itineraries: ${res.statusText}`)
+      }
+      return res.json()
+    })
+    .catch((err) => {
+      throw new Error(`Error fetching itineraries: ${err.message}`)
+    })
+
 export const getFavorites = async (slug?: string): Promise<TFavorites[]> => {
   const urlFavorites = slug
     ? `${urls.getFavorites}/${slug}`

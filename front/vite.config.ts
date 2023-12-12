@@ -14,6 +14,11 @@ export default defineConfig({
         changeOrigin: true,
         // rewrite: (path) => path.replace(/^\/api/, ''),
       },
+      '/sso': {
+        target: 'https://dev.sso.itawiki.eurecatacademy.org/',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/sso/, ''),
+      },
     },
   },
   test: {

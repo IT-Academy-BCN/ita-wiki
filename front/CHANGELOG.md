@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.0] - 2023-12-11
+
+### Added
+
+- Added sso service api to proxy in vite.config
+- Added useGetItineraries hook and its test
+
+### Changed
+
+- Register dropdown shows itineraries from sso service
+- Updated tests accordingly
+
+### Fixed
+
+- Fixed missing translation of error in legal terms at Register
+
 ## [0.6.8] - 2023-11-29
 
 ### Fixed

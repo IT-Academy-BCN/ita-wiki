@@ -68,6 +68,19 @@ export const handlers = [
     )
   ),
 
+  rest.get(urls.getItineraries, (_, res, ctx) =>
+    res(
+      ctx.status(200),
+      ctx.json([
+        {
+          id: '1',
+          name: 'Frontend Angular',
+          slug: 'frontend-angular',
+        },
+      ])
+    )
+  ),
+
   rest.get(urls.getTopics, (req, res, ctx) => {
     const slug = req.url.searchParams.get('slug')
     if (slug === 'react') {
