@@ -548,6 +548,7 @@ const Category: FC = () => {
                     <TopicsRadioWidget
                       key={slug}
                       slug={slug}
+                      topic={topic}
                       setTopic={handleTopicFilter}
                     />
                   )}
