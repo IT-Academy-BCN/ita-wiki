@@ -6,10 +6,12 @@ export const buildQueryString = ({
   resourceTypes,
   status,
   topic,
+  search,
 }: TFilters) =>
   qs.stringify({
     slug,
     resourceTypes,
     status,
     topic,
+    search,
   })

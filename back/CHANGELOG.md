@@ -23,6 +23,18 @@ All notable changes to this project will be documented in this file.
 - Changed token cookies to authToken
 - Changed create resource test to post
 
+## [0.3.4] - 2023-11-29
+
+### Changed
+
+- Modified GET Favorites query so the nested user object returned with each favorite resource, specifies the name and avatarId of the author of each resource.
+
+## [0.3.3] - 2023-11-28
+
+### Changed
+
+- Modified GET Favorites resources controller and schema so response omits userId and includes a "isAuthor" boolean and a user object contaning name and avatarId.
+
 ## [0.3.2] - 2023-11-23
 
 ### Changed

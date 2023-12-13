@@ -66,19 +66,43 @@ describe('ResourceForm', () => {
     }) as unknown as Location
     render(<ResourceForm selectOptions={options} />)
 
-    expect(screen.getByLabelText(/título/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/descripción/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/títol/i)).toBeInTheDocument()
+    expect(screen.getByLabelText(/descripció/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/url/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/video/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/curso/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/blog/i)).toBeInTheDocument()
-    expect(screen.getByLabelText(/tema/i)).toBeInTheDocument()
-  })
+    expect(screen.getByTestId('resourceType')).toBeInTheDocument()
+    expect(screen.getByTestId('resourceTopic')).toBeInTheDocument()
 
+    expect(screen.getByText(/crear/i)).toBeInTheDocument()
+  })
+  it('renders correctly on edit resource with initial values', () => {
+    vi.mocked(useLocation).mockReturnValue({
+      pathname: '',
+      search: '',
+      hash: '',
+      key: '',
+      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
+    }) as unknown as Location
+    const initialValues = {
+      title: 'TEST TITLE',
+      description: 'TEST DESCRIPTION',
+      url: 'TEST URL',
+      resourceType: 'VIDEO',
+      topicId: 'cli04v2l0000008mq5pwx7w5j',
+    }
+    render(
+      <ResourceForm selectOptions={options} initialValues={initialValues} />
+    )
+
+    expect(screen.getByDisplayValue('TEST TITLE')).toBeInTheDocument()
+    expect(screen.getByDisplayValue('TEST DESCRIPTION')).toBeInTheDocument()
+    expect(screen.getByDisplayValue('TEST URL')).toBeInTheDocument()
+    expect(screen.getByDisplayValue('VIDEO')).toBeInTheDocument()
+    expect(screen.getByDisplayValue('Listas')).toBeInTheDocument()
+  })
   it('should show error message when form input is invalid', async () => {
     render(<ResourceForm selectOptions={options} />)
 
-    fireEvent.change(screen.getByLabelText(/título/i), {
+    fireEvent.change(screen.getByLabelText(/títol/i), {
       target: { value: '' },
     })
     fireEvent.click(screen.getByText(/crear/i))
@@ -87,19 +111,28 @@ describe('ResourceForm', () => {
     )
   })
 
-  it.skip('should correctly submit the form when all fields requested are complete', async () => {
+  it('should correctly submit the form when all fields requested are complete', async () => {
+    vi.mocked(useLocation).mockReturnValue({
+      pathname: '',
+      search: '',
+      hash: '',
+      key: '',
+      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
+    }) as unknown as Location
     render(<ResourceForm selectOptions={options} />)
 
-    const titleInput = screen.getByLabelText(/título/i) as HTMLInputElement
+    const titleInput = screen.getByLabelText(/títol/i) as HTMLInputElement
 
     fireEvent.change(titleInput, { target: { value: 'TEST TITLE' } })
-    expect(titleInput.value).toBe('TEST TITLE')
 
-    fireEvent.change(screen.getByLabelText(/descripción/i), {
+    const descriptionInput = screen.getByLabelText(
+      /descripció/i
+    ) as HTMLInputElement
+    fireEvent.change(descriptionInput, {
       target: { value: 'TESTING DESCRIPTION' },
     })
-
-    fireEvent.change(screen.getByLabelText(/url/i), {
+    const urlInput = screen.getByLabelText(/url/i) as HTMLInputElement
+    fireEvent.change(urlInput, {
       target: { value: 'https://dev.itawiki.eurecatacademy.org/' },
     })
 
@@ -108,14 +141,19 @@ describe('ResourceForm', () => {
       target: { value: 'cli04uxud000609k37w9phejw' },
     })
 
-    const videoRadio = screen.getByLabelText(/video/i)
+    const videoRadio = screen.getByTestId('resourceType') as HTMLInputElement
     fireEvent.click(videoRadio)
 
     const button = screen.getByText(/crear/i)
     fireEvent.click(button)
 
     await waitFor(() => {
-      expect(screen.getByTestId('done-icon')).toBeInTheDocument()
+      expect(titleInput.value).toBe('TEST TITLE')
+      expect(descriptionInput.value).toBe('TESTING DESCRIPTION')
+      expect(urlInput.value).toBe('https://dev.itawiki.eurecatacademy.org/')
+      expect(temaSelect.value).toBe('cli04uxud000609k37w9phejw')
+      expect(videoRadio).toBeEnabled()
+      expect(button).toBeEnabled()
     })
     reloadPage()
   })
@@ -125,15 +163,21 @@ describe('ResourceForm', () => {
     render(<ResourceForm selectOptions={options} />)
   })
 
-  it.skip('should submit the form for updating a resource when initialValues is provided', async () => {
+  it('should submit the form for updating a resource when initialValues is provided', async () => {
+    vi.mocked(useLocation).mockReturnValue({
+      pathname: '',
+      search: '',
+      hash: '',
+      key: '',
+      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
+    }) as unknown as Location
     const initialValues = {
+      id: 'resource-id',
       title: 'Initial Title',
       description: 'Initial Description',
       url: 'https://example.com',
-      topics: ['cli04v2l0000008mq5pwx7w5j'],
       topicId: 'cli04v2l0000008mq5pwx7w5j',
       resourceType: 'VIDEO',
-      userEmail: 'test@example.com',
     }
     const resourceId = 'resource-id'
 
@@ -144,12 +188,12 @@ describe('ResourceForm', () => {
         resourceId={resourceId}
       />
     )
-    const titleInput = screen.getByLabelText(/título/i) as HTMLInputElement
+    const titleInput = screen.getByLabelText(/títol/i) as HTMLInputElement
 
     fireEvent.change(titleInput, { target: { value: 'Updated Title' } })
     expect(titleInput.value).toBe('Updated Title')
 
-    fireEvent.change(screen.getByLabelText(/descripción/i), {
+    fireEvent.change(screen.getByLabelText(/descripció/i), {
       target: { value: 'Updated Description' },
     })
 
@@ -160,20 +204,26 @@ describe('ResourceForm', () => {
     const temaSelect = screen.getByLabelText(/tema/i) as HTMLSelectElement
     fireEvent.change(temaSelect, { target: { value: initialValues.topicId } })
 
-    const button = screen.getByText(/editar/i)
+    const button = screen.getByTestId('submit-button')
     fireEvent.click(button)
     reloadPage()
   })
 
-  it.skip('should show error message when updating a resource with invalid input', async () => {
+  it('should show error message when updating a resource with invalid input', async () => {
+    vi.mocked(useLocation).mockReturnValue({
+      pathname: '',
+      search: '',
+      hash: '',
+      key: '',
+      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
+    }) as unknown as Location
     const initialValues = {
+      id: 'resource-id',
       title: 'Initial Title',
       description: 'Initial Description',
       url: 'https://example.com',
-      topics: ['cli04v2l0000008mq5pwx7w5j'],
       topicId: 'cli04v2l0000008mq5pwx7w5j',
       resourceType: 'VIDEO',
-      userEmail: 'test@example.com',
     }
     const resourceId = 'resource-id'
 
@@ -185,12 +235,15 @@ describe('ResourceForm', () => {
       />
     )
 
-    fireEvent.change(screen.getByLabelText(/título/i), {
+    fireEvent.change(screen.getByLabelText(/títol/i), {
       target: { value: '' },
     })
-    fireEvent.click(screen.getByText(/editar/i))
+    const button = screen.getByTestId('submit-button')
+    fireEvent.click(button)
+
     await waitFor(() =>
       expect(screen.getByText('Este campo es obligatorio')).toBeInTheDocument()
     )
+    reloadPage()
   })
 })

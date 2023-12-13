@@ -6,6 +6,7 @@ import { resourceFavoriteSchema } from '../../schemas'
 
 export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User
+
   const { categorySlug } = ctx.params
   const where = {
     userId: user.id,
@@ -23,21 +24,33 @@ export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
           description: true,
           url: true,
           resourceType: true,
+          userId: true,
           createdAt: true,
           updatedAt: true,
-          userId: true,
           categoryId: true,
           topics: { select: { topic: true } },
           vote: { select: { vote: true, userId: true } },
+          user: {
+            select: {
+              name: true,
+              avatarId: true,
+            },
+          },
         },
       },
     },
   })
 
-  const parsedResources = favorites.map((resource) =>
-    resourceFavoriteSchema.parse(
-      transformResourceToAPI(resource.resource, user ? user.id : undefined)
-    )
+  const favoritesWithIsAuthor = favorites.map((fav) => {
+    const isAuthor = fav.resource.userId === user.id
+    return { ...fav, resource: { ...fav.resource, isAuthor } }
+  })
+
+  const parsedResources = favoritesWithIsAuthor.map((resource) =>
+    resourceFavoriteSchema.parse({
+      ...transformResourceToAPI(resource.resource, user ? user.id : undefined),
+      isAuthor: resource.resource.isAuthor,
+    })
   )
 
   ctx.status = 200

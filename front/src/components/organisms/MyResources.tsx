@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../context/AuthProvider'
 import { Modal } from '../molecules'
-import { Title, Spinner, Icon, Text } from '../atoms'
+import { Title, Spinner, Text } from '../atoms'
 import {
   FlexBox,
   colors,
@@ -23,10 +23,8 @@ const TitleContainer = styled(FlexBox)`
   align-items: stretch;
 
   @media only ${device.Tablet} {
-    flex-direction: row;
-    align-items: center;
-    gap: ${dimensions.spacing.xxxs};
     margin-top: ${dimensions.spacing.md};
+    margin-bottom: ${dimensions.spacing.xxxs};
   }
 `
 
@@ -34,7 +32,6 @@ const ResourcesUserStyled = styled(FlexBox)`
   flex-direction: row;
   overflow: hidden;
   overflow-x: auto;
-  justify-content: flex-start;
 
   &::-webkit-scrollbar {
     display: none;
@@ -43,8 +40,18 @@ const ResourcesUserStyled = styled(FlexBox)`
   @media only ${device.Tablet} {
     flex-direction: column;
     align-items: flex-start;
+    justify-content: flex-start;
     overflow: hidden;
     overflow-y: auto;
+    gap: 0.35rem;
+  }
+`
+
+const MyResourcesCardList = styled(FlexBox)`
+  width: 100%;
+
+  @media only ${device.Tablet} {
+    padding-bottom: 0.3rem;
   }
 `
 
@@ -59,14 +66,6 @@ const StyledText = styled(Text)`
 const TextDecorationStyled = styled.span`
   text-decoration: underline;
   cursor: pointer;
-`
-
-const MyResourcesCardList = styled(FlexBox)`
-  margin-right: ${dimensions.spacing.xxs};
-
-  @media only ${device.Tablet} {
-    margin-right: ${dimensions.spacing.none};
-  }
 `
 
 const getWindowMobile = () =>
@@ -103,12 +102,9 @@ const MyResources = () => {
             {t('Tus recursos')}
           </Title>
         ) : (
-          <>
-            <Icon name="menu_book" fill={0} />
-            <Title as="h2" fontWeight="bold" data-testid="title">
-              {t('Mis recursos')}
-            </Title>
-          </>
+          <Title as="h2" fontWeight="bold" data-testid="title">
+            {t('Mis recursos')}
+          </Title>
         )}
       </TitleContainer>
       {!user && (

@@ -14,13 +14,18 @@ const DropdownLang = styled.select<{ selectedLanguage: Language }>`
   background-color: ${colors.white};
   height: 40px;
   width: ${({ selectedLanguage }) =>
-    selectedLanguage === 'cat' ? '60px' : '46px'};
+    selectedLanguage === 'cat' ? '62px' : '46px'};
+  transition: transform 0.3s ease;
+
   &:hover {
     cursor: pointer;
+    transform: scale(1.03);
   }
+
   &:focus {
     outline: 0 none;
   }
+
   @media ${device.Mobile} {
     background-color: ${colors.white};
     margin: 0;

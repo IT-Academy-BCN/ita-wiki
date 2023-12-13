@@ -1,5 +1,6 @@
 import { useState, useEffect, ChangeEvent } from 'react'
 import styled from 'styled-components'
+import { useTranslation } from 'react-i18next'
 import { CheckBox, Label, Spinner, Text } from '../atoms'
 import { colors, dimensions, FlexBox, font } from '../../styles'
 import { TGetTypes, TTypesFilterWidget } from '../../types/types'
@@ -29,6 +30,7 @@ const CheckBoxStyled = styled(CheckBox)`
 
 const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
   const { isLoading, data, error } = useGetTypes()
+  const { t } = useTranslation()
 
   const [selectedTypes, setSelectedTypes] = useState<TGetTypes>([])
 
@@ -52,18 +54,20 @@ const TypesFilterWidget = ({ handleTypesFilter }: TTypesFilterWidget) => {
     setSelectedTypes(removeTypes)
     return removeTypes
   }
-
+  const mapTypeLabel = (type: string): string =>
+    type === 'TUTORIAL'
+      ? t('Curso')
+      : type.slice(0, 1) + type.slice(1).toLowerCase()
   if (error) return <p>Ha habido un error...</p>
-
   return (
     <StyledFlexbox direction="column" align="start" data-testid="types-filter">
-      <StyledText fontWeight="bold">Tipo</StyledText>
+      <StyledText fontWeight="bold">{t('Tipo')}</StyledText>
       {isLoading && <StyledSpinner size="small" role="status" />}
       {data?.map((item: string) => (
         <CheckBoxStyled
           key={item}
           id={item}
-          label={`${item.slice(0, 1)}${item.slice(1).toLowerCase()}`}
+          label={mapTypeLabel(item)}
           defaultChecked
           onChange={(e) => handleTypesFilter(changeSelection(e, item))}
         />

@@ -691,8 +691,6 @@ paths:
                         - BLOG
                         - VIDEO
                         - TUTORIAL
-                    userId:
-                      type: string
                     categoryId:
                       type: string
                       example: clocr0bi20000h8vwipfbazso
@@ -706,6 +704,19 @@ paths:
                         - type: string
                           format: date-time
                         - type: string
+                    user:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        avatarId:
+                          type: string
+                          nullable: true
+                      required:
+                        - name
+                        - avatarId
+                    isAuthor:
+                      type: boolean
                     voteCount:
                       type: object
                       properties:
@@ -771,10 +782,11 @@ paths:
                     - slug
                     - url
                     - resourceType
-                    - userId
                     - categoryId
                     - createdAt
                     - updatedAt
+                    - user
+                    - isAuthor
                     - voteCount
                     - topics
         "401":

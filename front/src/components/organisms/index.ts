@@ -1,3 +1,4 @@
+import { AccountAdmin } from './AccountAdmin'
 import { CardResourceLink } from './CardResourceLink'
 import { CategoriesList } from './CategoriesList'
 import { DesktopSideMenu } from './DesktopSideMenu'
@@ -16,8 +17,10 @@ import type { TResourceForm } from './ResourceForm'
 import { UserAccessHome } from './UserAccessHome'
 import { UserProfileResourcesWidget } from './UserProfileResourcesWidget'
 import { VotesDateController } from './VotesDateController'
+import { Search } from './Search'
 
 export {
+  AccountAdmin,
   CardResourceLink,
   CategoriesList,
   DesktopSideMenu,
@@ -35,6 +38,7 @@ export {
   UserAccessHome,
   UserProfileResourcesWidget,
   VotesDateController,
+  Search,
 }
 
 export type { TResourceForm }

@@ -1,5 +1,5 @@
 {
-  "Benvinguts": "Benvinguts a la wiki de la IT Academy!",
+  "Benvinguts": "Et donem la benvinguda a la wiki de la IT Academy!",
   "Registra't": "Registra't o inicia sessió per poder pujar i votar recursos",
   "RegistrarmeBtn": "Registrar-me",
   "EntrarBtn": "Entrar",
@@ -36,17 +36,22 @@
   "recordar/cambiar": "Recordar/canviar la contrasenya",
   "no tienes una cuenta?": "No tens un compte?, crea'n un",
 
-  "Editar recurso": "Edita el recurs",
-  "Eliminar de favoritos": "Elimina de favorits",
-  "Añadir a favoritos": "Afegeix a favorits",
+  "Acceso restringido": "Accés restringit",
+  "Regístrate para subir o votar contenido": "Registra't per pujar o votar contingut",
+  "Registrarme": "Registrar-me",
+  "Entrar": "Entrar",
 
-  "Recursos favoritos": "Recursos favorits",
+  "Editar recurso": "Edita el recurs",
+  "Eliminar de favoritos": "Elimina de preferits",
+  "Añadir a favoritos": "Afegeix a preferits",
+
+  "Recursos favoritos": "Recursos preferits",
   "Recursos que te gustan": "Recursos que t'agraden",
   "Regístrate": "Registra't",
   " o ": " o ",
   "inicia sesión": "inicia sessió",
-  " para añadir recursos favoritos": " per afegir recursos favorits",
-  "No tienes recursos favoritos": "No hi ha recursos favorits",
+  " para añadir recursos favoritos": " per afegir recursos preferits",
+  "No tienes recursos favoritos": "No hi ha recursos preferits",
   "Algo ha ido mal...": "Alguna cosa ha anat malament...",
   "Mis recursos": "Els meus recursos",
   "Tus recursos": "Els teus recursos",
@@ -89,6 +94,22 @@
   "Votos": "Vots",
   "Fecha": "Data",
   "Crear nuevo recurso": "Crear nou recurs",
+  "searchErrorMessage": "Escriu al menys 2 caràcters",
+
+  "Crear": "Crear",
+  "Título": "Títol",
+  "Descripción": "Descripció",
+  "Opciones": "Opcions",
+  "Tema": "Tema",
+  "Curso": "Curs",
+
+  "Todos": "Tots",
+  "Por ver": "Pendents",
+  "Vistos": "Vistos",
+  "Tipo": "Format",
+
+  "¡Vaya! :/": "Vaja! :/",
+  "Todavía no hay recursos de este tipo.": "Encara no hi ha recursos d'aquest tipus.",
 
   "Error 401 - No autorizado": "Operació no autoritzada. És necessari iniciar sessió d'usuari.",
   "Error 403 - Acceso denegado": "Accés denegat. No tens els permisos necessaris per realitzar l'operació.",
@@ -101,7 +122,7 @@
   "Sin imagen de usuario": "Sense imatge d'usuari",
   "Aportaciones": "Aportacions",
   "Votos recibidos": "Vots rebuts",
-  "Favoritos guardados": "Favorits guardats",
+  "Favoritos guardados": "Recursos preferits",
   "n/d": "n/d",
 
   "Mostrando":"Mostrant",

@@ -28,6 +28,7 @@ export type TGetTypes = string[]
 export type TTypesFilterWidget = {
   handleTypesFilter: (selectedTypes: TGetTypes) => void
 }
+
 export type TFavorites = {
   id: string
   title: string
@@ -35,14 +36,14 @@ export type TFavorites = {
   description: string
   url: string
   resourceType: string
-  userId: string
-  user?: {
-    name: string
-    email: string
-  }
+  categoryId: string
   createdAt: string
   updatedAt: string
-  status: string
+  user: {
+    name: string
+    avatarId: string
+  }
+  isAuthor: boolean
   voteCount: {
     upvote: number
     downvote: number
@@ -51,6 +52,7 @@ export type TFavorites = {
   }
   topics: TTopicResource[]
 }
+
 export type TUserData = {
   id: string
   email: string
@@ -62,6 +64,11 @@ export type TUserData = {
   updatedAt: string
 }
 
+export type TUserUpdatedStatus = {
+  id: string
+  status: string
+}
+
 export type TResource = {
   id: string
   title: string
@@ -71,9 +78,9 @@ export type TResource = {
   createdAt: string
   updatedAt: string
   userId?: string
-  user?: {
+  user: {
     name: string
-    email: string
+    avatarId: string
   }
   voteCount: {
     upvote: number
@@ -84,7 +91,6 @@ export type TResource = {
   resourceType: string
   topics: TTopicResource[]
   isFavorite: boolean
-  editable: boolean
 }
 
 export type TFilters = {
@@ -92,6 +98,7 @@ export type TFilters = {
   resourceTypes?: string[]
   status?: string[]
   topic?: string
+  search?: string
 }
 export type TEditResourceProps = {
   description: string

@@ -21,6 +21,7 @@ export const TopicsManagerBoard: FC = () => {
   const { t } = useTranslation()
   const [selectedId, setSelectedId] = useState<string>('')
   const { data, isLoading, isError } = useGetTopics(slug as string)
+
   const {
     updateTopic,
     createTopic,

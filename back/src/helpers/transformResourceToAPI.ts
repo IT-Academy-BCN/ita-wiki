@@ -69,7 +69,6 @@ export function transformResourceToAPI(
 
   return {
     ...resource,
-    userId: resource.userId,
     voteCount,
   }
 }

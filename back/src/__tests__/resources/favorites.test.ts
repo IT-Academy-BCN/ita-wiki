@@ -37,7 +37,9 @@ afterAll(async () => {
     where: { topic: { slug: 'testing' } },
   })
   await prisma.favorites.deleteMany({
-    where: { user: { dni: testUserData.admin.dni } },
+    where: {
+      user: { dni: { in: [testUserData.admin.dni, testUserData.user.dni] } },
+    },
   })
   await prisma.vote.deleteMany({})
   await prisma.resource.deleteMany({
@@ -81,9 +83,19 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
           description: expect.any(String),
           url: expect.any(String),
           resourceType: expect.any(String),
-          userId: expect.any(String),
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
+          user: expect.objectContaining({
+            name: expect.any(String),
+            avatarId: null,
+          }),
+          isAuthor: expect.any(Boolean),
+          voteCount: expect.objectContaining({
+            upvote: expect.any(Number),
+            downvote: expect.any(Number),
+            total: expect.any(Number),
+            userVote: expect.any(Number),
+          }),
           topics: expect.arrayContaining([
             expect.objectContaining({
               topic: expect.objectContaining({
@@ -91,15 +103,11 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
                 name: expect.any(String),
                 slug: expect.any(String),
                 categoryId: expect.any(String),
+                createdAt: expect.any(String),
+                updatedAt: expect.any(String),
               }),
             }),
           ]),
-          voteCount: expect.objectContaining({
-            upvote: expect.any(Number),
-            downvote: expect.any(Number),
-            total: expect.any(Number),
-            userVote: expect.any(Number),
-          }),
         }),
       ])
     )
@@ -144,6 +152,35 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
             downvote: 0,
             total: 1,
             userVote: 1,
+          }),
+        }),
+      ])
+    )
+  })
+  it('If a user favorited his own created resources, it should be reflected as author', async () => {
+    const testingUserId = await prisma.user.findUnique({
+      where: { dni: testUserData.user.dni },
+    })
+    const resourceToFavorite = await prisma.resource.findUnique({
+      where: { slug: 'test-resource-1-blog' },
+    })
+    await prisma.favorites.create({
+      data: {
+        userId: testingUserId!.id,
+        resourceId: resourceToFavorite!.id,
+      },
+    })
+
+    const response = await supertest(server)
+      .get(`${url}`)
+      .set('Cookie', authToken.user)
+
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          isAuthor: true,
+          user: expect.objectContaining({
+            name: testUserData.user.name,
           }),
         }),
       ])

@@ -19,9 +19,8 @@ const LateralMenu = styled(FlexBox)`
 `
 
 const LogoImage = styled.img`
-  max-width: 79px;
+  max-width: 116px;
   height: auto;
-  margin-left: ${dimensions.spacing.xxxs};
 `
 
 export const DesktopSideMenu: FC = () => (

@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { ChangeEvent, FC, HTMLAttributes } from 'react'
+import { useTranslation } from 'react-i18next'
 import { InputGroup, SelectGroup } from '../molecules'
 import { Button, ValidationMessage, Radio, Icon, Spinner } from '../atoms'
 import { FlexBox, colors, dimensions } from '../../styles'
@@ -92,10 +93,11 @@ const ResourceForm: FC<TSelectOptions> = ({
     resolver: zodResolver(ResourceFormSchema),
     defaultValues: initialValues ?? undefined,
   })
-
   const { state } = useLocation()
 
-  const buttonText = initialValues ? 'Editar' : 'Crear'
+  const { t } = useTranslation()
+
+  const buttonText = initialValues ? t('Editar') : t('Crear')
   const {
     isLoading: isCreateLoading,
     isSuccess: isCreateSuccess,
@@ -120,26 +122,32 @@ const ResourceForm: FC<TSelectOptions> = ({
   })
   const update = handleSubmit(async (data) => {
     const { title, description, url, topicId, resourceType } = data
+
     const updatedData = {
       id: resourceId,
       title,
       description,
       url,
-      topicId: topicId ?? initialValues?.topicId ?? '',
+      topicId: topicId ?? initialValues?.topicId,
       resourceType,
     }
     await updateResource.mutateAsync(updatedData)
   })
+
   const handleTopicChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedTopicId = event.target.value
     const selectedTopic = selectOptions.find(
-      (option) => option.value === selectedTopicId
+      (option) => option.label === selectedTopicId
     )
     if (selectedTopic) {
       setValue('topics', selectedTopic.label)
       setValue('topicId', selectedTopic.value)
     }
   }
+  const initialTopicLabel = selectOptions.find(
+    (option) => option.value === initialValues?.topicId
+  )?.label
+
   return (
     <ResourceFormStyled
       onSubmit={initialValues ? update : create}
@@ -148,8 +156,8 @@ const ResourceForm: FC<TSelectOptions> = ({
       <InputGroup
         hiddenLabel
         id="title"
-        label="Título"
-        placeholder="Título"
+        label={t('Título')}
+        placeholder={t('Título')}
         {...register('title')}
         data-testid="resourceTitle"
         error={errors.title && true}
@@ -159,8 +167,9 @@ const ResourceForm: FC<TSelectOptions> = ({
       <InputGroup
         hiddenLabel
         id="description"
-        label="Descripción"
-        placeholder="Descripción"
+        data-testid="resourceDescription"
+        label={t('Descripción')}
+        placeholder={t('Descripción')}
         {...register('description')}
         error={errors.description && true}
         validationMessage={errors.description?.message}
@@ -170,6 +179,7 @@ const ResourceForm: FC<TSelectOptions> = ({
         hiddenLabel
         id="url"
         label="URL"
+        data-testid="resourceUrl"
         placeholder="URL"
         {...register('url')}
         error={errors.url && true}
@@ -178,10 +188,11 @@ const ResourceForm: FC<TSelectOptions> = ({
       />
       <SelectGroup
         id="topics"
-        label="Tema"
+        label={t('Tema')}
         options={selectOptions}
+        data-testid="resourceTopic"
         {...register('topics')}
-        defaultValue={initialValues?.topicId}
+        defaultValue={initialTopicLabel ?? ''}
         error={!!errors.topics}
         validationMessage={errors.topics?.message}
         onChange={handleTopicChange}
@@ -190,11 +201,11 @@ const ResourceForm: FC<TSelectOptions> = ({
         {...register('resourceType')}
         options={[
           { id: 'VIDEO', name: 'Video' },
-          { id: 'TUTORIAL', name: 'Curso' },
+          { id: 'TUTORIAL', name: t('Curso') },
           { id: 'BLOG', name: 'Blog' },
         ]}
         inputName="resourceType"
-        defaultChecked="VIDEO"
+        data-testid="resourceType"
       />
       <FlexErrorStyled align="start">
         {errors?.title ||
@@ -214,7 +225,11 @@ const ResourceForm: FC<TSelectOptions> = ({
             <Icon data-testid="done-icon" name="done" />
           </ButtonStyled>
         ) : (
-          <Button type="submit" disabled={isCreateLoading || isUpdateLoading}>
+          <Button
+            type="submit"
+            data-testid="submit-button"
+            disabled={isCreateLoading || isUpdateLoading}
+          >
             {isCreateLoading || isUpdateLoading ? (
               <Spinner size="xsmall" />
             ) : (

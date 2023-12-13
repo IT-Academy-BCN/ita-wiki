@@ -20,7 +20,7 @@ test('Renders EditResource when resource is editable', () => {
   fireEvent.click(editIcon)
 
   expect(screen.getByTestId('resource-form')).toBeInTheDocument()
-  expect(screen.getByLabelText('Descripción')).toBeInTheDocument()
-  expect(screen.getByLabelText('Título')).toBeInTheDocument()
-  expect(screen.getByLabelText('URL')).toBeInTheDocument()
+  expect(screen.getByLabelText(/descripció/i)).toBeInTheDocument()
+  expect(screen.getByLabelText(/títol/i)).toBeInTheDocument()
+  expect(screen.getByLabelText(/url/i)).toBeInTheDocument()
 })
