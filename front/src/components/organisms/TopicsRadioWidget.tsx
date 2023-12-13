@@ -13,7 +13,6 @@ const StyledRadio = styled(Radio)`
 
 type TTopicsSlug = {
   slug: string
-  topic: string
   setTopic: (topic: string) => void
 }
 
@@ -23,7 +22,6 @@ const SpinnerStyled = styled(Spinner)`
 
 export const TopicsRadioWidget: FC<TTopicsSlug> = ({
   slug,
-  topic,
   setTopic,
 }) => {
   const { data, isLoading, isError } = useGetTopics(slug)
@@ -37,14 +35,17 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
   if (isLoading) return <SpinnerStyled size="small" role="status" />
   if (isError) return <p>Ha habido un error...</p>
 
+  const options = [
+    { id: 'todos', name: t('Todos') },
+    ...(data ? data.map((tp) => ({ id: tp.id, name: tp.name })) : [])
+  ]
+
   return (
     <StyledRadio
-      options={[{ id: 'todos', name: t('Todos') }].concat(
-        data ? data.map((ts) => ({ id: ts.id, name: ts.name })) : []
-      )}
+      options={options}
       inputName="Topics Radio Filter"
       onChange={onTopicChange}
-      defaultChecked={topic}
+      defaultChecked='todos'
     />
   )
 }

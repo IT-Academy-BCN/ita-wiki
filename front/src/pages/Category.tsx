@@ -353,6 +353,7 @@ const Category: FC = () => {
   const [isSortByVotesActive, setIsSortByVotesActive] = useState(false)
 
   const [topic, setTopic] = useState('todos')
+  const [initialized, setInitialized] = useState(false)
   const [filters, setFilters] = useState<TFilters>({
     slug,
     resourceTypes: [],
@@ -451,6 +452,20 @@ const Category: FC = () => {
     setTopic(selectedTopic)
   }
 
+  useEffect(() => {
+    setTopic('todos')
+    setInitialized(true)
+  }, [slug])
+
+  useEffect(() => {
+    if (initialized && topic === 'todos') {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        topic: undefined,
+      }))
+    }
+  }, [initialized, topic])
+
   const handleSortOrder = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
   }
@@ -531,8 +546,8 @@ const Category: FC = () => {
                 <ScrollTopics>
                   {slug && (
                     <TopicsRadioWidget
+                      key={slug}
                       slug={slug}
-                      topic={topic}
                       setTopic={handleTopicFilter}
                     />
                   )}

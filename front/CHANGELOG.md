@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.9] - 2023-12-13
+
+### Fixed
+
+- Fixed "Todos" radio button not being selected when switching between categories.
+
 ## [0.6.8] - 2023-11-29
 
 ### Fixed
