@@ -3,11 +3,11 @@ import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { Media, User } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
-import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { prisma } from '../../prisma/client'
 import { userGetSchema } from '../../schemas'
+import { authToken } from '../mocks/ssoServer'
 
 describe('Testing ME endpoint', () => {
   const pathUploadMedia = './static/media'
@@ -62,7 +62,7 @@ describe('Testing ME endpoint', () => {
   it('Should return user avatar, if available, along with user info', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.auth}/me`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
 
     expect(response.status).toBe(200)
     expect(() => userGetSchema.parse(response.body)).not.toThrow()

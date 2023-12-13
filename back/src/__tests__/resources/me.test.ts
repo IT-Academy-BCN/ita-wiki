@@ -2,12 +2,12 @@ import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { Category } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
-import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
 import { resourceGetSchema } from '../../schemas'
 import { resourceTestData } from '../mocks/resources'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
+import { authToken } from '../mocks/ssoServer'
 
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
@@ -80,7 +80,7 @@ describe('Testing resources/me endpoint', () => {
     // User admin has no posted resources
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}/me`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
 
     expect(response.status).toBe(200)
     expect(response.body).toBeInstanceOf(Array)
@@ -91,7 +91,7 @@ describe('Testing resources/me endpoint', () => {
     // Normal user has a resource created for this test.
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}/me`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
 
     expect(response.status).toBe(200)
     expect(response.body).toBeInstanceOf(Array)
@@ -105,7 +105,7 @@ describe('Testing resources/me endpoint', () => {
     const testCategorySlug = 'testing'
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}/me`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
       .query({ testCategorySlug })
     expect(response.status).toBe(200)
     expect(response.body).toBeInstanceOf(Array)
@@ -121,7 +121,7 @@ describe('Testing resources/me endpoint', () => {
     })
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}/me`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

@@ -4,9 +4,9 @@ import { USER_ROLE, USER_STATUS, User } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
-import { authToken } from '../setup'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { userPatchSchema } from '../../schemas'
+import { authToken } from '../mocks/ssoServer'
 
 let sampleUser: User | null
 
@@ -19,7 +19,6 @@ beforeEach(async () => {
       email: 'sampleUser1@sampleUser.com',
       name: 'sampleUser1',
       dni: '99999999Z',
-      password: 'samplePassword1',
       role: USER_ROLE.REGISTERED,
       status: USER_STATUS.ACTIVE,
       specializationId: existingTestCategory!.id,
@@ -54,7 +53,7 @@ describe('Testing user patch endpoint', () => {
   it('Should NOT be able to access if user level is not ADMIN', async () => {
     const response = await supertest(server)
       .patch(`${pathRoot.v1.users}`)
-      .set('Cookie', authToken.mentor)
+      .set('Cookie', [`authToken=${authToken.mentor}`])
     expect(response.status).toBe(403)
   })
   it('An ADMIN user should be able to access the endpoint without updating the user', async () => {
@@ -65,7 +64,7 @@ describe('Testing user patch endpoint', () => {
 
     const response = await supertest(server)
       .patch(`${pathRoot.v1.users}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .send(modifiedUser)
 
     expect(response.status).toBe(204)
@@ -76,14 +75,13 @@ describe('Testing user patch endpoint', () => {
       email: 'sampleUser2@sampleUser.com',
       name: 'UpdatedSampleUser',
       dni: '88888888X',
-      password: 'UpdatedSamplePassword1',
       status: USER_STATUS.INACTIVE,
       updatedAt: new Date().toISOString(),
     }
     expect(userPatchSchema.safeParse(modifiedUser).success).toBeTruthy()
     const response = await supertest(server)
       .patch(`${pathRoot.v1.users}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .send(modifiedUser)
 
     expect(response.status).toBe(204)
@@ -97,7 +95,7 @@ describe('Testing user patch endpoint', () => {
     }
     const response = await supertest(server)
       .patch(`${pathRoot.v1.users}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .send(modifiedUser)
     expect(response.status).toBe(409)
   })
@@ -106,11 +104,10 @@ describe('Testing user patch endpoint', () => {
       id: sampleUser!.id,
       name: 'UpdatedSampleUser',
       dni: '8X',
-      password: 'hola',
     }
     const response = await supertest(server)
       .patch(`${pathRoot.v1.users}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .send(modifiedUser)
 
     expect(response.status).toBe(400)

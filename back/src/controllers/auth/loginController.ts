@@ -1,43 +1,53 @@
 import Koa from 'koa'
-import jwt, { Secret } from 'jsonwebtoken'
 import { prisma } from '../../prisma/client'
-import { checkPassword } from '../../helpers/passwordHash'
+import { appConfig } from '../../config/config'
+import {
+  ForbiddenError,
+  InvalidCredentials,
+  ValidationError,
+} from '../../helpers/errors'
 
 export const loginController = async (ctx: Koa.Context) => {
   const { dni, password } = ctx.request.body
   const dniUpperCase = dni.toUpperCase()
   const expirationInMilliseconds = 86400000
-
+  const fetchSSO = await fetch(`${appConfig.ssoUrl}/api/v1/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      dni,
+      password,
+    }),
+  })
+  const data = await fetchSSO.json()
+  if (fetchSSO.status === 401) {
+    throw new InvalidCredentials()
+  }
+  if (fetchSSO.status !== 200) {
+    // eslint-disable-next-line @typescript-eslint/no-throw-literal
+    throw new ValidationError(data.message)
+  }
   const user = await prisma.user.findUnique({
     where: { dni: dniUpperCase as string },
-    select: { id: true, password: true, status: true },
+    select: { id: true, status: true },
   })
 
   if (!user) {
-    ctx.status = 404
-    ctx.body = { error: 'User not found' }
-    return
+    // eslint-disable-next-line @typescript-eslint/no-throw-literal
+    throw new InvalidCredentials()
   }
 
   if (user.status !== 'ACTIVE') {
-    ctx.status = 403
-    ctx.body = { error: 'Only active users can login' }
-    return
+    throw new ForbiddenError('Only active users can login')
   }
 
-  const isPasswordValid = await checkPassword(password, user.password)
-
-  if (!isPasswordValid) {
-    ctx.status = 422
-    ctx.body = { error: 'Invalid password' }
-    return
-  }
-
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_KEY as Secret, {
-    expiresIn: expirationInMilliseconds.toString(),
+  ctx.cookies.set('authToken', data.authToken, {
+    httpOnly: true,
+    maxAge: expirationInMilliseconds,
   })
-
-  ctx.cookies.set('token', token, {
+  ctx.cookies.set('refreshToken', data.refreshToken, {
     httpOnly: true,
     maxAge: expirationInMilliseconds,
   })

@@ -74,13 +74,17 @@ export async function setup() {
   const existingTestCategory = await prisma.category.findUnique({
     where: { name: 'Testing' },
   })
+  const { password, ...admin } = testUserData.admin
+  const { password: p0, ...user } = testUserData.user
+  const { password: p1, ...mentor } = testUserData.mentor
+  const { password: p2, ...inactiveUser } = testUserData.inactiveUser
   await prisma.user.createMany({
     data: [
-      { ...testUserData.admin, specializationId: existingTestCategory!.id },
-      { ...testUserData.user, specializationId: existingTestCategory!.id },
-      { ...testUserData.mentor, specializationId: existingTestCategory!.id },
+      { ...admin, specializationId: existingTestCategory!.id },
+      { ...user, specializationId: existingTestCategory!.id },
+      { ...mentor, specializationId: existingTestCategory!.id },
       {
-        ...testUserData.inactiveUser,
+        ...inactiveUser,
         specializationId: existingTestCategory!.id,
       },
     ],

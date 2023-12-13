@@ -2,9 +2,9 @@ import supertest from 'supertest'
 import { expect, test, describe, beforeEach, afterEach } from 'vitest'
 import { Favorites, User, Resource, Category } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
-import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
+import { authToken } from '../mocks/ssoServer'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 describe('Testing resource modify endpoint', () => {
@@ -51,7 +51,7 @@ describe('Testing resource modify endpoint', () => {
   test('should create a favorite', async () => {
     const response = await supertest(server)
       .put(`${pathRoot.v1.favorites}/`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
       .send(req)
 
     const favorite = await prisma.favorites.findFirst({
@@ -78,7 +78,7 @@ describe('Testing resource modify endpoint', () => {
 
     const response = await supertest(server)
       .put(`${pathRoot.v1.favorites}/`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
       .send(resource!)
 
     const favorite = await prisma.favorites.findFirst({
@@ -101,7 +101,7 @@ describe('Testing resource modify endpoint', () => {
 
     const response = await supertest(server)
       .put(`${pathRoot.v1.favorites}/`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
       .send(newResource)
     expect(response.status).toBe(400)
   })

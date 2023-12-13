@@ -1,12 +1,20 @@
 import { Middleware, Context } from 'koa'
 import { prisma } from '../../prisma/client'
-import { NotFoundError } from '../../helpers/errors'
+import { NotFoundError, ValidationError } from '../../helpers/errors'
 import { UserRegister } from '../../schemas/users/userRegisterSchema'
 import { processMedia } from '../../helpers/processMedia'
+import { appConfig } from '../../config/config'
 
 export const registerController: Middleware = async (ctx: Context) => {
-  const { dni, password, name, email, specialization }: UserRegister =
-    ctx.request.body
+  const {
+    dni,
+    password,
+    name,
+    email,
+    confirmPassword,
+    specialization,
+    itineraryId,
+  }: UserRegister = ctx.request.body
 
   const media = ctx.file
 
@@ -18,23 +26,34 @@ export const registerController: Middleware = async (ctx: Context) => {
     throw new NotFoundError('Category not found')
   }
 
+  const fetchSSO = await fetch(`${appConfig.ssoUrl}/api/v1/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      dni,
+      password,
+      confirmPassword,
+      email,
+      itineraryId,
+    }),
+  })
+  const data = await fetchSSO.json()
+  if (fetchSSO.status !== 200) {
+    // eslint-disable-next-line @typescript-eslint/no-throw-literal
+    throw new ValidationError(data.message)
+  }
+
   const user = await prisma.user.create({
     data: {
+      id: data.id,
       dni: dni.toUpperCase(),
-      password,
       name,
       email,
       specializationId: existingCategory.id,
     },
   })
-
-  if (!user || user.dni !== dni.toUpperCase()) {
-    ctx.status = 500
-    ctx.body = {
-      error: 'Database error',
-    }
-    return
-  }
 
   if (media) {
     const { mediaId } = await processMedia(media, user.id)

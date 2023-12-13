@@ -1,7 +1,8 @@
 import { Context, Middleware } from 'koa'
+import jwt, { JwtPayload } from 'jsonwebtoken'
 import { InvalidCredentials } from '../../utils/errors'
-import { verifyToken } from '../../utils/auth'
 import { ValidateSchema } from '../../schemas/token/validateSchema'
+import { appConfig } from '../../config'
 
 export const validate: Middleware = async (ctx: Context) => {
   const { authToken } = ctx.request.body as ValidateSchema
@@ -10,11 +11,12 @@ export const validate: Middleware = async (ctx: Context) => {
     throw new InvalidCredentials()
   }
 
-  const validToken = verifyToken(authToken)
+  const { id } = jwt.verify(authToken, appConfig.jwtKey) as JwtPayload
 
-  if (!validToken) {
+  if (!id) {
     throw new InvalidCredentials()
   } else {
-    ctx.status = 204
+    ctx.status = 200
+    ctx.body = { id }
   }
 }

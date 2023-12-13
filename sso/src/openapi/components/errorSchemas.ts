@@ -1,10 +1,10 @@
 import { registry } from '../registry'
 import { z } from '../zod'
 
-export const EmailError = registry.register(
+export const EmailDniError = registry.register(
   'EmailError',
   z.object({
-    message: z.string().openapi({ example: 'email already exists' }),
+    message: z.string().openapi({ example: 'email or dni already exists' }),
   })
 )
 

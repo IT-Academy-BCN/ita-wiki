@@ -1,7 +1,8 @@
 import z from 'zod'
 import { pathRoot } from '../../../routes/routes'
 import {
-  InvalidCredentialsResponse,
+  invalidCredentialsResponse,
+  validTokenResponse,
   zodValidationResponse,
 } from '../../components/responses'
 import { registry } from '../../registry'
@@ -23,11 +24,9 @@ registry.registerPath({
     },
   },
   responses: {
-    204: {
-      description: 'The token is valid',
-    },
+    200: validTokenResponse,
     400: zodValidationResponse,
-    401: InvalidCredentialsResponse,
+    401: invalidCredentialsResponse,
     500: {
       description: 'Other error',
       content: {

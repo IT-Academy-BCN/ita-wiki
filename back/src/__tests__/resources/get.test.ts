@@ -13,8 +13,8 @@ import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
 import { resourceGetSchema, topicSchema } from '../../schemas'
 import { resourceTestData } from '../mocks/resources'
-import { authToken } from '../setup'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
+import { authToken } from '../mocks/ssoServer'
 
 type ResourceVotes = {
   [key: string]: number
@@ -198,7 +198,7 @@ describe('Testing resources GET endpoint', () => {
   it('should retrieve resources viewed by the user with SEEN status when logged in', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .query({ status: 'SEEN' })
     expect(response.status).toBe(200)
     expect(response.body.length).toBe(1)
@@ -210,7 +210,7 @@ describe('Testing resources GET endpoint', () => {
   it('should retrieve resources not viewed by the user with NOT_SEEN status when logged in', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .query({ status: 'NOT_SEEN' })
     expect(response.status).toBe(200)
     expect(response.body.length).toBe(2)
@@ -263,7 +263,7 @@ describe('Testing resources GET endpoint', () => {
   it('should display user votes when the user is logged in', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .query({})
     expect(response.status).toBe(200)
     expect(response.body.length).toBeGreaterThanOrEqual(1)
@@ -290,7 +290,7 @@ describe('Testing resources GET endpoint', () => {
 
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .query({})
     expect(response.status).toBe(200)
     expect(response.body.length).toBeGreaterThanOrEqual(1)
