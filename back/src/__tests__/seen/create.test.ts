@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import { expect, describe, beforeAll, afterAll, it, afterEach } from 'vitest'
-import { Category, Resource } from '@prisma/client'
+import { Category, Resource, User } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
@@ -10,13 +10,17 @@ import { authToken } from '../mocks/ssoServer'
 
 let testResource: Resource
 const uri = `${pathRoot.v1.seen}/`
+let user: User | null
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
     where: { slug: 'testing' },
   })) as Category
+  user = await prisma.user.findFirst({
+    where: { name: testUserData.user.name },
+  })
   const testResourceData = {
     ...resourceTestData[0],
-    user: { connect: { dni: testUserData.user.dni } },
+    user: { connect: { id: user?.id } },
     category: { connect: { id: testCategory.id } },
   }
   testResource = await prisma.resource.create({
@@ -27,7 +31,7 @@ beforeAll(async () => {
 afterAll(async () => {
   await prisma.viewedResource.deleteMany({ where: {} })
   await prisma.resource.deleteMany({
-    where: { user: { dni: testUserData.user.dni } },
+    where: { user: { id: user?.id } },
   })
 })
 
@@ -41,7 +45,7 @@ describe('Testing viewed resource creation endpoint', () => {
       .set('Cookie', [`authToken=${authToken.admin}`])
     const viewedResources = await prisma.viewedResource.findMany({
       where: {
-        user: { dni: testUserData.admin.dni },
+        user: { name: testUserData.admin.name },
         resourceId: testResource.id,
       },
     })
@@ -60,7 +64,7 @@ describe('Testing viewed resource creation endpoint', () => {
     expect(secondResponse.statusCode).toBe(204)
     const viewedResources = await prisma.viewedResource.findMany({
       where: {
-        user: { dni: testUserData.admin.dni },
+        user: { name: testUserData.admin.name },
         resourceId: testResource.id,
       },
     })

@@ -41,9 +41,13 @@ const handlers = [
         { status: 401 }
       )
     }
-
+    const prismaUser = await prisma.user.findFirst({
+      where: { name: user.name },
+      select: { id: true },
+    })
     return HttpResponse.json(
       {
+        id: prismaUser?.id,
         authToken: 'string',
         refreshToken: 'string',
       } as LoginResponse,
@@ -74,12 +78,10 @@ const handlers = [
           { status: 400 }
         )
       }
-      const userDuplicate = await prisma.user.findMany({
-        where: { OR: [{ dni: req.dni }, { email: req.email }] },
-        select: { id: true },
-      })
+      const emails = Object.values(testUserData).map((user) => user.email)
+      const dnis = Object.values(testUserData).map((user) => user.dni)
 
-      if (userDuplicate.length) {
+      if (emails.includes(req.email) || dnis.includes(req.dni)) {
         return HttpResponse.json(
           { message: 'email or dni already exists' },
           { status: 409 }
@@ -121,9 +123,9 @@ const handlers = [
           { status: 401 }
         )
       }
-      const { dni } = testUserData[userType]
-      const userId = await prisma.user.findUnique({
-        where: { dni },
+      const { name } = testUserData[userType]
+      const userId = await prisma.user.findFirst({
+        where: { name },
         select: { id: true },
       })
 

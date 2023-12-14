@@ -1,20 +1,17 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
-## [0.4.0] - 2023-12-13
+
+## [0.4.0] - 2023-12-14
 
 ### Added
 
 - `ssoUrl` to `.env` file and `appConfig`
 - implemented SSO in auth files and authenticate middleware file
 
-### Changed
-
-- Modified GET resources controller so search query param only is applied when it is 2 or more chars long.
-
 ### Removed
 
-- password from User model
+- password, dni and email from User model
 
 ### Testing
 

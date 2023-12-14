@@ -612,7 +612,7 @@ paths:
               additionalProperties: false
       responses:
         "204":
-          description: Topic successully modified.
+          description: Topic successfully modified.
         "401":
           description: Missing token
           content:

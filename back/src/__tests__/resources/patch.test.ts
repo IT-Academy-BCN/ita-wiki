@@ -15,8 +15,8 @@ describe('Testing resource modify endpoint', () => {
       where: { slug: 'testing' },
     })) as Topic
 
-    const user = (await prisma.user.findUnique({
-      where: { email: 'testingUser@user.cat' },
+    const user = (await prisma.user.findFirst({
+      where: { name: testUserData.user.name },
     })) as User
 
     const category = (await prisma.category.findUnique({
@@ -41,7 +41,7 @@ describe('Testing resource modify endpoint', () => {
       where: { topic: { id: testTopic.id } },
     })
     await prisma.resource.deleteMany({
-      where: { user: { dni: testUserData.user.dni } },
+      where: { user: { name: testUserData.user.name } },
     })
   })
 

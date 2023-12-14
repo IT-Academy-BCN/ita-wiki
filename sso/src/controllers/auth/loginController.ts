@@ -22,5 +22,5 @@ export const loginController: Middleware = async (ctx: Context) => {
   const authToken = generateToken(user.id, '15m')
   const refreshToken = generateToken(user.id, '7d')
   ctx.status = 200
-  ctx.body = { authToken, refreshToken }
+  ctx.body = { id: user.id, authToken, refreshToken }
 }

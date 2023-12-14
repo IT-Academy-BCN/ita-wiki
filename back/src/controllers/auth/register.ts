@@ -3,7 +3,7 @@ import { prisma } from '../../prisma/client'
 import { NotFoundError, ValidationError } from '../../helpers/errors'
 import { UserRegister } from '../../schemas/users/userRegisterSchema'
 import { processMedia } from '../../helpers/processMedia'
-import { appConfig } from '../../config/config'
+import { handleSSO } from '../../helpers/handleSso'
 
 export const registerController: Middleware = async (ctx: Context) => {
   const {
@@ -26,21 +26,14 @@ export const registerController: Middleware = async (ctx: Context) => {
     throw new NotFoundError('Category not found')
   }
 
-  const fetchSSO = await fetch(`${appConfig.ssoUrl}/api/v1/auth/register`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      dni,
-      password,
-      confirmPassword,
-      email,
-      itineraryId,
-    }),
+  const { status, data } = await handleSSO('register', {
+    dni,
+    password,
+    confirmPassword,
+    email,
+    itineraryId,
   })
-  const data = await fetchSSO.json()
-  if (fetchSSO.status !== 200) {
+  if (status !== 200) {
     // eslint-disable-next-line @typescript-eslint/no-throw-literal
     throw new ValidationError(data.message)
   }
@@ -48,9 +41,7 @@ export const registerController: Middleware = async (ctx: Context) => {
   const user = await prisma.user.create({
     data: {
       id: data.id,
-      dni: dni.toUpperCase(),
       name,
-      email,
       specializationId: existingCategory.id,
     },
   })

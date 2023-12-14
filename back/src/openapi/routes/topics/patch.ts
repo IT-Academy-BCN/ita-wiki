@@ -28,7 +28,7 @@ registry.registerPath({
   },
   responses: {
     204: {
-      description: 'Topic successully modified.',
+      description: 'Topic successfully modified.',
     },
     401: missingTokenResponse,
     403: deniedAccessResponse,

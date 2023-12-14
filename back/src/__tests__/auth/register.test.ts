@@ -15,16 +15,13 @@ beforeAll(async () => {
 afterEach(async () => {
   await prisma.user.deleteMany({
     where: {
-      OR: [
-        { email: 'anotherexample@example.com' },
-        { email: 'example2@example.com' },
-      ],
+      OR: [{ name: 'Example2' }],
     },
   })
 })
 afterAll(async () => {
   await prisma.user.deleteMany({
-    where: { email: 'example2@example.com' },
+    where: { name: 'Example2' },
   })
 })
 describe('Testing registration endpoint', () => {
@@ -47,18 +44,10 @@ describe('Testing registration endpoint', () => {
 
   describe('should fail with duplicate', () => {
     it('should fail with duplicate: DNI', async () => {
-      await prisma.user.create({
-        data: {
-          dni: '45632452b',
-          name: 'Example2',
-          email: 'example2@example.com',
-          specializationId: existingTestCategory!.id,
-        },
-      })
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452b',
+          dni: '11111111A',
           name: 'Example2',
           email: 'anotherexample@example.com',
           password: 'password1',
@@ -72,20 +61,12 @@ describe('Testing registration endpoint', () => {
     })
 
     it('should fail with duplicate: email', async () => {
-      await prisma.user.create({
-        data: {
-          dni: '45632452b',
-          name: 'Example2',
-          email: 'example2@example.com',
-          specializationId: existingTestCategory!.id,
-        },
-      })
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
           dni: '45632452c',
           name: 'Example2',
-          email: 'example2@example.com',
+          email: 'testingUser@user.cat',
           password: 'password1',
           confirmPassword: 'password1',
           accept: true,

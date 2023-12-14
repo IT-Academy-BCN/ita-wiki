@@ -1,6 +1,6 @@
 import supertest from 'supertest'
-import { expect, test, describe, beforeEach, afterEach } from 'vitest'
-import { Favorites, User, Resource, Category } from '@prisma/client'
+import { expect, it, describe, beforeEach, afterEach } from 'vitest'
+import { Favorites, User, Resource } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
@@ -9,14 +9,15 @@ import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 describe('Testing resource modify endpoint', () => {
   const req: { id: string } = { id: '' }
+  let user: User | null
   beforeEach(async () => {
-    const user = (await prisma.user.findUnique({
-      where: { email: 'testingUser@user.cat' },
-    })) as User
+    user = await prisma.user.findFirst({
+      where: { name: testUserData.user.name },
+    })
 
-    const category = (await prisma.category.findUnique({
+    const category = await prisma.category.findUnique({
       where: { slug: 'testing' },
-    })) as Category
+    })
 
     const resource = await prisma.resource.create({
       data: {
@@ -33,9 +34,6 @@ describe('Testing resource modify endpoint', () => {
   })
 
   afterEach(async () => {
-    const user = await prisma.user.findUnique({
-      where: { email: 'testingUser@user.cat' },
-    })
     const resource = await prisma.resource.findUnique({
       where: { slug: 'test-patch-resource' },
     })
@@ -44,11 +42,11 @@ describe('Testing resource modify endpoint', () => {
       where: { userId: user!.id, resourceId: resource!.id },
     })
     await prisma.resource.deleteMany({
-      where: { user: { dni: testUserData.user.dni } },
+      where: { user: { id: user?.id } },
     })
   })
 
-  test('should create a favorite', async () => {
+  it('should create a favorite', async () => {
     const response = await supertest(server)
       .put(`${pathRoot.v1.favorites}/`)
       .set('Cookie', [`authToken=${authToken.user}`])
@@ -63,17 +61,13 @@ describe('Testing resource modify endpoint', () => {
     expect(response.status).toBe(204)
   })
 
-  test('should delete a favorite if already exists', async () => {
+  it('should delete a favorite if already exists', async () => {
     const resource = (await prisma.resource.findFirst({
       where: { slug: 'test-patch-resource' },
     })) as Resource
 
-    const user = (await prisma.user.findUnique({
-      where: { email: 'testingUser@user.cat' },
-    })) as User
-
     ;(await prisma.favorites.create({
-      data: { resourceId: req.id, userId: user.id },
+      data: { resourceId: req.id, userId: user!.id },
     })) as Favorites
 
     const response = await supertest(server)
@@ -89,7 +83,7 @@ describe('Testing resource modify endpoint', () => {
     expect(response.status).toBe(204)
   })
 
-  test('should accept string only', async () => {
+  it('should accept string only', async () => {
     const newResource = {
       id: 23,
       title: 23,

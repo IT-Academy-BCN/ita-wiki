@@ -1,36 +1,25 @@
 import Koa from 'koa'
 import { prisma } from '../../prisma/client'
-import { appConfig } from '../../config/config'
 import {
   ForbiddenError,
   InvalidCredentials,
   ValidationError,
 } from '../../helpers/errors'
+import { handleSSO } from '../../helpers/handleSso'
 
 export const loginController = async (ctx: Koa.Context) => {
   const { dni, password } = ctx.request.body
-  const dniUpperCase = dni.toUpperCase()
   const expirationInMilliseconds = 86400000
-  const fetchSSO = await fetch(`${appConfig.ssoUrl}/api/v1/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      dni,
-      password,
-    }),
-  })
-  const data = await fetchSSO.json()
+  const fetchSSO = await handleSSO('login', { dni, password })
   if (fetchSSO.status === 401) {
     throw new InvalidCredentials()
   }
   if (fetchSSO.status !== 200) {
     // eslint-disable-next-line @typescript-eslint/no-throw-literal
-    throw new ValidationError(data.message)
+    throw new ValidationError(fetchSSO.data.message)
   }
   const user = await prisma.user.findUnique({
-    where: { dni: dniUpperCase as string },
+    where: { id: fetchSSO.data.id },
     select: { id: true, status: true },
   })
 
@@ -43,11 +32,11 @@ export const loginController = async (ctx: Koa.Context) => {
     throw new ForbiddenError('Only active users can login')
   }
 
-  ctx.cookies.set('authToken', data.authToken, {
+  ctx.cookies.set('authToken', fetchSSO.data.authToken, {
     httpOnly: true,
     maxAge: expirationInMilliseconds,
   })
-  ctx.cookies.set('refreshToken', data.refreshToken, {
+  ctx.cookies.set('refreshToken', fetchSSO.data.refreshToken, {
     httpOnly: true,
     maxAge: expirationInMilliseconds,
   })

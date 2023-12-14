@@ -9,8 +9,6 @@ datasource db {
 
 model User {
   id               String           @id @default(cuid())
-  email            String           @unique
-  dni              String           @unique @db.VarChar(10)
   name             String
   specialization   Category?        @relation(fields: [specializationId], references: [id])
   specializationId String?          @map("specialization")

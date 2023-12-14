@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import { Category, Resource } from '@prisma/client'
+import { Category, Resource, User } from '@prisma/client'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
@@ -8,15 +8,17 @@ import { resourceGetSchema } from '../../schemas'
 import { resourceTestData } from '../mocks/resources'
 
 let testResource: Resource
-
+let user: User | null
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
     where: { slug: 'testing' },
   })) as Category
-
+  user = await prisma.user.findFirst({
+    where: { name: testUserData.user.name },
+  })
   const testResourceData = {
     ...resourceTestData[0],
-    user: { connect: { dni: testUserData.user.dni } },
+    user: { connect: { id: user?.id } },
     category: { connect: { id: testCategory.id } },
   }
   testResource = await prisma.resource.create({
@@ -26,7 +28,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await prisma.resource.deleteMany({
-    where: { user: { dni: testUserData.user.dni } },
+    where: { user: { id: user?.id } },
   })
 })
 

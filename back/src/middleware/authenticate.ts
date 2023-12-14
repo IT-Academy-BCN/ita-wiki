@@ -5,23 +5,15 @@ import {
   NotFoundError,
   UnauthorizedError,
 } from '../helpers/errors'
-import { appConfig } from '../config/config'
+import { handleSSO } from '../helpers/handleSso'
 
 export const authenticate = async (ctx: Koa.Context, next: Koa.Next) => {
   const authToken = ctx.cookies.get('authToken')
   if (!authToken) {
     throw new UnauthorizedError()
   }
-  const fetchSSO = await fetch(`${appConfig.ssoUrl}/api/v1/tokens/validate`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ authToken }),
-  })
-  const data = await fetchSSO.json()
-  if (fetchSSO.status !== 200) {
+  const { status, data } = await handleSSO('validate', { authToken })
+  if (status !== 200) {
     ctx.cookies.set('authToken', null, {
       expires: new Date(0),
       overwrite: true,
@@ -46,16 +38,8 @@ export const getUserFromToken = async (ctx: Koa.Context, next: Koa.Next) => {
   ctx.user = null
   const authToken = ctx.cookies.get('authToken')
   if (authToken) {
-    const fetchSSO = await fetch(`${appConfig.ssoUrl}/api/v1/tokens/validate`, {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ authToken }),
-    })
-    const data = await fetchSSO.json()
-    if (fetchSSO.status !== 200) {
+    const { status, data } = await handleSSO('validate', { authToken })
+    if (status !== 200) {
       // eslint-disable-next-line @typescript-eslint/no-throw-literal
       ctx.cookies.set('authToken', null, {
         expires: new Date(0),

@@ -4,6 +4,7 @@ import {
   Category,
   RESOURCE_TYPE,
   Resource,
+  User,
   ViewedResource,
 } from '@prisma/client'
 import qs from 'qs'
@@ -26,13 +27,21 @@ const votesForResources: ResourceVotes = {
 }
 let createdResources: Resource[] = []
 let viewedResource: ViewedResource
+let user: User | null
+let adminUser: User | null
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
     where: { slug: 'testing' },
   })) as Category
+  user = await prisma.user.findFirst({
+    where: { name: testUserData.user.name },
+  })
+  adminUser = await prisma.user.findFirst({
+    where: { name: testUserData.admin.name },
+  })
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,
-    user: { connect: { dni: testUserData.user.dni } },
+    user: { connect: { id: user?.id } },
     topics: {
       create: [{ topic: { connect: { slug: 'testing' } } }],
     },
@@ -46,7 +55,7 @@ beforeAll(async () => {
 
   viewedResource = await prisma.viewedResource.create({
     data: {
-      user: { connect: { dni: testUserData.admin.dni } },
+      user: { connect: { id: adminUser?.id } },
       resource: {
         connect: { id: createdResources[0].id },
       },
@@ -57,7 +66,7 @@ beforeAll(async () => {
       prisma.vote.create({
         data: {
           user: {
-            connect: { dni: testUserData.admin.dni },
+            connect: { id: adminUser?.id },
           },
           resource: {
             connect: { id: resource.id },
@@ -77,7 +86,7 @@ afterAll(async () => {
   })
   await prisma.favorites.deleteMany({})
   await prisma.resource.deleteMany({
-    where: { user: { dni: testUserData.user.dni } },
+    where: { user: { id: user?.id } },
   })
 })
 // resourceTypes as array from prisma types for the it.each tests.
@@ -278,7 +287,7 @@ describe('Testing resources GET endpoint', () => {
     })
 
     const existingAdminUserId = await prisma.user.findUnique({
-      where: { dni: testUserData.admin.dni },
+      where: { id: adminUser?.id },
     })
 
     const testFavoriteResource = await prisma.favorites.create({

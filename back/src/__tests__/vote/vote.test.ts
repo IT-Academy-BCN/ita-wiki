@@ -12,8 +12,8 @@ let resource: Resource
 let testUser: User
 
 beforeAll(async () => {
-  testUser = (await prisma.user.findUnique({
-    where: { dni: testUserData.admin.dni },
+  testUser = (await prisma.user.findFirst({
+    where: { name: testUserData.admin.name },
   })) as User
 
   const category = (await prisma.category.findUnique({
@@ -31,10 +31,13 @@ beforeAll(async () => {
       categoryId: category.id,
     },
   })
+  const user = (await prisma.user.findFirst({
+    where: { name: testUserData.user.name },
+  })) as User
   await prisma.vote.create({
     data: {
       user: {
-        connect: { dni: testUserData.user.dni },
+        connect: { id: user.id },
       },
       resource: {
         connect: { id: resource.id },

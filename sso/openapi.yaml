@@ -125,9 +125,12 @@ paths:
                   refreshToken:
                     type: string
                     minLength: 1
+                  id:
+                    type: string
                 required:
                   - authToken
                   - refreshToken
+                  - id
         "400":
           description: Zod validation error
           content:

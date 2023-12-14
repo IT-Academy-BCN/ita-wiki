@@ -11,8 +11,8 @@ import { authToken } from '../mocks/ssoServer'
 const pathUploadMedia = './static/media'
 
 afterAll(async () => {
-  const testUser = await prisma.user.findUnique({
-    where: { dni: testUserData.user.dni },
+  const testUser = await prisma.user.findFirst({
+    where: { name: testUserData.user.name },
   })
   await prisma.media.deleteMany({
     where: { userId: testUser!.id },

@@ -2,12 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.4.0] - 2023-12-13
+## [1.4.0] - 2023-12-14
 
 ### Changed
 
-- Register endpoint returns user id
-- Validate endpoint returns user id
+- Register, Validate, Login endpoint returns user id
 - InvalidParamError to catch foreign_key error
 - EmailError to EmailDniError
 

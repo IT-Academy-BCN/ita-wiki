@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
-import { Category } from '@prisma/client'
+import { Category, User } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { resourceTestData } from '../mocks/resources'
@@ -10,19 +10,26 @@ import { authToken } from '../mocks/ssoServer'
 
 const url: string = `${pathRoot.v1.resources}/favorites`
 const categorySlug = 'testing'
-
+let adminUser: User | null
+let user: User | null
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
     where: { slug: 'testing' },
   })) as Category
+  user = await prisma.user.findFirst({
+    where: { name: testUserData.user.name },
+  })
+  adminUser = await prisma.user.findFirst({
+    where: { name: testUserData.admin.name },
+  })
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,
-    user: { connect: { dni: testUserData.user.dni } },
+    user: { connect: { id: user?.id } },
     topics: {
       create: [{ topic: { connect: { slug: 'testing' } } }],
     },
     favorites: {
-      create: [{ user: { connect: { dni: testUserData.admin.dni } } }],
+      create: [{ user: { connect: { id: adminUser?.id } } }],
     },
     category: { connect: { id: testCategory.id } },
   }))
@@ -38,12 +45,12 @@ afterAll(async () => {
   })
   await prisma.favorites.deleteMany({
     where: {
-      user: { dni: { in: [testUserData.admin.dni, testUserData.user.dni] } },
+      user: { id: { in: [adminUser!.id, user!.id] } },
     },
   })
   await prisma.vote.deleteMany({})
   await prisma.resource.deleteMany({
-    where: { user: { dni: testUserData.user.dni } },
+    where: { user: { id: user?.id } },
   })
 })
 
@@ -119,9 +126,7 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
     const testFavoriteVoteResource = await prisma.resource.findUnique({
       where: { slug: 'test-resource-1-blog' },
     })
-    const adminUser = await prisma.user.findUnique({
-      where: { dni: testUserData.admin.dni },
-    })
+
     await prisma.vote.upsert({
       where: {
         userId_resourceId: {
@@ -158,22 +163,19 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
     )
   })
   it('If a user favorited his own created resources, it should be reflected as author', async () => {
-    const testingUserId = await prisma.user.findUnique({
-      where: { dni: testUserData.user.dni },
-    })
     const resourceToFavorite = await prisma.resource.findUnique({
       where: { slug: 'test-resource-1-blog' },
     })
     await prisma.favorites.create({
       data: {
-        userId: testingUserId!.id,
+        userId: user!.id,
         resourceId: resourceToFavorite!.id,
       },
     })
 
     const response = await supertest(server)
       .get(`${url}`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
 
     expect(response.body).toEqual(
       expect.arrayContaining([

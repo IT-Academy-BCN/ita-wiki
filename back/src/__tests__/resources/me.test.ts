@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
-import { Category } from '@prisma/client'
+import { Category, User } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
@@ -9,12 +9,13 @@ import { resourceTestData } from '../mocks/resources'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoServer'
 
+let user: User | null
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
     where: { slug: 'testing' },
   })) as Category
-  const user = await prisma.user.findUnique({
-    where: { email: testUserData.user.email },
+  user = await prisma.user.findFirst({
+    where: { name: testUserData.user.name },
   })
 
   const testResourcesWithUser = resourceTestData.map((resource) => {
@@ -59,11 +60,11 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await prisma.favorites.deleteMany({
-    where: { user: { email: testUserData.user.email } },
+    where: { user: { id: user?.id } },
   })
   await prisma.vote.deleteMany({})
   await prisma.resource.deleteMany({
-    where: { user: { email: testUserData.user.email } },
+    where: { user: { id: user?.id } },
   })
 })
 
@@ -116,9 +117,6 @@ describe('Testing resources/me endpoint', () => {
   })
 
   it('If the user voted and favorited one of its own created resources, it should be reflected on the response object', async () => {
-    const user = await prisma.user.findUnique({
-      where: { email: testUserData.user.email },
-    })
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}/me`)
       .set('Cookie', [`authToken=${authToken.user}`])
