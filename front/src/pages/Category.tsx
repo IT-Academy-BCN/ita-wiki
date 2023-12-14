@@ -353,7 +353,6 @@ const Category: FC = () => {
   const [isSortByVotesActive, setIsSortByVotesActive] = useState(false)
 
   const [topic, setTopic] = useState('todos')
-  const [initialized, setInitialized] = useState(false)
   const [filters, setFilters] = useState<TFilters>({
     slug,
     resourceTypes: [],
@@ -454,17 +453,11 @@ const Category: FC = () => {
 
   useEffect(() => {
     setTopic('todos')
-    setInitialized(true)
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      topic: undefined,
+    }))
   }, [slug])
-
-  useEffect(() => {
-    if (initialized && topic === 'todos') {
-      setFilters((prevFilters) => ({
-        ...prevFilters,
-        topic: undefined,
-      }))
-    }
-  }, [initialized, topic])
 
   const handleSortOrder = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
@@ -548,7 +541,6 @@ const Category: FC = () => {
                     <TopicsRadioWidget
                       key={slug}
                       slug={slug}
-                      topic={topic}
                       setTopic={handleTopicFilter}
                     />
                   )}

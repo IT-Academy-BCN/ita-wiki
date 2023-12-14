@@ -8,7 +8,7 @@ describe('TopicsRadioWidget', () => {
   it('renders correctly on succesfull API call', async () => {
     const setTopic = vi.fn()
     render(
-      <TopicsRadioWidget slug="react" topic="listas" setTopic={setTopic} />
+      <TopicsRadioWidget slug="react" setTopic={setTopic} />
     )
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
@@ -24,7 +24,7 @@ describe('TopicsRadioWidget', () => {
     mswServer.use(...errorHandlers)
     const setTopic = vi.fn()
     render(
-      <TopicsRadioWidget slug="react" topic="invalid" setTopic={setTopic} />
+      <TopicsRadioWidget slug="react" setTopic={setTopic} />
     )
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
@@ -36,10 +36,25 @@ describe('TopicsRadioWidget', () => {
     })
   })
 
+  it('shows "Todos" as the default selected option', async () => {
+    const setTopic = vi.fn()
+    
+    render(
+      <TopicsRadioWidget slug="react" setTopic={setTopic} />
+    )
+  
+    await waitFor(() => {
+      const option1 = screen.getByLabelText(/tots/i)
+      const option2 = screen.getByLabelText(/listas/i)
+      expect(option1).toBeChecked()
+      expect(option2).not.toBeChecked()
+    })
+  })
+
   it('The user can select another radio option', async () => {
     const setTopic = vi.fn()
 
-    render(<TopicsRadioWidget slug="react" topic="todos" setTopic={setTopic} />)
+    render(<TopicsRadioWidget slug="react" setTopic={setTopic} />)
 
     await waitFor(() => {
       const option1 = screen.getByLabelText(/tots/i)

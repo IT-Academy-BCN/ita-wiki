@@ -13,9 +13,7 @@ const StyledRadio = styled(Radio)`
 
 type TTopicsSlug = {
   slug: string
-  // eslint-disable-next-line react/no-unused-prop-types
-  topic?: string
-  setTopic: (topic: string) => void
+  setTopic: (value: string) => void
 }
 
 const SpinnerStyled = styled(Spinner)`
