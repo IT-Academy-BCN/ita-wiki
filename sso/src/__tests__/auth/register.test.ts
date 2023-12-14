@@ -28,7 +28,8 @@ describe('Testing registration endpoint', () => {
         confirmPassword: 'password1',
         itineraryId,
       })
-    expect(response.status).toBe(204)
+    expect(response.status).toBe(200)
+    expect(response.body.id).toBeTypeOf('string')
   })
 
   describe('should fail with duplicate', () => {
@@ -42,10 +43,8 @@ describe('Testing registration endpoint', () => {
           confirmPassword: 'password1',
           itineraryId,
         })
-      expect(response.status).toBe(500)
-      expect(response.body.message).toContain(
-        'duplicate key value violates unique constraint "user_dni_key"'
-      )
+      expect(response.status).toBe(409)
+      expect(response.body.message).toContain('email or dni already exists')
     })
 
     it('should fail with duplicate: email', async () => {
@@ -59,10 +58,8 @@ describe('Testing registration endpoint', () => {
           itineraryId,
         })
 
-      expect(response.status).toBe(500)
-      expect(response.body.message).toBe(
-        'duplicate key value violates unique constraint "user_email_key"'
-      )
+      expect(response.status).toBe(409)
+      expect(response.body.message).toBe('email or dni already exists')
     })
   })
 

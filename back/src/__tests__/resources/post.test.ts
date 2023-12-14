@@ -1,10 +1,10 @@
 import supertest from 'supertest'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import { server } from '../globalSetup'
-import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
+import { authToken } from '../mocks/ssoServer'
 
 let topicIds: string[] = []
 
@@ -16,7 +16,7 @@ afterAll(async () => {
   await prisma.topicsOnResources.deleteMany({
     where: { resource: { slug: 'test-resource' } },
   })
-  await prisma.resource.delete({
+  await prisma.resource.deleteMany({
     where: { slug: 'test-resource' },
   })
 })
@@ -38,7 +38,7 @@ describe('Testing resource creation endpoint', async () => {
     newResource.topics = topicIds
     const response = await supertest(server)
       .post(`${pathRoot.v1.resources}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .send(newResource)
 
     expect(response.status).toBe(204)
@@ -48,7 +48,7 @@ describe('Testing resource creation endpoint', async () => {
     newResource.topics = []
     const response = await supertest(server)
       .post(`${pathRoot.v1.resources}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .send(newResource)
 
     expect(response.status).toBe(422)
@@ -66,7 +66,7 @@ describe('Testing resource creation endpoint', async () => {
 
     const response = await supertest(server)
       .post(`${pathRoot.v1.resources}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .send(invalidResource)
 
     expect(response.status).toBe(400)

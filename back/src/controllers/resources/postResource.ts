@@ -1,14 +1,11 @@
 import Koa, { Middleware } from 'koa'
-import jwt, { Secret } from 'jsonwebtoken'
 import slugify from 'slugify'
+import { User } from '@prisma/client'
 import { prisma } from '../../prisma/client'
 import { MissingParamError } from '../../helpers/errors'
 
-export const createResource: Middleware = async (ctx: Koa.Context) => {
-  const token = ctx.cookies.get('token') as string
-  const { userId } = jwt.verify(token, process.env.JWT_KEY as Secret) as {
-    userId: string
-  }
+export const postResource: Middleware = async (ctx: Koa.Context) => {
+  const { id: userId } = ctx.user as User
   const resource = ctx.request.body
 
   const slug = slugify(resource.title, { lower: true })

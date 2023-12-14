@@ -3,10 +3,10 @@ import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { Category, Topic } from '@prisma/client'
 import slugify from 'slugify'
 import { server } from '../globalSetup'
-import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
+import { authToken } from '../mocks/ssoServer'
 
 let testCategory1: Category | null
 let testCategory2: Category | null
@@ -66,7 +66,7 @@ describe('Testing topic patch endpoint', () => {
 
     const response = await supertest(server)
       .patch(`${pathRoot.v1.topics}`)
-      .set('Cookie', authToken.mentor)
+      .set('Cookie', [`authToken=${authToken.mentor}`])
       .send(modifiedTopic)
 
     const updatedTopic = await prisma.topic.findFirst({
@@ -89,7 +89,7 @@ describe('Testing topic patch endpoint', () => {
 
     const response = await supertest(server)
       .patch(`${pathRoot.v1.topics}`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
       .send(modifiedTopic)
 
     expect(response.status).toBe(403)

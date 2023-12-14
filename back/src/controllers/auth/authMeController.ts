@@ -10,8 +10,6 @@ export const authMeController: Middleware = async (ctx: Context) => {
     select: {
       id: true,
       name: true,
-      dni: true,
-      email: true,
       role: true,
       status: true,
       avatarId: true,

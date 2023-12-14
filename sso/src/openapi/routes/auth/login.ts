@@ -2,8 +2,7 @@ import { pathRoot } from '../../../routes/routes'
 import { loginSchema } from '../../../schemas/auth/loginSchema'
 import { tokenSchema } from '../../../schemas/token/tokenSchema'
 import {
-  invalidPasswordResponse,
-  userNotFoundResponse,
+  invalidCredentialsResponse,
   zodValidationResponse,
 } from '../../components/responses'
 import { registry } from '../../registry'
@@ -34,7 +33,6 @@ registry.registerPath({
       },
     },
     400: zodValidationResponse,
-    404: userNotFoundResponse,
-    422: invalidPasswordResponse,
+    401: invalidCredentialsResponse,
   },
 })

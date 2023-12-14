@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import { expect, test, describe, afterAll, beforeAll } from 'vitest'
+import { expect, it, describe, afterAll, beforeAll, afterEach } from 'vitest'
 import { Category } from '@prisma/client'
 import { server } from '../globalSetup'
 import { prisma } from '../../prisma/client'
@@ -12,14 +12,20 @@ beforeAll(async () => {
     where: { name: 'Testing' },
   })
 })
-
+afterEach(async () => {
+  await prisma.user.deleteMany({
+    where: {
+      OR: [{ name: 'Example2' }],
+    },
+  })
+})
 afterAll(async () => {
   await prisma.user.deleteMany({
-    where: { email: 'example2@example.com' },
+    where: { name: 'Example2' },
   })
 })
 describe('Testing registration endpoint', () => {
-  test('should succeed with correct credentials', async () => {
+  it('should succeed with correct credentials', async () => {
     const response = await supertest(server)
       .post(`${pathRoot.v1.auth}/register`)
       .send({
@@ -30,47 +36,50 @@ describe('Testing registration endpoint', () => {
         confirmPassword: 'password1',
         accept: true,
         specialization: existingTestCategory!.id,
+        itineraryId: 'clq2d13xz000008jyfowt0l16',
       })
 
     expect(response.status).toBe(204)
   })
 
   describe('should fail with duplicate', () => {
-    test('should fail with duplicate: DNI', async () => {
+    it('should fail with duplicate: DNI', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452b',
+          dni: '11111111A',
           name: 'Example2',
           email: 'anotherexample@example.com',
           password: 'password1',
           confirmPassword: 'password1',
           accept: true,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
-      expect(response.status).toBe(409)
-      expect(response.body.message).toBe('dni already exists')
+      expect(response.status).toBe(400)
+      expect(response.body.message).toBe('email or dni already exists')
     })
 
-    test('should fail with duplicate: email', async () => {
+    it('should fail with duplicate: email', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
           dni: '45632452c',
           name: 'Example2',
-          email: 'example2@example.com',
+          email: 'testingUser@user.cat',
           password: 'password1',
           confirmPassword: 'password1',
           accept: true,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
-      expect(response.status).toBe(409)
-      expect(response.body.message).toBe('email already exists')
+      expect(response.status).toBe(400)
+      expect(response.body.message).toBe('email or dni already exists')
     })
   })
 
   describe('should fail with missing required fields', () => {
-    test('should fail with missing required fields: dni', async () => {
+    it('should fail with missing required fields: dni', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -80,13 +89,14 @@ describe('Testing registration endpoint', () => {
           confirmPassword: 'password1',
           accept: true,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
       expect(response.body.message[0].path).toContain('dni')
     })
 
-    test('should fail with missing required fields: email', async () => {
+    it('should fail with missing required fields: email', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -96,13 +106,14 @@ describe('Testing registration endpoint', () => {
           confirmPassword: 'password1',
           accept: true,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
       expect(response.body.message[0].path).toContain('email')
     })
 
-    test('should fail with missing required fields: name', async () => {
+    it('should fail with missing required fields: name', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -112,13 +123,14 @@ describe('Testing registration endpoint', () => {
           confirmPassword: 'password1',
           accept: true,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
       expect(response.body.message[0].path).toContain('name')
     })
 
-    test('should fail with missing required fields: password', async () => {
+    it('should fail with missing required fields: password', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -128,13 +140,14 @@ describe('Testing registration endpoint', () => {
           confirmPassword: 'password1',
           accept: true,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
       expect(response.body.message[0].path).toContain('password')
     })
 
-    test('should fail with missing required fields: confirmPassword', async () => {
+    it('should fail with missing required fields: confirmPassword', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -144,13 +157,14 @@ describe('Testing registration endpoint', () => {
           password: 'password1',
           accept: true,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
       expect(response.body.message[0].path).toContain('confirmPassword')
     })
 
-    test('should fail with missing required fields: accept', async () => {
+    it('should fail with missing required fields: accept', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -159,6 +173,7 @@ describe('Testing registration endpoint', () => {
           email: 'example2@example.com',
           password: 'password1',
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe(
@@ -167,7 +182,7 @@ describe('Testing registration endpoint', () => {
       expect(response.body.message[0].path).toContain('accept')
     })
 
-    test('should fail with missing required fields: specialization', async () => {
+    it('should fail with missing required fields: specialization', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -175,6 +190,7 @@ describe('Testing registration endpoint', () => {
           name: 'Example2',
           email: 'example2@example.com',
           password: 'password1',
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
@@ -183,7 +199,7 @@ describe('Testing registration endpoint', () => {
   })
 
   describe('should fail with invalid input', () => {
-    test('should fail with invalid input: dni', async () => {
+    it('should fail with invalid input: dni', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -194,13 +210,14 @@ describe('Testing registration endpoint', () => {
           confirmPassword: 'password1',
           accept: true,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].validation).toBe('regex')
       expect(response.body.message[0].path).toContain('dni')
     })
 
-    test('should fail with invalid input: email', async () => {
+    it('should fail with invalid input: email', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -211,13 +228,14 @@ describe('Testing registration endpoint', () => {
           confirmPassword: 'password1',
           accept: true,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].validation).toBe('email')
       expect(response.body.message[0].path).toContain('email')
     })
 
-    test('should fail with invalid input: accept', async () => {
+    it('should fail with invalid input: accept', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -228,13 +246,14 @@ describe('Testing registration endpoint', () => {
           confirmPassword: 'password1',
           accept: false,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].expected).toBe(true)
       expect(response.body.message[0].path).toContain('accept')
     })
 
-    test('should fail with invalid input: password too short', async () => {
+    it('should fail with invalid input: password too short', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -245,13 +264,14 @@ describe('Testing registration endpoint', () => {
           confirmPassword: 'pswd1',
           accept: true,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].path).toContain('password')
       expect(response.body.message[0].code).toBe('too_small')
     })
 
-    test('should fail with invalid input: password has no numbers', async () => {
+    it('should fail with invalid input: password has no numbers', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -262,13 +282,14 @@ describe('Testing registration endpoint', () => {
           confirmPassword: 'password',
           accept: true,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].validation).toBe('regex')
       expect(response.body.message[0].path).toContain('password')
     })
 
-    test('should fail with invalid input: password contains non-alfanumeric', async () => {
+    it('should fail with invalid input: password contains non-alfanumeric', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -279,12 +300,13 @@ describe('Testing registration endpoint', () => {
           confirmPassword: 'password1?',
           accept: true,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].validation).toBe('regex')
       expect(response.body.message[0].path).toContain('password')
     })
-    test('should fail with invalid input: passwords do not match', async () => {
+    it('should fail with invalid input: passwords do not match', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -295,6 +317,7 @@ describe('Testing registration endpoint', () => {
           confirmPassword: 'password2',
           accept: true,
           specialization: existingTestCategory!.id,
+          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Passwords must match')
