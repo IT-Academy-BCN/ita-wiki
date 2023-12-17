@@ -28,6 +28,7 @@ const meta = {
 export default meta;
 type ButtonStory = StoryObj<typeof Button>;
 
+//ask about this template
 // const Template: ButtonStory<TButton> = (args) => <Button { ...args } />
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
@@ -41,7 +42,7 @@ export const Primary: ButtonStory = {
 
 export const Secondary: ButtonStory = {
   args: {
-    label: 'Secundary Button',
+    label: 'Button',
     secondary: true,
     outline: false
   },
@@ -50,14 +51,14 @@ export const Secondary: ButtonStory = {
 export const Large: ButtonStory = {
   args: {
     size: 'large',
-    label: 'large Button',
+    label: 'Button',
   },
 };
 
 export const Small: ButtonStory = {
   args: {
     size: 'small',
-    label: 'small Button',
+    label: 'Button',
   },
 };
 
