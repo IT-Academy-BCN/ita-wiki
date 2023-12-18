@@ -27,8 +27,7 @@
   "peerDependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "styled-components": "^5.3.9",
-    "react-router-dom": "6.9.0"
+    "styled-components": "^5.3.9"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "7.6.0",
