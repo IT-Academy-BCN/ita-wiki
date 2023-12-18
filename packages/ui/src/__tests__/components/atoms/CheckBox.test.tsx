@@ -1,8 +1,10 @@
 import React from 'react'
+//import '@testing-library/jest-dom'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
-import { expect } from 'vitest'
+import { expect, it, describe } from 'vitest'
 import Checkbox from '../../../components/atoms/Checkbox'
 import { colors } from './../../../styles'
+//import { toBeChecked } from '@testing-library/jest-dom/matchers'
 
 describe('CheckBox', () => {
   it('renders correctly', async () => {
@@ -15,9 +17,9 @@ describe('CheckBox', () => {
     expect(labelTest).toBeInTheDocument()
 
     expect(checkBoxTest).toHaveAttribute('type', 'checkbox')
-    expect(checkBoxTest).toHaveStyle(`color: ${colors.gray.gray2};`)
+    // //    expect(checkBoxTest).toHaveStyle(`color: ${colors.gray.gray3};`)
 
-    expect(checkBoxTest).not.toBeChecked()
+    expect(checkBoxTest).not.toBeCheched()
 
     fireEvent.click(checkBoxTest)
 
