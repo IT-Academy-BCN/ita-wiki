@@ -14,11 +14,14 @@ const meta = {
   tags: ["autodocs"],
   // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
-    error: { control: "boolean" },
-    success: { control: "boolean" },
-    warning: { control: "boolean" },
-    type: { control: { type: "select", options: ["text", "password", "email"] } },
-    onChange: { action: "changed" },
+    error: { control: "boolean", defaultValue: false },
+    success: { control: "boolean", defaultValue: false },
+    warning: { control: "boolean", defaultValue: false },
+    type: {
+      control: "select",
+      options: ["text", "password", "email"],
+      defaultValue: "text",
+    },
 
   },
 } satisfies Meta<typeof Input>;
@@ -26,20 +29,16 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-
-
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
-    value: "",
-    onChange: action("changed"),
     type : "text",
   },
 };
 
 export const Error: Story = {
   args: {
-    value : "invalid input",
+    value: "invalid input",
     error: true,
   },
 }
