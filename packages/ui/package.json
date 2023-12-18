@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "description": "React FE components for ITAcademy projects.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "test",
+    "test": "vitest",
+    "coverage": "vitest --coverage",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -25,7 +27,8 @@
   "peerDependencies": {
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "styled-components": "^5.3.9"
+    "styled-components": "^5.3.9",
+    "react-router-dom": "6.9.0"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "7.6.0",
@@ -60,7 +63,8 @@
     "react-dom": "^18.2.0",
     "storybook": "7.6.0",
     "typescript": "^5.0.4",
-    "vitest": "0.30.1"
+    "vitest": "0.30.1",
+    "@vitest/coverage-c8": "0.30.1"
   },
   "eslintConfig": {
     "extends": [
