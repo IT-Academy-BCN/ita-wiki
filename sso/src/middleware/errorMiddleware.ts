@@ -3,6 +3,7 @@ import { Context, Next } from 'koa'
 import { ZodError } from 'zod'
 import { JsonWebTokenError } from 'jsonwebtoken'
 import {
+  DuplicateError,
   InvalidParamError,
   InvalidToken,
   UnauthorizedError,
@@ -21,6 +22,8 @@ const errorMiddleware = async (ctx: Context, next: Next) => {
       error = new InvalidToken()
     } else if (error.code === '23503') {
       error = new InvalidParamError(error.constraint.split('_')[1])
+    } else if (error.code === '23505') {
+      error = new DuplicateError('email or dni')
     }
     ctx.status = error.status || 500
     ctx.body = {

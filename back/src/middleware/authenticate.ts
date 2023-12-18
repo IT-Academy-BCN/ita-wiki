@@ -1,20 +1,26 @@
 import Koa from 'koa'
-import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
 import { prisma } from '../prisma/client'
-import { NotFoundError, UnauthorizedError } from '../helpers/errors'
+import {
+  InvalidToken,
+  NotFoundError,
+  UnauthorizedError,
+} from '../helpers/errors'
+import { handleSSO } from '../helpers/handleSso'
 
 export const authenticate = async (ctx: Koa.Context, next: Koa.Next) => {
-  const token = ctx.cookies.get('token')
-  if (!token) {
+  const authToken = ctx.cookies.get('authToken')
+  if (!authToken) {
     throw new UnauthorizedError()
   }
-
-  const { userId } = jwt.verify(
-    token,
-    process.env.JWT_KEY as Secret
-  ) as JwtPayload
-
-  const user = await prisma.user.findUnique({ where: { id: userId } })
+  const { status, data } = await handleSSO('validate', { authToken })
+  if (status !== 200) {
+    ctx.cookies.set('authToken', null, {
+      expires: new Date(0),
+      overwrite: true,
+    })
+    throw new InvalidToken()
+  }
+  const user = await prisma.user.findUnique({ where: { id: data.id } })
 
   if (!user) throw new NotFoundError('User not found')
 
@@ -30,13 +36,18 @@ export const authenticate = async (ctx: Koa.Context, next: Koa.Next) => {
  */
 export const getUserFromToken = async (ctx: Koa.Context, next: Koa.Next) => {
   ctx.user = null
-  const token = ctx.cookies.get('token')
-  if (token) {
-    const { userId } = jwt.verify(
-      token,
-      process.env.JWT_KEY as Secret
-    ) as JwtPayload
-    const user = await prisma.user.findUnique({ where: { id: userId } })
+  const authToken = ctx.cookies.get('authToken')
+  if (authToken) {
+    const { status, data } = await handleSSO('validate', { authToken })
+    if (status !== 200) {
+      // eslint-disable-next-line @typescript-eslint/no-throw-literal
+      ctx.cookies.set('authToken', null, {
+        expires: new Date(0),
+        overwrite: true,
+      })
+      throw new InvalidToken()
+    }
+    const user = await prisma.user.findUnique({ where: { id: data.id } })
     ctx.user = user
   }
   await next()

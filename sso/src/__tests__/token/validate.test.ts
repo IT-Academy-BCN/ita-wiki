@@ -2,6 +2,7 @@ import supertest from 'supertest'
 import { expect, it, describe, beforeAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
+import { userSchema } from '../../schemas'
 
 const route = `${pathRoot.v1.tokens}/validate`
 let authToken = ''
@@ -19,7 +20,11 @@ describe('Testing validate token endpoint', () => {
     const response = await supertest(server).post(route).send({
       authToken,
     })
-    expect(response.status).toBe(204)
+    expect(response.status).toBe(200)
+    expect(response.body.id).toBeTypeOf('string')
+    expect(
+      userSchema.pick({ id: true }).safeParse(response.body).success
+    ).toBeTruthy()
   })
   it('should fail with Zod validation error for no token', async () => {
     const response = await supertest(server).post(route).send({ authToken: '' })
@@ -43,13 +48,13 @@ describe('Testing validate token endpoint', () => {
     const response = await supertest(server).post(route).send({ token: '' })
     expect(response.status).toBe(400)
   })
-  it('should fail with InvalidCredentials error for invalid token', async () => {
+  it('should fail with InvalidToken error for invalid token', async () => {
     const response = await supertest(server)
       .post(route)
       .send({ authToken: 'invalid_token' })
 
-    expect(response.status).toBe(401)
-    expect(response.body.message).toBe('Invalid Credentials')
+    expect(response.status).toBe(498)
+    expect(response.body.message).toBe('Token is not valid')
   })
   it('should fail with incorrect password', async () => {
     const response = await supertest(server)

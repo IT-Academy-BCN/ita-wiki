@@ -19,37 +19,37 @@ export const checkInvalidToken = (
       case 'get':
         response = await requestWithoutToken
           .get(endpoint)
-          .set('Cookie', `token=invalidToken`)
+          .set('Cookie', `authToken=invalidToken`)
         break
       case 'post':
         response = body
           ? await requestWithoutToken
               .post(endpoint)
-              .set('Cookie', `token=invalidToken`)
+              .set('Cookie', `authToken=invalidToken`)
               .send(body)
           : await requestWithoutToken
               .post(endpoint)
-              .set('Cookie', `token=invalidToken`)
+              .set('Cookie', `authToken=invalidToken`)
         break
       case 'put':
         response = body
           ? await supertest(server)
               .put(endpoint)
-              .set('Cookie', `token=invalidToken`)
+              .set('Cookie', `authToken=invalidToken`)
               .send(body)
           : await supertest(server)
               .put(endpoint)
-              .set('Cookie', `token=invalidToken`)
+              .set('Cookie', `authToken=invalidToken`)
         break
       case 'patch':
         response = body
           ? await supertest(server)
               .patch(endpoint)
-              .set('Cookie', `token=invalidToken`)
+              .set('Cookie', `authToken=invalidToken`)
               .send(body)
           : await supertest(server)
               .patch(endpoint)
-              .set('Cookie', `token=invalidToken`)
+              .set('Cookie', `authToken=invalidToken`)
         break
       default:
         throw new Error(`Unsupported method: ${method}`)
@@ -62,10 +62,10 @@ export const checkInvalidToken = (
     expect(cookieHeader).toBeDefined()
 
     const tokenCookie = cookieHeader.find((header: string) =>
-      header.startsWith('token=')
+      header.startsWith('authToken=')
     )
     expect(tokenCookie).toBe(
-      'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly'
+      'authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly'
     )
   })
 }

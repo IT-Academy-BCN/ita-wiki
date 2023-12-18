@@ -1,4 +1,4 @@
-import { Category, Topic } from '@prisma/client'
+import { Category, Topic, User } from '@prisma/client'
 import supertest from 'supertest'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
@@ -9,6 +9,8 @@ import { resourceTestData } from '../mocks/resources'
 
 let testTopic: Topic
 
+let user: User | null
+
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
     where: { slug: 'testing' },
@@ -17,10 +19,12 @@ beforeAll(async () => {
   testTopic = (await prisma.topic.findUnique({
     where: { slug: 'testing' },
   })) as Topic
-
+  user = await prisma.user.findFirst({
+    where: { name: testUserData.user.name },
+  })
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,
-    user: { connect: { dni: testUserData.user.dni } },
+    user: { connect: { id: user?.id } },
     topics: {
       create: [{ topic: { connect: { id: testTopic.id } } }],
     },
@@ -37,7 +41,7 @@ afterAll(async () => {
     where: { topic: { id: testTopic.id } },
   })
   await prisma.resource.deleteMany({
-    where: { user: { dni: testUserData.user.dni } },
+    where: { user: { id: user?.id } },
   })
 })
 

@@ -2,18 +2,18 @@ import { Category, Resource, User } from '@prisma/client'
 import supertest from 'supertest'
 import { expect, describe, it, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
-import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { voteCountSchema } from '../../schemas'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
+import { authToken } from '../mocks/ssoServer'
 
 let resource: Resource
 let testUser: User
 
 beforeAll(async () => {
-  testUser = (await prisma.user.findUnique({
-    where: { dni: testUserData.admin.dni },
+  testUser = (await prisma.user.findFirst({
+    where: { name: testUserData.admin.name },
   })) as User
 
   const category = (await prisma.category.findUnique({
@@ -31,10 +31,13 @@ beforeAll(async () => {
       categoryId: category.id,
     },
   })
+  const user = (await prisma.user.findFirst({
+    where: { name: testUserData.user.name },
+  })) as User
   await prisma.vote.create({
     data: {
       user: {
-        connect: { dni: testUserData.user.dni },
+        connect: { id: user.id },
       },
       resource: {
         connect: { id: resource.id },
@@ -65,7 +68,7 @@ describe('Testing VOTE endpoint, GET method', async () => {
   it('Should return userVote as 0 for logged in user who hasn’t voted', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.vote}/${resource.id}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
 
     expect(response.status).toBe(200)
     expect(() => voteCountSchema.parse(response.body)).not.toThrow()
@@ -74,7 +77,7 @@ describe('Testing VOTE endpoint, GET method', async () => {
   it('Should return userVote as a number for logged in user who has voted', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.vote}/${resource.id}`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
 
     expect(response.status).toBe(200)
     expect(() => voteCountSchema.parse(response.body)).not.toThrow()
@@ -116,7 +119,7 @@ describe('Testing VOTE endpoint, PUT method', async () => {
       it('Should succeed with up vote, and update the data in the db', async () => {
         const response = await supertest(server)
           .put(`${pathRoot.v1.vote}`)
-          .set('Cookie', authToken.admin)
+          .set('Cookie', [`authToken=${authToken.admin}`])
           .send({
             resourceId: resource.id,
             vote: 'up',
@@ -133,7 +136,7 @@ describe('Testing VOTE endpoint, PUT method', async () => {
       it('Should succeed with down vote, and update the data in the db', async () => {
         const response = await supertest(server)
           .put(`${pathRoot.v1.vote}`)
-          .set('Cookie', authToken.admin)
+          .set('Cookie', [`authToken=${authToken.admin}`])
           .send({
             resourceId: resource.id,
             vote: 'down',
@@ -149,7 +152,7 @@ describe('Testing VOTE endpoint, PUT method', async () => {
       it('Should succeed with canceling the vote, and update the data in the db', async () => {
         const response = await supertest(server)
           .put(`${pathRoot.v1.vote}`)
-          .set('Cookie', authToken.admin)
+          .set('Cookie', [`authToken=${authToken.admin}`])
           .send({
             resourceId: resource.id,
             vote: 'cancel',
@@ -167,7 +170,7 @@ describe('Testing VOTE endpoint, PUT method', async () => {
       it('Should fail with invalid resourceId', async () => {
         const response = await supertest(server)
           .put(`${pathRoot.v1.vote}`)
-          .set('Cookie', authToken.admin)
+          .set('Cookie', [`authToken=${authToken.admin}`])
           .send({
             resourceId: 'someInvalidResourceId',
             vote: 'down',
@@ -177,7 +180,7 @@ describe('Testing VOTE endpoint, PUT method', async () => {
       it('Should fail with valid resourceId but does not belong to one', async () => {
         const response = await supertest(server)
           .put(`${pathRoot.v1.vote}`)
-          .set('Cookie', authToken.admin)
+          .set('Cookie', [`authToken=${authToken.admin}`])
           .send({
             resourceId: 'cjld2cjxh0000qzrmn831i7rn',
             vote: 'cancel',
@@ -188,7 +191,7 @@ describe('Testing VOTE endpoint, PUT method', async () => {
       it('Should fail with invalid vote', async () => {
         const response = await supertest(server)
           .put(`${pathRoot.v1.vote}`)
-          .set('Cookie', authToken.admin)
+          .set('Cookie', [`authToken=${authToken.admin}`])
           .send({
             resourceId: resource.id,
             vote: 1,
@@ -198,7 +201,7 @@ describe('Testing VOTE endpoint, PUT method', async () => {
       it('Should fail with missing vote', async () => {
         const response = await supertest(server)
           .put(`${pathRoot.v1.vote}`)
-          .set('Cookie', authToken.admin)
+          .set('Cookie', [`authToken=${authToken.admin}`])
           .send({
             resourceId: resource.id,
           })
@@ -207,7 +210,7 @@ describe('Testing VOTE endpoint, PUT method', async () => {
       it('Should fail with missing body', async () => {
         const response = await supertest(server)
           .put(`${pathRoot.v1.vote}`)
-          .set('Cookie', authToken.admin)
+          .set('Cookie', [`authToken=${authToken.admin}`])
         expect(response.status).toBe(400)
       })
     })

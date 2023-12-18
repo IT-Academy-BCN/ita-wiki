@@ -14,7 +14,8 @@ describe('Testing authentication endpoint', () => {
     expect(response.status).toBe(204)
 
     const cookie = response.header['set-cookie'] as string[]
-    expect(cookie[0]).toMatch(/token/)
+    expect(cookie[0]).toMatch(/authToken/)
+    expect(cookie[1]).toMatch(/refreshToken/)
   })
 
   test('should fail if user not active', async () => {
@@ -25,7 +26,7 @@ describe('Testing authentication endpoint', () => {
         password: testUserData.inactiveUser.password,
       })
     expect(response.status).toBe(403)
-    expect(response.body.error).toBe('Only active users can login')
+    expect(response.body.message).toBe('Only active users can login')
   })
 
   test('should fail with incorrect password', async () => {
@@ -35,8 +36,8 @@ describe('Testing authentication endpoint', () => {
         dni: testUserData.admin.dni,
         password: 'wrong password',
       })
-    expect(response.status).toBe(422)
-    expect(response.body.error).toBe('Invalid password')
+    expect(response.status).toBe(401)
+    expect(response.body.message).toBe('Invalid credentials')
   })
 
   test('should fail with user not found', async () => {
@@ -46,7 +47,7 @@ describe('Testing authentication endpoint', () => {
         dni: '11111111b',
         password: 'password1',
       })
-    expect(response.status).toBe(404)
-    expect(response.body.error).toBe('User not found')
+    expect(response.status).toBe(401)
+    expect(response.body.message).toBe('Invalid credentials')
   })
 })

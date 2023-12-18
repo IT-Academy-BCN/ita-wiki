@@ -12,7 +12,7 @@ async function seedDB() {
   const categoryReact = await prisma.category.findUnique({
     where: { name: 'React' },
   })
-
+  if (!categoryReact) throw new Error('Category React not found');
   const categoryNode = await prisma.category.findUnique({
     where: { name: 'Node' },
   })
@@ -38,16 +38,16 @@ async function seedDB() {
     ],
   })
 
-  const userAdmin = await prisma.user.findUnique({
-    where: { email: 'admin@admin.com' },
+  const userAdmin = await prisma.user.findFirst({
+    where: { name: 'Kevin Mamaqi' },
   })
 
-  const userMentor = await prisma.user.findUnique({
-    where: { email: 'mentor@mentor.com' },
+  const userMentor = await prisma.user.findFirst({
+    where: { name: 'Linux Mint' },
   })
 
-  const userRegistered = await prisma.user.findUnique({
-    where: { email: 'registered@registered.com' },
+  const userRegistered = await prisma.user.findFirst({
+    where: { name: 'Django Unchained' },
   })
 
   const topicCategories = [
