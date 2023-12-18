@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { action } from "@storybook/addon-actions";
 import Input from "../../components/atoms/Input";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -22,7 +21,6 @@ const meta = {
       options: ["text", "password", "email"],
       defaultValue: "text",
     },
-
   },
 } satisfies Meta<typeof Input>;
 
@@ -32,7 +30,7 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
-    type : "text",
+    type: "text",
   },
 };
 
@@ -41,7 +39,7 @@ export const Error: Story = {
     value: "invalid input",
     error: true,
   },
-}
+};
 
 export const Success: Story = {
   args: {
@@ -55,18 +53,18 @@ export const Warning: Story = {
     value: "warning input",
     warning: true,
   },
-}
+};
 
 export const EmailInput: Story = {
   args: {
     value: "user@example.com",
     type: "email",
   },
-}
+};
 
 export const PasswordInput: Story = {
   args: {
     value: "password",
     type: "password",
   },
-}
+};
