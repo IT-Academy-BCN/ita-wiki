@@ -1,9 +1,8 @@
-import { screen } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import { Label } from "../../components/atoms";
 import { colors, font } from "../../styles";
 import React from "react";
 import { expect, it, describe } from "vitest";
-import { render } from "../test-utils";
 
 describe("Label", () => {
   it("renders correctly", () => {
