@@ -18,6 +18,7 @@ const meta = {
     children: { control: 'text' },
     secondary: { control: 'boolean' },
     outline: { control: 'boolean' },
+    disabled: { control: 'boolean' },
     size: {
       control: { type: 'select' },
       options: ['small', 'normal', 'large']
@@ -36,7 +37,8 @@ export const Primary: ButtonStory = {
   args: {
     label: 'Button',
     secondary: false,
-    outline: false
+    outline: false,
+    disabled: false,
   },
 };
 
@@ -44,7 +46,8 @@ export const Secondary: ButtonStory = {
   args: {
     label: 'Button',
     secondary: true,
-    outline: false
+    outline: false,
+    disabled: false,
   },
 };
 
