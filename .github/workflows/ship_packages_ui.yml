@@ -1,11 +1,11 @@
-name: ship_packages_schemas
+name: ship_packages_ui
 
 on:
   push:
     branches:
       - main
     paths:
-      - "packages/schemas/**"
+      - "packages/ui/**"
 
 jobs:
   build:
@@ -22,12 +22,12 @@ jobs:
           registry-url: "https://registry.npmjs.org"
 
       - name: Install dependencies
-        run: cd packages/schemas && npm ci
+        run: cd packages/ui && npm ci
 
-      - name: Build schemas package
-        run: cd packages/schemas && npm run build
+      - name: Build ui package
+        run: cd packages/ui && npm run build
 
       - name: Publish to npm
-        run: cd packages/schemas && npm publish --access public
+        run: cd packages/ui && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
