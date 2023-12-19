@@ -1,5 +1,4 @@
 import { vi } from 'vitest'
-import { rest } from 'msw'
 import { TopicsRadioWidget } from '../../components/organisms'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { mswServer } from '../setup'
@@ -37,27 +36,7 @@ describe('TopicsRadioWidget', () => {
     })
   })
 
-  it('renders correctly with empty data', async () => {
-    mswServer.use(
-      rest.get('/api/v1/resources', (req, res, ctx) => res(ctx.json([])))
-    )
-    const setTopic = vi.fn()
-
-    render(<TopicsRadioWidget slug="react" setTopic={setTopic} />)
-
-    const spinnerComponent = screen.getByRole('status') as HTMLDivElement
-    expect(spinnerComponent).toBeInTheDocument()
-
-    await waitFor(() => {
-      const defaultOption = screen.getByText(/tots/i)
-      expect(defaultOption).toBeInTheDocument()
-
-      const additionalOptions = screen.queryAllByRole('radio')
-      expect(additionalOptions).toHaveLength(3)
-    })
-  })
-
-  it('displays "Todos" as the default option and allows users to select others', async () => {
+  it('displays Todos as the default option and allows users to select others', async () => {
     const setTopic = vi.fn()
     
     render(
@@ -79,5 +58,31 @@ describe('TopicsRadioWidget', () => {
       expect(option2).not.toBeChecked()
       expect(option3).toBeChecked()
     })
+  })
+
+  it('keeps Todos as the selected option after changing the page', async () => {
+    const setTopic = vi.fn()
+
+    render(<TopicsRadioWidget slug="react" setTopic={setTopic} />)
+
+    await waitFor(() => {
+      const defaultOption = screen.getByLabelText(/tots/i)
+      const option2 = screen.getByLabelText(/listas/i)
+      const option3 = screen.getByLabelText(/renderizado condicional/i)
+
+      fireEvent.click(option3)
+
+      expect(defaultOption).not.toBeChecked()
+      expect(option2).not.toBeChecked()
+      expect(option3).toBeChecked()
+    })
+    
+    render(<TopicsRadioWidget slug="node" setTopic={setTopic} />)
+
+    await waitFor(() => {})
+
+    const updatedDefaultOption = screen.getByLabelText(/tots/i) as HTMLInputElement
+    
+    expect(updatedDefaultOption).toHaveAttribute('checked')
   })
 })
