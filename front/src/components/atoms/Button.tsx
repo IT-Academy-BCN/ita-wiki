@@ -7,7 +7,7 @@ const StyledButton = styled.button<TButton>`
   align-items: center;
   justify-content: center;
   border-radius: ${dimensions.borderRadius.base};
-  // margin: ${dimensions.spacing.xxs};
+  margin: ${dimensions.spacing.xxs};
   padding: ${({ size }) =>
     (size === 'small' && dimensions.spacing.xxs) ||
     (size === 'large' && dimensions.spacing.md) ||
