@@ -3,7 +3,7 @@ import { ButtonHTMLAttributes, FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, font } from '../../styles'
 
-const StyledButton = styled.button<TButton>`
+ const StyledButton = styled.button<TButton>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,7 +73,7 @@ type TButton = ButtonHTMLAttributes<HTMLButtonElement> & {
     outline?: boolean
     size?: 'small' | 'normal' | 'large'
 }
-const Button: FC<TButton> = ({
+export const Button: FC<TButton> = ({
     type = 'submit',
     secondary = false,
     outline = false,
@@ -93,4 +93,3 @@ const Button: FC<TButton> = ({
     </StyledButton>
 )
 
-export default styled(Button)``
