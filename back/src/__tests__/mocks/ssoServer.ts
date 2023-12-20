@@ -24,6 +24,7 @@ type LoginResponse =
   | { message: string }
   | { authToken: string; refreshToken: string }
 type ValidationResponse = { message: string } | { id: string }
+type GetUserResponse = { message: string } | { dni: string; email: string }
 type RegisterResponse = { message: ZodIssue[] | string } | { id: string }
 
 const handlers = [
@@ -137,6 +138,41 @@ const handlers = [
       )
     }
   ),
+
+  http.post('http://localhost:8000/api/v1/user', async ({ request }) => {
+    const { authToken: token } = (await request.json()) as {
+      authToken: string
+    }
+    const isValidToken = Object.values(authToken).includes(token)
+    if (!isValidToken) {
+      return HttpResponse.json(
+        {
+          message: 'Invalid Credentials',
+        } as GetUserResponse,
+        { status: 401 }
+      )
+    }
+    const userType = Object.keys(authToken).find(
+      (key) => authToken[key] === token
+    )
+    if (!userType) {
+      return HttpResponse.json(
+        {
+          message: 'Invalid Credentials',
+        } as GetUserResponse,
+        { status: 401 }
+      )
+    }
+    const { dni, email } = testUserData[userType]
+
+    return HttpResponse.json(
+      {
+        dni,
+        email,
+      } as GetUserResponse,
+      { status: 200 }
+    )
+  }),
 ]
 
 export const ssoServer = setupServer(...handlers)
