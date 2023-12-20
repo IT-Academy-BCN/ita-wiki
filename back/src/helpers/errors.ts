@@ -68,7 +68,11 @@ class InvalidToken extends DefaultError {
     super(498, `${message}`)
   }
 }
-
+class InternalSSOError extends DefaultError {
+  constructor(message: string = 'Internal SSO error') {
+    super(500, `${message}`)
+  }
+}
 class ServiceUnavailable extends DefaultError {
   constructor(message: string = 'Service Unavailable') {
     super(503, `${message}`)
@@ -86,5 +90,6 @@ export {
   UnsupportedMediaType,
   MissingParamError,
   InvalidToken,
+  InternalSSOError,
   ServiceUnavailable,
 }

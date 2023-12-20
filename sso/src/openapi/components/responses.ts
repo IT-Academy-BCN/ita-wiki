@@ -101,3 +101,12 @@ export const validTokenResponse = {
     },
   },
 }
+
+export const getUserResponse = {
+  description: 'Token is valid and user information is returned.',
+  content: {
+    'application/json': {
+      schema: userSchema.pick({ dni: true, email: true }),
+    },
+  },
+}

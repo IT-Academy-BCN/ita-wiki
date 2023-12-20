@@ -2,7 +2,7 @@ import { appConfig } from '../config/config'
 import { TSsoLoginRequest } from '../schemas/sso/ssoLogin'
 
 export async function handleSSO(
-  action: 'login' | 'register' | 'validate',
+  action: 'login' | 'register' | 'validate' | 'getUser',
   data:
     | TSsoLoginRequest
     | { authToken: string }
@@ -32,6 +32,10 @@ export async function handleSSO(
       break
     case 'validate':
       url = `${appConfig.ssoUrl}/api/v1/tokens/validate`
+      headers.Accept = 'application/json'
+      break
+    case 'getUser':
+      url = `${appConfig.ssoUrl}/api/v1/user`
       headers.Accept = 'application/json'
       break
     default:
