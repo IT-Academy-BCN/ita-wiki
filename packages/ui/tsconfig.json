@@ -16,7 +16,7 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx", ".storybook/**/*.ts", ".storybook/**/*.tsx"],
+  "include": ["./src/**/*.ts", "./src/**/*.tsx", ".storybook/**/*.ts", ".storybook/**/*.tsx", "vite.config.ts"],
   "exclude": [
     "node_modules",
     "dist",
