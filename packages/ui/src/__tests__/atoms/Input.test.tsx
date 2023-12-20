@@ -3,7 +3,6 @@ import { expect, vi, it, describe } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { Input } from "../../components/atoms";
 import { colors, dimensions } from "../../styles";
-import React from "react";
 
 const onChangeMock = vi.fn();
 

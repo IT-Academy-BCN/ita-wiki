@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { LabelHTMLAttributes } from "react";
 import { colors, font } from "../../styles";
-import React from "react";
 
 const LabelStyled = styled.label`
   color: ${colors.gray.gray2};
