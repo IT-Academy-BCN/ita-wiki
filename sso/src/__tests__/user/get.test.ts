@@ -4,7 +4,7 @@ import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { userSchema } from '../../schemas'
 
-const route = `${pathRoot.v1.tokens}/validate`
+const route = `${pathRoot.v1.user}`
 let authToken = ''
 beforeAll(async () => {
   const response = await supertest(server)
@@ -15,15 +15,16 @@ beforeAll(async () => {
     })
   authToken = response.body.authToken
 })
-describe('Testing validate token endpoint', () => {
+describe('Testing get user endpoint', () => {
   it('should succeed with a valid token', async () => {
     const response = await supertest(server).post(route).send({
       authToken,
     })
     expect(response.status).toBe(200)
-    expect(response.body.id).toBeTypeOf('string')
+    expect(response.body.dni).toBeTypeOf('string')
     expect(
-      userSchema.pick({ id: true }).safeParse(response.body).success
+      userSchema.pick({ dni: true, email: true }).safeParse(response.body)
+        .success
     ).toBeTruthy()
   })
   it('should fail with Zod validation error for no token', async () => {

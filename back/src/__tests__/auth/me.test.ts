@@ -59,7 +59,7 @@ describe('Testing ME endpoint', () => {
     expect(response.body.message).toBe('Missing token')
   })
 
-  it.skip('Should return user avatar, if available, along with user info', async () => {
+  it('Should return user avatar, if available, along with user info', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.auth}/me`)
       .set('Cookie', [`authToken=${authToken.admin}`])
