@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import Button from "../../components/atoms/Button";
+import { Button } from "../../components/atoms/Button";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -35,7 +35,6 @@ type ButtonStory = StoryObj<typeof Button>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Primary: ButtonStory = {
   args: {
-    label: 'Button',
     secondary: false,
     outline: false,
     disabled: false,
@@ -44,7 +43,6 @@ export const Primary: ButtonStory = {
 
 export const Secondary: ButtonStory = {
   args: {
-    label: 'Button',
     secondary: true,
     outline: false,
     disabled: false,
@@ -54,14 +52,12 @@ export const Secondary: ButtonStory = {
 export const Large: ButtonStory = {
   args: {
     size: 'large',
-    label: 'Button',
   },
 };
 
 export const Small: ButtonStory = {
   args: {
     size: 'small',
-    label: 'Button',
   },
 };
 
