@@ -54,6 +54,11 @@ jobs:
           cd ${{ github.workspace }}/packages/ui
           npm run test -- --coverage
 
+      - name: build storybook
+        run: |
+          cd ${{ github.workspace }}/packages/ui
+          npm run build-storybook
+
       - name: build
         run: |
           cd ${{ github.workspace }}/packages/ui
