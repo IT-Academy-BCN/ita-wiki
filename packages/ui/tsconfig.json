@@ -16,14 +16,13 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["./src/**/*.ts", "./src/**/*.tsx", ".storybook/**/*.ts", ".storybook/**/*.tsx", "vite.config.ts"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build",
-    "public",
-    "scripts"
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    ".storybook/**/*.ts",
+    ".storybook/**/*.tsx",
+    "vitest.config.ts"
   ],
+  "exclude": ["node_modules", "dist", "build", "public", "scripts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
-
