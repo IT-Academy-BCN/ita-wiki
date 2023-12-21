@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2023-12-20
+
+
+### Added
+
+- authenticate middleware
+- Get user information endpoint
+
+### Changed
+
+- Modified validate token route to use authenticate middleware
+- Updated controller logic to be handled in the authenticate middleware
+- 
+### Testing
+
+- Added tests for get user information endpoint
+  
+### Documentation
+
+- Enhanced OpenAPI documentation with details on the new get user information endpoint
+
 ## [1.4.0] - 2023-12-14
 
 ### Changed

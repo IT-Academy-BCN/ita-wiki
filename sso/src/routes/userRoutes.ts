@@ -1,18 +1,18 @@
 import Router from '@koa/router'
 import { pathRoot } from './routes'
-import { validate as validateToken } from '../controllers/token/validate'
+import { authenticate } from '../middleware/authenticate'
+import { getUserController } from '../controllers/user/get'
 import { validate } from '../middleware/validate'
 import { z } from '../openapi/zod'
 import { validateSchema } from '../schemas/token/validateSchema'
-import { authenticate } from '../middleware/authenticate'
 
-export const tokenRoutes = new Router()
+export const userRoutes = new Router()
 
-tokenRoutes.prefix(pathRoot.v1.tokens)
+userRoutes.prefix(pathRoot.v1.user)
 
-tokenRoutes.post(
-  '/validate',
+userRoutes.post(
+  '/',
   validate(z.object({ body: validateSchema })),
   authenticate,
-  validateToken
+  getUserController
 )

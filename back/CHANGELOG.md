@@ -1,7 +1,17 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [0.5.0] - 2023-12-20
 
+### Changed
+
+- Retrieve DNI and email of the user from SSO instead of the database
+
+
+### Testing
+
+- Added to ssoServer mock, get user handler.
+  
 ## [0.4.0] - 2023-12-14
 
 ### Added
