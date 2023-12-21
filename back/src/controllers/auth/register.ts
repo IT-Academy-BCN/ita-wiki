@@ -1,9 +1,8 @@
-import { Middleware, Context } from 'koa'
-import { prisma } from '../../prisma/client'
-import { ValidationError } from '../../helpers/errors'
-import { UserRegister } from '../../schemas/users/userRegisterSchema'
+import { Context, Middleware } from 'koa'
 import { processMedia } from '../../helpers/processMedia'
-import { handleSSO } from '../../helpers/handleSso'
+import { ssoHandler } from '../../helpers/sso/ssoHandler'
+import { prisma } from '../../prisma/client'
+import { UserRegister } from '../../schemas/users/userRegisterSchema'
 
 export const registerController: Middleware = async (ctx: Context) => {
   const {
@@ -17,21 +16,17 @@ export const registerController: Middleware = async (ctx: Context) => {
 
   const media = ctx.file
 
-  const { status, data } = await handleSSO('register', {
+  const { id } = await ssoHandler.register({
     dni,
     password,
     confirmPassword,
     email,
     itineraryId,
   })
-  if (status !== 200) {
-    // eslint-disable-next-line @typescript-eslint/no-throw-literal
-    throw new ValidationError(data.message)
-  }
 
   const user = await prisma.user.create({
     data: {
-      id: data.id,
+      id,
       name,
     },
   })

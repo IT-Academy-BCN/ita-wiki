@@ -1,8 +1,8 @@
 import Koa, { Middleware } from 'koa'
-import { handleSSO } from '../../helpers/handleSso'
+import { ssoHandler } from '../../helpers/sso/ssoHandler'
 
 export const getItineraries: Middleware = async (ctx: Koa.Context) => {
-  const fetchSSO = await handleSSO('getItineraries')
+  const data = await ssoHandler.getItineraries()
   ctx.status = 200
-  ctx.body = fetchSSO.data
+  ctx.body = data
 }
