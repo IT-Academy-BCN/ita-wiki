@@ -15,8 +15,8 @@ describe('Button', () => {
             </Button>
         )
         const button = screen.getByTestId('button')
-// TODO
-//comprobar errores en los estilos que se renderiza el btn active
+        //  comprobar errores en los estilos que se renderiza el btn active
+        // TODO
         expect(button).toBeInTheDocument()
         expect(screen.getByText('Test text')).toBeInTheDocument()
         expect(button).toHaveStyle(`border-radius: ${dimensions.borderRadius.base}`)

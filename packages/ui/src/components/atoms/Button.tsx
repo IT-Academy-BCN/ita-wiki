@@ -1,5 +1,4 @@
-import React from 'react'
-import { ButtonHTMLAttributes, FC } from 'react'
+import React, { ButtonHTMLAttributes, FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, font } from '../../styles'
 

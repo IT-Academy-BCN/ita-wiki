@@ -29,7 +29,7 @@ const meta = {
 export default meta;
 type ButtonStory = StoryObj<typeof Button>;
 
-//ask about this template
+// ask about this template
 // const Template: ButtonStory<TButton> = (args) => <Button { ...args } />
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
