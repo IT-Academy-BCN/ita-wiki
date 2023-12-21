@@ -1,9 +1,16 @@
 import { appConfig } from '../config/config'
 import { TSsoLoginRequest } from '../schemas/sso/ssoLogin'
 
+type SsoAction =
+  | 'login'
+  | 'register'
+  | 'validate'
+  | 'getUser'
+  | 'getItineraries'
+
 export async function handleSSO(
-  action: 'login' | 'register' | 'validate' | 'getUser',
-  data:
+  action: SsoAction,
+  data?:
     | TSsoLoginRequest
     | { authToken: string }
     | {
@@ -15,15 +22,15 @@ export async function handleSSO(
       }
 ) {
   let url = ''
-  const method = 'POST'
+  let method = 'POST'
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
   }
-  const requestData = { ...data }
+  const requestData = data ? { ...data } : undefined
   switch (action) {
     case 'login':
       url = `${appConfig.ssoUrl}/api/v1/auth/login`
-      if ('dni' in requestData) {
+      if (requestData && 'dni' in requestData) {
         requestData.dni = requestData.dni.toUpperCase()
       }
       break
@@ -38,14 +45,18 @@ export async function handleSSO(
       url = `${appConfig.ssoUrl}/api/v1/user`
       headers.Accept = 'application/json'
       break
+    case 'getItineraries':
+      url = `${appConfig.ssoUrl}/api/v1/itinerary`
+      method = 'GET'
+      break
     default:
       throw new Error('Invalid action')
   }
-  const fetchSSO = await fetch(url, {
-    method,
-    headers,
-    body: JSON.stringify(requestData),
-  })
+  const fetchOptions: RequestInit =
+    method === 'GET'
+      ? { method }
+      : { method, headers, body: JSON.stringify(requestData) }
+  const fetchSSO = await fetch(url, fetchOptions)
   const fetchData = await fetchSSO.json()
   return { status: fetchSSO.status, data: fetchData }
 }

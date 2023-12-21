@@ -25,15 +25,12 @@ async function seedDB() {
     data: [
       {
         ...users[0],
-        specializationId: categoryReact!.id,
       },
       {
         ...users[1],
-        specializationId: categoryReact!.id,
       },
       {
         ...users[2],
-        specializationId: categoryNode!.id,
       },
     ],
   })

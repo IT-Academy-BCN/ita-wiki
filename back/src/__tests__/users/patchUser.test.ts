@@ -11,15 +11,11 @@ import { authToken } from '../mocks/ssoServer'
 let sampleUser: User
 
 beforeEach(async () => {
-  const existingTestCategory = await prisma.category.findUnique({
-    where: { name: 'Testing' },
-  })
   sampleUser = await prisma.user.create({
     data: {
       name: 'sampleUser1',
       role: USER_ROLE.REGISTERED,
       status: USER_STATUS.ACTIVE,
-      specializationId: existingTestCategory!.id,
     },
   })
 })

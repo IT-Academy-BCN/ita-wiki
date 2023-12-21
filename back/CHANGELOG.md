@@ -1,6 +1,25 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [0.6.0] - 2023-12-21
+
+
+### Added
+
+- Get itineraries from SSO endpoint
+
+### Removed
+
+- Specialization from "users" table
+  
+### Testing
+
+- Added tests for GET itineraries endpoint
+  
+### Documentation
+
+- Enhanced OpenAPI documentation with details on the new GET itineraries endpoint
+  
 ## [0.5.0] - 2023-12-20
 
 ### Changed

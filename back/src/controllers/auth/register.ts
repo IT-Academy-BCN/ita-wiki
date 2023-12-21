@@ -1,6 +1,6 @@
 import { Middleware, Context } from 'koa'
 import { prisma } from '../../prisma/client'
-import { NotFoundError, ValidationError } from '../../helpers/errors'
+import { ValidationError } from '../../helpers/errors'
 import { UserRegister } from '../../schemas/users/userRegisterSchema'
 import { processMedia } from '../../helpers/processMedia'
 import { handleSSO } from '../../helpers/handleSso'
@@ -12,19 +12,10 @@ export const registerController: Middleware = async (ctx: Context) => {
     name,
     email,
     confirmPassword,
-    specialization,
     itineraryId,
   }: UserRegister = ctx.request.body
 
   const media = ctx.file
-
-  const existingCategory = await prisma.category.findUnique({
-    where: { id: specialization },
-  })
-
-  if (!existingCategory) {
-    throw new NotFoundError('Category not found')
-  }
 
   const { status, data } = await handleSSO('register', {
     dni,
@@ -42,7 +33,6 @@ export const registerController: Middleware = async (ctx: Context) => {
     data: {
       id: data.id,
       name,
-      specializationId: existingCategory.id,
     },
   })
 

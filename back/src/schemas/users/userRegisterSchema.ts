@@ -6,15 +6,15 @@ export const userRegSchema = userSchema
   .pick({
     email: true,
     dni: true,
-    specialization: true,
+    itineraryId: true,
   })
   .extend({
     name: z.string(),
     accept: z.literal<boolean>(true),
     password: z.string().min(8).regex(passwordRegex),
     confirmPassword: z.string().min(8).regex(passwordRegex),
-    itineraryId: z.string().nonempty().cuid(),
   })
+  .strict()
 export const userRegisterSchema = userRegSchema.refine(
   (data) => data.password === data.confirmPassword,
   {

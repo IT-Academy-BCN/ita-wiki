@@ -10,8 +10,6 @@ datasource db {
 model User {
   id               String           @id @default(cuid())
   name             String
-  specialization   Category?        @relation(fields: [specializationId], references: [id])
-  specializationId String?          @map("specialization")
   status           USER_STATUS      @default(INACTIVE)
   role             USER_ROLE        @default(REGISTERED)
   resources        Resource[]
@@ -77,7 +75,6 @@ model Category {
   topics    Topic[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  User      User[]
   Media     Media?   @relation(fields: [mediaId], references: [id])
   mediaId   String?  @unique @map("media_id")
 
