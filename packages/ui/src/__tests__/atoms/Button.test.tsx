@@ -1,8 +1,6 @@
-import React from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { vi } from 'vitest'
 import { dimensions, colors } from '../../styles'
-import "@testing-library/jest-dom";
 import {Button} from '../../components/atoms/Button'
   
 const mockClick = vi.fn()
@@ -15,8 +13,8 @@ describe('Button', () => {
             </Button>
         )
         const button = screen.getByTestId('button')
-        //  comprobar errores en los estilos que se renderiza el btn active
         // TODO
+        //  comprobar errores en los estilos que se renderiza con el btn active
         expect(button).toBeInTheDocument()
         expect(screen.getByText('Test text')).toBeInTheDocument()
         expect(button).toHaveStyle(`border-radius: ${dimensions.borderRadius.base}`)
