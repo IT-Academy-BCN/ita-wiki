@@ -2,10 +2,10 @@ import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { Category } from '@prisma/client'
 import { server } from '../globalSetup'
-import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
+import { authToken } from '../mocks/ssoServer'
 
 let testCategory: Category | null
 
@@ -40,7 +40,7 @@ describe('Testing resource creation endpoint', () => {
 
     const response = await supertest(server)
       .post(`${pathRoot.v1.topics}`)
-      .set('Cookie', authToken.mentor)
+      .set('Cookie', [`authToken=${authToken.mentor}`])
       .send(newTopic)
 
     expect(response.status).toBe(204)
@@ -53,7 +53,7 @@ describe('Testing resource creation endpoint', () => {
 
     const response = await supertest(server)
       .post(`${pathRoot.v1.topics}`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
       .send(newTopic)
 
     expect(response.status).toBe(403)

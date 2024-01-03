@@ -27,6 +27,12 @@ class UnauthorizedError extends DefaultError {
   }
 }
 
+class InvalidCredentials extends DefaultError {
+  constructor(message: string = 'Invalid credentials') {
+    super(401, `${message}`)
+  }
+}
+
 class ForbiddenError extends DefaultError {
   constructor(message: string = 'Forbidden') {
     super(403, `${message}`)
@@ -63,14 +69,22 @@ class InvalidToken extends DefaultError {
   }
 }
 
+class ServiceUnavailable extends DefaultError {
+  constructor(message: string = 'Service Unavailable') {
+    super(503, `${message}`)
+  }
+}
+
 export {
   DefaultError,
   ValidationError,
   UnauthorizedError,
+  InvalidCredentials,
   ForbiddenError,
   NotFoundError,
   DuplicateError,
   UnsupportedMediaType,
   MissingParamError,
   InvalidToken,
+  ServiceUnavailable,
 }

@@ -2,7 +2,7 @@ export { loginController } from './auth/loginController'
 export { logoutController } from './auth/logoutController'
 export { registerController } from './auth/register'
 export { authMeController } from './auth/authMeController'
-export { createResource } from './resources/createResourceController'
+export { postResource } from './resources/postResource'
 export { getResources } from './resources/get'
 export { getResourcesById } from './resources/getResourcesById'
 export {

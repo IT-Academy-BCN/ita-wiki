@@ -1,5 +1,5 @@
 info:
-  version: 1.0.0
+  version: 1.4.0
   title: IT Academy SSO Service
   description: This is an SSO service that is used accross all ITA services.
 openapi: 3.0.0
@@ -10,7 +10,7 @@ components:
       properties:
         message:
           type: string
-          example: email already exists
+          example: email or dni already exists
       required:
         - message
     InputError:
@@ -125,33 +125,24 @@ paths:
                   refreshToken:
                     type: string
                     minLength: 1
+                  id:
+                    type: string
                 required:
                   - authToken
                   - refreshToken
+                  - id
         "400":
           description: Zod validation error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ValidationError"
-        "404":
-          description: User not found
+        "401":
+          description: Invalid Credentials error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingUserError"
-        "422":
-          description: Invalid password
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    example: Invalid password
-                required:
-                  - message
+                $ref: "#/components/schemas/InvalidCredentialsError"
   /api/v1/auth/register:
     post:
       tags:
@@ -189,14 +180,29 @@ paths:
                 - password
                 - confirmPassword
       responses:
-        "204":
+        "200":
           description: The user has been registered.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                required:
+                  - id
         "400":
           description: Zod validation error
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/ValidationError"
+        "409":
+          description: Email or User already exist
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailError"
         "422":
           description: Invalid itinerary ID
           content:
@@ -240,8 +246,17 @@ paths:
                 - authToken
               additionalProperties: false
       responses:
-        "204":
+        "200":
           description: The token is valid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                required:
+                  - id
         "400":
           description: Zod validation error
           content:
@@ -294,3 +309,64 @@ paths:
                     - id
                     - name
                     - slug
+  /api/v1/user:
+    post:
+      tags:
+        - user
+      description: Returns information of a logged in user. Token received in the
+        login necessary.
+      summary: Get user information
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                authToken:
+                  type: string
+                  minLength: 1
+              required:
+                - authToken
+              additionalProperties: false
+      responses:
+        "200":
+          description: Token is valid and user information is returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dni:
+                    type: string
+                  email:
+                    type: string
+                    minLength: 1
+                    format: email
+                    example: user@example.cat
+                required:
+                  - dni
+                  - email
+        "400":
+          description: Zod validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        "401":
+          description: Invalid Credentials error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidCredentialsError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message

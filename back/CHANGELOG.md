@@ -1,6 +1,34 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [0.5.0] - 2023-12-20
+
+### Changed
+
+- Retrieve DNI and email of the user from SSO instead of the database
+
+
+### Testing
+
+- Added to ssoServer mock, get user handler.
+  
+## [0.4.0] - 2023-12-14
+
+### Added
+
+- `ssoUrl` to `.env` file and `appConfig`
+- implemented SSO in auth files and authenticate middleware file
+
+### Removed
+
+- password, dni and email from User model
+
+### Testing
+
+- Added ssoServer mock
+- Updated tests to implement ssoServer mock
+- Changed token cookies to authToken
+- Changed create resource test to post
 
 ## [0.3.4] - 2023-11-29
 

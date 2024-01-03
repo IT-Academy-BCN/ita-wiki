@@ -1,5 +1,5 @@
 info:
-  version: 1.0.0
+  version: 0.5.0
   title: IT Academy Wiki
   description: Our app implements a Wiki to be used as a knowledge base by the
     students of the Barcelona Activa's IT Academy
@@ -204,6 +204,9 @@ paths:
                   type: string
                   minLength: 8
                   pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*$
+                itineraryId:
+                  type: string
+                  minLength: 1
               required:
                 - email
                 - dni
@@ -212,6 +215,7 @@ paths:
                 - accept
                 - password
                 - confirmPassword
+                - itineraryId
       responses:
         "204":
           description: The user has been registered
@@ -608,7 +612,7 @@ paths:
               additionalProperties: false
       responses:
         "204":
-          description: Topic successully modified.
+          description: Topic successfully modified.
         "401":
           description: Missing token
           content:

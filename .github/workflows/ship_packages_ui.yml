@@ -1,0 +1,33 @@
+name: ship_packages_ui
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/ui/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install dependencies
+        run: cd packages/ui && npm ci
+
+      - name: Build ui package
+        run: cd packages/ui && npm run build
+
+      - name: Publish to npm
+        run: cd packages/ui && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

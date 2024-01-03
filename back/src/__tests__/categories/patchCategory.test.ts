@@ -3,9 +3,9 @@ import { expect, it, describe, afterAll } from 'vitest'
 import { Category } from '@prisma/client'
 import { prisma } from '../../prisma/client'
 import { server } from '../globalSetup'
-import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
+import { authToken } from '../mocks/ssoServer'
 
 describe('Testing category PATCH method', async () => {
   let newTestCategory: Category | null = null
@@ -27,7 +27,7 @@ describe('Testing category PATCH method', async () => {
   it('Should respond 204 status when patching a category', async () => {
     const response = await supertest(server)
       .patch(baseURL!)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .send({ name: 'Test Debugging' })
 
     expect(response.status).toBe(204)
@@ -36,7 +36,7 @@ describe('Testing category PATCH method', async () => {
     const response = await supertest(server)
       .patch(baseURL!)
 
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
       .send({ name: 'Test Debugging' })
 
     expect(response.status).toBe(403)
@@ -44,7 +44,7 @@ describe('Testing category PATCH method', async () => {
   it('Should respond 409 if attempting to patch a category with an already existing name', async () => {
     const response = await supertest(server)
       .patch(baseURL!)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .send({ name: 'Testing' })
 
     expect(response.status).toBe(409)

@@ -5,7 +5,7 @@ export const openapiFilename = 'openapi.yaml'
 
 export const generatorConfig = {
   info: {
-    version: '1.0.0',
+    version: '0.5.0',
     title: 'IT Academy Wiki',
     description:
       "Our app implements a Wiki to be used as a knowledge base by the students of the Barcelona Activa's IT Academy",

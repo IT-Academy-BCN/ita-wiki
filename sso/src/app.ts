@@ -50,6 +50,7 @@ app.use(errorMiddleware)
 app.use(Routes.authRoutes.routes())
 app.use(Routes.tokenRoutes.routes())
 app.use(Routes.itineraryRoutes.routes())
+app.use(Routes.userRoutes.routes())
 
 // Swagger UI
 app.use(swaggeruiCSPMiddleware)

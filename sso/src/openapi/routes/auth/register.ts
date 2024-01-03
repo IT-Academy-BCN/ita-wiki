@@ -2,7 +2,9 @@ import z from 'zod'
 import { pathRoot } from '../../../routes/routes'
 import { registerSchema } from '../../../schemas'
 import {
+  duplicateResponse,
   invalidItineraryResponse,
+  registerResponse,
   zodValidationResponse,
 } from '../../components/responses'
 import { registry } from '../../registry'
@@ -24,10 +26,9 @@ registry.registerPath({
     },
   },
   responses: {
-    204: {
-      description: 'The user has been registered.',
-    },
+    200: registerResponse,
     400: zodValidationResponse,
+    409: duplicateResponse,
     422: invalidItineraryResponse,
     500: {
       description: 'Other error',
