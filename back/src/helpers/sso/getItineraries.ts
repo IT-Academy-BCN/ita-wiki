@@ -7,14 +7,10 @@ export async function getItineraries() {
     method: 'GET',
   })
 
-  const { status } = fetchSSO
   const fetchData = (await fetchSSO.json()) as TSsoGetItinerariesResponse
 
-  switch (status) {
-    case 200:
-      return fetchData
-
-    default:
-      throw new ServiceUnavailable()
+  if (fetchSSO.status === 200) {
+    return fetchData
   }
+  throw new ServiceUnavailable()
 }

@@ -20,11 +20,6 @@ export async function validate(ctx: Context, data: TSsoValidateRequest) {
     case 200:
       return { ...(fetchData as TSsoValidateResponse) }
     case 400:
-      ctx.cookies.set('authToken', null, {
-        expires: new Date(0),
-        overwrite: true,
-      })
-      throw new InvalidToken()
     case 401:
       ctx.cookies.set('authToken', null, {
         expires: new Date(0),
