@@ -1,7 +1,7 @@
 import { Middleware, Context } from 'koa'
 
 import { prisma } from '../../prisma/client'
-import { ssoHandler } from '../../helpers/sso/ssoHandler'
+import { ssoHandler } from '../../helpers'
 
 export const authMeController: Middleware = async (ctx: Context) => {
   const { id } = ctx.user

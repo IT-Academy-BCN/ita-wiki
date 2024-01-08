@@ -1,8 +1,8 @@
 import { Context, Middleware } from 'koa'
 import { processMedia } from '../../helpers/processMedia'
-import { ssoHandler } from '../../helpers/sso/ssoHandler'
 import { prisma } from '../../prisma/client'
 import { UserRegister } from '../../schemas/users/userRegisterSchema'
+import { ssoHandler } from '../../helpers'
 
 export const registerController: Middleware = async (ctx: Context) => {
   const {

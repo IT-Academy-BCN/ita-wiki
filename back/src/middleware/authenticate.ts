@@ -1,7 +1,7 @@
 import Koa from 'koa'
 import { NotFoundError, UnauthorizedError } from '../helpers/errors'
-import { ssoHandler } from '../helpers/sso/ssoHandler'
 import { prisma } from '../prisma/client'
+import { ssoHandler } from '../helpers'
 
 export const authenticate = async (ctx: Koa.Context, next: Koa.Next) => {
   const authToken = ctx.cookies.get('authToken')

@@ -1,7 +1,7 @@
 import Koa from 'koa'
 import { prisma } from '../../prisma/client'
 import { ForbiddenError, InvalidCredentials } from '../../helpers/errors'
-import { ssoHandler } from '../../helpers/sso/ssoHandler'
+import { ssoHandler } from '../../helpers'
 
 export const loginController = async (ctx: Koa.Context) => {
   const { dni, password } = ctx.request.body
