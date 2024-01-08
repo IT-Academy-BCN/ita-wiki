@@ -14,6 +14,12 @@ All notable changes to this project will be documented in this file.
 - Migrate languages locales to UI
 - Added 'storybook-react-i18next' to addons in main.ts,
 - Updated preview with globals languages
+## [0.2.2] -2023-12-21
+
+### added
+- Migrate Button to UI
+- Added Button stories to storybook
+- Tests to atoms ( Button)
 
 ## [0.2.1] - 2023-12-19
 
@@ -29,3 +35,5 @@ All notable changes to this project will be documented in this file.
 - Added stories to storybook
 - Tests config, and tests to atoms ( input and label)
 - SonarCloud config
+
+

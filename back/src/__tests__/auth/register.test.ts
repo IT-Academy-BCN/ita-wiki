@@ -1,17 +1,9 @@
 import supertest from 'supertest'
-import { expect, it, describe, afterAll, beforeAll, afterEach } from 'vitest'
-import { Category } from '@prisma/client'
+import { expect, it, describe, afterAll, afterEach } from 'vitest'
 import { server } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 
-let existingTestCategory: Category | null
-
-beforeAll(async () => {
-  existingTestCategory = await prisma.category.findUnique({
-    where: { name: 'Testing' },
-  })
-})
 afterEach(async () => {
   await prisma.user.deleteMany({
     where: {
@@ -35,7 +27,6 @@ describe('Testing registration endpoint', () => {
         password: 'password1',
         confirmPassword: 'password1',
         accept: true,
-        specialization: existingTestCategory!.id,
         itineraryId: 'clq2d13xz000008jyfowt0l16',
       })
 
@@ -53,7 +44,6 @@ describe('Testing registration endpoint', () => {
           password: 'password1',
           confirmPassword: 'password1',
           accept: true,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -70,7 +60,6 @@ describe('Testing registration endpoint', () => {
           password: 'password1',
           confirmPassword: 'password1',
           accept: true,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -88,7 +77,6 @@ describe('Testing registration endpoint', () => {
           password: 'password1',
           confirmPassword: 'password1',
           accept: true,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -105,7 +93,6 @@ describe('Testing registration endpoint', () => {
           password: 'password1',
           confirmPassword: 'password1',
           accept: true,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -122,7 +109,6 @@ describe('Testing registration endpoint', () => {
           password: 'password1',
           confirmPassword: 'password1',
           accept: true,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -139,7 +125,6 @@ describe('Testing registration endpoint', () => {
           email: 'example2@example.com',
           confirmPassword: 'password1',
           accept: true,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -156,7 +141,6 @@ describe('Testing registration endpoint', () => {
           email: 'example2@example.com',
           password: 'password1',
           accept: true,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -172,7 +156,6 @@ describe('Testing registration endpoint', () => {
           name: 'Example2',
           email: 'example2@example.com',
           password: 'password1',
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -182,7 +165,7 @@ describe('Testing registration endpoint', () => {
       expect(response.body.message[0].path).toContain('accept')
     })
 
-    it('should fail with missing required fields: specialization', async () => {
+    it('should fail with missing required fields: itineraryId', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
@@ -190,11 +173,10 @@ describe('Testing registration endpoint', () => {
           name: 'Example2',
           email: 'example2@example.com',
           password: 'password1',
-          itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
       expect(response.body.message[0].message).toBe('Required')
-      expect(response.body.message[0].path).toContain('specialization')
+      expect(response.body.message[0].path).toContain('itineraryId')
     })
   })
 
@@ -209,7 +191,6 @@ describe('Testing registration endpoint', () => {
           password: 'password1',
           confirmPassword: 'password1',
           accept: true,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -227,7 +208,6 @@ describe('Testing registration endpoint', () => {
           password: 'password1',
           confirmPassword: 'password1',
           accept: true,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -245,7 +225,6 @@ describe('Testing registration endpoint', () => {
           password: 'password1',
           confirmPassword: 'password1',
           accept: false,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -263,7 +242,6 @@ describe('Testing registration endpoint', () => {
           password: 'pswd1',
           confirmPassword: 'pswd1',
           accept: true,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -281,7 +259,6 @@ describe('Testing registration endpoint', () => {
           password: 'password',
           confirmPassword: 'password',
           accept: true,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -299,7 +276,6 @@ describe('Testing registration endpoint', () => {
           password: 'password1?',
           confirmPassword: 'password1?',
           accept: true,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)
@@ -316,7 +292,6 @@ describe('Testing registration endpoint', () => {
           password: 'password1',
           confirmPassword: 'password2',
           accept: true,
-          specialization: existingTestCategory!.id,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
       expect(response.status).toBe(400)

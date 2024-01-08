@@ -49,6 +49,13 @@ export const NotFoundError = registry.register(
   })
 )
 
+export const ServiceUnavailableError = registry.register(
+  'ServiceUnavailableError',
+  z.object({
+    message: z.string().openapi({ example: 'Service Unavailable' }),
+  })
+)
+
 export const ZodValidationError = registry.register(
   'ValidationError',
   z.object({
