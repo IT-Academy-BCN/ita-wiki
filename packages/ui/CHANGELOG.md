@@ -2,6 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
+
 ## [0.3.0] - 2024-01-03
 
 ### Added
@@ -10,6 +11,13 @@ All notable changes to this project will be documented in this file.
 - Added disabled mode
 - Added stories to storybook
 - Migrate and update tests
+
+## [0.2.2] -2023-12-21
+
+### Added
+- Migrate Button to UI
+- Added Button stories to storybook
+- Tests to atoms ( Button)
 
 ## [0.2.1] - 2023-12-19
 
@@ -25,3 +33,5 @@ All notable changes to this project will be documented in this file.
 - Added stories to storybook
 - Tests config, and tests to atoms ( input and label)
 - SonarCloud config
+
+
