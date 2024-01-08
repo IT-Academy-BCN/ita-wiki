@@ -20,7 +20,7 @@ describe('BackButton component', () => {
     it('renders correctly', () => {
         render(<BackButton />)
         const button = screen.getByRole('button', {
-            name: /arrow_back_ios Volver/i,
+            name: /arrow_back_ios torna/i,
         })
         expect(button).toBeInTheDocument()
     })
@@ -28,7 +28,7 @@ describe('BackButton component', () => {
     it('triggers navigation to the previous page on click event', async () => {
         render(<BackButton />)
         const button = screen.getByRole('button', {
-            name: /arrow_back_ios Volver/i,
+            name: /arrow_back_ios torna/i,
         })
         fireEvent.click(button)
         await waitFor(() => {

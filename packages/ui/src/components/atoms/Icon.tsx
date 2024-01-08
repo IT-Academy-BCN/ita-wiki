@@ -1,10 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const IconStyled = styled.span<TIcon>`
+interface IconStyledProps extends TIcon {
+  $wght: number;
+  $grad: number;
+  $opsz: number
+}
+const IconStyled = styled.span<IconStyledProps>`
   font-variation-settings: 'FILL' ${({ fill }) => fill},
-    'wght' ${({ wght }) => wght}, 'GRAD' ${({ grad }) => grad},
-    'opsz' ${({ opsz }) => opsz};
+    'wght' ${({ $wght }) => $wght}, 
+    'GRAD' ${({ $grad }) => $grad},
+    'opsz' ${({ $opsz }) => $opsz};
   color: ${({ color }) => color};
   cursor: pointer;
   transition: transform 0.3s ease;
@@ -13,12 +19,12 @@ const IconStyled = styled.span<TIcon>`
     transform: scale(1.1);
   }
 `
-type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
+ type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
   name: string
   fill?: number
-  wght?: number
-  grad?: number
-  opsz?: number
+  $wght?: number
+  $grad?: number
+  $opsz?: number
   className?: string
   color?: string
   cursor?: string
@@ -26,9 +32,9 @@ type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
 export const Icon: React.FC<TIcon> = ({
   className = '',
   fill = 1,
-  wght = 400,
-  grad = 0,
-  opsz = 48,
+  $wght = 400,
+  $grad = 0,
+  $opsz = 48,
   name = '',
   color = '',
   ...rest
@@ -36,10 +42,10 @@ export const Icon: React.FC<TIcon> = ({
   <IconStyled
     className={`material-symbols-outlined ${className}`}
     fill={fill}
-    wght={wght}
-    grad={grad}
+    $wght={$wght}
+    $grad={$grad}
     color={color}
-    opsz={opsz}
+    $opsz={$opsz}
     {...rest}
     name={name}
   >

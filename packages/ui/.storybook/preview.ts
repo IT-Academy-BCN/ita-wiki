@@ -1,5 +1,9 @@
 import type { Preview } from "@storybook/react";
+import { device } from "../src/styles/mediaQueries";
+
 import i18n from '../src/i18n';
+import { withRouter } from "storybook-addon-react-router-v6";
+
 const preview: Preview = {
   globals: {
     locale: 'cat',
@@ -12,6 +16,7 @@ const preview: Preview = {
   parameters: {
     i18n,
     actions: { argTypesRegex: "^on[A-Z].*" },
+    viewport: { viewports: device },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -19,6 +24,9 @@ const preview: Preview = {
       },
     },
   },
+  decorators: [withRouter],
+
+
 };
 
 export default preview;
