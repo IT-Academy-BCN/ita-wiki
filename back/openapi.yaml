@@ -1,5 +1,5 @@
 info:
-  version: 0.5.0
+  version: 0.6.0
   title: IT Academy Wiki
   description: Our app implements a Wiki to be used as a knowledge base by the
     students of the Barcelona Activa's IT Academy
@@ -72,6 +72,14 @@ components:
         message:
           type: string
           example: User not found
+      required:
+        - message
+    ServiceUnavailableError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Service Unavailable
       required:
         - message
     ValidationError:
@@ -187,9 +195,9 @@ paths:
                   example: user@example.cat
                 dni:
                   type: string
-                specialization:
+                itineraryId:
                   type: string
-                  example: specializationId
+                  minLength: 1
                 name:
                   type: string
                 accept:
@@ -204,18 +212,15 @@ paths:
                   type: string
                   minLength: 8
                   pattern: ^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]*$
-                itineraryId:
-                  type: string
-                  minLength: 1
               required:
                 - email
                 - dni
-                - specialization
+                - itineraryId
                 - name
                 - accept
                 - password
                 - confirmPassword
-                - itineraryId
+              additionalProperties: false
       responses:
         "204":
           description: The user has been registered
@@ -1902,9 +1907,9 @@ paths:
                     avatarId:
                       type: string
                       nullable: true
-                    specialization:
+                    itineraryId:
                       type: string
-                      example: specializationId
+                      minLength: 1
                     status:
                       type: string
                       enum: *a3
@@ -1921,7 +1926,7 @@ paths:
                     - id
                     - email
                     - dni
-                    - specialization
+                    - itineraryId
                     - status
                     - role
                     - createdAt
@@ -1987,6 +1992,9 @@ paths:
                   minLength: 8
                 name:
                   type: string
+                itineraryId:
+                  type: string
+                  minLength: 1
                 status:
                   type: string
                   enum: *a3
@@ -2096,3 +2104,40 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
+  /api/v1/itinerary:
+    get:
+      tags:
+        - itinerary
+      description: Fetches all available itineraries
+      summary: Get all itineraries
+      responses:
+        "200":
+          description: List of all itineraries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                      example: Frontend Angular
+                    slug:
+                      type: string
+                      example: frontend-angular
+                  required:
+                    - id
+                    - name
+                    - slug
+        "503":
+          description: The SSO server is not available.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ServiceUnavailableError"
+                  - example:
+                      message: Service Unavailable
