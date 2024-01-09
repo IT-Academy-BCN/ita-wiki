@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.2.3] - 2024-01-09a
+## [0.3.1] - 2024-01-09
 
 ### Added
 - Migrate BackButton to UI

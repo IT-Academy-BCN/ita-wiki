@@ -1,6 +1,5 @@
 import { FC, HTMLAttributes } from 'react'
 import { useNavigate } from 'react-router-dom'
-// import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Icon } from '../atoms/Icon'
 import { font, device, dimensions } from '../../styles'
@@ -41,7 +40,6 @@ type TButton = HTMLAttributes<HTMLButtonElement>
 
 export const BackButton: FC<TButton> = ({ children }) => {
   const navigate = useNavigate()
-  // const { t } = useTranslation()
   const handlePrevPage = () => {
     navigate(-1)
   }
@@ -52,9 +50,7 @@ export const BackButton: FC<TButton> = ({ children }) => {
         $wght={700}
         style={{ fontSize: `${font.base}` }}
       />
-      {/* {
-        // t
-        ('Volver')} */}
+    
       {children || 'torna'}
 
     </ButtonStyled>
