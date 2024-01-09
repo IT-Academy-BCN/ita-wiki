@@ -18,5 +18,5 @@ export const urls = {
   users: '/api/v1/users',
   favorites: '/api/v1/favorites',
   postStatus: '/api/v1/seen',
-  getItineraries: '/sso/api/v1/itinerary',
+  getItineraries: '/api/v1/itinerary',
 }
