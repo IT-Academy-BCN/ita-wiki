@@ -451,6 +451,14 @@ const Category: FC = () => {
     setTopic(selectedTopic)
   }
 
+  useEffect(() => {
+    setTopic('todos')
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      topic: undefined,
+    }))
+  }, [slug])
+
   const handleSortOrder = () => {
     setSortOrder((prevSortOrder) => (prevSortOrder === 'desc' ? 'asc' : 'desc'))
   }
@@ -531,8 +539,8 @@ const Category: FC = () => {
                 <ScrollTopics>
                   {slug && (
                     <TopicsRadioWidget
+                      key={slug}
                       slug={slug}
-                      topic={topic}
                       setTopic={handleTopicFilter}
                     />
                   )}
