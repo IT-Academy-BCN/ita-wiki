@@ -30,7 +30,7 @@ export const Default: BackButtonStory = {
 
     args: {
 
-        children: 'Torna'
+        children: 'torna'
     },
     decorators: []
 

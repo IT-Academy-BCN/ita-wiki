@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes } from 'react'
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 // import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Icon } from '../atoms/Icon'
@@ -40,10 +40,10 @@ const ButtonStyled = styled.button`
 type TButton = HTMLAttributes<HTMLButtonElement>
 
 export const BackButton: FC<TButton> = ({ children }) => {
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
   // const { t } = useTranslation()
   const handlePrevPage = () => {
-    // navigate(-1)
+    navigate(-1)
   }
   return (
     <ButtonStyled onClick={handlePrevPage}>
@@ -52,8 +52,10 @@ export const BackButton: FC<TButton> = ({ children }) => {
         $wght={700}
         style={{ fontSize: `${font.base}` }}
       />
-      {/* {t('Volver')} */}
-      {children}
+      {/* {
+        // t
+        ('Volver')} */}
+      {children || 'torna'}
 
     </ButtonStyled>
   )

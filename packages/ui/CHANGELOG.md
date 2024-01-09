@@ -2,18 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.2.3] - 2023-12-25
+## [0.2.3] - 2024-01-09a
 
 ### Added
 - Migrate BackButton to UI
-- Added BackButton.stories
+- Added BackButton.stories to molecules folder
 - Migrate Icon to UI
-- Added Icon stories
-- Migrate tests to atoms (BackButton and Icon)
-- set i18n within StoryBook
-- Migrate languages locales to UI
-- Added 'storybook-react-i18next' to addons in main.ts,
-- Updated preview with globals languages
+- Added Icon stories to atoms folder
+- Migrate tests to atoms(Icon) and molecules( BackButton )
+
 ## [0.2.2] -2023-12-21
 
 ### added

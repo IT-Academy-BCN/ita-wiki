@@ -1,7 +1,5 @@
 import { vi } from 'vitest'
-// import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-// import { I18nextProvider } from 'react-i18next'
 import { BackButton } from '../../components/molecules/BackButton'
 
 const navigate = vi.fn()
@@ -15,7 +13,6 @@ vi.mock('react-router-dom', async () => {
         useNavigate: vi.fn(() => navigate),
     }
 })
-// TODO: Check translate with i18n {volver}
 describe('BackButton component', () => {
     it('renders correctly', () => {
         render(<BackButton />)

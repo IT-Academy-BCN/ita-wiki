@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
-    "coverage": "vitest --coverage",
+    "coverage": "vitest --coverage", 
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build": "tsc --project tsconfig.build.json",
