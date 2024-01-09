@@ -1,6 +1,6 @@
 # ITA Wiki Schemas
 
-Package to share Zod schemas between back and fron in the open source project ITA Wiki from ITAcademy - Barcelona Activa.
+Package to share Zod schemas between back and front in the open source project ITA Wiki from ITAcademy - Barcelona Activa.
 
 ## This packages follows strict SEMVER
 
@@ -17,7 +17,6 @@ This packages follows strict semver: https://semver.org/
 7. Go back to your project (front or back).
 8. update @itacademy/schemas package to the version you created.
 9. Use the new schemas.
-
 
 ## Steps to use in development
 
