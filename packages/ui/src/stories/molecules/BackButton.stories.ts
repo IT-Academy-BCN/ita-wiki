@@ -17,7 +17,7 @@ const meta = {
     // More on argTypes: https://storybook.js.org/docs/api/argtypes
     argTypes: {
         onClick: { action: 'handlePrevPage' },
-        children: { control: "text", defaultValue: 'Torna' }
+        children: { control: "text" }
     },
 
 } satisfies Meta<typeof BackButton>;
@@ -40,7 +40,7 @@ export const IconArrow = {
         name: 'arrow_back_ios',
         fill: 1,
         $wght: 700,
-
+        childre: ''
     },
 }
 
