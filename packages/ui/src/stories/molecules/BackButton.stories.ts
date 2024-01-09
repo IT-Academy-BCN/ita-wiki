@@ -1,25 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within } from '@storybook/testing-library'
 import { expect } from '@storybook/jest';
-// import { withActions } from '@storybook/addon-actions/decorator';
 import { action } from '@storybook/addon-actions';
-import { BackButton } from "../../components/atoms/BackButton";
-// import { Icon } from "../../components/atoms/Icon";
-// import { IconStory } from "./Icon.stories";
+import { BackButton } from "../../components/molecules/BackButton";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-    title: 'Atoms/BackButton',
+    title: 'Molecules/BackButton',
     component: BackButton,
-    // render: ({ Icon, ...args }) => (
-    //     <BackButton>{< Icon />} < /BackButton >)
 
     parameters: {
         // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
         layout: 'centered',
-        // actions: {
-        //     handles: ['click .btn'],
-        // },
+
     },
 
     // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
@@ -29,10 +22,7 @@ const meta = {
         onClick: { action: 'handlePrevPage' },
         children: { control: "text", defaultValue: 'Torna' }
     },
-    // decorators: [
 
-    //     withActions
-    // ],
 } satisfies Meta<typeof BackButton>;
 
 export default meta;
@@ -57,7 +47,6 @@ export const Default: BackButtonStory = {
 
     args: {
 
-        onClick: action('handlePrevPage'),
         children: 'Torna'
     },
     decorators: []

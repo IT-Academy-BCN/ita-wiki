@@ -33,7 +33,7 @@ export type IconStory = StoryObj<typeof meta>
 export const Default: IconStory = {
 
     args: {
-        name: '',
+        name: 'arrow_back_ios',
         fill: 1,
         $wght: 400,
         $grad: 0,

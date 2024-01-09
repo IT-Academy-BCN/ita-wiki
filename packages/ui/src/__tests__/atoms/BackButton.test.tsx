@@ -2,7 +2,7 @@ import { vi } from 'vitest'
 // import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 // import { I18nextProvider } from 'react-i18next'
-import { BackButton } from '../../components/atoms/BackButton'
+import { BackButton } from '../../components/molecules/BackButton'
 
 const navigate = vi.fn()
 
