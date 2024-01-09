@@ -1,6 +1,6 @@
 import { FC, HTMLAttributes } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+// import { useNavigate } from 'react-router-dom'
+// import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
 import { Icon } from './Icon'
 import { font, device, dimensions } from '../../styles'
@@ -39,20 +39,21 @@ const ButtonStyled = styled.button`
 
 type TButton = HTMLAttributes<HTMLButtonElement>
 
-export const BackButton: FC<TButton> = () => {
-  const navigate = useNavigate()
-    const { t } = useTranslation()
+export const BackButton: FC<TButton> = ({ children }) => {
+  // const navigate = useNavigate()
+  // const { t } = useTranslation()
     const handlePrevPage = () => {
-      navigate(-1)
+      // navigate(-1)
     }
     return (
         <ButtonStyled onClick={handlePrevPage}>
-            <Icon
+        <Icon
                 name="arrow_back_ios"
           $wght={700}
                 style={{ fontSize: `${font.base}` }}
             />
-            {t('Volver')}
+        {/* {t('Volver')} */}
+        {children }
 
         </ButtonStyled>
     )

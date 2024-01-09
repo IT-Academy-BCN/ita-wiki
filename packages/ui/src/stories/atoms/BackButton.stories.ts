@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within } from '@storybook/testing-library'
 import { expect } from '@storybook/jest';
-import { withActions } from '@storybook/addon-actions/decorator';
+// import { withActions } from '@storybook/addon-actions/decorator';
 import { action } from '@storybook/addon-actions';
 import { BackButton } from "../../components/atoms/BackButton";
 // import { Icon } from "../../components/atoms/Icon";
@@ -17,9 +17,9 @@ const meta = {
     parameters: {
         // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
         layout: 'centered',
-        actions: {
-            handles: ['click .btn'],
-        },
+        // actions: {
+        //     handles: ['click .btn'],
+        // },
     },
 
     // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
@@ -27,12 +27,12 @@ const meta = {
     // More on argTypes: https://storybook.js.org/docs/api/argtypes
     argTypes: {
         onClick: { action: 'handlePrevPage' },
-        children: { control: "text" }
+        children: { control: "text", defaultValue: 'Torna' }
     },
-    decorators: [
+    // decorators: [
 
-        withActions
-    ],
+    //     withActions
+    // ],
 } satisfies Meta<typeof BackButton>;
 
 export default meta;

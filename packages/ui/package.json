@@ -36,7 +36,6 @@
     "@storybook/addon-interactions": "7.6.0",
     "@storybook/addon-links": "7.6.0",
     "@storybook/addon-onboarding": "1.0.8",
-    "@storybook/blocks": "7.6.0",
     "@storybook/react": "7.6.0",
     "@storybook/react-vite": "7.6.0",
     "@storybook/test": "7.6.0",
@@ -71,6 +70,8 @@
   },
   "dependencies": {
     "@storybook/addon-actions": "^7.6.6",
+    "@storybook/blocks": "7.6.0",
+    "@storybook/icons": "^1.2.3",
     "@storybook/jest": "^0.2.3",
     "@storybook/testing-library": "^0.2.2",
     "i18next": "^23.7.11",
