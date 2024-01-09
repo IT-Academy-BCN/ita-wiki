@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
-    "coverage": "vitest --coverage", 
+    "coverage": "vitest --coverage",
+    "eslint": "npx eslint src --max-warnings 0",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build": "tsc --project tsconfig.build.json",
