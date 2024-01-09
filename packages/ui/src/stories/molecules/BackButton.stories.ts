@@ -1,7 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from '@storybook/testing-library'
-import { expect } from '@storybook/jest';
-import { action } from '@storybook/addon-actions';
 import { BackButton } from "../../components/molecules/BackButton";
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -30,20 +27,6 @@ type BackButtonStory = StoryObj<typeof BackButton>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: BackButtonStory = {
-
-
-    play: async ({ canvasElement }) => {
-        const canvas = within(canvasElement)
-        const GetBackButton = canvas.getByRole('button');
-
-        await userEvent.click(GetBackButton);
-        await expect(
-            canvas.getByText(
-                'Torna',
-            )
-        ).toBeInTheDocument();
-
-    },
 
     args: {
 

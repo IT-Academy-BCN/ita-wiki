@@ -67,14 +67,6 @@
     "styled-components": "6.1.2",
     "typescript": "^5.0.4",
     "vitest": "0.30.1"
-  },
-  "dependencies": {
-    "@storybook/addon-actions": "^7.6.6",
-    "@storybook/blocks": "7.6.0",
-    "@storybook/icons": "^1.2.3",
-    "@storybook/jest": "^0.2.3",
-    "@storybook/testing-library": "^0.2.2",
-    "react-router-dom": "6.9.0",
-    "storybook-addon-react-router-v6": "^2.0.10"
   }
+
 }
