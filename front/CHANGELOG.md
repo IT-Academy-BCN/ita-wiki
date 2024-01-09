@@ -6,17 +6,24 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Added sso service api to proxy in vite.config
 - Added useGetItineraries hook and its test
 
 ### Changed
 
-- Register dropdown shows itineraries from sso service
+- Register dropdown shows itineraries
+- Register request includes itineraryId instead of specialization
 - Updated tests accordingly
 
 ### Fixed
 
 - Fixed missing translation of error in legal terms at Register
+
+## [0.6.9] - 2023-12-13
+
+### Fixed
+
+- Fixed "Todos" radio button not being selected when switching between categories.
+- Updated tests.
 
 ## [0.6.8] - 2023-11-29
 

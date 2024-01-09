@@ -1,20 +1,15 @@
 import Koa from 'koa'
-import jwt, { JwtPayload, Secret } from 'jsonwebtoken'
-import { prisma } from '../prisma/client'
 import { NotFoundError, UnauthorizedError } from '../helpers/errors'
+import { prisma } from '../prisma/client'
+import { ssoHandler } from '../helpers'
 
 export const authenticate = async (ctx: Koa.Context, next: Koa.Next) => {
-  const token = ctx.cookies.get('token')
-  if (!token) {
+  const authToken = ctx.cookies.get('authToken')
+  if (!authToken) {
     throw new UnauthorizedError()
   }
-
-  const { userId } = jwt.verify(
-    token,
-    process.env.JWT_KEY as Secret
-  ) as JwtPayload
-
-  const user = await prisma.user.findUnique({ where: { id: userId } })
+  const { id } = await ssoHandler.validate(ctx, { authToken })
+  const user = await prisma.user.findUnique({ where: { id } })
 
   if (!user) throw new NotFoundError('User not found')
 
@@ -30,13 +25,11 @@ export const authenticate = async (ctx: Koa.Context, next: Koa.Next) => {
  */
 export const getUserFromToken = async (ctx: Koa.Context, next: Koa.Next) => {
   ctx.user = null
-  const token = ctx.cookies.get('token')
-  if (token) {
-    const { userId } = jwt.verify(
-      token,
-      process.env.JWT_KEY as Secret
-    ) as JwtPayload
-    const user = await prisma.user.findUnique({ where: { id: userId } })
+  const authToken = ctx.cookies.get('authToken')
+  if (authToken) {
+    const { id } = await ssoHandler.validate(ctx, { authToken })
+
+    const user = await prisma.user.findUnique({ where: { id } })
     ctx.user = user
   }
   await next()

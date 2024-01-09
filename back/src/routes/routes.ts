@@ -10,5 +10,6 @@ export const pathRoot = {
     users: '/api/v1/users',
     favorites: '/api/v1/favorites',
     seen: '/api/v1/seen',
+    itinerary: '/api/v1/itinerary',
   },
 }

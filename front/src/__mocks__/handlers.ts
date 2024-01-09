@@ -30,7 +30,7 @@ export const handlers = [
           dni: '12345678L',
           name: 'Test Name',
           avatarId: 'testAvatar.jpg',
-          specialization: 'react',
+          itineraryId: 'react',
           status: 'ACTIVE',
           role: 'REGISTERED',
           createdAt: '2023-11-15T15:36:02.234Z',

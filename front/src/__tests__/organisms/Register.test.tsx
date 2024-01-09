@@ -52,7 +52,7 @@ describe('Register', () => {
       'password123AAAA'
     )
     await userEvent.selectOptions(
-      screen.getByLabelText('specialization'),
+      screen.getByLabelText('itineraryId'),
       'Frontend Angular'
     )
     await userEvent.click(screen.getByTestId('accept'))

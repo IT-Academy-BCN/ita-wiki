@@ -1,36 +1,35 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
-import jwt, { Secret } from 'jsonwebtoken'
-import { Category } from '@prisma/client'
+import { Category, User } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
-import { authToken } from '../setup'
 import { prisma } from '../../prisma/client'
 import { resourceTestData } from '../mocks/resources'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
+import { authToken } from '../mocks/ssoServer'
 
 const url: string = `${pathRoot.v1.resources}/favorites`
 const categorySlug = 'testing'
-const invalidUserToken = jwt.sign(
-  { userId: 'invalid' },
-  process.env.JWT_KEY as Secret,
-  {
-    expiresIn: '1h',
-  }
-)
-
+let adminUser: User | null
+let user: User | null
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
     where: { slug: 'testing' },
   })) as Category
+  user = await prisma.user.findFirst({
+    where: { name: testUserData.user.name },
+  })
+  adminUser = await prisma.user.findFirst({
+    where: { name: testUserData.admin.name },
+  })
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,
-    user: { connect: { dni: testUserData.user.dni } },
+    user: { connect: { id: user?.id } },
     topics: {
       create: [{ topic: { connect: { slug: 'testing' } } }],
     },
     favorites: {
-      create: [{ user: { connect: { dni: testUserData.admin.dni } } }],
+      create: [{ user: { connect: { id: adminUser?.id } } }],
     },
     category: { connect: { id: testCategory.id } },
   }))
@@ -46,12 +45,12 @@ afterAll(async () => {
   })
   await prisma.favorites.deleteMany({
     where: {
-      user: { dni: { in: [testUserData.admin.dni, testUserData.user.dni] } },
+      user: { id: { in: [adminUser!.id, user!.id] } },
     },
   })
   await prisma.vote.deleteMany({})
   await prisma.resource.deleteMany({
-    where: { user: { dni: testUserData.user.dni } },
+    where: { user: { id: user?.id } },
   })
 })
 
@@ -59,24 +58,18 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
   it('Should respond 200 status with category param', async () => {
     const response = await supertest(server)
       .get(`${url}/:${categorySlug}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
     expect(response.status).toBe(200)
   })
   it('Should respond 200 status without category param', async () => {
     const response = await supertest(server)
       .get(`${url}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
     expect(response.status).toBe(200)
   })
   it('Should respond 401 status without token', async () => {
     const response = await supertest(server).get(`${url}/${categorySlug}`)
     expect(response.status).toBe(401)
-  })
-  it('Should respond 404 status without valid userId', async () => {
-    const response = await supertest(server)
-      .get(`${url}/${categorySlug}`)
-      .set('Cookie', `token=${invalidUserToken}`)
-    expect(response.status).toBe(404)
   })
 
   checkInvalidToken(`${url}/${categorySlug}`, 'get')
@@ -84,7 +77,7 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
   it('Should return favorites as an array of objects.', async () => {
     const response = await supertest(server)
       .get(`${url}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
 
     expect(response.body).toBeInstanceOf(Array)
     expect(response.body.length).toBeGreaterThan(0)
@@ -133,9 +126,7 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
     const testFavoriteVoteResource = await prisma.resource.findUnique({
       where: { slug: 'test-resource-1-blog' },
     })
-    const adminUser = await prisma.user.findUnique({
-      where: { dni: testUserData.admin.dni },
-    })
+
     await prisma.vote.upsert({
       where: {
         userId_resourceId: {
@@ -154,7 +145,7 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
     })
     const response = await supertest(server)
       .get(`${url}`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
 
     expect(response.body).toBeInstanceOf(Array)
     expect(response.body.length).toBeGreaterThan(0)
@@ -172,22 +163,19 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
     )
   })
   it('If a user favorited his own created resources, it should be reflected as author', async () => {
-    const testingUserId = await prisma.user.findUnique({
-      where: { dni: testUserData.user.dni },
-    })
     const resourceToFavorite = await prisma.resource.findUnique({
       where: { slug: 'test-resource-1-blog' },
     })
     await prisma.favorites.create({
       data: {
-        userId: testingUserId!.id,
+        userId: user!.id,
         resourceId: resourceToFavorite!.id,
       },
     })
 
     const response = await supertest(server)
       .get(`${url}`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
 
     expect(response.body).toEqual(
       expect.arrayContaining([

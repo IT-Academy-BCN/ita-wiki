@@ -38,7 +38,7 @@ const FormStyled = styled.form`
     display: grid;
     grid-template-areas:
       'dni email'
-      'name specialization'
+      'name itineraryId'
       'password confirmPassword'
       'accept button';
     grid-template-columns: 1fr 1fr;
@@ -126,18 +126,11 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     useRegister(handleRegisterModal)
 
   const onSubmit = handleSubmit(async (userData) => {
-    const {
-      email,
-      password,
-      name,
-      dni,
-      specialization,
-      confirmPassword,
-      accept,
-    } = userData
+    const { email, password, name, dni, itineraryId, confirmPassword, accept } =
+      userData
 
     const selectedCategory = itinerariesMap?.find(
-      (itinerary: { label: string }) => itinerary.label === specialization
+      (itinerary: { label: string }) => itinerary.label === itineraryId
     )
 
     if (selectedCategory && password === confirmPassword && accept) {
@@ -146,7 +139,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
         password,
         name,
         dni,
-        specialization: selectedCategory.value,
+        itineraryId: selectedCategory.value,
         confirmPassword,
         accept,
       })
@@ -252,20 +245,20 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             }}
           />
         </GridAreaStyled>
-        <GridAreaStyled gridArea="specialization">
+        <GridAreaStyled gridArea="itineraryId">
           <SelectGroup
-            data-testid="specialization"
-            id="specialization"
-            label="specialization"
+            data-testid="itineraryId"
+            id="itineraryId"
+            label="itineraryId"
             placeholder={t('Especialidad')}
-            error={!!errors.specialization}
+            error={!!errors.itineraryId}
             options={itinerariesMap}
             validationMessage={
-              errors.specialization?.message && t('camp obligatori')
+              errors.itineraryId?.message && t('camp obligatori')
             }
-            {...register('specialization')}
+            {...register('itineraryId')}
             onBlur={() => {
-              trigger('specialization')
+              trigger('itineraryId')
             }}
           />
         </GridAreaStyled>

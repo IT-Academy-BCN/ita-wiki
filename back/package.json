@@ -1,7 +1,7 @@
 {
   "name": "back",
   "private": true,
-  "version": "0.3.4",
+  "version": "0.6.0",
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
@@ -41,6 +41,7 @@
     "eslint-config-prettier": "8.7.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-prettier": "4.2.1",
+    "msw": "^2.0.10",
     "node-html-parser": "6.1.5",
     "nodemon": "2.0.21",
     "prettier": "2.8.4",
@@ -52,7 +53,7 @@
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "4.5.0",
-    "@koa/cors": "4.0.0",
+    "@koa/cors": "5.0.0",
     "@koa/multer": "^3.0.2",
     "@koa/router": "12.0.0",
     "@prisma/client": "^4.12.0",

@@ -2,6 +2,7 @@ const appConfig = {
   port: process.env.PORT ?? 8999,
   jwtKey: process.env.JWT_KEY ?? 'secret',
   jwtExpiration: process.env.JWT_EXPIRATION ?? '14d',
+  ssoUrl: process.env.SSO_URL ?? 'http://localhost:8000',
 }
 
 const dbConfig = {

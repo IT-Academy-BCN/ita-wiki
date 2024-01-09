@@ -4,15 +4,15 @@ import supertest from 'supertest'
 import sharp from 'sharp'
 import { expect, test, describe, it, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
-import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
+import { authToken } from '../mocks/ssoServer'
 
 const pathUploadMedia = './static/media'
 
 afterAll(async () => {
-  const testUser = await prisma.user.findUnique({
-    where: { dni: testUserData.user.dni },
+  const testUser = await prisma.user.findFirst({
+    where: { name: testUserData.user.name },
   })
   await prisma.media.deleteMany({
     where: { userId: testUser!.id },
@@ -28,7 +28,7 @@ describe('Testing POST media endpoint', () => {
     await fs.writeFile(`${pathUploadMedia}/testImage.png`, bufferData)
     const response = await supertest(server)
       .post(`${pathRoot.v1.media}`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
       .attach('media', `${pathUploadMedia}/testImage.png`)
 
     // Success uploading
@@ -77,7 +77,7 @@ describe('Testing POST media endpoint', () => {
       await fs.writeFile(`${pathUploadMedia}/testImage.png`, bufferData)
       const response = await supertest(server)
         .post(`${pathRoot.v1.media}`)
-        .set('Cookie', 'token=invalidToken')
+        .set('Cookie', 'authToken=invalidToken')
         .attach('media', `${pathUploadMedia}/testImage.png`)
 
       expect(response.status).toBe(498)
@@ -86,17 +86,17 @@ describe('Testing POST media endpoint', () => {
       expect(cookieHeader).toBeDefined()
 
       const tokenCookie = cookieHeader.find((header: string) =>
-        header.startsWith('token=')
+        header.startsWith('authToken=')
       )
       expect(tokenCookie).toBe(
-        'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly'
+        'authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; httponly'
       )
       await fs.rm(`${pathUploadMedia}/testImage.png`)
     })
     it('Should fail if no file is attached to the request', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.media}`)
-        .set('Cookie', authToken.user)
+        .set('Cookie', [`authToken=${authToken.user}`])
 
       expect(response.status).toBe(422)
       expect(response.body.message).toBe('Missing media')
@@ -108,7 +108,7 @@ describe('Testing POST media endpoint', () => {
       )
       const response = await supertest(server)
         .post(`${pathRoot.v1.media}`)
-        .set('Cookie', authToken.user)
+        .set('Cookie', [`authToken=${authToken.user}`])
         .attach('media', `${pathUploadMedia}/testText.txt`)
 
       expect(response.status).toBe(415)
@@ -123,7 +123,7 @@ describe('Testing POST media endpoint', () => {
 
       const response = await supertest(server)
         .post(`${pathRoot.v1.media}`)
-        .set('Cookie', authToken.user)
+        .set('Cookie', [`authToken=${authToken.user}`])
         .attach('media', `${pathUploadMedia}/testImage.png`)
 
       expect(response.status).toBe(500)

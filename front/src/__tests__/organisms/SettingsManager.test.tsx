@@ -13,7 +13,7 @@ const mockUsers = [
     dni: '12345678',
     name: 'User One',
     avatarId: 'testAvatar.jpg',
-    specialization: 'react',
+    itineraryId: 'react',
     status: 'ACTIVE',
     role: 'REGISTERED',
     createdAt: '2023-01-01T00:00:00Z',
