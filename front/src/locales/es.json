@@ -32,6 +32,7 @@
   "confirmPasswordError": "Las contraseñas deben coincidir",
   "acepto": "Acepto",
   "terminos legales": "términos legales",
+  "error terminos legales": "Es necesario aceptar los términos legales",
   "tienes una cuenta?": "¿Tienes una cuenta?, entrar",
   "recordar/cambiar": "Recordar/cambiar contraseña",
   "no tienes una cuenta?": "¿No tienes una cuenta?, crear una",
@@ -125,8 +126,7 @@
   "Favoritos guardados": "Favoritos guardados",
   "n/d": "n/d",
 
-  "Mostrando":"Mostrando",
-  "resultados para":"resultados para",
-  "Nuevo Recurso":"Nuevo recurso"
-
+  "Mostrando": "Mostrando",
+  "resultados para": "resultados para",
+  "Nuevo Recurso": "Nuevo recurso"
 }

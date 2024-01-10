@@ -30,7 +30,7 @@ export const handlers = [
           dni: '12345678L',
           name: 'Test Name',
           avatarId: 'testAvatar.jpg',
-          specialization: 'react',
+          itineraryId: 'react',
           status: 'ACTIVE',
           role: 'REGISTERED',
           createdAt: '2023-11-15T15:36:02.234Z',
@@ -63,6 +63,19 @@ export const handlers = [
           id: '1',
           name: 'React',
           slug: 'react',
+        },
+      ])
+    )
+  ),
+
+  rest.get(urls.getItineraries, (_, res, ctx) =>
+    res(
+      ctx.status(200),
+      ctx.json([
+        {
+          id: '1',
+          name: 'Frontend Angular',
+          slug: 'frontend-angular',
         },
       ])
     )

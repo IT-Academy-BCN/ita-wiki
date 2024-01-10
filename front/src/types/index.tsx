@@ -1,4 +1,5 @@
 import type {
+  TItinerary,
   TFavorites,
   TGetTopics,
   TTopic,
@@ -22,6 +23,7 @@ import type {
 } from './types'
 
 export type {
+  TItinerary,
   TFavorites,
   TGetTopics,
   TTopic,

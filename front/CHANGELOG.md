@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.0] - 2023-12-11
+
+### Added
+
+- Added useGetItineraries hook and its test
+
+### Changed
+
+- Register dropdown shows itineraries
+- Register request includes itineraryId instead of specialization
+- Updated tests accordingly
+
+### Fixed
+
+- Fixed missing translation of error in legal terms at Register
+
 ## [0.6.9] - 2023-12-13
 
 ### Fixed

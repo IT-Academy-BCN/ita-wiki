@@ -32,6 +32,7 @@
   "confirmPasswordError": "La contrasenya ha de coincidir",
   "acepto": "Accepto",
   "terminos legales": "termes legals",
+  "error terminos legales": "És necessari acceptar els termes legals",
   "tienes una cuenta?": "Tens un compte?, entra",
   "recordar/cambiar": "Recordar/canviar la contrasenya",
   "no tienes una cuenta?": "No tens un compte?, crea'n un",
@@ -125,7 +126,7 @@
   "Favoritos guardados": "Recursos preferits",
   "n/d": "n/d",
 
-  "Mostrando":"Mostrant",
-  "resultados para":"resultat per",
-  "Nuevo Recurso":"Nou recurs"
+  "Mostrando": "Mostrant",
+  "resultados para": "resultat per",
+  "Nuevo Recurso": "Nou recurs"
 }
