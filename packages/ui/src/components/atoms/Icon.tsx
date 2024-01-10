@@ -2,14 +2,13 @@ import React from 'react'
 import styled from 'styled-components'
 
 interface IconStyledProps extends TIcon {
-  $wght: number;
-  $grad: number;
+  $wght: number
+  $grad: number
   $opsz: number
 }
 const IconStyled = styled.span<IconStyledProps>`
   font-variation-settings: 'FILL' ${({ fill }) => fill},
-    'wght' ${({ $wght }) => $wght}, 
-    'GRAD' ${({ $grad }) => $grad},
+    'wght' ${({ $wght }) => $wght}, 'GRAD' ${({ $grad }) => $grad},
     'opsz' ${({ $opsz }) => $opsz};
   color: ${({ color }) => color};
   cursor: pointer;
@@ -19,7 +18,7 @@ const IconStyled = styled.span<IconStyledProps>`
     transform: scale(1.1);
   }
 `
- type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
+type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
   name: string
   fill?: number
   $wght?: number
@@ -29,7 +28,7 @@ const IconStyled = styled.span<IconStyledProps>`
   color?: string
   cursor?: string
 }
-export const Icon: React.FC<TIcon> = ({
+const Icon: React.FC<TIcon> = ({
   className = '',
   fill = 1,
   $wght = 400,
@@ -53,4 +52,4 @@ export const Icon: React.FC<TIcon> = ({
   </IconStyled>
 )
 
-
+export default styled(Icon)``

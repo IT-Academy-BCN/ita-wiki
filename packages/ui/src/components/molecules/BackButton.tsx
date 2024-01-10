@@ -1,6 +1,6 @@
 import { FC, HTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { Icon } from '../atoms/Icon'
+import Icon from '../atoms/Icon'
 import { font, device, dimensions } from '../../styles'
 
 const ButtonStyled = styled.button`
