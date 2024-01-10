@@ -2,14 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.3.1] - 2024-01-09
+## [0.5.0] - 2024-01-09
 
 ### Added
 - Migrate BackButton to UI
 - Added BackButton.stories to molecules folder
 - Migrate Icon to UI
 - Added Icon stories to atoms folder
-- Migrate tests to atoms(Icon) and molecules( BackButton )
+- 
 
 ## [0.3.0] - 2024-01-09
 
