@@ -39,7 +39,6 @@
     "@storybook/addon-onboarding": "1.0.8",
     "@storybook/react": "7.6.0",
     "@storybook/react-vite": "7.6.0",
-    "storybook-addon-react-router-v6": "^2.0.10",
     "@storybook/test": "7.6.0",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
@@ -64,10 +63,11 @@
     "prettier": "2.8.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.1",
     "storybook": "7.6.0",
+    "storybook-addon-react-router-v6": "^2.0.10",
     "styled-components": "6.1.2",
     "typescript": "^5.0.4",
     "vitest": "0.30.1"
   }
- 
 }
