@@ -2,14 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+
 ## [0.5.0] - 2024-01-09
 
 ### Added
 - Migrate BackButton to UI
-- Added BackButton.stories to molecules folder
+- Added molecules folder
 - Migrate Icon to UI
-- Added Icon stories to atoms folder
-- 
+
+## [0.4.0] - 2024-01-09
+
+### Added
+
+- Added HamburgerMenu component
 
 ## [0.3.0] - 2024-01-09
 
@@ -17,23 +22,18 @@ All notable changes to this project will be documented in this file.
 
 - Migrate checkbox to UI
 - Added disabled mode
-- Added stories to storybook
-- Migrate and update tests
 
-## [0.2.2] -2024-01-09
+## [0.2.3] - 2024-01-09
 
 ### chore
 
 - Add .npmignore file
 
-
-## [0.2.2] -2023-12-21
+## [0.2.2] - 2023-12-21
 
 ### Added
 
-- Migrate Button to UI
-- Added Button stories to storybook
-- Tests to atoms ( Button)
+- Add button component
 
 ## [0.2.1] - 2023-12-19
 
