@@ -30,7 +30,7 @@ describe('useRegister hook', () => {
         password: 'password1',
         name: 'test',
         dni: '12345678',
-        specialization: 'react',
+        itineraryId: 'react',
         confirmPassword: 'password1',
         accept: true,
       })
@@ -54,7 +54,7 @@ describe('useRegister hook', () => {
         password: 'password1',
         name: 'test',
         dni: '12345678',
-        specialization: 'react',
+        itineraryId: 'react',
         confirmPassword: 'passwordError',
         accept: true,
       })

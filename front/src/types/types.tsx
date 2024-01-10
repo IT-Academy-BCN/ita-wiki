@@ -1,6 +1,12 @@
 import { UserRegisterSchema } from '@itacademy/schemas'
 import { z } from 'zod'
 
+export type TItinerary = {
+  id: string
+  name: string
+  slug: string
+}
+
 export type TTopic = {
   id?: string
   name: string
