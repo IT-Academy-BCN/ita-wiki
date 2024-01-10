@@ -1,6 +1,59 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [0.6.0] - 2024-01-08
+
+
+### Added
+
+- Get itineraries from SSO endpoint
+
+### Removed
+
+- Specialization from "users" table
+  
+### Testing
+
+- Added tests for GET itineraries endpoint
+  
+### Documentation
+
+- Enhanced OpenAPI documentation with details on the new GET itineraries endpoint
+  
+## [0.5.0] - 2023-12-20
+
+### Changed
+
+- Retrieve DNI and email of the user from SSO instead of the database
+
+
+### Testing
+
+- Added to ssoServer mock, get user handler.
+  
+## [0.4.0] - 2023-12-14
+
+### Added
+
+- `ssoUrl` to `.env` file and `appConfig`
+- implemented SSO in auth files and authenticate middleware file
+
+### Removed
+
+- password, dni and email from User model
+
+### Testing
+
+- Added ssoServer mock
+- Updated tests to implement ssoServer mock
+- Changed token cookies to authToken
+- Changed create resource test to post
+
+## [0.3.4] - 2023-11-29
+
+### Changed
+
+- Modified GET Favorites query so the nested user object returned with each favorite resource, specifies the name and avatarId of the author of each resource.
 
 ## [0.3.3] - 2023-11-28
 

@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "CommonJS",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "jsx": "react-jsx",
+    "outDir": "dist"
+  },
+  "files": ["./src/index.ts"],
+  "include": ["./src/index.ts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "public",
+    "scripts",
+    "**/*.stories.*",
+    "**/.storybook/**/*",
+    "**/src/__tests__/**/*",
+    "vitest.config.ts"
+  ]
+}

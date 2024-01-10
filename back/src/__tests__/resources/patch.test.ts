@@ -2,10 +2,10 @@ import supertest from 'supertest'
 import { expect, test, describe, beforeAll, afterAll } from 'vitest'
 import { Resource, Category, Topic, User } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
-import { authToken } from '../setup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
+import { authToken } from '../mocks/ssoServer'
 
 describe('Testing resource modify endpoint', () => {
   let testTopic: Topic
@@ -15,8 +15,8 @@ describe('Testing resource modify endpoint', () => {
       where: { slug: 'testing' },
     })) as Topic
 
-    const user = (await prisma.user.findUnique({
-      where: { email: 'testingUser@user.cat' },
+    const user = (await prisma.user.findFirst({
+      where: { name: testUserData.user.name },
     })) as User
 
     const category = (await prisma.category.findUnique({
@@ -41,7 +41,7 @@ describe('Testing resource modify endpoint', () => {
       where: { topic: { id: testTopic.id } },
     })
     await prisma.resource.deleteMany({
-      where: { user: { dni: testUserData.user.dni } },
+      where: { user: { name: testUserData.user.name } },
     })
   })
 
@@ -56,7 +56,7 @@ describe('Testing resource modify endpoint', () => {
 
     const response = await supertest(server)
       .patch(`${pathRoot.v1.resources}/`)
-      .set('Cookie', authToken.admin)
+      .set('Cookie', [`authToken=${authToken.admin}`])
       .send(newResource!)
     expect(response.status).toBe(401)
   })
@@ -72,7 +72,7 @@ describe('Testing resource modify endpoint', () => {
     }
     const response = await supertest(server)
       .patch(`${pathRoot.v1.resources}/`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
       .send(newResource)
     expect(response.status).toBe(400)
   })
@@ -91,7 +91,7 @@ describe('Testing resource modify endpoint', () => {
     }
     const response = await supertest(server)
       .patch(`${pathRoot.v1.resources}/`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
       .send(lastRes!)
 
     const compare = await prisma.resource.findUnique({
@@ -120,7 +120,7 @@ describe('Testing resource modify endpoint', () => {
     }
     const response = await supertest(server)
       .patch(`${pathRoot.v1.resources}/`)
-      .set('Cookie', authToken.user)
+      .set('Cookie', [`authToken=${authToken.user}`])
       .send(newResource!)
     const lastResource = await prisma.resource.findUnique({
       where: { id: newResource!.id },

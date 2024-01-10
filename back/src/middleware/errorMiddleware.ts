@@ -6,6 +6,7 @@ import { Prisma } from '@prisma/client'
 import {
   DuplicateError,
   InvalidToken,
+  ServiceUnavailable,
   UnauthorizedError,
   ValidationError,
 } from '../helpers/errors'
@@ -26,6 +27,8 @@ const errorMiddleware = async (ctx: Context, next: Next) => {
       error = new DuplicateError(resourceName)
     } else if (error instanceof Prisma.PrismaClientValidationError) {
       error = new ValidationError('Invalid data input')
+    } else if (error.message === 'fetch failed') {
+      error = new ServiceUnavailable()
     }
     ctx.status = error.status || 500
     ctx.body = {

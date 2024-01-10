@@ -16,5 +16,6 @@ export const registerController: Middleware = async (ctx: Context) => {
 
   await client.query(query)
 
-  ctx.status = 204
+  ctx.status = 200
+  ctx.body = { id }
 }

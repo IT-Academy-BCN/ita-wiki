@@ -1,5 +1,7 @@
+import { userSchema } from '../../schemas'
 import { z } from '../zod'
 import {
+  EmailDniError,
   InvalidCredentials,
   InvalidTokenError,
   MissingTokenError,
@@ -44,6 +46,14 @@ export const zodValidationResponse = {
     },
   },
 }
+export const duplicateResponse = {
+  description: 'Email or User already exist',
+  content: {
+    'application/json': {
+      schema: EmailDniError,
+    },
+  },
+}
 
 export const invalidPasswordResponse = {
   description: 'Invalid password',
@@ -55,7 +65,7 @@ export const invalidPasswordResponse = {
     },
   },
 }
-export const InvalidCredentialsResponse = {
+export const invalidCredentialsResponse = {
   description: 'Invalid Credentials error',
   content: {
     'application/json': {
@@ -71,6 +81,32 @@ export const invalidItineraryResponse = {
       schema: z.object({
         message: z.string().openapi({ example: 'Invalid itinerary' }),
       }),
+    },
+  },
+}
+export const registerResponse = {
+  description: 'The user has been registered.',
+  content: {
+    'application/json': {
+      schema: userSchema.pick({ id: true }),
+    },
+  },
+}
+
+export const validTokenResponse = {
+  description: 'The token is valid',
+  content: {
+    'application/json': {
+      schema: userSchema.pick({ id: true }),
+    },
+  },
+}
+
+export const getUserResponse = {
+  description: 'Token is valid and user information is returned.',
+  content: {
+    'application/json': {
+      schema: userSchema.pick({ dni: true, email: true }),
     },
   },
 }

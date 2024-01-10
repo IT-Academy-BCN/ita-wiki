@@ -32,6 +32,7 @@
   "confirmPasswordError": "Passwords must match",
   "acepto": "Accept",
   "terminos legales": "legal terms",
+  "error terminos legales": "Legal terms must be accepted",
   "tienes una cuenta?": "Do you have an account?, log in",
   "recordar/cambiar": "Remember/change password",
   "no tienes una cuenta?": "Don't have an account?, create one",
@@ -125,7 +126,7 @@
   "Favoritos guardados": "Saved favorites",
   "n/d": "n/a",
 
-  "Mostrando":"Showing",
-  "resultados para":"results for",
-  "Nuevo Recurso":"New resource"
+  "Mostrando": "Showing",
+  "resultados para": "results for",
+  "Nuevo Recurso": "New resource"
 }

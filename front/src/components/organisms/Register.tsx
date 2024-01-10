@@ -17,9 +17,9 @@ import {
 import InputGroup from '../molecules/InputGroup'
 import SelectGroup from '../molecules/SelectGroup'
 import { colors, device, dimensions, FlexBox } from '../../styles'
-import { TCategory, TRegisterForm } from '../../types'
-import { useGetCategories } from '../../hooks'
+import { TItinerary, TRegisterForm } from '../../types'
 import { useRegister } from '../../hooks/useRegister'
+import { useGetItineraries } from '../../hooks'
 
 const RegisterStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.sm};
@@ -38,7 +38,7 @@ const FormStyled = styled.form`
     display: grid;
     grid-template-areas:
       'dni email'
-      'name specialization'
+      'name itineraryId'
       'password confirmPassword'
       'accept button';
     grid-template-columns: 1fr 1fr;
@@ -116,28 +116,21 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     trigger,
   } = useForm<TRegisterForm>({ resolver: zodResolver(UserRegisterSchema) })
 
-  const { data } = useGetCategories()
-  const categoriesMap = data?.map((category: TCategory) => ({
-    value: category.id,
-    label: category.name,
+  const { data } = useGetItineraries()
+  const itinerariesMap = data?.map((itinerary: TItinerary) => ({
+    value: itinerary.id,
+    label: itinerary.name,
   }))
 
   const { registerUser, error, isLoading, isSuccess } =
     useRegister(handleRegisterModal)
 
   const onSubmit = handleSubmit(async (userData) => {
-    const {
-      email,
-      password,
-      name,
-      dni,
-      specialization,
-      confirmPassword,
-      accept,
-    } = userData
+    const { email, password, name, dni, itineraryId, confirmPassword, accept } =
+      userData
 
-    const selectedCategory = categoriesMap.find(
-      (category: { label: string }) => category.label === specialization
+    const selectedCategory = itinerariesMap?.find(
+      (itinerary: { label: string }) => itinerary.label === itineraryId
     )
 
     if (selectedCategory && password === confirmPassword && accept) {
@@ -146,7 +139,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
         password,
         name,
         dni,
-        specialization: selectedCategory.value,
+        itineraryId: selectedCategory.value,
         confirmPassword,
         accept,
       })
@@ -252,20 +245,20 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             }}
           />
         </GridAreaStyled>
-        <GridAreaStyled gridArea="specialization">
+        <GridAreaStyled gridArea="itineraryId">
           <SelectGroup
-            data-testid="specialization"
-            id="specialization"
-            label="specialization"
+            data-testid="itineraryId"
+            id="itineraryId"
+            label="itineraryId"
             placeholder={t('Especialidad')}
-            error={!!errors.specialization}
-            options={categoriesMap}
+            error={!!errors.itineraryId}
+            options={itinerariesMap}
             validationMessage={
-              errors.specialization?.message && t('camp obligatori')
+              errors.itineraryId?.message && t('camp obligatori')
             }
-            {...register('specialization')}
+            {...register('itineraryId')}
             onBlur={() => {
-              trigger('specialization')
+              trigger('itineraryId')
             }}
           />
         </GridAreaStyled>
@@ -287,7 +280,10 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
           </FlexBox>
           {errors.accept && (
             <FlexBox align="start">
-              <ValidationMessage color="error" text={errors.accept?.message} />
+              <ValidationMessage
+                color="error"
+                text={errors.accept?.message && t('error terminos legales')}
+              />
             </FlexBox>
           )}
         </GridAreaStyled>

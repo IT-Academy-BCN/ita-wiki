@@ -1,0 +1,57 @@
+name: build_ui
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "packages/ui/**"
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Grab version
+        id: version
+        run: echo "::set-output name=version::$(jq -r '.version' packages/ui/package.json)"
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: packages/ui
+          push: true
+          tags: kevinmamaqi/ita-ui:v${{ steps.version.outputs.version }}
+
+      - name: Update version
+        run: |
+          git config --global user.name "ITA Wiki bot"
+          git config --global user.email "bot@itawiki.com"
+          version=$(grep version: ./config/dev/ui.yml | awk '{print $2}')
+          sed -i "s/version: $version/version: ${{ steps.version.outputs.version }}/" ./config/dev/ui.yml
+          git add ./config/dev/ui.yml
+          git commit -m "Bump ui image to v${{ steps.version.outputs.version }}"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          # Get in the line below the branch name
+          title: "Bump ui image version to v${{ steps.version.outputs.version }}"
+          commit-message: "Bump ui image version to v${{ steps.version.outputs.version }} - ${{ env.GITHUB_REF_NAME }}"
+          branch: "bump-ui-to-v${{ steps.version.outputs.version }}"
+          delete-branch: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          assignees: ${{ github.actor }}

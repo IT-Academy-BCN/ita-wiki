@@ -8,7 +8,7 @@ export const userSchema = z.object({
   password: z.string().min(8),
   name: z.string().optional(),
   avatarId: z.string().optional().nullable(),
-  specialization: z.string().openapi({ example: 'specializationId' }),
+  itineraryId: z.string().nonempty().cuid(),
   status: z.enum(['ACTIVE', 'INACTIVE']),
   role: z.enum(['ADMIN', 'REGISTERED', 'MENTOR']),
   createdAt: z.string().datetime(),

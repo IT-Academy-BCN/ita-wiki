@@ -2,11 +2,35 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.9] - 2023-11-28
+## [0.7.1] - 2023-11-28
 
 ### Fixed
 
 - Unique ID generation when linking label with HTMLelement
+
+## [0.7.0] - 2023-12-11
+
+### Added
+
+- Added useGetItineraries hook and its test
+
+### Changed
+
+- Register dropdown shows itineraries
+- Register request includes itineraryId instead of specialization
+- Updated tests accordingly
+
+### Fixed
+
+- Fixed missing translation of error in legal terms at Register
+
+## [0.6.9] - 2023-12-13
+
+### Fixed
+
+- Fixed "Todos" radio button not being selected when switching between categories.
+- Updated tests.
+
 ## [0.6.8] - 2023-11-29
 
 ### Fixed
