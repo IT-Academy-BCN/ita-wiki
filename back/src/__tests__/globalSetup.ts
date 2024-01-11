@@ -10,6 +10,7 @@ server = app.listen()
 
 export const testUserData = {
   user: {
+    id: 'vwt15uwddul2afme75x6fs8q',
     email: 'testingUser@user.cat',
     name: 'testingUser',
     dni: '11111111A',
@@ -19,6 +20,7 @@ export const testUserData = {
     avatarId: null,
   },
   admin: {
+    id: 'ph4c1vq7s4hszoxbbwx4c2wd',
     email: 'testingAdmin@user.cat',
     name: 'testingAdmin',
     dni: '22222222B',
@@ -28,6 +30,7 @@ export const testUserData = {
     avatarId: null,
   },
   mentor: {
+    id: 'qhpw2d4fykgcwiveh7mhfc3l',
     email: 'testingMentor@user.cat',
     name: 'testingMentor',
     dni: '44444444B',
@@ -37,6 +40,7 @@ export const testUserData = {
     avatarId: null,
   },
   inactiveUser: {
+    id: 'wo3i34m29rhke1ptcwtmy3t2',
     email: 'testingInactiveUser@user.cat',
     name: 'testingInactiveUser',
     dni: '33333333A',

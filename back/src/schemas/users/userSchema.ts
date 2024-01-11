@@ -1,8 +1,9 @@
 import { z } from '../../openapi/zod'
 import { dniSchema } from '../dniSchema'
 
+export const userId = z.string().cuid2()
 export const userSchema = z.object({
-  id: z.string().cuid(),
+  id: userId,
   email: z.string().email().openapi({ example: 'user@example.cat' }),
   dni: dniSchema,
   password: z.string().min(8),
