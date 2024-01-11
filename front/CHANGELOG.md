@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.1] - 2023-11-28
+
+### Fixed
+
+- Unique ID generation when linking label with HTMLelement
+
 ## [0.7.0] - 2023-12-11
 
 ### Added

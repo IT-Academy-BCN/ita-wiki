@@ -4,6 +4,7 @@ import { dimensions, FlexBox } from '../../styles'
 import { Icon, Input, Label, ValidationMessage } from '../atoms'
 import { TInput } from '../atoms/Input'
 import { TValidationMessage } from '../atoms/ValidationMessage'
+import { newId } from '../../utils/newId'
 
 const InputGroupStyled = styled.div`
   width: 100%;
@@ -61,23 +62,26 @@ const InputGroup = forwardRef(
       ...rest
     }: TInputGroup,
     ref: Ref<HTMLInputElement>
-  ) => (
-    <InputGroupStyled className={className}>
-      <Label text={label} htmlFor={id} hiddenLabel={hiddenLabel} />
-      <FlexBox direction="row" justify="flex-end">
-        <Input id={id} name={name} {...rest} ref={ref} />
-        {!!icon && (
-          <Icon
-            name={icon}
-            onClick={iconClick}
-            {...rest}
-            data-testid={iconDataTestId(rest)}
-          />
-        )}
-      </FlexBox>
-      <ValidationMessage text={validationMessage} color={validationType} />
-    </InputGroupStyled>
-  )
+  ) => {
+    const uniqueTagId = newId()
+    return (
+      <InputGroupStyled className={className}>
+        <Label text={label} htmlFor={uniqueTagId} hiddenLabel={hiddenLabel} />
+        <FlexBox direction="row" justify="flex-end">
+          <Input id={uniqueTagId} name={name} {...rest} ref={ref} />
+          {!!icon && (
+            <Icon
+              name={icon}
+              onClick={iconClick}
+              {...rest}
+              data-testid={iconDataTestId(rest)}
+            />
+          )}
+        </FlexBox>
+        <ValidationMessage text={validationMessage} color={validationType} />
+      </InputGroupStyled>
+    )
+  }
 )
 
 export default styled(InputGroup)``
