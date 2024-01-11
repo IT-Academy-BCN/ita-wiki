@@ -11,10 +11,10 @@ beforeAll(async () => {
   itineraryId = id.id
 })
 afterAll(async () => {
-  await client.query('DELETE FROM "user" WHERE dni = $1 AND email = $2', [
-    '11111111Q',
-    'example@example.com',
-  ])
+  await client.query(
+    'DELETE FROM "user" WHERE dni IN ($1, $2) AND email = $3',
+    ['11111111Q', '11111111S', 'example@example.com']
+  )
 })
 
 describe('Testing registration endpoint', () => {
@@ -23,7 +23,7 @@ describe('Testing registration endpoint', () => {
       .post(`${pathRoot.v1.auth}/register`)
       .send({
         dni: '11111111Q',
-        email: 'example@example.com',
+        email: 'example@example.cat',
         password: 'password1',
         confirmPassword: 'password1',
         itineraryId,
@@ -31,7 +31,24 @@ describe('Testing registration endpoint', () => {
     expect(response.status).toBe(200)
     expect(response.body.id).toBeTypeOf('string')
   })
-
+  it('should succeed with correct credentials and save DNI in uppercase', async () => {
+    const dni = '11111111s'
+    const response = await supertest(server)
+      .post(`${pathRoot.v1.auth}/register`)
+      .send({
+        dni,
+        email: 'example@example.com',
+        password: 'password1',
+        confirmPassword: 'password1',
+        itineraryId,
+      })
+    const query = await client.query('SELECT dni FROM "user" WHERE dni = $1', [
+      dni.toUpperCase(),
+    ])
+    expect(query.rows[0].dni).toBe(dni.toUpperCase())
+    expect(response.status).toBe(200)
+    expect(response.body.id).toBeTypeOf('string')
+  })
   describe('should fail with duplicate', () => {
     it('should fail with duplicate: DNI', async () => {
       const response = await supertest(server)
