@@ -3,6 +3,7 @@
   "version": "0.6.0",
   "description": "React FE components for ITAcademy projects.",
   "main": "./dist/index.js",
+  "module": "./dist/index.es.js",
   "type": "module",
   "scripts": {
     "test": "vitest",
@@ -10,7 +11,7 @@
     "eslint": "npx eslint src --max-warnings 0",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "build": "tsc --project tsconfig.build.json",
+    "build": "rollup -c --bundleConfigAsCjs",
     "prepublishOnly": "npm run build"
   },
   "repository": {
@@ -33,6 +34,10 @@
     "styled-components": "^5.3.9"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "25.0.7",
+    "@rollup/plugin-node-resolve": "15.2.3",
+    "@rollup/plugin-terser": "0.4.4",
+    "@rollup/plugin-typescript": "11.1.6",
     "@storybook/addon-essentials": "7.6.0",
     "@storybook/addon-interactions": "7.6.0",
     "@storybook/addon-links": "7.6.0",
@@ -63,6 +68,9 @@
     "prettier": "2.8.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "rollup": "4.9.4",
+    "rollup-plugin-peer-deps-external": "2.2.4",
+    "rollup-plugin-postcss": "4.0.2",
     "storybook": "7.6.0",
     "styled-components": "6.1.2",
     "typescript": "^5.0.4",
