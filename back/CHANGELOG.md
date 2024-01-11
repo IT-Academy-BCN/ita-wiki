@@ -1,6 +1,17 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [0.6.1] - 2024-01-11
+
+### Fixed
+
+- `userId` in user validation schema now accepts `cuid2` format.
+
+
+### Testing
+
+-  Verified `userId` fields now correctly accept `cuid2` format.
+
 ## [0.6.0] - 2024-01-08
 
 
@@ -11,11 +22,11 @@ All notable changes to this project will be documented in this file.
 ### Removed
 
 - Specialization from "users" table
-  
+
 ### Testing
 
 - Added tests for GET itineraries endpoint
-  
+
 ### Documentation
 
 - Enhanced OpenAPI documentation with details on the new GET itineraries endpoint
