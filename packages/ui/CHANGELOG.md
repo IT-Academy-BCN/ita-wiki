@@ -2,10 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.0] - 2024-01-11
+
+### Added
+
+- Migrate InputGroup and ValidationMessage to UI
+
+## [0.5.1] - 2024-01-11
+
+### Added
+
+- Add rollup build
 
 ## [0.5.0] - 2024-01-09
 
 ### Added
+
 - Migrate BackButton to UI
 - Added molecules folder
 - Migrate Icon to UI

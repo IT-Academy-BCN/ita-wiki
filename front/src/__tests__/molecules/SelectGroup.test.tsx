@@ -17,8 +17,7 @@ describe('SelectGroupText', () => {
 
     expect(label).toBeInTheDocument()
     expect(select).toBeInTheDocument()
-    expect(label).toHaveAttribute('for', 'testid')
-    expect(select).toHaveAttribute('id', 'testid')
+    expect(label).toHaveAttribute('for', select.id)
     expect(select).toHaveAttribute('name', 'testname')
   })
 

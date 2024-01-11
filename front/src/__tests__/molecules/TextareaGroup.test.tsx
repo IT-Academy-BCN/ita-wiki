@@ -17,8 +17,7 @@ describe('TextareaGroup', () => {
 
     expect(label).toBeInTheDocument()
     expect(textarea).toBeInTheDocument()
-    expect(label).toHaveAttribute('for', 'test-id')
-    expect(textarea).toHaveAttribute('id', 'test-id')
+    expect(label).toHaveAttribute('for', textarea.id)
     expect(textarea).toHaveAttribute('rows', '5')
     expect(textarea).toHaveAttribute('name', 'test-name')
   })

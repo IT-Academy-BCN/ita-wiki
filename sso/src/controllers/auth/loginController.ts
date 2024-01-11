@@ -1,16 +1,17 @@
 import { Context, Middleware } from 'koa'
 import { client } from '../../models/db'
-import { checkPassword } from '../../utils/passwordHash'
-import { InvalidCredentials } from '../../utils/errors'
+import { UserLogin } from '../../schemas/auth/loginSchema'
 import { generateToken } from '../../utils/auth'
+import { InvalidCredentials } from '../../utils/errors'
+import { checkPassword } from '../../utils/passwordHash'
 
 export const loginController: Middleware = async (ctx: Context) => {
-  const { dni, password } = ctx.request.body
+  const { dni, password }: UserLogin = ctx.request.body
+  const dniToUpperCase = dni.toUpperCase()
   const userResult = await client.query(
     'SELECT id, password FROM "user" WHERE dni = $1',
-    [dni]
+    [dniToUpperCase]
   )
-
   const user = userResult.rows[0]
   if (!user) {
     throw new InvalidCredentials()
