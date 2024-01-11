@@ -23,6 +23,13 @@
     ".storybook/**/*.tsx",
     "vitest.config.ts"
   ],
-  "exclude": ["node_modules", "dist", "build", "public", "scripts"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "public",
+    "scripts",
+    "rollup.config.js"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
