@@ -11,6 +11,7 @@ type TRadioOptions = {
 type TRadio = {
   options: TRadioOptions[]
   inputName: string
+  direction: 'row' | 'column'
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   hiddenLabel?: boolean
   defaultChecked?: string
@@ -41,6 +42,7 @@ const Radio = forwardRef(
     {
       options,
       inputName,
+      direction,
       hiddenLabel = false,
       onChange,
       defaultChecked,
@@ -48,7 +50,7 @@ const Radio = forwardRef(
     }: TRadio,
     ref: Ref<HTMLInputElement>
   ) => (
-    <RadioStyled {...rest} direction="row">
+    <RadioStyled {...rest} direction={direction}>
       {options?.map(({ id, name }) => (
         <FlexBox direction="row" key={id}>
           <input
