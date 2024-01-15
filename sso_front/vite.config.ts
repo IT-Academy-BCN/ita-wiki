@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://dev.api.itawiki.eurecatacademy.org/',
+        target: 'https://dev.sso.itawiki.eurecatacademy.org/',
         //target: 'http://localhost:8999/',
 
         changeOrigin: true,
