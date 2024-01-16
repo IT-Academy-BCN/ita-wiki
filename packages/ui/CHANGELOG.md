@@ -2,7 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.6.0] - 2024-01-16
+## [0.7.1] - 2024-01-16
+
+### Chore
+
+- Fix nginx
+
+## [0.7.0] - 2024-01-16
 
 ### Added
 
