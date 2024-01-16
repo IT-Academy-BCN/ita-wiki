@@ -1,6 +1,15 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.5.1] - 2024-01-10
+
+### Fixed
+
+-  Corrected DNI letter handling to ensure it's always stored and verified in uppercase.
+
+### Testing
+
+- Introduced tests to ensure DNI handling in registration and login processes accepts both uppercase and lowercase inputs.
 
 ## [1.5.0] - 2023-12-20
 

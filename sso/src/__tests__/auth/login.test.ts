@@ -13,7 +13,28 @@ describe('Testing authentication endpoint', () => {
         password: testUserData.admin.password,
       })
     expect(response.status).toBe(200)
+    expect(tokenSchema.safeParse(response.body).success).toBeTruthy()
+  })
 
+  it('should succeed with correct credentials and uppercase DNI', async () => {
+    const response = await supertest(server)
+      .post(`${pathRoot.v1.auth}/login`)
+      .send({
+        dni: testUserData.admin.dni.toUpperCase(),
+        password: testUserData.admin.password,
+      })
+    expect(response.status).toBe(200)
+    expect(tokenSchema.safeParse(response.body).success).toBeTruthy()
+  })
+
+  it('should succeed with correct credentials and lowercase DNI', async () => {
+    const response = await supertest(server)
+      .post(`${pathRoot.v1.auth}/login`)
+      .send({
+        dni: testUserData.admin.dni.toLowerCase(),
+        password: testUserData.admin.password,
+      })
+    expect(response.status).toBe(200)
     expect(tokenSchema.safeParse(response.body).success).toBeTruthy()
   })
 

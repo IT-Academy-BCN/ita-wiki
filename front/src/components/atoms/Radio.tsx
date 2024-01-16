@@ -2,6 +2,7 @@ import { Ref, forwardRef } from 'react'
 import styled from 'styled-components'
 import { FlexBox, dimensions, colors, font } from '../../styles'
 import Label from './Label'
+import { newId } from '../../utils/newId'
 
 type TRadioOptions = {
   id: string
@@ -49,20 +50,27 @@ const Radio = forwardRef(
     ref: Ref<HTMLInputElement>
   ) => (
     <RadioStyled {...rest} direction="row">
-      {options?.map(({ id, name }) => (
-        <FlexBox direction="row" key={id}>
-          <input
-            type="radio"
-            id={id}
-            value={id}
-            name={inputName}
-            ref={ref}
-            defaultChecked={defaultChecked === id}
-            onChange={onChange}
-          />
-          <Label htmlFor={id} text={name} hiddenLabel={hiddenLabel} />
-        </FlexBox>
-      ))}
+      {options?.map(({ id, name }) => {
+        const uniqueTagId = newId()
+        return (
+          <FlexBox direction="row" key={id}>
+            <input
+              type="radio"
+              id={uniqueTagId}
+              value={id}
+              name={inputName}
+              ref={ref}
+              defaultChecked={defaultChecked === id}
+              onChange={onChange}
+            />
+            <Label
+              htmlFor={uniqueTagId}
+              text={name}
+              hiddenLabel={hiddenLabel}
+            />
+          </FlexBox>
+        )
+      })}
     </RadioStyled>
   )
 )

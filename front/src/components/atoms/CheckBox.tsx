@@ -2,6 +2,7 @@ import { forwardRef, InputHTMLAttributes, Ref } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, FlexBox } from '../../styles'
 import Label from './Label'
+import { newId } from '../../utils/newId'
 
 export const CheckBoxWrapper = styled(FlexBox)`
   flex-direction: row;
@@ -61,21 +62,24 @@ const CheckBox = forwardRef(
       ...rest
     }: TCheckBox,
     ref: Ref<HTMLInputElement>
-  ) => (
-    <CheckBoxWrapper className={className}>
-      <input
-        type="checkbox"
-        ref={ref}
-        id={id}
-        name={id}
-        defaultChecked={defaultChecked}
-        required={required}
-        onChange={onChange}
-        {...rest}
-      />
-      <Label htmlFor={id} text={label} hidden={hiddenLabel} />
-    </CheckBoxWrapper>
-  )
+  ) => {
+    const uniqueTagId = newId()
+    return (
+      <CheckBoxWrapper className={className}>
+        <input
+          type="checkbox"
+          ref={ref}
+          id={uniqueTagId}
+          name={uniqueTagId}
+          defaultChecked={defaultChecked}
+          required={required}
+          onChange={onChange}
+          {...rest}
+        />
+        <Label htmlFor={uniqueTagId} text={label} hidden={hiddenLabel} />
+      </CheckBoxWrapper>
+    )
+  }
 )
 
 export default styled(CheckBox)``
