@@ -8,6 +8,7 @@ const config: StorybookConfig = {
     '@storybook/addon-onboarding',
     '@storybook/addon-interactions',
     '@storybook/addon-actions',
+    '@storybook/addon-mdx-gfm',
   ],
   framework: {
     name: '@storybook/react-vite',
@@ -16,5 +17,6 @@ const config: StorybookConfig = {
   docs: {
     autodocs: 'tag',
   },
+  staticDirs: ['../public'],
 }
 export default config
