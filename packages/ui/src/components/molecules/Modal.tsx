@@ -116,7 +116,10 @@ const Modal: FC<TModal> = ({ children, isOpen, title, toggleModal }) => {
         if (event.key === 'Escape') {
             setShouldAnimate(false)
           setIsModalOpen(false)
-
+          setTimeout(() => {
+            toggleModal()
+            setShouldAnimate(false)
+          }, 490)
         }
     }
 
