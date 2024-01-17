@@ -100,11 +100,12 @@ const ModalContent = styled(FlexBox) <TAnimation>`
   }
 `
 
-type TModal = {
+export type TModal = {
     children: React.ReactNode
   isOpen: boolean
     title?: string
     toggleModal: () => void
+
 }
 
 const Modal: FC<TModal> = ({ children, isOpen, title, toggleModal }) => {
@@ -115,41 +116,34 @@ const Modal: FC<TModal> = ({ children, isOpen, title, toggleModal }) => {
         if (event.key === 'Escape') {
             setShouldAnimate(false)
           setIsModalOpen(false)
-            setTimeout(() => {
-                toggleModal()
-                setShouldAnimate(true)
-            }, 490)
+
         }
     }
 
     const handleClick = () => {
       setIsModalOpen(false)
       setShouldAnimate(false)
-        setTimeout(() => {
-          toggleModal()
-          setShouldAnimate(false)
-      setIsModalOpen(false)
-
-        }, 490)
-
+      setTimeout(() => {
+        toggleModal()
+        setShouldAnimate(false)
+      }, 490)
   }
+
   const handleButtonClick = () => {
     setShouldAnimate(true)
-    setIsModalOpen(!isModalOpen)
+    setIsModalOpen(true)
+
   }
     useEffect(() => {
         document.addEventListener('keydown', handleKeyDown)
-      document.addEventListener('onClick', handleButtonClick)
-      console.log(`isModalOpen: ${isModalOpen}`);
-      console.log(`isOpen: ${isOpen}`);
+
 
         return () => {
-            document.removeEventListener('keydown', handleKeyDown)
-          document.removeEventListener('onClick', handleButtonClick)
+          document.removeEventListener('keydown', handleKeyDown)
         }
     })
 
-    return isOpen ? (
+  return (isModalOpen || isOpen) ? (
         <ModalContainer>
             <ModalWrapper
                 onClick={handleClick}
@@ -165,8 +159,7 @@ const Modal: FC<TModal> = ({ children, isOpen, title, toggleModal }) => {
                         aria-label="Close icon"
               $wght={700}
                     />
-                </FlexBox>
-                {title && (
+        </FlexBox>
                     <Title
                         as="h1"
                         fontWeight="bold"
@@ -174,13 +167,12 @@ const Modal: FC<TModal> = ({ children, isOpen, title, toggleModal }) => {
                         style={{ textAlign: 'center' }}
                     >
                         {title}
-                    </Title>
-                )}
+        </Title>
                 {children}
             </ModalContent>
         </ModalContainer>
 
-    ) : <Button onClick={handleButtonClick} secondary={false} outline={false} >Open Modal</Button>
+  ) : <Button onClick={handleButtonClick} secondary={false} outline={false} >{children}</Button>
 }
 
 export { Modal }
