@@ -69,4 +69,4 @@ const Radio = forwardRef(
   )
 )
 
-export default styled(Radio)``
+export default Radio

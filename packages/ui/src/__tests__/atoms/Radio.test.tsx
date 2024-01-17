@@ -21,189 +21,63 @@ const options = [
   },
 ]
 
-// describe('Radio', () => {
-//   it('renders correctly', async () => {
-//     render(<Radio options={options} inputName="radioTest" />)
-
-//     test.each(options)('renders radio %s', ({ label }) => {
-//       const radioTest = screen.getByLabelText(label)
-//       const labelTest = screen.getByText(label)
-
-//       expect(radioTest).toBeInTheDocument()
-//       expect(labelTest).toBeInTheDocument()
-
-//       expect(radioTest).toHaveAttribute('type', 'radio')
-//       expect(radioTest).toHaveAttribute('name', 'radioTest')
-//       expect(radioTest).toHaveStyle(`color: ${colors.gray.gray2};`)
-
-//       expect(radioTest).not.toBeChecked()
-//     })
-//   })
-
-//   it('renders radio that checks its radio when is clicked', async () => {
-//     render(<Radio options={options} inputName="radioTest" />)
-
-//     test.each(options)('renders radio %s', ({ label }) => {
-//       const radioTest = screen.getByLabelText(label)
-//       const labelTest = screen.getByText(label)
-
-//       expect(radioTest).not.toBeChecked()
-
-//       fireEvent.click(labelTest)
-
-//       expect(radioTest).toBeChecked()
-//     })
-//   })
-
-//   it('renders radio checked by default when provided and user can uncheck it', async () => {
-//     render(
-//       <Radio
-//         options={options}
-//         inputName="radioTest"
-//         defaultChecked={options[1].id}
-//       />
-//     )
-
-//     test.each(options)('renders radio %s', ({ label, id }) => {
-//       const radioTest = screen.getByLabelText(label)
-//       const labelTest = screen.getByText(label)
-
-//       if (id === options[1].id) {
-//         expect(radioTest).toBeChecked()
-//       } else {
-//         expect(radioTest).not.toBeChecked()
-//       }
-
-//       fireEvent.click(labelTest)
-
-//       expect(radioTest).toBeChecked()
-//     })
-//   })
-// })
-
 describe('Radio', () => {
-  describe('renders correctly in row direction', () => {
-    it('renders correctly', async () => {
-      render(<Radio options={options} inputName="radioTest" direction="row" />)
+  it('renders correctly', async () => {
+    render(<Radio options={options} inputName="radioTest" direction="row" />)
 
-      test.each(options)('renders radio %s', ({ label }) => {
-        const radioTest = screen.getByLabelText(label)
-        const labelTest = screen.getByText(label)
+    test.each(options)('renders radio %s', ({ label }) => {
+      const radioTest = screen.getByLabelText(label)
+      const labelTest = screen.getByText(label)
 
-        expect(radioTest).toBeInTheDocument()
-        expect(labelTest).toBeInTheDocument()
+      expect(radioTest).toBeInTheDocument()
+      expect(labelTest).toBeInTheDocument()
 
-        expect(radioTest).toHaveAttribute('type', 'radio')
-        expect(radioTest).toHaveAttribute('name', 'radioTest')
-        expect(radioTest).toHaveStyle(`color: ${colors.gray.gray2};`)
+      expect(radioTest).toHaveAttribute('type', 'radio')
+      expect(radioTest).toHaveAttribute('name', 'radioTest')
+      expect(radioTest).toHaveStyle(`color: ${colors.gray.gray2};`)
 
-        expect(radioTest).not.toBeChecked()
-      })
-    })
-
-    it('renders radio that checks its radio when is clicked', async () => {
-      render(<Radio options={options} inputName="radioTest" direction="row" />)
-
-      test.each(options)('renders radio %s', ({ label }) => {
-        const radioTest = screen.getByLabelText(label)
-        const labelTest = screen.getByText(label)
-
-        expect(radioTest).not.toBeChecked()
-
-        fireEvent.click(labelTest)
-
-        expect(radioTest).toBeChecked()
-      })
-    })
-
-    it('renders radio checked by default when provided and user can uncheck it', async () => {
-      render(
-        <Radio
-          options={options}
-          inputName="radioTest"
-          defaultChecked={options[1].id}
-          direction="row"
-        />
-      )
-
-      test.each(options)('renders radio %s', ({ label, id }) => {
-        const radioTest = screen.getByLabelText(label)
-        const labelTest = screen.getByText(label)
-
-        if (id === options[1].id) {
-          expect(radioTest).toBeChecked()
-        } else {
-          expect(radioTest).not.toBeChecked()
-        }
-
-        fireEvent.click(labelTest)
-
-        expect(radioTest).toBeChecked()
-      })
+      expect(radioTest).not.toBeChecked()
     })
   })
-  describe('renders correctly in column direction', () => {
-    it('renders correctly', async () => {
-      render(
-        <Radio options={options} inputName="radioTest" direction="column" />
-      )
 
-      test.each(options)('renders radio %s', ({ label }) => {
-        const radioTest = screen.getByLabelText(label)
-        const labelTest = screen.getByText(label)
+  it('renders radio that checks its radio when is clicked', async () => {
+    render(<Radio options={options} inputName="radioTest" direction="row" />)
 
-        expect(radioTest).toBeInTheDocument()
-        expect(labelTest).toBeInTheDocument()
+    test.each(options)('renders radio %s', ({ label }) => {
+      const radioTest = screen.getByLabelText(label)
+      const labelTest = screen.getByText(label)
 
-        expect(radioTest).toHaveAttribute('type', 'radio')
-        expect(radioTest).toHaveAttribute('name', 'radioTest')
-        expect(radioTest).toHaveStyle(`color: ${colors.gray.gray2};`)
+      expect(radioTest).not.toBeChecked()
 
-        expect(radioTest).not.toBeChecked()
-      })
+      fireEvent.click(labelTest)
+
+      expect(radioTest).toBeChecked()
     })
+  })
 
-    it('renders radio that checks its radio when is clicked', async () => {
-      render(
-        <Radio options={options} inputName="radioTest" direction="column" />
-      )
+  it('renders radio checked by default when provided and user can uncheck it', async () => {
+    render(
+      <Radio
+        options={options}
+        inputName="radioTest"
+        defaultChecked={options[1].id}
+        direction="row"
+      />
+    )
 
-      test.each(options)('renders radio %s', ({ label }) => {
-        const radioTest = screen.getByLabelText(label)
-        const labelTest = screen.getByText(label)
+    test.each(options)('renders radio %s', ({ label, id }) => {
+      const radioTest = screen.getByLabelText(label)
+      const labelTest = screen.getByText(label)
 
+      if (id === options[1].id) {
+        expect(radioTest).toBeChecked()
+      } else {
         expect(radioTest).not.toBeChecked()
+      }
 
-        fireEvent.click(labelTest)
+      fireEvent.click(labelTest)
 
-        expect(radioTest).toBeChecked()
-      })
-    })
-
-    it('renders radio checked by default when provided and user can uncheck it', async () => {
-      render(
-        <Radio
-          options={options}
-          inputName="radioTest"
-          defaultChecked={options[1].id}
-          direction="column"
-        />
-      )
-
-      test.each(options)('renders radio %s', ({ label, id }) => {
-        const radioTest = screen.getByLabelText(label)
-        const labelTest = screen.getByText(label)
-
-        if (id === options[1].id) {
-          expect(radioTest).toBeChecked()
-        } else {
-          expect(radioTest).not.toBeChecked()
-        }
-
-        fireEvent.click(labelTest)
-
-        expect(radioTest).toBeChecked()
-      })
+      expect(radioTest).toBeChecked()
     })
   })
 })
