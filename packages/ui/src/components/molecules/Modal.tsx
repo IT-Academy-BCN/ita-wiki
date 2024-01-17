@@ -1,5 +1,4 @@
-import { useEffect, useState, FC } from 'react'
-
+import { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../../styles'
 import { Icon, Title } from '../atoms'
@@ -27,7 +26,7 @@ const fadeOut = css`
   }
 `
 
-const ModalWrapper = styled(FlexBox) <TAnimation>`
+const ModalWrapper = styled(FlexBox)<TAnimation>`
   background-color: rgba(0, 0, 0, 0.68);
   backdrop-filter: blur(5px);
   width: 100%;
@@ -39,14 +38,14 @@ const ModalWrapper = styled(FlexBox) <TAnimation>`
   z-index: -1;
 
   ${({ shouldAnimate }) =>
-        shouldAnimate &&
-        `
+    shouldAnimate &&
+    `
       ${fadeIn};
       `}
 
   ${({ shouldAnimate }) =>
-        !shouldAnimate &&
-        `
+    !shouldAnimate &&
+    `
     ${fadeOut};
     `}
 `
@@ -72,10 +71,10 @@ const StyledIcon = styled(Icon)`
 `
 
 type TAnimation = {
-    shouldAnimate: boolean
+  shouldAnimate: boolean
 }
 
-const ModalContent = styled(FlexBox) <TAnimation>`
+const ModalContent = styled(FlexBox)<TAnimation>`
   background-color: ${colors.white};
   width: 95%;
   height: auto;
@@ -84,14 +83,14 @@ const ModalContent = styled(FlexBox) <TAnimation>`
   border-radius: ${dimensions.borderRadius.sm};
 
   ${({ shouldAnimate }) =>
-        shouldAnimate &&
-        `
+    shouldAnimate &&
+    `
       ${fadeIn};
       `}
 
   ${({ shouldAnimate }) =>
-        !shouldAnimate &&
-        `
+    !shouldAnimate &&
+    `
     ${fadeOut};
     `}
 
@@ -100,82 +99,71 @@ const ModalContent = styled(FlexBox) <TAnimation>`
   }
 `
 
-export type TModal = {
-    children: React.ReactNode
+type TModal = {
+  children: React.ReactNode
   isOpen: boolean
-    title?: string
-    toggleModal: () => void
-
+  title?: string
+  toggleModal: () => void
 }
 
-const Modal: FC<TModal> = ({ children, isOpen, title, toggleModal }) => {
-  const [$shouldAnimate, setShouldAnimate] = useState(true)
-  const [isModalOpen, setIsModalOpen] = useState(isOpen)
+export const Modal = ({ children, isOpen, toggleModal, title }: TModal) => {
+  const [shouldAnimate, setShouldAnimate] = useState(true)
 
-    const handleKeyDown = (event: { key: string }) => {
-        if (event.key === 'Escape') {
-            setShouldAnimate(false)
-          setIsModalOpen(false)
-          setTimeout(() => {
-            toggleModal()
-            setShouldAnimate(false)
-          }, 490)
-        }
-    }
-
-    const handleClick = () => {
-      setIsModalOpen(false)
+  const handleKeyDown = (event: { key: string }) => {
+    if (event.key === 'Escape') {
       setShouldAnimate(false)
       setTimeout(() => {
         toggleModal()
-        setShouldAnimate(false)
+        setShouldAnimate(true)
       }, 490)
+    }
   }
 
-  const handleButtonClick = () => {
-    setShouldAnimate(true)
-    setIsModalOpen(true)
-
+  const handleClick = () => {
+    setShouldAnimate(false)
+    setTimeout(() => {
+      toggleModal()
+      setShouldAnimate(true)
+    }, 490)
   }
-    useEffect(() => {
-        document.addEventListener('keydown', handleKeyDown)
 
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
 
-        return () => {
-          document.removeEventListener('keydown', handleKeyDown)
-        }
-    })
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  })
 
-  return (isModalOpen || isOpen) ? (
-        <ModalContainer>
-            <ModalWrapper
-                onClick={handleClick}
-                data-testid="modal-wrapper"
-          shouldAnimate={$shouldAnimate}
-            />
-        <ModalContent align="stretch" shouldAnimate={$shouldAnimate}>
-                <FlexBox align="end">
-                    <StyledIcon
-                        name="close"
-                        onClick={handleClick}
-                        role="img"
-                        aria-label="Close icon"
-              $wght={700}
-                    />
+  return isOpen ? (
+    <ModalContainer>
+      <ModalWrapper
+        onClick={handleClick}
+        data-testid="modal-wrapper"
+        shouldAnimate={shouldAnimate}
+      />
+      <ModalContent align="stretch" shouldAnimate={shouldAnimate}>
+        <FlexBox align="end">
+          <StyledIcon
+            name="close"
+            onClick={handleClick}
+            role="img"
+            aria-label="Close icon"
+            $wght={700}
+          />
         </FlexBox>
-                    <Title
-                        as="h1"
-                        fontWeight="bold"
-                        color={colors.black.black3}
-                        style={{ textAlign: 'center' }}
-                    >
-                        {title}
-        </Title>
-                {children}
-            </ModalContent>
-        </ModalContainer>
-
-  ) : <button onClick={handleButtonClick} type='button' >{children}</button>
+        {title && (
+          <Title
+            as="h1"
+            fontWeight="bold"
+            color={colors.black.black3}
+            style={{ textAlign: 'center' }}
+          >
+            {title}
+          </Title>
+        )}
+        {children}
+      </ModalContent>
+    </ModalContainer>
+  ) : null
 }
-
-export { Modal }
