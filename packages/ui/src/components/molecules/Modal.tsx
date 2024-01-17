@@ -2,7 +2,7 @@ import { useEffect, useState, FC } from 'react'
 
 import styled, { css } from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../../styles'
-import { Icon, Button,Title } from '../atoms'
+import { Icon, Title } from '../atoms'
 
 const fadeIn = css`
   animation: fadeIn 0.5s forwards;
