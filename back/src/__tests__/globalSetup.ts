@@ -72,13 +72,26 @@ export async function setup() {
     },
   })
 
-  const { password, email, dni, ...admin } = testUserData.admin
-  const { password: p0, email: e0, dni: d0, ...user } = testUserData.user
-  const { password: p1, email: e1, dni: d1, ...mentor } = testUserData.mentor
+  const { password, email, dni, role, ...admin } = testUserData.admin
+  const {
+    password: p0,
+    email: e0,
+    dni: d0,
+    role: r0,
+    ...user
+  } = testUserData.user
+  const {
+    password: p1,
+    email: e1,
+    dni: d1,
+    role: r1,
+    ...mentor
+  } = testUserData.mentor
   const {
     password: p2,
     email: e2,
     dni: d2,
+    role: r2,
     ...inactiveUser
   } = testUserData.inactiveUser
   await prisma.user.createMany({
