@@ -1,5 +1,5 @@
 info:
-  version: 1.5.1
+  version: 1.6.0
   title: IT Academy SSO Service
   description: This is an SSO service that is used accross all ITA services.
 openapi: 3.0.0
@@ -343,9 +343,16 @@ paths:
                     minLength: 1
                     format: email
                     example: user@example.cat
+                  role:
+                    type: string
+                    enum:
+                      - ADMIN
+                      - MENTOR
+                      - REGISTERED
                 required:
                   - dni
                   - email
+                  - role
         "400":
           description: Zod validation error
           content:

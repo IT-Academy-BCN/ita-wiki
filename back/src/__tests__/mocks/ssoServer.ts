@@ -24,7 +24,9 @@ type LoginResponse =
   | { message: string }
   | { authToken: string; refreshToken: string }
 type ValidationResponse = { message: string } | { id: string }
-type GetUserResponse = { message: string } | { dni: string; email: string }
+type GetUserResponse =
+  | { message: string }
+  | { dni: string; email: string; role: string }
 type RegisterResponse = { message: ZodIssue[] | string } | { id: string }
 
 const handlers = [
@@ -162,12 +164,13 @@ const handlers = [
         { status: 401 }
       )
     }
-    const { dni, email } = testUserData[userType]
+    const { dni, email, role } = testUserData[userType]
 
     return HttpResponse.json(
       {
         dni,
         email,
+        role,
       } as GetUserResponse,
       { status: 200 }
     )

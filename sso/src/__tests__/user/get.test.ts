@@ -23,8 +23,9 @@ describe('Testing get user endpoint', () => {
     expect(response.status).toBe(200)
     expect(response.body.dni).toBeTypeOf('string')
     expect(
-      userSchema.pick({ dni: true, email: true }).safeParse(response.body)
-        .success
+      userSchema
+        .pick({ dni: true, email: true, role: true })
+        .safeParse(response.body).success
     ).toBeTruthy()
   })
   it('should fail with Zod validation error for no token', async () => {

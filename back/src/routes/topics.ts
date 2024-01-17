@@ -1,10 +1,10 @@
 import Router from '@koa/router'
 import { z } from 'zod'
-import { USER_ROLE } from '@prisma/client'
 import { createTopic, getTopics, patchTopic } from '../controllers'
 import { pathRoot } from './routes'
 import { authenticate, authorize, validate } from '../middleware'
 import { topicCreateSchema, topicPatchSchema } from '../schemas'
+import { UserRole } from '../schemas/users/userSchema'
 
 const topicsRouter = new Router()
 
@@ -28,7 +28,7 @@ topicsRouter.get(
 topicsRouter.post(
   '/',
   authenticate,
-  authorize(USER_ROLE.MENTOR),
+  authorize(UserRole.MENTOR),
   validate(z.object({ body: topicCreateSchema })),
   createTopic
 )
@@ -36,7 +36,7 @@ topicsRouter.post(
 topicsRouter.patch(
   '/',
   authenticate,
-  authorize(USER_ROLE.MENTOR),
+  authorize(UserRole.MENTOR),
   validate(z.object({ body: topicPatchSchema })),
   patchTopic
 )
