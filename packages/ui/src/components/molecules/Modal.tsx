@@ -172,7 +172,7 @@ const Modal: FC<TModal> = ({ children, isOpen, title, toggleModal }) => {
             </ModalContent>
         </ModalContainer>
 
-  ) : <Button onClick={handleButtonClick} secondary={false} outline={false} >{children}</Button>
+  ) : <Button onClick={handleButtonClick} >{children}</Button>
 }
 
 export { Modal }
