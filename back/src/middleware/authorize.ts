@@ -1,13 +1,17 @@
 import Koa from 'koa'
-import { User, USER_ROLE } from '@prisma/client'
-import { checkRoleAccess } from '../helpers'
+import { checkRoleAccess, ssoHandler } from '../helpers'
+import { UserRole } from '../schemas/users/userSchema'
+import { UnauthorizedError } from '../helpers/errors'
 
 export const authorize =
-  (role: USER_ROLE) => async (ctx: Koa.Context, next: Koa.Next) => {
-    const user = ctx.user as User
-
+  (role: UserRole) => async (ctx: Koa.Context, next: Koa.Next) => {
+    const authToken = ctx.cookies.get('authToken')
+    if (!authToken) {
+      throw new UnauthorizedError()
+    }
+    const data = await ssoHandler.getUser({ authToken })
     if (role) {
-      checkRoleAccess(role, user.role)
+      checkRoleAccess(role, data.role)
     }
     await next()
   }

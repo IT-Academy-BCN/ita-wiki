@@ -1,16 +1,13 @@
-import { USER_ROLE } from '@prisma/client'
 import { ForbiddenError } from './errors'
+import { UserRole } from '../schemas/users/userSchema'
 
 const rolePoints = {
-  [USER_ROLE.ADMIN]: 100,
-  [USER_ROLE.MENTOR]: 50,
-  [USER_ROLE.REGISTERED]: 0,
+  [UserRole.ADMIN]: 100,
+  [UserRole.MENTOR]: 50,
+  [UserRole.REGISTERED]: 0,
 }
 
-export const checkRoleAccess = (
-  requiredRole: USER_ROLE,
-  userRole: USER_ROLE
-) => {
+export const checkRoleAccess = (requiredRole: UserRole, userRole: UserRole) => {
   const requiredRolePoints = rolePoints[requiredRole]
   const userRolePoints = rolePoints[userRole]
 

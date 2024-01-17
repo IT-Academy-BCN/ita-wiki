@@ -11,7 +11,6 @@ model User {
   id               String           @id @default(cuid())
   name             String
   status           USER_STATUS      @default(INACTIVE)
-  role             USER_ROLE        @default(REGISTERED)
   resources        Resource[]
   media            Media[]
   avatarId         String?          @unique @map("avatar_id")
@@ -27,12 +26,6 @@ model User {
 enum USER_STATUS {
   ACTIVE
   INACTIVE
-}
-
-enum USER_ROLE {
-  ADMIN
-  REGISTERED
-  MENTOR
 }
 
 model Resource {
