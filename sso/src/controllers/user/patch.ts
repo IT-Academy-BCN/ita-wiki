@@ -1,11 +1,16 @@
 import { Context, Middleware } from 'koa'
-
 import { client } from '../../models/db'
 import { hashPassword } from '../../utils/passwordHash'
-import { UserPatch, optionalUserPatchSchema } from '../../schemas'
+import {
+  UserPatch,
+  optionalUserPatchSchema,
+  userPatchSchema,
+} from '../../schemas'
 
 export const patchUser: Middleware = async (ctx: Context) => {
-  const { id, authToken, ...data }: UserPatch = ctx.request.body
+  const { id, authToken, ...data }: UserPatch = userPatchSchema.parse(
+    ctx.request.body
+  )
   if (data.password) {
     data.password = await hashPassword(data.password)
   }
