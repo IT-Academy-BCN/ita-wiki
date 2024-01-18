@@ -7,6 +7,10 @@ const ssoGetUserRequestSchema = ssoLoginResponseSchema.pick({
 })
 export type TSsoGetUserRequest = z.infer<typeof ssoGetUserRequestSchema>
 
-const ssoGetUserResponseSchema = userSchema.pick({ dni: true, email: true })
+const ssoGetUserResponseSchema = userSchema.pick({
+  dni: true,
+  email: true,
+  role: true,
+})
 
 export type TSsoGetUserResponse = z.infer<typeof ssoGetUserResponseSchema>

@@ -1,6 +1,11 @@
 import { z } from '../../openapi/zod'
 import { dniSchema } from '../dniSchema'
 
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  MENTOR = 'MENTOR',
+  REGISTERED = 'REGISTERED',
+}
 export const userId = z.string().cuid2()
 export const userSchema = z.object({
   id: userId,
@@ -11,7 +16,7 @@ export const userSchema = z.object({
   avatarId: z.string().optional().nullable(),
   itineraryId: z.string().nonempty().cuid(),
   status: z.enum(['ACTIVE', 'INACTIVE']),
-  role: z.enum(['ADMIN', 'REGISTERED', 'MENTOR']),
+  role: z.nativeEnum(UserRole),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 })
