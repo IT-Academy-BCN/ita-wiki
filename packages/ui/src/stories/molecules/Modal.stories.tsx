@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { FC, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { Button } from '../../components/atoms/Button'
 import { Modal } from '../../components/molecules/Modal'
 
