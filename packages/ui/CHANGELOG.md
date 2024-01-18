@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.0] - 2024-01-16
+
+### Added
+
+- Migrate Radio component to UI
+
 ## [0.8.0] - 2024-01-16
 
 ### Added
