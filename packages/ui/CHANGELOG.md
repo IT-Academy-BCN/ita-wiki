@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.2] - 2024-01-16
+
+### Added
+
+- Fix Button UI
+
 ## [0.9.0] - 2024-01-16
 
 ### Added
