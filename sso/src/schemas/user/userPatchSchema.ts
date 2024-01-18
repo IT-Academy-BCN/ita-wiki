@@ -3,13 +3,13 @@ import { userSchema } from './userSchema'
 import { validateSchema } from '../token/validateSchema'
 
 const basePatchSchema = userSchema.pick({ id: true })
-const optionalUserSchema = userSchema
+export const optionalUserPatchSchema = userSchema
   .omit({ id: true, createdAt: true, updatedAt: true })
   .partial()
-const optionalKeys = optionalUserSchema.keyof().options
+const optionalKeys = optionalUserPatchSchema.keyof().options
 const mergedSchema = basePatchSchema
   .merge(validateSchema)
-  .merge(optionalUserSchema)
+  .merge(optionalUserPatchSchema)
   .strict()
 export const userPatchSchema = mergedSchema.refine(
   (data) => {
