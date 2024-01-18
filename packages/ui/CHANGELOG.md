@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.8.0] - 2024-01-16
+
+### Added
+
+- Migrate Modal, Title, Text to UI
+
 ## [0.7.1] - 2024-01-16
 
 ### Chore
