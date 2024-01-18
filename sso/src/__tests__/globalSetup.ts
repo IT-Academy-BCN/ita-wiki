@@ -1,4 +1,5 @@
 import { IncomingMessage, Server, ServerResponse } from 'http'
+import fs from 'fs/promises'
 import { app } from '../app'
 import { client } from '../models/db'
 import { generateId } from '../utils/cuidGenerator'
@@ -15,6 +16,7 @@ export const testUserData = {
     name: 'testingUser',
     dni: '11111111A',
     password: 'testingPswd1',
+    role: 'REGISTERED',
     user_meta: {},
   },
   admin: {
@@ -22,6 +24,7 @@ export const testUserData = {
     name: 'testingAdmin',
     dni: '22222222B',
     password: 'testingPswd2',
+    role: 'ADMIN',
     user_meta: {},
   },
   mentor: {
@@ -29,6 +32,7 @@ export const testUserData = {
     name: 'testingMentor',
     dni: '44444444B',
     password: 'testingPswd4',
+    role: 'MENTOR',
     user_meta: {},
   },
   inactiveUser: {
@@ -36,6 +40,7 @@ export const testUserData = {
     name: 'testingInactiveUser',
     dni: '33333333A',
     password: 'testingPswd3',
+    role: 'REGISTERED',
     user_meta: {},
   },
 }
@@ -51,34 +56,9 @@ export const itinerariesData = [
 export async function setup() {
   await client.query('DROP TABLE IF EXISTS "user" CASCADE')
   await client.query('DROP TABLE IF EXISTS "itinerary" CASCADE')
-  await client.query(`
-  CREATE OR REPLACE FUNCTION TRIGGER_SET_TIMESTAMP() RETURNS TRIGGER AS $$ BEGIN NEW.updated_at := NOW();
-  RETURN NEW;
-  END;
-  $$LANGUAGE plpgsql;
-  
-  CREATE TABLE IF NOT EXISTS "user" (
-      id TEXT PRIMARY KEY,
-      dni VARCHAR(25) UNIQUE NOT NULL,
-      email VARCHAR (255) UNIQUE NOT NULL,
-      password TEXT NOT NULL,
-      user_meta JSONB NOT NULL DEFAULT '{}',
-      created_at TIMESTAMPTZ DEFAULT NOW (),
-      updated_at TIMESTAMPTZ
-  );
-  
-  CREATE TRIGGER set_timestamp BEFORE
-  UPDATE ON "user" FOR EACH ROW EXECUTE FUNCTION trigger_set_timestamp();
-  
-  CREATE TABLE IF NOT EXISTS itinerary (
-    id TEXT PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL,
-    slug TEXT UNIQUE NOT NULL
-  );
 
-  ALTER TABLE "user"
-  ADD COLUMN itinerary_id TEXT NOT NULL REFERENCES itinerary(id);
-`)
+  const sqlContent = await fs.readFile('db/init.sql', 'utf8')
+  await client.query(sqlContent)
 
   // Cleanup database
   await client.query('DELETE FROM "user"')
@@ -116,14 +96,15 @@ export async function setup() {
     }
 
     const query = `
-      INSERT INTO "user" (id, dni, email, password, user_meta, itinerary_id)
-      VALUES ($1, $2, $3, $4, $5, $6)
+      INSERT INTO "user" (id, dni, email, password, role, user_meta, itinerary_id)
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
       ON CONFLICT (dni) DO NOTHING;`
     await client.query(query, [
       generateId(),
       user.dni,
       user.email,
       await hashPassword(user.password),
+      user.role,
       user.user_meta,
       itineraryId,
     ])

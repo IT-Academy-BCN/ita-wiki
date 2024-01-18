@@ -1,5 +1,5 @@
 info:
-  version: 0.6.1
+  version: 0.7.1
   title: IT Academy Wiki
   description: Our app implements a Wiki to be used as a knowledge base by the
     students of the Barcelona Activa's IT Academy
@@ -276,10 +276,10 @@ paths:
                     example: user@example.cat
                   role:
                     type: string
-                    enum: &a4
+                    enum:
                       - ADMIN
-                      - REGISTERED
                       - MENTOR
+                      - REGISTERED
                   status:
                     type: string
                     enum: &a3
@@ -1915,7 +1915,10 @@ paths:
                       enum: *a3
                     role:
                       type: string
-                      enum: *a4
+                      enum:
+                        - ADMIN
+                        - MENTOR
+                        - REGISTERED
                     createdAt:
                       type: string
                       format: date-time
@@ -2000,7 +2003,10 @@ paths:
                   enum: *a3
                 role:
                   type: string
-                  enum: *a4
+                  enum:
+                    - ADMIN
+                    - MENTOR
+                    - REGISTERED
                 createdAt:
                   type: string
                   format: date-time

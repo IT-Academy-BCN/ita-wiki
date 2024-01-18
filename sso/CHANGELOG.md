@@ -1,6 +1,19 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+
+## [1.6.0] - 2024-01-17
+
+### Changed
+
+- Modification of the user table to include the role field with the USER_ROLE type.
+- Added the role field with default values 'ADMIN', 'REGISTERED', and 'MENTOR' to reflect the different user roles in the system.
+- Enhanced the getUserController to retrieve the role attribute of users
+
+### Testing
+
+- Introduced tests to ensure DNI handling in registration and login processes accepts both uppercase and lowercase inputs.
+
 ## [1.5.1] - 2024-01-10
 
 ### Fixed
@@ -9,7 +22,8 @@ All notable changes to this project will be documented in this file.
 
 ### Testing
 
-- Introduced tests to ensure DNI handling in registration and login processes accepts both uppercase and lowercase inputs.
+- Updated test for GET user.
+- Updated the setup function to read SQL commands from `init.sql`
 
 ## [1.5.0] - 2023-12-20
 

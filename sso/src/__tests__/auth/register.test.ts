@@ -11,10 +11,11 @@ beforeAll(async () => {
   itineraryId = id.id
 })
 afterAll(async () => {
-  await client.query(
-    'DELETE FROM "user" WHERE dni IN ($1, $2) AND email = $3',
-    ['11111111Q', '11111111S', 'example@example.com']
-  )
+  await client.query('DELETE FROM "user" WHERE dni IN ($1, $2) OR email = $3', [
+    '11111111Q',
+    '11111111S',
+    'example@example.com',
+  ])
 })
 
 describe('Testing registration endpoint', () => {
