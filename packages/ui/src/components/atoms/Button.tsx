@@ -2,7 +2,11 @@ import React, { ButtonHTMLAttributes, FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, font } from '../../styles'
 
- const StyledButton = styled.button<TButton>`
+const StyledButton = styled.button
+    .withConfig<TButton>({
+        shouldForwardProp: (prop) => !['size', 'secondary', 'outline']
+            .includes(prop)
+    }) <TButton>`
   display: flex;
   align-items: center;
   justify-content: center;

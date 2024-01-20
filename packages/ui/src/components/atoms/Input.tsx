@@ -2,7 +2,10 @@ import React, { InputHTMLAttributes } from "react";
 import styled from "styled-components";
 import { colors, dimensions, font } from "../../styles";
 
-const InputStyled = styled.input<TInput>`
+const InputStyled = styled.input.withConfig<TInput>({
+  shouldForwardProp: (prop) =>
+    !["error", "success", "warning"].includes(prop),
+})`
   width: 100%;
   padding: ${dimensions.spacing.base};
   border-radius: ${dimensions.borderRadius.base};

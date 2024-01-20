@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.5] - 2024-01-20
+
+### Fixed
+
+- Fix error when passing props in styled componente to render in DOM.
+```Styled Component
+  const MyComponent = styled(FlexBox).withConfig<Type>({
+  shouldForwardProp: (prop) => !['props'].includes(prop),
+})`
+
 ## [0.9.0] - 2024-01-16
 
 ### Added

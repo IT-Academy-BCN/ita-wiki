@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
 import { FlexBox, colors, device, dimensions } from '../../styles'
 import { Icon, Title } from '../atoms'
+import { TFlexBox } from '../../styles/FlexBox'
 
 const fadeIn = css`
   animation: fadeIn 0.5s forwards;
@@ -25,8 +26,11 @@ const fadeOut = css`
     }
   }
 `
+type TModalContentProps = TAnimation & TFlexBox;
 
-const ModalWrapper = styled(FlexBox)<TAnimation>`
+const ModalWrapper = styled(FlexBox).withConfig<TModalContentProps>({
+  shouldForwardProp: (prop) => !['shouldAnimate'].includes(prop),
+})`
   background-color: rgba(0, 0, 0, 0.68);
   backdrop-filter: blur(5px);
   width: 100%;
@@ -74,7 +78,9 @@ type TAnimation = {
   shouldAnimate: boolean
 }
 
-const ModalContent = styled(FlexBox)<TAnimation>`
+const ModalContent = styled(FlexBox).withConfig<TModalContentProps>({
+  shouldForwardProp: (prop) => !['shouldAnimate'].includes(prop),
+})`
   background-color: ${colors.white};
   width: 95%;
   height: auto;
