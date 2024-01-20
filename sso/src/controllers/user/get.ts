@@ -5,7 +5,7 @@ import { NotFoundError } from '../../utils/errors'
 export const getUserController: Middleware = async (ctx: Context) => {
   const { id } = ctx
   const userResult = await client.query(
-    'SELECT dni, email FROM "user" WHERE id = $1',
+    'SELECT dni, email, role FROM "user" WHERE id = $1',
     [id]
   )
 
@@ -14,5 +14,5 @@ export const getUserController: Middleware = async (ctx: Context) => {
     throw new NotFoundError('User Not found')
   }
   ctx.status = 200
-  ctx.body = { dni: user.dni, email: user.email }
+  ctx.body = { dni: user.dni, email: user.email, role: user.role }
 }

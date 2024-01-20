@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.0] - 2024-01-20
+
+### Added
+
+- Migrate Tabs to UI
+- Added default active tab option
+
+## [0.9.3] - 2024-01-18
+
+### Added
+
+- Added default values to InputGroup stories UI
+
+## [0.9.0] - 2024-01-16
+
+### Added
+
+- Migrate Radio component to UI
+
+## [0.8.0] - 2024-01-16
+
+### Added
+
+- Migrate Modal, Title, Text to UI
+
 ## [0.7.1] - 2024-01-16
 
 ### Chore

@@ -1,20 +1,20 @@
 import Router from '@koa/router'
-import { USER_ROLE } from '@prisma/client'
 import { z } from 'zod'
 import { getUsers, patchUser } from '../controllers'
 import { pathRoot } from './routes'
 import { authenticate, authorize, validate } from '../middleware'
 import { userPatchSchema } from '../schemas'
+import { UserRole } from '../schemas/users/userSchema'
 
 const usersRouter = new Router()
 usersRouter.prefix(pathRoot.v1.users)
 
-usersRouter.get('/', authenticate, authorize(USER_ROLE.ADMIN), getUsers)
+usersRouter.get('/', authenticate, authorize(UserRole.ADMIN), getUsers)
 
 usersRouter.patch(
   '/',
   authenticate,
-  authorize(USER_ROLE.ADMIN),
+  authorize(UserRole.ADMIN),
   validate(z.object({ body: userPatchSchema })),
   patchUser
 )

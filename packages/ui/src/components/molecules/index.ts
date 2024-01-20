@@ -1,4 +1,5 @@
-import { BackButton } from "./BackButton";
-import  InputGroup  from "./InputGroup";
+import { BackButton } from './BackButton'
+import InputGroup from './InputGroup'
 
-export { BackButton , InputGroup}
+export { Modal } from './Modal'
+export { BackButton, InputGroup }

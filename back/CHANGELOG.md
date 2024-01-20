@@ -1,6 +1,27 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+
+## [0.7.1] - 2024-01-17
+
+### Fixed
+
+- Prisma migration renamed
+
+## [0.7.0] - 2024-01-17
+
+### Changed
+
+- User-role associations now handled by SSO.
+
+### Removed
+
+- role from "users" table
+
+### Testing
+
+-  Updated ssoServer mock, get user handler now sends user role.
+
 ## [0.6.1] - 2024-01-11
 
 ### Fixed

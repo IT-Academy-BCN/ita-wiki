@@ -14,7 +14,7 @@ describe('TabItem component', () => {
       <TabItem
         title="Test"
         index={0}
-        isActive={false}
+        $isactive={false}
         setActiveTab={onClickItem}
       />
     )
@@ -33,7 +33,7 @@ describe('TabItem component', () => {
 
   it('renders correctly as active tab', async () => {
     render(
-      <TabItem title="Test" index={0} isActive setActiveTab={onClickItem} />
+      <TabItem title="Test" index={0} $isactive setActiveTab={onClickItem} />
     )
 
     const tabTitle = screen.getByText(/test/i)

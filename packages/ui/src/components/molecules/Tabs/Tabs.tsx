@@ -24,19 +24,18 @@ const TabMenuNav = styled.ul`
   width: 100%;
 `
 
-type TTabsData = {
-  id?: string
+export type TTabsData = {
   title: string
   tabComponent: ReactElement
-  requiredRole?: string[]
 }
 
 type TTabsProp = {
   tabsData: TTabsData[]
+  defaultActiveTab?: number
 }
 
-const Tabs = ({ tabsData }: TTabsProp) => {
-  const [activeTab, setActiveTab] = useState(0)
+const Tabs = ({ tabsData, defaultActiveTab }: TTabsProp) => {
+  const [activeTab, setActiveTab] = useState(defaultActiveTab ?? 0)
 
   return (
     <StyledFlexBox gap="1rem" as="nav">
@@ -46,7 +45,7 @@ const Tabs = ({ tabsData }: TTabsProp) => {
             key={item.title}
             title={item.title}
             index={index}
-            isActive={activeTab === index}
+            $isactive={activeTab === index}
             setActiveTab={setActiveTab}
           />
         ))}
