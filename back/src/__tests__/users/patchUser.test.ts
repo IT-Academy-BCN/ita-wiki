@@ -27,7 +27,7 @@ afterEach(async () => {
   })
 })
 
-describe.skip('Testing user patch endpoint', () => {
+describe('Testing user patch endpoint', () => {
   it('Should return error if no token is provided', async () => {
     const response = await supertest(server).patch(`${pathRoot.v1.users}`)
     expect(response.status).toBe(401)
@@ -38,12 +38,25 @@ describe.skip('Testing user patch endpoint', () => {
       id: sampleUser!.id,
     })
   })
-
   it('Should NOT be able to access if user level is not ADMIN', async () => {
     const response = await supertest(server)
       .patch(`${pathRoot.v1.users}`)
       .set('Cookie', [`authToken=${authToken.mentor}`])
     expect(response.status).toBe(403)
+    expect(response.body.message).toBe(
+      "Access denied. You don't have permissions"
+    )
+  })
+  it('User patch should success if attempted with duplicate data', async () => {
+    const modifiedUser = {
+      id: sampleUser!.id,
+      name: 'UpdatedSampleUser',
+    }
+    const response = await supertest(server)
+      .patch(`${pathRoot.v1.users}`)
+      .set('Cookie', [`authToken=${authToken.admin}`])
+      .send(modifiedUser)
+    expect(response.status).toBe(204)
   })
   it('An ADMIN user should be able to access the endpoint without updating the user', async () => {
     const modifiedUser = {
@@ -72,18 +85,7 @@ describe.skip('Testing user patch endpoint', () => {
 
     expect(response.status).toBe(204)
   })
-  it.skip('User patch should fail if attempted with duplicate data', async () => {
-    const modifiedUser = {
-      id: sampleUser!.id,
-      name: 'UpdatedSampleUser',
-    }
-    const response = await supertest(server)
-      .patch(`${pathRoot.v1.users}`)
-      .set('Cookie', [`authToken=${authToken.admin}`])
-      .send(modifiedUser)
-    expect(response.status).toBe(409)
-  })
-  it.skip('User patch should fail if attempted with invalid data', async () => {
+  it('User patch should fail if attempted with invalid data', async () => {
     const modifiedUser = {
       id: sampleUser!.id,
       name: 'UpdatedSampleUser',

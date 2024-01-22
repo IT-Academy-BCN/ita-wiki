@@ -63,6 +63,7 @@ type Story = StoryObj<typeof ModalForDocs>
 export const Default: Story = {
   args: {
     children: 'Children in Modal',
+    isOpen: false,
   },
 }
 export const IsOpen: Story = {
