@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Tabs } from '../../../components/molecules/Tabs'
+import { Tabs } from '../../../components/molecules'
 import { Text } from '../../../components/atoms'
 
 const ContentA = () => <Text>The content in the Tab A</Text>
