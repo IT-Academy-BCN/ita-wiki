@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.0] - 2024-01-20
+
+### Added
+
+- Migrate Tabs to UI
+- Added default active tab option
+
 ## [0.9.5] - 2024-01-18
 
 ### Added

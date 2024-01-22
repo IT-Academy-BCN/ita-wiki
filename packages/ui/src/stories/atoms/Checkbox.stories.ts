@@ -17,10 +17,10 @@ const meta = {
     id: { control: 'text' },
     name: { control: 'text' },
     label: { control: 'text' },
-    hiddenLabel: { control: 'boolean', defaultValue: false },
-    defaultChecked: { control: 'boolean', defaultValue: false },
-    required: { control: 'boolean', defaultValue: false },
-    disabled: { control: 'boolean', defaultValue: false },
+    hiddenLabel: { control: 'boolean' },
+    defaultChecked: { control: 'boolean' },
+    required: { control: 'boolean' },
+    disabled: { control: 'boolean' },
   },
 } satisfies Meta<typeof Checkbox>
 
