@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.4] - 2024-01-18
+
+### Added
+
+- Fix Modal 
+
 ## [0.9.3] - 2024-01-18
 
 ### Added
