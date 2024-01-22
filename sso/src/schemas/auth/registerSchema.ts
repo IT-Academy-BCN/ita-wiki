@@ -1,5 +1,5 @@
 import z from 'zod'
-import { userSchema } from './userSchema'
+import { userSchema } from '../user/userSchema'
 import { passwordRegex } from '../passwordRegex'
 
 export const registerSchema = userSchema
