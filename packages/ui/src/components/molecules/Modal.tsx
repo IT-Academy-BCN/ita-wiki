@@ -111,7 +111,6 @@ export const Modal = ({ children, isOpen, toggleModal, title }: TModal) => {
 
   const handleKeyDown = (event: { key: string }) => {
     if (event.key === 'Escape') {
-      setShouldAnimate(false)
       setTimeout(() => {
         toggleModal()
         setShouldAnimate(true)
@@ -120,7 +119,6 @@ export const Modal = ({ children, isOpen, toggleModal, title }: TModal) => {
   }
 
   const handleClick = () => {
-    setShouldAnimate(false)
     setTimeout(() => {
       toggleModal()
       setShouldAnimate(true)

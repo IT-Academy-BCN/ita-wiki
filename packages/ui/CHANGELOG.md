@@ -9,6 +9,18 @@ All notable changes to this project will be documented in this file.
 - Migrate Tabs to UI
 - Added default active tab option
 
+## [0.9.5] - 2024-01-18
+
+### Added
+
+- Fix Button UI
+
+## [0.9.4] - 2024-01-18
+
+### Added
+
+- Fix Modal 
+
 ## [0.9.3] - 2024-01-18
 
 ### Added
