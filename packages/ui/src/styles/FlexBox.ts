@@ -13,15 +13,6 @@ export type TFlexBox = {
   gap?: string
 }
 
-// const Comp = styled('div').withConfig({
-//   shouldForwardProp: (prop) =>
-//       !['hidden'].includes(prop),
-// }).attrs({ className: 'foo' })`
-//   color: red;
-//   &.foo {
-//     text-decoration: underline;
-//   }
-// `;
 export const FlexBox = styled.div.withConfig<TFlexBox>(
 { shouldForwardProp: (prop) => !['direction', 'justify', 'align', 'gap']
 .includes(prop) })<TFlexBox>`
@@ -30,11 +21,4 @@ export const FlexBox = styled.div.withConfig<TFlexBox>(
   justify-content: ${({ justify }) => justify || 'center'};
   align-items: ${({ align }) => align || 'center'};
   gap: ${({ gap }) => gap || '0'};
-
-// export const FlexBox = styled.div<TFlexBox>`
-//   display: flex;
-//   flex-direction: ${({ direction }) => direction || 'column'};
-//   justify-content: ${({ justify }) => justify || 'center'};
-//   align-items: ${({ align }) => align || 'center'};
-//   gap: ${({ gap }) => gap || '0'};
-// `
+`
