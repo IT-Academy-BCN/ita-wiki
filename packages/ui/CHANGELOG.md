@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.2] - 2024-01-22
+
+### Fixed
+
+- Export Checkbox and Tabs from UI
+
 ## [0.10.1] - 2024-01-20
 
 ### Fixed

@@ -1,6 +1,6 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { expect, it, describe } from 'vitest'
-import Checkbox from '../../components/atoms/Checkbox'
+import { Checkbox } from '../../components/atoms'
 import { colors } from '../../styles'
 
 describe('CheckBox', () => {
