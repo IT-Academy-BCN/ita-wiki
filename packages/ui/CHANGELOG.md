@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
-- Fix error when passing props in styled componente to render in DOM.
+- Fix error when passing props in styled component FlexBox, ModalWrapper and ModalContent, .
 
 ## [0.10.0] - 2024-01-20
 
