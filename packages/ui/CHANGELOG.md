@@ -2,11 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.10.1] - 2024-01-22
+## [0.10.2] - 2024-01-22
 
 ### Fixed
 
 - Export Checkbox and Tabs from UI
+
+## [0.10.1] - 2024-01-20
+
+### Fixed
+
+- Fix error props FlexBox.
+- Fix error props ModalWrapper.
+- Fix error props ModalContent.
 
 ## [0.10.0] - 2024-01-20
 
