@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.0] - 2024-01-18
+
+### Added
+
+- checkRole function
+- authorization middleware
+- Patch user information endpoint
+
+### Changed
+
+- Use of `ctx.state.user` instead of `ctx.id`
+- authenticate middleware pass role information
+- 
+### Documentation
+
+- Enhanced OpenAPI documentation with details on the new patch user endpoint
+
+### Testing
+
+- Added tests for patch user information endpoint
+
 ## [1.6.0] - 2024-01-17
 
 ### Changed

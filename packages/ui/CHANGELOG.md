@@ -2,22 +2,36 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.9.5] - 2024-01-20
+## [0.10.1] - 2024-01-20
 
 ### Fixed
 
 - Fix error when passing props in styled componente to render in DOM.
-```Styled Component
-  const MyComponent = styled(FlexBox).withConfig<Type>({
-  shouldForwardProp: (prop) => !['props'].includes(prop),
-})`
+
+## [0.10.0] - 2024-01-20
+
+### Added
+
+- Migrate Tabs to UI
+- Added default active tab option
+
+## [0.9.5] - 2024-01-18
+
+### Added
+
+- Fix Button UI
+
+## [0.9.4] - 2024-01-18
+
+### Added
+
+- Fix Modal
 
 ## [0.9.3] - 2024-01-18
 
 ### Added
 
 - Added default values to InputGroup stories UI
-
 
 ## [0.9.0] - 2024-01-16
 

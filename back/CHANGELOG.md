@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.2] - 2024-01-18
+
+### Testing
+
+- Fixed user patch tests
+
 ## [0.7.1] - 2024-01-17
 
 ### Fixed
