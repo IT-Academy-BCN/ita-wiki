@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.1] - 2024-01-20
+
+### Fixed
+
+- Fix error props FlexBox.
+- Fix error props ModalWrapper.
+- Fix error props ModalContent.
+
 ## [0.10.0] - 2024-01-20
 
 ### Added
@@ -19,7 +27,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Fix Modal 
+- Fix Modal
 
 ## [0.9.3] - 2024-01-18
 
