@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.0] - 2024-01-23
+
+### Added
+
+- Migrate UserImage to UI
+- Migrate folder assets/Icons to UI
+
 ## [0.10.2] - 2024-01-22
 
 ### Fixed
