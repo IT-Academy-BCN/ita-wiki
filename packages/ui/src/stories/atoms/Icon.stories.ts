@@ -11,7 +11,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     onClick: {
-      action: 'previous Page icon',
+      action: 'clicked',
     },
     color: {
       control: 'color',

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.0] - 2024-01-23
+
+### Added
+
+- Migrate Counter to UI
+
 ## [0.10.1] - 2024-01-20
 
 ### Fixed
