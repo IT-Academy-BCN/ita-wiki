@@ -20,7 +20,9 @@ const meta = {
 export default meta
 type SpinnerStory = StoryObj<typeof meta>
 
-export const Default: SpinnerStory = {
+export const Default: SpinnerStory = {}
+
+export const ExtraSmall: SpinnerStory = {
   args: {
     size: 'xsmall',
   },
