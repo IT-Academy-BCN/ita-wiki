@@ -1,7 +1,5 @@
 import 'dotenv/config'
 import Koa from 'koa'
-// import ejs from 'koa-ejs'
-// import path from 'path'
 import cors from '@koa/cors'
 import helmet from 'koa-helmet'
 import { HttpMethodEnum, koaBody } from 'koa-body'
@@ -30,21 +28,6 @@ app.use(
   })
 )
 app.use(errorMiddleware)
-
-// Template engine setup
-// ejs(app, {
-//   root: path.resolve(__dirname, './views'),
-//   layout: false,
-//   viewExt: 'ejs',
-//   cache: false,
-//   debug: false,
-// })
-
-// app.use(async (ctx) => {
-//   await ctx.render('index', {
-//     title: 'Molt bona nit',
-//   })
-// })
 
 // Routes
 app.use(Routes.authRoutes.routes())
