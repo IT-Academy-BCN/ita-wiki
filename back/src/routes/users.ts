@@ -13,9 +13,9 @@ usersRouter.get('/', authenticate, authorize(UserRole.ADMIN), getUsers)
 
 usersRouter.patch(
   '/',
+  validate(z.object({ body: userPatchSchema })),
   authenticate,
   authorize(UserRole.ADMIN),
-  validate(z.object({ body: userPatchSchema })),
   patchUser
 )
 

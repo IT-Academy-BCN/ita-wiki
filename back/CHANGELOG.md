@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.8.0] - 2024-01-23
+
+### Added
+
+- Patch user from SSO endpoint
+- patch user schema
+
+
+### Testing
+
+- Updated user patch tests
+- Added to ssoServer mock, patch user handler.
+
 ## [0.7.2] - 2024-01-18
 
 ### Testing
