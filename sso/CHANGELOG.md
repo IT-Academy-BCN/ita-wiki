@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.7.1] - 2024-01-18
+## [1.7.1] - 2024-01-24
 
 ### Chore
 
