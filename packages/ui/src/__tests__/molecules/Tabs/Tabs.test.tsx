@@ -1,5 +1,5 @@
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
-import { Tabs } from '../../../components/molecules/Tabs'
+import { Tabs } from '../../../components/molecules'
 import { colors } from '../../../styles'
 
 const tabsTestData = [

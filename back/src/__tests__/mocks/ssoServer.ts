@@ -7,6 +7,7 @@ import {
   UserRegister,
   userRegSchema,
 } from '../../schemas/users/userRegisterSchema'
+import { TSsoPatchUserRequest } from '../../schemas/sso/ssoPatchUser'
 
 export const authToken: {
   admin: string
@@ -174,6 +175,31 @@ const handlers = [
       } as GetUserResponse,
       { status: 200 }
     )
+  }),
+  http.patch('http://localhost:8000/api/v1/user', async ({ request }) => {
+    const { authToken: token } = (await request.json()) as TSsoPatchUserRequest
+    const isValidToken = Object.values(authToken).includes(token)
+    if (!isValidToken) {
+      return HttpResponse.json(
+        {
+          message: 'Invalid Credentials',
+        } as GetUserResponse,
+        { status: 401 }
+      )
+    }
+    const userType = Object.keys(authToken).find(
+      (key) => authToken[key] === token
+    )
+    if (!userType) {
+      return HttpResponse.json(
+        {
+          message: 'Invalid Credentials',
+        } as GetUserResponse,
+        { status: 401 }
+      )
+    }
+
+    return new HttpResponse(null, { status: 204 })
   }),
   http.get('http://localhost:8000/api/v1/itinerary', async () => {
     const itineraries = [

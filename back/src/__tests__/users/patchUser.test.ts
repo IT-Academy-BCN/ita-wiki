@@ -29,7 +29,9 @@ afterEach(async () => {
 
 describe('Testing user patch endpoint', () => {
   it('Should return error if no token is provided', async () => {
-    const response = await supertest(server).patch(`${pathRoot.v1.users}`)
+    const response = await supertest(server)
+      .patch(`${pathRoot.v1.users}`)
+      .send({ id: sampleUser!.id })
     expect(response.status).toBe(401)
     expect(response.body.message).toBe('Missing token')
   })
@@ -42,6 +44,7 @@ describe('Testing user patch endpoint', () => {
     const response = await supertest(server)
       .patch(`${pathRoot.v1.users}`)
       .set('Cookie', [`authToken=${authToken.mentor}`])
+      .send({ id: sampleUser!.id })
     expect(response.status).toBe(403)
     expect(response.body.message).toBe(
       "Access denied. You don't have permissions"
@@ -75,7 +78,6 @@ describe('Testing user patch endpoint', () => {
       id: sampleUser.id,
       name: 'UpdatedSampleUser',
       status: USER_STATUS.INACTIVE,
-      updatedAt: new Date().toISOString(),
     }
     expect(userPatchSchema.safeParse(modifiedUser).success).toBeTruthy()
     const response = await supertest(server)
