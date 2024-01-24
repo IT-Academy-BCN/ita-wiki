@@ -4,6 +4,7 @@ import {
   ValidationError,
   InvalidCredentials,
   ServiceUnavailable,
+  ForbiddenError,
 } from '../errors'
 import { pathSso } from './pathSso'
 
@@ -29,6 +30,8 @@ export async function login(data: TSsoLoginRequest) {
       throw new ValidationError(fetchData.message as ZodIssue[])
     case 401:
       throw new InvalidCredentials()
+    case 403:
+      throw new ForbiddenError(fetchData.message)
     default:
       throw new ServiceUnavailable()
   }

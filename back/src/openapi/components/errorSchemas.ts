@@ -38,7 +38,7 @@ export const InvalidTokenError = registry.register(
 export const ForbiddenError = registry.register(
   'ForbiddenError',
   z.object({
-    message: z.string().openapi({ example: 'Forbidden' }),
+    message: z.string().openapi({ example: 'Only active users can login' }),
   })
 )
 

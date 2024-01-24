@@ -8,17 +8,21 @@ import {
   userRegSchema,
 } from '../../schemas/users/userRegisterSchema'
 import { TSsoPatchUserRequest } from '../../schemas/sso/ssoPatchUser'
+import { UserStatus } from '../../schemas/users/userSchema'
 
 export const authToken: {
   admin: string
   mentor: string
   user: string
+  inactiveUser: string
 } = {
   admin:
     'ebJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
   mentor:
     'ecJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
   user: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+  inactiveUser:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5d',
 }
 
 type LoginResponse =
@@ -27,7 +31,7 @@ type LoginResponse =
 type ValidationResponse = { message: string } | { id: string }
 type GetUserResponse =
   | { message: string }
-  | { dni: string; email: string; role: string }
+  | { dni: string; email: string; role: string; status: string }
 type RegisterResponse = { message: ZodIssue[] | string } | { id: string }
 
 const handlers = [
@@ -43,6 +47,12 @@ const handlers = [
           message: 'Invalid Credentials',
         } as LoginResponse,
         { status: 401 }
+      )
+    }
+    if (user.status === UserStatus.INACTIVE) {
+      return HttpResponse.json(
+        { message: 'Only active users can login' },
+        { status: 403 }
       )
     }
     const prismaUser = await prisma.user.findFirst({
@@ -165,13 +175,14 @@ const handlers = [
         { status: 401 }
       )
     }
-    const { dni, email, role } = testUserData[userType]
+    const { dni, email, role, status } = testUserData[userType]
 
     return HttpResponse.json(
       {
         dni,
         email,
         role,
+        status,
       } as GetUserResponse,
       { status: 200 }
     )

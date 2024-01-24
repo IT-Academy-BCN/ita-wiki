@@ -2,13 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.0] - 2024-01-24
+
+### Changed
+
+- User-status associations now handled by SSO.
+
+### Removed
+
+- status from "users" table
+
+### Testing
+
+-  Modified `ssoServer` mock: login handler now issues a 403 error for inactive user logins.
+
+### Documentation
+
+- Added forbidden response for POST login user.
+
 ## [0.8.0] - 2024-01-23
 
 ### Added
 
 - Patch user from SSO endpoint
 - patch user schema
-
 
 ### Testing
 

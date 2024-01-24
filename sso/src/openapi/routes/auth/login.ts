@@ -2,6 +2,7 @@ import { pathRoot } from '../../../routes/routes'
 import { loginSchema } from '../../../schemas/auth/loginSchema'
 import { tokenSchema } from '../../../schemas/token/tokenSchema'
 import {
+  forbiddenResponse,
   invalidCredentialsResponse,
   zodValidationResponse,
 } from '../../components/responses'
@@ -33,6 +34,7 @@ registry.registerPath({
       },
     },
     400: zodValidationResponse,
+    403: forbiddenResponse,
     401: invalidCredentialsResponse,
   },
 })

@@ -3,6 +3,9 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'user_role') THEN
         CREATE TYPE USER_ROLE AS ENUM ('ADMIN', 'REGISTERED', 'MENTOR');
     END IF;
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'user_status') THEN
+        CREATE TYPE USER_STATUS AS ENUM ('ACTIVE', 'INACTIVE');
+    END IF;
 END
 $$;
 
@@ -17,6 +20,7 @@ CREATE TABLE IF NOT EXISTS "user" (
     email VARCHAR (255) UNIQUE NOT NULL,
     password TEXT NOT NULL,
     role USER_ROLE NOT NULL DEFAULT 'REGISTERED',
+    status USER_STATUS NOT NULL DEFAULT 'INACTIVE',
     user_meta JSONB NOT NULL DEFAULT '{}',
     created_at TIMESTAMPTZ DEFAULT NOW (),
     updated_at TIMESTAMPTZ

@@ -1,6 +1,6 @@
 import Koa from 'koa'
 import { prisma } from '../../prisma/client'
-import { ForbiddenError, InvalidCredentials } from '../../helpers/errors'
+import { InvalidCredentials } from '../../helpers/errors'
 import { ssoHandler } from '../../helpers'
 
 export const loginController = async (ctx: Koa.Context) => {
@@ -13,15 +13,11 @@ export const loginController = async (ctx: Koa.Context) => {
 
   const user = await prisma.user.findUnique({
     where: { id },
-    select: { id: true, status: true },
+    select: { id: true },
   })
 
   if (!user) {
     throw new InvalidCredentials()
-  }
-
-  if (user.status !== 'ACTIVE') {
-    throw new ForbiddenError('Only active users can login')
   }
 
   ctx.cookies.set('authToken', authToken, {

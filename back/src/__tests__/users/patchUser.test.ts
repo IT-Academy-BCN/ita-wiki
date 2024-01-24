@@ -1,12 +1,13 @@
 import supertest from 'supertest'
 import { expect, it, describe, afterEach, beforeEach } from 'vitest'
-import { USER_STATUS, User } from '@prisma/client'
+import { User } from '@prisma/client'
 import { server } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { userPatchSchema } from '../../schemas'
 import { authToken } from '../mocks/ssoServer'
+import { UserStatus } from '../../schemas/users/userSchema'
 
 let sampleUser: User
 
@@ -14,7 +15,6 @@ beforeEach(async () => {
   sampleUser = await prisma.user.create({
     data: {
       name: 'sampleUser1',
-      status: USER_STATUS.ACTIVE,
     },
   })
 })
@@ -77,7 +77,7 @@ describe('Testing user patch endpoint', () => {
     const modifiedUser = {
       id: sampleUser.id,
       name: 'UpdatedSampleUser',
-      status: USER_STATUS.INACTIVE,
+      status: UserStatus.INACTIVE,
     }
     expect(userPatchSchema.safeParse(modifiedUser).success).toBeTruthy()
     const response = await supertest(server)
