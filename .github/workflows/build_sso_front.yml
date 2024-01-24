@@ -8,7 +8,7 @@ on:
       - "sso_front/**"
 
 jobs:
-  build_and_deploy:
+  build_sso_front:
     runs-on: ubuntu-latest
 
     steps:
