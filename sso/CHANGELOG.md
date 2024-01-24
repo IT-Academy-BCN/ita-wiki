@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7.1] - 2024-01-18
+
+### Chore
+
+- remove unused deps (koa-ejs)
+
 ## [1.7.0] - 2024-01-18
 
 ### Added
@@ -14,7 +20,8 @@ All notable changes to this project will be documented in this file.
 
 - Use of `ctx.state.user` instead of `ctx.id`
 - authenticate middleware pass role information
-- 
+-
+
 ### Documentation
 
 - Enhanced OpenAPI documentation with details on the new patch user endpoint
@@ -39,7 +46,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
--  Corrected DNI letter handling to ensure it's always stored and verified in uppercase.
+- Corrected DNI letter handling to ensure it's always stored and verified in uppercase.
 
 ### Testing
 
@@ -47,7 +54,6 @@ All notable changes to this project will be documented in this file.
 - Updated the setup function to read SQL commands from `init.sql`
 
 ## [1.5.0] - 2023-12-20
-
 
 ### Added
 
@@ -58,11 +64,12 @@ All notable changes to this project will be documented in this file.
 
 - Modified validate token route to use authenticate middleware
 - Updated controller logic to be handled in the authenticate middleware
-- 
+-
+
 ### Testing
 
 - Added tests for get user information endpoint
-  
+
 ### Documentation
 
 - Enhanced OpenAPI documentation with details on the new get user information endpoint
@@ -88,7 +95,7 @@ All notable changes to this project will be documented in this file.
 
 - Updated Login and Validate endpoints
 - Added duplicateError response and register response for POST register user.
-  
+
 ## [1.3.0] - 2023-11-23
 
 ### Added
@@ -106,7 +113,7 @@ All notable changes to this project will be documented in this file.
 
 - Swagger endpoint for GET itinerary.
 - Updated error response for POST register user.
-  
+
 ## [1.2.0] - 2023-11-22
 
 ### Changed
@@ -121,7 +128,7 @@ All notable changes to this project will be documented in this file.
 
 - Swagger endpoint for POST validate token.
 - Updated description for POST login user.
-  
+
 ## [1.1.1] - 2023-11-20
 
 ### Added
