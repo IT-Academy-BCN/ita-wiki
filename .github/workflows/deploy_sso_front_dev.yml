@@ -1,4 +1,4 @@
-name: deploy_sso_dev
+name: deploy_sso_front_dev
 
 on:
   pull_request:
@@ -7,10 +7,10 @@ on:
     types:
       - closed
     paths:
-      - "config/dev/sso.yml"
+      - "config/dev/sso_front.yml"
 
 jobs:
-  deploy_sso_dev:
+  deploy_sso_front_dev:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
@@ -35,5 +35,5 @@ jobs:
           script: |
             echo "Deploying SSO Version: ${{ steps.versions.outputs.sso_version }}"
             echo "Deploying SSO Front Version: ${{ steps.versions.outputs.sso_front_version }}"
-            cd ${{ secrets.SSO_PATH }}/dev
-            bash deploy.sh sso ${{ steps.versions.outputs.sso_version }} ${{ steps.versions.outputs.sso_front_version }}
+            cd ${{ secrets.WIKI_PATH }}/dev
+            bash deploy.sh sso_front ${{ steps.versions.outputs.sso_version }} ${{ steps.versions.outputs.sso_front_version }}
