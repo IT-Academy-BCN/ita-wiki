@@ -4,6 +4,7 @@ import { z } from '../../zod'
 import { setCookieHeader } from '../../components/setCookieHeader'
 import { pathRoot } from '../../../routes/routes'
 import {
+  forbiddenResponse,
   userNotFoundResponse,
   zodValidationErrorResponse,
 } from '../../components/responses/authMiddleware'
@@ -29,6 +30,7 @@ registry.registerPath({
       headers: { 'Set-Cookie': setCookieHeader.ref },
     },
     400: zodValidationErrorResponse,
+    403: forbiddenResponse,
     404: userNotFoundResponse,
     422: {
       description: 'Invalid password',

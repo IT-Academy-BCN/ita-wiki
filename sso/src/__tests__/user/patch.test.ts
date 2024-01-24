@@ -6,12 +6,14 @@ import { pathRoot } from '../../routes/routes'
 import { client } from '../../models/db'
 import { userPatchSchema } from '../../schemas'
 import { checkPassword, hashPassword } from '../../utils/passwordHash'
+import { UserRole, UserStatus } from '../../schemas/user/userSchema'
 
 const id = 'va3dvcicw0ttxccoe328v6bo'
 const dni = '11111111Q'
 const email = 'example@example.com'
 const password = 'hashedPassword'
-const role = 'REGISTERED'
+const role = UserRole.REGISTERED
+const status = UserStatus.INACTIVE
 let itineraryId: string = ''
 const route = `${pathRoot.v1.user}`
 let authToken = ''
@@ -94,6 +96,24 @@ describe('Testing patch user endpoint', () => {
     expect(response.status).toBe(204)
     expect(parseResult.success).toBe(true)
   })
+  it('Should succeed with duplicated status', async () => {
+    const body = {
+      id,
+      authToken,
+      status,
+    }
+    const response = await supertest(server).patch(route).send(body)
+    const parseResult = z.object({ body: userPatchSchema }).safeParse({
+      body,
+    })
+    const userStatus = await client.query(
+      'SELECT status FROM "user" WHERE id = $1',
+      [id]
+    )
+    expect(userStatus.rows[0].status).toBe(status)
+    expect(response.status).toBe(204)
+    expect(parseResult.success).toBe(true)
+  })
   it('Should succeed with duplicated password', async () => {
     const body = {
       id,
@@ -113,10 +133,25 @@ describe('Testing patch user endpoint', () => {
     expect(parseResult.success).toBe(true)
   })
   it('An ADMIN user should succeed with valid update', async () => {
+    const updatedUserPassword = 'ABC123456'
+    const updatedUser = {
+      email: 'newexample@example.com',
+      dni: '73426589D',
+      role: UserRole.MENTOR,
+      status: UserStatus.ACTIVE,
+    }
     const response = await supertest(server)
       .patch(route)
-      .send({ id, authToken, email: 'newexample@example.com' })
+      .send({ id, authToken, password: updatedUserPassword, ...updatedUser })
 
+    const userQuery = await client.query(
+      'SELECT dni, email, password, role, status FROM "user" WHERE id = $1',
+      [id]
+    )
+    const user = userQuery.rows[0]
+    const { password: dbUserPassword, ...dbUser } = user
+    expect(checkPassword(updatedUserPassword, dbUserPassword)).toBeTruthy()
+    expect(dbUser).toEqual(updatedUser)
     expect(response.status).toBe(204)
   })
   it('Should return error if no id is provided', async () => {

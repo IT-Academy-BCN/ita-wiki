@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.0] - 2024-01-24
+
+### Changed
+
+- Modification of the user table to include the status field with the USER_STATUS type.
+- Added the role field with default values 'ACTIVE' and 'INACTIVE' to reflect the different user states in the system.
+- Enhanced `loginController` to throw a 403 error if the user's status is 'INACTIVE'.
+
+### Testing
+
+- Implemented test to verify it returns a 403 status code when the user's status is 'INACTIVE'.
+- Updated patch user test
+
+### Documentation
+
+- Added forbidden response for POST login user.
+
+
 ## [1.7.1] - 2024-01-24
 
 ### Chore
