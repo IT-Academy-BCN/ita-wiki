@@ -35,5 +35,5 @@ jobs:
           script: |
             echo "Deploying SSO Version: ${{ steps.versions.outputs.sso_version }}"
             echo "Deploying SSO Front Version: ${{ steps.versions.outputs.sso_front_version }}"
-            cd ${{ secrets.WIKI_PATH }}/dev
+            cd ${{ secrets.SSO_PATH }}/dev
             bash deploy.sh sso_front ${{ steps.versions.outputs.sso_version }} ${{ steps.versions.outputs.sso_front_version }}
