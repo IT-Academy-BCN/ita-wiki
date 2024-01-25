@@ -1,9 +1,9 @@
 import { FC, HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import { colors, device } from '../../styles'
-import icons from '../../assets/icons'
+import Icons from '../../assets/icons'
 
-const StyledUserImage = styled.img<TUserImage>`
+const StyledUserAvatar = styled.img<TUserAvatar>`
   width: 97px;
   height: 97px;
   border-radius: 50%;
@@ -17,13 +17,13 @@ const StyledUserImage = styled.img<TUserImage>`
     border: none;
   }
 `
-type TUserImage = HTMLAttributes<HTMLDivElement> & {
-    src: string
-    alt: string
+export type TUserAvatar = HTMLAttributes<HTMLDivElement> & {
+  src: string
+  alt: string
 }
 
-const UserImage: FC<TUserImage> = ({ src, alt }) => (
-    <StyledUserImage src={src === '' ? icons.user : src} alt={alt} />
+const UserAvatar: FC<TUserAvatar> = ({ src, alt }) => (
+  <StyledUserAvatar src={src === '' ? Icons.noAvatarImage : src} alt={alt} />
 )
 
-export default UserImage
+export default UserAvatar
