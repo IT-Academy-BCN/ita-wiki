@@ -41,6 +41,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug, setTopic }) => {
     <StyledRadio
       options={options}
       inputName="Topics Radio Filter"
+      direction="column"
       onChange={onTopicChange}
       defaultChecked="todos"
     />
