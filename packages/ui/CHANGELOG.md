@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.1] - 2024-01-25
+
+### Fix
+
+- Export molecules from UI
+
 ## [0.11.0] - 2024-01-24
 
 ### Added
