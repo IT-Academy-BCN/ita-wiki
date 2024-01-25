@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react'
-import UserAvatar from '../../components/atoms/UserAvatar'
+import Avatar from '../../components/atoms/Avatar'
 
-describe('UserImage', () => {
+describe('Avatar', () => {
   it('should render with given props', () => {
     render(
-      <UserAvatar
+      <Avatar
         src='/test.png'
         alt='users portrait'
       />
