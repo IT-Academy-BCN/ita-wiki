@@ -2,7 +2,7 @@ import { FC, HTMLAttributes } from 'react'
 import styled from 'styled-components'
 import { colors, device } from '../../styles'
 
-const StyledUserAvatar = styled.img<TUserAvatar>`
+const StyledAvatar = styled.img<TAvatar>`
   width: 97px;
   height: 97px;
   border-radius: 50%;
@@ -29,13 +29,13 @@ const defaultAvatar: string = (() => {
   const url = URL.createObjectURL(blob);
   return url;
 })();
-export type TUserAvatar = HTMLAttributes<HTMLDivElement> & {
+export type TAvatar = HTMLAttributes<HTMLDivElement> & {
   src: string
   alt: string
 }
 
-const UserAvatar: FC<TUserAvatar> = ({ src, alt }) => (
-  <StyledUserAvatar src={src === '' ? defaultAvatar : src} alt={alt} />
+const Avatar: FC<TAvatar> = ({ src, alt }) => (
+  <StyledAvatar src={src === '' ? defaultAvatar : src} alt={alt} />
 )
 
-export default UserAvatar
+export default Avatar

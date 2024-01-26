@@ -7,6 +7,7 @@ import HamburgerMenu from './HamburgerMenu'
 import ValidationMessage from './ValidationMessage'
 import Radio from './Radio'
 import Text from './Text'
+import Avatar from './Avatar'
 
 export { Title } from './Title'
 export {
@@ -19,4 +20,5 @@ export {
   ValidationMessage,
   Text,
   Radio,
+  Avatar,
 }

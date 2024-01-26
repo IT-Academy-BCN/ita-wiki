@@ -19,16 +19,16 @@ const defaultAvatar: string = (() => {
     return url;
 })();
 
-const svgAvatarString: string = (() => {
-    const AvatarString = `
+const svgAvatarToString: string = (() => {
+    const svgAvatarString = `
     <svg viewBox="-143.36 -143.36 1310.72 1310.72" xmlns="http://www.w3.org/2000/svg" fill="#6c2e9e" stroke="#6c2e9e" stroke-width="0.01024"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier">
     <path fill="#00000" d="M628.736 528.896A416 416 0 0 1 928 928H96a415.872 415.872 0 0 1 299.264-399.104L512 704l116.736-175.104zM720 304a208 208 0 1 1-416 0 208 208 0 0 1 416 0z"></path></g></svg>
     `;
-    const blob = new Blob([AvatarString], { type: 'image/svg+xml' });
+    const blob = new Blob([svgAvatarString], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
     return url;
 })();
-const UserAvatarForDocs: FC<TAvatarForDocs> = ({
+const AvatarForDocs: FC<TAvatarForDocs> = ({
     src,
     alt
 }) => (
@@ -36,8 +36,8 @@ const UserAvatarForDocs: FC<TAvatarForDocs> = ({
 )
 
 const meta = {
-    title: 'Atoms/UserAvatar',
-    component: UserAvatarForDocs,
+    title: 'Atoms/Avatar',
+    component: AvatarForDocs,
     parameters: {
         layout: 'centered',
     },
@@ -51,10 +51,10 @@ const meta = {
             options: ['Sin imagen de usuario', 'user name']
         },
     },
-} satisfies Meta<typeof UserAvatarForDocs>
+} satisfies Meta<typeof AvatarForDocs>
 
 export default meta
-type Story = StoryObj<typeof UserAvatarForDocs>
+type Story = StoryObj<typeof AvatarForDocs>
 
 export const Default: Story = {
     args: {
@@ -64,7 +64,7 @@ export const Default: Story = {
 }
 export const WithAvatar: Story = {
     args: {
-        src: `${svgAvatarString}`,
+        src: `${svgAvatarToString}`,
     },
 }
 export const AvatarError: Story = {
