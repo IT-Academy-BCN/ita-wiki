@@ -1,5 +1,5 @@
 info:
-  version: 1.7.0
+  version: 1.8.0
   title: IT Academy SSO Service
   description: This is an SSO service that is used accross all ITA services.
 openapi: 3.0.0
@@ -42,7 +42,7 @@ components:
       properties:
         message:
           type: string
-          example: Forbidden
+          example: Only active users can login
       required:
         - message
     MissingUserError:
@@ -143,6 +143,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidCredentialsError"
+        "403":
+          description: Forbidden error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenError"
   /api/v1/auth/register:
     post:
       tags:
@@ -412,6 +418,11 @@ paths:
                     - ADMIN
                     - MENTOR
                     - REGISTERED
+                status:
+                  type: string
+                  enum:
+                    - ACTIVE
+                    - INACTIVE
                 itineraryId:
                   type: string
               required:

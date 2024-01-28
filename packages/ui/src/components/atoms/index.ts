@@ -8,6 +8,8 @@ import ValidationMessage from './ValidationMessage'
 import Radio from './Radio'
 import Text from './Text'
 import Avatar from './Avatar'
+import { Spinner } from './Spinner'
+import Counter from './Counter'
 
 export { Title } from './Title'
 export {
@@ -21,4 +23,6 @@ export {
   Text,
   Radio,
   Avatar,
+  Spinner,
+  Counter,
 }

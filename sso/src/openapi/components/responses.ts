@@ -2,6 +2,7 @@ import { userSchema } from '../../schemas'
 import { z } from '../zod'
 import {
   EmailDniError,
+  ForbiddenError,
   InvalidCredentials,
   InvalidTokenError,
   MissingTokenError,
@@ -51,6 +52,15 @@ export const duplicateResponse = {
   content: {
     'application/json': {
       schema: EmailDniError,
+    },
+  },
+}
+
+export const forbiddenResponse = {
+  description: 'Forbidden error',
+  content: {
+    'application/json': {
+      schema: ForbiddenError,
     },
   },
 }

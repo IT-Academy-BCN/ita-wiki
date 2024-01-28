@@ -1,4 +1,5 @@
 import {
+  ForbiddenError,
   InvalidTokenError,
   MissingTokenError,
   NotFoundError,
@@ -21,6 +22,15 @@ export const invalidTokenResponse = {
   content: {
     'application/json': {
       schema: InvalidTokenError,
+    },
+  },
+}
+
+export const forbiddenResponse = {
+  description: 'Forbidden error',
+  content: {
+    'application/json': {
+      schema: ForbiddenError,
     },
   },
 }

@@ -60,3 +60,14 @@ describe('Testing authentication endpoint', () => {
     expect(response.body.message).toBe('Invalid Credentials')
   })
 })
+
+it('should fail if user not active', async () => {
+  const response = await supertest(server)
+    .post(`${pathRoot.v1.auth}/login`)
+    .send({
+      dni: testUserData.inactiveUser.dni,
+      password: testUserData.inactiveUser.password,
+    })
+  expect(response.status).toBe(403)
+  expect(response.body.message).toBe('Only active users can login')
+})

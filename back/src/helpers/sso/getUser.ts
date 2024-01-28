@@ -11,7 +11,7 @@ import {
 import { pathSso } from './pathSso'
 
 export async function getUser(data: TSsoGetUserRequest) {
-  const fetchSSO = await fetch(pathSso.getUser, {
+  const fetchSSO = await fetch(pathSso.user, {
     method: 'POST',
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     body: JSON.stringify(data),

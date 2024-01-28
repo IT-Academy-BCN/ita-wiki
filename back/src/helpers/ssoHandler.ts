@@ -13,7 +13,15 @@ import {
   TSsoGetUserResponse,
 } from '../schemas/sso/ssoGetUser'
 import { TSsoGetItinerariesResponse } from '../schemas/sso/ssoGetItineraries'
-import { login, getUser, register, validate, getItineraries } from './sso'
+import {
+  login,
+  getUser,
+  register,
+  validate,
+  getItineraries,
+  patchUser,
+} from './sso'
+import { TSsoPatchUserRequest } from '../schemas/sso/ssoPatchUser'
 
 interface SsoApiEndpoints {
   login(data: TSsoLoginRequest): Promise<TSsoLoginResponse>
@@ -23,6 +31,7 @@ interface SsoApiEndpoints {
     data: TSsoValidateRequest
   ): Promise<TSsoValidateResponse>
   getUser(data: TSsoGetUserRequest): Promise<TSsoGetUserResponse>
+  patchUser(data: TSsoPatchUserRequest): Promise<void>
   getItineraries(): Promise<TSsoGetItinerariesResponse>
 }
 
@@ -31,5 +40,6 @@ export const ssoHandler: SsoApiEndpoints = {
   register,
   validate,
   getUser,
+  patchUser,
   getItineraries,
 }
