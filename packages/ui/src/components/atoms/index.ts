@@ -9,6 +9,7 @@ import Radio from './Radio'
 import Text from './Text'
 import { Spinner } from './Spinner'
 import Counter from './Counter'
+import Link from './Link'
 
 export { Title } from './Title'
 export {
@@ -23,4 +24,5 @@ export {
   Radio,
   Spinner,
   Counter,
+  Link,
 }

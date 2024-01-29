@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.12.0] - 2024-01-29
+
+### Added
+
+- Migrate Link to UI
+
 ## [0.11.1] - 2024-01-25
 
 ### Fix
