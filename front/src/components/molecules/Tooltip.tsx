@@ -1,7 +1,9 @@
+import { Button } from '@itacademy/ui'
 import { FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions } from '../../styles'
-import { Button } from '../atoms'
+
+const ButtonStyled = styled(Button)``
 
 type TSize = 'small' | 'medium' | 'big'
 type TTooltip = {
@@ -34,7 +36,7 @@ const TooltipStyled = styled.div<TTooltip>`
   align-items: center;
   z-index: 2;
 
-  ${Button} {
+  ${ButtonStyled} {
     background-color: ${colors.secondary};
     border: none;
   }

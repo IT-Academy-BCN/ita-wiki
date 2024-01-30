@@ -6,6 +6,7 @@ interface IconStyledProps extends TIcon {
   $grad: number
   $opsz: number
 }
+
 const IconStyled = styled.span<IconStyledProps>`
   font-variation-settings: 'FILL' ${({ fill }) => fill},
     'wght' ${({ $wght }) => $wght}, 'GRAD' ${({ $grad }) => $grad},
@@ -28,7 +29,8 @@ type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
   color?: string
   cursor?: string
 }
-const Icon: React.FC<TIcon> = ({
+
+export const Icon: React.FC<TIcon> = ({
   className = '',
   fill = 1,
   $wght = 400,
@@ -51,5 +53,3 @@ const Icon: React.FC<TIcon> = ({
     {name}
   </IconStyled>
 )
-
-export default styled(Icon)``

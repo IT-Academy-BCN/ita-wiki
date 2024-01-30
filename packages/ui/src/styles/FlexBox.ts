@@ -13,9 +13,10 @@ export type TFlexBox = {
   gap?: string
 }
 
-export const FlexBox = styled.div.withConfig<TFlexBox>(
-{ shouldForwardProp: (prop) => !['direction', 'justify', 'align', 'gap']
-.includes(prop) })<TFlexBox>`
+export const FlexBox = styled('div').withConfig<TFlexBox>({
+  shouldForwardProp: (prop) =>
+    !['direction', 'justify', 'align', 'gap'].includes(prop),
+})<TFlexBox>`
   display: flex;
   flex-direction: ${({ direction }) => direction || 'column'};
   justify-content: ${({ justify }) => justify || 'center'};

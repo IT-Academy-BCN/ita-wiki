@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.12.1] - 2024-01-31
+
+### Fix
+
+- Fix bundle and tests
+
 ## [0.12.0] - 2024-01-28
 
 ### Added

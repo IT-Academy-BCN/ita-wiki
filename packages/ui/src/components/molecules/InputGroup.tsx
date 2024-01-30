@@ -5,6 +5,8 @@ import { Icon, Input, Label, ValidationMessage } from '../atoms'
 import { TInput } from '../atoms/Input'
 import { TValidationMessage } from '../atoms/ValidationMessage'
 
+const StyledIcon = styled(Icon)``
+
 const InputGroupStyled = styled.div`
   width: 100%;
 
@@ -12,7 +14,7 @@ const InputGroupStyled = styled.div`
     margin-top: ${dimensions.spacing.xxxs};
     margin-bottom: ${dimensions.spacing.none};
   }
-  ${Icon} {
+  ${StyledIcon} {
     position: absolute;
     margin-right: ${dimensions.spacing.base};
   }
@@ -46,7 +48,8 @@ type TInputGroup = {
   iconClick?: () => void
   hiddenLabel?: boolean
 } & TInput
-const InputGroup = forwardRef(
+
+export const InputGroup = forwardRef(
   (
     {
       id,
@@ -79,5 +82,3 @@ const InputGroup = forwardRef(
     </InputGroupStyled>
   )
 )
-
-export default styled(InputGroup)``

@@ -2,6 +2,7 @@ import { useParams } from 'react-router-dom'
 import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { keyframes } from 'styled-components'
+import { Button } from '@itacademy/ui'
 import {
   DesktopSideMenu,
   Login,
@@ -15,7 +16,7 @@ import {
   TopicsRadioWidget,
   VotesDateController,
 } from '../components/organisms'
-import { Button, Text, Title } from '../components/atoms'
+import { Text, Title } from '../components/atoms'
 import {
   AccessModalContent,
   Modal,
