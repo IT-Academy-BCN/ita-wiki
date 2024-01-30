@@ -10,7 +10,10 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    weight: { control: 'select', options: ['bold', 'regular'] },
+    weight: {
+      control: 'select',
+      options: ['bold', 'regular'],
+    },
     href: { control: 'text' },
     children: { control: 'text' },
   },
@@ -21,7 +24,6 @@ type LinkStory = StoryObj<typeof meta>
 
 export const DefaultLink: LinkStory = {
   args: {
-    weight: 'regular',
     href: '/',
     children: 'This is the default link',
   },

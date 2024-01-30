@@ -1,15 +1,13 @@
 import { FC, HTMLAttributes } from 'react'
 import styled from 'styled-components'
-import { colors, dimensions, font } from '../../styles'
+import { colors, font } from '../../styles'
 
 const StyledLink = styled.a.withConfig<TLink>({
   shouldForwardProp: (prop) => !['weight'].includes(prop),
 })`
-  /* margin: ${dimensions.spacing.xxs}; */
-  gap: ${dimensions.spacing.xxs};
   cursor: pointer;
   color: ${colors.black};
-  font-weight: ${({ weight }: { weight?: 'bold' | 'regular' | string }) =>
+  font-weight: ${({ weight }: { weight?: 'bold' | 'regular' }) =>
     weight === 'bold' ? font.bold : font.regular};
   font-family: ${font.fontFamily};
 `
@@ -18,7 +16,7 @@ type TLink = HTMLAttributes<HTMLAnchorElement> & {
   href: string
   children?: React.ReactNode
 }
-const Link: FC<TLink> = ({
+export const Link: FC<TLink> = ({
   weight = 'regular',
   href = '/',
   children,
@@ -28,5 +26,3 @@ const Link: FC<TLink> = ({
     {children}
   </StyledLink>
 )
-
-export default Link
