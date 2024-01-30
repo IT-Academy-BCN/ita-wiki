@@ -4,6 +4,7 @@ import typescript from '@rollup/plugin-typescript'
 import terser from '@rollup/plugin-terser'
 import external from 'rollup-plugin-peer-deps-external'
 import postcss from 'rollup-plugin-postcss'
+import image from '@rollup/plugin-image'
 
 const pkg = require('./package.json')
 
@@ -24,6 +25,7 @@ export default {
   ],
   plugins: [
     external(),
+    image(),
     resolve(),
     commonjs(),
     typescript({ tsconfig: './tsconfig.build.json' }),

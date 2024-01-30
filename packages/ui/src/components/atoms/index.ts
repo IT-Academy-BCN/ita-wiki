@@ -10,6 +10,7 @@ import Text from './Text'
 import { Spinner } from './Spinner'
 import Counter from './Counter'
 
+export { Avatar } from './Avatar'
 export { Title } from './Title'
 export {
   Input,
