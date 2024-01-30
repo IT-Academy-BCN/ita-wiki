@@ -7,10 +7,10 @@ import HamburgerMenu from './HamburgerMenu'
 import ValidationMessage from './ValidationMessage'
 import Radio from './Radio'
 import Text from './Text'
-import Avatar from './Avatar'
 import { Spinner } from './Spinner'
 import Counter from './Counter'
 
+export { Avatar } from './Avatar'
 export { Title } from './Title'
 export {
   Input,
@@ -22,7 +22,6 @@ export {
   ValidationMessage,
   Text,
   Radio,
-  Avatar,
   Spinner,
   Counter,
 }
