@@ -7,7 +7,6 @@ import CheckBox from './CheckBox'
 import Icon from './Icon'
 import Input from './Input'
 import Label from './Label'
-import Link from './Link'
 import Radio from './Radio'
 import Text from './Text'
 import Textarea from './Textarea'
@@ -23,7 +22,6 @@ export {
   Icon,
   Input,
   Label,
-  Link,
   Radio,
   Select,
   Spinner,
@@ -33,5 +31,5 @@ export {
   ValidationMessage,
   HamburgerMenu,
   UserImage,
-  Counter
+  Counter,
 }

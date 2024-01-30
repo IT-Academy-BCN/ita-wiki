@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.8.0] - 2024-01-30
+
+### Removed
+
+- Remove unused Link component
+
 ## [0.7.1] - 2023-11-28
 
 ### Fixed
