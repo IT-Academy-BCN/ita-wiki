@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.12.1] - 2024-01-30
+
+## [0.12.2] - 2024-01-31
 
 ### Removed
 
 - Removed Avatar Error from Avatar.stories
+
+## [0.12.1] - 2024-01-31
+
+### Fix
+
+- Fix bundle and tests
 
 ## [0.12.0] - 2024-01-28
 
