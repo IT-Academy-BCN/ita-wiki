@@ -1,9 +1,8 @@
-import { ReactElement, FC } from 'react'
+import { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Tabs } from '@itacademy/ui'
 import { TopicsManagerBoard } from './TopicsManagerBoard'
 import { UsersManager } from './UsersManager'
-//import { Tabs } from '../../../../packages/ui/src/components/molecules'
-import { Tabs } from '@itacademy/ui'
 import { useAuth } from '../../context/AuthProvider'
 
 type TTabsDataInfo = {
@@ -52,9 +51,5 @@ export const SettingsManager = () => {
       return modifiedTab
     })
 
-  return (
-    <>
-      <Tabs tabsData={tabsData} />
-    </>
-  )
+  return <Tabs tabsData={tabsData} />
 }
