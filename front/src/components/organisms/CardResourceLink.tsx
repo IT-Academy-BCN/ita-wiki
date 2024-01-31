@@ -4,7 +4,17 @@ import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
 import EditResource from './EditResource'
 import { TCardResource } from '../../types'
 
-const CardContainerStyled = styled(FlexBox)`
+const CardContainerStyled = styled(FlexBox).withConfig({
+  shouldForwardProp: (prop) =>
+    ![
+      'createdAt',
+      'createdBy',
+      'updatedAt',
+      'handleAccessModal',
+      'resourceType',
+      'isFavorite',
+    ].includes(prop),
+})`
   width: 100%;
   margin-top: ${dimensions.spacing.xxs};
 `

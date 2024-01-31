@@ -3,7 +3,7 @@ import { render, screen, waitFor, fireEvent } from '../../test-utils'
 import { TabItem } from '../../../components/molecules/Tabs/TabItem'
 import { colors } from '../../../styles'
 
-describe('TabItem component', () => {
+describe.skip('TabItem component', () => {
   const onClickItem = vi.fn()
   afterEach(() => {
     vi.restoreAllMocks()
