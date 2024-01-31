@@ -21,7 +21,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/__tests__/setup.ts',
     coverage: {
-      provider: 'c8',
+      provider: 'v8',
       reporter: ['lcov', 'text'],
     },
   },

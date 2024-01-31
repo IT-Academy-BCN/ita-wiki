@@ -1,7 +1,6 @@
 import { Select } from './Select'
 import { Spinner } from './Spinner'
 import { Title } from './Title'
-import Button from './Button'
 import Dropdown from './Dropdown'
 import CheckBox from './CheckBox'
 import Icon from './Icon'
@@ -16,7 +15,6 @@ import UserImage from './UserImage'
 import Counter from './Counter'
 
 export {
-  Button,
   Dropdown,
   CheckBox,
   Icon,

@@ -1,3 +1,4 @@
+import { Button } from '@itacademy/ui'
 import { FC, HTMLAttributes, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -5,7 +6,7 @@ import styled from 'styled-components'
 import { UserLoginSchema } from '@itacademy/schemas'
 import { useTranslation } from 'react-i18next'
 import InputGroup from '../molecules/InputGroup'
-import { Button, Icon, Spinner, Text, Title, ValidationMessage } from '../atoms'
+import { Icon, Spinner, Text, Title, ValidationMessage } from '../atoms'
 import { dimensions, colors, FlexBox, device } from '../../styles'
 import { useLogin } from '../../hooks/useLogin'
 

@@ -5,10 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
+import { Button } from '@itacademy/ui'
 import {
   Title,
   Text,
-  Button,
   CheckBox,
   ValidationMessage,
   Spinner,
