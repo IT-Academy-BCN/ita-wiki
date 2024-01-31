@@ -29,6 +29,6 @@
     "public",
     "scripts",
     "vite.config.ts"
-  ]
+  ],
+  "eslint.workingDirectories": [{ "mode": "location" }]
 }
-
