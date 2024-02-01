@@ -8,6 +8,18 @@ All notable changes to this project will be documented in this file.
 
 - Migrate Textarea to UI
 
+## [0.12.2] - 2024-01-31
+
+### Removed
+
+- Removed Avatar Error from Avatar.stories
+
+## [0.12.1] - 2024-01-31
+
+### Fix
+
+- Fix bundle and tests
+
 ## [0.12.0] - 2024-01-28
 
 ### Added

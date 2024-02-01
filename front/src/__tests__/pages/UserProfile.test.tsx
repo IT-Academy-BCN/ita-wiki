@@ -2,8 +2,8 @@ import { vi } from 'vitest'
 import { render, screen, waitFor } from '../test-utils'
 import { UserProfile } from '../../pages'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
-import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
+import { server } from '../../__mocks__/server'
 
 beforeEach(() => {
   vi.mock('../../context/AuthProvider', async () => {
@@ -26,7 +26,7 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.restoreAllMocks()
-  mswServer.resetHandlers()
+  server.resetHandlers()
 })
 
 describe('UserProfile', () => {
@@ -79,7 +79,7 @@ describe('UserProfile', () => {
   })
 
   it('renders correctly on server error', async () => {
-    mswServer.use(...errorHandlers)
+    server.use(...errorHandlers)
     render(<UserProfile />)
 
     const spinnerComponent = screen.getAllByRole(

@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import InputGroup from '../../components/molecules/InputGroup'
+import { InputGroup } from '../../components/molecules'
 
 describe('InputGroupText', () => {
   it('renders correctly', () => {

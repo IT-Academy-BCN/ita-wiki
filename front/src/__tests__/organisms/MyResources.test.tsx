@@ -4,7 +4,7 @@ import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { render, screen, waitFor } from '../test-utils'
 import { MyResources } from '../../components/organisms'
 import { errorHandlers } from '../../__mocks__/handlers'
-import { mswServer } from '../setup'
+import { server } from '../../__mocks__/server'
 
 beforeEach(() => {
   vi.mock('../../context/AuthProvider', async () => {
@@ -37,11 +37,11 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  mswServer.resetHandlers()
+  server.resetHandlers()
   vi.resetAllMocks()
 })
 
-afterAll(() => mswServer.close())
+afterAll(() => server.close())
 
 describe('MyResources component', () => {
   it('renders correctly', async () => {
@@ -109,7 +109,7 @@ describe('MyResources component', () => {
   })
 
   it('renders correctly on error', async () => {
-    mswServer.use(...errorHandlers)
+    server.use(...errorHandlers)
 
     render(<MyResources />)
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement

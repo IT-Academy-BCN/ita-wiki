@@ -2,8 +2,6 @@ import { vi } from 'vitest'
 import { Route, Routes } from 'react-router-dom'
 import { render, screen, waitFor } from '../test-utils'
 import { ResourceCardList } from '../../components/organisms'
-import { mswServer } from '../setup'
-import { errorHandlers } from '../../__mocks__/handlers'
 import { TResource } from '../../types'
 
 describe('ResourceCardList', () => {
@@ -11,7 +9,6 @@ describe('ResourceCardList', () => {
   afterEach(() => {
     afterEach(() => {
       vi.restoreAllMocks()
-      mswServer.resetHandlers()
     })
   })
 
@@ -108,28 +105,6 @@ describe('ResourceCardList', () => {
     await waitFor(() => {
       expect(screen.getByTestId('emptyResource')).toBeInTheDocument()
       expect(screen.queryByText('Resource Test')).not.toBeInTheDocument()
-    })
-  })
-
-  it.skip('renders correctly on error', async () => {
-    mswServer.use(...errorHandlers)
-    render(
-      <ResourceCardList
-        handleAccessModal={handleAccessModal}
-        sortOrder="desc"
-        isSortByVotesActive
-        onSelectedSortOrderChange={() => ''}
-        resourcesError={new Error('Ha habido un error...')}
-        resourcesLoading
-        resourcesData={[]}
-      />
-    )
-
-    const spinnerComponent = screen.queryByTestId('spinner') as HTMLDivElement
-
-    await waitFor(() => {
-      expect(spinnerComponent).toBeInTheDocument()
-      expect(screen.getByText('Ha habido un error...')).toBeInTheDocument()
     })
   })
 })

@@ -1,6 +1,7 @@
+import { Button } from '@itacademy/ui'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { Text, Button, Counter, UserImage } from '../atoms'
+import { Text, Counter, UserImage } from '../atoms'
 import { FlexBox, colors, font, dimensions, device } from '../../styles'
 import icons from '../../assets/icons'
 

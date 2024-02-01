@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 import Text from './Text'
-import Icon from './Icon'
+import { Icon } from './Icon'
 import { font, dimensions, device, colors, FlexBox } from '../../styles'
 import { Spinner } from './Spinner'
 

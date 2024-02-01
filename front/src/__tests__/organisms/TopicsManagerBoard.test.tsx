@@ -1,14 +1,14 @@
 import { vi } from 'vitest'
+import { HttpResponse, http } from 'msw'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { rest } from 'msw'
 import { useParams, Params, useLocation } from 'react-router-dom'
 import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor, fireEvent } from '../test-utils'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { TopicsManagerBoard } from '../../components/organisms'
-import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
 import { urls } from '../../constants'
+import { server } from '../../__mocks__/server'
 
 beforeEach(() => {
   vi.mock('../../context/AuthProvider', async () => {
@@ -185,7 +185,7 @@ describe('TopicsManagerBoard component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: null,
     } as TAuthContext)
-    mswServer.use(...errorHandlers)
+    server.use(...errorHandlers)
 
     render(<TopicsManagerBoard />)
 
@@ -212,8 +212,10 @@ describe('TopicsManagerBoard component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: { name: 'Name', avatarId: 'Avatar', role: 'REGISTERED' },
     } as TAuthContext)
-    mswServer.use(
-      rest.patch(urls.patchTopics, (req, res, ctx) => res(ctx.status(403)))
+    server.use(
+      http.patch(urls.patchTopics, () =>
+        HttpResponse.json(null, { status: 403 })
+      )
     )
     render(<TopicsManagerBoard />)
 
@@ -293,8 +295,10 @@ describe('TopicsManagerBoard component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: { name: 'Name', avatarId: 'Avatar', role: 'MENTOR' },
     } as TAuthContext)
-    mswServer.use(
-      rest.patch(urls.patchTopics, (req, res, ctx) => res(ctx.status(500)))
+    server.use(
+      http.patch(urls.patchTopics, () =>
+        HttpResponse.json(null, { status: 500 })
+      )
     )
     render(<TopicsManagerBoard />)
 
@@ -340,7 +344,7 @@ describe('TopicsManagerBoard component', () => {
         role: 'MENTOR',
       },
     } as TAuthContext)
-    mswServer.use(...errorHandlers)
+    server.use(...errorHandlers)
 
     render(<TopicsManagerBoard />)
 

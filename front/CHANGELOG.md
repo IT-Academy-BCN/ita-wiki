@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.1] - 2024-01-31
+
+### Fix
+
+- Bump msw to 2.1.5
+- Fix tests
+
+## [0.9.0] - 2024-01-31
+
+### Removed
+
+- Bump @itacademy/ui to 0.12.1
+- Import Button from UI
+
+## [0.8.0] - 2024-01-30
+
+### Removed
+
+- Remove unused Link component
+
 ## [0.7.1] - 2023-11-28
 
 ### Fixed
