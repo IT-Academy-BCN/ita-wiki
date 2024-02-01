@@ -17,10 +17,8 @@ type TLayout = {
   children: React.ReactNode
 } & Partial<TLayoutStyled>
 
-export const Layout = ({ children, minHeight = 100, width = 100 }: TLayout) => {
-  return (
-    <LayoutStyled minHeight={minHeight} width={width}>
-      {children}
-    </LayoutStyled>
-  )
-}
+export const Layout = ({ children, minHeight = 100, width = 100 }: TLayout) => (
+  <LayoutStyled minHeight={minHeight} width={width}>
+    {children}
+  </LayoutStyled>
+)
