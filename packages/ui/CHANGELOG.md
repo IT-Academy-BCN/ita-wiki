@@ -2,6 +2,44 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.12.1] - 2024-01-31
+
+### Fix
+
+- Fix bundle and tests
+
+## [0.12.0] - 2024-01-28
+
+### Added
+
+- Migrate UserImage to UI
+
+## [0.11.1] - 2024-01-25
+
+### Fix
+
+- Export molecules from UI
+
+## [0.11.0] - 2024-01-24
+
+### Added
+
+- Migrate Counter to UI
+
+## [0.10.2] - 2024-01-22
+
+### Fixed
+
+- Export Checkbox and Tabs from UI
+
+## [0.10.1] - 2024-01-20
+
+### Fixed
+
+- Fix error props FlexBox.
+- Fix error props ModalWrapper.
+- Fix error props ModalContent.
+
 ## [0.10.0] - 2024-01-20
 
 ### Added
@@ -19,7 +57,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Fix Modal 
+- Fix Modal
 
 ## [0.9.3] - 2024-01-18
 

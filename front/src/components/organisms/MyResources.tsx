@@ -71,7 +71,7 @@ const TextDecorationStyled = styled.span`
 const getWindowMobile = () =>
   window.innerWidth <= parseInt(responsiveSizes.tablet, 10)
 
-const MyResources = () => {
+export const MyResources = () => {
   const { user } = useAuth()
   const { slug } = useParams()
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
@@ -175,5 +175,3 @@ const MyResources = () => {
     </>
   )
 }
-
-export { MyResources }

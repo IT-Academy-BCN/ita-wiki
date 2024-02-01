@@ -1,8 +1,7 @@
 import { IncomingMessage, Server, ServerResponse } from 'http'
-import { USER_STATUS } from '@prisma/client'
 import { prisma } from '../prisma/client'
 import { app } from '../server'
-import { UserRole } from '../schemas/users/userSchema'
+import { UserRole, UserStatus } from '../schemas/users/userSchema'
 
 // eslint-disable-next-line import/no-mutable-exports
 export let server: Server<typeof IncomingMessage, typeof ServerResponse>
@@ -17,7 +16,7 @@ export const testUserData = {
     dni: '11111111A',
     password: 'testingPswd1',
     role: UserRole.REGISTERED,
-    status: USER_STATUS.ACTIVE,
+    status: UserStatus.ACTIVE,
     avatarId: null,
   },
   admin: {
@@ -27,7 +26,7 @@ export const testUserData = {
     dni: '22222222B',
     password: 'testingPswd2',
     role: UserRole.ADMIN,
-    status: USER_STATUS.ACTIVE,
+    status: UserStatus.ACTIVE,
     avatarId: null,
   },
   mentor: {
@@ -37,7 +36,7 @@ export const testUserData = {
     dni: '44444444B',
     password: 'testingPswd4',
     role: UserRole.MENTOR,
-    status: USER_STATUS.ACTIVE,
+    status: UserStatus.ACTIVE,
     avatarId: null,
   },
   inactiveUser: {
@@ -47,7 +46,7 @@ export const testUserData = {
     dni: '33333333A',
     password: 'testingPswd3',
     role: UserRole.REGISTERED,
-    status: USER_STATUS.INACTIVE,
+    status: UserStatus.INACTIVE,
     avatarId: null,
   },
 }
@@ -72,12 +71,13 @@ export async function setup() {
     },
   })
 
-  const { password, email, dni, role, ...admin } = testUserData.admin
+  const { password, email, dni, role, status, ...admin } = testUserData.admin
   const {
     password: p0,
     email: e0,
     dni: d0,
     role: r0,
+    status: s0,
     ...user
   } = testUserData.user
   const {
@@ -85,6 +85,7 @@ export async function setup() {
     email: e1,
     dni: d1,
     role: r1,
+    status: s1,
     ...mentor
   } = testUserData.mentor
   const {
@@ -92,6 +93,7 @@ export async function setup() {
     email: e2,
     dni: d2,
     role: r2,
+    status: s2,
     ...inactiveUser
   } = testUserData.inactiveUser
   await prisma.user.createMany({

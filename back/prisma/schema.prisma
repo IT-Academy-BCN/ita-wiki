@@ -10,7 +10,6 @@ datasource db {
 model User {
   id               String           @id @default(cuid())
   name             String
-  status           USER_STATUS      @default(INACTIVE)
   resources        Resource[]
   media            Media[]
   avatarId         String?          @unique @map("avatar_id")
@@ -21,11 +20,6 @@ model User {
   updatedAt        DateTime         @updatedAt @map("updated_at")
 
   @@map("user")
-}
-
-enum USER_STATUS {
-  ACTIVE
-  INACTIVE
 }
 
 model Resource {

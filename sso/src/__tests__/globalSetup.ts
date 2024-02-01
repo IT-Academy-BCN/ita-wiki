@@ -4,6 +4,7 @@ import { app } from '../app'
 import { client } from '../models/db'
 import { generateId } from '../utils/cuidGenerator'
 import { hashPassword } from '../utils/passwordHash'
+import { UserRole, UserStatus } from '../schemas/user/userSchema'
 
 // eslint-disable-next-line import/no-mutable-exports
 export let server: Server<typeof IncomingMessage, typeof ServerResponse>
@@ -16,7 +17,8 @@ export const testUserData = {
     name: 'testingUser',
     dni: '11111111A',
     password: 'testingPswd1',
-    role: 'REGISTERED',
+    role: UserRole.REGISTERED,
+    status: UserStatus.ACTIVE,
     user_meta: {},
   },
   admin: {
@@ -24,7 +26,8 @@ export const testUserData = {
     name: 'testingAdmin',
     dni: '22222222B',
     password: 'testingPswd2',
-    role: 'ADMIN',
+    role: UserRole.ADMIN,
+    status: UserStatus.ACTIVE,
     user_meta: {},
   },
   mentor: {
@@ -32,7 +35,8 @@ export const testUserData = {
     name: 'testingMentor',
     dni: '44444444B',
     password: 'testingPswd4',
-    role: 'MENTOR',
+    role: UserRole.MENTOR,
+    status: UserStatus.ACTIVE,
     user_meta: {},
   },
   inactiveUser: {
@@ -40,7 +44,8 @@ export const testUserData = {
     name: 'testingInactiveUser',
     dni: '33333333A',
     password: 'testingPswd3',
-    role: 'REGISTERED',
+    role: UserRole.REGISTERED,
+    status: UserStatus.INACTIVE,
     user_meta: {},
   },
 }
@@ -96,8 +101,8 @@ export async function setup() {
     }
 
     const query = `
-      INSERT INTO "user" (id, dni, email, password, role, user_meta, itinerary_id)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      INSERT INTO "user" (id, dni, email, password, role, status, user_meta, itinerary_id)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
       ON CONFLICT (dni) DO NOTHING;`
     await client.query(query, [
       generateId(),
@@ -105,6 +110,7 @@ export async function setup() {
       user.email,
       await hashPassword(user.password),
       user.role,
+      user.status,
       user.user_meta,
       itineraryId,
     ])

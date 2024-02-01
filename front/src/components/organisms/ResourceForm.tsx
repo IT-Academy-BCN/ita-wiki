@@ -1,3 +1,4 @@
+import { Button } from '@itacademy/ui'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -6,18 +7,10 @@ import styled from 'styled-components'
 import { ChangeEvent, FC, HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
 import { InputGroup, SelectGroup } from '../molecules'
-import { Button, ValidationMessage, Radio, Icon, Spinner } from '../atoms'
+import { ValidationMessage, Radio, Icon, Spinner } from '../atoms'
 import { FlexBox, colors, dimensions } from '../../styles'
 import { useCreateResource, useUpdateResource } from '../../hooks'
 
-const ButtonContainerStyled = styled(FlexBox)`
-  gap: ${dimensions.spacing.xs};
-  margin: ${dimensions.spacing.xs} 0;
-  ${Button} {
-    font-weight: 500;
-    margin: 0rem;
-  }
-`
 type TButton = HTMLAttributes<HTMLParagraphElement> & {
   backgroundColor?: string
   padding?: string
@@ -33,6 +26,16 @@ const ButtonStyled = styled(Button)<TButton>`
     border: 2px solid ${({ backgroundColor }) => backgroundColor};
   }
 `
+
+const ButtonContainerStyled = styled(FlexBox)`
+  gap: ${dimensions.spacing.xs};
+  margin: ${dimensions.spacing.xs} 0;
+  ${ButtonStyled} {
+    font-weight: 500;
+    margin: 0rem;
+  }
+`
+
 const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.xxxs};
   margin-left: 0.2rem;

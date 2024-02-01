@@ -1,7 +1,7 @@
 {
   "name": "front",
   "private": true,
-  "version": "0.7.1",
+  "version": "0.10.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.0.0",
     "@itacademy/schemas": "^0.3.0",
-    "@itacademy/ui": "^0.11.1",
+    "@itacademy/ui": "0.12.1",
     "@tanstack/react-query": "^4.29.5",
     "@tanstack/react-query-devtools": "^4.29.6",
     "i18next": "^23.5.1",
@@ -41,7 +41,7 @@
     "@typescript-eslint/eslint-plugin": "5.55.0",
     "@typescript-eslint/parser": "5.55.0",
     "@vitejs/plugin-react-swc": "^3.0.0",
-    "@vitest/coverage-c8": "0.30.1",
+    "@vitest/coverage-v8": "1.2.2",
     "eslint": "8.36.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "17.0.0",
@@ -51,10 +51,10 @@
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-react-hooks": "4.6.0",
     "jsdom": "^21.1.1",
-    "msw": "1.2.1",
+    "msw": "2.1.5",
     "prettier": "2.8.4",
     "typescript": "^5.0.4",
-    "vite": "^4.5.2",
-    "vitest": "0.30.1"
+    "vite": "5.0.12",
+    "vitest": "1.2.2"
   }
 }

@@ -2,15 +2,17 @@ import React, { ButtonHTMLAttributes, FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, font } from '../../styles'
 
- const StyledButton = styled.button<TButton>`
+const StyledButton = styled('button').withConfig<TButton>({
+  shouldForwardProp: (prop) => !['size', 'secondary', 'outline'].includes(prop),
+})<TButton>`
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: ${dimensions.borderRadius.base};
   padding: ${({ size }) =>
-        (size === 'small' && dimensions.spacing.xxs) ||
-        (size === 'large' && dimensions.spacing.md) ||
-        dimensions.spacing.base};
+    (size === 'small' && dimensions.spacing.xxs) ||
+    (size === 'large' && dimensions.spacing.md) ||
+    dimensions.spacing.base};
   cursor: pointer;
   width: 100%;
   color: ${colors.white};
@@ -33,8 +35,8 @@ import { colors, dimensions, font } from '../../styles'
   }
 
   ${({ secondary }) =>
-        secondary &&
-        `
+    secondary &&
+    `
         background-color: ${colors.secondary};
         border: 2px solid ${colors.secondary};
         &:hover {
@@ -52,8 +54,8 @@ import { colors, dimensions, font } from '../../styles'
     `}
 
   ${({ outline }) =>
-        outline &&
-        `
+    outline &&
+    `
         font-weight: ${font.bold};
         background-color: ${colors.white};
         color: ${colors.gray.gray2};
@@ -68,27 +70,26 @@ import { colors, dimensions, font } from '../../styles'
     `}
 `
 type TButton = ButtonHTMLAttributes<HTMLButtonElement> & {
-    secondary?: boolean
-    outline?: boolean
-    size?: 'small' | 'normal' | 'large'
+  secondary?: boolean
+  outline?: boolean
+  size?: 'small' | 'normal' | 'large'
 }
 export const Button: FC<TButton> = ({
-    type = 'submit',
-    secondary = false,
-    outline = false,
-    size = 'normal',
-    children,
-    ...rest
+  type = 'submit',
+  secondary = false,
+  outline = false,
+  size = 'normal',
+  children,
+  ...rest
 }) => (
-    <StyledButton
-        type={type}
-        data-testid="button"
-        secondary={secondary}
-        outline={outline}
-        size={size}
-        {...rest}
-    >
-        {children}
-    </StyledButton>
+  <StyledButton
+    type={type}
+    data-testid="button"
+    secondary={secondary}
+    outline={outline}
+    size={size}
+    {...rest}
+  >
+    {children}
+  </StyledButton>
 )
-

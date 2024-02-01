@@ -22,7 +22,9 @@ jobs:
         id: versions
         run: |
           sso_version=$(grep version: ./config/dev/sso.yml | awk '{print $2}')
+          sso_front_version=$(grep version: ./config/dev/sso_front.yml | awk '{print $2}')
           echo "::set-output name=sso_version::$sso_version"
+          echo "::set-output name=sso_front_version::$sso_front_version"
 
       - name: Execute SSH Command
         uses: appleboy/ssh-action@master
@@ -31,6 +33,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            echo "Deploying Back Version: ${{ steps.versions.outputs.sso_version }}"
+            echo "Deploying SSO Version: ${{ steps.versions.outputs.sso_version }}"
+            echo "Deploying SSO Front Version: ${{ steps.versions.outputs.sso_front_version }}"
             cd ${{ secrets.SSO_PATH }}/dev
-            bash deploy.sh ${{ steps.versions.outputs.sso_version }}
+            bash deploy.sh sso ${{ steps.versions.outputs.sso_version }} ${{ steps.versions.outputs.sso_front_version }}

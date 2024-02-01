@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-type TFlexBox = {
+export type TFlexBox = {
   direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse'
   justify?:
     | 'flex-start'
@@ -13,7 +13,10 @@ type TFlexBox = {
   gap?: string
 }
 
-export const FlexBox = styled.div<TFlexBox>`
+export const FlexBox = styled('div').withConfig<TFlexBox>({
+  shouldForwardProp: (prop) =>
+    !['direction', 'justify', 'align', 'gap'].includes(prop),
+})<TFlexBox>`
   display: flex;
   flex-direction: ${({ direction }) => direction || 'column'};
   justify-content: ${({ justify }) => justify || 'center'};

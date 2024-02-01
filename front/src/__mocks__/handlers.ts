@@ -1,29 +1,27 @@
-import { rest } from 'msw'
+import { HttpResponse, http } from 'msw'
 import { urls } from '../constants'
 import { voteErrorHandlers, voteHandlers } from './handlers/vote'
 
 export const handlers = [
-  rest.post(urls.logIn, (req, res, ctx) => res(ctx.status(204))),
+  http.post(urls.logIn, () => new HttpResponse(null, { status: 204 })),
 
-  // Handles a POST /register request
-  rest.post(urls.register, (req, res, ctx) => res(ctx.status(204))),
+  http.post(urls.register, () => new HttpResponse(null, { status: 204 })),
 
-  rest.post(urls.createResource, (req, res, ctx) => res(ctx.status(204))),
+  http.post(urls.createResource, () => new HttpResponse(null, { status: 204 })),
 
-  rest.post(urls.postTopics, (req, res, ctx) =>
-    res(ctx.status(200), ctx.json({ success: true }))
+  http.post(urls.postTopics, () =>
+    HttpResponse.json({ success: true }, { status: 200 })
   ),
 
-  rest.patch(urls.patchTopics, (req, res, ctx) =>
-    res(ctx.status(200), ctx.json({ success: true }))
+  http.patch(urls.patchTopics, () =>
+    HttpResponse.json({ success: true }, { status: 200 })
   ),
 
-  rest.patch(urls.users, (req, res, ctx) => res(ctx.status(204))),
+  http.patch(urls.users, () => new HttpResponse(null, { status: 204 })),
 
-  rest.get(urls.users, (_, res, ctx) =>
-    res(
-      ctx.status(200),
-      ctx.json([
+  http.get(urls.users, () =>
+    HttpResponse.json(
+      [
         {
           id: 'testId',
           email: 'usertest@example.cat',
@@ -36,14 +34,14 @@ export const handlers = [
           createdAt: '2023-11-15T15:36:02.234Z',
           updatedAt: '2023-11-15T15:36:02.234Z',
         },
-      ])
+      ],
+      { status: 200 }
     )
   ),
 
-  rest.get(urls.getMe, (_, res, ctx) =>
-    res(
-      ctx.status(200),
-      ctx.json([
+  http.get(urls.getMe, () =>
+    HttpResponse.json(
+      [
         {
           name: 'string',
           dni: 'string',
@@ -51,42 +49,45 @@ export const handlers = [
           role: 'ADMIN',
           status: 'ACTIVE',
         },
-      ])
+      ],
+      { status: 200 }
     )
   ),
 
-  rest.get(urls.getCategories, (_, res, ctx) =>
-    res(
-      ctx.status(200),
-      ctx.json([
+  http.get(urls.getCategories, () =>
+    HttpResponse.json(
+      [
         {
           id: '1',
           name: 'React',
           slug: 'react',
         },
-      ])
+      ],
+      { status: 200 }
     )
   ),
 
-  rest.get(urls.getItineraries, (_, res, ctx) =>
-    res(
-      ctx.status(200),
-      ctx.json([
+  http.get(urls.getItineraries, () =>
+    HttpResponse.json(
+      [
         {
           id: '1',
           name: 'Frontend Angular',
           slug: 'frontend-angular',
         },
-      ])
+      ],
+      { status: 200 }
     )
   ),
 
-  rest.get(urls.getTopics, (req, res, ctx) => {
-    const slug = req.url.searchParams.get('slug')
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  http.get(urls.getTopics, ({ request }) => {
+    const url = new URL(request.url)
+    const slug = url.searchParams.get('slug')
     if (slug === 'react') {
-      return res(
-        ctx.status(200),
-        ctx.json([
+      return HttpResponse.json(
+        [
           {
             id: 'cli04v2l0000008mq5pwx7w5j',
             name: 'Listas',
@@ -99,30 +100,30 @@ export const handlers = [
             slug: 'renderizado-condicional',
             categoryId: 'clh78rhsk000008l0ahamgoug',
           },
-        ])
+        ],
+        { status: 200 }
       )
     }
     if (slug === 'empty-topics') {
-      return res(ctx.status(200), ctx.json([]))
+      return HttpResponse.json([], { status: 200 })
     }
     if (slug === 'invalid-slug') {
-      return res(
-        ctx.status(404),
-        ctx.json({ message: 'No category found with this slug' })
+      return HttpResponse.json(
+        { message: 'No category found with this slug' },
+        { status: 404 }
       )
     }
-    return res(ctx.status(200), ctx.json(undefined))
+    return HttpResponse.json(undefined, { status: 200 })
   }),
 
-  rest.get(urls.getResources, (req, res, ctx) => {
-    const categorySlug = req.url.searchParams.get('slug')
-    if (categorySlug === 'emptyResource') {
-      return res(ctx.status(200), ctx.json([]))
+  http.get(urls.getResources, ({ params }) => {
+    const { slug } = params
+    if (slug === 'emptyResource') {
+      return HttpResponse.json([], { status: 200 })
     }
 
-    return res(
-      ctx.status(200),
-      ctx.json([
+    return HttpResponse.json(
+      [
         {
           id: 'resourceId',
           title: 'Resource Test',
@@ -142,23 +143,26 @@ export const handlers = [
           },
           isFavorite: 'false',
         },
-      ])
+      ],
+      { status: 200 }
     )
   }),
-  rest.post(urls.createResource, (_, res, ctx) => res(ctx.status(204))),
+  http.post(urls.createResource, () => new HttpResponse(null, { status: 204 })),
 
-  rest.patch(urls.updateResource, (_, res, ctx) => res(ctx.status(204))),
-  rest.get(urls.getTypes, (_, res, ctx) =>
-    res(
-      ctx.status(200),
-      ctx.json(['Test type 1', 'Test type 2', 'Test type 3'])
-    )
+  http.patch(
+    urls.updateResource,
+    () => new HttpResponse(null, { status: 204 })
   ),
 
-  rest.get(urls.getFavorites, (_, res, ctx) =>
-    res(
-      ctx.status(200),
-      ctx.json([
+  http.get(urls.getTypes, () =>
+    HttpResponse.json(['Test type 1', 'Test type 2', 'Test type 3'], {
+      status: 200,
+    })
+  ),
+
+  http.get(urls.getFavorites, () =>
+    HttpResponse.json(
+      [
         {
           id: 'favoriteId',
           title: 'My favorite title',
@@ -227,17 +231,17 @@ export const handlers = [
             },
           ],
         },
-      ])
+      ],
+      { status: 200 }
     )
   ),
 
-  // eslint-disable-next-line consistent-return
-  rest.get(`${urls.getFavorites}/:slug`, (req, res, ctx) => {
-    const { slug } = req.params
+  // eslint-disable-next-line consistent-return,
+  http.get(`${urls.getFavorites}/:slug`, ({ params }) => {
+    const { slug } = params
     if (slug === 'react') {
-      return res(
-        ctx.status(200),
-        ctx.json([
+      return HttpResponse.json(
+        [
           {
             id: 'favoriteId',
             title: 'My favorite title',
@@ -257,24 +261,28 @@ export const handlers = [
             },
             isFavorite: 'true',
           },
-        ])
+        ],
+        { status: 200 }
       )
     }
     if (slug === 'slugWithoutFavs') {
-      return res(ctx.status(200), ctx.json([]))
+      return HttpResponse.json([], { status: 200 })
     }
   }),
 
-  rest.put(urls.favorites, (_, res, ctx) => res(ctx.status(204))),
+  http.put(urls.favorites, () => new HttpResponse(null, { status: 204 })),
 
-  rest.post(`${urls.postStatus}/test`, (_, res, ctx) => res(ctx.status(204))),
+  http.post(
+    `${urls.postStatus}/test`,
+    () => new HttpResponse(null, { status: 204 })
+  ),
 
-  rest.get(urls.getResourcesByUser, (req, res, ctx) => {
-    const slug = req.url.searchParams.get('categorySlug')
+  http.get(urls.getResourcesByUser, ({ request }) => {
+    const url = new URL(request.url)
+    const slug = url.searchParams.get('categorySlug')
     if (slug === 'react') {
-      return res(
-        ctx.status(200),
-        ctx.json([
+      return HttpResponse.json(
+        [
           {
             id: 'resourceId',
             title: 'My React resource title',
@@ -303,15 +311,15 @@ export const handlers = [
             },
             favorite: false,
           },
-        ])
+        ],
+        { status: 200 }
       )
     }
     if (slug === 'emptySlug') {
-      return res(ctx.status(200), ctx.json([]))
+      return HttpResponse.json([], { status: 200 })
     }
-    return res(
-      ctx.status(200),
-      ctx.json([
+    return HttpResponse.json(
+      [
         {
           id: 'resourceId',
           title: 'My resource title without slug',
@@ -340,82 +348,89 @@ export const handlers = [
           },
           favorite: false,
         },
-      ])
+      ],
+      { status: 200 }
     )
   }),
   ...voteHandlers,
 ]
 
 export const errorHandlers = [
-  rest.get(urls.getCategories, (_, res, ctx) =>
-    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  http.get(urls.getCategories, () =>
+    HttpResponse.json({ message: 'Internal server error' }, { status: 500 })
   ),
 
-  rest.post(urls.getTopics, (_, res, ctx) =>
-    res(ctx.status(401), ctx.json({ message: 'Unauthorized: Missing token' }))
+  http.post(urls.getTopics, () =>
+    HttpResponse.json(
+      { message: 'Unauthorized: Missing token' },
+      { status: 401 }
+    )
   ),
 
-  rest.get(urls.getTopics, (_, res, ctx) =>
-    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  http.get(urls.getTopics, () =>
+    HttpResponse.json({ message: 'Internal server error' }, { status: 500 })
   ),
 
-  rest.post(urls.getTopics, (_, res, ctx) =>
-    res(ctx.status(500), ctx.json({ message: 'Database error' }))
+  http.post(urls.getTopics, () =>
+    HttpResponse.json({ message: 'Database error' }, { status: 500 })
   ),
 
-  rest.get(urls.getResources, (_, res, ctx) =>
-    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  http.get(urls.getResources, () =>
+    HttpResponse.json({ message: 'Internal server error' }, { status: 500 })
   ),
 
-  rest.put(urls.getResources, (_, res, ctx) =>
-    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  http.put(urls.getResources, () =>
+    HttpResponse.json({ message: 'Internal server error' }, { status: 500 })
   ),
 
-  rest.get(urls.getTypes, (_, res, ctx) =>
-    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  http.get(urls.getTypes, () =>
+    HttpResponse.json({ message: 'Internal server error' }, { status: 500 })
   ),
 
-  rest.get(`${urls.getFavorites}/:slug`, (_, res, ctx) =>
-    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  http.get(`${urls.getFavorites}/:slug`, () =>
+    HttpResponse.json({ message: 'Internal server error' }, { status: 500 })
   ),
 
-  rest.get(urls.getFavorites, (_, res, ctx) =>
-    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  http.get(urls.getFavorites, () =>
+    HttpResponse.json({ message: 'Internal server error' }, { status: 500 })
   ),
 
-  rest.put(urls.vote, (_, res, ctx) =>
-    res(ctx.status(401), ctx.json({ message: 'User not found' }))
+  http.put(urls.vote, () =>
+    HttpResponse.json({ message: 'User not found' }, { status: 401 })
   ),
-  rest.put(urls.vote, (_, res, ctx) =>
-    res(ctx.status(404), ctx.json({ message: 'User or resource not found' }))
+  http.put(urls.vote, () =>
+    HttpResponse.json(
+      { message: 'User or resource not found' },
+      { status: 404 }
+    )
   ),
-  rest.post(urls.postStatus, (_, res, ctx) =>
-    res(ctx.status(401), ctx.json({ message: 'Error updating status' }))
+  http.post(urls.postStatus, () =>
+    HttpResponse.json({ message: 'Error updating status' }, { status: 401 })
   ),
 
-  rest.get(urls.getResourcesByUser, (_, res, ctx) =>
-    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  http.get(urls.getResourcesByUser, () =>
+    HttpResponse.json({ message: 'Internal server error' }, { status: 500 })
   ),
 
-  rest.get(urls.getResourcesByUser, (req, res, ctx) => {
-    const categorySlug = req.url.searchParams.get('slug')
+  http.get(urls.getResourcesByUser, ({ params }) => {
+    const { categorySlug } = params
 
     if (categorySlug === 'errorCase') {
-      return res(
-        ctx.status(500),
-        ctx.json({ message: 'Internal server error' })
+      return HttpResponse.json(
+        { message: 'Internal server error' },
+        { status: 500 }
       )
     }
 
-    return res(ctx.status(401), ctx.json({ message: 'User not found' }))
+    return HttpResponse.json({ message: 'User not found' }, { status: 401 })
   }),
 
-  rest.get(urls.users, (_, res, ctx) =>
-    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  http.get(urls.users, () =>
+    HttpResponse.json({ message: 'Internal server error' }, { status: 500 })
   ),
 
-  rest.patch(urls.users, (_, res, ctx) =>
-    res(ctx.status(500), ctx.json({ message: 'Internal server error' }))
+  http.patch(urls.users, () =>
+    HttpResponse.json({ message: 'Internal server error' }, { status: 500 })
   ),
 
   ...voteErrorHandlers,

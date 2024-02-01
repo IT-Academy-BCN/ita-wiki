@@ -1,6 +1,6 @@
 import { vi } from 'vitest'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
-import TabItem from '../../../components/molecules/Tabs/TabItem'
+import { TabItem } from '../../../components/molecules/Tabs'
 import { colors } from '../../../styles'
 
 describe('TabItem component', () => {

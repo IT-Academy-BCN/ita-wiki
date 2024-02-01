@@ -2,10 +2,11 @@ import { vi } from 'vitest'
 import { useParams, Params } from 'react-router-dom'
 import { render, screen, waitFor, fireEvent } from '../test-utils'
 import { FavoritesIcon } from '../../components/molecules'
-import { mswServer, queryClient } from '../setup'
+import { queryClient } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { TFavorites, TResource } from '../../types'
+import { server } from '../../__mocks__/server'
 
 const resourceNotFavoriteMock = {
   id: 'testNotFavorite',
@@ -63,7 +64,9 @@ describe('FavoritesWidget', () => {
       expect(favIconDeselected).toBeInTheDocument()
       expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
       expect(favIconDeselected).toHaveAttribute('fill', '0')
-      expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
+      expect(
+        screen.queryByTitle('Elimina de preferits')
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -79,7 +82,9 @@ describe('FavoritesWidget', () => {
       expect(favIconDeselected).toBeInTheDocument()
       expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
       expect(favIconDeselected).toHaveAttribute('fill', '0')
-      expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
+      expect(
+        screen.queryByTitle('Elimina de preferits')
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -263,13 +268,10 @@ it('should update cache in resources/me when rendered in Profile page', async ()
   )
 
   const favIconUnselected = screen.getByText('favorite')
-
   expect(favIconUnselected).toBeInTheDocument()
-
   expect(favIconUnselected).toHaveAttribute('fill', '0')
 
   fireEvent.click(favIconUnselected)
-
   await waitFor(() => {
     const queryResourcesByUserUpdated = queryClient.getQueryData([
       'getResourcesByUser',
@@ -286,28 +288,28 @@ it('should update cache in resources/me when rendered in Profile page', async ()
     expect(favIconUnselected).toHaveAttribute('fill', '1')
     expect(screen.queryByTitle('Afegeix a preferits')).not.toBeInTheDocument()
   })
+})
 
-  it('renders correctly on error (fav icon does not change)', async () => {
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
+it('renders correctly on error (fav icon does not change)', async () => {
+  vi.mocked(useParams).mockReturnValue({
+    slug: 'react',
+  } as Readonly<Params>)
 
-    mswServer.use(...errorHandlers)
+  server.use(...errorHandlers)
 
-    render(<FavoritesIcon resourceId="favoriteId" isFavorite={false} />)
+  render(<FavoritesIcon resourceId="favoriteId" isFavorite={false} />)
 
-    const favIconDeselected = screen.getByText('favorite')
-    expect(favIconDeselected).toBeInTheDocument()
+  const favIconDeselected = screen.getByText('favorite')
+  expect(favIconDeselected).toBeInTheDocument()
+  expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
+  expect(favIconDeselected).toHaveAttribute('fill', '0')
+  expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
+
+  fireEvent.click(favIconDeselected)
+
+  await waitFor(() => {
     expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
     expect(favIconDeselected).toHaveAttribute('fill', '0')
     expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
-
-    fireEvent.click(favIconDeselected)
-
-    await waitFor(() => {
-      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
-      expect(favIconDeselected).toHaveAttribute('fill', '0')
-      expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
-    })
   })
 })

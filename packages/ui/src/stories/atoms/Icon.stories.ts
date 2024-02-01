@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import Icon from '../../components/atoms/Icon'
+import { Icon } from '../../components/atoms'
 import { font } from '../../styles/font'
 
 const meta = {
@@ -11,7 +11,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     onClick: {
-      action: 'previous Page icon',
+      action: 'clicked',
     },
     color: {
       control: 'color',

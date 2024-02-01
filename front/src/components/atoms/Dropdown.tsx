@@ -7,8 +7,8 @@ import {
   HTMLAttributes,
 } from 'react'
 import styled from 'styled-components'
+import { Button } from '@itacademy/ui'
 import Icon from './Icon'
-import Button from './Button'
 import { colors, dimensions, font } from '../../styles'
 
 const StyledDropdown = styled.div<TDropdown>`
