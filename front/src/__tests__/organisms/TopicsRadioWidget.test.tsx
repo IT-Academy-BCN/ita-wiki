@@ -1,15 +1,13 @@
 import { vi } from 'vitest'
 import { TopicsRadioWidget } from '../../components/organisms'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
-import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
+import { server } from '../../__mocks__/server'
 
 describe('TopicsRadioWidget', () => {
   it('renders correctly on succesfull API call', async () => {
     const setTopic = vi.fn()
-    render(
-      <TopicsRadioWidget slug="react" setTopic={setTopic} />
-    )
+    render(<TopicsRadioWidget slug="react" setTopic={setTopic} />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
     expect(spinnerComponent).toBeInTheDocument()
@@ -21,11 +19,9 @@ describe('TopicsRadioWidget', () => {
   })
 
   it('renders correctly when there is an error during the fetch', async () => {
-    mswServer.use(...errorHandlers)
+    server.use(...errorHandlers)
     const setTopic = vi.fn()
-    render(
-      <TopicsRadioWidget slug="react" setTopic={setTopic} />
-    )
+    render(<TopicsRadioWidget slug="react" setTopic={setTopic} />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
     expect(spinnerComponent).toBeInTheDocument()
@@ -38,11 +34,9 @@ describe('TopicsRadioWidget', () => {
 
   it('displays Todos as the default option and allows users to select others', async () => {
     const setTopic = vi.fn()
-    
-    render(
-      <TopicsRadioWidget slug="react" setTopic={setTopic} />
-    )
-  
+
+    render(<TopicsRadioWidget slug="react" setTopic={setTopic} />)
+
     await waitFor(() => {
       const defaultOption = screen.getByLabelText(/tots/i)
       const option2 = screen.getByLabelText(/listas/i)
@@ -76,13 +70,15 @@ describe('TopicsRadioWidget', () => {
       expect(option2).not.toBeChecked()
       expect(option3).toBeChecked()
     })
-    
+
     render(<TopicsRadioWidget slug="node" setTopic={setTopic} />)
 
     await waitFor(() => {})
 
-    const updatedDefaultOption = screen.getByLabelText(/tots/i) as HTMLInputElement
-    
+    const updatedDefaultOption = screen.getByLabelText(
+      /tots/i
+    ) as HTMLInputElement
+
     expect(updatedDefaultOption).toHaveAttribute('checked')
   })
 })

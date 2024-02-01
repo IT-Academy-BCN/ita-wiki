@@ -3,8 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor, fireEvent } from '../test-utils'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { SettingsManager } from '../../components/organisms'
-import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
+import { server } from '../../__mocks__/server'
 
 const mockUsers = [
   {
@@ -48,11 +48,11 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  mswServer.resetHandlers()
+  server.resetHandlers()
   vi.resetAllMocks()
 })
 
-afterAll(() => mswServer.close())
+afterAll(() => server.close())
 
 describe('SettingsManager component', () => {
   it('renders Temes and Usuaris tabs correctly for admin role', () => {
@@ -136,7 +136,7 @@ describe('User Permissions', () => {
   })
 
   it.skip('renders an error when the fetching process fails', async () => {
-    mswServer.use(...errorHandlers)
+    server.use(...errorHandlers)
 
     render(<SettingsManager />)
 

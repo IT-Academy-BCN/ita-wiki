@@ -1,15 +1,18 @@
-import { rest } from 'msw'
+import { http, HttpResponse } from 'msw'
 import { urls } from '../../constants'
 
 export const voteHandlers = [
-  rest.put(urls.vote, (req, res, ctx) => res(ctx.status(204))),
+  http.put(urls.vote, () => new HttpResponse(null, { status: 204 })),
 ]
 
 export const voteErrorHandlers = [
-  rest.put(urls.vote, (_, res, ctx) =>
-    res(ctx.status(401), ctx.json({ message: 'User not found' }))
+  http.put(urls.vote, () =>
+    HttpResponse.json({ message: 'User not found' }, { status: 401 })
   ),
-  rest.put(urls.vote, (_, res, ctx) =>
-    res(ctx.status(404), ctx.json({ message: 'User or resource not found' }))
+  http.put(urls.vote, () =>
+    HttpResponse.json(
+      { message: 'User or resource not found' },
+      { status: 404 }
+    )
   ),
 ]

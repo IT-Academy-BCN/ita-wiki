@@ -46,7 +46,9 @@ type TButton = HTMLAttributes<HTMLParagraphElement> & {
   padding?: string
 }
 
-const ButtonStyled = styled(Button)<TButton>`
+const ButtonStyled = styled(Button).withConfig({
+  shouldForwardProp: (prop) => !['backgroundColor', 'padding'].includes(prop),
+})<TButton>`
   margin: ${dimensions.spacing.none};
   background-color: ${(props) => props.backgroundColor};
   border: 2px solid ${(props) => props.backgroundColor};
