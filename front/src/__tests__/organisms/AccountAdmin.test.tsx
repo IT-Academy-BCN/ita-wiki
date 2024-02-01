@@ -1,16 +1,16 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, fireEvent, waitFor } from '../test-utils'
 import { AccountAdmin } from '../../components/organisms'
-import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
+import { server } from '../../__mocks__/server'
 
 const queryClient = new QueryClient()
 
 afterEach(() => {
-  mswServer.resetHandlers()
+  server.resetHandlers()
 })
 
-afterAll(() => mswServer.close())
+afterAll(() => server.close())
 
 const renderWithQueryClient = (component: React.ReactNode) =>
   render(
@@ -76,7 +76,7 @@ describe('AccountAdmin Component', () => {
   })
 
   it('renders error text when fetching users fails', async () => {
-    mswServer.use(...errorHandlers)
+    server.use(...errorHandlers)
     render(<AccountAdmin />)
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
     expect(spinnerComponent).toBeInTheDocument()

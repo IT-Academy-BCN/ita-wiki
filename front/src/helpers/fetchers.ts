@@ -21,7 +21,6 @@ const errorMessageStatus: { [key: number]: string } = {
 
 export const getTopics = async (slug?: string): Promise<TGetTopics> => {
   const url = slug ? `${urls.getTopics}?slug=${slug}` : urls.getTopics
-
   const response = await fetch(url)
   if (!response.ok) {
     throw new Error(`Error fetching topics: ${response.statusText}`)
