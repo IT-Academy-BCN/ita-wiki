@@ -1,4 +1,4 @@
-import { rest } from 'msw'
+import { http, HttpResponse } from 'msw'
 import { render, waitFor, screen, fireEvent } from '../test-utils'
 import { server } from '../../__mocks__/server'
 import Login from '../../components/organisms/Login'
@@ -37,7 +37,9 @@ describe('Login', () => {
   })
 
   it('should show an error message if login fails', async () => {
-    server.use(rest.post(urls.logIn, (req, res, ctx) => res(ctx.status(404))))
+    server.use(
+      http.post(urls.logIn, () => HttpResponse.json(null, { status: 404 }))
+    )
     render(
       <Login handleLoginModal={handleLogin} handleRegisterModal={handleLogin} />
     )
