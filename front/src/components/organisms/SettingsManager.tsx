@@ -5,18 +5,18 @@ import { UsersManager } from './UsersManager'
 import { Tabs } from '../molecules/Tabs'
 import { useAuth } from '../../context/AuthProvider'
 
-const tabsData: React.ComponentProps<typeof Tabs> ['tabsData'] = [
+const tabsData: React.ComponentProps<typeof Tabs>['tabsData'] = [
   {
     id: 'topicsTab',
     title: 'Temas',
     tabComponent: <TopicsManagerBoard />,
-    requiredRole: ['MENTOR', 'ADMIN']
+    requiredRole: ['MENTOR', 'ADMIN'],
   },
   {
     id: 'usersTab',
     title: 'Usuarios',
     tabComponent: <UsersManager />,
-    requiredRole: ['ADMIN']
+    requiredRole: ['ADMIN'],
   },
 ]
 
@@ -30,7 +30,10 @@ export const SettingsManager: FC = () => {
       if (tab.id === 'usersTab') {
         return user?.role === 'ADMIN'
       }
-      return Array.isArray(tab.requiredRole) && tab.requiredRole.some((role) => role === user?.role)
+      return (
+        Array.isArray(tab.requiredRole) &&
+        tab.requiredRole.some((role) => role === user?.role)
+      )
     })
     .map((tab) => {
       const modifiedTab = {

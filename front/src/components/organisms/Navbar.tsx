@@ -1,14 +1,20 @@
-import { Button } from '@itacademy/ui'
+import {
+  Button,
+  Icon,
+  Title,
+  HamburgerMenu,
+  FlexBox,
+  colors,
+  device,
+  dimensions,
+  Modal,
+} from '@itacademy/ui'
 import { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { FlexBox, colors, device, dimensions } from '../../styles'
-import { Icon, Title, HamburgerMenu } from '../atoms'
-import { UserButton } from '../molecules/UserButton'
-import { SelectLanguage } from '../molecules/SelectLanguage'
+import { UserButton, SelectLanguage } from '../molecules'
 import { CategoriesList } from './CategoriesList'
-import { Modal } from '../molecules/Modal'
 import { SettingsManager } from './SettingsManager'
 import { useAuth } from '../../context/AuthProvider'
 

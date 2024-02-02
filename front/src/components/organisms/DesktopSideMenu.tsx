@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { FC } from 'react'
 import { Link } from 'react-router-dom'
-import { FlexBox, device, dimensions } from '../../styles'
+import { FlexBox, device, dimensions } from '@itacademy/ui'
 import icons from '../../assets/icons'
 import { paths } from '../../constants'
 import { CategoriesList } from './CategoriesList'

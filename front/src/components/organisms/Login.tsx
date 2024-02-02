@@ -1,13 +1,22 @@
-import { Button } from '@itacademy/ui'
 import { FC, HTMLAttributes, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
 import { UserLoginSchema } from '@itacademy/schemas'
 import { useTranslation } from 'react-i18next'
-import InputGroup from '../molecules/InputGroup'
-import { Icon, Spinner, Text, Title, ValidationMessage } from '../atoms'
-import { dimensions, colors, FlexBox, device } from '../../styles'
+import {
+  Icon,
+  Spinner,
+  Text,
+  Title,
+  ValidationMessage,
+  Button,
+  dimensions,
+  colors,
+  FlexBox,
+  device,
+  InputGroup,
+} from '@itacademy/ui'
 import { useLogin } from '../../hooks/useLogin'
 
 const FlexErrorStyled = styled(FlexBox)`

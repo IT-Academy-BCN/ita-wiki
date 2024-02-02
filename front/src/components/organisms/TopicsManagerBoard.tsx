@@ -2,13 +2,11 @@ import { FC, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { colors, FlexBox } from '../../styles'
-import { Spinner, Text } from '../atoms'
+import { colors, FlexBox, Spinner, Text } from '@itacademy/ui'
 import { TopicsEditableItem } from '../molecules'
 import { useAuth } from '../../context/AuthProvider'
-import { useGetTopics } from '../../hooks'
+import { useGetTopics, useManageTopic } from '../../hooks'
 import { TTopic } from '../../types'
-import { useManageTopic } from '../../hooks/useManageTopic'
 
 const StyledFlexBox = styled(FlexBox)`
   width: 100%;
