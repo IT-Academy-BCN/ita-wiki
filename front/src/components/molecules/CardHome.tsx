@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { FlexBox, colors, dimensions, font } from '../../styles'
-import { Text } from '../atoms'
+import { FlexBox, colors, dimensions, font, Text } from '@itacademy/ui'
 import bgHomeCardCorner from '../../assets/icons/bg-home-card-corner.svg'
 
 const CardContainer = styled(FlexBox)`

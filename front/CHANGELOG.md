@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.0] - 2024-02-02
+
+### Fix
+
+- Substitute in CardHome with UI components
+
 ## [0.10.0] - 2024-02-02
 
 ### Fix
