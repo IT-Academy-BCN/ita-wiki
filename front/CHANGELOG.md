@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.0] - 2024-02-02
+
+### Fix
+
+- Substitute in AccessModalContent with UI components
+
 ## [0.9.1] - 2024-01-31
 
 ### Fix
