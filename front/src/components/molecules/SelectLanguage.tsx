@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { colors, device, dimensions, font } from '../../styles'
+import { colors, device, dimensions, font } from '@itacademy/ui'
 
 type Language = 'es' | 'cat' | 'en'
 

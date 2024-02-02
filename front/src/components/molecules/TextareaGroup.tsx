@@ -1,8 +1,7 @@
 import { forwardRef, Ref } from 'react'
 import styled from 'styled-components'
+import { Label, ValidationMessage, dimensions, FlexBox } from '@itacademy/ui'
 import Textarea, { TTextarea } from '../atoms/Textarea'
-import { Label, ValidationMessage } from '../atoms'
-import { dimensions, FlexBox } from '../../styles'
 import { TValidationMessage } from '../atoms/ValidationMessage'
 import { newId } from '../../utils/newId'
 

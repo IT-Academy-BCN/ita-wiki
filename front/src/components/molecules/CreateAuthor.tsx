@@ -1,6 +1,5 @@
 import styled from 'styled-components'
-import { FlexBox, colors, font } from '../../styles'
-import { Text } from '../atoms'
+import { FlexBox, colors, font, Text } from '@itacademy/ui'
 
 const StyledDiv = styled.div`
   padding-right: 4px;

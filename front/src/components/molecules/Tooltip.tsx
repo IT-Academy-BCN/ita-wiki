@@ -1,7 +1,6 @@
-import { Button } from '@itacademy/ui'
 import { FC } from 'react'
+import { colors, dimensions, Button } from '@itacademy/ui'
 import styled from 'styled-components'
-import { colors, dimensions } from '../../styles'
 
 const ButtonStyled = styled(Button)``
 

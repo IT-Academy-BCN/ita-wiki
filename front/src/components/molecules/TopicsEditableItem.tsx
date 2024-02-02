@@ -1,9 +1,16 @@
-import { Button } from '@itacademy/ui'
 import { useRef } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { colors, dimensions, FlexBox, font } from '../../styles'
-import { Icon, Input, Text } from '../atoms'
+import {
+  colors,
+  dimensions,
+  FlexBox,
+  font,
+  Input,
+  Text,
+  Button,
+} from '@itacademy/ui'
+import { Icon } from '../atoms'
 import icons from '../../assets/icons'
 import { TTopic } from '../../types'
 

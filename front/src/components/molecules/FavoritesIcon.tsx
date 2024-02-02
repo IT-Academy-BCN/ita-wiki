@@ -1,7 +1,6 @@
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { Icon } from '../atoms'
-import { colors } from '../../styles'
+import { Icon, colors } from '@itacademy/ui'
 import { favMutation } from '../../helpers/fetchers'
 import { TFavorites, TResource } from '../../types'
 

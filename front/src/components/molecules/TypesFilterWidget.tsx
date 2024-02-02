@@ -1,8 +1,16 @@
 import { useState, useEffect, ChangeEvent } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { CheckBox, Label, Spinner, Text } from '../atoms'
-import { colors, dimensions, FlexBox, font } from '../../styles'
+import {
+  Checkbox,
+  Label,
+  Spinner,
+  Text,
+  colors,
+  dimensions,
+  FlexBox,
+  font,
+} from '@itacademy/ui'
 import { TGetTypes, TTypesFilterWidget } from '../../types/types'
 import { useGetTypes } from '../../hooks'
 
@@ -20,7 +28,7 @@ const StyledSpinner = styled(Spinner)`
   justify-content: center;
 `
 
-const CheckBoxStyled = styled(CheckBox)`
+const CheckBoxStyled = styled(Checkbox)`
   ${Label} {
     font-weight: ${font.medium};
     color: ${colors.black.black3};

@@ -1,7 +1,13 @@
 import { forwardRef, Ref } from 'react'
 import styled from 'styled-components'
-import { dimensions, FlexBox } from '../../styles'
-import { Icon, Input, Label, ValidationMessage } from '../atoms'
+import {
+  Input,
+  Label,
+  ValidationMessage,
+  dimensions,
+  FlexBox,
+} from '@itacademy/ui'
+import Icon from '../atoms/Icon'
 import { TInput } from '../atoms/Input'
 import { TValidationMessage } from '../atoms/ValidationMessage'
 import { newId } from '../../utils/newId'

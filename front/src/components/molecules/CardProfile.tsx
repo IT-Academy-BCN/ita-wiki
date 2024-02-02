@@ -1,8 +1,16 @@
-import { Button } from '@itacademy/ui'
+import {
+  Button,
+  Text,
+  Counter,
+  FlexBox,
+  colors,
+  font,
+  dimensions,
+  device,
+} from '@itacademy/ui'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { Text, Counter, UserImage } from '../atoms'
-import { FlexBox, colors, font, dimensions, device } from '../../styles'
+import { UserImage } from '../atoms'
 import icons from '../../assets/icons'
 
 const ContentContainer = styled(FlexBox)`
@@ -165,6 +173,7 @@ export const CardProfile = ({
             text={t('Aportaciones')}
             icon="attach_file"
             isError={resourcesError}
+            errorMessage={t('n/d')}
           />
         </SideCounter>
         <CenteredCounter>
@@ -173,6 +182,7 @@ export const CardProfile = ({
             text={t('Votos recibidos')}
             icon="expand_less"
             isError={resourcesError}
+            errorMessage={t('n/d')}
           />
         </CenteredCounter>
         <SideCounter>
@@ -181,6 +191,7 @@ export const CardProfile = ({
             text={t('Favoritos guardados')}
             icon="favorite"
             isError={favsError}
+            errorMessage={t('n/d')}
           />
         </SideCounter>
       </UserActivityWrapper>

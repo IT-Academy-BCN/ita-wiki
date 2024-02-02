@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
-import { FlexBox, colors, device, dimensions } from '../../styles'
-import { Icon, Title } from '../atoms'
+import { FlexBox, colors, device, dimensions, Title } from '@itacademy/ui'
+import { Icon } from '../atoms'
 
 const fadeIn = css`
   animation: fadeIn 0.5s forwards;

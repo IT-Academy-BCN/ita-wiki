@@ -1,8 +1,14 @@
-import { Button } from '@itacademy/ui'
+import {
+  FlexBox,
+  colors,
+  dimensions,
+  font,
+  Text,
+  Title,
+  Button,
+} from '@itacademy/ui'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { Text, Title } from '../atoms'
-import { FlexBox, colors, dimensions, font } from '../../styles'
 import img from '../../assets/icons/lock-dynamic-color.svg'
 
 const ImageStyled = styled.div`

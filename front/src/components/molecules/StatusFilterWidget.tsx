@@ -1,8 +1,15 @@
 import { ChangeEvent, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { CheckBox, Label, Text } from '../atoms'
-import { colors, dimensions, FlexBox, font } from '../../styles'
+import {
+  colors,
+  dimensions,
+  FlexBox,
+  font,
+  Checkbox,
+  Label,
+  Text,
+} from '@itacademy/ui'
 
 const StyledFlexbox = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
@@ -13,7 +20,7 @@ const StyledText = styled(Text)`
   margin-bottom: 0.2rem;
 `
 
-const CheckBoxStyled = styled(CheckBox)`
+const CheckBoxStyled = styled(Checkbox)`
   ${Label} {
     font-weight: ${font.medium};
     color: ${colors.black.black3};
