@@ -24,27 +24,27 @@ type Story = StoryObj<typeof Textarea>;
 export const Default: Story = {
     args: {
         label: "Textarea",
-        children: "Lorem ipsum...",
+        defaultValue: "Lorem ipsum...",
     },
 }
 export const Success: Story = {
     args: {
         label: "Textarea success",
-        children: "Lorem success...",
+        defaultValue: "Lorem success...",
         success: true
     },
 }
 export const Warning: Story = {
     args: {
         label: "Textarea warning",
-        children: "Lorem warning...",
+        defaultValue: "Lorem warning...",
         warning: true
     },
 }
 export const Error: Story = {
     args: {
         label: "Textarea error",
-        children: "Lorem error...",
+        defaultValue: "Lorem error...",
         error: true,
     },
 }
