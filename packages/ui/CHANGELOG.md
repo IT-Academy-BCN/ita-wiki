@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.14.0] - 2024-02-03
+
+### Add
+
+- Migrate CardHome to UI
+
 ## [0.13.0] - 2024-02-03
 
 ### Add
