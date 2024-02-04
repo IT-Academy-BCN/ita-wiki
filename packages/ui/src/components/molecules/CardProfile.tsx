@@ -1,9 +1,8 @@
-/* eslint-disable import/no-relative-packages */
 import { useId } from 'react'
 import styled from 'styled-components'
 import { Text, Counter, Button } from '../atoms'
 // TODO: FIX when atom UserImage migrated to UI
-import { UserImage } from '../../../../../front/src/components/atoms'
+// import { UserImage } from '../atoms'
 import { FlexBox, colors, font, dimensions, device } from '../../styles'
 import { TCounter } from '../atoms/Counter'
 
@@ -144,14 +143,14 @@ export const CardProfile = ({
     data-testid="card-profile"
   >
     <UserInfoContainer direction="column" justify="flex-start">
-      <UserImage
+      {/* <UserImage
         src={userData.profilePicture}
         alt={
           userData.profilePicture === ''
             ? userData.noProfilePictureAlt
             : `${userData.userName}`
         }
-      />
+      /> */}
       <UserInfoWrapper>
         <UsernameStyled as="h1">{userData.userName}</UsernameStyled>
         <TextStyled>{userData.userEmail}</TextStyled>

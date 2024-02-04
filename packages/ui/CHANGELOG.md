@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.15.0] - 2024-02-04
+
+### Add
+
+- Migrate CardProfile to UI
+
 ## [0.14.0] - 2024-02-03
 
 ### Add
