@@ -3,8 +3,8 @@ import { useParams, Params } from 'react-router-dom'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { render, screen, waitFor } from '../test-utils'
 import { MyFavoritesList } from '../../components/organisms'
-import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
+import { server } from '../../__mocks__/server'
 
 beforeEach(() => {
   vi.mock('../../context/AuthProvider', async () => {
@@ -34,11 +34,11 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  mswServer.resetHandlers()
+  server.resetHandlers()
   vi.resetAllMocks()
 })
 
-afterAll(() => mswServer.close())
+afterAll(() => server.close())
 
 describe('MyFavoritesList', () => {
   it('renders correctly', async () => {
@@ -82,7 +82,9 @@ describe('MyFavoritesList', () => {
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() =>
-      expect(screen.getByText('No hi ha recursos preferits')).toBeInTheDocument()
+      expect(
+        screen.getByText('No hi ha recursos preferits')
+      ).toBeInTheDocument()
     )
     expect(
       screen.queryByText('Alguna cosa ha anat malament...')
@@ -117,7 +119,7 @@ describe('MyFavoritesList', () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
     } as Readonly<Params>)
-    mswServer.use(...errorHandlers)
+    server.use(...errorHandlers)
 
     render(<MyFavoritesList />)
 

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.1] - 2024-01-31
+
+### Fix
+
+- Bump msw to 2.1.5
+- Fix tests
+
 ## [0.9.0] - 2024-01-31
 
 ### Removed
