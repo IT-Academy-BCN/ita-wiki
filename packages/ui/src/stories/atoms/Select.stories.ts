@@ -1,17 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Select } from '../../components/atoms'
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
   title: 'Atoms/Select',
   component: Select,
   parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: 'centered',
   },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ['autodocs'],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
   argTypes: {
     options: [
       {
@@ -22,14 +18,13 @@ const meta = {
     ],
     placeholder: { control: 'text' },
     defaultValue: { control: 'text' },
-    error: { control: 'boolean' },
+    $error: { control: 'boolean' },
   },
 } satisfies Meta<typeof Select>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
     options: [
@@ -54,7 +49,7 @@ export const WithPlaceholder: Story = {
 export const DefaultValueProvided: Story = {
   args: {
     options: [
-      { id: 'option1', label: 'Option 1', value: 'Option 1' },
+      { id: 'option1', label: 'Option 1 (default)', value: 'Option 1' },
       { id: 'option2', label: 'Option 2', value: 'Option 2' },
       { id: 'option3', label: 'Option 3', value: 'Option 3' },
     ],
@@ -71,6 +66,6 @@ export const WithError: Story = {
       { id: 'option3', label: 'Option 3', value: 'Option 3' },
     ],
     placeholder: 'Select an option',
-    error: true,
+    $error: true,
   },
 }
