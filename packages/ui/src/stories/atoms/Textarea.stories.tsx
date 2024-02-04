@@ -9,7 +9,6 @@ const meta = {
     },
     tags: ["autodocs"],
     argTypes: {
-        label: { control: 'text' },
         success: { control: 'boolean', defaultValue: false },
         warning: { control: 'boolean', defaultValue: false },
         error: { control: 'boolean', defaultValue: false },
