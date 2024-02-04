@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-type TFlexBox = {
+export type TFlexBox = {
   direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse'
   justify?:
     | 'flex-start'

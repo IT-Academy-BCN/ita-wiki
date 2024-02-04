@@ -17,8 +17,14 @@ import { UserButton, SelectLanguage } from '../molecules'
 import { CategoriesList } from './CategoriesList'
 import { SettingsManager } from './SettingsManager'
 import { useAuth } from '../../context/AuthProvider'
+import type { TFlexBox } from '../../styles/FlexBox'
 
-const NavbarStyled = styled(FlexBox)<{ isInCategoryPage: boolean }>`
+interface TCustomFlexBox extends TFlexBox {
+  isInCategoryPage: boolean;
+}
+const NavbarStyled = styled(FlexBox).withConfig<TCustomFlexBox>({
+  shouldForwardProp: (prop) => !['isInCategoryPage'].includes(prop),
+})`
   background-color: ${({ isInCategoryPage }) =>
     isInCategoryPage ? `${colors.gray.gray5}` : `${colors.white}`};
 

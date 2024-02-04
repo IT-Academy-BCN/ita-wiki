@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.1] - 2024-02-07
+
+### Fixed
+
+- Remove unnecessary prop from NavBar
+
 ## [0.11.0] - 2024-02-06
 
 ### Added
