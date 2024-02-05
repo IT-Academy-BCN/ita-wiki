@@ -7,6 +7,7 @@ import ValidationMessage from './ValidationMessage'
 import Radio from './Radio'
 import Text from './Text'
 import { Textarea } from './Textarea'
+import { Select } from './Select'
 import { Spinner } from './Spinner'
 import Counter from './Counter'
 
@@ -23,6 +24,7 @@ export {
   Text,
   Textarea,
   Radio,
+  Select,
   Spinner,
   Counter,
 }
