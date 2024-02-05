@@ -1,6 +1,5 @@
-import { screen, fireEvent } from '@testing-library/react'
+import { screen, fireEvent, render } from '@testing-library/react'
 import { vi } from 'vitest'
-import { render } from '../test-utils'
 import { CardProfile } from '../../components/molecules'
 
 const mockLogOut = vi.fn()
