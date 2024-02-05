@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.0] - 2024-02-01
+
+### Removed
+
+- Import Tabs from UI
+
 ## [0.9.1] - 2024-01-31
 
 ### Fix
