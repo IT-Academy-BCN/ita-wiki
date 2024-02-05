@@ -19,8 +19,10 @@ describe('AccessModalContent', () => {
         handleAccessModal={handleAccessModal}
         loginBtnTitle="Login"
         registerBtnTitle="Register"
-        svgSrc="test"
-        svgAlt="alt test"
+        img={{
+          svgSrc: 'test',
+          svgAlt: 'alt test',
+        }}
         title="Title test"
         userMsg="user message test"
       />
@@ -41,8 +43,10 @@ describe('AccessModalContent', () => {
         handleAccessModal={handleAccessModal}
         loginBtnTitle="Login"
         registerBtnTitle="Register"
-        svgSrc="test"
-        svgAlt="alt test"
+        img={{
+          svgSrc: 'test',
+          svgAlt: 'alt test',
+        }}
         title="Title test"
         userMsg="user message test"
       />
@@ -65,8 +69,10 @@ describe('AccessModalContent', () => {
         handleAccessModal={handleAccessModal}
         loginBtnTitle="Login"
         registerBtnTitle="Register"
-        svgSrc="test"
-        svgAlt="alt test"
+        img={{
+          svgSrc: 'test',
+          svgAlt: 'alt test',
+        }}
         title="Title test"
         userMsg="user message test"
       />
