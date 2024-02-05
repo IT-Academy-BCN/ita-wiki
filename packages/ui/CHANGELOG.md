@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.13.0] - 2024-02-04
+
+### Added
+
+- Migrate Select to UI
 
 ## [0.12.2] - 2024-01-31
 
