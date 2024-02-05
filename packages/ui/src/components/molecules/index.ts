@@ -1,6 +1,7 @@
 import { BackButton } from './BackButton'
 import { Tabs } from './Tabs'
+import { InputGroup } from './InputGroup'
+import { Modal } from './Modal'
+import { CardProfile } from './CardProfile'
 
-export { InputGroup } from './InputGroup'
-export { Modal } from './Modal'
-export { BackButton, Tabs }
+export { BackButton, Tabs, InputGroup, Modal, CardProfile }

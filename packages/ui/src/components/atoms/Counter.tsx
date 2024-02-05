@@ -59,7 +59,7 @@ const IconStyled = styled(Icon)<{ name: string }>`
   }
 `
 
-type TCounter = {
+export type TCounter = {
   number?: number
   text: string
   icon: string
