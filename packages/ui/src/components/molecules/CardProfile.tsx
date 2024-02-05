@@ -1,8 +1,6 @@
 import { useId } from 'react'
 import styled from 'styled-components'
 import { Text, Counter, Button } from '../atoms'
-// TODO: FIX when atom UserImage migrated to UI
-// import { UserImage } from '../atoms'
 import { FlexBox, colors, font, dimensions, device } from '../../styles'
 import { TCounter } from '../atoms/Counter'
 
@@ -120,8 +118,7 @@ export type TUserData = {
 }
 
 export type TLogoutData = {
-  logoutIcon: string
-  altLogout: string
+  img?: { logoutIcon: string; altLogout: string }
   handleLogOut: () => void
   logoutMsg: string
 }
@@ -143,20 +140,15 @@ export const CardProfile = ({
     data-testid="card-profile"
   >
     <UserInfoContainer direction="column" justify="flex-start">
-      {/* <UserImage
-        src={userData.profilePicture}
-        alt={
-          userData.profilePicture === ''
-            ? userData.noProfilePictureAlt
-            : `${userData.userName}`
-        }
-      /> */}
       <UserInfoWrapper>
         <UsernameStyled as="h1">{userData.userName}</UsernameStyled>
         <TextStyled>{userData.userEmail}</TextStyled>
         <ButtonStyled outline onClick={logoutData.handleLogOut}>
           {logoutData.logoutMsg}{' '}
-          <img src={logoutData.logoutIcon} alt={logoutData.altLogout} />
+          <img
+            src={logoutData.img?.logoutIcon}
+            alt={logoutData.img?.altLogout}
+          />
         </ButtonStyled>
       </UserInfoWrapper>
     </UserInfoContainer>
