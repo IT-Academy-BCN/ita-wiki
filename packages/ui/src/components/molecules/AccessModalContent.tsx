@@ -34,8 +34,10 @@ type TAccessModal = {
   userMsg: string
   registerBtnTitle: string
   loginBtnTitle: string
-  svgSrc: string
-  svgAlt: string
+  img?: {
+    svgSrc: string
+    svgAlt: string
+  }
 }
 
 const AccessModalContent = ({
@@ -46,12 +48,11 @@ const AccessModalContent = ({
   userMsg,
   registerBtnTitle,
   loginBtnTitle,
-  svgSrc,
-  svgAlt,
+  img,
 }: TAccessModal) => (
   <FlexBox>
     <ImageStyled>
-      <img src={svgSrc} alt={svgAlt} />
+      <img src={img?.svgSrc} alt={img?.svgAlt} />
     </ImageStyled>
     <FlexBoxStyled>
       <Title as="h1" fontWeight="bold" color={colors.black.black3}>

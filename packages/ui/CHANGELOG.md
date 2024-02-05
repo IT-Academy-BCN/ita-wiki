@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.13.0] - 2024-02-03
 
-### Add
+### Added
 
 - Migrate AccessModalContent to UI
 
@@ -16,7 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.12.1] - 2024-01-31
 
-### Fix
+### Fixed
 
 - Fix bundle and tests
 
@@ -28,7 +28,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.11.1] - 2024-01-25
 
-### Fix
+### Fixed
 
 - Export molecules from UI
 
@@ -148,7 +148,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.2.1] - 2023-12-19
 
-### Fix
+### Fixed
 
 - npm prepublishOnly
 

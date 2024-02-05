@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { AccessModalContent } from '../../components/molecules'
-import customImg from '../assets/lock-dynamic-color.svg'
+import { AccessModalContent } from '../../../components/molecules'
+import customImg from './lock-dynamic-color.svg'
 
 const meta = {
   title: 'Molecules/AccessModalContent',
@@ -20,8 +20,10 @@ const meta = {
     userMsg: { control: 'text' },
     registerBtnTitle: { control: 'text' },
     loginBtnTitle: { control: 'text' },
-    svgSrc: { control: 'text' },
-    svgAlt: { control: 'text' },
+    img: {
+      svgSrc: { control: 'text' },
+      svgAlt: { control: 'text' },
+    },
   },
 } satisfies Meta<typeof AccessModalContent>
 
@@ -37,8 +39,10 @@ export const Default: AccessModalContentStory = {
     userMsg: 'AccessModalContent_userMsg',
     registerBtnTitle: 'Register',
     loginBtnTitle: 'Login',
-    svgSrc: '',
-    svgAlt: 'test alt',
+    img: {
+      svgSrc: '',
+      svgAlt: 'test alt',
+    },
   },
 }
 
@@ -51,7 +55,9 @@ export const WithIcon: AccessModalContentStory = {
     userMsg: 'Regístrate para subir o votar contenido',
     registerBtnTitle: 'Registrarme',
     loginBtnTitle: 'Entrar',
-    svgSrc: customImg,
-    svgAlt: 'test alt',
+    img: {
+      svgSrc: customImg,
+      svgAlt: 'test alt',
+    },
   },
 }
