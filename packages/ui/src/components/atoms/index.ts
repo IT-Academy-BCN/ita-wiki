@@ -6,6 +6,7 @@ import HamburgerMenu from './HamburgerMenu'
 import ValidationMessage from './ValidationMessage'
 import Radio from './Radio'
 import Text from './Text'
+import { Textarea } from './Textarea'
 import { Spinner } from './Spinner'
 import Counter from './Counter'
 
@@ -20,6 +21,7 @@ export {
   HamburgerMenu,
   ValidationMessage,
   Text,
+  Textarea,
   Radio,
   Spinner,
   Counter,

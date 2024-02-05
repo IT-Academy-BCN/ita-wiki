@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Textarea from "../../components/atoms/Textarea"
+import { Textarea } from "../../components/atoms"
 
 const meta = {
     title: "Atoms/Textarea",
@@ -22,27 +22,23 @@ type Story = StoryObj<typeof Textarea>;
 
 export const Default: Story = {
     args: {
-        label: "Textarea",
         defaultValue: "Lorem ipsum...",
     },
 }
 export const Success: Story = {
     args: {
-        label: "Textarea success",
         defaultValue: "Lorem success...",
         success: true
     },
 }
 export const Warning: Story = {
     args: {
-        label: "Textarea warning",
         defaultValue: "Lorem warning...",
         warning: true
     },
 }
 export const Error: Story = {
     args: {
-        label: "Textarea error",
         defaultValue: "Lorem error...",
         error: true,
     },
