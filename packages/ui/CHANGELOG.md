@@ -20,15 +20,11 @@ All notable changes to this project will be documented in this file.
 
 - Migrate Select to UI
 
-### Added
+## [0.12.2] - 2024-01-31
 
-- Migrate CardHome to UI
+### Removed
 
-## [0.13.0] - 2024-02-04
-
-### Added
-
-- Migrate Select to UI
+- Removed Avatar Error from Avatar.stories
 
 ## [0.12.1] - 2024-01-31
 
