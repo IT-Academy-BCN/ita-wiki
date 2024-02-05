@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { CardProfile } from '../../components/molecules'
-import logoutSvg from '../assets/logout.svg'
-import profileAvatar from '../assets/profile-avatar.svg'
+import { CardProfile } from '../../../components/molecules'
+import logoutSvg from './logout.svg'
+import profileAvatar from './profile-avatar.svg'
 
 const meta = {
   title: 'Molecules/CardProfile',
@@ -30,8 +30,10 @@ const meta = {
       },
     ],
     logoutData: {
-      logoutIcon: { control: 'string' },
-      altLogout: { control: 'string' },
+      img: {
+        logoutIcon: { control: 'string' },
+        altLogout: { control: 'string' },
+      },
       handleLogOut: { control: 'function' },
       logoutMsg: { control: 'string' },
     },
@@ -59,8 +61,10 @@ export const Default: CardProfileStory = {
       },
     ],
     logoutData: {
-      logoutIcon: '',
-      altLogout: '',
+      img: {
+        logoutIcon: '',
+        altLogout: '',
+      },
       handleLogOut: () => {},
       logoutMsg: '',
     },
@@ -85,8 +89,10 @@ export const WithImgs: CardProfileStory = {
       },
     ],
     logoutData: {
-      logoutIcon: logoutSvg,
-      altLogout: 'logout icon',
+      img: {
+        logoutIcon: logoutSvg,
+        altLogout: 'logout icon',
+      },
       handleLogOut: () => {},
       logoutMsg: 'Log out',
     },
@@ -111,8 +117,10 @@ export const WithErrors: CardProfileStory = {
       },
     ],
     logoutData: {
-      logoutIcon: logoutSvg,
-      altLogout: 'logout icon',
+      img: {
+        logoutIcon: logoutSvg,
+        altLogout: 'logout icon',
+      },
       handleLogOut: () => {},
       logoutMsg: 'Log out',
     },

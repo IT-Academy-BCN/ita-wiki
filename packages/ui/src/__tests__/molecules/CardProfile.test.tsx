@@ -40,16 +40,12 @@ describe('CardProfile', () => {
         }}
         counterData={counterData}
         logoutData={{
-          logoutIcon: 'test-icon.jpg',
-          altLogout: 'test-icon-alt',
+          img: { logoutIcon: 'test-icon.jpg', altLogout: 'test-icon-alt' },
           handleLogOut: mockLogOut,
           logoutMsg: 'Logout',
         }}
       />
     )
-
-    /*   const image: HTMLImageElement = screen.getByAltText(/test-name/i)
-    expect(image).toHaveAttribute('src', '/test-img.jpg') */
 
     expect(screen.getByText(/test-name/i)).toBeInTheDocument()
 
@@ -104,8 +100,7 @@ describe('CardProfile', () => {
         }}
         counterData={counterData}
         logoutData={{
-          logoutIcon: 'test-icon.jpg',
-          altLogout: 'test-icon-alt',
+          img: { logoutIcon: 'test-icon.jpg', altLogout: 'test-icon-alt' },
           handleLogOut: mockLogOut,
           logoutMsg: 'Logout',
         }}
