@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { fireEvent, render, screen, waitFor } from '../test-utils'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { AccessModalContent } from '../../components/molecules'
 
 describe('AccessModalContent', () => {
