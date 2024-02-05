@@ -4,13 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ## [0.10.0] - 2024-02-02
 
-### Fix
+### Added
 
 - Import atoms ui components into front organisms
 
 ## [0.9.1] - 2024-01-31
 
-### Fix
+### Fixed
 
 - Bump msw to 2.1.5
 - Fix tests
