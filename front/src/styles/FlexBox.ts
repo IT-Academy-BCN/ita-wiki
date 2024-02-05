@@ -1,17 +1,5 @@
 import styled from 'styled-components'
-
-export type TFlexBox = {
-  direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse'
-  justify?:
-    | 'flex-start'
-    | 'flex-end'
-    | 'center'
-    | 'space-between'
-    | 'space-around'
-    | 'space-evenly'
-  align?: 'stretch' | 'center' | 'start' | 'end' | 'baseline'
-  gap?: string
-}
+import type { TFlexBox } from '../types'
 
 export const FlexBox = styled.div.withConfig({
   shouldForwardProp: (prop) =>

@@ -8,6 +8,7 @@ import {
   device,
   dimensions,
   Modal,
+  type TFlexBox,
 } from '@itacademy/ui'
 import { useState, useMemo } from 'react'
 import styled from 'styled-components'
@@ -17,12 +18,12 @@ import { UserButton, SelectLanguage } from '../molecules'
 import { CategoriesList } from './CategoriesList'
 import { SettingsManager } from './SettingsManager'
 import { useAuth } from '../../context/AuthProvider'
-import type { TFlexBox } from '../../styles/FlexBox'
 
-interface TCustomFlexBox extends TFlexBox {
-  isInCategoryPage: boolean;
+type TNavbarStyled = TFlexBox & {
+  isInCategoryPage?: boolean
 }
-const NavbarStyled = styled(FlexBox).withConfig<TCustomFlexBox>({
+
+const NavbarStyled = styled(FlexBox).withConfig<TNavbarStyled>({
   shouldForwardProp: (prop) => !['isInCategoryPage'].includes(prop),
 })`
   background-color: ${({ isInCategoryPage }) =>
@@ -193,5 +194,3 @@ export const Navbar = ({
     </>
   )
 }
-
-export default styled(Navbar)``
