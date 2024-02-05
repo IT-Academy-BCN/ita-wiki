@@ -14,9 +14,15 @@ All notable changes to this project will be documented in this file.
 
 - Migrate Select to UI
 
-### Add
+### Added
 
-- Migrate cardhome to package ui
+- Migrate CardHome to UI
+
+## [0.13.0] - 2024-02-04
+
+### Added
+
+- Migrate Select to UI
 
 ## [0.12.1] - 2024-01-31
 
