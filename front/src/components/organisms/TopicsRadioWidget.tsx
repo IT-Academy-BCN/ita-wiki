@@ -1,12 +1,10 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { dimensions, Spinner } from '@itacademy/ui'
-import { Radio } from '../atoms'
+import { dimensions, Spinner, Radio } from '@itacademy/ui'
 import { useGetTopics } from '../../hooks'
 
 const StyledRadio = styled(Radio)`
-  flex-direction: column;
   align-items: start;
   gap: ${dimensions.spacing.xs};
 `

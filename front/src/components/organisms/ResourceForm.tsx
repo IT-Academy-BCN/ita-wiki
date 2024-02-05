@@ -1,3 +1,13 @@
+import {
+  Button,
+  Radio,
+  FlexBox,
+  colors,
+  dimensions,
+  ValidationMessage,
+  Icon,
+  Spinner,
+} from '@itacademy/ui'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -5,16 +15,6 @@ import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { ChangeEvent, FC, HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  FlexBox,
-  colors,
-  dimensions,
-  ValidationMessage,
-  Icon,
-  Spinner,
-  Button,
-} from '@itacademy/ui'
-import { Radio } from '../atoms'
 import { InputGroup, SelectGroup } from '../molecules'
 import { useCreateResource, useUpdateResource } from '../../hooks'
 
@@ -74,11 +74,11 @@ export type TInitialValues = Omit<
   topicId?: string
   id?: string
 }
-const ResourceFormStyled = styled.form`
-  ${Radio} {
-    margin-top: ${dimensions.spacing.xl};
-  }
+
+const StyledRadio = styled(Radio)`
+  margin-top: ${dimensions.spacing.xl};
 `
+
 type TSelectOption = {
   value: string
   label: string
@@ -89,7 +89,7 @@ export type TResourceForm = {
   initialValues?: Partial<TInitialValues>
   resourceId?: string
 }
-const ResourceForm: FC<TResourceForm> = ({
+export const ResourceForm: FC<TResourceForm> = ({
   selectOptions,
   initialValues,
   resourceId,
@@ -159,7 +159,7 @@ const ResourceForm: FC<TResourceForm> = ({
   )?.label
 
   return (
-    <ResourceFormStyled
+    <form
       onSubmit={initialValues ? update : create}
       data-testid="resource-form"
     >
@@ -207,13 +207,14 @@ const ResourceForm: FC<TResourceForm> = ({
         validationMessage={errors.topics?.message}
         onChange={handleTopicChange}
       />
-      <Radio
+      <StyledRadio
         {...register('resourceType')}
         options={[
           { id: 'VIDEO', name: 'Video' },
           { id: 'TUTORIAL', name: t('Curso') },
           { id: 'BLOG', name: 'Blog' },
         ]}
+        direction="row"
         inputName="resourceType"
         data-testid="resourceType"
       />
@@ -248,7 +249,6 @@ const ResourceForm: FC<TResourceForm> = ({
           </Button>
         )}
       </ButtonContainerStyled>
-    </ResourceFormStyled>
+    </form>
   )
 }
-export default ResourceForm

@@ -1,7 +1,7 @@
 import { vi } from 'vitest'
 import { useLocation } from 'react-router-dom'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
-import ResourceForm from '../../components/organisms/ResourceForm'
+import { ResourceForm } from '../../components/organisms/ResourceForm'
 import { reloadPage } from '../../utils/navigation'
 
 const reload = vi.fn(() => reloadPage)
