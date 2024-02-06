@@ -1,3 +1,13 @@
+import {
+  Button,
+  Radio,
+  FlexBox,
+  colors,
+  dimensions,
+  ValidationMessage,
+  Icon,
+  Spinner,
+} from '@itacademy/ui'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -5,16 +15,6 @@ import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { ChangeEvent, FC, HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  FlexBox,
-  colors,
-  dimensions,
-  ValidationMessage,
-  Icon,
-  Spinner,
-  Button,
-} from '@itacademy/ui'
-import { Radio } from '../atoms'
 import { InputGroup, SelectGroup } from '../molecules'
 import { useCreateResource, useUpdateResource } from '../../hooks'
 
@@ -22,6 +22,7 @@ type TButton = HTMLAttributes<HTMLParagraphElement> & {
   backgroundColor?: string
   padding?: string
 }
+
 const ButtonStyled = styled(Button)<TButton>`
   margin: ${dimensions.spacing.none};
   background-color: ${({ backgroundColor }) => backgroundColor};
@@ -37,6 +38,7 @@ const ButtonStyled = styled(Button)<TButton>`
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
   margin: ${dimensions.spacing.xs} 0;
+
   ${ButtonStyled} {
     font-weight: 500;
     margin: 0rem;
@@ -47,6 +49,7 @@ const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.xxxs};
   margin-left: 0.2rem;
 `
+
 const ResourceFormSchema = z.object({
   title: z
     .string({ required_error: 'Este campo es obligatorio' })
@@ -66,6 +69,7 @@ const ResourceFormSchema = z.object({
     .refine((val) => val !== '', 'Debe seleccionar un tema válido'),
   resourceType: z.string(),
 })
+
 export type TInitialValues = Omit<
   z.infer<typeof ResourceFormSchema>,
   'topics'
@@ -74,22 +78,24 @@ export type TInitialValues = Omit<
   topicId?: string
   id?: string
 }
-const ResourceFormStyled = styled.form`
-  ${Radio} {
-    margin-top: ${dimensions.spacing.xl};
-  }
+
+const StyledRadio = styled(Radio)`
+  margin-top: ${dimensions.spacing.xl};
 `
+
 type TSelectOption = {
   value: string
   label: string
   id?: string
 }
+
 export type TResourceForm = {
   selectOptions: TSelectOption[]
   initialValues?: Partial<TInitialValues>
   resourceId?: string
 }
-const ResourceForm: FC<TResourceForm> = ({
+
+export const ResourceForm: FC<TResourceForm> = ({
   selectOptions,
   initialValues,
   resourceId,
@@ -159,7 +165,7 @@ const ResourceForm: FC<TResourceForm> = ({
   )?.label
 
   return (
-    <ResourceFormStyled
+    <form
       onSubmit={initialValues ? update : create}
       data-testid="resource-form"
     >
@@ -207,13 +213,14 @@ const ResourceForm: FC<TResourceForm> = ({
         validationMessage={errors.topics?.message}
         onChange={handleTopicChange}
       />
-      <Radio
+      <StyledRadio
         {...register('resourceType')}
         options={[
           { id: 'VIDEO', name: 'Video' },
           { id: 'TUTORIAL', name: t('Curso') },
           { id: 'BLOG', name: 'Blog' },
         ]}
+        direction="row"
         inputName="resourceType"
         data-testid="resourceType"
       />
@@ -248,7 +255,6 @@ const ResourceForm: FC<TResourceForm> = ({
           </Button>
         )}
       </ButtonContainerStyled>
-    </ResourceFormStyled>
+    </form>
   )
 }
-export default ResourceForm
