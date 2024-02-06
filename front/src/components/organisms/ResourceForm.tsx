@@ -22,6 +22,7 @@ type TButton = HTMLAttributes<HTMLParagraphElement> & {
   backgroundColor?: string
   padding?: string
 }
+
 const ButtonStyled = styled(Button)<TButton>`
   margin: ${dimensions.spacing.none};
   background-color: ${({ backgroundColor }) => backgroundColor};
@@ -37,6 +38,7 @@ const ButtonStyled = styled(Button)<TButton>`
 const ButtonContainerStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.xs};
   margin: ${dimensions.spacing.xs} 0;
+
   ${ButtonStyled} {
     font-weight: 500;
     margin: 0rem;
@@ -47,6 +49,7 @@ const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.xxxs};
   margin-left: 0.2rem;
 `
+
 const ResourceFormSchema = z.object({
   title: z
     .string({ required_error: 'Este campo es obligatorio' })
@@ -66,6 +69,7 @@ const ResourceFormSchema = z.object({
     .refine((val) => val !== '', 'Debe seleccionar un tema válido'),
   resourceType: z.string(),
 })
+
 export type TInitialValues = Omit<
   z.infer<typeof ResourceFormSchema>,
   'topics'
@@ -84,11 +88,13 @@ type TSelectOption = {
   label: string
   id?: string
 }
+
 export type TResourceForm = {
   selectOptions: TSelectOption[]
   initialValues?: Partial<TInitialValues>
   resourceId?: string
 }
+
 export const ResourceForm: FC<TResourceForm> = ({
   selectOptions,
   initialValues,
