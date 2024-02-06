@@ -17,11 +17,11 @@ const sizes = {
   big: '133px',
 }
 
-type TSpinner = {
+export type TSpinner = {
   size?: 'xsmall' | 'small' | 'medium' | 'big'
 }
 
-const Spinner = styled.div.attrs<TSpinner>((props) => ({
+export const Spinner = styled.div.attrs<TSpinner>((props) => ({
   size: props?.size,
 }))<TSpinner>`
   ${({ size }) => `
@@ -36,4 +36,3 @@ const Spinner = styled.div.attrs<TSpinner>((props) => ({
   border-radius: 50%;
   animation: ${spinnerAnimation} 1s linear infinite;
 `
-export { Spinner }

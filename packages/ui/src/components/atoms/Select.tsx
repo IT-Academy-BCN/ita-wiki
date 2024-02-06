@@ -1,6 +1,18 @@
-import { SelectHTMLAttributes, forwardRef } from 'react'
+import { type SelectHTMLAttributes, forwardRef } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, font } from '../../styles'
+
+export type TOption = {
+  value: string
+  label: string
+  id?: string
+}
+
+export type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
+  options?: TOption[]
+  $error?: boolean
+  placeholder?: string
+}
 
 const SelectStyled = styled.select<TSelect>`
   cursor: pointer;
@@ -18,17 +30,6 @@ const SelectStyled = styled.select<TSelect>`
     outline: 0 none;
   }
 `
-type TOption = {
-  value: string
-  label: string
-  id?: string
-}
-
-type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
-  options?: TOption[]
-  $error?: boolean
-  placeholder?: string
-}
 
 export const Select = forwardRef<HTMLSelectElement, TSelect>((props, ref) => {
   const {

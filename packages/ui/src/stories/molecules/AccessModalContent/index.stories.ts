@@ -5,13 +5,10 @@ import customImg from './lock-dynamic-color.svg'
 const meta = {
   title: 'Molecules/AccessModalContent',
   component: AccessModalContent,
-
   parameters: {
     layout: 'centered',
   },
-
   tags: ['autodocs'],
-
   argTypes: {
     handleAccessModal: { control: 'function' },
     handleLoginModal: { control: 'function' },

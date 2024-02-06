@@ -26,7 +26,8 @@ const ButtonStyled = styled(Button)`
 const StyledText = styled(Text)`
   font-weight: ${font.medium};
 `
-type TAccessModal = {
+
+export type TAccessModalContent = {
   handleAccessModal: () => void
   handleLoginModal: () => void
   handleRegisterModal: () => void
@@ -40,7 +41,7 @@ type TAccessModal = {
   }
 }
 
-const AccessModalContent = ({
+export const AccessModalContent = ({
   handleAccessModal,
   handleLoginModal,
   handleRegisterModal,
@@ -49,7 +50,7 @@ const AccessModalContent = ({
   registerBtnTitle,
   loginBtnTitle,
   img,
-}: TAccessModal) => (
+}: TAccessModalContent) => (
   <FlexBox>
     <ImageStyled>
       <img src={img?.svgSrc} alt={img?.svgAlt} />
@@ -81,5 +82,3 @@ const AccessModalContent = ({
     </ButtonContainerStyled>
   </FlexBox>
 )
-
-export { AccessModalContent }

@@ -1,30 +1,15 @@
-import Input from './Input'
-import Label from './Label'
-import Checkbox from './Checkbox'
-import { Button } from './Button'
-import HamburgerMenu from './HamburgerMenu'
-import ValidationMessage from './ValidationMessage'
-import Radio from './Radio'
-import Text from './Text'
-import { Textarea } from './Textarea'
-import { Select } from './Select'
-import { Spinner } from './Spinner'
-import Counter from './Counter'
-
-export { Avatar } from './Avatar'
-export { Icon } from './Icon'
-export { Title } from './Title'
-export {
-  Input,
-  Label,
-  Button,
-  Checkbox,
-  HamburgerMenu,
-  ValidationMessage,
-  Text,
-  Textarea,
-  Radio,
-  Select,
-  Spinner,
-  Counter,
-}
+export { Avatar, type TAvatar } from './Avatar'
+export { Button, type TButton } from './Button'
+export { Checkbox, type TCheckbox } from './Checkbox'
+export { Counter, type TCounter } from './Counter'
+export { HamburgerMenu, type THamburgerMenu } from './HamburgerMenu'
+export { Icon, type TIcon } from './Icon'
+export { Input, type TInput } from './Input'
+export { Label, type TLabel } from './Label'
+export { Radio, type TRadio, type TRadioOptions } from './Radio'
+export { Select, type TSelect, type TOption } from './Select'
+export { Spinner, type TSpinner } from './Spinner'
+export { Text, type TText } from './Text'
+export { Textarea, type TTextarea } from './Textarea'
+export { Title, type TTitle } from './Title'
+export { ValidationMessage, type TValidationMessage } from './ValidationMessage'
