@@ -2,17 +2,19 @@ import styled from 'styled-components'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useAuth } from '../../context/AuthProvider'
-import { Modal } from '../molecules'
-import { Title, Spinner, Text } from '../atoms'
 import {
+  Title,
+  Spinner,
+  Text,
   FlexBox,
   colors,
   device,
   dimensions,
   font,
   responsiveSizes,
-} from '../../styles'
+  Modal,
+} from '@itacademy/ui'
+import { useAuth } from '../../context/AuthProvider'
 import { CardResourceLink } from './CardResourceLink'
 import Login from './Login'
 import Register from './Register'

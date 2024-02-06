@@ -1,8 +1,8 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { dimensions } from '../../styles'
-import { Radio, Spinner } from '../atoms'
+import { dimensions, Spinner } from '@itacademy/ui'
+import { Radio } from '../atoms'
 import { useGetTopics } from '../../hooks'
 
 const StyledRadio = styled(Radio)`
@@ -20,12 +20,9 @@ const SpinnerStyled = styled(Spinner)`
   margin: 0 auto;
 `
 
-export const TopicsRadioWidget: FC<TTopicsSlug> = ({
-  slug,
-  setTopic,
-}) => {
+export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug, setTopic }) => {
   const { data, isLoading, isError } = useGetTopics(slug)
-  
+
   const { t } = useTranslation()
 
   const onTopicChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +34,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
 
   const options = [
     { id: 'todos', name: t('Todos') },
-    ...(data ? data.map((tp) => ({ id: tp.id, name: tp.name })) : [])
+    ...(data ? data.map((tp) => ({ id: tp.id, name: tp.name })) : []),
   ]
 
   return (
@@ -45,7 +42,7 @@ export const TopicsRadioWidget: FC<TTopicsSlug> = ({
       options={options}
       inputName="Topics Radio Filter"
       onChange={onTopicChange}
-      defaultChecked='todos'
+      defaultChecked="todos"
     />
   )
 }

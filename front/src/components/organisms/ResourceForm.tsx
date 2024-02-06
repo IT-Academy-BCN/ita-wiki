@@ -1,4 +1,3 @@
-import { Button } from '@itacademy/ui'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -6,9 +5,17 @@ import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { ChangeEvent, FC, HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
+import {
+  FlexBox,
+  colors,
+  dimensions,
+  ValidationMessage,
+  Icon,
+  Spinner,
+  Button,
+} from '@itacademy/ui'
+import { Radio } from '../atoms'
 import { InputGroup, SelectGroup } from '../molecules'
-import { ValidationMessage, Radio, Icon, Spinner } from '../atoms'
-import { FlexBox, colors, dimensions } from '../../styles'
 import { useCreateResource, useUpdateResource } from '../../hooks'
 
 type TButton = HTMLAttributes<HTMLParagraphElement> & {

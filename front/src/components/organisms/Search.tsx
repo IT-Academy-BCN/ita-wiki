@@ -1,11 +1,19 @@
-import { Button } from '@itacademy/ui'
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
-import { InputGroup } from '../molecules'
-import { FlexBox, colors, device, dimensions, font } from '../../styles'
-import { Icon, Input, Title } from '../atoms'
+import {
+  FlexBox,
+  colors,
+  device,
+  dimensions,
+  font,
+  Button,
+  Input,
+  Title,
+  InputGroup,
+} from '@itacademy/ui'
+import { Icon } from '../atoms'
 import { TResource } from '../../types'
 
 type TSearch = {

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.0] - 2024-02-06
+
+### Added
+
+- Import atoms ui components into front organisms
+
 ## [0.10.0] - 2024-02-01
 
 ### Removed
