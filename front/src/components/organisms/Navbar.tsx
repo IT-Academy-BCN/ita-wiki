@@ -106,6 +106,7 @@ type TNavbar = {
   handleAccessModal?: () => void
   toggleSearch?: () => void
 }
+
 export const Navbar = ({
   toggleModal,
   handleAccessModal,
@@ -113,16 +114,13 @@ export const Navbar = ({
 }: TNavbar) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-
   const { user } = useAuth()
   const { t } = useTranslation()
-
   const handleSettingsModal = () => {
     setIsSettingsOpen(!isSettingsOpen)
   }
 
   const location = useLocation()
-
   const shouldRenderIcons = useMemo(() => {
     const excludedPaths = ['/', '/profile']
     return !excludedPaths.includes(location.pathname)
