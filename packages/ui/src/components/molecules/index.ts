@@ -3,6 +3,11 @@ export {
   type TAccessModalContent,
 } from './AccessModalContent'
 export { BackButton, type TBackButton } from './BackButton'
+export {
+  CheckboxFilterWidget,
+  type TItems,
+  type TCheckboxFilterWidget,
+} from './CheckboxFilterWidget'
 export { InputGroup, type TInputGroup } from './InputGroup'
 export { Modal, type TModal } from './Modal'
 export { SelectGroup, type TSelectGroup } from './SelectGroup'
