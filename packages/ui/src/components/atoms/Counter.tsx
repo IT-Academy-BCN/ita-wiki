@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import Text from './Text'
+import { Text } from './Text'
 import { Icon } from './Icon'
 import { font, dimensions, device, colors, FlexBox } from '../../styles'
 import { Spinner } from './Spinner'
@@ -59,7 +59,7 @@ const IconStyled = styled(Icon)<{ name: string }>`
   }
 `
 
-type TCounter = {
+export type TCounter = {
   number?: number
   text: string
   icon: string
@@ -67,7 +67,7 @@ type TCounter = {
   errorMessage: string
 }
 
-const Counter: FC<TCounter> = ({
+export const Counter: FC<TCounter> = ({
   number,
   text,
   icon,
@@ -90,4 +90,3 @@ const Counter: FC<TCounter> = ({
     <TextStyled>{text}</TextStyled>
   </CounterWrapper>
 )
-export default Counter

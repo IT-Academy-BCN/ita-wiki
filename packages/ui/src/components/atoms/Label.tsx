@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { LabelHTMLAttributes } from 'react'
+import { FC, LabelHTMLAttributes } from 'react'
 import { colors, font } from '../../styles'
 
 const LabelStyled = styled.label`
@@ -15,12 +15,13 @@ export type TLabel = Omit<LabelHTMLAttributes<HTMLLabelElement>, 'htmlFor'> & {
   hiddenLabel?: boolean
 }
 
-function Label({ htmlFor, text = '', hiddenLabel = false, ...rest }: TLabel) {
-  return (
-    <LabelStyled htmlFor={htmlFor} hidden={hiddenLabel} {...rest}>
-      {text}
-    </LabelStyled>
-  )
-}
-
-export default styled(Label)``
+export const Label: FC<TLabel> = ({
+  htmlFor,
+  text = '',
+  hiddenLabel = false,
+  ...rest
+}) => (
+  <LabelStyled htmlFor={htmlFor} hidden={hiddenLabel} {...rest}>
+    {text}
+  </LabelStyled>
+)

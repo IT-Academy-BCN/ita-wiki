@@ -19,7 +19,7 @@ const IconStyled = styled.span<IconStyledProps>`
     transform: scale(1.1);
   }
 `
-type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
+export type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
   name: string
   fill?: number
   $wght?: number

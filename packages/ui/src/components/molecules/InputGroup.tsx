@@ -1,19 +1,26 @@
 import { forwardRef, Ref } from 'react'
 import styled from 'styled-components'
 import { dimensions, FlexBox } from '../../styles'
-import { Icon, Input, Label, ValidationMessage } from '../atoms'
-import { TInput } from '../atoms/Input'
-import { TValidationMessage } from '../atoms/ValidationMessage'
+import {
+  Icon,
+  Input,
+  Label,
+  ValidationMessage,
+  type TInput,
+  type TValidationMessage,
+} from '../atoms'
 
 const StyledIcon = styled(Icon)``
+const ValidationMessageStyled = styled(ValidationMessage)``
 
 const InputGroupStyled = styled.div`
   width: 100%;
 
-  ${ValidationMessage} {
+  ${ValidationMessageStyled} {
     margin-top: ${dimensions.spacing.xxxs};
     margin-bottom: ${dimensions.spacing.none};
   }
+
   ${StyledIcon} {
     position: absolute;
     margin-right: ${dimensions.spacing.base};
@@ -37,7 +44,8 @@ const iconDataTestId = (rest: TObjectWithDataTestId) => {
     dataTestId.charAt(0).toUpperCase() + dataTestId.slice(1)
   return dataTestId ? `icon${upperCaseDataTestId}` : ''
 }
-type TInputGroup = {
+
+export type TInputGroup = {
   id: string
   name: string
   label: string
@@ -78,7 +86,10 @@ export const InputGroup = forwardRef(
           />
         )}
       </FlexBox>
-      <ValidationMessage text={validationMessage} color={validationType} />
+      <ValidationMessageStyled
+        text={validationMessage}
+        color={validationType}
+      />
     </InputGroupStyled>
   )
 )

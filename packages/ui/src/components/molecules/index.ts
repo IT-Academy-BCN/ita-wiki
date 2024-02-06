@@ -1,7 +1,8 @@
-import { BackButton } from './BackButton'
-import { Tabs } from './Tabs'
-import { AccessModalContent } from './AccessModalContent'
-import { InputGroup } from './InputGroup'
-
-export { Modal } from './Modal'
-export { BackButton, Tabs, InputGroup, AccessModalContent }
+export {
+  AccessModalContent,
+  type TAccessModalContent,
+} from './AccessModalContent'
+export { BackButton, type TBackButton } from './BackButton'
+export { InputGroup, type TInputGroup } from './InputGroup'
+export { Modal, type TModal } from './Modal'
+export { Tabs, type TTabs } from './Tabs'

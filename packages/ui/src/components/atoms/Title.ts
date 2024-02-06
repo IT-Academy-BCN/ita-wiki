@@ -1,11 +1,12 @@
 import styled from 'styled-components'
 import { HTMLAttributes } from 'react'
 import { colors, font } from '../../styles'
-import Text from './Text'
+import { Text } from './Text'
 
-type TTitle = HTMLAttributes<HTMLHeadingElement> & {
-  as: 'h1' | 'h2' | 'h3'|'h4'|'h5'|'h6'
+export type TTitle = HTMLAttributes<HTMLHeadingElement> & {
+  as: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 }
+
 export const Title = styled(Text).attrs<TTitle>((props) => ({
   as: props?.as || 'h1',
 }))<TTitle>`
