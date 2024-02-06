@@ -25,6 +25,8 @@ type TSearch = {
   handleSearch: (value: string) => void
 }
 
+const InputStyled = styled(Input)``
+
 const SearchBar = styled(InputGroup)`
   display: none;
 
@@ -40,7 +42,7 @@ const SearchBar = styled(InputGroup)`
       justify-content: flex-start;
     }
 
-    ${Input} {
+    ${InputStyled} {
       padding: ${dimensions.spacing.base};
       padding-left: 2.8rem;
       font-size: ${font.xs};
