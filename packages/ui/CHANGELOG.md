@@ -2,11 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.18.0] - 2024-02-06
+
+### Added
+
+- Migrate CheckboxFilterWidget to UI
+
+### Fixed
+
+- Fixed errors in SelectGroup
+
+## [0.17.0] - 2024-02-06
+
+### Added
+
+- Migrate CardProfile to UI
+
 ## [0.16.0] - 2024-02-06
 
 ### Added
 
-- Migrate Select to UI
+- Migrate SelectGroup to UI
 
 ## [0.15.0] - 2024-02-05
 

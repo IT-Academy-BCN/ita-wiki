@@ -3,6 +3,7 @@ export {
   type TAccessModalContent,
 } from './AccessModalContent'
 export { BackButton, type TBackButton } from './BackButton'
+export { CardProfile, type TCardProfile } from './CardProfile'
 export {
   CheckboxFilterWidget,
   type TItems,
