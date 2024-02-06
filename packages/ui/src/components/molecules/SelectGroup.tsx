@@ -1,11 +1,19 @@
 import { forwardRef } from 'react'
 import styled from 'styled-components'
-import { dimensions } from '../../styles'
-import { Label, Select, ValidationMessage } from '../atoms'
+import { FlexBox, dimensions } from '../../styles'
+import { Label, Select, Text, ValidationMessage } from '../atoms'
 import { TSelect } from '../atoms/Select'
 import { TValidationMessage } from '../atoms/ValidationMessage'
 
-const SelectGroupStyled = styled.div`
+const ValidationMessageStyled = styled(Text)`
+  ${ValidationMessage} {
+    margin-top: ${dimensions.spacing.xxxs};
+    margin-bottom: ${dimensions.spacing.none};
+  }
+  width: 100%;
+`
+
+const SelectGroupStyled = styled(FlexBox)`
   ${ValidationMessage} {
     margin-top: ${dimensions.spacing.xxxs};
     margin-bottom: ${dimensions.spacing.none};
@@ -25,7 +33,7 @@ export const SelectGroup = forwardRef<HTMLSelectElement, TSelectGroup>(
     <SelectGroupStyled>
       <Label text={label} htmlFor={id} hiddenLabel={hiddenLabel} />
       <Select id={id} name={name} ref={ref} {...rest} />
-      <ValidationMessage text={validationMessage} color="error" />
+      <ValidationMessageStyled text={validationMessage} color="error" />
     </SelectGroupStyled>
   )
 )
