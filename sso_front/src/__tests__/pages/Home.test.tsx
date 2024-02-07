@@ -5,6 +5,7 @@ describe('Home page', () => {
   it('renders correctly', () => {
     render(<Home />)
 
-    expect(screen.getByText('Home Front SSO')).toBeInTheDocument()
+    expect(screen.getByText('Connector')).toBeInTheDocument()
+    expect(screen.getByRole('main')).toHaveStyle('background-color: #FFFFFF')
   })
 })
