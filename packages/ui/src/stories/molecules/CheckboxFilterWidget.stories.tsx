@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { CheckboxFilterWidget } from '../../components/molecules'
 
-const items = ['option 1', 'option 2', 'option 3']
+const items = [
+  { id: 'option1', label: 'Option 1' },
+  { id: 'option2', label: 'Option 2' },
+  { id: 'option3', label: 'Option 3' },
+]
 
 const meta = {
   title: 'Molecules/CheckboxFilterWidget',
@@ -45,7 +49,7 @@ export const OneOptionChecked: Story = {
   args: {
     filterName: 'Only one item checked',
     items,
-    defaultCheckedItems: ['option 1'],
+    defaultCheckedItems: [{ id: 'option1', label: 'Option 1' }],
   },
 }
 

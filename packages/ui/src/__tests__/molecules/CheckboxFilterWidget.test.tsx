@@ -3,7 +3,11 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { CheckboxFilterWidget } from '../../components/molecules'
 import { dimensions } from '../../styles'
 
-const items = ['item 1', 'item 2', 'item 3']
+const items = [
+  { id: 'item1', label: 'Item 1' },
+  { id: 'item2', label: 'Item 2' },
+  { id: 'item3', label: 'Item 3' },
+]
 
 describe('CheckboxFilterWidget component', () => {
   const handleItemsFilter = vi.fn()
@@ -29,9 +33,9 @@ describe('CheckboxFilterWidget component', () => {
     expect(allCheckboxes).toHaveLength(3)
     allCheckboxes.forEach((checkbox) => expect(checkbox).not.toBeChecked())
 
-    expect(screen.getByLabelText('item 1')).toBeInTheDocument()
-    expect(screen.getByLabelText('item 2')).toBeInTheDocument()
-    expect(screen.getByLabelText('item 3')).toBeInTheDocument()
+    expect(screen.getByLabelText('Item 1')).toBeInTheDocument()
+    expect(screen.getByLabelText('Item 2')).toBeInTheDocument()
+    expect(screen.getByLabelText('Item 3')).toBeInTheDocument()
 
     expect(handleItemsFilter).toHaveBeenCalledTimes(1)
     expect(handleItemsFilter).toHaveBeenCalledWith([])
@@ -53,14 +57,17 @@ describe('CheckboxFilterWidget component', () => {
 
     expect(handleItemsFilter).toHaveBeenCalledTimes(1)
     expect(handleItemsFilter).toHaveBeenCalledWith([
-      'item 1',
-      'item 2',
-      'item 3',
+      { id: 'item1', label: 'Item 1' },
+      { id: 'item2', label: 'Item 2' },
+      { id: 'item3', label: 'Item 3' },
     ])
   })
 
   it('shows only provided checkboxes checked', () => {
-    const defaultCheckedItems = ['item 1', 'item 3']
+    const defaultCheckedItems = [
+      { id: 'item1', label: 'Item 1' },
+      { id: 'item3', label: 'Item 3' },
+    ]
 
     render(
       <CheckboxFilterWidget
@@ -79,7 +86,10 @@ describe('CheckboxFilterWidget component', () => {
     expect(allCheckboxes[2]).toBeChecked()
 
     expect(handleItemsFilter).toHaveBeenCalledTimes(1)
-    expect(handleItemsFilter).toHaveBeenCalledWith(['item 1', 'item 3'])
+    expect(handleItemsFilter).toHaveBeenCalledWith([
+      { id: 'item1', label: 'Item 1' },
+      { id: 'item3', label: 'Item 3' },
+    ])
   })
 
   it('should raise an onChange event when user clicks one checkbox', async () => {
@@ -92,28 +102,31 @@ describe('CheckboxFilterWidget component', () => {
       />
     )
 
-    const checkboxA = screen.getByLabelText('item 1')
+    const checkboxA = screen.getByLabelText('Item 1')
 
     expect(checkboxA).toBeChecked()
 
     expect(handleItemsFilter).toHaveBeenCalledWith([
-      'item 1',
-      'item 2',
-      'item 3',
+      { id: 'item1', label: 'Item 1' },
+      { id: 'item2', label: 'Item 2' },
+      { id: 'item3', label: 'Item 3' },
     ])
 
     fireEvent.click(checkboxA)
 
     await waitFor(() =>
-      expect(handleItemsFilter).toHaveBeenCalledWith(['item 2', 'item 3'])
+      expect(handleItemsFilter).toHaveBeenCalledWith([
+        { id: 'item2', label: 'Item 2' },
+        { id: 'item3', label: 'Item 3' },
+      ])
     )
 
     fireEvent.click(checkboxA)
     await waitFor(() =>
       expect(handleItemsFilter).toHaveBeenCalledWith([
-        'item 1',
-        'item 2',
-        'item 3',
+        { id: 'item1', label: 'Item 1' },
+        { id: 'item2', label: 'Item 2' },
+        { id: 'item3', label: 'Item 3' },
       ])
     )
     expect(handleItemsFilter).toHaveBeenCalledTimes(3)

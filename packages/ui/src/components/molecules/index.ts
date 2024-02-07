@@ -6,7 +6,7 @@ export { BackButton, type TBackButton } from './BackButton'
 export { CardProfile, type TCardProfile } from './CardProfile'
 export {
   CheckboxFilterWidget,
-  type TItems,
+  type TCheckboxFilterItem,
   type TCheckboxFilterWidget,
 } from './CheckboxFilterWidget'
 export { InputGroup, type TInputGroup } from './InputGroup'

@@ -5,10 +5,6 @@ import { colors, dimensions, FlexBox, font } from '../../styles'
 
 const StyledLabel = styled(Label)``
 
-const StyledFlexbox = styled(FlexBox)`
-  gap: ${dimensions.spacing.xs};
-`
-
 const CheckboxStyled = styled(Checkbox)`
   ${StyledLabel} {
     font-weight: ${font.medium};
@@ -17,14 +13,17 @@ const CheckboxStyled = styled(Checkbox)`
   }
 `
 
-export type TItems = string[]
+export type TCheckboxFilterItem = {
+  id: string
+  label: string
+}
 
 export type TCheckboxFilterWidget = {
   direction?: 'row' | 'column'
   filterName?: string
-  items: TItems
-  handleItemsFilter: (selectedItems: TItems) => void
-  defaultCheckedItems?: TItems
+  items: TCheckboxFilterItem[]
+  handleItemsFilter: (selectedItems: TCheckboxFilterItem[]) => void
+  defaultCheckedItems?: TCheckboxFilterItem[]
 }
 
 export const CheckboxFilterWidget: FC<TCheckboxFilterWidget> = ({
@@ -34,7 +33,7 @@ export const CheckboxFilterWidget: FC<TCheckboxFilterWidget> = ({
   handleItemsFilter,
   defaultCheckedItems,
 }) => {
-  const [selectedItems, setSelectedItems] = useState<TItems>([])
+  const [selectedItems, setSelectedItems] = useState<TCheckboxFilterItem[]>([])
 
   useEffect(() => {
     if (defaultCheckedItems && defaultCheckedItems?.length > 0) {
@@ -46,7 +45,10 @@ export const CheckboxFilterWidget: FC<TCheckboxFilterWidget> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const changeSelection = (e: ChangeEvent<HTMLInputElement>, item: string) => {
+  const changeSelection = (
+    e: ChangeEvent<HTMLInputElement>,
+    item: TCheckboxFilterItem
+  ) => {
     if (e.target.checked) {
       const addTypes = [...selectedItems]
       addTypes.push(item)
@@ -54,15 +56,16 @@ export const CheckboxFilterWidget: FC<TCheckboxFilterWidget> = ({
       return addTypes
     }
 
-    const removeTypes = selectedItems.filter((el: string) => el !== item)
+    const removeTypes = selectedItems.filter((el) => el !== item)
     setSelectedItems(removeTypes)
     return removeTypes
   }
 
   return (
-    <StyledFlexbox
+    <FlexBox
       direction={direction}
       align={direction === 'column' ? 'start' : 'center'}
+      gap={`${dimensions.spacing.xs}`}
       data-testid="container"
     >
       {filterName ? (
@@ -77,15 +80,17 @@ export const CheckboxFilterWidget: FC<TCheckboxFilterWidget> = ({
           {filterName}
         </Text>
       ) : null}
-      {items?.map((item: string) => (
+      {items?.map((item: TCheckboxFilterItem) => (
         <CheckboxStyled
-          key={item}
-          id={item}
-          label={item}
-          defaultChecked={defaultCheckedItems?.includes(item)}
+          key={item.id}
+          id={item.id}
+          label={item.label}
+          defaultChecked={defaultCheckedItems?.some(
+            (checkedItem) => checkedItem.id === item.id
+          )}
           onChange={(e) => handleItemsFilter(changeSelection(e, item))}
         />
       ))}
-    </StyledFlexbox>
+    </FlexBox>
   )
 }
