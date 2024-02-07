@@ -9,6 +9,7 @@ export {
   type TCheckboxFilterItem,
   type TCheckboxFilterWidget,
 } from './CheckboxFilterWidget'
+export { CreateAuthor, type TCreateAuthor } from './CreateAuthor'
 export { InputGroup, type TInputGroup } from './InputGroup'
 export { Modal, type TModal } from './Modal'
 export { SelectGroup, type TSelectGroup } from './SelectGroup'

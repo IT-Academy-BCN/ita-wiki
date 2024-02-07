@@ -2,15 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.18.0] - 2024-02-06
+## [0.19.0] - 2024-02-07
 
 ### Added
 
 - Migrate CheckboxFilterWidget to UI
 
-### Fixed
+## [0.18.0] - 2024-02-06
 
-- Fixed errors in SelectGroup
+### Added
+
+- Migrate CreateAuthor to UI
 
 ## [0.17.0] - 2024-02-06
 

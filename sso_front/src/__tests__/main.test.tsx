@@ -32,7 +32,7 @@ describe('main', () => {
       </Layout>
     )
 
-    const HomeElement = screen.getByText('Home Front SSO')
+    const HomeElement = screen.getByText('Configuración')
     expect(HomeElement).toBeInTheDocument()
   })
 })
