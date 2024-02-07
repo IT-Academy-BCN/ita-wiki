@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { CreateAuthor } from '../../components/molecules/CreateAuthor'
+import { CreateAuthor } from '../../components/molecules'
 import github from '../assets/github.svg'
 
 const meta = {

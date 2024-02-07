@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { CreateAuthor } from '../../components/molecules/CreateAuthor'
+import { CreateAuthor } from '../../components/molecules'
 import avatar from '../../components/atoms/Avatar/default.svg'
 
 const dateFormatOption: Intl.DateTimeFormatOptions = {
@@ -26,7 +26,7 @@ describe('CreateAuthor', () => {
         )}`
 
         expect(screen.getByRole('img')).toHaveAttribute('src', avatar)
-        expect(screen.getByAltText('Author icon')).toBeInTheDocument()
+        expect(screen.getByAltText(createdBy)).toBeInTheDocument()
         expect(screen.getByText(metaInfo)).toBeInTheDocument()
     })
 

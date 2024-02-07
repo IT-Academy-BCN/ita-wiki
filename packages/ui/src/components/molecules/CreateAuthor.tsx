@@ -24,7 +24,7 @@ const dateFormatOption: Intl.DateTimeFormatOptions = {
 
 export const CreateAuthor = ({ createdBy, updatedAt, img }: TCreateAuthor) => (
     <FlexBox direction="row">
-        <StyledDiv>{img ? <img src={img} alt="Author icon" /> : '😺'}</StyledDiv>
+        <StyledDiv>{img ? <img src={img} alt={createdBy} /> : '😺'}</StyledDiv>
         <MetaInfo>
             {createdBy},{' '}
             {new Date(updatedAt).toLocaleDateString('es-ES', dateFormatOption)}
