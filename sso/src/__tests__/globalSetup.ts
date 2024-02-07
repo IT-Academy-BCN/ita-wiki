@@ -101,13 +101,14 @@ export async function setup() {
     }
 
     const query = `
-      INSERT INTO "user" (id, dni, email, password, role, status, user_meta, itinerary_id)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO "user" (id, dni, email, name, password, role, status, user_meta, itinerary_id)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       ON CONFLICT (dni) DO NOTHING;`
     await client.query(query, [
       generateId(),
       user.dni,
       user.email,
+      user.name,
       await hashPassword(user.password),
       user.role,
       user.status,

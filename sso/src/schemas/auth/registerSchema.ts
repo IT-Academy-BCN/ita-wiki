@@ -6,10 +6,10 @@ export const registerSchema = userSchema
   .pick({
     dni: true,
     email: true,
+    name: true,
     itineraryId: true,
   })
   .extend({
-    // accept: z.literal<boolean>(true),
     password: z.string().min(8).regex(passwordRegex),
     confirmPassword: z.string().min(8).regex(passwordRegex),
   })

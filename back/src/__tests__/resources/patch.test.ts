@@ -5,7 +5,7 @@ import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
-import { authToken } from '../mocks/ssoServer'
+import { authToken } from '../mocks/ssoHandlers/authToken'
 
 describe('Testing resource modify endpoint', () => {
   let testTopic: Topic
@@ -16,7 +16,7 @@ describe('Testing resource modify endpoint', () => {
     })) as Topic
 
     const user = (await prisma.user.findFirst({
-      where: { name: testUserData.user.name },
+      where: { id: testUserData.user.id },
     })) as User
 
     const category = (await prisma.category.findUnique({
@@ -41,7 +41,7 @@ describe('Testing resource modify endpoint', () => {
       where: { topic: { id: testTopic.id } },
     })
     await prisma.resource.deleteMany({
-      where: { user: { name: testUserData.user.name } },
+      where: { user: { id: testUserData.user.id } },
     })
   })
 

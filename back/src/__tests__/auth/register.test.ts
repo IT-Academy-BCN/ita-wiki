@@ -3,17 +3,18 @@ import { expect, it, describe, afterAll, afterEach } from 'vitest'
 import { server } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
+import { mockRegisterId } from '../mocks/ssoHandlers'
 
 afterEach(async () => {
   await prisma.user.deleteMany({
     where: {
-      OR: [{ name: 'Example2' }],
+      OR: [{ id: mockRegisterId }],
     },
   })
 })
 afterAll(async () => {
   await prisma.user.deleteMany({
-    where: { name: 'Example2' },
+    where: { id: mockRegisterId },
   })
 })
 describe('Testing registration endpoint', () => {

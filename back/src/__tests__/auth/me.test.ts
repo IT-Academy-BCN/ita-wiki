@@ -7,7 +7,7 @@ import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { prisma } from '../../prisma/client'
 import { userGetSchema } from '../../schemas'
-import { authToken } from '../mocks/ssoServer'
+import { authToken } from '../mocks/ssoHandlers/authToken'
 
 describe('Testing ME endpoint', () => {
   const pathUploadMedia = './static/media'
@@ -22,7 +22,7 @@ describe('Testing ME endpoint', () => {
     // const savedFile = fs.readFile(`${pathUploadMedia}/testImage.png`)
 
     user = (await prisma.user.findFirst({
-      where: { name: testUserData.admin.name },
+      where: { id: testUserData.admin.id },
     })) as User
 
     await prisma.media.create({

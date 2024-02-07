@@ -120,3 +120,12 @@ export const getUserResponse = {
     },
   },
 }
+
+export const getUsersIdNameResponse = {
+  description: 'Token is valid and user information is returned.',
+  content: {
+    'application/json': {
+      schema: z.array(userSchema.pick({ id: true, name: true })),
+    },
+  },
+}

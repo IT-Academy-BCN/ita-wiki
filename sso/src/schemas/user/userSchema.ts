@@ -10,10 +10,12 @@ export enum UserStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
 }
+export const userIdSchema = z.string().cuid2()
 export const userSchema = z.object({
-  id: z.string().cuid2(),
+  id: userIdSchema,
   dni: dniSchema,
   email: z.string().email().nonempty().openapi({ example: 'user@example.cat' }),
+  name: z.string().nonempty().openapi({ example: 'Name' }),
   password: z.string().min(8),
   role: z.nativeEnum(UserRole),
   status: z.nativeEnum(UserStatus),

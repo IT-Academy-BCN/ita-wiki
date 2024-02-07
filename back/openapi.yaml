@@ -1,5 +1,5 @@
 info:
-  version: 0.9.0
+  version: 0.10.0
   title: IT Academy Wiki
   description: Our app implements a Wiki to be used as a knowledge base by the
     students of the Barcelona Activa's IT Academy
@@ -877,7 +877,7 @@ paths:
           example: tailwind
       responses:
         "200":
-          description: Sucessful operation
+          description: Successful operation
           content:
             application/json:
               schema:

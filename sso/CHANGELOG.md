@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.0] - 2024-02-07
+
+### Added
+
+- `GET /users/name` endpoint to fetch user names and IDs by `ids` query parameter.
+
+### Changed
+
+- Adjusted middleware sequence: errorMiddleware now initialized before koaBody to capture body parsing errors.
+- Modification of the user table to include the name field.
+- `POST /register` endpoint to now accept name as an additional parameter.
+- Updated query parsing and middleware to decode URL, handle array parameters, and store parsed queries in ctx.state.query.
+- Enhanced `POST /user` endpoint to return name
+
+### Testing
+
+- Added tests for `GET /users/name` information endpoint
+- Updated test for `POST /user` and `POST /register` endpoints
+
+### Documentation
+
+- Enhanced OpenAPI documentation with details on the new get users name information endpoint
+
 ## [1.8.0] - 2024-01-24
 
 ### Changed

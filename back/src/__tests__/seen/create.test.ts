@@ -6,7 +6,7 @@ import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { resourceTestData } from '../mocks/resources'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
-import { authToken } from '../mocks/ssoServer'
+import { authToken } from '../mocks/ssoHandlers/authToken'
 
 let testResource: Resource
 const uri = `${pathRoot.v1.seen}/`
@@ -16,7 +16,7 @@ beforeAll(async () => {
     where: { slug: 'testing' },
   })) as Category
   user = await prisma.user.findFirst({
-    where: { name: testUserData.user.name },
+    where: { id: testUserData.user.id },
   })
   const testResourceData = {
     ...resourceTestData[0],
@@ -45,7 +45,7 @@ describe('Testing viewed resource creation endpoint', () => {
       .set('Cookie', [`authToken=${authToken.admin}`])
     const viewedResources = await prisma.viewedResource.findMany({
       where: {
-        user: { name: testUserData.admin.name },
+        user: { id: testUserData.admin.id },
         resourceId: testResource.id,
       },
     })
@@ -64,7 +64,7 @@ describe('Testing viewed resource creation endpoint', () => {
     expect(secondResponse.statusCode).toBe(204)
     const viewedResources = await prisma.viewedResource.findMany({
       where: {
-        user: { name: testUserData.admin.name },
+        user: { id: testUserData.admin.id },
         resourceId: testResource.id,
       },
     })

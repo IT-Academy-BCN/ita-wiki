@@ -1,7 +1,7 @@
 info:
-  version: 1.8.0
+  version: 1.9.0
   title: IT Academy SSO Service
-  description: This is an SSO service that is used accross all ITA services.
+  description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
 components:
   schemas:
@@ -169,6 +169,10 @@ paths:
                   minLength: 1
                   format: email
                   example: user@example.cat
+                name:
+                  type: string
+                  minLength: 1
+                  example: Name
                 itineraryId:
                   type: string
                 password:
@@ -182,6 +186,7 @@ paths:
               required:
                 - dni
                 - email
+                - name
                 - itineraryId
                 - password
                 - confirmPassword
@@ -409,6 +414,10 @@ paths:
                   minLength: 1
                   format: email
                   example: user@example.cat
+                name:
+                  type: string
+                  minLength: 1
+                  example: Name
                 password:
                   type: string
                   minLength: 8
@@ -450,6 +459,59 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidTokenError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
+  /api/v1/users/name:
+    get:
+      tags:
+        - users
+      description: Returns id and name information of users.
+      summary: Get user name information
+      parameters:
+        - in: query
+          name: id
+          schema:
+            type: array
+            items:
+              type: string
+          required: true
+          description: user id
+          explode: false
+      responses:
+        "200":
+          description: Token is valid and user information is returned.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                      minLength: 1
+                      example: Name
+                  required:
+                    - id
+                    - name
+        "400":
+          description: Zod validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
         "500":
           description: Other error
           content:

@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.0] - 2024-02-07
+
+### Added
+- `attachUserNamesToResources` to unify and simplify resource object structure across the application by ensuring all resources include `user` details (name and optionally `avatarId`) and `favorites`
+-`markFavorites` to mark resources as favorites based on user interaction,
+- Get users name by id from SSO endpoint
+
+### Changed
+
+- Removed unnecessary nesting in the Prisma query within the `getFavoriteResources` middleware.
+- Adjusted middleware sequence: errorMiddleware now initialized before koaBody to capture body parsing errors.
+- User name is now handled by SSO.
+
+### Removed
+
+- name from "users" table
+
+### Testing
+
+- Organized MSW handlers into separate files
+- Added to ssoServer mock, get users name by id handler.
+
+
 ## [0.9.0] - 2024-01-24
 
 ### Changed

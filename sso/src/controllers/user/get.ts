@@ -6,7 +6,7 @@ import { User } from '../../schemas'
 export const getUserController: Middleware = async (ctx: Context) => {
   const { id } = ctx.state.user as Pick<User, 'id' | 'role'>
   const userResult = await client.query(
-    'SELECT dni, email, role FROM "user" WHERE id = $1',
+    'SELECT dni, email, name, role FROM "user" WHERE id = $1',
     [id]
   )
 
@@ -15,5 +15,10 @@ export const getUserController: Middleware = async (ctx: Context) => {
     throw new NotFoundError('User Not found')
   }
   ctx.status = 200
-  ctx.body = { dni: user.dni, email: user.email, role: user.role }
+  ctx.body = {
+    dni: user.dni,
+    email: user.email,
+    name: user.name,
+    role: user.role,
+  }
 }

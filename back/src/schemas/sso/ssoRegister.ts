@@ -5,6 +5,7 @@ import { userRegSchema } from '../users/userRegisterSchema'
 const ssoRegisterRequestSchema = userRegSchema.pick({
   dni: true,
   email: true,
+  name: true,
   itineraryId: true,
   password: true,
   confirmPassword: true,

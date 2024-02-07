@@ -24,6 +24,7 @@ const app = new Koa()
 
 app.use(cors())
 app.use(helmet())
+app.use(errorMiddleware)
 app.use(
   koaBody({
     parsedMethods: [
@@ -34,7 +35,6 @@ app.use(
     ],
   })
 )
-app.use(errorMiddleware)
 
 // Routes
 app.use(Routes.authRouter.routes())

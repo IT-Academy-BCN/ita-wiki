@@ -36,15 +36,15 @@ async function seedDB() {
   })
 
   const userAdmin = await prisma.user.findFirst({
-    where: { name: 'Kevin Mamaqi' },
+    where: { id: users[0].id },
   })
 
   const userMentor = await prisma.user.findFirst({
-    where: { name: 'Linux Mint' },
+    where: { id: users[1].id },
   })
 
   const userRegistered = await prisma.user.findFirst({
-    where: { name: 'Django Unchained' },
+    where: { id: users[2].id },
   })
 
   const topicCategories = [

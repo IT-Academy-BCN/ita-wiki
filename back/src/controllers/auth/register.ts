@@ -19,6 +19,7 @@ export const registerController: Middleware = async (ctx: Context) => {
   const { id } = await ssoHandler.register({
     dni,
     password,
+    name,
     confirmPassword,
     email,
     itineraryId,
@@ -27,7 +28,6 @@ export const registerController: Middleware = async (ctx: Context) => {
   const user = await prisma.user.create({
     data: {
       id,
-      name,
     },
   })
 

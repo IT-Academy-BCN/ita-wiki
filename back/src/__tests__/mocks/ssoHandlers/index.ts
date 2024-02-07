@@ -1,0 +1,7 @@
+export { loginHandler } from './loginHandler'
+export { registerHandler, mockRegisterId } from './registerHandler'
+export { validateTokenHandler } from './validateTokenHandler'
+export { getUserHandler } from './getUserHandler'
+export { patchUserHandler } from './patchUserHandler'
+export { getUsersNameByIdHandler } from './getUsersNameByIdHandler'
+export { getItinerariesHandler } from './getItinerariesHandler'

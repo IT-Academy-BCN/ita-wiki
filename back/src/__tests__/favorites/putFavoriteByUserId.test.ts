@@ -4,7 +4,7 @@ import { Favorites, User, Resource } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
-import { authToken } from '../mocks/ssoServer'
+import { authToken } from '../mocks/ssoHandlers/authToken'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 
 describe('Testing resource modify endpoint', () => {
@@ -12,7 +12,7 @@ describe('Testing resource modify endpoint', () => {
   let user: User | null
   beforeEach(async () => {
     user = await prisma.user.findFirst({
-      where: { name: testUserData.user.name },
+      where: { id: testUserData.user.id },
     })
 
     const category = await prisma.category.findUnique({

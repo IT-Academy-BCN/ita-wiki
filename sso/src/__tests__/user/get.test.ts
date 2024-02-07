@@ -24,7 +24,7 @@ describe('Testing get user endpoint', () => {
     expect(response.body.dni).toBeTypeOf('string')
     expect(
       userSchema
-        .pick({ dni: true, email: true, role: true })
+        .pick({ dni: true, email: true, name: true, role: true })
         .safeParse(response.body).success
     ).toBeTruthy()
   })

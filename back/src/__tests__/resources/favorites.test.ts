@@ -6,7 +6,7 @@ import { prisma } from '../../prisma/client'
 import { resourceTestData } from '../mocks/resources'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
-import { authToken } from '../mocks/ssoServer'
+import { authToken } from '../mocks/ssoHandlers/authToken'
 
 const url: string = `${pathRoot.v1.resources}/favorites`
 const categorySlug = 'testing'
@@ -17,10 +17,10 @@ beforeAll(async () => {
     where: { slug: 'testing' },
   })) as Category
   user = await prisma.user.findFirst({
-    where: { name: testUserData.user.name },
+    where: { id: testUserData.user.id },
   })
   adminUser = await prisma.user.findFirst({
-    where: { name: testUserData.admin.name },
+    where: { id: testUserData.admin.id },
   })
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,

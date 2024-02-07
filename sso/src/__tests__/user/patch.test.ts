@@ -11,6 +11,7 @@ import { UserRole, UserStatus } from '../../schemas/user/userSchema'
 const id = 'va3dvcicw0ttxccoe328v6bo'
 const dni = '11111111Q'
 const email = 'example@example.com'
+const name = 'nameExample'
 const password = 'hashedPassword'
 const role = UserRole.REGISTERED
 const status = UserStatus.INACTIVE
@@ -32,8 +33,8 @@ beforeAll(async () => {
   itineraryId = itineraryRows[0].id
 
   const createUserQuery = {
-    text: 'INSERT INTO "user"(id, dni, email, password, itinerary_id) VALUES($1, $2, $3, $4, $5)',
-    values: [id, dni, email, hashPassword(password), itineraryId],
+    text: 'INSERT INTO "user"(id, dni, email, name, password, itinerary_id) VALUES($1, $2, $3, $4, $5, $6)',
+    values: [id, dni, email, name, hashPassword(password), itineraryId],
   }
   await client.query(createUserQuery)
 })
@@ -138,6 +139,7 @@ describe('Testing patch user endpoint', () => {
       email: 'newexample@example.com',
       dni: '73426589D',
       role: UserRole.MENTOR,
+      name: 'Example',
       status: UserStatus.ACTIVE,
     }
     const response = await supertest(server)
@@ -145,7 +147,7 @@ describe('Testing patch user endpoint', () => {
       .send({ id, authToken, password: updatedUserPassword, ...updatedUser })
 
     const userQuery = await client.query(
-      'SELECT dni, email, password, role, status FROM "user" WHERE id = $1',
+      'SELECT dni, email, name, password, role, status FROM "user" WHERE id = $1',
       [id]
     )
     const user = userQuery.rows[0]

@@ -1,55 +1,54 @@
-import Koa, { Middleware } from 'koa'
 import { User } from '@prisma/client'
+import Koa, { Middleware } from 'koa'
 import { prisma } from '../../prisma/client'
-import { transformResourceToAPI } from '../../helpers/transformResourceToAPI'
 import { resourceFavoriteSchema } from '../../schemas'
+import {
+  attachUserNamesToResources,
+  transformResourceToAPI,
+} from '../../helpers'
 
 export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User
 
   const { categorySlug } = ctx.params
-  const where = {
-    userId: user.id,
-    resource: categorySlug ? { category: { slug: categorySlug } } : {},
-  }
 
-  const favorites = await prisma.favorites.findMany({
-    where,
+  const resources = await prisma.resource.findMany({
+    where: {
+      favorites: { some: { userId: user.id } },
+      category: { slug: categorySlug },
+    },
     select: {
-      resource: {
+      id: true,
+      title: true,
+      slug: true,
+      description: true,
+      url: true,
+      resourceType: true,
+      userId: true,
+      createdAt: true,
+      updatedAt: true,
+      categoryId: true,
+      topics: { select: { topic: true } },
+      vote: { select: { vote: true, userId: true } },
+      user: {
         select: {
-          id: true,
-          title: true,
-          slug: true,
-          description: true,
-          url: true,
-          resourceType: true,
-          userId: true,
-          createdAt: true,
-          updatedAt: true,
-          categoryId: true,
-          topics: { select: { topic: true } },
-          vote: { select: { vote: true, userId: true } },
-          user: {
-            select: {
-              name: true,
-              avatarId: true,
-            },
-          },
+          avatarId: true,
         },
       },
     },
   })
 
-  const favoritesWithIsAuthor = favorites.map((fav) => {
-    const isAuthor = fav.resource.userId === user.id
-    return { ...fav, resource: { ...fav.resource, isAuthor } }
+  const resourcesWithUserName = await attachUserNamesToResources(resources)
+
+  const resourcesWithIsAuthor = resourcesWithUserName.map((resource) => {
+    const isAuthor = resource.userId === user.id
+    return { ...resource, isAuthor }
   })
 
-  const parsedResources = favoritesWithIsAuthor.map((resource) =>
+  const parsedResources = resourcesWithIsAuthor.map((resource) =>
     resourceFavoriteSchema.parse({
-      ...transformResourceToAPI(resource.resource, user ? user.id : undefined),
-      isAuthor: resource.resource.isAuthor,
+      ...transformResourceToAPI(resource, user ? user.id : undefined),
+      isAuthor: resource.isAuthor,
     })
   )
 

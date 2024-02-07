@@ -69,6 +69,14 @@ class InvalidToken extends DefaultError {
   }
 }
 
+class ServiceFail extends DefaultError {
+  constructor(
+    message: string = 'Upstream service failed to respond with the required data'
+  ) {
+    super(502, `${message}`)
+  }
+}
+
 class ServiceUnavailable extends DefaultError {
   constructor(message: string = 'Service Unavailable') {
     super(503, `${message}`)
@@ -86,5 +94,6 @@ export {
   UnsupportedMediaType,
   MissingParamError,
   InvalidToken,
+  ServiceFail,
   ServiceUnavailable,
 }

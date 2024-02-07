@@ -1,9 +1,12 @@
 import Koa, { Middleware } from 'koa'
 import { User } from '@prisma/client'
 import { prisma } from '../../prisma/client'
-import { transformResourceToAPI } from '../../helpers/transformResourceToAPI'
 import { resourceGetSchema } from '../../schemas'
 import { NotFoundError } from '../../helpers/errors'
+import {
+  attachUserNamesToResources,
+  transformResourceToAPI,
+} from '../../helpers'
 
 export const getResourcesById: Middleware = async (ctx: Koa.Context) => {
   const { resourceId } = ctx.params
@@ -14,20 +17,16 @@ export const getResourcesById: Middleware = async (ctx: Koa.Context) => {
   const resource = await prisma.resource.findUnique({
     where: { id: resourceId },
     include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
       vote: { select: voteSelect },
       topics: { select: { topic: true } },
     },
   })
   if (!resource) throw new NotFoundError('Resource not found')
 
+  const usersWithName = await attachUserNamesToResources([resource])
+
   const resourceWithVote = transformResourceToAPI(
-    resource,
+    usersWithName[0],
     user ? user.id : undefined
   )
   const parsedResource = resourceGetSchema.parse(resourceWithVote)

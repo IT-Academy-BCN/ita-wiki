@@ -6,7 +6,7 @@ import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { userPatchSchema } from '../../schemas'
-import { authToken } from '../mocks/ssoServer'
+import { authToken } from '../mocks/ssoHandlers/authToken'
 import { UserStatus } from '../../schemas/users/userSchema'
 
 let sampleUser: User
@@ -14,7 +14,7 @@ let sampleUser: User
 beforeEach(async () => {
   sampleUser = await prisma.user.create({
     data: {
-      name: 'sampleUser1',
+      id: 'jvrbkpeq9v6l4l23rt0u00w9',
     },
   })
 })
@@ -22,7 +22,7 @@ beforeEach(async () => {
 afterEach(async () => {
   await prisma.user.deleteMany({
     where: {
-      OR: [{ name: 'sampleUser1' }, { name: 'UpdatedSampleUser' }],
+      OR: [{ id: 'jvrbkpeq9v6l4l23rt0u00w9' }],
     },
   })
 })

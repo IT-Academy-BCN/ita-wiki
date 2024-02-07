@@ -1,9 +1,13 @@
-import Koa, { Middleware } from 'koa'
 import { Prisma, User } from '@prisma/client'
+import Koa, { Middleware } from 'koa'
 import { prisma } from '../../prisma/client'
-import { transformResourceToAPI } from '../../helpers/transformResourceToAPI'
 import { resourceGetSchema } from '../../schemas'
 import { TResourcesGetParamsSchema } from '../../schemas/resource/resourcesGetParamsSchema'
+import {
+  attachUserNamesToResources,
+  markFavorites,
+  transformResourceToAPI,
+} from '../../helpers'
 
 export const getResources: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User | null
@@ -45,11 +49,6 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
   const resources = await prisma.resource.findMany({
     where,
     include: {
-      user: {
-        select: {
-          name: true,
-        },
-      },
       vote: { select: voteSelect },
       topics: { select: { topic: true } },
       favorites: {
@@ -58,18 +57,8 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
     },
   })
 
-  const resourcesWithFavorites = resources.map((resource) => {
-    let isFavorite: boolean = false
-    if (user !== null)
-      isFavorite = !!resource.favorites.find(
-        (favorite) => favorite.userId === user.id
-      )
-
-    return {
-      ...resource,
-      isFavorite,
-    }
-  })
+  const resourcesWithUserName = await attachUserNamesToResources(resources)
+  const resourcesWithFavorites = markFavorites(resourcesWithUserName, user)
 
   const parsedResources = resourcesWithFavorites.map((resource) =>
     resourceGetSchema.parse(

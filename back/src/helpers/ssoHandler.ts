@@ -1,18 +1,4 @@
 import { Context } from 'koa'
-import { TSsoLoginRequest, TSsoLoginResponse } from '../schemas/sso/ssoLogin'
-import {
-  TSsoRegisterRequest,
-  TSsoRegisterResponse,
-} from '../schemas/sso/ssoRegister'
-import {
-  TSsoValidateRequest,
-  TSsoValidateResponse,
-} from '../schemas/sso/ssoValidate'
-import {
-  TSsoGetUserRequest,
-  TSsoGetUserResponse,
-} from '../schemas/sso/ssoGetUser'
-import { TSsoGetItinerariesResponse } from '../schemas/sso/ssoGetItineraries'
 import {
   login,
   getUser,
@@ -20,8 +6,22 @@ import {
   validate,
   getItineraries,
   patchUser,
+  getUsersNameById,
 } from './sso'
-import { TSsoPatchUserRequest } from '../schemas/sso/ssoPatchUser'
+import {
+  TSsoGetItinerariesResponse,
+  TSsoGetUserRequest,
+  TSsoGetUserResponse,
+  TSsoGetUsersNameByIdRequest,
+  TSsoGetUsersNameByIdResponse,
+  TSsoLoginRequest,
+  TSsoLoginResponse,
+  TSsoPatchUserRequest,
+  TSsoRegisterRequest,
+  TSsoRegisterResponse,
+  TSsoValidateRequest,
+  TSsoValidateResponse,
+} from '../schemas/sso'
 
 interface SsoApiEndpoints {
   login(data: TSsoLoginRequest): Promise<TSsoLoginResponse>
@@ -31,6 +31,9 @@ interface SsoApiEndpoints {
     data: TSsoValidateRequest
   ): Promise<TSsoValidateResponse>
   getUser(data: TSsoGetUserRequest): Promise<TSsoGetUserResponse>
+  getUsersNameById(
+    data: TSsoGetUsersNameByIdRequest
+  ): Promise<TSsoGetUsersNameByIdResponse>
   patchUser(data: TSsoPatchUserRequest): Promise<void>
   getItineraries(): Promise<TSsoGetItinerariesResponse>
 }
@@ -40,6 +43,7 @@ export const ssoHandler: SsoApiEndpoints = {
   register,
   validate,
   getUser,
+  getUsersNameById,
   patchUser,
   getItineraries,
 }
