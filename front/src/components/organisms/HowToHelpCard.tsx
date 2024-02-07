@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { Icon, Text } from '../atoms'
-import { FlexBox, colors, dimensions } from '../../styles'
+import { FlexBox, colors, dimensions, Icon, Text } from '@itacademy/ui'
 import icons from '../../assets/icons'
 import { paths } from '../../constants'
 

@@ -1,6 +1,6 @@
 import styled from 'styled-components'
-import { FlexBox, dimensions } from '../../styles'
-import { ResourceTitleLink } from '../molecules/ResourceTitleLink'
+import { FlexBox, dimensions } from '@itacademy/ui'
+import { ResourceTitleLink } from '../molecules'
 import EditResource from './EditResource'
 import { TCardResource } from '../../types'
 

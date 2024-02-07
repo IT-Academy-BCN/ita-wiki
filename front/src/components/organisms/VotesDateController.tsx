@@ -1,8 +1,7 @@
 import { FC, useState } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { FlexBox, colors, device, dimensions } from '../../styles'
-import { Icon, Text } from '../atoms'
+import { FlexBox, colors, device, dimensions, Icon, Text } from '@itacademy/ui'
 
 const VotesDateContainer = styled(FlexBox)`
   display: none;

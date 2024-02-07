@@ -2,18 +2,21 @@ import { FC, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { useGetFavorites } from '../../hooks/useGetFavorites'
-import { Title, Spinner, Text } from '../atoms'
-import { useAuth } from '../../context/AuthProvider'
 import {
+  Title,
+  Spinner,
+  Text,
   FlexBox,
   colors,
   device,
   dimensions,
   font,
   responsiveSizes,
-} from '../../styles'
-import { Modal, ResourceTitleLink } from '../molecules'
+  Modal,
+} from '@itacademy/ui'
+import { useGetFavorites } from '../../hooks/useGetFavorites'
+import { useAuth } from '../../context/AuthProvider'
+import { ResourceTitleLink } from '../molecules'
 import Login from './Login'
 import Register from './Register'
 import { TFavorites } from '../../types'

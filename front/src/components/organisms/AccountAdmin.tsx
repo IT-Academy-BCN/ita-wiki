@@ -1,10 +1,9 @@
 import styled from 'styled-components'
 import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { colors, device } from '../../styles'
+import { colors, device, Spinner } from '@itacademy/ui'
 import { TUserData } from '../../types'
 import { useGetUsers, useUpdateUserStatus } from '../../hooks'
-import { Spinner } from '../atoms'
 
 const UserListContainer = styled.div`
   display: flex;

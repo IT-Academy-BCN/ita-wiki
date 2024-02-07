@@ -8,6 +8,36 @@ All notable changes to this project will be documented in this file.
 
 - Migrate CreateAuthor to UI.
 
+## [0.17.0] - 2024-02-06
+
+### Added
+
+- Migrate CardProfile to UI
+
+## [0.16.0] - 2024-02-06
+
+### Added
+
+- Migrate SelectGroup to UI
+
+## [0.15.0] - 2024-02-05
+
+### Added
+
+- Migrate Textarea to UI
+
+## [0.14.0] - 2024-02-05
+
+### Added
+
+- Migrate AccessModalContent to UI
+
+## [0.13.0] - 2024-02-04
+
+### Added
+
+- Migrate Select to UI
+
 ## [0.12.2] - 2024-01-31
 
 ### Removed
@@ -16,7 +46,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.12.1] - 2024-01-31
 
-### Fix
+### Fixed
 
 - Fix bundle and tests
 
@@ -28,7 +58,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.11.1] - 2024-01-25
 
-### Fix
+### Fixed
 
 - Export molecules from UI
 
@@ -148,7 +178,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.2.1] - 2023-12-19
 
-### Fix
+### Fixed
 
 - npm prepublishOnly
 

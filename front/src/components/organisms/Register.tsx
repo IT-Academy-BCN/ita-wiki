@@ -5,21 +5,23 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { Button } from '@itacademy/ui'
 import {
+  Button,
   Title,
   Text,
-  CheckBox,
+  Checkbox,
   ValidationMessage,
   Spinner,
   Icon,
-} from '../atoms'
-import InputGroup from '../molecules/InputGroup'
+  InputGroup,
+  colors,
+  device,
+  dimensions,
+  FlexBox,
+} from '@itacademy/ui'
 import SelectGroup from '../molecules/SelectGroup'
-import { colors, device, dimensions, FlexBox } from '../../styles'
 import { TItinerary, TRegisterForm } from '../../types'
-import { useRegister } from '../../hooks/useRegister'
-import { useGetItineraries } from '../../hooks'
+import { useGetItineraries, useRegister } from '../../hooks'
 
 const RegisterStyled = styled(FlexBox)`
   gap: ${dimensions.spacing.sm};
@@ -54,7 +56,7 @@ const GridAreaStyled = styled.div<TGridArea>`
   grid-area: ${(props) => props.gridArea};
 `
 
-const CheckBoxStyled = styled(CheckBox)`
+const CheckBoxStyled = styled(Checkbox)`
   margin-top: ${dimensions.spacing.base};
   margin-bottom: ${dimensions.spacing.base};
 

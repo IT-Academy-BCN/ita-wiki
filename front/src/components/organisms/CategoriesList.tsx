@@ -1,8 +1,14 @@
 import { FC } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import styled from 'styled-components'
-import { FlexBox, colors, device, dimensions, font } from '../../styles'
-import { Spinner } from '../atoms'
+import {
+  FlexBox,
+  colors,
+  device,
+  dimensions,
+  font,
+  Spinner,
+} from '@itacademy/ui'
 import icons from '../../assets/icons'
 import { TCategory, TLinkStyled } from '../../types'
 import { useGetCategories } from '../../hooks'

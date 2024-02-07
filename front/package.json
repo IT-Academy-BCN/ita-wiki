@@ -1,7 +1,7 @@
 {
   "name": "front",
   "private": true,
-  "version": "0.9.1",
+  "version": "0.12.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.0.0",
     "@itacademy/schemas": "^0.3.0",
-    "@itacademy/ui": "0.12.1",
+    "@itacademy/ui": "0.15.0",
     "@tanstack/react-query": "^4.29.5",
     "@tanstack/react-query-devtools": "^4.29.6",
     "i18next": "^23.5.1",

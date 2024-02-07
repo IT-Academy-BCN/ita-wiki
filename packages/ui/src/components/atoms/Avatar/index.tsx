@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { colors, device } from '../../../styles'
 import defaultAvatar from './default.svg'
 
-type TAvatar = HTMLAttributes<HTMLDivElement> & {
+export type TAvatar = HTMLAttributes<HTMLDivElement> & {
   src?: string
   alt: string
 }

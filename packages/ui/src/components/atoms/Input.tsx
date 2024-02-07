@@ -1,10 +1,17 @@
-import React, { InputHTMLAttributes } from "react";
-import styled from "styled-components";
-import { colors, dimensions, font } from "../../styles";
+import { forwardRef, type InputHTMLAttributes } from 'react'
+import styled from 'styled-components'
+import { colors, dimensions, font } from '../../styles'
+
+export type TInput = InputHTMLAttributes<HTMLInputElement> & {
+  error?: boolean | string
+  success?: boolean
+  warning?: boolean
+  type?: 'text' | 'password' | 'email'
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
 
 const InputStyled = styled.input.withConfig<TInput>({
-  shouldForwardProp: (prop) =>
-    !["error", "success", "warning"].includes(prop),
+  shouldForwardProp: (prop) => !['error', 'success', 'warning'].includes(prop),
 })`
   width: 100%;
   padding: ${dimensions.spacing.base};
@@ -20,21 +27,15 @@ const InputStyled = styled.input.withConfig<TInput>({
   &:focus {
     outline: 0 none;
   }
-`;
-export type TInput = InputHTMLAttributes<HTMLInputElement> & {
-  error?: boolean | string;
-  success?: boolean;
-  warning?: boolean;
-  type?: "text" | "password" | "email";
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-};
-const Input = React.forwardRef<HTMLInputElement, TInput>(
+`
+
+export const Input = forwardRef<HTMLInputElement, TInput>(
   (
     {
       error = false,
       warning = false,
       success = false,
-      type = "text",
+      type = 'text',
       onChange,
       ...rest
     },
@@ -50,6 +51,4 @@ const Input = React.forwardRef<HTMLInputElement, TInput>(
       ref={ref}
     />
   )
-);
-
-export default styled(Input)``;
+)

@@ -1,12 +1,18 @@
 import styled from 'styled-components'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import {
+  colors,
+  dimensions,
+  device,
+  FlexBox,
+  Spinner,
+  Title,
+} from '@itacademy/ui'
 import { useSortByDate, useSortByVotes } from '../../hooks'
 import { TFavorites, TResource, TSortOrder } from '../../types'
 import CardResource from './CardResource'
 import { VotesDateController } from './VotesDateController'
-import { colors, dimensions, device, FlexBox } from '../../styles'
-import { Spinner, Title } from '../atoms'
 
 type TResourcesWidget = {
   title: string

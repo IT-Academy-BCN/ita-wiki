@@ -1,7 +1,8 @@
+import { FC } from 'react'
 import styled from 'styled-components'
 import { colors, font } from '../../styles'
 
-type TValidationMessageStyled = {
+export type TValidationMessageStyled = {
   color: 'success' | 'error' | 'warning'
 }
 
@@ -17,7 +18,7 @@ export type TValidationMessage = {
   color?: 'success' | 'error' | 'warning'
 }
 
-const ValidationMessage = ({
+export const ValidationMessage: FC<TValidationMessage> = ({
   text = '',
   color = 'success',
   ...rest
@@ -29,5 +30,3 @@ const ValidationMessage = ({
     </ValidationMessageStyled>
   )
 }
-
-export default styled(ValidationMessage)``
