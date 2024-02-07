@@ -11,7 +11,7 @@ const MetaInfo = styled(Text)`
   font-size: ${font.xss};
   color: ${colors.gray.gray3};
 `
-type TCreateAuthor = {
+export type TCreateAuthor = {
     createdBy: string
     updatedAt: string
     img?: string
