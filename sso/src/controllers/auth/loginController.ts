@@ -4,7 +4,7 @@ import { UserLogin } from '../../schemas/auth/loginSchema'
 import { generateToken } from '../../utils/auth'
 import { ForbiddenError, InvalidCredentials } from '../../utils/errors'
 import { checkPassword } from '../../utils/passwordHash'
-import { User, UserStatus } from '../../schemas/user/userSchema'
+import { User, UserStatus } from '../../schemas/users/userSchema'
 
 export const loginController: Middleware = async (ctx: Context) => {
   const { dni, password }: UserLogin = ctx.request.body

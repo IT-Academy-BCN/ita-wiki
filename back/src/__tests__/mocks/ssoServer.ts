@@ -1,10 +1,10 @@
 import { setupServer } from 'msw/node'
 import {
-  getItinerariesHandler,
+  listItinerariesHandler,
   getUserHandler,
   getUsersNameByIdHandler,
   loginHandler,
-  patchUserHandler,
+  updateUserHandler,
   registerHandler,
   validateTokenHandler,
 } from './ssoHandlers'
@@ -14,9 +14,9 @@ const handlers = [
   registerHandler,
   validateTokenHandler,
   getUserHandler,
-  patchUserHandler,
+  updateUserHandler,
   getUsersNameByIdHandler,
-  getItinerariesHandler,
+  listItinerariesHandler,
 ]
 
 export const ssoServer = setupServer(...handlers)

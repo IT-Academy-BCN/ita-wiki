@@ -2,7 +2,7 @@ import supertest from 'supertest'
 import { expect, it, describe } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
-import { tokenSchema } from '../../schemas/token/tokenSchema'
+import { tokenSchema } from '../../schemas/tokens/tokenSchema'
 
 describe('Testing authentication endpoint', () => {
   it('should succeed with correct credentials', async () => {

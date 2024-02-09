@@ -47,7 +47,7 @@ app.use(Routes.typesRouter.routes())
 app.use(Routes.usersRouter.routes())
 app.use(Routes.favorites.routes())
 app.use(Routes.seenRouter.routes())
-app.use(Routes.itineraryRouter.routes())
+app.use(Routes.itinerariesRouter.routes())
 
 // Swagger UI
 app.use(swaggeruiCSPMiddleware)

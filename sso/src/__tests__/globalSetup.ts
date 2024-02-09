@@ -4,7 +4,7 @@ import { app } from '../app'
 import { client } from '../models/db'
 import { generateId } from '../utils/cuidGenerator'
 import { hashPassword } from '../utils/passwordHash'
-import { UserRole, UserStatus } from '../schemas/user/userSchema'
+import { UserRole, UserStatus } from '../schemas/users/userSchema'
 
 // eslint-disable-next-line import/no-mutable-exports
 export let server: Server<typeof IncomingMessage, typeof ServerResponse>

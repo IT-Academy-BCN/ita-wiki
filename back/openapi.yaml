@@ -74,6 +74,14 @@ components:
           example: User not found
       required:
         - message
+    UpstreamServiceFail:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Upstream service failed to respond with the required data
+      required:
+        - message
     ServiceUnavailableError:
       type: object
       properties:
@@ -2067,6 +2075,12 @@ paths:
                     example: Database error
                 required:
                   - message
+        "502":
+          description: Upstream service fail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpstreamServiceFail"
   /api/v1/favorites:
     put:
       tags:

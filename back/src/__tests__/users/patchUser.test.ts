@@ -87,6 +87,23 @@ describe('Testing user patch endpoint', () => {
 
     expect(response.status).toBe(204)
   })
+  it('should fail if the user ID does not exist in SSO', async () => {
+    const modifiedUser = {
+      id: 'xsgjgke8sae1973kqotrept4',
+      name: 'UpdatedSampleUser',
+      status: UserStatus.INACTIVE,
+    }
+    expect(userPatchSchema.safeParse(modifiedUser).success).toBeTruthy()
+    const response = await supertest(server)
+      .patch(`${pathRoot.v1.users}`)
+      .set('Cookie', [`authToken=${authToken.admin}`])
+      .send(modifiedUser)
+
+    expect(response.status).toBe(502)
+    expect(response.body.message).toBe(
+      'Upstream service failed to respond with the required data'
+    )
+  })
   it('User patch should fail if attempted with invalid data', async () => {
     const modifiedUser = {
       id: sampleUser!.id,

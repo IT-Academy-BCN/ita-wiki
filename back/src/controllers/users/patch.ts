@@ -7,7 +7,7 @@ import { UserPatchSchema } from '../../schemas/users/userPatchSchema'
 export const patchUser: Middleware = async (ctx: Context) => {
   const { id, ...newData } = ctx.request.body as UserPatchSchema
   const authToken = ctx.cookies.get('authToken') as string
-  await ssoHandler.patchUser({ id, authToken, ...newData })
+  await ssoHandler.updateUser({ id, authToken, ...newData })
   const media = ctx.file
   let newMediaId: string
   if (media) {

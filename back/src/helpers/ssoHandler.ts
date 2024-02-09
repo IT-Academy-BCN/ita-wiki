@@ -1,22 +1,22 @@
 import { Context } from 'koa'
 import {
   login,
-  getUser,
+  getMeUsers,
   register,
   validate,
-  getItineraries,
-  patchUser,
-  getUsersNameById,
+  updateUser,
+  listUsers,
+  listItineraries,
 } from './sso'
 import {
-  TSsoGetItinerariesResponse,
   TSsoGetUserRequest,
   TSsoGetUserResponse,
   TSsoGetUsersNameByIdRequest,
-  TSsoGetUsersNameByIdResponse,
+  TSsoListUsersResponse,
+  TSsoListItinerariesResponse,
   TSsoLoginRequest,
   TSsoLoginResponse,
-  TSsoPatchUserRequest,
+  TSsoUpdateUserRequest,
   TSsoRegisterRequest,
   TSsoRegisterResponse,
   TSsoValidateRequest,
@@ -30,20 +30,18 @@ interface SsoApiEndpoints {
     ctx: Context,
     data: TSsoValidateRequest
   ): Promise<TSsoValidateResponse>
-  getUser(data: TSsoGetUserRequest): Promise<TSsoGetUserResponse>
-  getUsersNameById(
-    data: TSsoGetUsersNameByIdRequest
-  ): Promise<TSsoGetUsersNameByIdResponse>
-  patchUser(data: TSsoPatchUserRequest): Promise<void>
-  getItineraries(): Promise<TSsoGetItinerariesResponse>
+  getMeUsers(data: TSsoGetUserRequest): Promise<TSsoGetUserResponse>
+  listUsers(data: TSsoGetUsersNameByIdRequest): Promise<TSsoListUsersResponse>
+  updateUser(data: TSsoUpdateUserRequest): Promise<void>
+  listItineraries(): Promise<TSsoListItinerariesResponse>
 }
 
 export const ssoHandler: SsoApiEndpoints = {
   login,
   register,
   validate,
-  getUser,
-  getUsersNameById,
-  patchUser,
-  getItineraries,
+  getMeUsers,
+  listUsers,
+  updateUser,
+  listItineraries,
 }

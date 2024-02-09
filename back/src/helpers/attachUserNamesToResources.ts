@@ -24,7 +24,7 @@ type UnifiedResources =
   | ExtendedResourceWithFavorites[]
   | ExtendedResourceWithAvatar[]
 export async function attachUserNamesToResources(resources: UnifiedResources) {
-  const names = await ssoHandler.getUsersNameById(
+  const names = await ssoHandler.listUsers(
     resources.map((resource) => resource.userId)
   )
   return resources.map((resource) => {

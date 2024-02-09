@@ -1,5 +1,4 @@
 export { authRoutes } from './authRoutes'
-export { tokenRoutes } from './tokenRoutes'
-export { itineraryRoutes } from './itinerary'
-export { userRoutes } from './userRoutes'
+export { tokensRoutes as tokenRoutes } from './tokensRoutes'
+export { itinerariesRoutes } from './itinerariesRoutes'
 export { usersRoutes } from './usersRoutes'

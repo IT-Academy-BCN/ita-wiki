@@ -241,7 +241,7 @@ paths:
   /api/v1/tokens/validate:
     post:
       tags:
-        - token
+        - tokens
       description: Validates a given authentication token.
       summary: Validate a Token
       requestBody:
@@ -292,10 +292,10 @@ paths:
                     example: Database error
                 required:
                   - message
-  /api/v1/itinerary:
+  /api/v1/itineraries:
     get:
       tags:
-        - itinerary
+        - itineraries
       description: Fetches all available itineraries
       summary: Get all itineraries
       responses:
@@ -320,10 +320,10 @@ paths:
                     - id
                     - name
                     - slug
-  /api/v1/user:
+  /api/v1/users/me:
     post:
       tags:
-        - user
+        - users
       description: Returns information of a logged in user. Token received in the
         login necessary.
       summary: Get user information
@@ -388,11 +388,18 @@ paths:
                     example: Database error
                 required:
                   - message
+  /api/v1/users/{id}:
     patch:
       tags:
-        - user
+        - users
       description: Allows a logged in ADMIN user to modify another user.
       summary: Patch a user.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
       requestBody:
         required: true
         description: Updates an existing user. The ID is mandatory, and all other fields
@@ -402,8 +409,6 @@ paths:
             schema:
               type: object
               properties:
-                id:
-                  type: string
                 authToken:
                   type: string
                   minLength: 1
@@ -435,7 +440,6 @@ paths:
                 itineraryId:
                   type: string
               required:
-                - id
                 - authToken
               additionalProperties: false
       responses:
@@ -453,6 +457,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingUserError"
         "498":
           description: Invalid token
           content:
@@ -471,12 +481,12 @@ paths:
                     example: Database error
                 required:
                   - message
-  /api/v1/users/name:
+  /api/v1/users:
     get:
       tags:
         - users
       description: Returns id and name information of users.
-      summary: Get user name information
+      summary: Get list of users name information with given id array
       parameters:
         - in: query
           name: id
@@ -486,6 +496,18 @@ paths:
               type: string
           required: true
           description: user id
+          explode: false
+        - in: query
+          name: fields
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - id
+                - name
+          required: false
+          description: Specify fields to return (id, name)
           explode: false
       responses:
         "200":
