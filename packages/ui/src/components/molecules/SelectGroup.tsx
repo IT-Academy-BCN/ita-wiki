@@ -1,20 +1,18 @@
 import { forwardRef } from 'react'
 import styled from 'styled-components'
-import { FlexBox, dimensions } from '../../styles'
-import { Label, Select, Text, ValidationMessage } from '../atoms'
-import { TSelect } from '../atoms/Select'
-import { TValidationMessage } from '../atoms/ValidationMessage'
+import { dimensions } from '../../styles'
+import {
+  Label,
+  Select,
+  ValidationMessage,
+  type TSelect,
+  type TValidationMessage,
+} from '../atoms'
 
-const ValidationMessageStyled = styled(Text)`
-  ${ValidationMessage} {
-    margin-top: ${dimensions.spacing.xxxs};
-    margin-bottom: ${dimensions.spacing.none};
-  }
-  width: 100%;
-`
+const ValidationMessageStyled = styled(ValidationMessage)``
 
-const SelectGroupStyled = styled(FlexBox)`
-  ${ValidationMessage} {
+const SelectGroupStyled = styled.div`
+  ${ValidationMessageStyled} {
     margin-top: ${dimensions.spacing.xxxs};
     margin-bottom: ${dimensions.spacing.none};
   }
