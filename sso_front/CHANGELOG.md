@@ -2,13 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.2.1] - 2024-02-07
+
+### Added
+
+- Finish basic Layout
+
 ## [0.2.0] - 2024-01-31
 
 ### Added
 
 - Implement Layout
 
-## [0.1.] - 2024-01-24
+## [0.1.2] - 2024-01-24
 
 ### Chore
 
