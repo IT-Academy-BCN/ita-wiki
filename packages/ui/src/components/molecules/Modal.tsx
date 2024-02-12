@@ -1,8 +1,13 @@
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 import styled, { css } from 'styled-components'
-import { FlexBox, colors, device, dimensions } from '../../styles'
+import {
+  FlexBox,
+  colors,
+  device,
+  dimensions,
+  type TFlexBox,
+} from '../../styles'
 import { Icon, Title } from '../atoms'
-import { TFlexBox } from '../../styles/FlexBox'
 
 const fadeIn = css`
   animation: fadeIn 0.5s forwards;
@@ -26,7 +31,7 @@ const fadeOut = css`
     }
   }
 `
-type TModalContentProps = TAnimation & TFlexBox;
+type TModalContentProps = TAnimation & TFlexBox
 
 const ModalWrapper = styled(FlexBox).withConfig<TModalContentProps>({
   shouldForwardProp: (prop) => !['shouldAnimate'].includes(prop),
@@ -105,14 +110,14 @@ const ModalContent = styled(FlexBox).withConfig<TModalContentProps>({
   }
 `
 
-type TModal = {
+export type TModal = {
   children: React.ReactNode
   isOpen: boolean
   title?: string
   toggleModal: () => void
 }
 
-export const Modal = ({ children, isOpen, toggleModal, title }: TModal) => {
+export const Modal: FC<TModal> = ({ children, isOpen, toggleModal, title }) => {
   const [shouldAnimate, setShouldAnimate] = useState(true)
 
   const handleKeyDown = (event: { key: string }) => {

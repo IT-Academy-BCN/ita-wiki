@@ -4,13 +4,10 @@ import { InputGroup } from '../../components/molecules'
 const meta = {
   title: 'Molecules/InputGroup',
   component: InputGroup,
-
   parameters: {
     layout: 'centered',
   },
-
   tags: ['autodocs'],
-
   argTypes: {
     id: { control: 'text' },
     name: { control: 'text' },
@@ -48,6 +45,7 @@ export const WithValidationMessage: InputGroupStory = {
     validationType: 'error',
   },
 }
+
 export const WithIcon: InputGroupStory = {
   args: {
     id: 'inputGroup_id',

@@ -1,6 +1,12 @@
-import React, { ButtonHTMLAttributes, FC } from 'react'
+import { ButtonHTMLAttributes, FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, font } from '../../styles'
+
+export type TButton = ButtonHTMLAttributes<HTMLButtonElement> & {
+  secondary?: boolean
+  outline?: boolean
+  size?: 'small' | 'normal' | 'large'
+}
 
 const StyledButton = styled('button').withConfig<TButton>({
   shouldForwardProp: (prop) => !['size', 'secondary', 'outline'].includes(prop),
@@ -69,11 +75,7 @@ const StyledButton = styled('button').withConfig<TButton>({
         }
     `}
 `
-type TButton = ButtonHTMLAttributes<HTMLButtonElement> & {
-  secondary?: boolean
-  outline?: boolean
-  size?: 'small' | 'normal' | 'large'
-}
+
 export const Button: FC<TButton> = ({
   type = 'submit',
   secondary = false,

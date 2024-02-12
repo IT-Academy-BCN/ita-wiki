@@ -1,18 +1,31 @@
-import { Button } from '@itacademy/ui'
+import {
+  Button,
+  Icon,
+  Title,
+  HamburgerMenu,
+  FlexBox,
+  colors,
+  device,
+  dimensions,
+  Modal,
+  type TFlexBox,
+} from '@itacademy/ui'
 import { useState, useMemo } from 'react'
 import styled from 'styled-components'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { FlexBox, colors, device, dimensions } from '../../styles'
-import { Icon, Title, HamburgerMenu } from '../atoms'
-import { UserButton } from '../molecules/UserButton'
-import { SelectLanguage } from '../molecules/SelectLanguage'
+import { UserButton, SelectLanguage } from '../molecules'
 import { CategoriesList } from './CategoriesList'
-import { Modal } from '../molecules/Modal'
 import { SettingsManager } from './SettingsManager'
 import { useAuth } from '../../context/AuthProvider'
 
-const NavbarStyled = styled(FlexBox)<{ isInCategoryPage: boolean }>`
+type TNavbarStyled = TFlexBox & {
+  isInCategoryPage?: boolean
+}
+
+const NavbarStyled = styled(FlexBox).withConfig<TNavbarStyled>({
+  shouldForwardProp: (prop) => !['isInCategoryPage'].includes(prop),
+})`
   background-color: ${({ isInCategoryPage }) =>
     isInCategoryPage ? `${colors.gray.gray5}` : `${colors.white}`};
 
@@ -93,6 +106,7 @@ type TNavbar = {
   handleAccessModal?: () => void
   toggleSearch?: () => void
 }
+
 export const Navbar = ({
   toggleModal,
   handleAccessModal,
@@ -100,16 +114,13 @@ export const Navbar = ({
 }: TNavbar) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
-
   const { user } = useAuth()
   const { t } = useTranslation()
-
   const handleSettingsModal = () => {
     setIsSettingsOpen(!isSettingsOpen)
   }
 
   const location = useLocation()
-
   const shouldRenderIcons = useMemo(() => {
     const excludedPaths = ['/', '/profile']
     return !excludedPaths.includes(location.pathname)
@@ -181,5 +192,3 @@ export const Navbar = ({
     </>
   )
 }
-
-export default styled(Navbar)``

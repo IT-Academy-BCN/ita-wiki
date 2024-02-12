@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from "../../components/atoms/Button";
+import type { Meta, StoryObj } from '@storybook/react'
+import { Button } from '../../components/atoms'
 
 const meta = {
   title: 'Atoms/Button',
@@ -19,13 +19,13 @@ const meta = {
     disabled: { control: 'boolean' },
     size: {
       control: { type: 'select' },
-      options: ['small', 'normal', 'large']
-    }
+      options: ['small', 'normal', 'large'],
+    },
   },
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof Button>
 
-export default meta;
-type ButtonStory = StoryObj<typeof Button>;
+export default meta
+type ButtonStory = StoryObj<typeof Button>
 
 export const Primary: ButtonStory = {
   args: {
@@ -33,7 +33,7 @@ export const Primary: ButtonStory = {
     outline: false,
     disabled: false,
   },
-};
+}
 
 export const Secondary: ButtonStory = {
   args: {
@@ -41,19 +41,16 @@ export const Secondary: ButtonStory = {
     outline: false,
     disabled: false,
   },
-};
+}
 
 export const Large: ButtonStory = {
   args: {
     size: 'large',
   },
-};
+}
 
 export const Small: ButtonStory = {
   args: {
     size: 'small',
   },
-};
-
-
-
+}

@@ -1,4 +1,2 @@
-import Tabs from './Tabs'
-import TabItem from './TabItem'
-
-export { TabItem, Tabs }
+export { TabItem } from './TabItem'
+export { Tabs, type TTabs } from './Tabs'

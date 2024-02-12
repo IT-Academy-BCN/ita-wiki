@@ -1,11 +1,19 @@
-import { Button } from '@itacademy/ui'
 import React from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
-import { InputGroup } from '../molecules'
-import { FlexBox, colors, device, dimensions, font } from '../../styles'
-import { Icon, Input, Title } from '../atoms'
+import {
+  FlexBox,
+  colors,
+  device,
+  dimensions,
+  font,
+  Button,
+  Input,
+  Title,
+  InputGroup,
+} from '@itacademy/ui'
+import { Icon } from '../atoms'
 import { TResource } from '../../types'
 
 type TSearch = {
@@ -16,6 +24,8 @@ type TSearch = {
   toggleSearch: () => void
   handleSearch: (value: string) => void
 }
+
+const InputStyled = styled(Input)``
 
 const SearchBar = styled(InputGroup)`
   display: none;
@@ -32,7 +42,7 @@ const SearchBar = styled(InputGroup)`
       justify-content: flex-start;
     }
 
-    ${Input} {
+    ${InputStyled} {
       padding: ${dimensions.spacing.base};
       padding-left: 2.8rem;
       font-size: ${font.xs};

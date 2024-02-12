@@ -2,14 +2,12 @@ import { FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, device } from '../../styles'
 
-type THamburgerMenu = {
+export type THamburgerMenu = {
   open: boolean
   onClick: () => void
 }
 
-
 const StyledBurger = styled.button<THamburgerMenu>`
-
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -54,11 +52,10 @@ const StyledBurger = styled.button<THamburgerMenu>`
   }
 `
 
-const HamburgerMenu: FC<THamburgerMenu> = ({ open, onClick }) => (
+export const HamburgerMenu: FC<THamburgerMenu> = ({ open, onClick }) => (
   <StyledBurger open={open} onClick={onClick} data-testid="hamburger-menu">
     <div data-testid="hamburger-menu-item" />
     <div data-testid="hamburger-menu-item" />
     <div data-testid="hamburger-menu-item" />
   </StyledBurger>
 )
-export default HamburgerMenu

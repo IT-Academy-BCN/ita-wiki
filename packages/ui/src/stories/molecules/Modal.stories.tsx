@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { FC, useState } from 'react'
-import { Button } from '../../components/atoms/Button'
-import { Modal } from '../../components/molecules/Modal'
+import { Button } from '../../components/atoms'
+import { Modal } from '../../components/molecules'
 
 type TModalForDocs = {
   isOpen: boolean
@@ -66,12 +66,14 @@ export const Default: Story = {
     isOpen: false,
   },
 }
+
 export const IsOpen: Story = {
   args: {
     children: 'Children in Modal',
     isOpen: true,
   },
 }
+
 export const IsClosed: Story = {
   args: {
     children: 'Open Modal',

@@ -1,40 +1,49 @@
-import React, { FC } from 'react'
+import { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Tabs } from '@itacademy/ui'
 import { TopicsManagerBoard } from './TopicsManagerBoard'
 import { UsersManager } from './UsersManager'
-import { Tabs } from '../molecules/Tabs'
 import { useAuth } from '../../context/AuthProvider'
 
-const tabsData: React.ComponentProps<typeof Tabs> ['tabsData'] = [
+type TTabsDataInfo = {
+  id: string
+  title: string
+  tabComponent: ReactElement
+  requiredRole?: string[]
+}
+
+const tabsDataInfo: TTabsDataInfo[] = [
   {
     id: 'topicsTab',
     title: 'Temas',
     tabComponent: <TopicsManagerBoard />,
-    requiredRole: ['MENTOR', 'ADMIN']
+    requiredRole: ['MENTOR', 'ADMIN'],
   },
   {
     id: 'usersTab',
     title: 'Usuarios',
     tabComponent: <UsersManager />,
-    requiredRole: ['ADMIN']
+    requiredRole: ['ADMIN'],
   },
 ]
 
-export const SettingsManager: FC = () => {
+export const SettingsManager = () => {
   const { user } = useAuth()
 
   const { t } = useTranslation()
 
-  const tTabsData = tabsData
+  const tabsData = tabsDataInfo
     .filter((tab) => {
       if (tab.id === 'usersTab') {
         return user?.role === 'ADMIN'
       }
-      return Array.isArray(tab.requiredRole) && tab.requiredRole.some((role) => role === user?.role)
+      return (
+        Array.isArray(tab.requiredRole) &&
+        tab.requiredRole.some((role) => role === user?.role)
+      )
     })
     .map((tab) => {
       const modifiedTab = {
-        id: tab.id,
         title: t(tab.title),
         tabComponent: tab.tabComponent,
       }
@@ -42,5 +51,5 @@ export const SettingsManager: FC = () => {
       return modifiedTab
     })
 
-  return <Tabs tabsData={tTabsData} />
+  return <Tabs tabsData={tabsData} />
 }

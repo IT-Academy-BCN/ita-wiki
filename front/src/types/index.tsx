@@ -20,6 +20,7 @@ import type {
   TSortOrder,
   TRegisterForm,
   TUserUpdatedStatus,
+  TFlexBox,
 } from './types'
 
 export type {
@@ -44,4 +45,5 @@ export type {
   TSortOrder,
   TRegisterForm,
   TUserUpdatedStatus,
+  TFlexBox,
 }

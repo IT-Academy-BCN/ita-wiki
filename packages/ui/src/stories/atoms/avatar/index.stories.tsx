@@ -33,15 +33,4 @@ export const WithAvatar: Story = {
     src: customAvatar,
   },
 }
-export const AvatarError: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'La imagen de usuario no se encuentra disponible.',
-      },
-    },
-  },
-  args: {
-    alt: 'Sin imagen de usuario',
-  },
-}
+

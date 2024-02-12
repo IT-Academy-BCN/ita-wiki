@@ -1,3 +1,4 @@
+import { type FC } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, font } from '../../../styles'
 
@@ -47,7 +48,12 @@ type TTabItem = {
   setActiveTab: (index: number) => void
 }
 
-const TabItem = ({ title, $isactive, setActiveTab, index }: TTabItem) => (
+export const TabItem: FC<TTabItem> = ({
+  title,
+  $isactive,
+  setActiveTab,
+  index,
+}) => (
   <TabItemLi
     onClick={() => setActiveTab(index)}
     $isactive={$isactive}
@@ -56,5 +62,3 @@ const TabItem = ({ title, $isactive, setActiveTab, index }: TTabItem) => (
     {title}
   </TabItemLi>
 )
-
-export default TabItem

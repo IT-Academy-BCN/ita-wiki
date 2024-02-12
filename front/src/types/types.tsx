@@ -185,6 +185,18 @@ export type TResourceTitleLink = {
   url: string
   id: string
 }
+export type TFlexBox = {
+  direction?: 'row' | 'row-reverse' | 'column' | 'column-reverse'
+  justify?:
+    | 'flex-start'
+    | 'flex-end'
+    | 'center'
+    | 'space-between'
+    | 'space-around'
+    | 'space-evenly'
+  align?: 'stretch' | 'center' | 'start' | 'end' | 'baseline'
+  gap?: string
+}
 
 export type TSortOrder = 'asc' | 'desc'
 

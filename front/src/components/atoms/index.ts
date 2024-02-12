@@ -6,7 +6,6 @@ import CheckBox from './CheckBox'
 import Icon from './Icon'
 import Input from './Input'
 import Label from './Label'
-import Radio from './Radio'
 import Text from './Text'
 import Textarea from './Textarea'
 import ValidationMessage from './ValidationMessage'
@@ -20,7 +19,6 @@ export {
   Icon,
   Input,
   Label,
-  Radio,
   Select,
   Spinner,
   Text,

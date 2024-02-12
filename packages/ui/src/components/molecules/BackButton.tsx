@@ -25,11 +25,11 @@ const ButtonStyled = styled.button`
   }
 `
 
-type TButton = Omit<HTMLAttributes<HTMLButtonElement>, 'onClick'> & {
+export type TBackButton = Omit<HTMLAttributes<HTMLButtonElement>, 'onClick'> & {
   onClick: () => void
 }
 
-export const BackButton: FC<TButton> = ({ children, ...rest }) => (
+export const BackButton: FC<TBackButton> = ({ children, ...rest }) => (
   <ButtonStyled {...rest}>
     <Icon
       name="arrow_back_ios"

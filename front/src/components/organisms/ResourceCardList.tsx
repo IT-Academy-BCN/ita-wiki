@@ -1,11 +1,9 @@
 import styled from 'styled-components'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-import { FlexBox, dimensions } from '../../styles'
-import { Spinner, Text } from '../atoms'
+import { FlexBox, dimensions, Spinner, Text } from '@itacademy/ui'
 import CardResource from './CardResource'
-import { useSortByDate } from '../../hooks/useSortByDate'
-import { useSortByVotes } from '../../hooks/useSortByVotes'
+import { useSortByDate, useSortByVotes } from '../../hooks'
 import { useAuth } from '../../context/AuthProvider'
 import { TResource, TSortOrder } from '../../types'
 

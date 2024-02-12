@@ -1,13 +1,14 @@
 import styled from 'styled-components'
-import { FlexBox, colors, dimensions } from '../../styles'
-import { Text } from '../atoms'
-import { CreateAuthor } from '../molecules/CreateAuthor'
-import { VoteCounter } from '../molecules/VoteCounter'
+import { FlexBox, colors, dimensions, Text } from '@itacademy/ui'
 import EditResource from './EditResource'
-import { FavoritesIcon } from '../molecules/FavoritesIcon'
 import { useAuth } from '../../context/AuthProvider'
 import { TCardResource } from '../../types'
-import { ResourceTitleLink } from '../molecules'
+import {
+  ResourceTitleLink,
+  VoteCounter,
+  CreateAuthor,
+  FavoritesIcon,
+} from '../molecules'
 
 const CardContainerStyled = styled(FlexBox)`
   background-color: ${colors.white};
