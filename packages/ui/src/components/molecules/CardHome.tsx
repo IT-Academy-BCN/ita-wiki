@@ -4,9 +4,7 @@ import { FlexBox, colors, dimensions, font } from '../../styles'
 import { Text } from '../atoms'
 
 const CardContainer = styled(FlexBox)`
-  flex-direction: column;
   flex: 1 1 9rem;
-  justify-content: flex-start;
   position: relative;
   max-width: 17.5rem;
   min-width: 9rem;
@@ -69,7 +67,7 @@ export const CardHome: FC<TCardHome> = ({
   icon,
   backgroundImg,
 }: TCardHome) => (
-  <CardContainer>
+  <CardContainer justify="flex-start">
     <IndicatorStyled direction="row" backgroundImg={backgroundImg}>
       {indicator}
     </IndicatorStyled>
