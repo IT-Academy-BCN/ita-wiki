@@ -7,7 +7,7 @@ import { InvalidToken, ServiceUnavailable } from '../errors'
 import { pathSso } from './pathSso'
 
 export async function validate(ctx: Context, data: TSsoValidateRequest) {
-  const fetchSSO = await fetch(pathSso.validate, {
+  const fetchSSO = await fetch(pathSso.v1.tokens.validate, {
     method: 'POST',
     headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
     body: JSON.stringify(data),

@@ -1,6 +1,6 @@
 import { pathRoot } from '../../../routes/routes'
 import { loginSchema } from '../../../schemas/auth/loginSchema'
-import { tokenSchema } from '../../../schemas/token/tokenSchema'
+import { tokenSchema } from '../../../schemas/tokens/tokenSchema'
 import {
   forbiddenResponse,
   invalidCredentialsResponse,

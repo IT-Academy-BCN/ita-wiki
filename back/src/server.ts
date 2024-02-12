@@ -24,6 +24,7 @@ const app = new Koa()
 
 app.use(cors())
 app.use(helmet())
+app.use(errorMiddleware)
 app.use(
   koaBody({
     parsedMethods: [
@@ -34,7 +35,6 @@ app.use(
     ],
   })
 )
-app.use(errorMiddleware)
 
 // Routes
 app.use(Routes.authRouter.routes())
@@ -47,7 +47,7 @@ app.use(Routes.typesRouter.routes())
 app.use(Routes.usersRouter.routes())
 app.use(Routes.favorites.routes())
 app.use(Routes.seenRouter.routes())
-app.use(Routes.itineraryRouter.routes())
+app.use(Routes.itinerariesRouter.routes())
 
 // Swagger UI
 app.use(swaggeruiCSPMiddleware)

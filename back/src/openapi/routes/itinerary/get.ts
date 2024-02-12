@@ -1,5 +1,5 @@
 import { pathRoot } from '../../../routes/routes'
-import { itineraryGetSchema } from '../../../schemas/itinerary/itineraryGetSchema'
+import { itinerariesListSchema } from '../../../schemas/itinerary/itinerariesListSchema'
 import { serviceUnavailableResponse } from '../../components/responses/itinerary'
 import { registry } from '../../registry'
 
@@ -14,7 +14,7 @@ registry.registerPath({
       description: 'List of all itineraries',
       content: {
         'application/json': {
-          schema: itineraryGetSchema,
+          schema: itinerariesListSchema,
         },
       },
     },

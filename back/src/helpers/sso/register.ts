@@ -8,7 +8,7 @@ import {
 import { pathSso } from './pathSso'
 
 export async function register(data: TSsoRegisterRequest) {
-  const fetchSSO = await fetch(pathSso.register, {
+  const fetchSSO = await fetch(pathSso.v1.auth.register, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

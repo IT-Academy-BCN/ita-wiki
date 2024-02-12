@@ -3,6 +3,7 @@ import {
   InvalidTokenError,
   MissingTokenError,
   NotFoundError,
+  UpstreamServiceFail,
   ZodValidationError,
 } from '../errorSchemas'
 
@@ -40,6 +41,14 @@ export const userNotFoundResponse = {
   content: {
     'application/json': {
       schema: NotFoundError,
+    },
+  },
+}
+export const upstreamServiceFailResponse = {
+  description: 'Upstream service fail',
+  content: {
+    'application/json': {
+      schema: UpstreamServiceFail,
     },
   },
 }

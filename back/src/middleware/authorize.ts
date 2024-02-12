@@ -9,7 +9,7 @@ export const authorize =
     if (!authToken) {
       throw new UnauthorizedError()
     }
-    const data = await ssoHandler.getUser({ authToken })
+    const data = await ssoHandler.getMeUsers({ authToken })
     if (role) {
       checkRoleAccess(role, data.role)
     }

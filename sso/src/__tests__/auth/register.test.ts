@@ -1,14 +1,28 @@
 import supertest from 'supertest'
-import { expect, it, describe, afterAll, beforeAll } from 'vitest'
+import { expect, it, describe, afterAll, beforeAll, afterEach } from 'vitest'
 import { server } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { client } from '../../models/db'
+import { UserRegister } from '../../schemas/auth/registerSchema'
 
 let itineraryId: string = ''
+let registerUser: UserRegister
 beforeAll(async () => {
   const { rows } = await client.query('SELECT id FROM "itinerary" LIMIT 1')
   const [id] = rows
   itineraryId = id.id
+  registerUser = {
+    dni: '11111111Q',
+    email: 'example@example.cat',
+    name: 'Example',
+    password: 'password1',
+    confirmPassword: 'password1',
+    itineraryId,
+  }
+})
+
+afterEach(async () => {
+  await client.query('DELETE FROM "user" WHERE dni IN ($1) ', ['11111111Q'])
 })
 afterAll(async () => {
   await client.query('DELETE FROM "user" WHERE dni IN ($1, $2) OR email = $3', [
@@ -22,31 +36,19 @@ describe('Testing registration endpoint', () => {
   it('should succeed with correct credentials', async () => {
     const response = await supertest(server)
       .post(`${pathRoot.v1.auth}/register`)
-      .send({
-        dni: '11111111Q',
-        email: 'example@example.cat',
-        password: 'password1',
-        confirmPassword: 'password1',
-        itineraryId,
-      })
+      .send(registerUser)
     expect(response.status).toBe(200)
     expect(response.body.id).toBeTypeOf('string')
   })
   it('should succeed with correct credentials and save DNI in uppercase', async () => {
-    const dni = '11111111s'
+    registerUser.dni = registerUser.dni.toLowerCase()
     const response = await supertest(server)
       .post(`${pathRoot.v1.auth}/register`)
-      .send({
-        dni,
-        email: 'example@example.com',
-        password: 'password1',
-        confirmPassword: 'password1',
-        itineraryId,
-      })
+      .send(registerUser)
     const query = await client.query('SELECT dni FROM "user" WHERE dni = $1', [
-      dni.toUpperCase(),
+      registerUser.dni.toUpperCase(),
     ])
-    expect(query.rows[0].dni).toBe(dni.toUpperCase())
+    expect(query.rows[0].dni).toBe(registerUser.dni.toUpperCase())
     expect(response.status).toBe(200)
     expect(response.body.id).toBeTypeOf('string')
   })
@@ -57,6 +59,7 @@ describe('Testing registration endpoint', () => {
         .send({
           dni: '11111111A',
           email: 'anotherexample@example.com',
+          name: 'Example',
           password: 'password1',
           confirmPassword: 'password1',
           itineraryId,
@@ -71,6 +74,7 @@ describe('Testing registration endpoint', () => {
         .send({
           dni: '45632452c',
           email: 'testingUser@user.cat',
+          name: 'Example',
           password: 'password1',
           confirmPassword: 'password1',
           itineraryId,
@@ -102,6 +106,7 @@ describe('Testing registration endpoint', () => {
         .send({
           dni: '45632452c',
           password: 'password1',
+          name: 'Example',
           confirmPassword: 'password1',
           itineraryId,
         })
@@ -110,12 +115,28 @@ describe('Testing registration endpoint', () => {
       expect(response.body.message[0].path).toContain('email')
     })
 
+    it('should fail with missing required fields: name', async () => {
+      const response = await supertest(server)
+        .post(`${pathRoot.v1.auth}/register`)
+        .send({
+          dni: '45632452c',
+          email: 'example2@example.com',
+          password: 'password1',
+          confirmPassword: 'password1',
+          itineraryId,
+        })
+      expect(response.status).toBe(400)
+      expect(response.body.message[0].message).toBe('Required')
+      expect(response.body.message[0].path).toContain('name')
+    })
+
     it('should fail with missing required fields: password', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
           dni: '45632452c',
           email: 'example2@example.com',
+          name: 'Example',
           confirmPassword: 'password1',
           itineraryId,
         })
@@ -130,6 +151,7 @@ describe('Testing registration endpoint', () => {
         .send({
           dni: '45632452c',
           email: 'example2@example.com',
+          name: 'Example',
           password: 'password1',
           itineraryId,
         })
@@ -143,6 +165,7 @@ describe('Testing registration endpoint', () => {
         .send({
           dni: '45632452c',
           email: 'example2@example.com',
+          name: 'Example',
           password: 'password1',
           confirmPassword: 'password1',
         })
@@ -159,6 +182,7 @@ describe('Testing registration endpoint', () => {
         .send({
           dni: 'notRealDNI',
           email: 'example2@example.com',
+          name: 'Example',
           password: 'password1',
           confirmPassword: 'password1',
           itineraryId,
@@ -174,6 +198,7 @@ describe('Testing registration endpoint', () => {
         .send({
           dni: '45632452c',
           email: 'notAValidEmail',
+          name: 'Example',
           password: 'password1',
           confirmPassword: 'password1',
           itineraryId,
@@ -189,6 +214,7 @@ describe('Testing registration endpoint', () => {
         .send({
           dni: '45632452c',
           email: 'example2@example.com',
+          name: 'Example',
           password: 'pswd1',
           confirmPassword: 'pswd1',
           itineraryId,
@@ -204,6 +230,7 @@ describe('Testing registration endpoint', () => {
         .send({
           dni: '45632452c',
           email: 'example2@example.com',
+          name: 'Example',
           password: 'password',
           confirmPassword: 'password',
           itineraryId,
@@ -219,6 +246,7 @@ describe('Testing registration endpoint', () => {
         .send({
           dni: '45632452c',
           email: 'example2@example.com',
+          name: 'Example',
           password: 'password1?',
           confirmPassword: 'password1?',
           itineraryId,
@@ -233,6 +261,7 @@ describe('Testing registration endpoint', () => {
         .send({
           dni: '45632452c',
           email: 'example2@example.com',
+          name: 'Example',
           password: 'password1',
           confirmPassword: 'password2',
           itineraryId,
@@ -247,6 +276,7 @@ describe('Testing registration endpoint', () => {
         .send({
           dni: '45632452c',
           email: 'example2@example.com',
+          name: 'Example',
           password: 'password1',
           confirmPassword: 'password1',
           itineraryId: 'clpb25e1l000008jr7j505s0o',

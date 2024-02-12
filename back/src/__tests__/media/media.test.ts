@@ -6,13 +6,13 @@ import { expect, test, describe, it, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
-import { authToken } from '../mocks/ssoServer'
+import { authToken } from '../mocks/ssoHandlers/authToken'
 
 const pathUploadMedia = './static/media'
 
 afterAll(async () => {
   const testUser = await prisma.user.findFirst({
-    where: { name: testUserData.user.name },
+    where: { id: testUserData.user.id },
   })
   await prisma.media.deleteMany({
     where: { userId: testUser!.id },

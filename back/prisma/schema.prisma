@@ -9,7 +9,6 @@ datasource db {
 
 model User {
   id               String           @id @default(cuid())
-  name             String
   resources        Resource[]
   media            Media[]
   avatarId         String?          @unique @map("avatar_id")

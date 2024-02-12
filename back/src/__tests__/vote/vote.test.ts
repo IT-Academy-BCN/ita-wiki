@@ -6,14 +6,14 @@ import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { voteCountSchema } from '../../schemas'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
-import { authToken } from '../mocks/ssoServer'
+import { authToken } from '../mocks/ssoHandlers/authToken'
 
 let resource: Resource
 let testUser: User
 
 beforeAll(async () => {
   testUser = (await prisma.user.findFirst({
-    where: { name: testUserData.admin.name },
+    where: { id: testUserData.admin.id },
   })) as User
 
   const category = (await prisma.category.findUnique({
@@ -32,7 +32,7 @@ beforeAll(async () => {
     },
   })
   const user = (await prisma.user.findFirst({
-    where: { name: testUserData.user.name },
+    where: { id: testUserData.user.id },
   })) as User
   await prisma.vote.create({
     data: {

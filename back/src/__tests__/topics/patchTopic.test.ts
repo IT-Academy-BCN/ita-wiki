@@ -6,7 +6,7 @@ import { server } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
-import { authToken } from '../mocks/ssoServer'
+import { authToken } from '../mocks/ssoHandlers/authToken'
 
 let testCategory1: Category | null
 let testCategory2: Category | null
