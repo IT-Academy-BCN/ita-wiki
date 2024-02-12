@@ -48,6 +48,14 @@ export const NotFoundError = registry.register(
     message: z.string().openapi({ example: 'User not found' }),
   })
 )
+export const UpstreamServiceFail = registry.register(
+  'UpstreamServiceFail',
+  z.object({
+    message: z.string().openapi({
+      example: 'Upstream service failed to respond with the required data',
+    }),
+  })
+)
 
 export const ServiceUnavailableError = registry.register(
   'ServiceUnavailableError',

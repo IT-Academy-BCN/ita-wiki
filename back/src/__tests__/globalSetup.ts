@@ -71,40 +71,12 @@ export async function setup() {
     },
   })
 
-  const { password, email, dni, role, status, ...admin } = testUserData.admin
-  const {
-    password: p0,
-    email: e0,
-    dni: d0,
-    role: r0,
-    status: s0,
-    ...user
-  } = testUserData.user
-  const {
-    password: p1,
-    email: e1,
-    dni: d1,
-    role: r1,
-    status: s1,
-    ...mentor
-  } = testUserData.mentor
-  const {
-    password: p2,
-    email: e2,
-    dni: d2,
-    role: r2,
-    status: s2,
-    ...inactiveUser
-  } = testUserData.inactiveUser
+  const users = Object.values(testUserData).map((userData) => {
+    const { name, dni, email, password, role, status, ...rest } = userData
+    return { ...rest }
+  })
   await prisma.user.createMany({
-    data: [
-      { ...admin },
-      { ...user },
-      { ...mentor },
-      {
-        ...inactiveUser,
-      },
-    ],
+    data: [...users],
   })
 
   await prisma.topic.create({

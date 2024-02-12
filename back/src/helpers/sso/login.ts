@@ -11,7 +11,7 @@ import { pathSso } from './pathSso'
 export async function login(data: TSsoLoginRequest) {
   const requestData = { ...data }
   requestData.dni = data.dni.toUpperCase()
-  const fetchSSO = await fetch(pathSso.login, {
+  const fetchSSO = await fetch(pathSso.v1.auth.login, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

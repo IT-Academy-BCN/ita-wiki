@@ -20,7 +20,7 @@ beforeAll(async () => {
     where: { slug: 'testing' },
   })) as Topic
   user = await prisma.user.findFirst({
-    where: { name: testUserData.user.name },
+    where: { id: testUserData.user.id },
   })
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,

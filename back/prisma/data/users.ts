@@ -2,12 +2,12 @@ import { Prisma } from '@prisma/client'
 
 export const users: Prisma.UserCreateArgs['data'][] = [
   {
-    name: 'Kevin Mamaqi',
+    id: 'cikq4kixu3386a1zb64t0gkw',
   },
   {
-    name: 'Django Unchained',
+    id: 'lmx9b6kkym55xqwai2gbhfem',
   },
   {
-    name: 'Linux Mint',
+    id: 'qbdlyw0p08mltg72ua19jezc',
   },
 ]

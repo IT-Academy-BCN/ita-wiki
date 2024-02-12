@@ -6,6 +6,7 @@ import { cookieAuth } from '../../components/cookieAuth'
 import {
   invalidTokenResponse,
   missingTokenResponse,
+  upstreamServiceFailResponse,
   zodValidationErrorResponse,
 } from '../../components/responses/authMiddleware'
 import { deniedAccessResponse } from '../../components/responses/authorize'
@@ -54,5 +55,6 @@ registry.registerPath({
         },
       },
     },
+    502: upstreamServiceFailResponse,
   },
 })

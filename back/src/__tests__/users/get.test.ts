@@ -4,7 +4,7 @@ import { User } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
-import { authToken } from '../mocks/ssoServer'
+import { authToken } from '../mocks/ssoHandlers/authToken'
 
 describe('Testing GET endpoint', () => {
   it('Should return error if no token is provided', async () => {

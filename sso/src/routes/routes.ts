@@ -4,6 +4,6 @@ export const pathRoot = {
     users: '/api/v1/users',
     user: '/api/v1/user',
     tokens: '/api/v1/tokens',
-    itinerary: '/api/v1/itinerary',
+    itineraries: '/api/v1/itineraries',
   },
 }
