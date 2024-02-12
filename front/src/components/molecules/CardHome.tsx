@@ -5,7 +5,9 @@ import { Text } from '../atoms'
 import bgHomeCardCorner from '../../assets/icons/bg-home-card-corner.svg'
 
 const CardContainer = styled(FlexBox)`
+  flex-direction: column;
   flex: 1 1 9rem;
+  justify-content: flex-start;
   position: relative;
   max-width: 17.5rem;
   min-width: 9rem;
@@ -67,7 +69,7 @@ export const CardHome = ({
   const { t } = useTranslation()
 
   return (
-    <CardContainer justify="flex-start">
+    <CardContainer>
       <IndicatorStyled direction="row">{indicator}</IndicatorStyled>
       <ImgStyled alt="" src={icon} data-testid="testIcon" />
       <FlexBox justify="flex-start">
