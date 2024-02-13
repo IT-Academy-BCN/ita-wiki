@@ -7,15 +7,20 @@ const onClickRowStatus = vi.fn()
 const onClickErrorMessage = vi.fn()
 const onClickItemChange = vi.fn()
 
-const newItemTxt = '+ Create new item'
-const placeholderTxt = 'Item name'
-const newPlaceholderTxt = 'New item name'
-const cancelTxt = 'Cancel'
-const editTxt = 'Edit'
-const confirmEditTxt = 'Confirm edit'
-const cancelEditTxt = 'Cancel edit'
-const deleteTxt = 'Delete item'
-const deleteIcon = 'Icon svg'
+const propsEditableITem = {
+  handleRowStatus: onClickRowStatus,
+  handleErrorMessage: onClickErrorMessage,
+  handleItemChange: onClickItemChange,
+  newItemTxt: '+ Create new item',
+  placeholderTxt: 'Item name',
+  newPlaceholderTxt: 'New item name',
+  cancelTxt: 'Cancel',
+  editTxt: 'Edit',
+  confirmEditTxt: 'Confirm edit',
+  cancelEditTxt: 'Cancel edit',
+  deleteTxt: 'Delete item',
+  deleteIcon: 'Icon svg',
+}
 
 afterEach(() => {
   vi.restoreAllMocks()
@@ -28,18 +33,7 @@ describe('EditableItem component', () => {
         id="newItem"
         name=""
         rowStatus="available"
-        handleRowStatus={onClickRowStatus}
-        handleErrorMessage={onClickErrorMessage}
-        handleItemChange={onClickItemChange}
-        newItemTxt={newItemTxt}
-        placeholderTxt={placeholderTxt}
-        newPlaceholderTxt={newPlaceholderTxt}
-        editTxt={editTxt}
-        cancelTxt={cancelTxt}
-        confirmEditTxt={confirmEditTxt}
-        cancelEditTxt={cancelEditTxt}
-        deleteTxt={deleteTxt}
-        deleteIcon={deleteIcon}
+        {...propsEditableITem}
       />
     )
 
@@ -61,18 +55,7 @@ describe('EditableItem component', () => {
         id="testItemId"
         name="testItemName"
         rowStatus="available"
-        handleRowStatus={onClickRowStatus}
-        handleErrorMessage={onClickErrorMessage}
-        handleItemChange={onClickItemChange}
-        newItemTxt={newItemTxt}
-        placeholderTxt={placeholderTxt}
-        newPlaceholderTxt={newPlaceholderTxt}
-        editTxt={editTxt}
-        cancelTxt={cancelTxt}
-        confirmEditTxt={confirmEditTxt}
-        cancelEditTxt={cancelEditTxt}
-        deleteTxt={deleteTxt}
-        deleteIcon={deleteIcon}
+        {...propsEditableITem}
       />
     )
 
@@ -100,18 +83,7 @@ describe('EditableItem component', () => {
         id="newItem"
         name=""
         rowStatus="editing"
-        handleRowStatus={onClickRowStatus}
-        handleErrorMessage={onClickErrorMessage}
-        handleItemChange={onClickItemChange}
-        newItemTxt={newItemTxt}
-        placeholderTxt={placeholderTxt}
-        newPlaceholderTxt={newPlaceholderTxt}
-        editTxt={editTxt}
-        cancelTxt={cancelTxt}
-        confirmEditTxt={confirmEditTxt}
-        cancelEditTxt={cancelEditTxt}
-        deleteTxt={deleteTxt}
-        deleteIcon={deleteIcon}
+        {...propsEditableITem}
       />
     )
 
@@ -145,18 +117,7 @@ describe('EditableItem component', () => {
         id="testItemId"
         name="testItemName"
         rowStatus="disabled"
-        handleRowStatus={onClickRowStatus}
-        handleErrorMessage={onClickErrorMessage}
-        handleItemChange={onClickItemChange}
-        newItemTxt={newItemTxt}
-        placeholderTxt={placeholderTxt}
-        newPlaceholderTxt={newPlaceholderTxt}
-        editTxt={editTxt}
-        cancelTxt={cancelTxt}
-        confirmEditTxt={confirmEditTxt}
-        cancelEditTxt={cancelEditTxt}
-        deleteTxt={deleteTxt}
-        deleteIcon={deleteIcon}
+        {...propsEditableITem}
       />
     )
 
@@ -182,18 +143,7 @@ describe('EditableItem component', () => {
         id="testItemId"
         name="testItemName"
         rowStatus="editing"
-        handleRowStatus={onClickRowStatus}
-        handleErrorMessage={onClickErrorMessage}
-        handleItemChange={onClickItemChange}
-        newItemTxt={newItemTxt}
-        placeholderTxt={placeholderTxt}
-        newPlaceholderTxt={newPlaceholderTxt}
-        editTxt={editTxt}
-        cancelTxt={cancelTxt}
-        confirmEditTxt={confirmEditTxt}
-        cancelEditTxt={cancelEditTxt}
-        deleteTxt={deleteTxt}
-        deleteIcon={deleteIcon}
+        {...propsEditableITem}
       />
     )
 
@@ -224,18 +174,7 @@ describe('EditableItem component', () => {
         id="testItemId"
         name="testItemName"
         rowStatus="editing"
-        handleRowStatus={onClickRowStatus}
-        handleErrorMessage={onClickErrorMessage}
-        handleItemChange={onClickItemChange}
-        newItemTxt={newItemTxt}
-        placeholderTxt={placeholderTxt}
-        newPlaceholderTxt={newPlaceholderTxt}
-        editTxt={editTxt}
-        cancelTxt={cancelTxt}
-        confirmEditTxt={confirmEditTxt}
-        cancelEditTxt={cancelEditTxt}
-        deleteTxt={deleteTxt}
-        deleteIcon={deleteIcon}
+        {...propsEditableITem}
       />
     )
 
@@ -260,18 +199,7 @@ describe('EditableItem component', () => {
         id="testItemjId"
         name="testItemName"
         rowStatus="editing"
-        handleRowStatus={onClickRowStatus}
-        handleErrorMessage={onClickErrorMessage}
-        handleItemChange={onClickItemChange}
-        newItemTxt={newItemTxt}
-        placeholderTxt={placeholderTxt}
-        newPlaceholderTxt={newPlaceholderTxt}
-        editTxt={editTxt}
-        cancelTxt={cancelTxt}
-        confirmEditTxt={confirmEditTxt}
-        cancelEditTxt={cancelEditTxt}
-        deleteTxt={deleteTxt}
-        deleteIcon={deleteIcon}
+        {...propsEditableITem}
       />
     )
 
@@ -291,18 +219,7 @@ describe('EditableItem component', () => {
         id="testItemId"
         name="testItemName"
         rowStatus="editing"
-        handleRowStatus={onClickRowStatus}
-        handleErrorMessage={onClickErrorMessage}
-        handleItemChange={onClickItemChange}
-        newItemTxt={newItemTxt}
-        placeholderTxt={placeholderTxt}
-        newPlaceholderTxt={newPlaceholderTxt}
-        editTxt={editTxt}
-        cancelTxt={cancelTxt}
-        confirmEditTxt={confirmEditTxt}
-        cancelEditTxt={cancelEditTxt}
-        deleteTxt={deleteTxt}
-        deleteIcon={deleteIcon}
+        {...propsEditableITem}
       />
     )
 
@@ -333,18 +250,7 @@ describe('EditableItem component', () => {
         id="testItemId"
         name="testItemName"
         rowStatus="deleting"
-        handleRowStatus={onClickRowStatus}
-        handleErrorMessage={onClickErrorMessage}
-        handleItemChange={onClickItemChange}
-        newItemTxt={newItemTxt}
-        placeholderTxt={placeholderTxt}
-        newPlaceholderTxt={newPlaceholderTxt}
-        editTxt={editTxt}
-        cancelTxt={cancelTxt}
-        confirmEditTxt={confirmEditTxt}
-        cancelEditTxt={cancelEditTxt}
-        deleteTxt={deleteTxt}
-        deleteIcon={deleteIcon}
+        {...propsEditableITem}
       />
     )
 

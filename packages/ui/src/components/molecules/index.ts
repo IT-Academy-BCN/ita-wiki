@@ -19,5 +19,6 @@ export {
 } from './EditableItem'
 export { InputGroup, type TInputGroup } from './InputGroup'
 export { Modal, type TModal } from './Modal'
+export { ResourceTitleLink, type TResourceTitleLink } from './ResourceTitleLink'
 export { SelectGroup, type TSelectGroup } from './SelectGroup'
 export { Tabs, type TTabs } from './Tabs'

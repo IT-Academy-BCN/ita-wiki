@@ -2,11 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.22.0] - 2024-02-13
+
+### Added
+
+- Migrate EditableItem to UI
+
 ## [0.21.0] - 2024-02-12
 
 ### Added
 
-- Migrate TopicsEditableItem to UI
+- Migrate ResourceTitleLink to UI
 
 ## [0.20.0] - 2024-02-07
 
