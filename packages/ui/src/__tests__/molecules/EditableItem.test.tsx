@@ -1,37 +1,37 @@
 import { vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
-import { TopicsEditableItem } from '../../components/molecules'
+import { EditableItem } from '../../components/molecules'
 
 const onClickRowStatus = vi.fn()
 const onClickErrorMessage = vi.fn()
-const onClickTopicChange = vi.fn()
+const onClickItemChange = vi.fn()
 
-const newTopicTxt = '+ Create new topic'
-const placeholderTxt = 'Topic name'
-const newPlaceholderTxt = 'New topic name'
+const newItemTxt = '+ Create new item'
+const placeholderTxt = 'Item name'
+const newPlaceholderTxt = 'New item name'
 const cancelTxt = 'Cancel'
 const editTxt = 'Edit'
 const confirmEditTxt = 'Confirm edit'
 const cancelEditTxt = 'Cancel edit'
-const deleteTxt = 'Delete topic'
+const deleteTxt = 'Delete item'
 const deleteIcon = 'Icon svg'
 
 afterEach(() => {
   vi.restoreAllMocks()
 })
 
-describe('TopicsEditableItem component', () => {
-  it('renders correctly in available mode when there is no topic', async () => {
+describe('EditableItem component', () => {
+  it('renders correctly in available mode when there is no item', async () => {
     render(
-      <TopicsEditableItem
-        id="newTopic"
+      <EditableItem
+        id="newItem"
         name=""
+        rowStatus="available"
         handleRowStatus={onClickRowStatus}
         handleErrorMessage={onClickErrorMessage}
-        handleTopicChange={onClickTopicChange}
-        rowStatus="available"
-        newTopicTxt={newTopicTxt}
+        handleItemChange={onClickItemChange}
+        newItemTxt={newItemTxt}
         placeholderTxt={placeholderTxt}
         newPlaceholderTxt={newPlaceholderTxt}
         editTxt={editTxt}
@@ -43,28 +43,28 @@ describe('TopicsEditableItem component', () => {
       />
     )
 
-    const textCreateNewTopic = screen.getByText('+ Create new topic')
+    const textCreateNewItem = screen.getByText('+ Create new item')
 
-    expect(textCreateNewTopic).toBeInTheDocument()
+    expect(textCreateNewItem).toBeInTheDocument()
 
     expect(screen.getByTestId('rowContainer')).toHaveStyle(`opacity: 1`)
 
-    fireEvent.click(textCreateNewTopic)
+    fireEvent.click(textCreateNewItem)
     await waitFor(() =>
-      expect(onClickRowStatus).toHaveBeenCalledWith('editing', 'newTopic')
+      expect(onClickRowStatus).toHaveBeenCalledWith('editing', 'newItem')
     )
   })
 
-  it('renders topic correctly in available mode', async () => {
+  it('renders item correctly in available mode', async () => {
     render(
-      <TopicsEditableItem
-        id="testTopicId"
-        name="testTopicName"
+      <EditableItem
+        id="testItemId"
+        name="testItemName"
+        rowStatus="available"
         handleRowStatus={onClickRowStatus}
         handleErrorMessage={onClickErrorMessage}
-        handleTopicChange={onClickTopicChange}
-        rowStatus="available"
-        newTopicTxt={newTopicTxt}
+        handleItemChange={onClickItemChange}
+        newItemTxt={newItemTxt}
         placeholderTxt={placeholderTxt}
         newPlaceholderTxt={newPlaceholderTxt}
         editTxt={editTxt}
@@ -76,34 +76,34 @@ describe('TopicsEditableItem component', () => {
       />
     )
 
-    expect(screen.getByText('testTopicName')).toBeInTheDocument()
+    expect(screen.getByText('testItemName')).toBeInTheDocument()
 
     const editButton = screen.getByRole('button', { name: 'Edit' })
 
     expect(editButton).toBeInTheDocument()
 
     expect(
-      screen.getByRole('button', { name: 'Delete topic' })
+      screen.getByRole('button', { name: 'Delete item' })
     ).toBeInTheDocument()
 
     expect(screen.getByTestId('rowContainer')).toHaveStyle(`opacity: 1`)
 
     fireEvent.click(editButton)
     await waitFor(() =>
-      expect(onClickRowStatus).toHaveBeenCalledWith('editing', 'testTopicId')
+      expect(onClickRowStatus).toHaveBeenCalledWith('editing', 'testItemId')
     )
   })
 
-  it('renders new topic correctly in editing mode', async () => {
+  it('renders new item correctly in editing mode', async () => {
     render(
-      <TopicsEditableItem
-        id="newTopic"
+      <EditableItem
+        id="newItem"
         name=""
+        rowStatus="editing"
         handleRowStatus={onClickRowStatus}
         handleErrorMessage={onClickErrorMessage}
-        handleTopicChange={onClickTopicChange}
-        rowStatus="editing"
-        newTopicTxt={newTopicTxt}
+        handleItemChange={onClickItemChange}
+        newItemTxt={newItemTxt}
         placeholderTxt={placeholderTxt}
         newPlaceholderTxt={newPlaceholderTxt}
         editTxt={editTxt}
@@ -115,9 +115,9 @@ describe('TopicsEditableItem component', () => {
       />
     )
 
-    const topicInput = screen.getByPlaceholderText('New topic name')
+    const itemInput = screen.getByPlaceholderText('New item name')
 
-    expect(topicInput).toBeInTheDocument()
+    expect(itemInput).toBeInTheDocument()
 
     expect(screen.getByTestId('rowContainer')).toHaveStyle(`opacity: 1`)
 
@@ -132,23 +132,23 @@ describe('TopicsEditableItem component', () => {
     expect(confirmEdit).toBeInTheDocument()
     expect(cancelEdit).toBeInTheDocument()
 
-    await userEvent.type(topicInput, 'New test topic name')
+    await userEvent.type(itemInput, 'New test item name')
 
     fireEvent.click(confirmEdit)
 
-    await waitFor(() => expect(onClickTopicChange).toHaveBeenCalled())
+    await waitFor(() => expect(onClickItemChange).toHaveBeenCalled())
   })
 
   it('renders correctly in disabled mode', () => {
     render(
-      <TopicsEditableItem
-        id="testTopicId"
-        name="testTopicName"
+      <EditableItem
+        id="testItemId"
+        name="testItemName"
+        rowStatus="disabled"
         handleRowStatus={onClickRowStatus}
         handleErrorMessage={onClickErrorMessage}
-        handleTopicChange={onClickTopicChange}
-        rowStatus="disabled"
-        newTopicTxt={newTopicTxt}
+        handleItemChange={onClickItemChange}
+        newItemTxt={newItemTxt}
         placeholderTxt={placeholderTxt}
         newPlaceholderTxt={newPlaceholderTxt}
         editTxt={editTxt}
@@ -160,14 +160,14 @@ describe('TopicsEditableItem component', () => {
       />
     )
 
-    expect(screen.getByText('testTopicName')).toBeInTheDocument()
+    expect(screen.getByText('testItemName')).toBeInTheDocument()
 
     const editButton = screen.getByRole('button', { name: 'Edit' })
 
     expect(editButton).toBeInTheDocument()
 
     expect(
-      screen.getByRole('button', { name: 'Delete topic' })
+      screen.getByRole('button', { name: 'Delete item' })
     ).toBeInTheDocument()
 
     expect(screen.getByTestId('rowContainer')).toHaveStyle(`opacity: 0.5`)
@@ -178,14 +178,14 @@ describe('TopicsEditableItem component', () => {
 
   it('renders correctly in editing mode', async () => {
     render(
-      <TopicsEditableItem
-        id="testTopicId"
-        name="testTopicName"
+      <EditableItem
+        id="testItemId"
+        name="testItemName"
+        rowStatus="editing"
         handleRowStatus={onClickRowStatus}
         handleErrorMessage={onClickErrorMessage}
-        handleTopicChange={onClickTopicChange}
-        rowStatus="editing"
-        newTopicTxt={newTopicTxt}
+        handleItemChange={onClickItemChange}
+        newItemTxt={newItemTxt}
         placeholderTxt={placeholderTxt}
         newPlaceholderTxt={newPlaceholderTxt}
         editTxt={editTxt}
@@ -197,9 +197,9 @@ describe('TopicsEditableItem component', () => {
       />
     )
 
-    const topicInput = screen.getByDisplayValue('testTopicName')
+    const itemInput = screen.getByDisplayValue('testItemName')
 
-    expect(topicInput).toBeInTheDocument()
+    expect(itemInput).toBeInTheDocument()
 
     const confirmEdit = screen.getByRole('button', {
       name: 'Confirm edit',
@@ -212,22 +212,22 @@ describe('TopicsEditableItem component', () => {
       expect(onClickRowStatus).toHaveBeenCalledWith('available', '')
     )
 
-    await userEvent.type(topicInput, 'New test topic name')
+    await userEvent.type(itemInput, 'New test item name')
 
     fireEvent.click(confirmEdit)
-    await waitFor(() => expect(onClickTopicChange).toHaveBeenCalled())
+    await waitFor(() => expect(onClickItemChange).toHaveBeenCalled())
   })
 
   it('cancel button exits edit mode ', async () => {
     render(
-      <TopicsEditableItem
-        id="testTopicId"
-        name="testTopicName"
+      <EditableItem
+        id="testItemId"
+        name="testItemName"
+        rowStatus="editing"
         handleRowStatus={onClickRowStatus}
         handleErrorMessage={onClickErrorMessage}
-        handleTopicChange={onClickTopicChange}
-        rowStatus="editing"
-        newTopicTxt={newTopicTxt}
+        handleItemChange={onClickItemChange}
+        newItemTxt={newItemTxt}
         placeholderTxt={placeholderTxt}
         newPlaceholderTxt={newPlaceholderTxt}
         editTxt={editTxt}
@@ -239,9 +239,9 @@ describe('TopicsEditableItem component', () => {
       />
     )
 
-    const topicInput = screen.getByDisplayValue('testTopicName')
+    const itemInput = screen.getByDisplayValue('testItemName')
 
-    expect(topicInput).toBeInTheDocument()
+    expect(itemInput).toBeInTheDocument()
 
     const cancelEdit = screen.getByRole('button', {
       name: 'Cancel edit',
@@ -254,16 +254,16 @@ describe('TopicsEditableItem component', () => {
     )
   })
 
-  it('editing confirm button does not update the topic name if it is not changed', async () => {
+  it('editing confirm button does not update the item name if it is not changed', async () => {
     render(
-      <TopicsEditableItem
-        id="testTopicId"
-        name="testTopicName"
+      <EditableItem
+        id="testItemjId"
+        name="testItemName"
         rowStatus="editing"
         handleRowStatus={onClickRowStatus}
         handleErrorMessage={onClickErrorMessage}
-        handleTopicChange={onClickTopicChange}
-        newTopicTxt={newTopicTxt}
+        handleItemChange={onClickItemChange}
+        newItemTxt={newItemTxt}
         placeholderTxt={placeholderTxt}
         newPlaceholderTxt={newPlaceholderTxt}
         editTxt={editTxt}
@@ -285,16 +285,16 @@ describe('TopicsEditableItem component', () => {
     )
   })
 
-  it('editing confirm button throws an error if topic name is empty', async () => {
+  it('editing confirm button throws an error if item name is empty', async () => {
     render(
-      <TopicsEditableItem
-        id="testTopicId"
-        name="testTopicName"
+      <EditableItem
+        id="testItemId"
+        name="testItemName"
+        rowStatus="editing"
         handleRowStatus={onClickRowStatus}
         handleErrorMessage={onClickErrorMessage}
-        handleTopicChange={onClickTopicChange}
-        rowStatus="editing"
-        newTopicTxt={newTopicTxt}
+        handleItemChange={onClickItemChange}
+        newItemTxt={newItemTxt}
         placeholderTxt={placeholderTxt}
         newPlaceholderTxt={newPlaceholderTxt}
         editTxt={editTxt}
@@ -306,13 +306,13 @@ describe('TopicsEditableItem component', () => {
       />
     )
 
-    const topicInput = screen.getByDisplayValue(
-      'testTopicName'
+    const itemInput = screen.getByDisplayValue(
+      'testItemName'
     ) as HTMLInputElement
 
-    await userEvent.clear(topicInput)
+    await userEvent.clear(itemInput)
 
-    expect(topicInput.placeholder).toBe('Topic name')
+    expect(itemInput.placeholder).toBe('Item name')
 
     fireEvent.click(
       screen.getByRole('button', {
@@ -324,19 +324,19 @@ describe('TopicsEditableItem component', () => {
       expect(onClickErrorMessage).toHaveBeenCalledWith('errorEmptyTxt')
     )
 
-    expect(onClickTopicChange).not.toHaveBeenCalled()
+    expect(onClickItemChange).not.toHaveBeenCalled()
   })
 
   it('renders correctly in deleting mode', async () => {
     render(
-      <TopicsEditableItem
-        id="testTopicId"
-        name="testTopicName"
+      <EditableItem
+        id="testItemId"
+        name="testItemName"
+        rowStatus="deleting"
         handleRowStatus={onClickRowStatus}
         handleErrorMessage={onClickErrorMessage}
-        handleTopicChange={onClickTopicChange}
-        rowStatus="deleting"
-        newTopicTxt={newTopicTxt}
+        handleItemChange={onClickItemChange}
+        newItemTxt={newItemTxt}
         placeholderTxt={placeholderTxt}
         newPlaceholderTxt={newPlaceholderTxt}
         editTxt={editTxt}
@@ -348,16 +348,16 @@ describe('TopicsEditableItem component', () => {
       />
     )
 
-    const topicText = screen.getByText('testTopicName')
+    const itemText = screen.getByText('testItemName')
     const cancelButton = screen.getByRole('button', { name: 'Cancel' })
-    const deleteButton = screen.getByRole('button', { name: 'Delete topic' })
+    const deleteButton = screen.getByRole('button', { name: 'Delete item' })
 
-    expect(topicText).toBeInTheDocument()
-    expect(topicText).toHaveStyle(`text-decoration: line-through`)
+    expect(itemText).toBeInTheDocument()
+    expect(itemText).toHaveStyle(`text-decoration: line-through`)
 
     expect(deleteButton).toBeInTheDocument()
     fireEvent.click(deleteButton)
-    await waitFor(() => expect(onClickTopicChange).toHaveBeenCalled())
+    await waitFor(() => expect(onClickItemChange).toHaveBeenCalled())
 
     expect(cancelButton).toBeInTheDocument()
     fireEvent.click(cancelButton)

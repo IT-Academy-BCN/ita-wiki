@@ -2,35 +2,31 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { FC, useState } from 'react'
 import { FlexBox } from '../../../styles'
 import { ValidationMessage } from '../../../components/atoms'
-import {
-  TTopic,
-  TTopicRow,
-  TopicsEditableItem,
-} from '../../../components/molecules'
+import { TItem, TItemRow, EditableItem } from '../../../components/molecules'
 import deleteIcon from './delete-icon.svg'
 
-const newTopicTxt = '+ Create new topic'
-const placeholderTxt = 'Topic name'
-const newPlaceholderTxt = 'New topic name'
+const newItemTxt = '+ Create new item'
+const placeholderTxt = 'Item name'
+const newPlaceholderTxt = 'New item name'
 const cancelTxt = 'Cancel'
 const editTxt = 'Edit'
 const confirmEditTxt = 'Confirm edit'
 const cancelEditTxt = 'Cancel edit'
-const deleteTxt = 'Delete topic'
+const deleteTxt = 'Delete item'
 
-type TMockedTopicsEditableItem = {
+type TMockedEditableItem = {
   id: string
   name: string
   rowStatus: 'available' | 'editing' | 'deleting' | 'disabled'
-} & TTopicRow
+} & TItemRow
 
-const MockedTopicsEditableItem: FC<TMockedTopicsEditableItem> = ({
+const MockedEditableItem: FC<TMockedEditableItem> = ({
   rowStatus,
   id,
   name,
 }) => {
-  const [topicId, setTopicId] = useState(id)
-  const [topicTxt, setTopicTxt] = useState(name)
+  const [itemId, setItemId] = useState(id)
+  const [itemTxt, setItemTxt] = useState(name)
   const [statusRow, setStatusRow] = useState<
     'available' | 'editing' | 'deleting' | 'disabled'
   >(rowStatus)
@@ -55,32 +51,32 @@ const MockedTopicsEditableItem: FC<TMockedTopicsEditableItem> = ({
     setErrorMessage(message)
   }
 
-  const handleTopicChange = (actionTxt: string, topicObject: TTopic) => {
+  const handleItemChange = (actionTxt: string, itemObject: TItem) => {
     if (actionTxt === 'delete') {
-      setTopicId('newTopic')
+      setItemId('newItem')
       handleErrorMessage('')
       setStatusRow('available')
     } else {
       handleErrorMessage('')
-      const updatedTopicTxt = topicObject.name
-      setTopicTxt(updatedTopicTxt)
+      const updatedItemTxt = itemObject.name
+      setItemTxt(updatedItemTxt)
       setStatusRow('available')
       if (actionTxt === 'create') {
-        setTopicId('topic')
+        setItemId('itemB')
       }
     }
   }
 
   return (
     <FlexBox style={{ width: '25rem', height: '6rem' }} justify="flex-start">
-      <TopicsEditableItem
-        id={topicId}
-        name={topicTxt}
+      <EditableItem
+        id={itemId}
+        name={itemTxt}
         rowStatus={statusRow}
         handleRowStatus={handleRowStatus}
         handleErrorMessage={handleErrorMessage}
-        handleTopicChange={handleTopicChange}
-        newTopicTxt={newTopicTxt}
+        handleItemChange={handleItemChange}
+        newItemTxt={newItemTxt}
         placeholderTxt={placeholderTxt}
         newPlaceholderTxt={newPlaceholderTxt}
         editTxt={editTxt}
@@ -94,7 +90,7 @@ const MockedTopicsEditableItem: FC<TMockedTopicsEditableItem> = ({
       {errorMessage ? (
         <ValidationMessage
           color="error"
-          text="Please do not leave the topic name empty."
+          text="Please do not leave the item name empty."
         />
       ) : null}
     </FlexBox>
@@ -102,8 +98,8 @@ const MockedTopicsEditableItem: FC<TMockedTopicsEditableItem> = ({
 }
 
 const meta = {
-  title: 'Molecules/TopicsEditableItem',
-  component: MockedTopicsEditableItem,
+  title: 'Molecules/EditableItem',
+  component: MockedEditableItem,
   parameters: {
     layout: 'centered',
   },
@@ -116,7 +112,7 @@ const meta = {
       options: ['available', 'editing', 'deleting', 'disabled'],
       defaultValue: 'available',
     },
-    newTopicTxt: { control: 'text' },
+    newItemTxt: { control: 'text' },
     placeholderTxt: { control: 'text' },
     newPlaceholderTxt: { control: 'text' },
     editTxt: { control: 'text' },
@@ -127,7 +123,7 @@ const meta = {
     deleteIcon: { control: 'text' },
   },
   args: {
-    newTopicTxt,
+    newItemTxt,
     placeholderTxt,
     newPlaceholderTxt,
     editTxt,
@@ -137,7 +133,7 @@ const meta = {
     deleteTxt,
     deleteIcon,
   },
-} satisfies Meta<typeof TopicsEditableItem>
+} satisfies Meta<typeof EditableItem>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -145,14 +141,14 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   args: {
     id: 'default1',
-    name: 'Default topic name',
+    name: 'Default item name',
     rowStatus: 'available',
   },
 }
 
 export const CreatingNew: Story = {
   args: {
-    id: 'newTopic',
+    id: 'newItem',
     name: '',
     rowStatus: 'available',
   },
@@ -161,7 +157,7 @@ export const CreatingNew: Story = {
 export const Editing: Story = {
   args: {
     id: 'editing1',
-    name: 'Topic name in edition',
+    name: 'Item name in edition',
     rowStatus: 'editing',
   },
 }
@@ -169,7 +165,7 @@ export const Editing: Story = {
 export const Deleting: Story = {
   args: {
     id: 'deleted1',
-    name: 'Topic about to delete',
+    name: 'Item about to delete',
     rowStatus: 'deleting',
   },
 }
@@ -177,7 +173,7 @@ export const Deleting: Story = {
 export const Disabled: Story = {
   args: {
     id: 'disabled1',
-    name: 'Topic disabled',
+    name: 'Item disabled',
     rowStatus: 'disabled',
   },
 }

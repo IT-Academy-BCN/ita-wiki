@@ -69,44 +69,44 @@ const DeletingText = styled(Text)`
   color: ${colors.error};
 `
 
-export type TTopic = {
+export type TItem = {
   id?: string
   name: string
   slug?: string
   categoryId?: string
 }
 
-export type TTopicRow = {
+export type TItemRow = {
   handleErrorMessage: (message: string) => void
-  handleTopicChange: (actionTopic: string, changedTopic: TTopic) => void
+  handleItemChange: (actionItem: string, changedItem: TItem) => void
   rowStatus: 'available' | 'editing' | 'deleting' | 'disabled'
   placeholderTxt: string
   newPlaceholderTxt: string
   cancelTxt: string
   confirmEditTxt: string
   cancelEditTxt: string
-} & TTopicAvailable
+} & TItemAvailable
 
-export type TTopicAvailable = {
+export type TItemAvailable = {
   id: string
   name: string
   handleRowStatus: (selectedStatus: string, id: string) => void
-  newTopicTxt: string
+  newItemTxt: string
   editTxt: string
   deleteTxt: string
   deleteIcon: string
 }
 
-const AvailableMode: FC<TTopicAvailable> = ({
+const AvailableMode: FC<TItemAvailable> = ({
   id,
   name,
   handleRowStatus,
-  newTopicTxt,
+  newItemTxt,
   editTxt,
   deleteTxt,
   deleteIcon,
 }) => {
-  if (id === 'newTopic') {
+  if (id === 'newItem') {
     return (
       <StyledFlexBox
         direction="row"
@@ -120,7 +120,7 @@ const AvailableMode: FC<TTopicAvailable> = ({
             handleRowStatus('editing', id)
           }}
         >
-          {newTopicTxt}
+          {newItemTxt}
         </StyledText>
       </StyledFlexBox>
     )
@@ -157,14 +157,14 @@ const AvailableMode: FC<TTopicAvailable> = ({
   )
 }
 
-export const TopicsEditableItem: FC<TTopicRow> = ({
+export const EditableItem: FC<TItemRow> = ({
   id,
   name,
   handleRowStatus,
   handleErrorMessage,
-  handleTopicChange,
+  handleItemChange,
   rowStatus,
-  newTopicTxt,
+  newItemTxt,
   placeholderTxt,
   newPlaceholderTxt,
   editTxt,
@@ -174,44 +174,42 @@ export const TopicsEditableItem: FC<TTopicRow> = ({
   deleteTxt,
   deleteIcon,
 }) => {
-  const topicNameRef = useRef<HTMLInputElement | null>(null)
+  const itemNameRef = useRef<HTMLInputElement | null>(null)
 
-  const editTopic = (idToEdit: string) => {
-    const topicName: string =
-      topicNameRef.current?.value !== undefined
-        ? topicNameRef.current.value
-        : ''
+  const editItem = (idToEdit: string) => {
+    const itemName: string =
+      itemNameRef.current?.value !== undefined ? itemNameRef.current.value : ''
 
-    if (topicNameRef.current?.value === '') {
+    if (itemNameRef.current?.value === '') {
       handleErrorMessage('errorEmptyTxt')
       return
     }
 
-    if (topicName === name) {
+    if (itemName === name) {
       handleRowStatus('available', '')
       return
     }
 
-    if (idToEdit === 'newTopic') {
-      const createdTopic = {
-        name: topicName,
+    if (idToEdit === 'newItem') {
+      const createdItem = {
+        name: itemName,
       }
-      handleTopicChange('create', createdTopic)
+      handleItemChange('create', createdItem)
     } else {
-      const updatedTopic = {
-        name: topicName,
+      const updatedItem = {
+        name: itemName,
         id: idToEdit,
       }
-      handleTopicChange('update', updatedTopic)
+      handleItemChange('update', updatedItem)
     }
   }
 
-  const deleteTopic = (idToDelete: string) => {
-    const deletedTopic = {
+  const deleteItem = (idToDelete: string) => {
+    const deletedItem = {
       id: idToDelete,
       name: '',
     }
-    handleTopicChange('delete', deletedTopic)
+    handleItemChange('delete', deletedItem)
   }
 
   const setAvailable = () => {
@@ -229,7 +227,7 @@ export const TopicsEditableItem: FC<TTopicRow> = ({
           id={id}
           name={name}
           handleRowStatus={handleRowStatus}
-          newTopicTxt={newTopicTxt}
+          newItemTxt={newItemTxt}
           editTxt={editTxt}
           deleteTxt={deleteTxt}
           deleteIcon={deleteIcon}
@@ -243,10 +241,10 @@ export const TopicsEditableItem: FC<TTopicRow> = ({
           id={id}
         >
           <StyledInput
-            placeholder={id === 'newTopic' ? newPlaceholderTxt : placeholderTxt}
+            placeholder={id === 'newItem' ? newPlaceholderTxt : placeholderTxt}
             defaultValue={name}
-            ref={topicNameRef}
-            id="editingTopic"
+            ref={itemNameRef}
+            id="editingItem"
             data-testid="input"
           />
           <FlexBoxRow direction="row" gap={`${dimensions.spacing.xxxs}`}>
@@ -255,7 +253,7 @@ export const TopicsEditableItem: FC<TTopicRow> = ({
               aria-label={confirmEditTxt}
               title={confirmEditTxt}
               onClick={() => {
-                editTopic(id)
+                editItem(id)
               }}
               data-testid={`confirm${id}`}
             >
@@ -295,7 +293,7 @@ export const TopicsEditableItem: FC<TTopicRow> = ({
               outline
               title={deleteTxt}
               onClick={() => {
-                deleteTopic(id)
+                deleteItem(id)
               }}
             >
               <img src={deleteIcon} alt={deleteTxt} />
