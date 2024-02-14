@@ -5,5 +5,8 @@ export const pathRoot = {
     user: '/api/v1/user',
     tokens: '/api/v1/tokens',
     itineraries: '/api/v1/itineraries',
+    dashboard: {
+      auth: '/api/v1/dashboard/auth',
+    },
   },
 }
