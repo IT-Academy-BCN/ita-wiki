@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.19.0] - 2024-02-14
+
+### Added
+
+- Migrate UserButton to UI.
+
 ## [0.18.0] - 2024-02-06
 
 ### Added

@@ -12,6 +12,8 @@ const meta = {
 
   argTypes: {
     src: { control: 'text' },
+    height: { control: 'number' },
+    width: { control: 'number' },
     alt: {
       control: { type: 'select' },
       type: 'string',
