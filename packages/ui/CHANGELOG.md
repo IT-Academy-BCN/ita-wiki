@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.24.0] - 2024-02-15
+
+### Added
+
+- Migrate Notifications to UI
+
 ## [0.23.0] - 2024-02-15
 
 ### Added
