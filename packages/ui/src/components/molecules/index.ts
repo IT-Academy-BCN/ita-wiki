@@ -11,6 +11,12 @@ export {
   type TCheckboxFilterWidget,
 } from './CheckboxFilterWidget'
 export { CreateAuthor, type TCreateAuthor } from './CreateAuthor'
+export {
+  EditableItem,
+  type TItem,
+  type TItemAvailable,
+  type TItemRow,
+} from './EditableItem'
 export { InputGroup, type TInputGroup } from './InputGroup'
 export { Modal, type TModal } from './Modal'
 export { ResourceTitleLink, type TResourceTitleLink } from './ResourceTitleLink'
