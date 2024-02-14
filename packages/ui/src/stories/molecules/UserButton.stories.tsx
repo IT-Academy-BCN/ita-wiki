@@ -10,7 +10,7 @@ const meta = {
     },
     tags: ['autodocs'],
     argTypes: {
-        onClick: { action: 'handleAccion', type: 'function' },
+        onClick: { action: 'handleAccion'},
 
     },
 
@@ -22,7 +22,6 @@ type UserButtonStory = StoryObj<typeof UserButton>
 export const Default: UserButtonStory = {
 
     args: {
-        onClick: () => { },
     },
 }
 export const HasUser: UserButtonStory = {
