@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Migrate VoteCounter to UI
+- Migrate Notifications to UI
 
 ## [0.23.0] - 2024-02-15
 
