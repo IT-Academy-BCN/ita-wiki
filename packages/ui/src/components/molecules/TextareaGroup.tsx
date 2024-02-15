@@ -8,7 +8,6 @@ import {
   type TValidationMessage,
 } from '../atoms'
 import { dimensions, FlexBox } from '../../styles'
-import { newId } from '../../utils'
 
 const TextareaStyled = styled(Textarea)``
 
@@ -42,21 +41,18 @@ export const TextareaGroup = forwardRef(
       ...rest
     }: TTextareaGroup,
     ref: Ref<HTMLTextAreaElement>
-  ) => {
-    const uniqueTagId = newId()
-    return (
-      <TextareaGroupStyled align="start">
-        <Label text={label} htmlFor={uniqueTagId} hiddenLabel={hiddenLabel} />
-        <TextareaStyled
-          name={name}
-          id={uniqueTagId}
-          rows={rows}
-          {...rest}
-          ref={ref}
-          data-testid="textarea"
-        />
-        <ValidationMessage text={validationMessage} color={validationType} />
-      </TextareaGroupStyled>
-    )
-  }
+  ) => (
+    <TextareaGroupStyled align="start">
+      <Label text={label} htmlFor={id} hiddenLabel={hiddenLabel} />
+      <TextareaStyled
+        name={name}
+        id={id}
+        rows={rows}
+        {...rest}
+        ref={ref}
+        data-testid="textarea"
+      />
+      <ValidationMessage text={validationMessage} color={validationType} />
+    </TextareaGroupStyled>
+  )
 )
