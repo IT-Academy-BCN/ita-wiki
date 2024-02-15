@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.22.1] - 2024-02-15
+
+### chore
+
+- Refactor Avatar props
+
 ## [0.22.0] - 2024-02-13
 
 ### Added

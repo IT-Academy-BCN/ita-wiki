@@ -17,6 +17,13 @@ const meta = {
       type: 'string',
       options: ['Sin imagen de usuario', 'user name'],
     },
+    avatarCss: {
+      control: 'object',
+    },
+    mediaQuery: {
+      control: 'object',
+    },
+    onClick: { action: 'clicked' },
   },
 } satisfies Meta<typeof Avatar>
 

@@ -6,25 +6,51 @@ import defaultAvatar from './default.svg'
 export type TAvatar = HTMLAttributes<HTMLDivElement> & {
   src?: string
   alt: string
+  avatarCss?: { [key: string]: string }
+  mediaQuery?: { [key: string]: string; }
+  forwardedRef?: React.RefObject<HTMLImageElement>
+  onClick?: () => void
 }
 
 const StyledAvatar = styled.img<TAvatar>`
-  width: 97px;
-  height: 97px;
-  border-radius: 50%;
+  avatarCss:${props => props.avatarCss};
   object-fit: cover;
   appearance: auto;
   text-align: center;
-  background-color: ${colors.gray.gray5};
-  border: 1px solid ${colors.gray.gray4};
-
+  cursor: pointer;
   @media only ${device.Tablet} {
-    width: 118px;
-    height: 118px;
-    border: none;
+    ${(props) => props.mediaQuery}
   }
 `
+const defaultMediaQuery = {
+  width: '118px',
+  height: '118px',
+  border: 'none',
+}
+const defaultAvataCss = {
+  width: '97px',
+  height: '97px',
+  borderRadius: '50%',
+  backgroundColor: colors.gray.gray5,
+  border: `1px solid ${colors.gray.gray4}`,
 
-export const Avatar: FC<TAvatar> = ({ src = defaultAvatar, alt }) => (
-  <StyledAvatar src={src} alt={alt} />
+}
+export const Avatar: FC<TAvatar> = ({
+  src = defaultAvatar,
+  alt,
+  avatarCss = {
+    ...defaultAvataCss
+  },
+  forwardedRef,
+  mediaQuery = { ...defaultMediaQuery },
+  onClick
+}) => (
+  <StyledAvatar
+    src={src}
+    alt={alt}
+    avatarCss={avatarCss}
+    ref={forwardedRef}
+    mediaQuery={mediaQuery}
+    onClick={onClick}
+  />
 )
