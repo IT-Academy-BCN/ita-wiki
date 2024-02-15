@@ -2,11 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.21.0] - 2024-02-13
+## [0.22.0] - 2024-02-13
 
 ### Added
 
-- Migrate TextareaGroup to UI
+- Migrate EditableItem to UI
+
+## [0.21.0] - 2024-02-12
+
+### Added
+
+- Migrate ResourceTitleLink to UI
 
 ## [0.20.0] - 2024-02-07
 

@@ -1,9 +1,16 @@
 info:
-  version: 1.9.0
+  version: 1.10.0
   title: IT Academy SSO Service
   description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
 components:
+  headers:
+    Set-Cookie:
+      schema:
+        type: string
+        example: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM;
+          path=/; httponly
+        description: Sets the JWT session cookie
   schemas:
     EmailError:
       type: object
@@ -546,3 +553,47 @@ paths:
                     example: Database error
                 required:
                   - message
+  /api/v1/dashboard/auth/login:
+    post:
+      tags:
+        - dashboard
+      description: Takes a DNI and a password and returns authToken and refreshToken cookie
+      summary: Logs in a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dni:
+                  type: string
+                password:
+                  type: string
+                  minLength: 8
+              required:
+                - dni
+                - password
+      responses:
+        "204":
+          description: The user has been authenticated
+          headers:
+            Set-Cookie:
+              $ref: "#/components/headers/Set-Cookie"
+        "400":
+          description: Zod validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        "401":
+          description: Invalid Credentials error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidCredentialsError"
+        "403":
+          description: Forbidden error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenError"
