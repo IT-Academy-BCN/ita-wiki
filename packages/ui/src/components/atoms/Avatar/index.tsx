@@ -1,19 +1,19 @@
 import { FC, HTMLAttributes } from 'react'
-import styled from 'styled-components'
+import styled, { Interpolation, ThemedStyledProps } from 'styled-components'
 import { colors, device } from '../../../styles'
 import defaultAvatar from './default.svg'
 
 export type TAvatar = HTMLAttributes<HTMLDivElement> & {
   src?: string
   alt: string
-  avatarCss?: { [key: string]: string }
+  avatarCss?: Interpolation<ThemedStyledProps<TAvatar, unknown>>
   mediaQuery?: { [key: string]: string; }
   forwardedRef?: React.RefObject<HTMLImageElement>
   onClick?: () => void
 }
 
 const StyledAvatar = styled.img<TAvatar>`
-  avatarCss:${props => props.avatarCss};
+ ${props => props.avatarCss};
   object-fit: cover;
   appearance: auto;
   text-align: center;
@@ -27,7 +27,7 @@ const defaultMediaQuery = {
   height: '118px',
   border: 'none',
 }
-const defaultAvataCss = {
+const defaultAvatarCss = {
   width: '97px',
   height: '97px',
   borderRadius: '50%',
@@ -39,7 +39,7 @@ export const Avatar: FC<TAvatar> = ({
   src = defaultAvatar,
   alt,
   avatarCss = {
-    ...defaultAvataCss
+    defaultAvatarCss
   },
   forwardedRef,
   mediaQuery = { ...defaultMediaQuery },
