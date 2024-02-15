@@ -35,6 +35,7 @@ app.use(Routes.tokenRoutes.routes())
 app.use(Routes.itinerariesRoutes.routes())
 app.use(Routes.usersRoutes.routes())
 app.use(Routes.dashboardAuthRoutes.routes())
+app.use(Routes.dashboardUsersRoutes.routes())
 
 // Swagger UI
 app.use(swaggeruiCSPMiddleware)

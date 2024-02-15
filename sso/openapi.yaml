@@ -1,5 +1,5 @@
 info:
-  version: 1.10.0
+  version: 1.11.0
   title: IT Academy SSO Service
   description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
@@ -11,6 +11,11 @@ components:
         example: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM;
           path=/; httponly
         description: Sets the JWT session cookie
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: authToken
   schemas:
     EmailError:
       type: object
@@ -597,3 +602,71 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ForbiddenError"
+  /api/v1/dashboard/auth/logout:
+    post:
+      tags:
+        - dashboard
+      description: Deletes cookie and logouts user
+      summary: Logs out user
+      responses:
+        "204":
+          description: User has been logged out successfully
+  /api/v1/dashboard/users:
+    get:
+      tags:
+        - dashboard
+      description: Returns id, name, itinerary, status and created at  information of users.
+      summary: Get list of users name information
+      security:
+        - cookieAuth: []
+      responses:
+        "200":
+          description: Token is valid and user information is returned.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                      minLength: 1
+                      example: Name
+                    status:
+                      type: string
+                      enum:
+                        - ACTIVE
+                        - INACTIVE
+                    createdAt:
+                      type: string
+                      pattern: ^\d{4}-\d{2}-\d{2}$
+                    itineraryName:
+                      type: string
+                      example: Frontend Angular
+                  required:
+                    - id
+                    - name
+                    - status
+                    - createdAt
+                    - itineraryName
+        "401":
+          description: Invalid Credentials error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidCredentialsError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message

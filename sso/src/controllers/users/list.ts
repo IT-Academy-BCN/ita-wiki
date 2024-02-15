@@ -14,6 +14,7 @@ export const listUsers: Middleware = async (ctx: Context) => {
   if (!queryResult.rowCount) {
     ctx.status = 200
     ctx.body = []
+    return
   }
   const usersName = queryResult.rows.map((user) => ({
     id: user.id,
