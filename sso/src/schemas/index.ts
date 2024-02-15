@@ -9,3 +9,4 @@ export {
 export { dniSchema } from './dniSchema'
 export { ValidateSchema, validateSchema } from './tokens/validateSchema'
 export { UsersList, usersListSchema } from './users/usersListSchema'
+export { dashboardUsersListSchema } from './users/dashboardUsersListSchema'

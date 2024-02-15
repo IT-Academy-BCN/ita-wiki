@@ -1,7 +1,7 @@
 import supertest from 'supertest'
-import { it, describe, expect } from 'vitest'
-import { server, testUserData } from '../../globalSetup'
+import { describe, expect, it } from 'vitest'
 import { pathRoot } from '../../../routes/routes'
+import { server, testUserData } from '../../globalSetup'
 
 describe('Testing authentication endpoint', () => {
   it('should succeed ', async () => {

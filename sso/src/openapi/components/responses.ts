@@ -1,4 +1,4 @@
-import { userSchema } from '../../schemas'
+import { dashboardUsersListSchema, userSchema } from '../../schemas'
 import { z } from '../zod'
 import {
   EmailDniError,
@@ -121,11 +121,19 @@ export const getUserResponse = {
   },
 }
 
-export const getUsersIdNameResponse = {
+export const listUsersIdNameResponse = {
   description: 'Token is valid and user information is returned.',
   content: {
     'application/json': {
       schema: z.array(userSchema.pick({ id: true, name: true })),
+    },
+  },
+}
+export const listDashboardUsersResponse = {
+  description: 'Token is valid and user information is returned.',
+  content: {
+    'application/json': {
+      schema: dashboardUsersListSchema,
     },
   },
 }
