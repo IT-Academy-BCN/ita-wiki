@@ -13,7 +13,6 @@ import { newId } from '../../utils'
 const TextareaStyled = styled(Textarea)``
 
 const TextareaGroupStyled = styled(FlexBox)`
-  align-items: flex-start;
   ${TextareaStyled} {
     margin-top: ${dimensions.spacing.xs};
   }
@@ -29,7 +28,7 @@ export type TTextareaGroup = {
   validationType?: TValidationMessage['color']
 } & TTextarea
 
-const TextareaGroup = forwardRef(
+export const TextareaGroup = forwardRef(
   (
     {
       label,
@@ -46,7 +45,7 @@ const TextareaGroup = forwardRef(
   ) => {
     const uniqueTagId = newId()
     return (
-      <TextareaGroupStyled>
+      <TextareaGroupStyled align="start">
         <Label text={label} htmlFor={uniqueTagId} hiddenLabel={hiddenLabel} />
         <TextareaStyled
           name={name}
@@ -61,5 +60,3 @@ const TextareaGroup = forwardRef(
     )
   }
 )
-
-export { TextareaGroup }
