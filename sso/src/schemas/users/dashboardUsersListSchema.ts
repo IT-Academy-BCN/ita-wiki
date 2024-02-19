@@ -13,3 +13,5 @@ export const dashboardUsersListSchema = userSchema
     itineraryName: itineraryNameSchema,
   })
   .array()
+
+export type DashboardUsersList = z.infer<typeof dashboardUsersListSchema>
