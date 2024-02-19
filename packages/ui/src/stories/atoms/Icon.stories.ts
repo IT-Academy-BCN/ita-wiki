@@ -3,6 +3,7 @@ import { Icon } from '../../components/atoms'
 import { font } from '../../styles'
 
 const meta = {
+
   title: 'Atoms/Icon',
   component: Icon,
   parameters: {
@@ -13,8 +14,14 @@ const meta = {
     onClick: {
       action: 'clicked',
     },
+    isFavorite: {
+      control: 'boolean',
+    },
     color: {
       control: 'color',
+    },
+    children: {
+      control: 'text',
     },
   },
 } satisfies Meta<typeof Icon>
@@ -22,23 +29,24 @@ const meta = {
 export default meta
 export type IconStory = StoryObj<typeof meta>
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: IconStory = {
   args: {
     name: 'arrow_back_ios',
-    fill: 1,
     $wght: 400,
-    $grad: 0,
-    $opsz: 48,
-    className: '',
-    color: '',
-    cursor: '',
   },
 }
 export const Variant: IconStory = {
   args: {
     name: 'arrow_back_ios',
-    $wght: 700,
     style: { fontSize: `${font.base}` },
   },
+}
+export const Favorite: IconStory = {
+
+  args: {
+    name: 'favorite',
+    $wght: 700,
+    isFavorite: false,
+  },
+
 }

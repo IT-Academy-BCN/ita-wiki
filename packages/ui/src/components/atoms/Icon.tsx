@@ -1,13 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 
-interface IconStyledProps extends TIcon {
-  $wght: number
-  $grad: number
-  $opsz: number
-}
+// interface IconStyledProps extends TIcon {
+//   $wght: number
+//   $grad: number
+//   $opsz: number
+// }
 
-const IconStyled = styled.span<IconStyledProps>`
+const IconStyled = styled.span<TIcon>`
   font-variation-settings: 'FILL' ${({ fill }) => fill},
     'wght' ${({ $wght }) => $wght}, 'GRAD' ${({ $grad }) => $grad},
     'opsz' ${({ $opsz }) => $opsz};
@@ -28,16 +28,20 @@ export type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
   className?: string
   color?: string
   cursor?: string
+  isFavorite?: boolean,
+  onClick?: () => void
 }
 
 export const Icon: React.FC<TIcon> = ({
   className = '',
-  fill = 1,
   $wght = 400,
   $grad = 0,
   $opsz = 48,
   name = '',
   color = '',
+  isFavorite ,
+  fill = isFavorite ? 1 : 0,
+  onClick = () => { },
   ...rest
 }) => (
   <IconStyled
@@ -47,8 +51,10 @@ export const Icon: React.FC<TIcon> = ({
     $grad={$grad}
     color={color}
     $opsz={$opsz}
-    {...rest}
     name={name}
+    onClick={onClick}
+    isFavorite={isFavorite}
+    {...rest}
   >
     {name}
   </IconStyled>
