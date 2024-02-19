@@ -5,7 +5,7 @@ import { colors } from '../../styles'
 describe('Icon', () => {
   it('renders correctly', () => {
     render(
-      <Icon data-testid="icon" name="download" color={colors.primary} >
+      <Icon data-testid="icon" name="download" color={colors.primary}  >
         download
       </Icon>
     )
@@ -21,19 +21,19 @@ describe('Icon', () => {
     )
     expect(icon).toHaveStyle(`color: ${colors.primary}`)
   })
-  it('renders correctly with isFavorite true', () => {
+  it('renders correctly with fill = 1', () => {
     render(
-      <Icon data-testid="icon" name="favorite" onClick={() => { }} isFavorite
+      <Icon data-testid="icon" name="favorite" onClick={() => { }} $fill={1}
       >
         favorite
       </Icon>
     )
     const icon = screen.getByTestId('icon')
     expect(icon).toBeInTheDocument();
-    expect(icon).toHaveAttribute('name', 'favorite');
-    fireEvent.click(icon);
     expect(icon).toHaveStyle(
       `font-variation-settings: 'FILL' 1, 'wght' 400,'GRAD' 0, 'opsz' 48;`
     )
+    expect(icon).toHaveAttribute('name', 'favorite');
+    fireEvent.click(icon);
   })
 })

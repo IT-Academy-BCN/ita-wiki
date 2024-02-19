@@ -14,15 +14,11 @@ const meta = {
     onClick: {
       action: 'clicked',
     },
-    isFavorite: {
-      control: 'boolean',
-    },
+  
     color: {
       control: 'color',
     },
-    children: {
-      control: 'text',
-    },
+
   },
 } satisfies Meta<typeof Icon>
 
@@ -41,12 +37,11 @@ export const Variant: IconStory = {
     style: { fontSize: `${font.base}` },
   },
 }
-export const Favorite: IconStory = {
+export const IsFill: IconStory = {
 
   args: {
     name: 'favorite',
-    $wght: 700,
-    isFavorite: false,
+    $fill: 1,
   },
 
 }
