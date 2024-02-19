@@ -2,6 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Avatar } from '../../../components/atoms/Avatar'
 import customAvatar from './custom.svg'
 
+const avatarCssForDoc = {
+  borderRadius: '20%',
+  backgroundColor: '#000',
+}
 const meta = {
   title: 'Atoms/Avatar',
   component: Avatar,
@@ -17,6 +21,13 @@ const meta = {
       type: 'string',
       options: ['Sin imagen de usuario', 'user name'],
     },
+    avatarCss: {
+      control: 'object',
+    },
+    mediaQuery: {
+      control: 'object',
+    },
+    onClick: { action: 'clicked' },
   },
 } satisfies Meta<typeof Avatar>
 
@@ -31,6 +42,12 @@ export const Default: Story = {
 export const WithAvatar: Story = {
   args: {
     src: customAvatar,
+  },
+}
+export const WithCssProps: Story = {
+  args: {
+    avatarCss: avatarCssForDoc
+
   },
 }
 
