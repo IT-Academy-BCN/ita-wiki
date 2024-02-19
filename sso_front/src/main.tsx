@@ -7,6 +7,7 @@ import { font } from '@itacademy/ui'
 import { paths } from './constants/paths'
 import { ErrorPage, Home } from './pages'
 import { Layout } from './components/layout'
+import './i18n'
 
 const GlobalStyle = createGlobalStyle`
   body {

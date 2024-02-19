@@ -128,5 +128,11 @@
 
   "Mostrando": "Mostrant",
   "resultados para": "resultat per",
-  "Nuevo Recurso": "Nou recurs"
+  "Nuevo Recurso": "Nou recurs",
+
+  "Fecha de inicio": "Data d'inici",
+  "Fecha final": "Data final",
+  "De...": "De...",
+  "Hasta...": "Fins...",
+  "calendarLanguage": "ca"
 }
