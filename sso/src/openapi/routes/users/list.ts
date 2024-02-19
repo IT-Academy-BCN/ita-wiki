@@ -1,7 +1,7 @@
 import z from 'zod'
 import { pathRoot } from '../../../routes/routes'
 import {
-  getUsersIdNameResponse,
+  listUsersIdNameResponse,
   zodValidationResponse,
 } from '../../components/responses'
 import { registry } from '../../registry'
@@ -17,7 +17,7 @@ registry.registerPath({
     query: usersListSchema,
   },
   responses: {
-    200: getUsersIdNameResponse,
+    200: listUsersIdNameResponse,
     400: zodValidationResponse,
     500: {
       description: 'Other error',

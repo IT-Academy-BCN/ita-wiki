@@ -22,3 +22,21 @@ export const authenticate = async (ctx: Context, next: Next) => {
   ctx.state.user = user
   await next()
 }
+
+export const authenticateCookie = async (ctx: Context, next: Next) => {
+  const authToken = ctx.cookies.get('authToken')
+  if (!authToken) {
+    throw new InvalidCredentials()
+  }
+  const { id } = jwt.verify(authToken, appConfig.jwtKey) as JwtPayload
+  const userResult = await client.query(
+    'SELECT id, role FROM "user" WHERE id = $1',
+    [id]
+  )
+  const user = userResult.rows[0]
+  if (!user) {
+    throw new InvalidCredentials()
+  }
+  ctx.state.user = user
+  await next()
+}

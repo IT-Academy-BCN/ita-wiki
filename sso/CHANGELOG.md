@@ -2,11 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.11.0] - 2024-02-15
+
+## Added
+
+- Endpoint  `GET /dashboard/users` for admin users.
+
 ## [1.10.0] - 2024-02-13
 
 ## Added
 
-- Endpoint  `POST /dashboard/login` and   ` POST /dashboard/logout` for admins users.
+- Endpoint  `POST /dashboard/login` and   ` POST /dashboard/logout` for admin users.
 
 ## [1.9.0] - 2024-02-12
 

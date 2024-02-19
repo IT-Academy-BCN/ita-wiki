@@ -2,11 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.22.1] - 2024-02-15
+## [0.25.0] - 2024-02-19
 
 ### chore
 
 - Refactor Avatar props
+
+## [0.24.0] - 2024-02-15
+
+### Added
+
+- Migrate Notifications to UI
+
+## [0.23.0] - 2024-02-15
+
+### Added
+
+- Migrate TextareaGroup to UI
 
 ## [0.22.0] - 2024-02-13
 

@@ -19,6 +19,13 @@ export {
 } from './EditableItem'
 export { InputGroup, type TInputGroup } from './InputGroup'
 export { Modal, type TModal } from './Modal'
+export {
+  Notifications,
+  notificationsReducer,
+  NotificationsProvider,
+  useNotifications,
+} from './Notifications'
 export { ResourceTitleLink, type TResourceTitleLink } from './ResourceTitleLink'
 export { SelectGroup, type TSelectGroup } from './SelectGroup'
 export { Tabs, type TTabs } from './Tabs'
+export { TextareaGroup, type TTextareaGroup } from './TextareaGroup'
