@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.24.1] - 2024-02-19
+
+### Added
+
+- Refactor Icon props
+
 ## [0.24.0] - 2024-02-15
 
 ### Added
