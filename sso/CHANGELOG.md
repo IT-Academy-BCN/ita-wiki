@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file.
 
 ## Changed
 
-- Refined regex `createdAt` at `dashboardUsersListSchema`
+- `createdAt` at `dashboardUsersListSchema` to `z.date()`
 
 ## [1.12.0] - 2024-02-19
 

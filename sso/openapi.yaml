@@ -661,7 +661,7 @@ paths:
                         - INACTIVE
                     createdAt:
                       type: string
-                      pattern: (0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(202[30.-9]|20[3-9]\d|2[1-9]\d{2}|[3-9]\d{3})
+                      example: 21/02/2024
                     itineraryName:
                       type: string
                       example: Frontend Angular
