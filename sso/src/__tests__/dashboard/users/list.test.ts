@@ -6,6 +6,7 @@ import { userSchema } from '../../../schemas'
 import { itinerariesData, server, testUserData } from '../../globalSetup'
 import { client } from '../../../models/db'
 import { DashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
+import { UserStatus } from '../../../schemas/users/userSchema'
 
 const route = `${pathRoot.v1.dashboard.users}`
 
@@ -61,6 +62,33 @@ describe('Testing get users endpoint', () => {
       users.find((u) => u.name === testUserData.admin.name),
     ])
     expect(responseSchema.safeParse(response.body).success).toBeTruthy()
+  })
+  it('returns a empty collection of users by itinerary slug successfully with a logged-in admin user ', async () => {
+    const response = await supertest(server)
+      .get(route)
+      .query({ itinerarySlug: itinerariesData[4].slug })
+      .set('Cookie', [authToken])
+    expect(response.status).toBe(200)
+    expect(response.body).toHaveLength(0)
+    expect(response.body).toEqual([])
+    expect(responseSchema.safeParse(response.body).success).toBeTruthy()
+  })
+  it('returns a  collection of users by status successfully with a logged-in admin user ', async () => {
+    const activeUsers = users.filter((u) => u.status === UserStatus.ACTIVE)
+    const response = await supertest(server)
+      .get(route)
+      .query({ status: UserStatus.ACTIVE })
+      .set('Cookie', [authToken])
+    const { body }: { body: DashboardUsersList } = response
+    expect(response.status).toBe(200)
+    expect(body).toHaveLength(3)
+    body.forEach((user) => {
+      expect(user.status).toBe(UserStatus.ACTIVE)
+    })
+    const sortedResponseBody = body.sort((a, b) => a.id.localeCompare(b.id))
+    const sortedExpected = activeUsers.sort((a, b) => a.id.localeCompare(b.id))
+    expect(sortedResponseBody).toEqual(sortedExpected)
+    expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
   it('returns 401 when no cookies are provided', async () => {
     const response = await supertest(server).get(route)
