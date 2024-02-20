@@ -3,8 +3,9 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import { z } from 'zod'
 import { pathRoot } from '../../../routes/routes'
 import { userSchema } from '../../../schemas'
-import { server, testUserData } from '../../globalSetup'
+import { itinerariesData, server, testUserData } from '../../globalSetup'
 import { client } from '../../../models/db'
+import { DashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
 
 const route = `${pathRoot.v1.dashboard.users}`
 
@@ -17,7 +18,7 @@ const responseSchema = userSchema
   .array()
 
 let authToken = ''
-let users
+let users: DashboardUsersList
 
 beforeAll(async () => {
   const loginRoute = `${pathRoot.v1.dashboard.auth}/login`
@@ -47,6 +48,18 @@ describe('Testing get users endpoint', () => {
     expect(response.status).toBe(200)
     expect(response.body).toHaveLength(users.length)
     expect(response.body).toEqual(users)
+    expect(responseSchema.safeParse(response.body).success).toBeTruthy()
+  })
+  it('returns a  collection of users by itinerary slug successfully with a logged-in admin user ', async () => {
+    const response = await supertest(server)
+      .get(route)
+      .query({ itinerarySlug: itinerariesData[3].slug })
+      .set('Cookie', [authToken])
+    expect(response.status).toBe(200)
+    expect(response.body).toHaveLength(1)
+    expect(response.body).toEqual([
+      users.find((u) => u.name === testUserData.admin.name),
+    ])
     expect(responseSchema.safeParse(response.body).success).toBeTruthy()
   })
   it('returns 401 when no cookies are provided', async () => {

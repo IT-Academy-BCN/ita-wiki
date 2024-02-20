@@ -1,5 +1,5 @@
 info:
-  version: 1.11.0
+  version: 1.12.0
   title: IT Academy SSO Service
   description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
@@ -619,6 +619,15 @@ paths:
       summary: Get list of users name information
       security:
         - cookieAuth: []
+      parameters:
+        - in: query
+          name: itinerarySlug
+          schema:
+            type: string
+            example: frontend-angular
+          required: false
+          description: Slug of the itinerary for which to retrieve itineraries
+          example: frontend-angular
       responses:
         "200":
           description: Token is valid and user information is returned.

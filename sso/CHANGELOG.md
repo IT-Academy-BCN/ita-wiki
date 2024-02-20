@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.0] - 2024-02-19
+
+## Added
+
+- Dynamic query filtering for `GET /dashboard/users` by `itinerarySlug`
+
 ## [1.11.0] - 2024-02-15
 
 ## Added
