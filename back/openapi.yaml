@@ -1,5 +1,5 @@
 info:
-  version: 0.9.0
+  version: 0.10.0
   title: IT Academy Wiki
   description: Our app implements a Wiki to be used as a knowledge base by the
     students of the Barcelona Activa's IT Academy
@@ -72,6 +72,14 @@ components:
         message:
           type: string
           example: User not found
+      required:
+        - message
+    UpstreamServiceFail:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Upstream service failed to respond with the required data
       required:
         - message
     ServiceUnavailableError:
@@ -877,7 +885,7 @@ paths:
           example: tailwind
       responses:
         "200":
-          description: Sucessful operation
+          description: Successful operation
           content:
             application/json:
               schema:
@@ -2067,6 +2075,12 @@ paths:
                     example: Database error
                 required:
                   - message
+        "502":
+          description: Upstream service fail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpstreamServiceFail"
   /api/v1/favorites:
     put:
       tags:

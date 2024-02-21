@@ -14,7 +14,7 @@ beforeAll(async () => {
     where: { slug: 'testing' },
   })) as Category
   user = await prisma.user.findFirst({
-    where: { name: testUserData.user.name },
+    where: { id: testUserData.user.id },
   })
   const testResourceData = {
     ...resourceTestData[0],

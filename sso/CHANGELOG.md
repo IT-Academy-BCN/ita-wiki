@@ -2,6 +2,57 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.12.0] - 2024-02-19
+
+## Added
+
+- Dynamic query filtering for `GET /dashboard/users` by `itinerarySlug`
+
+## [1.11.0] - 2024-02-15
+
+## Added
+
+- Endpoint  `GET /dashboard/users` for admin users.
+
+## [1.10.0] - 2024-02-13
+
+## Added
+
+- Endpoint  `POST /dashboard/login` and   ` POST /dashboard/logout` for admin users.
+
+## [1.9.0] - 2024-02-12
+
+### Added
+
+- Endpoint `/users` to fetch user `id` and `name` by passing an array of IDs in a query string.
+
+### Changed
+
+- Refined the `validate` and `parse` middleware functions to enhance query string handling
+- Updated API endpoint naming to align with [Google Cloud API Design Standards](https://cloud.google.com/apis/design/standard_methods?hl=es-419):
+  - Renamed `GET /user` to `GET /users/me` to better reflect the action of fetching the current user's information.
+  - Changed `itinerary` endpoint to `itineraries` to use plural nouns for resources
+  - Changed `token` endpoint to `tokens`
+- Modified the user update endpoint from `PATCH /users` (with ID in the request body) to `PATCH /users/{id}`, specifying the user ID in the URL path.
+- Adjusted middleware sequence: errorMiddleware now initialized before koaBody to capture body parsing errors.
+- Modification of the user table to include the name field.
+- `POST /register` endpoint to now accept name as an additional parameter.
+- Updated query parsing and middleware to decode URL, handle array parameters, and store parsed queries in ctx.state.query.
+- Enhanced `POST /users/me` endpoint to return name
+
+### Fixed
+
+- Enhanced error handling in `updateUser` controller: Now returns a `404 Not Found` status with the message "User not found" if the specified user ID does not match any existing user.
+
+### Testing
+
+- Added tests for `GET /users` information endpoint
+- Updated test for `POST /users/me` , `PATCH /users/{id}` and `POST /register` endpoints
+
+### Documentation
+
+- Enhanced OpenAPI documentation with details on the new `GET /users` information endpoint
+
 ## [1.8.0] - 2024-01-24
 
 ### Changed

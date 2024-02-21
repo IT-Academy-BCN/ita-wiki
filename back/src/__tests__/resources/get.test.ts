@@ -15,7 +15,7 @@ import { prisma } from '../../prisma/client'
 import { resourceGetSchema, topicSchema } from '../../schemas'
 import { resourceTestData } from '../mocks/resources'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
-import { authToken } from '../mocks/ssoServer'
+import { authToken } from '../mocks/ssoHandlers/authToken'
 
 type ResourceVotes = {
   [key: string]: number
@@ -34,10 +34,10 @@ beforeAll(async () => {
     where: { slug: 'testing' },
   })) as Category
   user = await prisma.user.findFirst({
-    where: { name: testUserData.user.name },
+    where: { id: testUserData.user.id },
   })
   adminUser = await prisma.user.findFirst({
-    where: { name: testUserData.admin.name },
+    where: { id: testUserData.admin.id },
   })
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,

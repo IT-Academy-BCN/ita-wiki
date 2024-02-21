@@ -19,7 +19,7 @@ registry.registerPath({
   },
   responses: {
     200: {
-      description: 'Sucessful operation',
+      description: 'Successful operation',
       content: {
         'application/json': {
           schema: z.array(resourceGetSchema),

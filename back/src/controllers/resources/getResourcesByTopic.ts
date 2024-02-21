@@ -1,8 +1,11 @@
 import Koa, { Middleware } from 'koa'
 import { prisma } from '../../prisma/client'
 import { MissingParamError, NotFoundError } from '../../helpers/errors'
-import { transformResourceToAPI } from '../../helpers/transformResourceToAPI'
 import { resourceGetSchema } from '../../schemas'
+import {
+  attachUserNamesToResources,
+  transformResourceToAPI,
+} from '../../helpers'
 
 export const getResourcesByTopicId: Middleware = async (ctx: Koa.Context) => {
   const { topicId } = ctx.params
@@ -26,17 +29,13 @@ export const getResourcesByTopicId: Middleware = async (ctx: Koa.Context) => {
       },
     },
     include: {
-      user: {
-        select: {
-          name: true,
-        },
-      },
       vote: { select: { vote: true } },
       topics: { select: { topic: true } },
     },
   })
 
-  const parsedResources = resourcesList.map((resource) => {
+  const resourcesWithUserName = await attachUserNamesToResources(resourcesList)
+  const parsedResources = resourcesWithUserName.map((resource) => {
     const resourceWithVote = transformResourceToAPI(resource)
     return resourceGetSchema.parse(resourceWithVote)
   })
@@ -65,17 +64,13 @@ export const getResourcesByTopicSlug: Middleware = async (ctx: Koa.Context) => {
       },
     },
     include: {
-      user: {
-        select: {
-          name: true,
-        },
-      },
       vote: { select: { vote: true } },
       topics: { select: { topic: true } },
     },
   })
 
-  const parsedResources = resourcesList.map((resource) => {
+  const resourcesWithUserName = await attachUserNamesToResources(resourcesList)
+  const parsedResources = resourcesWithUserName.map((resource) => {
     const resourceWithVote = transformResourceToAPI(resource)
     return resourceGetSchema.parse(resourceWithVote)
   })

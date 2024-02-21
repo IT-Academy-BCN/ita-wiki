@@ -2,11 +2,47 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.20.0] - 2024-02-12
+## [0.26.0] - 2024-02-21
 
 ### Added
 
 - Migrate Dropdown to UI
+
+## [0.25.0] - 2024-02-19
+
+### chore
+
+- Refactor Avatar props
+
+## [0.24.0] - 2024-02-15
+
+### Added
+
+- Migrate Notifications to UI
+
+## [0.23.0] - 2024-02-15
+
+### Added
+
+- Migrate TextareaGroup to UI
+
+## [0.22.0] - 2024-02-13
+
+### Added
+
+- Migrate EditableItem to UI
+
+## [0.21.0] - 2024-02-12
+
+### Added
+
+- Migrate ResourceTitleLink to UI
+
+## [0.20.0] - 2024-02-07
+
+### Added
+
+- Migrate CardHome to UI
 
 ## [0.19.0] - 2024-02-07
 

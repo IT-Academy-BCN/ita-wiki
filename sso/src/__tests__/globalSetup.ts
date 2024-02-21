@@ -4,7 +4,7 @@ import { app } from '../app'
 import { client } from '../models/db'
 import { generateId } from '../utils/cuidGenerator'
 import { hashPassword } from '../utils/passwordHash'
-import { UserRole, UserStatus } from '../schemas/user/userSchema'
+import { UserRole, UserStatus } from '../schemas/users/userSchema'
 
 // eslint-disable-next-line import/no-mutable-exports
 export let server: Server<typeof IncomingMessage, typeof ServerResponse>
@@ -101,13 +101,14 @@ export async function setup() {
     }
 
     const query = `
-      INSERT INTO "user" (id, dni, email, password, role, status, user_meta, itinerary_id)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      INSERT INTO "user" (id, dni, email, name, password, role, status, user_meta, itinerary_id)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       ON CONFLICT (dni) DO NOTHING;`
     await client.query(query, [
       generateId(),
       user.dni,
       user.email,
+      user.name,
       await hashPassword(user.password),
       user.role,
       user.status,

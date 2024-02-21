@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.0] - 2024-02-19
+
+### Added
+
+- Added DateRange component
+
 ## [0.2.1] - 2024-02-07
 
 ### Added
