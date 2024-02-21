@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### Added
+
+## [0.27.0] - 2024-02-21
+
+- Migrate Dropdown to UI
+
 ## [0.26.0] - 2024-02-21
 
 ### Added

@@ -6,6 +6,7 @@ import React, {
   forwardRef,
   useEffect,
   HTMLAttributes,
+  useCallback,
 } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, font } from '../../styles'
@@ -46,6 +47,8 @@ const DropdownList = styled.div`
   background-color: ${colors.white};
   width: 100%;
   border-radius: ${dimensions.borderRadius.base};
+  border: 1px solid ${colors.gray.gray4};
+  margin-top: ${dimensions.spacing.xxxs};
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
   max-height: 200px;
@@ -59,7 +62,8 @@ const DropdownItem = styled.div`
   font-size: ${font.xss};
 
   &:hover {
-    background-color: ${colors.gray.gray5};
+    background-color: ${colors.primary};
+    color: ${colors.white};
   }
 `
 
@@ -79,13 +83,32 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
     const [selectedValue, setSelectedValue] = useState(defaultValue)
     const dropdownListRef = useRef<HTMLDivElement>(null)
 
-    const handleSelect = (value: string) => {
-      setSelectedValue(value)
-      setIsDropdownOpen(false)
-      if (onValueChange) {
-        onValueChange(value)
-      }
-    }
+    const handleSelect = useCallback(
+      (value: string) => {
+        setSelectedValue(value)
+        setIsDropdownOpen(false)
+        if (onValueChange) {
+          onValueChange(value)
+        }
+
+        const handleClick = (event: MouseEvent) => {
+          const target = event.target as HTMLElement
+          const innerValue = target.innerText
+          if (dropdownListRef.current?.contains(target)) {
+            handleSelect(innerValue)
+          }
+        }
+
+        if (dropdownListRef.current) {
+          dropdownListRef.current.addEventListener('click', handleClick)
+          return () => {
+            dropdownListRef.current?.removeEventListener('click', handleClick)
+          }
+        }
+        return () => {}
+      },
+      [dropdownListRef, onValueChange]
+    )
 
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -96,26 +119,6 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
 
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [dropdownListRef])
-
-    useEffect(() => {
-      const handleClick = (event: MouseEvent) => {
-        const target = event.target as HTMLElement
-        const value = target.innerText
-        if (dropdownListRef.current?.contains(target)) {
-          handleSelect(value)
-        }
-      }
-
-      if (dropdownListRef.current) {
-        const currentRef = dropdownListRef.current
-        currentRef.addEventListener('click', handleClick)
-
-        return () => {
-          currentRef.removeEventListener('click', handleClick)
-        }
-      }
-      return () => {}
     }, [dropdownListRef])
 
     return (
@@ -142,11 +145,10 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
           </DropdownHeader>
           {isDropdownOpen && (
             <DropdownList ref={dropdownListRef}>
-              {Children.map(children, (child, index) => {
+              {Children.map(children, (child) => {
                 if (isValidElement(child)) {
                   return (
                     <DropdownItem
-                      key={index}
                       onClick={() =>
                         handleSelect(child.props.children.toString())
                       }
