@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### Added
+
+## [0.26.0] - 2024-02-15
+
+- Migrate Tooltip to UI
+- Added target element, hover behavior and position
+
 ## [0.25.0] - 2024-02-19
 
 ### chore
