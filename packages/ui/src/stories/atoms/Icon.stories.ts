@@ -37,11 +37,3 @@ export const Variant: IconStory = {
     style: { fontSize: `${font.base}` },
   },
 }
-export const IsFill: IconStory = {
-
-  args: {
-    name: 'favorite',
-    $fill: 1,
-  },
-
-}

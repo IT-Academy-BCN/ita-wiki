@@ -1,4 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { vi } from 'vitest'
+import { useState } from 'react'
 import { Icon } from '../../components/atoms'
 import { colors } from '../../styles'
 
@@ -21,19 +23,24 @@ describe('Icon', () => {
     )
     expect(icon).toHaveStyle(`color: ${colors.primary}`)
   })
+
   it('renders correctly with fill = 1', () => {
+    let isFavorite = false
+    const mockOnClick = vi.fn(() => { isFavorite = true });
+    const updatedFill = isFavorite ? 1 : 0
     render(
-      <Icon data-testid="icon" name="favorite" onClick={() => { }} $fill={1}
-      >
+      <Icon data-testid="icon" name="favorite" onClick={mockOnClick} $fill={updatedFill}>
         favorite
       </Icon>
     )
     const icon = screen.getByTestId('icon')
     expect(icon).toBeInTheDocument();
+    fireEvent.click(icon);
+    expect(mockOnClick).toHaveBeenCalled();
+    expect(icon).toHaveAttribute('name', 'favorite');
+    expect(updatedFill).toBe(1);
     expect(icon).toHaveStyle(
       `font-variation-settings: 'FILL' 1, 'wght' 400,'GRAD' 0, 'opsz' 48;`
     )
-    expect(icon).toHaveAttribute('name', 'favorite');
-    fireEvent.click(icon);
   })
 })
