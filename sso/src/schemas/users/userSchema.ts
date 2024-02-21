@@ -10,6 +10,7 @@ export enum UserStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
 }
+export const userStatusSchema = z.nativeEnum(UserStatus)
 export const userIdSchema = z.string().cuid2()
 export const userSchema = z.object({
   id: userIdSchema,
@@ -18,7 +19,7 @@ export const userSchema = z.object({
   name: z.string().nonempty().openapi({ example: 'Name' }),
   password: z.string().min(8),
   role: z.nativeEnum(UserRole),
-  status: z.nativeEnum(UserStatus),
+  status: userStatusSchema,
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
   itineraryId: z.string().cuid2(),

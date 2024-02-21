@@ -9,7 +9,7 @@ export const dashboardUsersListSchema = userSchema
     status: true,
   })
   .extend({
-    createdAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    createdAt: z.date().openapi({ example: '21/02/2024' }),
     itineraryName: itineraryNameSchema,
   })
   .array()

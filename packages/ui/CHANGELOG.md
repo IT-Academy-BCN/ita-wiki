@@ -8,11 +8,12 @@ All notable changes to this project will be documented in this file.
 
 - Migrate Dropdown to UI
 
-## [0.26.0] - 2024-02-21
-
 ### Added
 
-- Migrate Dropdown to UI
+## [0.26.0] - 2024-02-15
+
+- Migrate Tooltip to UI
+- Added target element, hover behavior and position
 
 ## [0.25.0] - 2024-02-19
 
