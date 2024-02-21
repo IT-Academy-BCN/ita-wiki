@@ -1,4 +1,6 @@
 import React, {
+  Children,
+  isValidElement,
   useState,
   useRef,
   forwardRef,
@@ -46,6 +48,8 @@ const DropdownList = styled.div`
   border-radius: ${dimensions.borderRadius.base};
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   z-index: 100;
+  max-height: 200px;
+  overflow-y: auto;
 `
 
 const DropdownItem = styled.div`
@@ -53,15 +57,24 @@ const DropdownItem = styled.div`
   cursor: pointer;
   font-family: ${font.fontFamily};
   font-size: ${font.xss};
+
+  &:hover {
+    background-color: ${colors.gray.gray5};
+  }
 `
 
 export type TDropdown = HTMLAttributes<HTMLElement> & {
   placeholder?: string
   defaultValue?: string
+  children: React.ReactNode
+  onValueChange?: (value: string) => void
 }
 
 export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
-  ({ defaultValue = '', placeholder = 'Selecciona', children }, ref) => {
+  (
+    { defaultValue = '', placeholder = 'Selecciona', children, onValueChange },
+    ref
+  ) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [selectedValue, setSelectedValue] = useState(defaultValue)
     const dropdownListRef = useRef<HTMLDivElement>(null)
@@ -69,6 +82,9 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
     const handleSelect = (value: string) => {
       setSelectedValue(value)
       setIsDropdownOpen(false)
+      if (onValueChange) {
+        onValueChange(value)
+      }
     }
 
     useEffect(() => {
@@ -80,7 +96,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
 
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [])
+    }, [dropdownListRef])
 
     useEffect(() => {
       const handleClick = (event: MouseEvent) => {
@@ -100,7 +116,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
         }
       }
       return () => {}
-    })
+    }, [dropdownListRef])
 
     return (
       <div ref={ref}>
@@ -126,9 +142,18 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
           </DropdownHeader>
           {isDropdownOpen && (
             <DropdownList ref={dropdownListRef}>
-              {React.Children.map(children, (child) => {
-                if (React.isValidElement(child)) {
-                  return <DropdownItem>{child}</DropdownItem>
+              {Children.map(children, (child, index) => {
+                if (isValidElement(child)) {
+                  return (
+                    <DropdownItem
+                      key={index}
+                      onClick={() =>
+                        handleSelect(child.props.children.toString())
+                      }
+                    >
+                      {child}
+                    </DropdownItem>
+                  )
                 }
                 return null
               })}

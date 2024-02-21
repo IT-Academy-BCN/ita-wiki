@@ -11,6 +11,7 @@ const meta: Meta<typeof Dropdown> = {
   argTypes: {
     defaultValue: { control: 'text' },
     placeholder: { control: 'text' },
+    onValueChange: { action: 'onValueChange' },
   },
 }
 
@@ -21,51 +22,50 @@ type DropdownStory = StoryObj<typeof Dropdown>
 export const Default: DropdownStory = {
   args: {
     placeholder: 'Select an option',
-    children: (
-      <>
-        <p>Option 1</p>
-        <p>Option 2</p>
-        <p>Option 3</p>
-      </>
-    ),
   },
+  render: (args) => (
+    <Dropdown {...args}>
+      <p>Option 1</p>
+      <p>Option 2</p>
+      <p>Option 3</p>
+    </Dropdown>
+  ),
 }
 
 export const WithSelectedOption: DropdownStory = {
   args: {
     placeholder: 'Select an option',
     defaultValue: 'Option 2',
-    children: (
-      <>
-        <p>Option 1</p>
-        <p>Option 2</p>
-        <p>Option 3</p>
-      </>
-    ),
   },
+  render: (args) => (
+    <Dropdown {...args}>
+      <p>Option 1</p>
+      <p>Option 2</p>
+      <p>Option 3</p>
+    </Dropdown>
+  ),
 }
 
 export const EmptyPlaceholder: DropdownStory = {
-  args: {
-    children: (
-      <>
-        <p>Option 1</p>
-        <p>Option 2</p>
-        <p>Option 3</p>
-      </>
-    ),
-  },
+  args: {},
+  render: (args) => (
+    <Dropdown {...args}>
+      <p>Option 1</p>
+      <p>Option 2</p>
+      <p>Option 3</p>
+    </Dropdown>
+  ),
 }
 
 export const LongList: DropdownStory = {
   args: {
     placeholder: 'Select an option',
-    children: (
-      <>
-        {Array.from({ length: 20 }, (_, i) => (
-          <p key={i}>Option {i + 1}</p>
-        ))}
-      </>
-    ),
   },
+  render: (args) => (
+    <Dropdown {...args}>
+      {Array.from({ length: 20 }, (_, i) => (
+        <p key={i}>Option {i + 1}</p>
+      ))}
+    </Dropdown>
+  ),
 }

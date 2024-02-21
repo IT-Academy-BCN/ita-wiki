@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { useState } from 'react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { expect } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { Dropdown } from '../../components/atoms/Dropdown'
@@ -92,5 +93,37 @@ describe('Dropdown', () => {
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
     expect(dropdownHeader).toHaveTextContent('Preselected Item')
+  })
+
+  const MockParent = () => {
+    const [selectedOption, setSelectedOption] = useState('')
+
+    const handleChange = (value: string) => {
+      console.log(value)
+      setSelectedOption(value)
+    }
+
+    return (
+      <div>
+        <Dropdown onValueChange={handleChange}>
+          <p data-value="Option 1">Option 1</p>
+          <p data-value="Option 2">Option 2</p>
+        </Dropdown>
+        <p data-testid="selected-value">{selectedOption}</p>
+      </div>
+    )
+  }
+
+  it('passes selected option to parent via onChange', async () => {
+    render(<MockParent />)
+    const dropdownHeader = screen.getByTestId('dropdown-header')
+    await userEvent.click(dropdownHeader)
+
+    const optionToSelect = screen.getByText('Option 2')
+    await userEvent.click(optionToSelect)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('selected-value')).toHaveTextContent('Option 2')
+    })
   })
 })
