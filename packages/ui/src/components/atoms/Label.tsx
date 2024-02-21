@@ -7,6 +7,7 @@ const LabelStyled = styled.label`
   font-size: ${font.xs};
   font-weight: 700;
   font-family: ${font.fontFamily};
+  visibility: ${(props) => (props.hidden ? 'hidden' : 'visible')};
 `
 
 export type TLabel = Omit<LabelHTMLAttributes<HTMLLabelElement>, 'htmlFor'> & {
