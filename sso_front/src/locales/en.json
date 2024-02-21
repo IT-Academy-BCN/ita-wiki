@@ -128,5 +128,11 @@
 
   "Mostrando": "Showing",
   "resultados para": "results for",
-  "Nuevo Recurso": "New resource"
+  "Nuevo Recurso": "New resource",
+
+  "Fecha de inicio": "Initial date",
+  "Fecha final": "Final date",
+  "De...": "From...",
+  "Hasta...": "To...",
+  "calendarLanguage": "en-IN"
 }

@@ -128,5 +128,11 @@
 
   "Mostrando": "Mostrando",
   "resultados para": "resultados para",
-  "Nuevo Recurso": "Nuevo recurso"
+  "Nuevo Recurso": "Nuevo recurso",
+
+  "Fecha de inicio": "Fecha de inicio",
+  "Fecha final": "Fecha final",
+  "De...": "De...",
+  "Hasta...": "Hasta...",
+  "calendarLanguage": "es"
 }

@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '@itacademy/ui'
-import { SideMenu, Navbar } from '../components/organisms'
+import { FiltersWidget, Navbar, SideMenu } from '../components/organisms'
 
 const Container = styled(FlexBox)`
   width: 100%;
@@ -20,7 +20,7 @@ const MainDiv = styled(FlexBox)`
   background-color: ${colors.white};
   width: 100%;
   height: 100%;
-  padding: ${dimensions.spacing.xs};
+  padding: ${dimensions.spacing.lg} ${dimensions.spacing.xxxl};
   border-radius: ${dimensions.borderRadius.base};
   color: ${colors.gray.gray3};
 `
@@ -30,7 +30,9 @@ export const Home: FC = () => (
     <SideMenu />
     <ContainerMain justify="flex-start">
       <Navbar />
-      <MainDiv as="main" justify="center" align="center" />
+      <MainDiv as="main" justify="flex-start" align="center">
+        <FiltersWidget />
+      </MainDiv>
     </ContainerMain>
   </Container>
 )
