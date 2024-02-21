@@ -1,9 +1,10 @@
 import { Context, Middleware } from 'koa'
 import { client } from '../../../models/db'
 import { itinerarySlugSchema } from '../../../schemas/itineraries/itinerarySchema'
+import { userStatusSchema } from '../../../schemas/users/userSchema'
 
 export const dashboardListUsers: Middleware = async (ctx: Context) => {
-  const { itinerarySlug } = ctx.state.query
+  const { itinerarySlug, status } = ctx.state.query
   let query = `
   SELECT
     u.id,
@@ -16,15 +17,21 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
   JOIN itinerary i ON u.itinerary_id = i.id
 `
   const queryParams = []
+  const conditions = []
   if (itinerarySlug) {
     const parsedSlug = itinerarySlugSchema.parse(itinerarySlug)
-    query += `WHERE i.slug = $1`
+    conditions.push(`i.slug = $${conditions.length + 1}`)
     queryParams.push(parsedSlug)
   }
-  const queryResult = await client.query(
-    query,
-    queryParams.length > 0 ? queryParams : undefined
-  )
+  if (status) {
+    const parsedStatus = userStatusSchema.parse(status)
+    conditions.push(`u.status = $${conditions.length + 1}`)
+    queryParams.push(parsedStatus)
+  }
+  if (conditions.length > 0) {
+    query += ` WHERE ${conditions.join(' AND ')}`
+  }
+  const queryResult = await client.query(query, queryParams)
 
   if (!queryResult.rowCount) {
     ctx.status = 200
