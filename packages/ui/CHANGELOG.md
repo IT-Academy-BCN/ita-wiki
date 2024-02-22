@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.28.0] - 2024-02-19
+
+### Chore
+
+- Refactor Icon props
+
 ## [0.27.0] - 2024-02-21
 
 ### Added
@@ -17,7 +23,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.25.0] - 2024-02-19
 
-### chore
+### Chore
 
 - Refactor Avatar props
 
