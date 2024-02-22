@@ -2,22 +2,34 @@
 
 All notable changes to this project will be documented in this file.
 
-### Added
+## [0.29.0] - 2024-02-22
 
-## [0.27.0] - 2024-02-21
+### Added
 
 - Migrate Dropdown to UI
 
+## [0.28.0] - 2024-02-19
+
+### Chore
+
+- Refactor Icon props
+
+## [0.27.0] - 2024-02-15
+
 ### Added
 
-## [0.26.0] - 2024-02-15
+- Migrate VoteCounter to UI
+
+## [0.26.0] - 2024-02-20
+
+### Added
 
 - Migrate Tooltip to UI
 - Added target element, hover behavior and position
 
 ## [0.25.0] - 2024-02-19
 
-### chore
+### Chore
 
 - Refactor Avatar props
 
