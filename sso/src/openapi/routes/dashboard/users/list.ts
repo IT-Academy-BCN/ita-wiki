@@ -6,6 +6,7 @@ import {
 } from '../../../components/responses'
 import { registry } from '../../../registry'
 import { cookieAuth } from '../../../components/cookieAuth'
+import { dashboardUsersListQuerySchema } from '../../../../schemas'
 
 registry.registerPath({
   method: 'get',
@@ -15,6 +16,7 @@ registry.registerPath({
     'Returns id, name, itinerary, status and created at  information of users.',
   summary: 'Get list of users name information',
   security: [{ [cookieAuth.name]: [] }],
+  request: { query: dashboardUsersListQuerySchema },
   responses: {
     200: listDashboardUsersResponse,
     401: invalidCredentialsResponse,
