@@ -1,2 +1,2 @@
 export { ErrorPage } from './ErrorPage'
-export { Home } from './Home'
+export { Home, type TStatus, type TUser } from './Home'

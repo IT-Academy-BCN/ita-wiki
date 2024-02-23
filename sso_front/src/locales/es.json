@@ -134,5 +134,15 @@
   "Fecha final": "Fecha final",
   "De...": "De...",
   "Hasta...": "Hasta...",
-  "calendarLanguage": "es"
+  "calendarLanguage": "es",
+
+  "Especialización": "Especialización",
+  "Fecha alta": "Fecha alta",
+  "Acciones": "Acciones",
+  "pendiente": "Pendiente",
+  "activo": "Activo",
+  "bloqueado": "Bloqueado",
+  "Aceptar": "Aceptar",
+  "Bloquear": "Bloquear",
+  "Desbloquear": "Desbloquear"
 }

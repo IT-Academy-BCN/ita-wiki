@@ -134,5 +134,15 @@
   "Fecha final": "Data final",
   "De...": "De...",
   "Hasta...": "Fins...",
-  "calendarLanguage": "ca"
+  "calendarLanguage": "ca",
+
+  "Especialización": "Especialització",
+  "Fecha alta": "Data alta",
+  "Acciones": "Accions",
+  "pendiente": "Pendent",
+  "activo": "Actiu",
+  "bloqueado": "Bloquejat",
+  "Aceptar": "Acceptar",
+  "Bloquear": "Bloquejar",
+  "Desbloquear": "Desbloquejar"
 }

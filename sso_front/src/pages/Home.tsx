@@ -1,7 +1,12 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '@itacademy/ui'
-import { FiltersWidget, Navbar, SideMenu } from '../components/organisms'
+import {
+  FiltersWidget,
+  Navbar,
+  SideMenu,
+  UsersTable,
+} from '../components/organisms'
 
 const Container = styled(FlexBox)`
   width: 100%;
@@ -25,13 +30,44 @@ const MainDiv = styled(FlexBox)`
   color: ${colors.gray.gray3};
 `
 
+export type TStatus = 'pendiente' | 'activo' | 'bloqueado'
+
+export type TUser = {
+  name: string
+  specialization: string
+  status: TStatus
+  registrationDate: string
+}
+
+const mockUsers: TUser[] = [
+  {
+    name: 'Ona Sitgar',
+    specialization: 'Node',
+    status: 'pendiente',
+    registrationDate: '05/11/2023',
+  },
+  {
+    name: 'Marc Bofill',
+    specialization: 'Node',
+    status: 'activo',
+    registrationDate: '05/11/2023',
+  },
+  {
+    name: 'Montserrat Capdevila',
+    specialization: 'Node',
+    status: 'bloqueado',
+    registrationDate: '05/11/2023',
+  },
+]
+
 export const Home: FC = () => (
   <Container direction="row" align="center">
     <SideMenu />
     <ContainerMain justify="flex-start">
       <Navbar />
-      <MainDiv as="main" justify="flex-start" align="center">
+      <MainDiv as="main" justify="flex-start" align="center" gap="2rem">
         <FiltersWidget />
+        <UsersTable users={mockUsers} />
       </MainDiv>
     </ContainerMain>
   </Container>

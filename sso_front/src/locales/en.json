@@ -134,5 +134,15 @@
   "Fecha final": "Final date",
   "De...": "From...",
   "Hasta...": "To...",
-  "calendarLanguage": "en-IN"
+  "calendarLanguage": "en-IN",
+
+  "Especialización": "Specialization",
+  "Fecha alta": "Registration date",
+  "Acciones": "Actions",
+  "pendiente": "Pending",
+  "activo": "Active",
+  "bloqueado": "Locked",
+  "Aceptar": "Accept",
+  "Bloquear": "Lock",
+  "Desbloquear": "Unlock"
 }
