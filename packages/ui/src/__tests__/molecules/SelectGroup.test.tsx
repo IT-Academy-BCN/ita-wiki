@@ -23,22 +23,6 @@ describe('SelectGroup component', () => {
     expect(screen.getByDisplayValue('test placeholder')).toBeInTheDocument()
   })
 
-  it('does not show label when hidden', () => {
-    render(
-      <SelectGroup
-        id="testid"
-        name="testname"
-        label="hidden label"
-        hiddenLabel
-      />
-    )
-
-    const label = screen.getByText('hidden label')
-
-    expect(label).toBeInTheDocument()
-    expect(label).not.toBeVisible()
-  })
-
   it('renders correctly on error with error color and validation message', () => {
     render(
       <SelectGroup

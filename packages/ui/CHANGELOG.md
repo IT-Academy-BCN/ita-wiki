@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.28.1] - 2024-02-27
+
+### Fix
+
+- Label visibility
+
 ## [0.28.0] - 2024-02-19
 
 ### Chore
