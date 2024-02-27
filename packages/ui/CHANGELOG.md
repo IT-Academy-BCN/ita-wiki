@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 ## [0.28.1] - 2024-02-27
 
-### Fix
+### Fixed
 
 - Label visibility
 
