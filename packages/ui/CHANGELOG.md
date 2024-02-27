@@ -2,11 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.29.0] - 2024-02-22
+## [0.29.1] - 2024-02-27
 
 ### Added
 
 - Migrate Dropdown to UI
+
+## [0.28.1] - 2024-02-27
+
+### Fixed
+
+- Label visibility
 
 ## [0.28.0] - 2024-02-19
 

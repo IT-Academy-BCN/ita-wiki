@@ -28,7 +28,7 @@ const DropdownHeader = styled(Button)`
   border: 1px solid ${colors.gray.gray4};
   color: ${colors.black.black3};
   font-family: ${font.fontFamily};
-  width: 200px;
+  width: 320px;
 
   &:hover {
     color: ${colors.white};
@@ -72,11 +72,20 @@ export type TDropdown = HTMLAttributes<HTMLElement> & {
   defaultValue?: string
   children: React.ReactNode
   onValueChange?: (value: string) => void
+  openText?: string
+  closeText?: string
 }
 
 export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
   (
-    { defaultValue = '', placeholder = 'Selecciona', children, onValueChange },
+    {
+      defaultValue = '',
+      placeholder = 'Selecciona',
+      children,
+      onValueChange,
+      openText = 'Ampliar',
+      closeText = 'Cerrar',
+    },
     ref
   ) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -133,13 +142,13 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
               <StyledIcon
                 name="expand_less"
                 aria-hidden="true"
-                title="Cerrar"
+                title={closeText}
               />
             ) : (
               <StyledIcon
                 name="expand_more"
                 aria-hidden="true"
-                title="Ampliar"
+                title={openText}
               />
             )}
           </DropdownHeader>
