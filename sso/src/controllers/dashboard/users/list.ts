@@ -2,9 +2,13 @@ import { Context, Middleware } from 'koa'
 import { client } from '../../../models/db'
 import { itinerarySlugSchema } from '../../../schemas/itineraries/itinerarySchema'
 import { userStatusSchema } from '../../../schemas/users/userSchema'
+import {
+  endDateSchema,
+  startDateSchema,
+} from '../../../schemas/users/dashboardUsersListQuerySchema'
 
 export const dashboardListUsers: Middleware = async (ctx: Context) => {
-  const { itinerarySlug, status } = ctx.state.query
+  const { itinerarySlug, status, startDate, endDate } = ctx.state.query
   let query = `
   SELECT
     u.id,
@@ -27,6 +31,16 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
     const parsedStatus = userStatusSchema.parse(status)
     conditions.push(`u.status = $${conditions.length + 1}`)
     queryParams.push(parsedStatus)
+  }
+  if (startDate) {
+    const parsedStartDate = startDateSchema.parse(startDate)
+    conditions.push(`u.created_at >= $${conditions.length + 1}`)
+    queryParams.push(parsedStartDate)
+  }
+  if (endDate) {
+    const parsedEndDate = endDateSchema.parse(endDate)
+    conditions.push(`u.created_at <= $${conditions.length + 1}`)
+    queryParams.push(parsedEndDate)
   }
   if (conditions.length > 0) {
     query += ` WHERE ${conditions.join(' AND ')}`

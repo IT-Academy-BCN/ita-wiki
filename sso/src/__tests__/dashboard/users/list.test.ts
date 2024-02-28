@@ -63,7 +63,7 @@ describe('Testing get users endpoint', () => {
     ])
     expect(responseSchema.safeParse(response.body).success).toBeTruthy()
   })
-  it('returns a empty collection of users by itinerary slug successfully with a logged-in admin user ', async () => {
+  it('returns an empty collection of users for an itinerary slug when no users are assigned, with admin logged in', async () => {
     const response = await supertest(server)
       .get(route)
       .query({ itinerarySlug: itinerariesData[4].slug })
@@ -88,6 +88,35 @@ describe('Testing get users endpoint', () => {
     const sortedResponseBody = body.sort((a, b) => a.id.localeCompare(b.id))
     const sortedExpected = activeUsers.sort((a, b) => a.id.localeCompare(b.id))
     expect(sortedResponseBody).toEqual(sortedExpected)
+    expect(responseSchema.safeParse(body).success).toBeTruthy()
+  })
+  it('returns a  collection of users within a date range successfully with a logged-in admin user', async () => {
+    const dateMinusOne = new Date()
+    dateMinusOne.setDate(dateMinusOne.getDate() - 1)
+    const datePlusOne = new Date()
+    datePlusOne.setDate(datePlusOne.getDate() + 1)
+    const startDate = dateMinusOne.toLocaleDateString('en-CA', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      timeZone: 'UTC',
+    })
+    const endDate = datePlusOne.toLocaleDateString('en-CA', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      timeZone: 'UTC',
+    })
+    const response = await supertest(server)
+      .get(route)
+      .query({
+        startDate,
+        endDate,
+      })
+      .set('Cookie', [authToken])
+    const { body }: { body: DashboardUsersList } = response
+    expect(response.status).toBe(200)
+    expect(body).toHaveLength(4)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
   it('returns 401 when no cookies are provided', async () => {
