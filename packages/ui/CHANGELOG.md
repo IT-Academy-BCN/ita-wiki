@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.28.2] - 2024-02-27
+
+### Fixed
+
+- CheckboxFilterWidget useEffect dependencies
+
 ## [0.28.1] - 2024-02-27
 
 ### Fixed
