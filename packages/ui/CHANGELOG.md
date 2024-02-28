@@ -2,11 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.29.1] - 2024-02-27
+## [0.29.2] - 2024-02-27
 
 ### Added
 
 - Migrate Dropdown to UI
+
+## [0.28.2] - 2024-02-27
+
+### Fixed
+
+- CheckboxFilterWidget useEffect dependencies
 
 ## [0.28.1] - 2024-02-27
 
@@ -20,7 +26,7 @@ All notable changes to this project will be documented in this file.
 
 - Refactor Icon props
 
-## [0.27.0] - 2024-02-15
+## [0.27.0] - 2024-02-21
 
 ### Added
 
