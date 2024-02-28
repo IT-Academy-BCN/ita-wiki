@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.0] - 2024-02-28
+
+## Added
+
+- Date range filtering by `createdAt` for `GET /dashboard/users` 
+
 ## [1.13.0] - 2024-02-20
 
 ## Added

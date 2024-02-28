@@ -2,6 +2,8 @@ import { z } from '../../openapi/zod'
 import { itinerarySlugSchema } from '../itineraries/itinerarySchema'
 import { UserStatus, userStatusSchema } from './userSchema'
 
+export const startDateSchema = z.coerce.date()
+export const endDateSchema = z.coerce.date()
 export const dashboardUsersListQuerySchema = z.object({
   itinerarySlug: itinerarySlugSchema.optional().openapi({
     param: {
@@ -17,4 +19,6 @@ export const dashboardUsersListQuerySchema = z.object({
       example: UserStatus.ACTIVE,
     },
   }),
+  startDate: startDateSchema.optional().openapi({ format: 'date' }),
+  endDate: endDateSchema.optional().openapi({ format: 'date' }),
 })
