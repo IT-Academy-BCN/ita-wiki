@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.29.0] - 2024-02-27
+
+### Added
+
+- Migrate Dropdown to UI
+
 ## [0.28.2] - 2024-02-27
 
 ### Fixed
@@ -26,9 +32,9 @@ All notable changes to this project will be documented in this file.
 
 - Migrate VoteCounter to UI
 
-### Added
-
 ## [0.26.0] - 2024-02-20
+
+### Added
 
 - Migrate Tooltip to UI
 - Added target element, hover behavior and position
