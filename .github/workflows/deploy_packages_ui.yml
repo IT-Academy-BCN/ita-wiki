@@ -1,4 +1,4 @@
-name: deploy_ui
+name: deploy_packages_ui
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ on:
       - "config/prod/ui.yml"
 
 jobs:
-  deploy_ui:
+  deploy_packages_ui:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 

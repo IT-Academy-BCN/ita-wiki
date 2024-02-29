@@ -1,0 +1,39 @@
+name: deploy_web_wiki_dev
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+    paths:
+      - "config/dev/web_wiki.yml"
+
+jobs:
+  deploy_web_wiki_dev:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Get versions
+        id: versions
+        run: |
+          service_wiki_version=$(grep version: ./config/dev/service_wiki.yml | awk '{print $2}')
+          web_wiki_version=$(grep version: ./config/dev/front.yml | awk '{print $2}')
+          echo "::set-output name=service_wiki_version::$service_wiki_version"
+          echo "::set-output name=web_wiki_version::$web_wiki_version"
+
+      - name: Execute SSH Command
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            echo "Deploying Back Version: ${{ steps.versions.outputs.service_wiki_version }}"
+            echo "Deploying Front Version: ${{ steps.versions.outputs.web_wiki_version }}"
+            cd ${{ secrets.WIKI_PATH }}/dev
+            bash deploy.sh front ${{ steps.versions.outputs.service_wiki_version }} ${{ steps.versions.outputs.web_wiki_version }}

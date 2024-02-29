@@ -1,14 +1,14 @@
-name: pr_check_back
+name: pr_check_service_wiki
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - "back/**"
+      - "services/wiki/**"
 
 jobs:
-  pr_check_back:
+  pr_check_service_wiki:
     runs-on: ubuntu-latest
 
     services:
@@ -28,11 +28,11 @@ jobs:
           fetch-depth: 0
 
       - name: Check package.json version
-        run: ./scripts/check_version.sh back/package.json
+        run: ./scripts/check_version.sh services/wiki/package.json
         shell: bash
 
       - name: Check CHANGELOG.md has been updated
-        run: ./scripts/check_changelog.sh back/CHANGELOG.md
+        run: ./scripts/check_changelog.sh services/wiki/CHANGELOG.md
         shell: bash
 
       - name: Use Node.js
@@ -40,55 +40,55 @@ jobs:
         with:
           node-version: "18"
           cache: "npm"
-          cache-dependency-path: back/package-lock.json
+          cache-dependency-path: services/wiki/package-lock.json
 
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
-          path: ${{ github.workspace }}/back/node_modules
+          path: ${{ github.workspace }}/services/wiki/node_modules
           key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
 
       - name: install dependencies
         run: |
-          cd ${{ github.workspace }}/back
+          cd ${{ github.workspace }}/services/wiki
           npm ci --legacy-peer-deps
 
       - name: lint
         run: |
-          cd ${{ github.workspace }}/back
+          cd ${{ github.workspace }}/services/wiki
           npx eslint src --max-warnings 0
 
       - name: Set up Prisma
         run: |
-          cd ${{ github.workspace }}/back
+          cd ${{ github.workspace }}/services/wiki
           npx prisma generate
 
       - name: Run migrations
         run: |
-          cd ${{ github.workspace }}/back
+          cd ${{ github.workspace }}/services/wiki
           npx prisma migrate deploy
 
       - name: Seed the database
         run: |
-          cd ${{ github.workspace }}/back
+          cd ${{ github.workspace }}/services/wiki
           npx prisma db seed
 
       - name: test
         run: |
-          cd ${{ github.workspace }}/back
+          cd ${{ github.workspace }}/services/wiki
           npm run test -- --coverage
 
       - name: build
         run: |
-          cd ${{ github.workspace }}/back
+          cd ${{ github.workspace }}/services/wiki
           npm run build
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
-          projectBaseDir: back
+          projectBaseDir: services/wiki
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
