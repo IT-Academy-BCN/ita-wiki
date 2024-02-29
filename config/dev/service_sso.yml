@@ -1,2 +1,2 @@
-sso:
+service_sso:
   version: 1.14.0

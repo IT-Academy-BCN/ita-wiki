@@ -1,14 +1,14 @@
-name: pr_check_sso_front
+name: pr_check_web_wiki
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - "sso_front/**"
+      - "web/wiki/**"
 
 jobs:
-  pr_check_sso_front:
+  pr_check_web_wiki:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,11 +17,11 @@ jobs:
           fetch-depth: 0
 
       - name: Check package.json version
-        run: ./scripts/check_version.sh sso_front/package.json
+        run: ./scripts/check_version.sh web/wiki/package.json
         shell: bash
 
       - name: Check CHANGELOG.md has been updated
-        run: ./scripts/check_changelog.sh sso_front/CHANGELOG.md
+        run: ./scripts/check_changelog.sh web/wiki/CHANGELOG.md
         shell: bash
 
       - name: Use Node.js
@@ -29,40 +29,40 @@ jobs:
         with:
           node-version: "18"
           cache: "npm"
-          cache-dependency-path: sso_front/package-lock.json
+          cache-dependency-path: web/wiki/package-lock.json
 
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
-          path: ${{ github.workspace }}/sso_front/node_modules
+          path: ${{ github.workspace }}/web/wiki/node_modules
           key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
 
       - name: install dependencies
         run: |
-          cd ${{ github.workspace }}/sso_front
+          cd ${{ github.workspace }}/web/wiki
           npm ci --legacy-peer-deps
 
       - name: lint
         run: |
-          cd ${{ github.workspace }}/sso_front
+          cd ${{ github.workspace }}/web/wiki
           npx eslint src --max-warnings 0
 
       - name: test
         run: |
-          cd ${{ github.workspace }}/sso_front
+          cd ${{ github.workspace }}/web/wiki
           npm run test -- --coverage
 
       - name: build
         run: |
-          cd ${{ github.workspace }}/sso_front
+          cd ${{ github.workspace }}/web/wiki
           npm run build
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
-          projectBaseDir: sso_front
+          projectBaseDir: web/wiki
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

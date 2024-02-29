@@ -1,14 +1,14 @@
-name: pr_check_front
+name: pr_check_web_usuaris
 
 on:
   pull_request:
     branches:
       - main
     paths:
-      - "front/**"
+      - "web/usuaris/**"
 
 jobs:
-  pr_check_front:
+  pr_check_web_usuaris:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,11 +17,11 @@ jobs:
           fetch-depth: 0
 
       - name: Check package.json version
-        run: ./scripts/check_version.sh front/package.json
+        run: ./scripts/check_version.sh web/usuaris/package.json
         shell: bash
 
       - name: Check CHANGELOG.md has been updated
-        run: ./scripts/check_changelog.sh front/CHANGELOG.md
+        run: ./scripts/check_changelog.sh web/usuaris/CHANGELOG.md
         shell: bash
 
       - name: Use Node.js
@@ -29,40 +29,40 @@ jobs:
         with:
           node-version: "18"
           cache: "npm"
-          cache-dependency-path: front/package-lock.json
+          cache-dependency-path: web/usuaris/package-lock.json
 
       - name: Cache Node.js modules
         uses: actions/cache@v3
         with:
-          path: ${{ github.workspace }}/front/node_modules
+          path: ${{ github.workspace }}/web/usuaris/node_modules
           key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.OS }}-node-
 
       - name: install dependencies
         run: |
-          cd ${{ github.workspace }}/front
+          cd ${{ github.workspace }}/web/usuaris
           npm ci --legacy-peer-deps
 
       - name: lint
         run: |
-          cd ${{ github.workspace }}/front
+          cd ${{ github.workspace }}/web/usuaris
           npx eslint src --max-warnings 0
 
       - name: test
         run: |
-          cd ${{ github.workspace }}/front
+          cd ${{ github.workspace }}/web/usuaris
           npm run test -- --coverage
 
       - name: build
         run: |
-          cd ${{ github.workspace }}/front
+          cd ${{ github.workspace }}/web/usuaris
           npm run build
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
-          projectBaseDir: front
+          projectBaseDir: web/usuaris
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
