@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.13.0] - 2024-03-03
+
+### Removed
+
+- Import CheckboxFilterWidget from UI
+
 ## [0.12.0] - 2024-02-07
 
 ### Removed

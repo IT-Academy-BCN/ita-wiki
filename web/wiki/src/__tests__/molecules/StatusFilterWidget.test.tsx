@@ -15,7 +15,7 @@ describe('StatusFilterWidget', () => {
     expect(screen.getByLabelText(/pendents/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/vistos/i)).toBeInTheDocument()
 
-    expect(onChangeStatusFilter).toHaveBeenCalledTimes(1)
+    expect(onChangeStatusFilter).toHaveBeenCalledTimes(2)
     expect(onChangeStatusFilter).toHaveBeenCalledWith(['NOT_SEEN', 'SEEN'])
   })
 
@@ -44,6 +44,6 @@ describe('StatusFilterWidget', () => {
       expect(onChangeStatusFilter).toHaveBeenCalledWith(['NOT_SEEN'])
     )
 
-    expect(onChangeStatusFilter).toHaveBeenCalledTimes(4)
+    expect(onChangeStatusFilter).toHaveBeenCalledTimes(5)
   })
 })

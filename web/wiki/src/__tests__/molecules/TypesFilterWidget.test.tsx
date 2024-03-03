@@ -1,8 +1,8 @@
 import { vi } from 'vitest'
 import { render, screen, waitFor, fireEvent } from '../test-utils'
 import { TypesFilterWidget } from '../../components/molecules/TypesFilterWidget'
-import { mswServer } from '../setup'
 import { errorHandlers } from '../../__mocks__/handlers'
+import { server } from '../../__mocks__/server'
 
 describe('TypesFilterWidget', () => {
   const onChangeTypesFilter = vi.fn()
@@ -23,7 +23,7 @@ describe('TypesFilterWidget', () => {
       expect(screen.getByLabelText('Test type 3')).toBeInTheDocument()
     })
 
-    expect(onChangeTypesFilter).toHaveBeenCalledTimes(1)
+    expect(onChangeTypesFilter).toHaveBeenCalledTimes(2)
     expect(onChangeTypesFilter).toHaveBeenCalledWith([
       'Test type 1',
       'Test type 2',
@@ -61,11 +61,11 @@ describe('TypesFilterWidget', () => {
         'Test type 3',
       ])
     )
-    expect(onChangeTypesFilter).toHaveBeenCalledTimes(3)
+    expect(onChangeTypesFilter).toHaveBeenCalledTimes(4)
   })
 
-  it.skip('renders correctly on error', async () => {
-    mswServer.use(...errorHandlers)
+  it('renders correctly on error', async () => {
+    server.use(...errorHandlers)
     render(<TypesFilterWidget handleTypesFilter={onChangeTypesFilter} />)
 
     const spinnerComponent = screen.getByRole('status') as HTMLDivElement
@@ -73,7 +73,7 @@ describe('TypesFilterWidget', () => {
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
-      expect(screen.getByText('Ha habido un error...')).toBeInTheDocument()
+      expect(screen.getByText('Hi ha hagut un error...')).toBeInTheDocument()
     })
   })
 })
