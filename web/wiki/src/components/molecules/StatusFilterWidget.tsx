@@ -8,7 +8,7 @@ type TStatusFilterWidget = {
   handleStatusFilter: (selectedStatus: string[]) => void
 }
 
-const StatusFilterWidget: FC<TStatusFilterWidget> = ({
+export const StatusFilterWidget: FC<TStatusFilterWidget> = ({
   handleStatusFilter,
 }) => {
   const [selectedStatus, setSelectedStatus] = useState<TCheckboxFilterItem[]>(
@@ -47,5 +47,3 @@ const StatusFilterWidget: FC<TStatusFilterWidget> = ({
     </div>
   )
 }
-
-export { StatusFilterWidget }
