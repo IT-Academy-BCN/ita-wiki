@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Added Table molecule
 - Added UsersTable organism
 - Added useGetUsers hook
+
 ## [0.3.1] - 2024-03-01
 
 ### Fixed
