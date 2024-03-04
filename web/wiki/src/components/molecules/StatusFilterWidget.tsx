@@ -1,22 +1,6 @@
 import { FC, useEffect, useState } from 'react'
-import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import {
-  CheckboxFilterWidget,
-  dimensions,
-  FlexBox,
-  TCheckboxFilterItem,
-  Text,
-} from '@itacademy/ui'
-
-const StyledFlexbox = styled(FlexBox)`
-  gap: ${dimensions.spacing.xs};
-`
-
-const StyledText = styled(Text)`
-  margin-top: ${dimensions.spacing.md};
-  margin-bottom: 0.2rem;
-`
+import { CheckboxFilterWidget, TCheckboxFilterItem } from '@itacademy/ui'
 
 const statusData: string[] = ['NOT_SEEN', 'SEEN']
 
@@ -27,9 +11,9 @@ type TStatusFilterWidget = {
 const StatusFilterWidget: FC<TStatusFilterWidget> = ({
   handleStatusFilter,
 }) => {
-  const [selectedStatus, setSelectedStatus] = useState<
-    TCheckboxFilterItem[] | null
-  >(null)
+  const [selectedStatus, setSelectedStatus] = useState<TCheckboxFilterItem[]>(
+    []
+  )
 
   const { t } = useTranslation()
 
@@ -53,16 +37,14 @@ const StatusFilterWidget: FC<TStatusFilterWidget> = ({
   }
 
   return (
-    <StyledFlexbox direction="column" align="start" data-testid="status-filter">
-      <StyledText fontWeight="bold">{t('Estado')}</StyledText>
-      {selectedStatus && selectedStatus.length > 0 ? (
-        <CheckboxFilterWidget
-          items={selectedStatus}
-          handleItemsFilter={handleSelectedStatus}
-          defaultCheckedItems={selectedStatus}
-        />
-      ) : null}
-    </StyledFlexbox>
+    <div data-testid="status-filter">
+      <CheckboxFilterWidget
+        filterName={t('Estado')}
+        items={selectedStatus}
+        handleItemsFilter={handleSelectedStatus}
+        defaultCheckedItems={selectedStatus}
+      />
+    </div>
   )
 }
 

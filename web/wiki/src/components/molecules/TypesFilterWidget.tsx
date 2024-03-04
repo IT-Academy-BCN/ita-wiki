@@ -3,23 +3,12 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import {
   CheckboxFilterWidget,
-  dimensions,
-  FlexBox,
   Spinner,
   TCheckboxFilterItem,
   Text,
 } from '@itacademy/ui'
 import { TGetTypes, TTypesFilterWidget } from '../../types/types'
 import { useGetTypes } from '../../hooks'
-
-const StyledFlexbox = styled(FlexBox)`
-  gap: ${dimensions.spacing.xs};
-`
-
-const StyledText = styled(Text)`
-  margin-top: ${dimensions.spacing.md};
-  margin-bottom: 0.2rem;
-`
 
 const StyledSpinner = styled(Spinner)`
   align-self: center;
@@ -61,16 +50,21 @@ export const TypesFilterWidget: FC<TTypesFilterWidget> = ({
   if (error) return <p>{t('Ha habido un error...')}</p>
 
   return (
-    <StyledFlexbox direction="column" align="start" data-testid="types-filter">
-      <StyledText fontWeight="bold">{t('Tipo')}</StyledText>
-      {isLoading && <StyledSpinner size="small" role="status" />}
-      {selectedTypes && selectedTypes.length > 0 ? (
+    <div data-testid="types-filter">
+      {isLoading && (
+        <>
+          <Text fontWeight="bold">{t('Tipo')}</Text>
+          <StyledSpinner size="small" role="status" />
+        </>
+      )}
+      {data ? (
         <CheckboxFilterWidget
+          filterName={t('Tipo')}
           items={selectedTypes}
           handleItemsFilter={handleSelectedTypes}
           defaultCheckedItems={selectedTypes}
         />
       ) : null}
-    </StyledFlexbox>
+    </div>
   )
 }

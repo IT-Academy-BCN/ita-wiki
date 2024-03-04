@@ -15,11 +15,11 @@ describe('StatusFilterWidget', () => {
     expect(screen.getByLabelText(/pendents/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/vistos/i)).toBeInTheDocument()
 
-    expect(onChangeStatusFilter).toHaveBeenCalledTimes(2)
+    expect(onChangeStatusFilter).toHaveBeenCalledTimes(3)
     expect(onChangeStatusFilter).toHaveBeenCalledWith(['NOT_SEEN', 'SEEN'])
   })
 
-  it('clicking a checkbox removes/adds its value to the filter selection', async () => {
+  it('clicking a checkbox removes/adds its value from/to the filter selection', async () => {
     render(<StatusFilterWidget handleStatusFilter={onChangeStatusFilter} />)
 
     const checkBoxA = screen.getByLabelText(/pendents/i)
@@ -44,6 +44,6 @@ describe('StatusFilterWidget', () => {
       expect(onChangeStatusFilter).toHaveBeenCalledWith(['NOT_SEEN'])
     )
 
-    expect(onChangeStatusFilter).toHaveBeenCalledTimes(5)
+    expect(onChangeStatusFilter).toHaveBeenCalledTimes(6)
   })
 })
