@@ -449,6 +449,7 @@ paths:
                   enum:
                     - ACTIVE
                     - INACTIVE
+                    - BLOCKED
                 itineraryId:
                   type: string
               required:
@@ -635,6 +636,7 @@ paths:
             enum:
               - ACTIVE
               - INACTIVE
+              - BLOCKED
           required: false
           description: Status to filter by
           example: ACTIVE
@@ -673,6 +675,7 @@ paths:
                       enum:
                         - ACTIVE
                         - INACTIVE
+                        - BLOCKED
                     createdAt:
                       type: string
                       example: 21/02/2024

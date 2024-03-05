@@ -48,6 +48,15 @@ export const testUserData = {
     status: UserStatus.INACTIVE,
     user_meta: {},
   },
+  blockedUser: {
+    email: 'testingBlockedUser@user.cat',
+    name: 'testingBlockedUser',
+    dni: '55555555A',
+    password: 'testingPswd5',
+    role: UserRole.REGISTERED,
+    status: UserStatus.BLOCKED,
+    user_meta: {},
+  },
 }
 export const itinerariesData = [
   { name: 'Frontend Angular', slug: 'frontend-angular' },
@@ -75,6 +84,7 @@ export async function setup() {
     mentorItineraryId,
     inactiveUserItineraryId,
     adminUserItineraryId,
+    blockedUserItineraryId,
   ] = await Promise.all(
     itinerariesData.map(async (itinerary) => {
       const itineraryId = generateId()
@@ -98,6 +108,8 @@ export async function setup() {
       itineraryId = inactiveUserItineraryId
     } else if (user.email === 'testingAdmin@user.cat') {
       itineraryId = adminUserItineraryId
+    } else if (user.email === 'testingBlockedUser@user.cat') {
+      itineraryId = blockedUserItineraryId
     }
 
     const query = `

@@ -9,6 +9,7 @@ export enum UserRole {
 export enum UserStatus {
   ACTIVE = 'ACTIVE',
   INACTIVE = 'INACTIVE',
+  BLOCKED = 'BLOCKED',
 }
 export const userStatusSchema = z.nativeEnum(UserStatus)
 export const userIdSchema = z.string().cuid2()

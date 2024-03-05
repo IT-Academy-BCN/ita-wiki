@@ -66,7 +66,7 @@ describe('Testing get users endpoint', () => {
   it('returns an empty collection of users for an itinerary slug when no users are assigned, with admin logged in', async () => {
     const response = await supertest(server)
       .get(route)
-      .query({ itinerarySlug: itinerariesData[4].slug })
+      .query({ itinerarySlug: itinerariesData[5].slug })
       .set('Cookie', [authToken])
     expect(response.status).toBe(200)
     expect(response.body).toHaveLength(0)
@@ -116,7 +116,7 @@ describe('Testing get users endpoint', () => {
       .set('Cookie', [authToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
-    expect(body).toHaveLength(4)
+    expect(body).toHaveLength(5)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
   it('returns 401 when no cookies are provided', async () => {
