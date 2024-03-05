@@ -1,6 +1,6 @@
 import { forwardRef } from 'react'
 import styled from 'styled-components'
-import { dimensions } from '../../styles'
+import { dimensions, font } from '../../styles'
 import {
   Label,
   Select,
@@ -32,15 +32,15 @@ export type TSelectGroup = {
   label: string
   hiddenLabel?: boolean
   validationMessage?: TValidationMessage['text']
-  iconSrc?: string
+  icon?: string
 } & TSelect
 
 export const SelectGroup = forwardRef<HTMLSelectElement, TSelectGroup>(
-  ({ label, id, name, hiddenLabel, validationMessage, iconSrc, ...rest }, ref) => (
+  ({ label, id, name, hiddenLabel, validationMessage, icon, ...rest }, ref) => (
     <SelectGroupStyled>
       <Label text={label} htmlFor={id} hiddenLabel={hiddenLabel} />
       <Select id={id} name={name} ref={ref} {...rest} />
-      {iconSrc && <Icon src={iconSrc} />}
+      {icon && <Icon src={icon} id={icon} />}
       <ValidationMessageStyled text={validationMessage} color="error" />
     </SelectGroupStyled>
   )
