@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.4.0] - 2024-03-01
+
+### Added
+
+- Added Table molecule
+- Added UsersTable organism
+- Added useGetUsers hook
+
+## [0.3.1] - 2024-03-01
+
+### Fixed
+
+- Added shouldForwardProp in Layout component
+
 ## [0.3.0] - 2024-02-19
 
 ### Added

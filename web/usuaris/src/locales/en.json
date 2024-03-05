@@ -134,5 +134,16 @@
   "Fecha final": "Final date",
   "De...": "From...",
   "Hasta...": "To...",
-  "calendarLanguage": "en-IN"
+  "calendarLanguage": "en-IN",
+
+  "Especialización": "Specialization",
+  "Fecha alta": "Registration date",
+  "Acciones": "Actions",
+  "pendiente": "Pending",
+  "activo": "Active",
+  "bloqueado": "Blocked",
+  "Aceptar": "Accept",
+  "Bloquear": "Block",
+  "Desbloquear": "Unblock",
+  "No hay usuarios para mostrar": "There are no users to display"
 }

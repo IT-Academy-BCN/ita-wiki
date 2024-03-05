@@ -7,9 +7,11 @@ type TLayoutStyled = {
   color?: string
 }
 
-const LayoutStyled = styled(FlexBox)<TLayoutStyled>`
-  min-height: ${(props) => props.minHeight}%;
-  width: ${(props) => props.width}%;
+const LayoutStyled = styled(FlexBox).withConfig({
+  shouldForwardProp: (prop) => !['minHeight', 'width'].includes(prop),
+})<TLayoutStyled>`
+  min-height: ${({ minHeight }) => minHeight}%;
+  width: ${({ width }) => width}%;
   color: ${({ color }) => color || colors.gray.gray5};
 `
 
