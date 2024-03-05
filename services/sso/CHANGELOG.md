@@ -2,37 +2,47 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.14.1] - 2024-02-28
+
+### Fix
+
+- Package.json `npm run up` script
+
+### Changed
+
+- Updated README.md
+
 ## [1.14.0] - 2024-02-28
 
-## Added
+### Added
 
 - Date range filtering by `createdAt` for `GET /dashboard/users` 
 
 ## [1.13.0] - 2024-02-20
 
-## Added
+### Added
 
 - Dynamic query filtering for `GET /dashboard/users` by `status`
 
-## Changed
+### Changed
 
 - `createdAt` at `dashboardUsersListSchema` to `z.date()`
 
 ## [1.12.0] - 2024-02-19
 
-## Added
+### Added
 
 - Dynamic query filtering for `GET /dashboard/users` by `itinerarySlug`
 
 ## [1.11.0] - 2024-02-15
 
-## Added
+### Added
 
 - Endpoint  `GET /dashboard/users` for admin users.
 
 ## [1.10.0] - 2024-02-13
 
-## Added
+### Added
 
 - Endpoint  `POST /dashboard/login` and   ` POST /dashboard/logout` for admin users.
 
