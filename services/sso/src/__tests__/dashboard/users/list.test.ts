@@ -119,6 +119,41 @@ describe('Testing get users endpoint', () => {
     expect(body).toHaveLength(4)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
+  it('returns a collection of users successfully with a name query of 2 or more characters', async () => {
+    const validName = 'testing'
+    const response = await supertest(server)
+      .get(route)
+      .query({ name: validName })
+      .set('Cookie', [authToken])
+    const { body }: { body: DashboardUsersList } = response
+    expect(response.status).toBe(200)
+    expect(body).toBeInstanceOf(Array)
+    expect(body).toHaveLength(4)
+    expect(responseSchema.safeParse(body).success).toBeTruthy()
+  })
+  it('returns only the user that match the exact name when searched', async () => {
+    const exactName = 'testingAdmin'
+    const response = await supertest(server)
+      .get(route)
+      .query({ name: exactName })
+      .set('Cookie', [authToken])
+    const { body }: { body: DashboardUsersList } = response
+    expect(response.status).toBe(200)
+    expect(body).toBeInstanceOf(Array)
+    expect(body).toHaveLength(1)
+    expect(body[0].name).toBe('testingAdmin')
+    expect(responseSchema.safeParse(body).success).toBeTruthy()
+  })
+  it('returns Zod error when name query is less than 2 characters', async () => {
+    const response = await supertest(server)
+      .get(route)
+      .query({ name: 'a' })
+      .set('Cookie', [authToken])
+    expect(response.status).toBe(400)
+    expect(response.body.message[0].message).toContain(
+      'String must contain at least 2 character(s)'
+    )
+  })
   it('returns 401 when no cookies are provided', async () => {
     const response = await supertest(server).get(route)
     expect(response.status).toBe(401)
