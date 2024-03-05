@@ -1,69 +1,49 @@
-import { ChangeEvent, useEffect, useState } from 'react'
-import styled from 'styled-components'
+import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CheckBox, Label, Text } from '../atoms'
-import { colors, dimensions, FlexBox, font } from '../../styles'
-
-const StyledFlexbox = styled(FlexBox)`
-  gap: ${dimensions.spacing.xs};
-`
-
-const StyledText = styled(Text)`
-  margin-top: ${dimensions.spacing.md};
-  margin-bottom: 0.2rem;
-`
-
-const CheckBoxStyled = styled(CheckBox)`
-  ${Label} {
-    font-weight: ${font.medium};
-    color: ${colors.black.black3};
-    cursor: pointer;
-  }
-`
+import { CheckboxFilterWidget, TCheckboxFilterItem } from '@itacademy/ui'
 
 const statusData: string[] = ['NOT_SEEN', 'SEEN']
 
-type Props = {
+type TStatusFilterWidget = {
   handleStatusFilter: (selectedStatus: string[]) => void
 }
 
-const StatusFilterWidget = ({ handleStatusFilter }: Props) => {
+export const StatusFilterWidget: FC<TStatusFilterWidget> = ({
+  handleStatusFilter,
+}) => {
+  const [selectedStatus, setSelectedStatus] = useState<TCheckboxFilterItem[]>(
+    []
+  )
+
   const { t } = useTranslation()
 
-  const [selectedStatus, setSelectedStatus] = useState<string[]>(statusData)
-
   useEffect(() => {
+    const statusItems: TCheckboxFilterItem[] = statusData.map(
+      (item: string) => ({
+        id: item,
+        label: item === 'SEEN' ? t('Vistos') : t('Por ver'),
+      })
+    )
+
+    setSelectedStatus(statusItems)
     handleStatusFilter(statusData)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [t])
 
-  const changeSelection = (e: ChangeEvent<HTMLInputElement>, item: string) => {
-    if (e.target.checked) {
-      const addStatus = [...selectedStatus]
-      addStatus.push(item)
-      setSelectedStatus(addStatus)
-      return addStatus
-    }
+  const handleSelectedStatus = (selectedItems: TCheckboxFilterItem[]) => {
+    const userSelectedItems: string[] = selectedItems.map((item) => item.id)
 
-    const removeStatus = selectedStatus.filter((el) => el !== item)
-    setSelectedStatus(removeStatus)
-    return removeStatus
+    handleStatusFilter(userSelectedItems)
   }
 
   return (
-    <StyledFlexbox direction="column" align="start" data-testid="status-filter">
-      <StyledText fontWeight="bold"> {t('Estado')} </StyledText>
-      {statusData.map((item: string) => (
-        <CheckBoxStyled
-          key={item}
-          id={item}
-          label={item === 'SEEN' ? t('Vistos') : t('Por ver')}
-          defaultChecked
-          onChange={(e) => handleStatusFilter(changeSelection(e, item))}
-        />
-      ))}
-    </StyledFlexbox>
+    <div data-testid="status-filter">
+      <CheckboxFilterWidget
+        filterName={t('Estado')}
+        items={selectedStatus}
+        handleItemsFilter={handleSelectedStatus}
+        defaultCheckedItems={selectedStatus}
+      />
+    </div>
   )
 }
-
-export { StatusFilterWidget }
