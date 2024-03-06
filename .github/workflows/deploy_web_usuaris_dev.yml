@@ -1,0 +1,39 @@
+name: deploy_web_usuaris_dev
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+    paths:
+      - "config/dev/web_usuaris.yml"
+
+jobs:
+  deploy_web_usuaris_dev:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Get versions
+        id: versions
+        run: |
+          service_sso_version=$(grep version: ./config/dev/sso.yml | awk '{print $2}')
+          web_usuaris_version=$(grep version: ./config/dev/sso_front.yml | awk '{print $2}')
+          echo "::set-output name=service_sso_version::$service_sso_version"
+          echo "::set-output name=web_usuaris_version::$web_usuaris_version"
+
+      - name: Execute SSH Command
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            echo "Deploying Service SSO Version: ${{ steps.versions.outputs.service_sso_version }}"
+            echo "Deploying Web Usuaris Version: ${{ steps.versions.outputs.web_usuaris_version }}"
+            cd ${{ secrets.SSO_PATH }}/dev
+            bash deploy.sh sso_front ${{ steps.versions.outputs.service_sso_version }} ${{ steps.versions.outputs.web_usuaris_version }}

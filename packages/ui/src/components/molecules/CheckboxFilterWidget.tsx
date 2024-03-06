@@ -43,22 +43,22 @@ export const CheckboxFilterWidget: FC<TCheckboxFilterWidget> = ({
       handleItemsFilter([])
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [defaultCheckedItems])
 
   const changeSelection = (
     e: ChangeEvent<HTMLInputElement>,
     item: TCheckboxFilterItem
   ) => {
     if (e.target.checked) {
-      const addTypes = [...selectedItems]
-      addTypes.push(item)
-      setSelectedItems(addTypes)
-      return addTypes
+      const addItems = [...selectedItems]
+      addItems.push(item)
+      setSelectedItems(addItems)
+      return addItems
     }
 
-    const removeTypes = selectedItems.filter((el) => el !== item)
-    setSelectedItems(removeTypes)
-    return removeTypes
+    const removeItems = selectedItems.filter((el) => el !== item)
+    setSelectedItems(removeItems)
+    return removeItems
   }
 
   return (

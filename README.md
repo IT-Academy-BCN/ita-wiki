@@ -86,7 +86,7 @@ While we encourage collaboration and support among team members, it's important 
 
 ```
 {
-    "eslint.workingDirectories": ["front", "back", "sso-service", "packages/ui"]
+    "eslint.workingDirectories": ["services_sso", "services_wiki", "web_wiki", "web_usuaris", "packages/ui"]
 }
 ```
 
@@ -100,11 +100,11 @@ Deployments are managed by the developers. The project is deployed on a developm
 
 ### Versioning
 
-We use <a href="https://semver.org/">Semantic Versioning</a> for versioning. It is the responsibility of the developers to update the version number in the package.json file of the respective apps (front and back).
+We use <a href="https://semver.org/">Semantic Versioning</a> for versioning. It is the responsibility of the developers to update the version number in the package.json file of the respective apps.
 
 ### Changes
 
-Changes are documented in the CHANGELOG.md file of the respective apps (front and back).
+Changes are documented in the CHANGELOG.md file of the respective apps.
 
 ### Development environment
 
