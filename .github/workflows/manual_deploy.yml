@@ -16,9 +16,10 @@ on:
         required: true
         type: choice
         options:
-          - front
-          - back
-          - sso
+          - web_wiki
+          - web_usuaris
+          - service_wiki
+          - service_sso
       version:
         description: "Version"
         required: true

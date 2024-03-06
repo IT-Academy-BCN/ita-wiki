@@ -1,0 +1,1 @@
+export { getUsers } from './fetchers'

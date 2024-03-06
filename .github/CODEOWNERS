@@ -1,3 +1,4 @@
-/front @IT-Academy-BCN/fe-react
-/back @IT-Academy-BCN/be-node
-/sso @IT-Academy-BCN/be-node
+/web/front @IT-Academy-BCN/fe-react
+/web/usuaris @IT-Academy-BCN/fe-react
+/services/wiki @IT-Academy-BCN/be-node
+/services/sso @IT-Academy-BCN/be-node

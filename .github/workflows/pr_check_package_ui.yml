@@ -1,0 +1,73 @@
+name: pr_check_package_ui
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/ui/**"
+
+jobs:
+  pr_check_package_ui:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Check package.json version
+        run: ./scripts/check_version.sh packages/ui/package.json
+        shell: bash
+
+      - name: Check CHANGELOG.md has been updated
+        run: ./scripts/check_changelog.sh packages/ui/CHANGELOG.md
+        shell: bash
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: packages/ui/package-lock.json
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/packages/ui/node_modules
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+
+      - name: install dependencies
+        run: |
+          cd ${{ github.workspace }}/packages/ui
+          npm ci --legacy-peer-deps
+
+      - name: lint
+        run: |
+          cd ${{ github.workspace }}/packages/ui
+          npx eslint src --max-warnings 0
+
+      - name: test
+        run: |
+          cd ${{ github.workspace }}/packages/ui
+          npm run test -- --coverage
+
+      - name: build storybook
+        run: |
+          cd ${{ github.workspace }}/packages/ui
+          npm run build-storybook
+
+      - name: build
+        run: |
+          cd ${{ github.workspace }}/packages/ui
+          npm run build
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: packages/ui
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

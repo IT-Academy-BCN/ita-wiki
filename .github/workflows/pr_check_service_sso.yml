@@ -1,0 +1,79 @@
+name: pr_check_service_sso
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "services/sso/**"
+
+jobs:
+  pr_check_service_sso:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14.1
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 123456
+          POSTGRES_DB: ita_sso
+        ports:
+          - 10912:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Check package.json version
+        run: ./scripts/check_version.sh services/sso/package.json
+        shell: bash
+
+      - name: Check CHANGELOG.md has been updated
+        run: ./scripts/check_changelog.sh services/sso/CHANGELOG.md
+        shell: bash
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: services/sso/package-lock.json
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v3
+        with:
+          path: ${{ github.workspace }}/services/sso/node_modules
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+
+      - name: install dependencies
+        run: |
+          cd ${{ github.workspace }}/services/sso
+          npm ci --legacy-peer-deps
+
+      - name: lint
+        run: |
+          cd ${{ github.workspace }}/services/sso
+          npx eslint src --max-warnings 0
+
+      - name: test
+        run: |
+          cd ${{ github.workspace }}/services/sso
+          npm run test -- --coverage
+
+      - name: build
+        run: |
+          cd ${{ github.workspace }}/services/sso
+          npm run build
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: services/sso
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
