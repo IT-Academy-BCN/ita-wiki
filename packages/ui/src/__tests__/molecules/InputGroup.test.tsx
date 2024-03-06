@@ -1,5 +1,8 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { vi } from 'vitest'
 import { InputGroup } from '../../components/molecules'
+
+const mockClick = vi.fn()
 
 describe('InputGroupText', () => {
   it('renders correctly', () => {
@@ -35,10 +38,21 @@ describe('InputGroupText', () => {
     expect(screen.getByText('error message')).toBeInTheDocument()
   })
 
-  it('renders the icon correctly', () => {
+  it('renders the icon correctly', async () => {
     render(
-      <InputGroup name="testname" label="test" id="testid" icon="test icon" />
+      <InputGroup
+        name="testname"
+        label="test"
+        id="testid"
+        icon="test icon"
+        iconClick={mockClick}
+      />
     )
-    expect(screen.getByText('test icon')).toBeInTheDocument()
+
+    const icon = screen.getByText('test icon')
+    expect(icon).toBeInTheDocument()
+
+    fireEvent.click(icon)
+    expect(mockClick).toHaveBeenCalled()
   })
 })

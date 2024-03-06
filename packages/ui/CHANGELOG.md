@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.29.1] - 2024-03-06
+
+### Fixed
+
+- Fixed icon position in InputGroup
+- Fixed type error with Icon onClick in InputGroup
+
 ## [0.29.0] - 2024-02-27
 
 ### Added
