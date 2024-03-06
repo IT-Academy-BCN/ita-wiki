@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.30.0] - 2024-02-27
+
+### Added
+
+- Icon SelectGroup
+
 ## [0.29.0] - 2024-02-27
 
 ### Added
