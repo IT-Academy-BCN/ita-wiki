@@ -7,6 +7,11 @@ const storyOptions = [
   { id: 'option3', label: 'Option 3', value: 'Option 3' },
 ]
 
+const storyOptionsWithIcon = [
+  { id: 'option1', label: 'Option 1', value: 'Option 1', iconSvg: 'icon' },
+  { id: 'option2', label: 'Option 2', value: 'Option 2', iconSvg: 'icon' },
+  { id: 'option3', label: 'Option 3', value: 'Option 3', iconSvg: 'icon' },
+]
 
 const meta = {
   title: 'Molecules/SelectGroup',
@@ -75,7 +80,7 @@ export const WithIcon: Story = {
     name: 'icon',
     label: 'With Icon SelectGroup',
     placeholder: 'Select an option',
-    options: storyOptions,
+    options: storyOptionsWithIcon,
     icon: 'icon',
   }
 }

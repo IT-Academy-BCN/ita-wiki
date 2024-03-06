@@ -1,4 +1,4 @@
-import { type SelectHTMLAttributes, forwardRef } from 'react'
+import { type SelectHTMLAttributes, forwardRef, ReactNode } from 'react'
 import styled from 'styled-components'
 import { colors, dimensions, font } from '../../styles'
 
@@ -6,6 +6,7 @@ export type TOption = {
   value: string
   label: string
   id?: string
+  iconSvg?: string
 }
 
 export type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
@@ -13,6 +14,12 @@ export type TSelect = SelectHTMLAttributes<HTMLSelectElement> & {
   $error?: boolean
   placeholder?: string
 }
+
+// const CustomOption = styled.option<TOption>`
+//   ::before{
+//     content: url(${(props) => `${props.iconSvg}`})
+//   }
+// `
 
 const SelectStyled = styled.select<TSelect>`
   cursor: pointer;
@@ -28,6 +35,10 @@ const SelectStyled = styled.select<TSelect>`
 
   &:focus {
     outline: 0 none;
+  }
+
+  option::before{
+    content:'#';
   }
 `
 
@@ -50,8 +61,8 @@ export const Select = forwardRef<HTMLSelectElement, TSelect>((props, ref) => {
       <option value="" disabled>
         {placeholder}
       </option>
-      {options.map(({ value, label, id }) => (
-        <option key={value} value={id}>
+      {options.map(({ value, label, id, iconSvg }) => (
+        <option key={value} value={value} id={id}>
           {label}
         </option>
       ))}

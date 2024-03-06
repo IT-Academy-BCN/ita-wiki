@@ -1,14 +1,16 @@
 import { forwardRef } from 'react'
 import styled from 'styled-components'
-import { dimensions, font } from '../../styles'
+import { colors, dimensions } from '../../styles'
 import {
   Label,
   Select,
   ValidationMessage,
   type TSelect,
   type TValidationMessage,
+  Icon,
 } from '../atoms'
 
+const IconStyled = styled(Icon)``
 const ValidationMessageStyled = styled(ValidationMessage)``
 
 const SelectGroupStyled = styled.div`
@@ -17,13 +19,19 @@ const SelectGroupStyled = styled.div`
     margin-bottom: ${dimensions.spacing.none};
   }
   width: 100%;
+
+  /* ${IconStyled}::before{
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: "";
+  } */
 `
 
-const Icon = styled.img`
-    width: 24px;
-    height: 24px;
-    top: 10px;
-    left: 12px;
+const SelectWrapper = styled.div`
+  display: flex;
 `
 
 export type TSelectGroup = {
@@ -39,8 +47,12 @@ export const SelectGroup = forwardRef<HTMLSelectElement, TSelectGroup>(
   ({ label, id, name, hiddenLabel, validationMessage, icon, ...rest }, ref) => (
     <SelectGroupStyled>
       <Label text={label} htmlFor={id} hiddenLabel={hiddenLabel} />
-      <Select id={id} name={name} ref={ref} {...rest} />
-      {icon && <Icon src={icon} id={icon} />}
+
+      <SelectWrapper>
+        {icon && <IconStyled name='arrow_back_ios' id={icon} style={{marginTop: '15px'}}/>}
+        <Select id={id} name={name} ref={ref} {...rest} /> 
+      </SelectWrapper>
+
       <ValidationMessageStyled text={validationMessage} color="error" />
     </SelectGroupStyled>
   )
