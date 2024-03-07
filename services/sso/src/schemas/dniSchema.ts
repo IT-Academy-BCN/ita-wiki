@@ -1,4 +1,5 @@
 import { z } from '../openapi/zod'
+import { isValidDNILetter } from '../utils/isValidDNILetter'
 
 const validNIEPrefixes = ['X', 'Y', 'Z']
 const validDNIPrefixes = [...Array(23).keys()].map((i) => (i + 1).toString())
@@ -15,6 +16,9 @@ export const dniSchema = z
       validDNIPrefixes.includes(firstLetter) ||
       validNIEPrefixes.includes(firstLetter)
     )
+  })
+  .refine((value) => isValidDNILetter(value), {
+    message: 'Invalid DNI/NIE letter',
   })
   .openapi({
     type: 'string',
