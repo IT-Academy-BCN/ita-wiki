@@ -53,7 +53,7 @@ describe('Testing authentication endpoint', () => {
     const response = await supertest(server)
       .post(`${pathRoot.v1.auth}/login`)
       .send({
-        dni: '11111111b',
+        dni: '92149467J',
         password: 'password1',
       })
     expect(response.status).toBe(401)
