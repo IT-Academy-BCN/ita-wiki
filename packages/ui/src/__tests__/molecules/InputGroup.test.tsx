@@ -38,7 +38,7 @@ describe('InputGroupText', () => {
     expect(screen.getByText('error message')).toBeInTheDocument()
   })
 
-  it('renders the icon correctly', async () => {
+  it('renders the icon correctly', () => {
     render(
       <InputGroup
         name="testname"
