@@ -1,12 +1,14 @@
 import {
   Button,
-  Radio,
   FlexBox,
+  Icon,
+  InputGroup,
+  Radio,
+  SelectGroup,
+  Spinner,
+  ValidationMessage,
   colors,
   dimensions,
-  ValidationMessage,
-  Icon,
-  Spinner,
 } from '@itacademy/ui'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -15,13 +17,14 @@ import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { ChangeEvent, FC, HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
-import { InputGroup, SelectGroup } from '../molecules'
 import { useCreateResource, useUpdateResource } from '../../hooks'
 
 type TButton = HTMLAttributes<HTMLParagraphElement> & {
   backgroundColor?: string
   padding?: string
 }
+
+const FormStyled = styled.form``
 
 const ButtonStyled = styled(Button)<TButton>`
   margin: ${dimensions.spacing.none};
@@ -36,7 +39,6 @@ const ButtonStyled = styled(Button)<TButton>`
 `
 
 const ButtonContainerStyled = styled(FlexBox)`
-  gap: ${dimensions.spacing.xs};
   margin: ${dimensions.spacing.xs} 0;
 
   ${ButtonStyled} {
@@ -165,7 +167,7 @@ export const ResourceForm: FC<TResourceForm> = ({
   )?.label
 
   return (
-    <form
+    <FormStyled
       onSubmit={initialValues ? update : create}
       data-testid="resource-form"
     >
@@ -205,13 +207,15 @@ export const ResourceForm: FC<TResourceForm> = ({
       <SelectGroup
         id="topics"
         label={t('Tema')}
+        placeholder={t('Tema')}
         options={selectOptions}
         data-testid="resourceTopic"
         {...register('topics')}
         defaultValue={initialTopicLabel ?? ''}
-        error={!!errors.topics}
+        $error={!!errors.topics}
         validationMessage={errors.topics?.message}
         onChange={handleTopicChange}
+        hiddenLabel
       />
       <StyledRadio
         {...register('resourceType')}
@@ -232,7 +236,7 @@ export const ResourceForm: FC<TResourceForm> = ({
           <ValidationMessage />
         ) : null}
       </FlexErrorStyled>
-      <ButtonContainerStyled align="stretch">
+      <ButtonContainerStyled align="stretch" gap={dimensions.spacing.xs}>
         {isCreateSuccess || isUpdateSuccess ? (
           <ButtonStyled
             backgroundColor={colors.success}
@@ -255,6 +259,6 @@ export const ResourceForm: FC<TResourceForm> = ({
           </Button>
         )}
       </ButtonContainerStyled>
-    </form>
+    </FormStyled>
   )
 }

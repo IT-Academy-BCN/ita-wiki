@@ -1,14 +1,21 @@
 import styled from 'styled-components'
-import { FlexBox, colors, dimensions, Text } from '@itacademy/ui'
-import EditResource from './EditResource'
-import { useAuth } from '../../context/AuthProvider'
-import { TCardResource } from '../../types'
 import {
-  ResourceTitleLink,
-  VoteCounter,
   CreateAuthor,
-  FavoritesIcon,
-} from '../molecules'
+  FlexBox,
+  ResourceTitleLink,
+  Text,
+  VoteCounter,
+  colors,
+  dimensions,
+} from '@itacademy/ui'
+import { FC } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { EditResource } from './EditResource'
+import { useAuth } from '../../context/AuthProvider'
+import { TCardResource, TResource, TUserVote } from '../../types'
+import { FavoritesIcon } from '../molecules'
+import { updateVote } from '../../helpers/fetchers'
+import { updateCachedVoteCount } from '../../helpers'
 
 const CardContainerStyled = styled(FlexBox)`
   background-color: ${colors.white};
@@ -18,7 +25,6 @@ const CardContainerStyled = styled(FlexBox)`
   width: 100%;
   min-width: 15rem;
   position: relative;
-  align-items: flex-start;
 `
 
 const UserWidgets = styled(FlexBox)`
@@ -51,7 +57,7 @@ const FlexBoxStyled = styled(FlexBox)`
   }
 `
 
-const CardResource = ({
+export const CardResource: FC<TCardResource> = ({
   createdBy,
   createdAt,
   description,
@@ -68,8 +74,71 @@ const CardResource = ({
   handleAccessModal,
   fromProfile,
   ...rest
-}: TCardResource) => {
+}) => {
   const { user } = useAuth()
+  const queryClient = useQueryClient()
+
+  const castVote = useMutation({
+    mutationFn: updateVote,
+    onSuccess: (_, { vote }) => {
+      const queryCacheGetResources = queryClient
+        .getQueryCache()
+        .findAll(['getResources'])
+
+      const queryCacheGetResourcesByUser = queryClient
+        .getQueryCache()
+        .findAll(['getResourcesByUser'])
+
+      const queryCacheGetFavorites = queryClient
+        .getQueryCache()
+        .findAll(['getFavorites'])
+
+      const allQueryKeys = !fromProfile
+        ? queryCacheGetResources
+        : queryCacheGetResources.concat(
+            queryCacheGetResourcesByUser,
+            queryCacheGetFavorites
+          )
+
+      const queryKeys = allQueryKeys.map((q) => q.queryKey)
+
+      for (let i = 0; i < queryKeys.length; i += 1) {
+        const queryKey = queryKeys[i]
+
+        queryClient.setQueryData(queryKey, (data?: TResource[]) => {
+          const newData = data?.map((resource) => {
+            if (resource.id !== id) return resource
+            const newVoteCount = updateCachedVoteCount(resource.voteCount, vote)
+            return {
+              ...resource,
+              voteCount: newVoteCount,
+            }
+          })
+          return newData
+        })
+      }
+    },
+    onError: () => {
+      // eslint-disable-next-line no-console
+      console.error('Error voting')
+    },
+  })
+
+  const handleClick = (vote: TUserVote) => {
+    if (!user) {
+      handleAccessModal()
+      return
+    }
+
+    if (
+      (voteCount?.userVote === 1 && vote === 'up') ||
+      (voteCount?.userVote === -1 && vote === 'down')
+    ) {
+      castVote.mutate({ resourceId: id, vote: 'cancel' })
+    } else {
+      castVote.mutate({ resourceId: id, vote })
+    }
+  }
 
   return (
     <CardContainerStyled
@@ -82,12 +151,7 @@ const CardResource = ({
     >
       {voteCount && (
         <CounterContainerStyled>
-          <VoteCounter
-            voteCount={voteCount}
-            resourceId={id}
-            handleAccessModal={handleAccessModal || undefined}
-            fromProfile={fromProfile}
-          />
+          <VoteCounter voteCount={voteCount} onClick={handleClick} />
         </CounterContainerStyled>
       )}
 
@@ -125,5 +189,3 @@ const CardResource = ({
     </CardContainerStyled>
   )
 }
-
-export default CardResource

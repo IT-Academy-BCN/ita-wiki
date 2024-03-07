@@ -1,5 +1,4 @@
+import { FC } from 'react'
 import { Text } from '../components/atoms'
 
-const Information = () => <Text>Info</Text>
-
-export { Information }
+export const Information: FC = () => <Text>Info</Text>

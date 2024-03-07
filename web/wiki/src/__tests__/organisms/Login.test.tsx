@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw'
 import { render, waitFor, screen, fireEvent } from '../test-utils'
 import { server } from '../../__mocks__/server'
-import Login from '../../components/organisms/Login'
+import { Login } from '../../components/organisms'
 import { urls } from '../../constants'
 
 const handleLogin = () => {}

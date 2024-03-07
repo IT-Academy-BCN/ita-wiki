@@ -1,10 +1,9 @@
+import { FC } from 'react'
 import { Text, Title } from '../components/atoms'
 
-export default function ErrorPage() {
-  return (
-    <>
-      <Title as="h1">Vaya! 😭</Title>
-      <Text>Page not found!</Text>
-    </>
-  )
-}
+export const ErrorPage: FC = () => (
+  <>
+    <Title as="h1">Vaya! 😭</Title>
+    <Text>Page not found!</Text>
+  </>
+)

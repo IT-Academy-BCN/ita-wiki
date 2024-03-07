@@ -4,6 +4,7 @@ import { createGlobalStyle } from 'styled-components'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Notifications, NotificationsProvider } from '@itacademy/ui'
 import { paths } from './constants'
 import { Home, Category, ErrorPage, UserProfile } from './pages'
 import { Information } from './pages/Information'
@@ -11,8 +12,6 @@ import { AuthProvider } from './context/AuthProvider'
 import { font } from './styles'
 import { FiltersProvider } from './context/store/context'
 import './i18n'
-import { NotificationsProvider } from './components/molecules/Notifications/context'
-import { Notifications } from './components/molecules/Notifications'
 
 const GlobalStyle = createGlobalStyle`
   body {

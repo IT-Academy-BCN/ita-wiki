@@ -5,17 +5,17 @@ import styled from 'styled-components'
 import { UserLoginSchema } from '@itacademy/schemas'
 import { useTranslation } from 'react-i18next'
 import {
+  Button,
+  FlexBox,
   Icon,
+  InputGroup,
   Spinner,
   Text,
   Title,
   ValidationMessage,
-  Button,
   dimensions,
   colors,
-  FlexBox,
   device,
-  InputGroup,
 } from '@itacademy/ui'
 import { useLogin } from '../../hooks/useLogin'
 
@@ -24,9 +24,7 @@ const FlexErrorStyled = styled(FlexBox)`
 `
 
 const LoginStyled = styled(FlexBox)`
-  gap: ${dimensions.spacing.sm};
   padding: ${dimensions.spacing.lg};
-  align-items: stretch;
 
   @media ${device.Tablet} {
     width: 80%;
@@ -85,7 +83,10 @@ type TLogin = {
   handleRegisterModal: () => void
 }
 
-const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
+export const Login: FC<TLogin> = ({
+  handleLoginModal,
+  handleRegisterModal,
+}) => {
   const [isVisibility, setIsVisibility] = useState(false)
   const { t } = useTranslation()
   const {
@@ -107,7 +108,11 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
   })
 
   return (
-    <LoginStyled>
+    <LoginStyled
+      data-testid="loginModal"
+      align="stretch"
+      gap={dimensions.spacing.sm}
+    >
       <TitleStyled as="h1" fontWeight="bold">
         Login
       </TitleStyled>
@@ -135,6 +140,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
           onBlur={() => {
             trigger('dni')
           }}
+          hiddenLabel
         />
         <InputGroup
           type={isVisibility ? 'text' : 'password'}
@@ -150,6 +156,7 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
           onBlur={() => {
             trigger('password')
           }}
+          hiddenLabel
         />
         <FlexBox align="end">
           <TextDecorationStyled
@@ -188,5 +195,3 @@ const Login: FC<TLogin> = ({ handleLoginModal, handleRegisterModal }) => {
     </LoginStyled>
   )
 }
-
-export default Login

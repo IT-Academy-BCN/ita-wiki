@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.14.0] - 2024-03-11
+
+### Removed
+
+- Import molecules from UI
+- Removed old molecules and tests
+
+## [0.13.1] - 2024-03-07
+
+### Fixed
+
+- Fixed SearchBar with InputGroup from UI
+
 ## [0.13.0] - 2024-03-04
 
 ### Removed
