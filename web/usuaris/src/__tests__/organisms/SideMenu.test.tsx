@@ -5,10 +5,9 @@ import { SideMenu } from '../../components/organisms'
 import { icons } from '../../assets/icons'
 
 describe('SideMenu', () => {
-  let renderedComponent
 
   beforeEach(() => {
-    renderedComponent = render(
+    render(
       <BrowserRouter>
         <SideMenu />
       </BrowserRouter>
