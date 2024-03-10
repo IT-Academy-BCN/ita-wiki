@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { SideMenu } from '../../components/organisms';
 import { colors } from '@itacademy/ui';
+import { SideMenu } from '../../components/organisms';
 import { icons } from '../../assets/icons';
 
 describe('SideMenu', () => {

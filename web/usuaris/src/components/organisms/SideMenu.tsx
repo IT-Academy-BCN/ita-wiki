@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { FlexBox, colors, dimensions, font, Icon } from '@itacademy/ui'
+import { FlexBox, colors, dimensions, font } from '@itacademy/ui'
 import { icons } from '../../assets/icons'
 
 const LinkCategory = styled(Link)`
