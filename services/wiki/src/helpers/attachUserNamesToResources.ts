@@ -23,6 +23,7 @@ type UnifiedResources =
   | ResourceWithTopicsVote[]
   | ExtendedResourceWithFavorites[]
   | ExtendedResourceWithAvatar[]
+
 export async function attachUserNamesToResources(resources: UnifiedResources) {
   const names = await ssoHandler.listUsers(
     resources.map((resource) => resource.userId)

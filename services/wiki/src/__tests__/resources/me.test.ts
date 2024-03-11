@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
-import { Category, User } from '@prisma/client'
+import { Category, User, Prisma } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
@@ -10,12 +10,17 @@ import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
 
 let user: User | null
+let userWithNoName: User | null
+
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
     where: { slug: 'testing' },
   })) as Category
   user = await prisma.user.findFirst({
     where: { id: testUserData.user.id },
+  })
+  userWithNoName = await prisma.user.findFirst({
+    where: { id: testUserData.userWithNoName.id },
   })
 
   const testResourcesWithUser = resourceTestData.map((resource) => {
@@ -25,6 +30,26 @@ beforeAll(async () => {
       categoryId: testCategory.id,
     }
   })
+
+  const resourceTest4: Omit<
+    Prisma.ResourceCreateArgs['data'],
+    'userId' | 'categoryId'
+  > = {
+    title: 'test-resource-4-blog',
+    slug: 'test-resource-4-blog',
+    description: 'Lorem ipsum blog',
+    url: 'https://sample.com',
+    resourceType: 'BLOG',
+  }
+
+  const testResourcesWithNoUserName = {
+    ...resourceTest4,
+    userId: userWithNoName!.id,
+    categoryId: testCategory.id,
+  }
+
+  testResourcesWithUser.push(testResourcesWithNoUserName)
+
   await prisma.resource.createMany({
     data: testResourcesWithUser,
   })
@@ -62,9 +87,17 @@ afterAll(async () => {
   await prisma.favorites.deleteMany({
     where: { user: { id: user?.id } },
   })
+
+  await prisma.favorites.deleteMany({
+    where: { user: { id: userWithNoName?.id } },
+  })
   await prisma.vote.deleteMany({})
   await prisma.resource.deleteMany({
     where: { user: { id: user?.id } },
+  })
+
+  await prisma.resource.deleteMany({
+    where: { user: { id: userWithNoName?.id } },
   })
 })
 
