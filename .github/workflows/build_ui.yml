@@ -33,7 +33,7 @@ jobs:
         with:
           context: packages/ui
           push: true
-          tags: kevinmamaqi/ita-ui:v${{ steps.version.outputs.version }}
+          tags: itacademybcn/ita-ui:v${{ steps.version.outputs.version }}
 
       - name: Update version
         run: |

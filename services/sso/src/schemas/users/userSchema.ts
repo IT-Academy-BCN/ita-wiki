@@ -13,11 +13,15 @@ export enum UserStatus {
 }
 export const userStatusSchema = z.nativeEnum(UserStatus)
 export const userIdSchema = z.string().cuid2()
+export const userNameSchema = z
+  .string()
+  .nonempty()
+  .openapi({ example: 'John Doe' })
 export const userSchema = z.object({
   id: userIdSchema,
   dni: dniSchema,
   email: z.string().email().nonempty().openapi({ example: 'user@example.cat' }),
-  name: z.string().nonempty().openapi({ example: 'Name' }),
+  name: userNameSchema,
   password: z.string().min(8),
   role: z.nativeEnum(UserRole),
   status: userStatusSchema,

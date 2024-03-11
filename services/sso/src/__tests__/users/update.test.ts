@@ -9,7 +9,7 @@ import { checkPassword, hashPassword } from '../../utils/passwordHash'
 import { UserRole, UserStatus } from '../../schemas/users/userSchema'
 
 const id = 'va3dvcicw0ttxccoe328v6bo'
-const dni = '11111111Q'
+const dni = 'Y1868974P'
 const email = 'example@example.com'
 const name = 'nameExample'
 const password = 'hashedPassword'

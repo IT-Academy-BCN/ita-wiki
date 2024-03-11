@@ -1,5 +1,5 @@
 info:
-  version: 1.15.0
+  version: 1.15.1
   title: IT Academy SSO Service
   description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
@@ -184,7 +184,7 @@ paths:
                 name:
                   type: string
                   minLength: 1
-                  example: Name
+                  example: John Doe
                 itineraryId:
                   type: string
                 password:
@@ -434,7 +434,7 @@ paths:
                 name:
                   type: string
                   minLength: 1
-                  example: Name
+                  example: John Doe
                 password:
                   type: string
                   minLength: 8
@@ -537,7 +537,7 @@ paths:
                     name:
                       type: string
                       minLength: 1
-                      example: Name
+                      example: John Doe
                   required:
                     - id
                     - name
@@ -647,6 +647,8 @@ paths:
             nullable: true
             format: date
           required: false
+          description: Start date to filter users by, format YYYY-MM-DD
+          example: 2023-03-05
         - in: query
           name: endDate
           schema:
@@ -654,6 +656,16 @@ paths:
             nullable: true
             format: date
           required: false
+          description: End date to filter users by, format YYYY-MM-DD
+          example: 2026-03-05
+        - in: query
+          name: name
+          schema:
+            type: string
+            minLength: 2
+            example: John Doe
+          required: false
+          description: Partial or full name to filter the users by
       responses:
         "200":
           description: Token is valid and user information is returned.
@@ -669,7 +681,7 @@ paths:
                     name:
                       type: string
                       minLength: 1
-                      example: Name
+                      example: John Doe
                     status:
                       type: string
                       enum:

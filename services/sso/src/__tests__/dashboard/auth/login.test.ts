@@ -58,7 +58,7 @@ describe('Testing authentication endpoint', () => {
 
   test('should fail with user not found', async () => {
     const response = await supertest(server).post(route).send({
-      dni: '11111111b',
+      dni: '31621761G',
       password: 'password1',
     })
     expect(response.status).toBe(401)
