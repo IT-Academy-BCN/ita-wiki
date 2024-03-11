@@ -33,7 +33,7 @@ jobs:
         with:
           context: web/usuaris
           push: true
-          tags: kevinmamaqi/ita-web-usuaris:v${{ steps.version.outputs.version }}
+          tags: itacademybcn/ita-usuaris-web:v${{ steps.version.outputs.version }}
 
       - name: Update version
         run: |
