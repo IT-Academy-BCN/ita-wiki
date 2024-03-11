@@ -78,7 +78,7 @@ export const InputGroup = forwardRef(
       <FlexBox direction="row" justify="flex-end">
         <Input id={id} name={name} {...rest} ref={ref} />
         {!!icon && (
-          <Icon
+          <StyledIcon
             name={icon}
             onClick={iconClick}
             {...rest}

@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.1] - 2024-03-07
+
+### Fixed
+- Corrected DNI/NIE control letter validation in validation schemas to ensure data integrity.
+
 ## [1.15.0] - 2024-03-05
 
 ### Added

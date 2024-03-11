@@ -1,19 +1,16 @@
-import React from 'react'
+import { FC, ChangeEvent } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import {
-  FlexBox,
   colors,
   device,
   dimensions,
   font,
   Button,
-  Input,
   Title,
   InputGroup,
 } from '@itacademy/ui'
-import { Icon } from '../atoms'
 import { TResource } from '../../types'
 
 type TSearch = {
@@ -24,8 +21,6 @@ type TSearch = {
   toggleSearch: () => void
   handleSearch: (value: string) => void
 }
-
-const InputStyled = styled(Input)``
 
 const SearchBar = styled(InputGroup)`
   display: none;
@@ -38,24 +33,18 @@ const SearchBar = styled(InputGroup)`
     width: 40%;
     max-width: 11rem;
     justify-content: flex-end;
-    ${FlexBox} {
-      justify-content: flex-start;
-    }
 
-    ${InputStyled} {
-      padding: ${dimensions.spacing.base};
-      padding-left: 2.8rem;
+    div input {
+      border: none;
       font-size: ${font.xs};
-      font-weight: ${font.regular};
+      font-weight: ${font.medium};
       border: none;
       text-align: right;
     }
 
-    ${Icon} {
-      padding-left: 0.8rem;
-      font-size: ${font.base};
-      scale: 1.8;
+    div span {
       color: ${colors.gray.gray3};
+      padding-right: 7rem;
     }
   }
 `
@@ -82,6 +71,7 @@ const InputSearch = styled.input<{ isError: boolean }>`
     color: ${(props) => (props.isError ? colors.error : null)};
   }
 `
+
 const CancelSearchButton = styled(Button)`
   color: ${colors.gray.gray3};
   background-color: ${colors.white};
@@ -95,7 +85,7 @@ const CancelSearchButton = styled(Button)`
   }
 `
 
-const Search: React.FC<TSearch> = ({
+const Search: FC<TSearch> = ({
   resourcesData,
   toggleSearch,
   isSearch,
@@ -106,7 +96,7 @@ const Search: React.FC<TSearch> = ({
   const { t } = useTranslation()
   const { state } = useLocation()
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target
     handleSearch(value)
   }
@@ -158,6 +148,7 @@ const Search: React.FC<TSearch> = ({
       <SearchBar
         data-testid="searchBar"
         label="searchResource"
+        hiddenLabel
         name="searchResource"
         placeholder={t('Buscar recurso')}
         id="searchResource"

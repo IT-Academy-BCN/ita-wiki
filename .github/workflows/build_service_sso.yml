@@ -33,7 +33,7 @@ jobs:
         with:
           context: services/sso
           push: true
-          tags: kevinmamaqi/ita-service-sso:v${{ steps.version.outputs.version }}
+          tags: itacademybcn/ita-sso-service:v${{ steps.version.outputs.version }}
 
       - name: Update version
         run: |
