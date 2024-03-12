@@ -128,7 +128,7 @@ describe('Testing get users endpoint', () => {
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toBeInstanceOf(Array)
-    expect(body).toHaveLength(4)
+    expect(body).toHaveLength(5)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
   it('returns only the user that match the exact name when searched', async () => {

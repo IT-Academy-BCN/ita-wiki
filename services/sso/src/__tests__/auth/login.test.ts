@@ -64,8 +64,8 @@ it('should fail if user not active', async () => {
 
 it('should fail if user is blocked', async () => {
   const response = await supertest(server).post(route).send({
-    dni: testUserData.blockedUser.dni,
-    password: testUserData.blockedUser.password,
+    dni: testUserData.inactiveUser.dni,
+    password: testUserData.inactiveUser.password,
   })
   expect(response.status).toBe(403)
   expect(response.body.message).toBe('Only active users can login')

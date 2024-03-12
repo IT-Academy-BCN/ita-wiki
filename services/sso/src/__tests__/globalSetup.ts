@@ -51,7 +51,7 @@ export const testUserData = {
   blockedUser: {
     email: 'testingBlockedUser@user.cat',
     name: 'testingBlockedUser',
-    dni: '55555555A',
+    dni: '45744082A',
     password: 'testingPswd5',
     role: UserRole.REGISTERED,
     status: UserStatus.BLOCKED,
