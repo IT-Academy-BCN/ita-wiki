@@ -1,8 +1,9 @@
 import { FC } from 'react'
-import { FlexBox, colors, dimensions, font } from '@itacademy/ui'
+import { FlexBox, Icon, colors, dimensions, font } from '@itacademy/ui'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
 import { icons } from '../../assets/icons'
+import { useTranslation } from 'react-i18next'
 
 const LinkCategory = styled(Link)`
   color: ${colors.gray.gray3};
@@ -76,9 +77,12 @@ const CategoryStyled = styled.span`
   }
 `
 
-const ImgStyled = styled.img`
+const ImgStyled = styled(Icon)`
   height: 30px;
   margin-right: ${dimensions.spacing.xxxs};
+
+  &[data-testid] {
+    content: attr(data-testid);
 `
 
 const LogoImage = styled.img`
@@ -89,45 +93,53 @@ const LogoImage = styled.img`
 const menu = [
   {
     id: 1,
-    title: 'Usuari@s',
-    icon: icons.user,
+    title: 'Usuarios',
+    icon: 'person',
     link: '/#',
   },
   {
     id: 2,
     title: 'Mentores',
-    icon: icons.user,
+    icon: 'person',
     link: '/#',
   },
   {
     id: 3,
     title: 'Connector',
-    icon: icons.thunder,
+    icon: 'bolt',
     link: '/#',
   },
   {
     id: 4,
     title: 'Configuración',
-    icon: icons.settings,
+    icon: 'settings',
     link: '/#',
   },
 ]
 
-export const SideMenu: FC = () => (
-  <SideMenuStyled justify="space-between" align="start">
-    <LogoImage src={icons.itLogo} alt="IT Academy" />
-    <ul>
-      {menu.map((item) => (
-        <li key={item.id}>
-          <Grid>
-            <ImgStyled src={item.icon} alt={item.title} title={item.title} />
-            <LinkCategory to={item.link} state={{}} key={1} tabIndex={0}>
-              <CategoryStyled tabIndex={0}>{item.title}</CategoryStyled>
-            </LinkCategory>
-          </Grid>
-        </li>
-      ))}
-    </ul>
-    <div style={{ height: '79px' }} />
-  </SideMenuStyled>
-)
+export const SideMenu: FC = () => {
+  const { t } = useTranslation()
+
+  return (
+    <SideMenuStyled justify="space-between" align="start">
+      <LogoImage src={icons.itLogo} alt="IT Academy" />
+      <ul>
+        {menu.map((item) => (
+          <li key={item.id}>
+            <Grid>
+              <ImgStyled
+                data-testid={item.icon}
+                name={item.icon}
+                color={`${colors.black.black1}`}
+              />
+              <LinkCategory to={item.link} state={{}} key={1} tabIndex={0}>
+                <CategoryStyled tabIndex={0}>{t(item.title)}</CategoryStyled>
+              </LinkCategory>
+            </Grid>
+          </li>
+        ))}
+      </ul>
+      <div style={{ height: '79px' }} />
+    </SideMenuStyled>
+  )
+}
