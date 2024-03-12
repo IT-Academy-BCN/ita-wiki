@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { colors } from '@itacademy/ui'
+import { describe, beforeEach, it, expect } from 'vitest'
 import { SideMenu } from '../../components/organisms'
-import { describe, beforeEach, it, expect, vi } from 'vitest'
 
 describe('SideMenu', () => {
   beforeEach(() => {

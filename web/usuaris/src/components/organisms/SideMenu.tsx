@@ -2,8 +2,8 @@ import { FC } from 'react'
 import { FlexBox, Icon, colors, dimensions, font } from '@itacademy/ui'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
-import { icons } from '../../assets/icons'
 import { useTranslation } from 'react-i18next'
+import { icons } from '../../assets/icons'
 
 const LinkCategory = styled(Link)`
   color: ${colors.gray.gray3};
