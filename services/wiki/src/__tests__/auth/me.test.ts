@@ -45,7 +45,7 @@ describe('Testing ME endpoint', () => {
 
   afterAll(async () => {
     await fs.rm(`${pathUploadMedia}/testImage.png`)
-    await fs.rmdir(pathUploadMedia)
+    await fs.rmdir(pathUploadMedia, { recursive: true })
     await prisma.media.deleteMany({})
     await prisma.user.update({
       where: { id: user?.id },

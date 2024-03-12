@@ -12,7 +12,7 @@ beforeAll(async () => {
   const [id] = rows
   itineraryId = id.id
   registerUser = {
-    dni: '11111111Q',
+    dni: '43246278E',
     email: 'example@example.cat',
     name: 'Example',
     password: 'password1',
@@ -22,12 +22,12 @@ beforeAll(async () => {
 })
 
 afterEach(async () => {
-  await client.query('DELETE FROM "user" WHERE dni IN ($1) ', ['11111111Q'])
+  await client.query('DELETE FROM "user" WHERE dni IN ($1) ', ['43246278E'])
 })
 afterAll(async () => {
   await client.query('DELETE FROM "user" WHERE dni IN ($1, $2) OR email = $3', [
-    '11111111Q',
-    '11111111S',
+    '43246278E',
+    '99102000Z',
     'example@example.com',
   ])
 })
@@ -57,7 +57,7 @@ describe('Testing registration endpoint', () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '11111111A',
+          dni: '38826335N',
           email: 'anotherexample@example.com',
           name: 'Example',
           password: 'password1',
@@ -72,7 +72,7 @@ describe('Testing registration endpoint', () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452c',
+          dni: '33870684X',
           email: 'testingUser@user.cat',
           name: 'Example',
           password: 'password1',
@@ -104,7 +104,7 @@ describe('Testing registration endpoint', () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452c',
+          dni: '33870684X',
           password: 'password1',
           name: 'Example',
           confirmPassword: 'password1',
@@ -119,7 +119,7 @@ describe('Testing registration endpoint', () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452c',
+          dni: '33870684X',
           email: 'example2@example.com',
           password: 'password1',
           confirmPassword: 'password1',
@@ -134,7 +134,7 @@ describe('Testing registration endpoint', () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452c',
+          dni: '33870684X',
           email: 'example2@example.com',
           name: 'Example',
           confirmPassword: 'password1',
@@ -149,7 +149,7 @@ describe('Testing registration endpoint', () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452c',
+          dni: '33870684X',
           email: 'example2@example.com',
           name: 'Example',
           password: 'password1',
@@ -163,7 +163,7 @@ describe('Testing registration endpoint', () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452c',
+          dni: '33870684X',
           email: 'example2@example.com',
           name: 'Example',
           password: 'password1',
@@ -191,12 +191,27 @@ describe('Testing registration endpoint', () => {
       expect(response.body.message[0].validation).toBe('regex')
       expect(response.body.message[0].path).toContain('dni')
     })
+    it('should fail with invalid input: invalid dni letter', async () => {
+      const response = await supertest(server)
+        .post(`${pathRoot.v1.auth}/register`)
+        .send({
+          dni: '33870684A',
+          email: 'example2@example.com',
+          name: 'Example',
+          password: 'password1',
+          confirmPassword: 'password1',
+          itineraryId,
+        })
+      expect(response.status).toBe(400)
+      expect(response.body.message[0].message).toBe('Invalid DNI/NIE letter')
+      expect(response.body.message[0].path).toContain('dni')
+    })
 
     it('should fail with invalid input: email', async () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452c',
+          dni: '33870684X',
           email: 'notAValidEmail',
           name: 'Example',
           password: 'password1',
@@ -212,7 +227,7 @@ describe('Testing registration endpoint', () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452c',
+          dni: '33870684X',
           email: 'example2@example.com',
           name: 'Example',
           password: 'pswd1',
@@ -228,7 +243,7 @@ describe('Testing registration endpoint', () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452c',
+          dni: '33870684X',
           email: 'example2@example.com',
           name: 'Example',
           password: 'password',
@@ -244,7 +259,7 @@ describe('Testing registration endpoint', () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452c',
+          dni: '33870684X',
           email: 'example2@example.com',
           name: 'Example',
           password: 'password1?',
@@ -259,7 +274,7 @@ describe('Testing registration endpoint', () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452c',
+          dni: '33870684X',
           email: 'example2@example.com',
           name: 'Example',
           password: 'password1',
@@ -274,7 +289,7 @@ describe('Testing registration endpoint', () => {
       const response = await supertest(server)
         .post(`${pathRoot.v1.auth}/register`)
         .send({
-          dni: '45632452c',
+          dni: '33870684X',
           email: 'example2@example.com',
           name: 'Example',
           password: 'password1',

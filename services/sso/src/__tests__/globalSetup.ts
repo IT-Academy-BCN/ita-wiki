@@ -15,7 +15,7 @@ export const testUserData = {
   user: {
     email: 'testingUser@user.cat',
     name: 'testingUser',
-    dni: '11111111A',
+    dni: '38826335N',
     password: 'testingPswd1',
     role: UserRole.REGISTERED,
     status: UserStatus.ACTIVE,
@@ -24,7 +24,7 @@ export const testUserData = {
   admin: {
     email: 'testingAdmin@user.cat',
     name: 'testingAdmin',
-    dni: '22222222B',
+    dni: '98917624Y',
     password: 'testingPswd2',
     role: UserRole.ADMIN,
     status: UserStatus.ACTIVE,
@@ -33,7 +33,7 @@ export const testUserData = {
   mentor: {
     email: 'testingMentor@user.cat',
     name: 'testingMentor',
-    dni: '44444444B',
+    dni: '34508651A',
     password: 'testingPswd4',
     role: UserRole.MENTOR,
     status: UserStatus.ACTIVE,
@@ -42,7 +42,7 @@ export const testUserData = {
   inactiveUser: {
     email: 'testingInactiveUser@user.cat',
     name: 'testingInactiveUser',
-    dni: '33333333A',
+    dni: 'Z4503536A',
     password: 'testingPswd3',
     role: UserRole.REGISTERED,
     status: UserStatus.INACTIVE,

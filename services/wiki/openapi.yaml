@@ -731,9 +731,6 @@ paths:
                         avatarId:
                           type: string
                           nullable: true
-                      required:
-                        - name
-                        - avatarId
                     isAuthor:
                       type: boolean
                     voteCount:

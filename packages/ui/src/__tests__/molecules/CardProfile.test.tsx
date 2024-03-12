@@ -34,18 +34,20 @@ describe('CardProfile', () => {
       <CardProfile
         userData={{
           profilePicture: '/test-img.jpg',
-          noProfilePictureAlt: 'No user image',
+          profilePictureAlt: 'No user image',
           userName: 'test-name',
           userEmail: 'test@test.com',
         }}
         counterData={counterData}
         logoutData={{
-          img: { logoutIcon: 'test-icon.jpg', altLogout: 'test-icon-alt' },
+          logoutIcon: { name: 'power_settings_new' },
           handleLogOut: mockLogOut,
           logoutMsg: 'Logout',
         }}
       />
     )
+
+    expect(screen.getByAltText(/no user image/i)).toBeInTheDocument()
 
     expect(screen.getByText(/test-name/i)).toBeInTheDocument()
 
@@ -53,6 +55,8 @@ describe('CardProfile', () => {
 
     const button: HTMLButtonElement = screen.getByRole('button')
     expect(button).toHaveTextContent(/logout/i)
+    expect(screen.getByText(/power_settings_new/i)).toBeInTheDocument()
+
     fireEvent.click(button)
     expect(mockLogOut).toHaveBeenCalled()
 
@@ -94,13 +98,13 @@ describe('CardProfile', () => {
       <CardProfile
         userData={{
           profilePicture: '/test-img.jpg',
-          noProfilePictureAlt: 'No user image',
+          profilePictureAlt: 'No user image',
           userName: 'test-name',
           userEmail: 'test@test.com',
         }}
         counterData={counterData}
         logoutData={{
-          img: { logoutIcon: 'test-icon.jpg', altLogout: 'test-icon-alt' },
+          logoutIcon: { name: 'power_settings_new' },
           handleLogOut: mockLogOut,
           logoutMsg: 'Logout',
         }}

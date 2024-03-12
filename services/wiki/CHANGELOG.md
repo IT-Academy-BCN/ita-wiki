@@ -2,12 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.1] - 2024-03-11
+
+### Fixed
+
+- Retrieve resources with user empty name
+
 ## [0.10.0] - 2024-02-12
 
 ### Added
 
-- `attachUserNamesToResources` to unify and simplify resource object structure across the application by ensuring all resources include `user` details (name and optionally `avatarId`) and `favorites`
--`markFavorites` to mark resources as favorites based on user interaction,
+- `attachUserNamesToResources` to unify and simplify resource object structure across the application by ensuring all resources include `user` details (name and optionally `avatarId`) and `favorites` -`markFavorites` to mark resources as favorites based on user interaction,
 - Get users name by id from SSO endpoint
 
 ### Changed
@@ -42,7 +47,7 @@ All notable changes to this project will be documented in this file.
 
 ### Testing
 
--  Modified `ssoServer` mock: login handler now issues a 403 error for inactive user logins.
+- Modified `ssoServer` mock: login handler now issues a 403 error for inactive user logins.
 
 ### Documentation
 
@@ -84,7 +89,7 @@ All notable changes to this project will be documented in this file.
 
 ### Testing
 
--  Updated ssoServer mock, get user handler now sends user role.
+- Updated ssoServer mock, get user handler now sends user role.
 
 ## [0.6.1] - 2024-01-11
 
@@ -92,13 +97,11 @@ All notable changes to this project will be documented in this file.
 
 - `userId` in user validation schema now accepts `cuid2` format.
 
-
 ### Testing
 
--  Verified `userId` fields now correctly accept `cuid2` format.
+- Verified `userId` fields now correctly accept `cuid2` format.
 
 ## [0.6.0] - 2024-01-08
-
 
 ### Added
 
@@ -115,18 +118,17 @@ All notable changes to this project will be documented in this file.
 ### Documentation
 
 - Enhanced OpenAPI documentation with details on the new GET itineraries endpoint
-  
+
 ## [0.5.0] - 2023-12-20
 
 ### Changed
 
 - Retrieve DNI and email of the user from SSO instead of the database
 
-
 ### Testing
 
 - Added to ssoServer mock, get user handler.
-  
+
 ## [0.4.0] - 2023-12-14
 
 ### Added
