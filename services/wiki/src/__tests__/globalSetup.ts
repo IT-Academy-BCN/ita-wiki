@@ -9,6 +9,16 @@ export let server: Server<typeof IncomingMessage, typeof ServerResponse>
 server = app.listen()
 
 export const testUserData = {
+  userWithNoName: {
+    id: 'vwt15uwddul2afme75x6fs8x',
+    email: 'testingUserNoName@user.cat',
+    name: '',
+    dni: '12345678Z',
+    password: 'testingPswd5',
+    role: UserRole.REGISTERED,
+    status: UserStatus.ACTIVE,
+    avatarId: null,
+  },
   user: {
     id: 'vwt15uwddul2afme75x6fs8q',
     email: 'testingUser@user.cat',

@@ -8,6 +8,21 @@ All notable changes to this project will be documented in this file.
 
 - Icon SelectGroup
 
+## [0.29.2] - 2024-03-07
+
+### Fixed
+
+- Added missing Avatar in CardProfile
+- Fixed error in Avatar to receive props correctly
+
+## [0.29.1] - 2024-03-06
+
+### Fixed
+
+- Fixed icon position in InputGroup
+- Fixed type error with Icon onClick in InputGroup
+
+
 ## [0.29.0] - 2024-02-27
 
 ### Added

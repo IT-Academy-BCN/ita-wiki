@@ -22,7 +22,6 @@ export type TIcon = React.HTMLAttributes<HTMLSpanElement> & {
   className?: string
   color?: string
   cursor?: string
-  onClick?: () => void
 }
 
 export const Icon: React.FC<TIcon> = ({
@@ -33,7 +32,6 @@ export const Icon: React.FC<TIcon> = ({
   $opsz = 48,
   name = '',
   color = '',
-  onClick = () => { },
   ...rest
 }) => (
   <IconStyled
@@ -44,7 +42,6 @@ export const Icon: React.FC<TIcon> = ({
     color={color}
     $opsz={$opsz}
     name={name}
-    onClick={onClick}
     {...rest}
   >
     {name}

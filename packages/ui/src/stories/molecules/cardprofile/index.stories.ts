@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { CardProfile } from '../../../components/molecules'
-import logoutSvg from './logout.svg'
 import profileAvatar from './profile-avatar.svg'
 
 const meta = {
@@ -16,7 +15,7 @@ const meta = {
   argTypes: {
     userData: {
       profilePicture: { control: 'string' },
-      noProfilePictureAlt: { control: 'string' },
+      profilePictureAlt: { control: 'string' },
       userName: { control: 'string' },
       userEmail: { control: 'string' },
     },
@@ -30,9 +29,15 @@ const meta = {
       },
     ],
     logoutData: {
-      img: {
-        logoutIcon: { control: 'string' },
-        altLogout: { control: 'string' },
+      logoutIcon: {
+        name: { control: 'string' },
+        $fill: { control: 'number' },
+        $wght: { contron: 'number' },
+        $grad: { control: 'number' },
+        $opsz: { control: 'number' },
+        className: { control: 'string' },
+        color: { control: 'string' },
+        cursor: { control: 'string' },
       },
       handleLogOut: { control: 'function' },
       logoutMsg: { control: 'string' },
@@ -46,8 +51,8 @@ type CardProfileStory = StoryObj<typeof CardProfile>
 export const Default: CardProfileStory = {
   args: {
     userData: {
-      profilePicture: '',
-      noProfilePictureAlt: '',
+      profilePicture: undefined,
+      profilePictureAlt: '',
       userName: '',
       userEmail: '',
     },
@@ -61,10 +66,7 @@ export const Default: CardProfileStory = {
       },
     ],
     logoutData: {
-      img: {
-        logoutIcon: '',
-        altLogout: '',
-      },
+      logoutIcon: undefined,
       handleLogOut: () => {},
       logoutMsg: '',
     },
@@ -75,7 +77,7 @@ export const WithImgs: CardProfileStory = {
   args: {
     userData: {
       profilePicture: profileAvatar,
-      noProfilePictureAlt: 'no user image',
+      profilePictureAlt: 'user image',
       userName: 'UserTest',
       userEmail: 'UserTest@itawiki.com',
     },
@@ -89,10 +91,7 @@ export const WithImgs: CardProfileStory = {
       },
     ],
     logoutData: {
-      img: {
-        logoutIcon: logoutSvg,
-        altLogout: 'logout icon',
-      },
+      logoutIcon: { name: 'power_settings_new' },
       handleLogOut: () => {},
       logoutMsg: 'Log out',
     },
@@ -102,8 +101,8 @@ export const WithImgs: CardProfileStory = {
 export const WithErrors: CardProfileStory = {
   args: {
     userData: {
-      profilePicture: '',
-      noProfilePictureAlt: 'no user image',
+      profilePicture: undefined,
+      profilePictureAlt: 'no user image',
       userName: 'UserTest',
       userEmail: 'UserTest@itawiki.com',
     },
@@ -117,10 +116,7 @@ export const WithErrors: CardProfileStory = {
       },
     ],
     logoutData: {
-      img: {
-        logoutIcon: logoutSvg,
-        altLogout: 'logout icon',
-      },
+      logoutIcon: { name: 'power_settings_new' },
       handleLogOut: () => {},
       logoutMsg: 'Log out',
     },

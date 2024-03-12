@@ -33,7 +33,7 @@ jobs:
         with:
           context: web/wiki
           push: true
-          tags: kevinmamaqi/ita-wiki-web:v${{ steps.version.outputs.version }}
+          tags: itacademybcn/ita-wiki-web:v${{ steps.version.outputs.version }}
 
       - name: Update version
         run: |

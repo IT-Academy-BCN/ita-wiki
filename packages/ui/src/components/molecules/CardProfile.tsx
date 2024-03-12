@@ -1,8 +1,15 @@
 import { FC, useId } from 'react'
 import styled from 'styled-components'
-import { Text, Counter, Button } from '../atoms'
+import {
+  Avatar,
+  Button,
+  Counter,
+  Icon,
+  Text,
+  type TCounter,
+  TIcon,
+} from '../atoms'
 import { FlexBox, colors, font, dimensions, device } from '../../styles'
-import { TCounter } from '../atoms/Counter'
 
 const ContentContainer = styled(FlexBox)`
   width: 90%;
@@ -19,6 +26,7 @@ const ContentContainer = styled(FlexBox)`
     background-color: ${colors.white};
     gap: ${dimensions.spacing.xl};
   }
+
   @media only ${device.Laptop} {
     width: 90%;
     gap: ${dimensions.spacing.lg};
@@ -33,8 +41,6 @@ const ContentContainer = styled(FlexBox)`
 `
 
 const UserInfoContainer = styled(FlexBox)`
-  gap: ${dimensions.spacing.base};
-
   @media only ${device.Tablet} {
     flex-direction: row;
     gap: ${dimensions.spacing.xl};
@@ -42,9 +48,6 @@ const UserInfoContainer = styled(FlexBox)`
 `
 
 const UserInfoWrapper = styled(FlexBox)`
-  gap: ${dimensions.spacing.xxs};
-  justify-content: space-between;
-
   @media only ${device.Tablet} {
     align-items: start;
   }
@@ -91,11 +94,6 @@ const ButtonStyled = styled(Button)`
 `
 
 const UserActivityWrapper = styled(FlexBox)`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: start;
-  gap: ${dimensions.spacing.xxs};
-
   @media only ${device.Tablet} {
     gap: ${dimensions.spacing.sm};
   }
@@ -111,14 +109,14 @@ const CenteredCounter = styled(FlexBox)`
 const GenerateId = () => useId()
 
 export type TUserData = {
-  profilePicture: string
-  noProfilePictureAlt: string
+  profilePicture?: string
+  profilePictureAlt: string
   userName: string
   userEmail: string
 }
 
 export type TLogoutData = {
-  img?: { logoutIcon: string; altLogout: string }
+  logoutIcon?: TIcon
   handleLogOut: () => void
   logoutMsg: string
 }
@@ -139,20 +137,27 @@ export const CardProfile: FC<TCardProfile> = ({
     justify="space-between"
     data-testid="card-profile"
   >
-    <UserInfoContainer direction="column" justify="flex-start">
-      <UserInfoWrapper>
+    <UserInfoContainer
+      direction="column"
+      justify="flex-start"
+      gap={dimensions.spacing.base}
+    >
+      <Avatar
+        src={userData.profilePicture ?? undefined}
+        alt={userData.profilePictureAlt}
+      />
+      <UserInfoWrapper justify="space-between" gap={dimensions.spacing.xxs}>
         <UsernameStyled as="h1">{userData.userName}</UsernameStyled>
         <TextStyled>{userData.userEmail}</TextStyled>
         <ButtonStyled outline onClick={logoutData.handleLogOut}>
           {logoutData.logoutMsg}{' '}
-          <img
-            src={logoutData.img?.logoutIcon}
-            alt={logoutData.img?.altLogout}
-          />
+          {logoutData.logoutIcon?.name ? (
+            <Icon name={logoutData.logoutIcon.name} />
+          ) : undefined}
         </ButtonStyled>
       </UserInfoWrapper>
     </UserInfoContainer>
-    <UserActivityWrapper>
+    <UserActivityWrapper direction="row" justify="space-between" align="start">
       {counterData?.map((counter) => (
         <CenteredCounter key={GenerateId()}>
           <Counter

@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.15.1] - 2024-03-07
+
+### Fixed
+- Corrected DNI/NIE control letter validation in validation schemas to ensure data integrity.
+
+## [1.15.0] - 2024-03-05
+
+### Added
+- Name search filter for `GET /dashboard/users` endpoint allowing partial and case-insensitive name matching.
+
+### Changed
+- Enhanced `startDate` and `endDate` query parameters documentation in OpenAPI to specify YYYY-MM-DD format.
+- `userNameSchema` validation in `dashboardUsersListQuerySchema` to require a minimum of 2 characters for name searches.
+
 ## [1.14.1] - 2024-02-28
 
 ### Fix

@@ -5,6 +5,7 @@ import { authToken } from './authToken'
 type GetMeUsersResponse =
   | { message: string }
   | { dni: string; email: string; role: string; status: string }
+
 export const getMeUsersHandler = http.post(
   'http://localhost:8000/api/v1/users/me',
   async ({ request }) => {
