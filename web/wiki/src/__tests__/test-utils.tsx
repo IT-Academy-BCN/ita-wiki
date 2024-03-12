@@ -3,10 +3,10 @@ import { render, RenderOptions } from '@testing-library/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { MemoryRouter } from 'react-router-dom'
 import { I18nextProvider } from 'react-i18next'
+import { NotificationsProvider } from '@itacademy/ui'
 import i18n from '../i18n'
 import { queryClient } from './setup'
 import { AuthProvider } from '../context/AuthProvider'
-import { NotificationsProvider } from '../components/molecules/Notifications'
 
 const AllTheProviders = ({
   children,

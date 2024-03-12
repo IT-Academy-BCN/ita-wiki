@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
-import { Category, User } from '@prisma/client'
+import { Category, User, Prisma } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { resourceTestData } from '../mocks/resources'
@@ -12,6 +12,7 @@ const url: string = `${pathRoot.v1.resources}/favorites`
 const categorySlug = 'testing'
 let adminUser: User | null
 let user: User | null
+let userWithNoName: User | null
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
     where: { slug: 'testing' },
@@ -21,6 +22,10 @@ beforeAll(async () => {
   })
   adminUser = await prisma.user.findFirst({
     where: { id: testUserData.admin.id },
+  })
+
+  userWithNoName = await prisma.user.findFirst({
+    where: { id: testUserData.userWithNoName.id },
   })
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,
@@ -34,6 +39,30 @@ beforeAll(async () => {
     category: { connect: { id: testCategory.id } },
   }))
 
+  const resourceTest4: Omit<
+    Prisma.ResourceCreateArgs['data'],
+    'userId' | 'categoryId'
+  > = {
+    title: 'test-resource-4-blog',
+    slug: 'test-resource-4-blog',
+    description: 'Lorem ipsum blog',
+    url: 'https://sample.com',
+    resourceType: 'BLOG',
+  }
+
+  const testResourceDataWithNoName = {
+    ...resourceTest4,
+    user: { connect: { id: userWithNoName?.id } },
+    topics: {
+      create: [{ topic: { connect: { slug: 'testing' } } }],
+    },
+    favorites: {
+      create: [{ user: { connect: { id: adminUser?.id } } }],
+    },
+    category: { connect: { id: testCategory.id } },
+  }
+  testResources.push(testResourceDataWithNoName)
+
   await prisma.$transaction(
     testResources.map((resource) => prisma.resource.create({ data: resource }))
   )
@@ -45,12 +74,15 @@ afterAll(async () => {
   })
   await prisma.favorites.deleteMany({
     where: {
-      user: { id: { in: [adminUser!.id, user!.id] } },
+      user: { id: { in: [adminUser!.id, user!.id, userWithNoName!.id] } },
     },
   })
   await prisma.vote.deleteMany({})
   await prisma.resource.deleteMany({
     where: { user: { id: user?.id } },
+  })
+  await prisma.resource.deleteMany({
+    where: { user: { id: userWithNoName?.id } },
   })
 })
 

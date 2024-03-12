@@ -2,7 +2,17 @@ import { useParams } from 'react-router-dom'
 import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled, { keyframes } from 'styled-components'
-import { Button } from '@itacademy/ui'
+import {
+  AccessModalContent,
+  Button,
+  FlexBox,
+  Modal,
+  SelectGroup,
+  colors,
+  device,
+  dimensions,
+  responsiveSizes,
+} from '@itacademy/ui'
 import {
   DesktopSideMenu,
   Login,
@@ -17,17 +27,11 @@ import {
   VotesDateController,
 } from '../components/organisms'
 import { Text, Title } from '../components/atoms'
-import {
-  AccessModalContent,
-  Modal,
-  SelectGroup,
-  StatusFilterWidget,
-  TypesFilterWidget,
-} from '../components/molecules'
+import { StatusFilterWidget, TypesFilterWidget } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
 import { useGetResources, useGetTopics } from '../hooks'
 import { TFilters, TResource, TSortOrder } from '../types'
-import { FlexBox, colors, device, dimensions, responsiveSizes } from '../styles'
+import icons from '../assets/icons'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -35,7 +39,6 @@ const Container = styled(FlexBox)`
 
   @media only ${device.Tablet} {
     height: 100vh;
-    display: flex;
     justify-content: flex-start;
     flex-direction: row;
     align-items: center;
@@ -50,7 +53,6 @@ const ContainerMain = styled(FlexBox)`
   height: 90%;
 
   @media ${device.Tablet} {
-    display: flex;
     flex-direction: row;
     align-items: flex-start;
     gap: ${dimensions.spacing.xs};
@@ -69,12 +71,9 @@ const ContainerMain = styled(FlexBox)`
 const WiderContainer = styled(FlexBox)`
   width: 100%;
   height: 100%;
-  justify-content: flex-start;
 `
 
-const MainContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+const MainContainer = styled(FlexBox)`
   height: 100%;
   width: 100%;
   background-color: ${colors.white};
@@ -103,7 +102,6 @@ const FiltersContainer = styled(FlexBox)`
   }
 
   @media ${device.Laptop} {
-    padding-top: ${dimensions.spacing.xxs};
     flex: 1 2 28rem;
   }
 
@@ -114,7 +112,6 @@ const FiltersContainer = styled(FlexBox)`
 
 const ScrollTopics = styled(FlexBox)`
   overflow-y: scroll;
-  justify-content: flex-start;
 
   &::-webkit-scrollbar {
     display: none;
@@ -123,8 +120,6 @@ const ScrollTopics = styled(FlexBox)`
 
 const ResourcesContainer = styled(FlexBox)`
   padding-left: ${dimensions.spacing.xxxs};
-  justify-content: flex-start;
-  align-items: flex-start;
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -138,9 +133,6 @@ const ResourcesContainer = styled(FlexBox)`
 `
 
 const TitleResourcesContainer = styled(FlexBox)`
-  justify-content: space-between;
-  align-items: flex-start;
-  flex-direction: row;
   width: 100%;
   padding: ${dimensions.spacing.none};
 `
@@ -157,6 +149,7 @@ const ScrollDiv = styled(FlexBox)`
 
 const ContainerResourcesAside = styled(FlexBox)`
   display: none;
+
   @media ${device.Tablet} {
     display: flex;
     justify-content: flex-start;
@@ -179,8 +172,6 @@ const ContainerResourcesAside = styled(FlexBox)`
 `
 
 const ResourcesAside = styled(FlexBox)`
-  justify-content: flex-start;
-  align-items: flex-start;
   flex: 1 2 19rem;
   overflow: hidden;
   overflow-x: auto;
@@ -213,6 +204,7 @@ const MobileContainer = styled(FlexBox)`
   z-index: 1;
   height: 100%;
   width: 100%;
+
   @media ${device.Tablet} {
     display: none;
   }
@@ -220,14 +212,14 @@ const MobileContainer = styled(FlexBox)`
 
 const MobileTopicsContainer = styled(MobileContainer)<{ isSearch: boolean }>`
   display: ${({ isSearch }) => (isSearch ? 'none' : 'flex')};
+
   @media ${device.Tablet} {
     display: none;
   }
 `
-const MobileSearchContainer = styled(MobileContainer)<{
-  isSearch: boolean
-}>`
+const MobileSearchContainer = styled(MobileContainer)<{ isSearch: boolean }>`
   display: ${({ isSearch }) => (isSearch ? 'flex' : 'none')};
+
   @media ${device.Tablet} {
     display: none;
   }
@@ -282,6 +274,7 @@ const slideInAnimation = keyframes`
   0% {
     transform: translateY(100%);
   }
+
   100% {
     transform: translateY(0);
   }
@@ -311,6 +304,7 @@ const MobileFiltersContainer = styled.div`
   border-top-left-radius: ${dimensions.borderRadius.sm};
   border-top-right-radius: ${dimensions.borderRadius.sm};
   box-shadow: ${dimensions.spacing.none} -0.2rem ${dimensions.spacing.base} ${colors.gray.gray3};
+
   &.open {
     transform: translateY(100%);
     animation: ${slideInAnimation} 1s forwards;
@@ -341,7 +335,7 @@ const CloseFilterButton = styled(Button)`
 const getWindowIsMobile = () =>
   window.innerWidth <= parseInt(responsiveSizes.tablet, 10)
 
-const Category: FC = () => {
+export const Category: FC = () => {
   const { slug } = useParams()
   const { user } = useAuth()
 
@@ -497,7 +491,7 @@ const Category: FC = () => {
     <>
       <Container direction="row" justify="flex-start" align="start">
         <DesktopSideMenu />
-        <WiderContainer>
+        <WiderContainer justify="flex-start">
           <Navbar
             toggleModal={toggleModal}
             handleAccessModal={handleAccessModal}
@@ -530,14 +524,14 @@ const Category: FC = () => {
             />
           </MobileSearchContainer>
           <ContainerMain>
-            <MainContainer as="main">
+            <MainContainer as="main" direction="column" align="start">
               <FiltersContainer data-testid="filters-container">
                 <Title as="h2" fontWeight="bold">
                   {t('Filtros')}
                 </Title>
                 <Text fontWeight="bold">{t('Temas')}</Text>
 
-                <ScrollTopics>
+                <ScrollTopics justify="flex-start">
                   {slug && (
                     <TopicsRadioWidget
                       key={slug}
@@ -552,8 +546,12 @@ const Category: FC = () => {
                   <StatusFilterWidget handleStatusFilter={handleStatusFilter} />
                 )}
               </FiltersContainer>
-              <ResourcesContainer>
-                <TitleResourcesContainer>
+              <ResourcesContainer justify="flex-start" align="start">
+                <TitleResourcesContainer
+                  direction="row"
+                  justify="space-between"
+                  align="start"
+                >
                   {!isMobile && (
                     <Search
                       searchValue={searchValue}
@@ -625,7 +623,7 @@ const Category: FC = () => {
               </MobileFiltersContainer>
             )}
             <ContainerResourcesAside as="aside">
-              <ResourcesAside>
+              <ResourcesAside justify="flex-start" align="start">
                 <MyFavoritesList />
               </ResourcesAside>
               <ResourcesAside>
@@ -652,6 +650,11 @@ const Category: FC = () => {
           handleLoginModal={handleLoginModal}
           handleRegisterModal={handleRegisterModal}
           handleAccessModal={handleAccessModal}
+          title={t('Acceso restringido')}
+          userMsg={t('Regístrate para subir o votar contenido')}
+          registerBtnTitle={t('Registrarme')}
+          loginBtnTitle={t('Entrar')}
+          img={{ svgSrc: icons.lockDynamic, svgAlt: 'Lock Dynamic Icon' }}
         />
       </Modal>
       {/* LOGIN AND REGISTER MODALS (INCLUDE BOTH!! - THEY TOGGLE) */}
@@ -677,5 +680,3 @@ const Category: FC = () => {
     </>
   )
 }
-
-export default Category

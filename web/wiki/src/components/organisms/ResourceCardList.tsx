@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FlexBox, dimensions, Spinner, Text } from '@itacademy/ui'
-import CardResource from './CardResource'
+import { CardResource } from './CardResource'
 import { useSortByDate, useSortByVotes } from '../../hooks'
 import { useAuth } from '../../context/AuthProvider'
 import { TResource, TSortOrder } from '../../types'
@@ -12,8 +12,6 @@ const SpinnerStyled = styled(Spinner)`
   justify-content: center;
 `
 const StyledFlexBox = styled(FlexBox)`
-  justify-content: flex-start;
-  gap: ${dimensions.spacing.base};
   overflow: scroll;
   width: 100%;
 
@@ -61,7 +59,12 @@ const ResourceCardList: FC<TResourceCardList> = ({
   }
 
   return (
-    <StyledFlexBox direction="column" data-testid="resource-list">
+    <StyledFlexBox
+      direction="column"
+      justify="flex-start"
+      gap={dimensions.spacing.base}
+      data-testid="resource-list"
+    >
       {resourcesLoading && (
         <SpinnerStyled size="medium" as="output" data-testid="spinner" />
       )}

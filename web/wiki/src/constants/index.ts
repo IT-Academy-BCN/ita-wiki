@@ -1,5 +1,4 @@
-import { urls } from './urls'
-import { paths } from './paths'
-import { categories } from './categories'
-
-export { paths, categories, urls }
+export { categories } from './categories'
+export { languages, type Language } from './languages'
+export { paths } from './paths'
+export { urls } from './urls'

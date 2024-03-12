@@ -3,27 +3,25 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
-  Title,
+  FlexBox,
+  Modal,
   Spinner,
   Text,
-  FlexBox,
+  Title,
   colors,
   device,
   dimensions,
   font,
   responsiveSizes,
-  Modal,
 } from '@itacademy/ui'
 import { useAuth } from '../../context/AuthProvider'
 import { CardResourceLink } from './CardResourceLink'
-import Login from './Login'
-import Register from './Register'
+import { Login } from './Login'
+import { Register } from './Register'
 import { TResource } from '../../types'
 import { useGetResourcesByUser } from '../../hooks'
 
 const TitleContainer = styled(FlexBox)`
-  align-items: stretch;
-
   @media only ${device.Tablet} {
     margin-top: ${dimensions.spacing.md};
     margin-bottom: ${dimensions.spacing.xxxs};
@@ -31,7 +29,6 @@ const TitleContainer = styled(FlexBox)`
 `
 
 const ResourcesUserStyled = styled(FlexBox)`
-  flex-direction: row;
   overflow: hidden;
   overflow-x: auto;
 
@@ -98,7 +95,7 @@ export const MyResources = () => {
 
   return (
     <>
-      <TitleContainer data-testid="main-title">
+      <TitleContainer data-testid="main-title" align="stretch">
         {isMobile ? (
           <Title as="h3" fontWeight="bold">
             {t('Tus recursos')}
@@ -126,7 +123,7 @@ export const MyResources = () => {
 
       {data &&
         (data.length > 0 ? (
-          <ResourcesUserStyled>
+          <ResourcesUserStyled direction="row">
             {data.map((resource: TResource) => (
               <MyResourcesCardList key={resource.id}>
                 <CardResourceLink

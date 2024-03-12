@@ -1,44 +1,21 @@
-import { AccountAdmin } from './AccountAdmin'
-import { CardResourceLink } from './CardResourceLink'
-import { CategoriesList } from './CategoriesList'
-import { DesktopSideMenu } from './DesktopSideMenu'
-import { HowToHelpCard } from './HowToHelpCard'
-import Login from './Login'
-import { MyFavoritesList } from './MyFavoritesList'
-import { MyResources } from './MyResources'
-import { Navbar } from './Navbar'
-import { ResourceCardList } from './ResourceCardList'
-import Register from './Register'
-import { ResourceForm } from './ResourceForm'
-import { SettingsManager } from './SettingsManager'
-import { TopicsManagerBoard } from './TopicsManagerBoard'
-import { TopicsRadioWidget } from './TopicsRadioWidget'
-import type { TResourceForm } from './ResourceForm'
-import { UserAccessHome } from './UserAccessHome'
-import { UserProfileResourcesWidget } from './UserProfileResourcesWidget'
-import { VotesDateController } from './VotesDateController'
-import { Search } from './Search'
-
-export {
-  AccountAdmin,
-  CardResourceLink,
-  CategoriesList,
-  DesktopSideMenu,
-  HowToHelpCard,
-  Login,
-  MyFavoritesList,
-  MyResources,
-  Navbar,
-  Register,
-  ResourceCardList,
-  ResourceForm,
-  SettingsManager,
-  TopicsManagerBoard,
-  TopicsRadioWidget,
-  UserAccessHome,
-  UserProfileResourcesWidget,
-  VotesDateController,
-  Search,
-}
-
-export type { TResourceForm }
+export { AccountAdmin } from './AccountAdmin'
+export { CardResource } from './CardResource'
+export { CardResourceLink } from './CardResourceLink'
+export { CategoriesList } from './CategoriesList'
+export { DesktopSideMenu } from './DesktopSideMenu'
+export { EditResource } from './EditResource'
+export { HowToHelpCard } from './HowToHelpCard'
+export { Login } from './Login'
+export { MyFavoritesList } from './MyFavoritesList'
+export { MyResources } from './MyResources'
+export { Navbar } from './Navbar'
+export { Register } from './Register'
+export { ResourceCardList } from './ResourceCardList'
+export { ResourceForm, type TResourceForm } from './ResourceForm'
+export { Search } from './Search'
+export { SettingsManager } from './SettingsManager'
+export { TopicsManagerBoard } from './TopicsManagerBoard'
+export { TopicsRadioWidget } from './TopicsRadioWidget'
+export { UserAccessHome } from './UserAccessHome'
+export { UserProfileResourcesWidget } from './UserProfileResourcesWidget'
+export { VotesDateController } from './VotesDateController'
