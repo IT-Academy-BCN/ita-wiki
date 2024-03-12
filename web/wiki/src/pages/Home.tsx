@@ -1,9 +1,15 @@
 import styled from 'styled-components'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
+import {
+  CardHome,
+  FlexBox,
+  colors,
+  device,
+  dimensions,
+  font,
+} from '@itacademy/ui'
 import icons from '../assets/icons'
-import { FlexBox, colors, device, dimensions, font } from '../styles'
-import { CardHome } from '../components/molecules'
 import {
   DesktopSideMenu,
   Navbar,
@@ -30,7 +36,6 @@ const Container = styled(FlexBox)`
 const ContainerMain = styled(FlexBox)`
   width: 100%;
   height: 100%;
-  justify-content: flex-start;
 `
 
 const MainDiv = styled(FlexBox)`
@@ -73,7 +78,6 @@ const StyledText = styled(Text)`
 `
 
 const ResponsiveFlexBox = styled(FlexBox)`
-  align-items: flex-start;
   margin-top: ${dimensions.spacing.md};
   margin-bottom: ${dimensions.spacing.xs};
 
@@ -112,7 +116,7 @@ const cardHomeContent = [
   },
 ]
 
-const Home: FC = () => {
+export const Home: FC = () => {
   const { user } = useAuth()
 
   const { t } = useTranslation()
@@ -120,7 +124,7 @@ const Home: FC = () => {
   return (
     <Container direction="row" justify="flex-start" align="start">
       <DesktopSideMenu />
-      <ContainerMain>
+      <ContainerMain justify="flex-start">
         <Navbar />
         <MainDiv
           as="main"
@@ -140,15 +144,16 @@ const Home: FC = () => {
               >
                 {t('Funcionalitats')}
               </StyledText>
-              <ResponsiveFlexBox direction="column" gap="1rem">
+              <ResponsiveFlexBox direction="column" align="start" gap="1rem">
                 {cardHomeContent.map((content) => (
                   <CardHome
                     key={content.id}
-                    cardTitle={content.title}
-                    cardSubtitle={content.subtitle}
+                    cardTitle={t(content.title)}
+                    cardSubtitle={t(content.subtitle)}
                     indicator={content.indicator}
                     icon={content.icon}
                     data-testid="cardHome"
+                    backgroundImg={icons.bgHomeCardCorner}
                   />
                 ))}
               </ResponsiveFlexBox>
@@ -159,5 +164,3 @@ const Home: FC = () => {
     </Container>
   )
 }
-
-export { Home }

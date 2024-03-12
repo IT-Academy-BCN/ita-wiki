@@ -1,6 +1,6 @@
 import { vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import Register from '../../components/organisms/Register'
+import { Register } from '../../components/organisms'
 import { render, screen, waitFor } from '../test-utils'
 
 describe('Register', () => {

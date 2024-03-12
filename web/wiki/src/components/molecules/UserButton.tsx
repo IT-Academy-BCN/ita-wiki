@@ -1,35 +1,13 @@
-import { useRef, useState } from 'react'
+import { FC, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
+import { Avatar, Modal, colors, dimensions } from '@itacademy/ui'
 import { useAuth } from '../../context/AuthProvider'
-import { colors, device, dimensions } from '../../styles'
-import userAvatar from '../../assets/icons/profile-avatar.svg'
-import defaultAvatar from '../../assets/icons/user.svg'
-import Login from '../organisms/Login'
-import Register from '../organisms/Register'
-import { Modal } from './Modal'
+import icons from '../../assets/icons'
+import { Login } from '../organisms/Login'
+import { Register } from '../organisms/Register'
 import { paths } from '../../constants'
 
-const AvatarImage = styled.img`
-  padding: 1px;
-  height: 40px;
-  width: 40px;
-  border-radius: ${dimensions.borderRadius.sm};
-  background-color: ${colors.white};
-  cursor: pointer;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.03);
-  }
-
-  @media only ${device.Tablet} {
-    border-radius: ${dimensions.borderRadius.base};
-    width: 48px;
-  }
-`
-
-export const UserButton: React.FC = () => {
+export const UserButton: FC = () => {
   const { user } = useAuth()
   const navigate = useNavigate()
   const [isRegisterOpen, setIsRegisterOpen] = useState(false)
@@ -37,9 +15,28 @@ export const UserButton: React.FC = () => {
 
   const avatarRef = useRef<HTMLImageElement>(null)
 
+  const avatarCss = {
+    padding: '1px',
+    height: '40px',
+    width: '40px',
+    borderRadius: dimensions.borderRadius.sm,
+    backgroundColor: colors.white,
+    transition: 'transform 0.3s ease',
+
+    '&:hover': {
+      transform: 'scale(1.03)',
+    },
+  }
+
+  const mediaQuery = {
+    borderRadius: dimensions.borderRadius.base,
+    width: '48px',
+  }
+
   const handleLoginModal = () => {
     setIsLoginOpen(!isLoginOpen)
   }
+
   const handleRegisterModal = () => {
     setIsRegisterOpen(!isRegisterOpen)
   }
@@ -51,20 +48,22 @@ export const UserButton: React.FC = () => {
   return (
     <>
       {!user && (
-        <AvatarImage
-          data-testid="avatarImage"
-          src={defaultAvatar}
+        <Avatar
+          src={icons.user}
           alt="Avatar"
+          avatarCss={avatarCss}
+          forwardedRef={avatarRef}
+          mediaQuery={mediaQuery}
           onClick={handleLoginModal}
-          ref={avatarRef}
         />
       )}
       {user && (
-        <AvatarImage
-          data-testid="avatarImageUser"
-          src={user.avatarId ? user.avatarId : userAvatar}
-          alt="Avatar"
-          ref={avatarRef}
+        <Avatar
+          src={user.avatarId ? user.avatarId : icons.profileAvatar}
+          alt="Avatar authenticated"
+          avatarCss={avatarCss}
+          forwardedRef={avatarRef}
+          mediaQuery={mediaQuery}
           onClick={handleProfileAccess}
         />
       )}
@@ -90,5 +89,3 @@ export const UserButton: React.FC = () => {
     </>
   )
 }
-
-export default styled(UserButton)``

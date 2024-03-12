@@ -2,17 +2,17 @@ import { useState, FC } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import {
+  Button,
+  FlexBox,
+  Modal,
+  Text,
   colors,
   device,
   dimensions,
-  FlexBox,
   font,
-  Button,
-  Text,
-  Modal,
 } from '@itacademy/ui'
-import Login from './Login'
-import Register from './Register'
+import { Login } from './Login'
+import { Register } from './Register'
 
 const StyledText = styled(Text)`
   margin: ${dimensions.spacing.sm} ${dimensions.spacing.none}

@@ -2,15 +2,21 @@ import { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { CardProfile } from '../components/molecules/CardProfile'
+import {
+  BackButton,
+  CardProfile,
+  FlexBox,
+  colors,
+  dimensions,
+  device,
+  responsiveSizes,
+} from '@itacademy/ui'
 import { paths } from '../constants'
 import { logOut } from '../utils/logOut'
 import { useGetFavorites } from '../hooks/useGetFavorites'
 import { useGetResourcesByUser } from '../hooks/useGetResourcesByUser'
 import { useAuth } from '../context/AuthProvider'
-import { BackButton } from '../components/atoms/BackButton'
 import { TResource } from '../types'
-import { FlexBox, colors, dimensions, device, responsiveSizes } from '../styles'
 import { Navbar, UserProfileResourcesWidget } from '../components/organisms'
 
 const Container = styled(FlexBox)`
@@ -32,8 +38,6 @@ const NavContainer = styled(FlexBox)`
 
 const ResourcesLists = styled(FlexBox)`
   margin-top: ${dimensions.spacing.base};
-  justify-content: flex-start;
-  align-items: flex-start;
 
   @media only ${device.Tablet} {
     flex-direction: row;
@@ -94,24 +98,63 @@ export const UserProfile: FC = () => {
     window.addEventListener('resize', handleSize)
   }, [isMobile])
 
+  const handlePrevPage = () => {
+    navigate(-1)
+  }
+
+  const userData = {
+    profilePicture: user?.avatarId,
+    profilePictureAlt: user?.avatarId ? user.name : t('Sin imagen de usuario'),
+    userName: user?.name || '@userName',
+    userEmail: user?.email || 'user@user.com',
+  }
+
+  const counterData = [
+    {
+      number: resourcesLength,
+      text: `${t('Aportaciones')}`,
+      icon: 'attach_file',
+      isError: resourcesError,
+      errorMessage: `${t('n/d')}`,
+    },
+    {
+      number: votes,
+      text: `${t('Votos recibidos')}`,
+      icon: 'expand_less',
+      isError: resourcesError,
+      errorMessage: `${t('n/d')}`,
+    },
+    {
+      number: favoritesLength,
+      text: `${t('Favoritos guardados')}`,
+      icon: 'favorite',
+      isError: favsError,
+      errorMessage: `${t('n/d')}`,
+    },
+  ]
+
+  const logoutData = {
+    logoutIcon: {
+      name: 'power_settings_new',
+    },
+    handleLogOut: () => logOut(navigate, paths.home),
+    logoutMsg: t('Cerrar sesión'),
+  }
+
   return (
     <Container direction="column" justify="flex-start">
       <NavContainer direction="row">
-        <BackButton />
+        <BackButton onClick={handlePrevPage}>{t('Volver')}</BackButton>
         {!isMobile ? <Navbar /> : null}
       </NavContainer>
       <CardProfile
-        img={user?.avatarId ?? ''}
-        userName={user?.name ?? '@userName'}
-        email={user?.email ?? 'user@user.com'}
-        votes={votes}
-        contributions={resourcesLength}
-        favorites={favoritesLength}
-        handleLogOut={() => logOut(navigate, paths.home)}
-        resourcesError={resourcesError}
-        favsError={favsError}
+        userData={userData}
+        counterData={counterData}
+        logoutData={logoutData}
       />
       <ResourcesLists
+        justify="flex-start"
+        align="start"
         gap={`${dimensions.spacing.base}`}
         direction="column-reverse"
       >

@@ -1,6 +1,6 @@
 import { vi } from 'vitest'
 import { render, screen } from '../test-utils'
-import CardResource from '../../components/organisms/CardResource'
+import { CardResource } from '../../components/organisms'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { TCardResource } from '../../types'
 
