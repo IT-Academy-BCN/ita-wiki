@@ -21,7 +21,6 @@ const meta = {
         name: { control: 'text' },
         label: { control: 'text' },
         value: { control: 'text' },
-        iconSvg: { control: 'text'}
       },
     ],
     placeholder: { control: 'text' },

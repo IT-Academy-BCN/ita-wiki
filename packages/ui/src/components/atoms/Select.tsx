@@ -51,7 +51,7 @@ export const Select = forwardRef<HTMLSelectElement, TSelect>((props, ref) => {
         {placeholder}
       </option>
       {options.map(({ value, label, id }) => (
-        <option key={value} value={value} id={id}>
+        <option key={value} value={id}>
           {label}
         </option>
       ))}

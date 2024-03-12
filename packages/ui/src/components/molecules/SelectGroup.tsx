@@ -18,7 +18,6 @@ const SelectGroupStyled = styled.div`
   }
   width: 100%;
   `
-
 export type TSelectGroup = {
   id: string
   name: string
@@ -31,7 +30,7 @@ export const SelectGroup = forwardRef<HTMLSelectElement, TSelectGroup>(
   ({ label, id, name, hiddenLabel, validationMessage, ...rest }, ref) => (
     <SelectGroupStyled>
       <Label text={label} htmlFor={id} hiddenLabel={hiddenLabel} />
-        <Select id={id} name={name} ref={ref} {...rest} />
+      <Select id={id} name={name} ref={ref} {...rest} />
       <ValidationMessageStyled text={validationMessage} color="error" />
     </SelectGroupStyled>
   )
