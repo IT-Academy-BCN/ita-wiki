@@ -51,7 +51,7 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-describe('FavoritesWidget', () => {
+describe('FavoritesIcon', () => {
   it('renders component correctly with slug', async () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'react',
@@ -63,7 +63,9 @@ describe('FavoritesWidget', () => {
       const favIconDeselected = screen.getByText('favorite')
       expect(favIconDeselected).toBeInTheDocument()
       expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
-      expect(favIconDeselected).toHaveAttribute('fill', '0')
+      expect(favIconDeselected).toHaveStyle(
+        "font-variation-settings: 'FILL' 0, 'wght' 400,'GRAD' 0, 'opsz' 48;"
+      )
       expect(
         screen.queryByTitle('Elimina de preferits')
       ).not.toBeInTheDocument()
@@ -81,7 +83,9 @@ describe('FavoritesWidget', () => {
       const favIconDeselected = screen.getByText('favorite')
       expect(favIconDeselected).toBeInTheDocument()
       expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
-      expect(favIconDeselected).toHaveAttribute('fill', '0')
+      expect(favIconDeselected).toHaveStyle(
+        "font-variation-settings: 'FILL' 0, 'wght' 400,'GRAD' 0, 'opsz' 48;"
+      )
       expect(
         screen.queryByTitle('Elimina de preferits')
       ).not.toBeInTheDocument()
@@ -99,7 +103,9 @@ describe('FavoritesWidget', () => {
       const favIconSelected = screen.getByText('favorite')
       expect(favIconSelected).toBeInTheDocument()
       expect(favIconSelected).toHaveAttribute('title', 'Elimina de preferits')
-      expect(favIconSelected).toHaveAttribute('fill', '1')
+      expect(favIconSelected).toHaveStyle(
+        "font-variation-settings: 'FILL' 1, 'wght' 400,'GRAD' 0, 'opsz' 48;"
+      )
       expect(screen.queryByTitle('Afegeix a preferits')).not.toBeInTheDocument()
     })
   })
@@ -122,7 +128,9 @@ describe('FavoritesWidget', () => {
 
     expect(favIconDeselected).toBeInTheDocument()
     expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
-    expect(favIconDeselected).toHaveAttribute('fill', '0')
+    expect(favIconDeselected).toHaveStyle(
+      "font-variation-settings: 'FILL' 0, 'wght' 400,'GRAD' 0, 'opsz' 48;"
+    )
     expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
 
     fireEvent.click(favIconDeselected)
@@ -137,7 +145,9 @@ describe('FavoritesWidget', () => {
         />
       )
       expect(favIconDeselected).toHaveAttribute('title', 'Elimina de preferits')
-      expect(favIconDeselected).toHaveAttribute('fill', '1')
+      expect(favIconDeselected).toHaveStyle(
+        "font-variation-settings: 'FILL' 1, 'wght' 400,'GRAD' 0, 'opsz' 48;"
+      )
       expect(screen.queryByTitle('Afegeix a preferits')).not.toBeInTheDocument()
     })
   })
@@ -157,7 +167,9 @@ describe('FavoritesWidget', () => {
 
     expect(favIconDeselected).toBeInTheDocument()
 
-    expect(favIconDeselected).toHaveAttribute('fill', '0')
+    expect(favIconDeselected).toHaveStyle(
+      "font-variation-settings: 'FILL' 0, 'wght' 400,'GRAD' 0, 'opsz' 48;"
+    )
 
     fireEvent.click(favIconDeselected)
 
@@ -170,146 +182,164 @@ describe('FavoritesWidget', () => {
       })
     })
   })
-})
 
-it('should change to not favorite when user clicks on it', async () => {
-  queryClient.setQueryData(['getResources'], [resourceFavoriteMock])
-  const queryData = queryClient.getQueryData(['getResources']) as TResource[]
+  it('should change to not favorite when user clicks on it', async () => {
+    queryClient.setQueryData(['getResources'], [resourceFavoriteMock])
+    const queryData = queryClient.getQueryData(['getResources']) as TResource[]
 
-  const { rerender } = render(
-    <FavoritesIcon
-      resourceId={resourceFavoriteMock.id}
-      isFavorite={queryData[0].isFavorite}
-    />
-  )
-
-  const favIconSelected = screen.getByText('favorite')
-
-  expect(favIconSelected).toBeInTheDocument()
-  expect(favIconSelected).toHaveAttribute('title', 'Elimina de preferits')
-  expect(favIconSelected).toHaveAttribute('fill', '1')
-  expect(screen.queryByTitle('Afegeix a preferits')).not.toBeInTheDocument()
-
-  fireEvent.click(favIconSelected)
-
-  await waitFor(() => {
-    const queryDataUpdated = queryClient.getQueryData([
-      'getResources',
-    ]) as TResource[]
-    rerender(
+    const { rerender } = render(
       <FavoritesIcon
         resourceId={resourceFavoriteMock.id}
-        isFavorite={queryDataUpdated[0].isFavorite}
+        isFavorite={queryData[0].isFavorite}
       />
     )
 
-    expect(favIconSelected).toHaveAttribute('title', 'Afegeix a preferits')
-    expect(favIconSelected).toHaveAttribute('fill', '0')
-    expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
+    const favIconSelected = screen.getByText('favorite')
+
+    expect(favIconSelected).toBeInTheDocument()
+    expect(favIconSelected).toHaveAttribute('title', 'Elimina de preferits')
+    expect(favIconSelected).toHaveStyle(
+      "font-variation-settings: 'FILL' 1, 'wght' 400,'GRAD' 0, 'opsz' 48;"
+    )
+    expect(screen.queryByTitle('Afegeix a preferits')).not.toBeInTheDocument()
+
+    fireEvent.click(favIconSelected)
+
+    await waitFor(() => {
+      const queryDataUpdated = queryClient.getQueryData([
+        'getResources',
+      ]) as TResource[]
+      rerender(
+        <FavoritesIcon
+          resourceId={resourceFavoriteMock.id}
+          isFavorite={queryDataUpdated[0].isFavorite}
+        />
+      )
+
+      expect(favIconSelected).toHaveAttribute('title', 'Afegeix a preferits')
+      expect(favIconSelected).toHaveStyle(
+        "font-variation-settings: 'FILL' 0, 'wght' 400,'GRAD' 0, 'opsz' 48;"
+      )
+      expect(
+        screen.queryByTitle('Elimina de preferits')
+      ).not.toBeInTheDocument()
+    })
   })
-})
 
-it('should remove the resource from getFavorites array when user removes favorite', async () => {
-  queryClient.setQueryData(
-    ['getFavorites'],
-    [
-      {
-        id: resourceFavoriteMock.id,
-        isFavorite: true,
-      },
-      {
-        id: 'anotherFavoriteId',
-        isFavorite: true,
-      },
-    ]
-  )
-  queryClient.setQueryData(['getResources'], [resourceFavoriteMock])
-  const queryData = queryClient.getQueryData(['getResources']) as TResource[]
+  it('should remove the resource from getFavorites array when user removes favorite', async () => {
+    queryClient.setQueryData(
+      ['getFavorites'],
+      [
+        {
+          id: resourceFavoriteMock.id,
+          isFavorite: true,
+        },
+        {
+          id: 'anotherFavoriteId',
+          isFavorite: true,
+        },
+      ]
+    )
+    queryClient.setQueryData(['getResources'], [resourceFavoriteMock])
+    const queryData = queryClient.getQueryData(['getResources']) as TResource[]
 
-  render(
-    <FavoritesIcon
-      resourceId={resourceFavoriteMock.id}
-      isFavorite={queryData[0].isFavorite}
-    />
-  )
+    render(
+      <FavoritesIcon
+        resourceId={resourceFavoriteMock.id}
+        isFavorite={queryData[0].isFavorite}
+      />
+    )
 
-  const favIconSelected = screen.getByText('favorite')
+    const favIconSelected = screen.getByText('favorite')
 
-  expect(favIconSelected).toHaveAttribute('fill', '1')
+    expect(favIconSelected).toHaveStyle(
+      "font-variation-settings: 'FILL' 1, 'wght' 400,'GRAD' 0, 'opsz' 48;"
+    )
 
-  const previousFavorites = queryClient.getQueryData([
-    'getFavorites',
-  ]) as TFavorites[]
-
-  expect(previousFavorites).toHaveLength(2)
-
-  fireEvent.click(favIconSelected)
-
-  await waitFor(() => {
-    const updatedFavorites = queryClient.getQueryData([
+    const previousFavorites = queryClient.getQueryData([
       'getFavorites',
     ]) as TFavorites[]
 
-    expect(updatedFavorites).toHaveLength(1)
+    expect(previousFavorites).toHaveLength(2)
+
+    fireEvent.click(favIconSelected)
+
+    await waitFor(() => {
+      const updatedFavorites = queryClient.getQueryData([
+        'getFavorites',
+      ]) as TFavorites[]
+
+      expect(updatedFavorites).toHaveLength(1)
+    })
   })
-})
 
-it('should update cache in resources/me when rendered in Profile page', async () => {
-  queryClient.setQueryData(['getResourcesByUser'], [resourceNotFavoriteMock])
-  const queryResourcesByUser = queryClient.getQueryData([
-    'getResourcesByUser',
-  ]) as TResource[]
-  const { rerender } = render(
-    <FavoritesIcon
-      resourceId={resourceNotFavoriteMock.id}
-      isFavorite={queryResourcesByUser[0].isFavorite}
-      fromProfile
-    />
-  )
-
-  const favIconUnselected = screen.getByText('favorite')
-  expect(favIconUnselected).toBeInTheDocument()
-  expect(favIconUnselected).toHaveAttribute('fill', '0')
-
-  fireEvent.click(favIconUnselected)
-  await waitFor(() => {
-    const queryResourcesByUserUpdated = queryClient.getQueryData([
+  it('should update cache in resources/me when rendered in Profile page', async () => {
+    queryClient.setQueryData(['getResourcesByUser'], [resourceNotFavoriteMock])
+    const queryResourcesByUser = queryClient.getQueryData([
       'getResourcesByUser',
     ]) as TResource[]
-    rerender(
+    const { rerender } = render(
       <FavoritesIcon
         resourceId={resourceNotFavoriteMock.id}
-        isFavorite={queryResourcesByUserUpdated[0].isFavorite}
+        isFavorite={queryResourcesByUser[0].isFavorite}
         fromProfile
       />
     )
 
-    expect(favIconUnselected).toHaveAttribute('title', 'Elimina de preferits')
-    expect(favIconUnselected).toHaveAttribute('fill', '1')
-    expect(screen.queryByTitle('Afegeix a preferits')).not.toBeInTheDocument()
+    const favIconUnselected = screen.getByText('favorite')
+    expect(favIconUnselected).toBeInTheDocument()
+    expect(favIconUnselected).toHaveStyle(
+      "font-variation-settings: 'FILL' 0, 'wght' 400,'GRAD' 0, 'opsz' 48;"
+    )
+
+    fireEvent.click(favIconUnselected)
+    await waitFor(() => {
+      const queryResourcesByUserUpdated = queryClient.getQueryData([
+        'getResourcesByUser',
+      ]) as TResource[]
+      rerender(
+        <FavoritesIcon
+          resourceId={resourceNotFavoriteMock.id}
+          isFavorite={queryResourcesByUserUpdated[0].isFavorite}
+          fromProfile
+        />
+      )
+
+      expect(favIconUnselected).toHaveAttribute('title', 'Elimina de preferits')
+      expect(favIconUnselected).toHaveStyle(
+        "font-variation-settings: 'FILL' 1, 'wght' 400,'GRAD' 0, 'opsz' 48;"
+      )
+      expect(screen.queryByTitle('Afegeix a preferits')).not.toBeInTheDocument()
+    })
   })
-})
 
-it('renders correctly on error (fav icon does not change)', async () => {
-  vi.mocked(useParams).mockReturnValue({
-    slug: 'react',
-  } as Readonly<Params>)
+  it('renders correctly on error (fav icon does not change)', async () => {
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'react',
+    } as Readonly<Params>)
 
-  server.use(...errorHandlers)
+    server.use(...errorHandlers)
 
-  render(<FavoritesIcon resourceId="favoriteId" isFavorite={false} />)
+    render(<FavoritesIcon resourceId="favoriteId" isFavorite={false} />)
 
-  const favIconDeselected = screen.getByText('favorite')
-  expect(favIconDeselected).toBeInTheDocument()
-  expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
-  expect(favIconDeselected).toHaveAttribute('fill', '0')
-  expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
-
-  fireEvent.click(favIconDeselected)
-
-  await waitFor(() => {
+    const favIconDeselected = screen.getByText('favorite')
+    expect(favIconDeselected).toBeInTheDocument()
     expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
-    expect(favIconDeselected).toHaveAttribute('fill', '0')
+    expect(favIconDeselected).toHaveStyle(
+      "font-variation-settings: 'FILL' 0, 'wght' 400,'GRAD' 0, 'opsz' 48;"
+    )
     expect(screen.queryByTitle('Elimina de preferits')).not.toBeInTheDocument()
+
+    fireEvent.click(favIconDeselected)
+
+    await waitFor(() => {
+      expect(favIconDeselected).toHaveAttribute('title', 'Afegeix a preferits')
+      expect(favIconDeselected).toHaveStyle(
+        "font-variation-settings: 'FILL' 0, 'wght' 400,'GRAD' 0, 'opsz' 48;"
+      )
+      expect(
+        screen.queryByTitle('Elimina de preferits')
+      ).not.toBeInTheDocument()
+    })
   })
 })

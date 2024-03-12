@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from '../test-utils'
-import EditResource from '../../components/organisms/EditResource'
+import { EditResource } from '../../components/organisms'
 
 test('Renders EditResource when resource is editable', () => {
   const props = {
