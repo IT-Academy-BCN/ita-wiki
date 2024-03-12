@@ -14,7 +14,7 @@ const meta = {
         id: { control: 'text' },
         label: { control: 'text' },
         value: { control: 'text' },
-        iconSvg: { control: 'text' },
+        iconSvg: { control: 'text'}
       },
     ],
     placeholder: { control: 'text' },
@@ -68,15 +68,5 @@ export const WithError: Story = {
     ],
     placeholder: 'Select an option',
     $error: true,
-  },
-}
-
-export const WithIcon: Story = {
-  args: {
-    options: [
-      { id: 'option1', label: 'Option 1', value: 'Option 1', iconSvg: './avatar/custom.svg' },
-      { id: 'option2', label: 'Option 2', value: 'Option 2', iconSvg: './avatar/custom.svg' },
-      { id: 'option3', label: 'Option 3', value: 'Option 3', iconSvg: './avatar/custom.svg' },
-    ],
   },
 }

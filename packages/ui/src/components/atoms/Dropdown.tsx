@@ -40,6 +40,7 @@ const StyledIcon = styled(Icon)`
   top: ${dimensions.spacing.base};
   right: ${dimensions.spacing.xxs};
   color: ${colors.gray.gray3};
+  transform: translateY(-50%);
 `
 
 const DropdownList = styled.div`
@@ -60,11 +61,17 @@ const DropdownItem = styled.div`
   cursor: pointer;
   font-family: ${font.fontFamily};
   font-size: ${font.xss};
+  display: flex;
+  align-items: center;
 
   &:hover {
     background-color: ${colors.primary};
     color: ${colors.white};
   }
+`
+
+const IconContainer = styled.span`
+  margin-right: 8px;
 `
 
 export type TDropdown = HTMLAttributes<HTMLElement> & {
@@ -75,6 +82,11 @@ export type TDropdown = HTMLAttributes<HTMLElement> & {
   openText?: string
   closeText?: string
 }
+
+export type TDropdownOption = {
+  value?: string;
+  icon?: string;
+};
 
 export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
   (
@@ -156,13 +168,15 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
             <DropdownList ref={dropdownListRef}>
               {Children.map(children, (child) => {
                 if (isValidElement(child)) {
+                  const { value, icon } = child.props;
                   return (
                     <DropdownItem
                       onClick={() =>
                         handleSelect(child.props.children.toString())
                       }
                     >
-                      {child}
+                      <IconContainer>{icon}</IconContainer>
+                      <span>{value}</span>
                     </DropdownItem>
                   )
                 }

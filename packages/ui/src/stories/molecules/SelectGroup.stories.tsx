@@ -7,12 +7,6 @@ const storyOptions = [
   { id: 'option3', label: 'Option 3', value: 'Option 3' },
 ]
 
-const storyOptionsWithIcon = [
-  { id: 'option1', label: 'Option 1', value: 'Option 1', iconSvg: 'icon' },
-  { id: 'option2', label: 'Option 2', value: 'Option 2', iconSvg: 'icon' },
-  { id: 'option3', label: 'Option 3', value: 'Option 3', iconSvg: 'icon' },
-]
-
 const meta = {
   title: 'Molecules/SelectGroup',
   component: SelectGroup,
@@ -27,6 +21,7 @@ const meta = {
         name: { control: 'text' },
         label: { control: 'text' },
         value: { control: 'text' },
+        iconSvg: { control: 'text'}
       },
     ],
     placeholder: { control: 'text' },
@@ -72,15 +67,4 @@ export const HiddenLabel: Story = {
     $error: true,
     validationMessage: 'Validation message with error',
   },
-}
-
-export const WithIcon: Story = {
-  args: {
-    id: 'icon',
-    name: 'icon',
-    label: 'With Icon SelectGroup',
-    placeholder: 'Select an option',
-    options: storyOptionsWithIcon,
-    icon: 'icon',
-  }
 }
