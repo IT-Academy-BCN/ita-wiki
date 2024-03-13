@@ -18,7 +18,7 @@ const responseSchema = userSchema
   })
   .array()
 
-let authToken = ''
+let authAdminToken = ''
 let users: DashboardUsersList
 
 beforeAll(async () => {
@@ -27,7 +27,9 @@ beforeAll(async () => {
     dni: testUserData.admin.dni,
     password: testUserData.admin.password,
   })
-  ;[authToken] = responseAdmin.header['set-cookie'][0].split(';')
+  ;[authAdminToken] = responseAdmin.header['set-cookie'][0].split(';')
+  console.log('authAdminToken', authAdminToken)
+
   const queryResult = await client.query(
     `SELECT
     u.id,
@@ -39,13 +41,26 @@ beforeAll(async () => {
     "user" u
   JOIN itinerary i ON u.itinerary_id = i.id;`
   )
+
   users = queryResult.rows
 })
-describe('Testing get users endpoint', () => {
+describe.only('Testing get users endpoint', () => {
+  it('should fail to return a collection of users with logged-in admin', async () => {
+    const queryResult = await client.query(
+      `UPDATE "user" SET status = 'BLOCKED' WHERE dni = '${testUserData.admin.dni}'`
+    )
+    const response = await supertest(server)
+      .get(route)
+      .set('Cookie', [authAdminToken])
+    expect(response.status).toBe(403)
+    const queryResult2 = await client.query(
+      `UPDATE "user" SET status = 'ACTIVE' WHERE dni = '${testUserData.admin.dni}'`
+    )
+  })
   it('returns a  collection of users successfully with a logged-in admin user', async () => {
     const response = await supertest(server)
       .get(route)
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     expect(response.status).toBe(200)
     expect(response.body).toHaveLength(users.length)
     expect(response.body).toEqual(users)
@@ -55,7 +70,7 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server)
       .get(route)
       .query({ itinerarySlug: itinerariesData[3].slug })
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     expect(response.status).toBe(200)
     expect(response.body).toHaveLength(1)
     expect(response.body).toEqual([
@@ -67,7 +82,7 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server)
       .get(route)
       .query({ itinerarySlug: itinerariesData[6].slug })
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     expect(response.status).toBe(200)
     expect(response.body).toHaveLength(0)
     expect(response.body).toEqual([])
@@ -78,7 +93,7 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server)
       .get(route)
       .query({ status: UserStatus.ACTIVE })
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toHaveLength(4)
@@ -113,7 +128,7 @@ describe('Testing get users endpoint', () => {
         startDate,
         endDate,
       })
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toHaveLength(6)
@@ -124,7 +139,7 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server)
       .get(route)
       .query({ name: validName })
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toBeInstanceOf(Array)
@@ -136,7 +151,7 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server)
       .get(route)
       .query({ name: exactName })
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toBeInstanceOf(Array)
@@ -148,7 +163,7 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server)
       .get(route)
       .query({ name: 'a' })
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     expect(response.status).toBe(400)
     expect(response.body.message[0].message).toContain(
       'String must contain at least 2 character(s)'
