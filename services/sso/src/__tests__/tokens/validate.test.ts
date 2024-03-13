@@ -4,6 +4,7 @@ import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { userSchema } from '../../schemas'
 import { client } from '../../models/db'
+import { UserStatus } from '../../schemas/users/userSchema'
 
 const route = `${pathRoot.v1.tokens}/validate`
 let userAuthToken = ''
@@ -28,7 +29,7 @@ beforeAll(async () => {
 })
 afterAll(async () => {
   const userDni = testUserData.userToBeBlocked.dni
-  const newStatus = 'ACTIVE'
+  const newStatus = UserStatus.ACTIVE
   await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
     newStatus,
     userDni,
@@ -81,7 +82,7 @@ describe('Testing validate token endpoint', () => {
     })
     expect(response1.status).toBe(200)
     const userDni = testUserData.userToBeBlocked.dni
-    const newStatus = 'BLOCKED'
+    const newStatus = UserStatus.BLOCKED
     await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
       newStatus,
       userDni,

@@ -44,18 +44,24 @@ beforeAll(async () => {
 
   users = queryResult.rows
 })
-describe.only('Testing get users endpoint', () => {
-  it('should fail to return a collection of users with logged-in admin', async () => {
-    const queryResult = await client.query(
-      `UPDATE "user" SET status = 'BLOCKED' WHERE dni = '${testUserData.admin.dni}'`
-    )
+describe('Testing get users endpoint', () => {
+  it('should fail to return a collection of users with a blocked logged-in admin', async () => {
+    const adminDni = testUserData.admin.dni
+    let newStatus = UserStatus.BLOCKED
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      newStatus,
+      adminDni,
+    ])
     const response = await supertest(server)
       .get(route)
       .set('Cookie', [authAdminToken])
     expect(response.status).toBe(403)
-    const queryResult2 = await client.query(
-      `UPDATE "user" SET status = 'ACTIVE' WHERE dni = '${testUserData.admin.dni}'`
-    )
+
+    newStatus = UserStatus.ACTIVE
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      newStatus,
+      adminDni,
+    ])
   })
   it('returns a  collection of users successfully with a logged-in admin user', async () => {
     const response = await supertest(server)
