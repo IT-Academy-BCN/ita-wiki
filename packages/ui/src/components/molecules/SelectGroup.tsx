@@ -17,7 +17,7 @@ const SelectGroupStyled = styled.div`
     margin-bottom: ${dimensions.spacing.none};
   }
   width: 100%;
-  `
+`
 export type TSelectGroup = {
   id: string
   name: string
