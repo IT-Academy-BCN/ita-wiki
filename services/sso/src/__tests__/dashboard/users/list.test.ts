@@ -28,8 +28,6 @@ beforeAll(async () => {
     password: testUserData.admin.password,
   })
   ;[authAdminToken] = responseAdmin.header['set-cookie'][0].split(';')
-  console.log('authAdminToken', authAdminToken)
-
   const queryResult = await client.query(
     `SELECT
     u.id,
