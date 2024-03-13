@@ -76,26 +76,28 @@ export type TItem = {
   categoryId?: string
 }
 
+export type TRowStatus = 'available' | 'editing' | 'deleting' | 'disabled'
+
+export type TItemAvailable = {
+  id: string
+  name: string
+  handleRowStatus: (selectedStatus: TRowStatus, id: string) => void
+  newItemTxt: string
+  editTxt: string
+  deleteTxt: string
+  deleteIcon: string
+}
+
 export type TItemRow = {
   handleErrorMessage: (message: string) => void
   handleItemChange: (actionItem: string, changedItem: TItem) => void
-  rowStatus: 'available' | 'editing' | 'deleting' | 'disabled'
+  rowStatus: TRowStatus
   placeholderTxt: string
   newPlaceholderTxt: string
   cancelTxt: string
   confirmEditTxt: string
   cancelEditTxt: string
 } & TItemAvailable
-
-export type TItemAvailable = {
-  id: string
-  name: string
-  handleRowStatus: (selectedStatus: string, id: string) => void
-  newItemTxt: string
-  editTxt: string
-  deleteTxt: string
-  deleteIcon: string
-}
 
 const AvailableMode: FC<TItemAvailable> = ({
   id,
