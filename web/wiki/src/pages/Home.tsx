@@ -4,6 +4,8 @@ import { useTranslation } from 'react-i18next'
 import {
   CardHome,
   FlexBox,
+  Text,
+  Title,
   colors,
   device,
   dimensions,
@@ -15,7 +17,6 @@ import {
   Navbar,
   UserAccessHome,
 } from '../components/organisms'
-import { Title, Text } from '../components/atoms'
 import { useAuth } from '../context/AuthProvider'
 
 const Container = styled(FlexBox)`

@@ -8,6 +8,8 @@ import {
   FlexBox,
   Modal,
   SelectGroup,
+  Text,
+  Title,
   colors,
   device,
   dimensions,
@@ -26,7 +28,6 @@ import {
   TopicsRadioWidget,
   VotesDateController,
 } from '../components/organisms'
-import { Text, Title } from '../components/atoms'
 import { StatusFilterWidget, TypesFilterWidget } from '../components/molecules'
 import { useAuth } from '../context/AuthProvider'
 import { useGetResources, useGetTopics } from '../hooks'

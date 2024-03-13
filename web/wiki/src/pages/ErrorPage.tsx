@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Text, Title } from '../components/atoms'
+import { Text, Title } from '@itacademy/ui'
 
 export const ErrorPage: FC = () => (
   <>
