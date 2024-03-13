@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.2] - 2024-03-13
+
+### Fixed
+
+- Handle Missing User Names without Throwing ServiceFail
+
 ## [0.10.1] - 2024-03-11
 
 ### Fixed

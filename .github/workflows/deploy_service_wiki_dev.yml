@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            echo "Deploying Back Version: ${{ steps.versions.outputs.wiki_service_version }}"
-            echo "Deploying Front Version: ${{ steps.versions.outputs.wiki_web_version }}"
+            echo "Deploying ITA_WIKI_SERVICE Version: ${{ steps.versions.outputs.wiki_service_version }}"
+            echo "Deploying ITA_WIKI_WEB Version: ${{ steps.versions.outputs.wiki_web_version }}"
             cd ${{ secrets.WIKI_PATH }}/dev
             bash deploy.sh back ${{ steps.versions.outputs.wiki_service_version }} ${{ steps.versions.outputs.wiki_web_version }}
