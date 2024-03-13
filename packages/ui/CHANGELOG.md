@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Icon SelectGroup
+- Icon Dropdown
 
 ## [0.29.2] - 2024-03-07
 

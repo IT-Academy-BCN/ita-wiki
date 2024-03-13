@@ -81,6 +81,8 @@ export type TDropdown = HTMLAttributes<HTMLElement> & {
   onValueChange?: (value: string) => void
   openText?: string
   closeText?: string
+  value?: string;
+  icon?: string;
 }
 
 export type TDropdownOption = {
@@ -168,15 +170,15 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
             <DropdownList ref={dropdownListRef}>
               {Children.map(children, (child) => {
                 if (isValidElement(child)) {
-                  const { value, icon } = child.props;
+                  const { icon } = child.props;
                   return (
                     <DropdownItem
                       onClick={() =>
                         handleSelect(child.props.children.toString())
                       }
                     >
-                      <IconContainer>{icon}</IconContainer>
-                      <span>{value}</span>
+                      {icon && <IconContainer>{icon}</IconContainer>}
+                      {child}
                     </DropdownItem>
                   )
                 }

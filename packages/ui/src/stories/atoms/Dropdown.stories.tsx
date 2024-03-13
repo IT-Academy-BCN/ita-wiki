@@ -13,6 +13,7 @@ const meta: Meta<typeof Dropdown> = {
     placeholder: { control: 'text' },
     onValueChange: { action: 'onValueChange' },
     children: { control: 'object' },
+    icon: { control: 'text'}
   },
 }
 
