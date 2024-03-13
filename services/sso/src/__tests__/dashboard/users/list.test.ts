@@ -66,7 +66,7 @@ describe('Testing get users endpoint', () => {
   it('returns an empty collection of users for an itinerary slug when no users are assigned, with admin logged in', async () => {
     const response = await supertest(server)
       .get(route)
-      .query({ itinerarySlug: itinerariesData[5].slug })
+      .query({ itinerarySlug: itinerariesData[6].slug })
       .set('Cookie', [authToken])
     expect(response.status).toBe(200)
     expect(response.body).toHaveLength(0)
@@ -81,7 +81,7 @@ describe('Testing get users endpoint', () => {
       .set('Cookie', [authToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
-    expect(body).toHaveLength(3)
+    expect(body).toHaveLength(4)
     body.forEach((user) => {
       expect(user.status).toBe(UserStatus.ACTIVE)
     })
@@ -116,7 +116,7 @@ describe('Testing get users endpoint', () => {
       .set('Cookie', [authToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
-    expect(body).toHaveLength(5)
+    expect(body).toHaveLength(6)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
   it('returns a collection of users successfully with a name query of 2 or more characters', async () => {
@@ -128,7 +128,7 @@ describe('Testing get users endpoint', () => {
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toBeInstanceOf(Array)
-    expect(body).toHaveLength(5)
+    expect(body).toHaveLength(6)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
   it('returns only the user that match the exact name when searched', async () => {

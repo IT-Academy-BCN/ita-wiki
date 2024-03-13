@@ -57,6 +57,15 @@ export const testUserData = {
     status: UserStatus.BLOCKED,
     user_meta: {},
   },
+  userToBeBlocked: {
+    email: 'testingUserToBeBlocked@user.cat',
+    name: 'testingUserToBeBlocked',
+    dni: '90001685V',
+    password: 'testingPswd6',
+    role: UserRole.REGISTERED,
+    status: UserStatus.ACTIVE,
+    user_meta: {},
+  },
 }
 export const itinerariesData = [
   { name: 'Frontend Angular', slug: 'frontend-angular' },
@@ -65,6 +74,7 @@ export const itinerariesData = [
   { name: 'Backend Node.js', slug: 'backend-nodejs' },
   { name: 'Full Stack PHP', slug: 'full-stack-php' },
   { name: 'Data Science', slug: 'data-science' },
+  { name: 'Data Analytics', slug: 'data-analytics' },
 ]
 
 export async function setup() {
@@ -85,6 +95,7 @@ export async function setup() {
     inactiveUserItineraryId,
     adminUserItineraryId,
     blockedUserItineraryId,
+    userToBeBlockedItineraryId,
   ] = await Promise.all(
     itinerariesData.map(async (itinerary) => {
       const itineraryId = generateId()
@@ -110,6 +121,8 @@ export async function setup() {
       itineraryId = adminUserItineraryId
     } else if (user.email === 'testingBlockedUser@user.cat') {
       itineraryId = blockedUserItineraryId
+    } else if (user.email === 'testingUserToBeBlocked@user.cat') {
+      itineraryId = userToBeBlockedItineraryId
     }
 
     const query = `

@@ -33,7 +33,7 @@ describe('Testing authentication endpoint', () => {
       password: testUserData.blockedUser.password,
     })
     expect(response.status).toBe(403)
-    expect(response.body.message).toBe('Only active users can login')
+    expect(response.body.message).toBe('The user is Blocked')
   })
 
   test('should fail if user is not admin', async () => {
