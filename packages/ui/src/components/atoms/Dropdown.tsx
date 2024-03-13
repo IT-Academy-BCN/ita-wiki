@@ -1,6 +1,4 @@
 import React, {
-  Children,
-  isValidElement,
   useState,
   useRef,
   forwardRef,
@@ -19,28 +17,29 @@ const StyledDropdown = styled.div`
   position: relative;
 `
 
+const StyledIcon = styled(Icon)`
+  color: ${colors.gray.gray3};
+`
+
 const DropdownHeader = styled(Button)`
+  justify-content: space-between;
   background-color: ${colors.white};
-  justify-content: start;
-  margin: 0;
   padding: ${dimensions.spacing.base};
   border-radius: ${dimensions.borderRadius.base};
   border: 1px solid ${colors.gray.gray4};
   color: ${colors.black.black3};
-  font-family: ${font.fontFamily};
   width: 320px;
 
   &:hover {
+    transition: all 0.2s ease;
     color: ${colors.white};
-  }
-`
+    border: 1px solid;
 
-const StyledIcon = styled(Icon)`
-  position: absolute;
-  top: ${dimensions.spacing.base};
-  right: ${dimensions.spacing.xxs};
-  color: ${colors.gray.gray3};
-  transform: translateY(-50%);
+    ${StyledIcon} {
+      transition: all 0.2s ease;
+      color: ${colors.white};
+    }
+  }
 `
 
 const DropdownList = styled.div`
@@ -70,30 +69,27 @@ const DropdownItem = styled.div`
   }
 `
 
-const IconContainer = styled.span`
-  margin-right: 8px;
-`
+export type TDropdownOption = {
+  id: string
+  name: string
+  icon?: string
+}
 
 export type TDropdown = HTMLAttributes<HTMLElement> & {
+  options: TDropdownOption[]
   placeholder?: string
   defaultValue?: string
-  children: React.ReactNode
   onValueChange?: (value: string) => void
   openText?: string
   closeText?: string
 }
 
-export type TDropdownOption = {
-  value?: string;
-  icon?: string;
-};
-
 export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
   (
     {
+      options = [],
       defaultValue = '',
       placeholder = 'Selecciona',
-      children,
       onValueChange,
       openText = 'Ampliar',
       closeText = 'Cerrar',
@@ -144,44 +140,27 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
 
     return (
       <div ref={ref}>
-        <StyledDropdown data-testid="dropdown">
+        <StyledDropdown data-testid="dropdown" ref={dropdownListRef}>
           <DropdownHeader
             data-testid="dropdown-header"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
+            {selectedValue && <StyledIcon name={selectedValue} />}
             <span>{selectedValue || placeholder}</span>
-            {isDropdownOpen ? (
-              <StyledIcon
-                name="expand_less"
-                aria-hidden="true"
-                title={closeText}
-              />
-            ) : (
-              <StyledIcon
-                name="expand_more"
-                aria-hidden="true"
-                title={openText}
-              />
-            )}
+            <StyledIcon
+              name={isDropdownOpen ? 'expand_less' : 'expand_more'}
+              aria-hidden="true"
+              title={isDropdownOpen ? openText : closeText}
+            />
           </DropdownHeader>
           {isDropdownOpen && (
-            <DropdownList ref={dropdownListRef}>
-              {Children.map(children, (child) => {
-                if (isValidElement(child)) {
-                  const { value, icon } = child.props;
-                  return (
-                    <DropdownItem
-                      onClick={() =>
-                        handleSelect(child.props.children.toString())
-                      }
-                    >
-                      <IconContainer>{icon}</IconContainer>
-                      <span>{value}</span>
-                    </DropdownItem>
-                  )
-                }
-                return null
-              })}
+            <DropdownList>
+              {options.map(({ name, id, icon }) => (
+                <DropdownItem key={id} onClick={() => handleSelect(id)}>
+                  {icon && <StyledIcon name={icon} />}
+                  <span>{name}</span>
+                </DropdownItem>
+              ))}
             </DropdownList>
           )}
         </StyledDropdown>

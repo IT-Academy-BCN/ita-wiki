@@ -67,14 +67,20 @@ export const LongList: DropdownStory = {
   render: (args) => <Dropdown {...args} />,
 }
 
-
 export const WithIcon: DropdownStory = {
   args: {
     placeholder: 'Select an option',
-    children: [
-      <p value="option1" icon="⬤">Option 1</p>,
-      <p value="option2" icon="⬛">Option 2</p>,
-      <p value="option3" icon="◯">Option 3</p>
+    options: [
+      {
+        id: '1',
+        name: 'Option 1',
+        icon: 'expand_less',
+      },
+      {
+        id: '1',
+        name: 'Option 1',
+        icon: 'expand_more',
+      },
     ],
   },
   render: (args) => <Dropdown {...args} />,
