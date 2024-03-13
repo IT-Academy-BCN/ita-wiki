@@ -34,7 +34,7 @@ afterAll(async () => {
     userDni,
   ])
 })
-describe.only('Testing validate token endpoint', () => {
+describe('Testing validate token endpoint', () => {
   it('should succeed with a valid token', async () => {
     const response = await supertest(server).post(route).send({
       authToken: adminAuthToken,
