@@ -18,14 +18,11 @@ export const listUsersHandler = http.get<
   const uniqueIds = [...new Set(queryParse.id)]
   const findUsers = uniqueIds
     .map((id) => Object.values(testUserData).find((user) => user.id === id))
-    .filter(Boolean)
-    .map((user) => {
-      if (user) {
-        return { id: user.id, name: user.name }
-      }
-      return undefined
-    })
-    .filter(Boolean) as { id: string; name: string }[]
+    .filter((user) => user && user.name)
+    .map((user) => ({ id: user!.id, name: user!.name })) as {
+    id: string
+    name: string
+  }[]
   return HttpResponse.json(findUsers as { id: string; name: string }[], {
     status: 200,
   })
