@@ -1,34 +1,30 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import { BrowserRouter } from 'react-router-dom'
+import { fireEvent, screen } from '@testing-library/react'
+import { render } from '../test-utils'
 import { colors } from '@itacademy/ui'
 import { describe, beforeEach, it, expect } from 'vitest'
 import { SideMenu } from '../../components/organisms'
 
 describe('SideMenu', () => {
   beforeEach(() => {
-    render(
-      <BrowserRouter>
-        <SideMenu />
-      </BrowserRouter>
-    )
+    render(<SideMenu />)
   })
 
   it('renders correctly', () => {
     expect(screen.getByAltText('IT Academy')).toBeInTheDocument()
-    expect(screen.getByText('Usuarios')).toBeInTheDocument()
-    expect(screen.getByText('Mentores')).toBeInTheDocument()
+    expect(screen.getByText('Usuaris')).toBeInTheDocument()
+    expect(screen.getByText('Mentors')).toBeInTheDocument()
     expect(screen.getByText('Connector')).toBeInTheDocument()
-    expect(screen.getByText('Configuración')).toBeInTheDocument()
+    expect(screen.getByText('Configuració')).toBeInTheDocument()
   })
 
   it('navigates to the correct page when a menu item is clicked', () => {
-    const firstMenuItem = screen.getByText('Usuarios')
+    const firstMenuItem = screen.getByText('Usuaris')
     fireEvent.click(firstMenuItem)
     expect(window.location.pathname).toEqual('/')
   })
 
   it('changes style on hover over a category', () => {
-    const category = screen.getByText('Usuarios')
+    const category = screen.getByText('Usuaris')
     fireEvent.mouseOver(category)
     expect(category).toHaveStyle(`color: ${colors.primary}`)
   })
@@ -45,7 +41,7 @@ describe('SideMenu', () => {
   })
 
   it('ensures menu items are focusable for accessibility', () => {
-    const firstMenuItem = screen.getByText('Usuarios')
+    const firstMenuItem = screen.getByText('Usuaris')
     firstMenuItem.focus()
     expect(firstMenuItem).toHaveFocus()
   })
