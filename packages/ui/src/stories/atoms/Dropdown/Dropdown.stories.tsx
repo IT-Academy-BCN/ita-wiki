@@ -21,7 +21,6 @@ const meta: Meta<typeof Dropdown> = {
         iconSvg: { control: 'text' },
       },
     ],
-    icon: { control: 'text'}
   },
 }
 
@@ -49,7 +48,7 @@ export const Default: DropdownStory = {
 export const WithSelectedOption: DropdownStory = {
   args: {
     placeholder: 'Select an option',
-    defaultValue: 'Option 2',
+    defaultValue: 'id',
     options: [
       {
         id: '1',

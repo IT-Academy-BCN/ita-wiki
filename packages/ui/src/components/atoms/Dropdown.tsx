@@ -89,8 +89,6 @@ export type TDropdown = HTMLAttributes<HTMLElement> & {
   onValueChange?: (value: string) => void
   openText?: string
   closeText?: string
-  value?: string;
-  icon?: string;
 }
 
 export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
@@ -120,7 +118,6 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
 
         const handleClick = (event: MouseEvent) => {
           const target = event.target as HTMLElement
-          console.log(target, event)
           if (dropdownListRef.current?.contains(target)) {
             handleSelect(value);
           }
@@ -136,7 +133,6 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
       },
       [dropdownListRef, onValueChange]
     )
-    console.log(selectedValue);
 
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {

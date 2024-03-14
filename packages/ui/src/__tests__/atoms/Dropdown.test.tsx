@@ -7,7 +7,7 @@ import { Dropdown } from '../../components/atoms/Dropdown'
 describe('Dropdown', () => {
   it('renders correctly', () => {
     render(
-      <Dropdown options={[]}>
+      <Dropdown>
         <p>Test children content</p>
       </Dropdown>
     )
@@ -25,7 +25,7 @@ describe('Dropdown', () => {
 
   it('renders dropdown children when user clicks on it', async () => {
     render(
-      <Dropdown options={[]}>
+      <Dropdown>
         <p>Test children content</p>
       </Dropdown>
     )
@@ -43,7 +43,7 @@ describe('Dropdown', () => {
 
   it('renders placeholder provided instead of default', () => {
     render(
-      <Dropdown placeholder="Test placeholder" options={[]}>
+      <Dropdown placeholder="Test placeholder">
         <p>Test children content</p>
       </Dropdown>
     )
@@ -56,7 +56,7 @@ describe('Dropdown', () => {
 
   it('renders value provided instead of placeholder', () => {
     render(
-      <Dropdown defaultValue="Test selected value" options={[]}>
+      <Dropdown defaultValue="Test selected value">
         <p>Test children content</p>
       </Dropdown>
     )
@@ -69,7 +69,7 @@ describe('Dropdown', () => {
 
   it('a click outside the dropdown closes its menu', async () => {
     render(
-      <Dropdown options={[]}>
+      <Dropdown>
         <p>Test children content</p>
       </Dropdown>
     )
@@ -85,7 +85,7 @@ describe('Dropdown', () => {
 
   it('renders the selected value in the DropdownHeader on initial load', () => {
     render(
-      <Dropdown defaultValue="Preselected Item" options={[]}>
+      <Dropdown defaultValue="Preselected Item">
         <p data-value="Preselected Item">Preselected Item</p>
         <p data-value="Item 2">Item 2</p>
       </Dropdown>
@@ -104,7 +104,7 @@ describe('Dropdown', () => {
 
     return (
       <div>
-        <Dropdown onValueChange={handleChange} options={[]}>
+        <Dropdown onValueChange={handleChange}>
           <p data-value="Option 1">Option 1</p>
           <p data-value="Option 2">Option 2</p>
         </Dropdown>
