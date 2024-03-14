@@ -11,6 +11,6 @@ describe('Testing validate token endpoint', () => {
     const response = await supertest(server).get(route)
     expect(response.status).toBe(200)
     expect(() => itinerariesListSchema.parse(response.body)).not.toThrow()
-    expect(response.body.length).toBe(6)
+    expect(response.body.length).toBe(7)
   })
 })

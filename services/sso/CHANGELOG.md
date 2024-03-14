@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.16.0] - 2024-03-12
+
+### Added
+
+- User `Blocked` status functionality
+
 ## [1.15.1] - 2024-03-07
 
 ### Fixed
