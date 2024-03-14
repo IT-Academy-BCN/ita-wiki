@@ -16,6 +16,7 @@ export {
   type TItem,
   type TItemAvailable,
   type TItemRow,
+  type TRowStatus,
 } from './EditableItem'
 export { InputGroup, type TInputGroup } from './InputGroup'
 export { Modal, type TModal } from './Modal'

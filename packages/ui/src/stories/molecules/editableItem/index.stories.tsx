@@ -2,7 +2,12 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { FC, useState } from 'react'
 import { FlexBox } from '../../../styles'
 import { ValidationMessage } from '../../../components/atoms'
-import { TItem, TItemRow, EditableItem } from '../../../components/molecules'
+import {
+  TItem,
+  TItemRow,
+  TRowStatus,
+  EditableItem,
+} from '../../../components/molecules'
 import deleteIcon from './delete-icon.svg'
 
 const newItemTxt = '+ Create new item'
@@ -17,7 +22,7 @@ const deleteTxt = 'Delete item'
 type TMockedEditableItem = {
   id: string
   name: string
-  rowStatus: 'available' | 'editing' | 'deleting' | 'disabled'
+  rowStatus: TRowStatus
 } & TItemRow
 
 const MockedEditableItem: FC<TMockedEditableItem> = ({
@@ -27,24 +32,11 @@ const MockedEditableItem: FC<TMockedEditableItem> = ({
 }) => {
   const [itemId, setItemId] = useState(id)
   const [itemTxt, setItemTxt] = useState(name)
-  const [statusRow, setStatusRow] = useState<
-    'available' | 'editing' | 'deleting' | 'disabled'
-  >(rowStatus)
+  const [statusRow, setStatusRow] = useState<TRowStatus>(rowStatus)
   const [errorMessage, setErrorMessage] = useState('')
 
-  const handleRowStatus = (rowStatusReceived: string) => {
-    if (rowStatusReceived === 'disabled') {
-      setStatusRow('disabled')
-    }
-    if (rowStatusReceived === 'editing') {
-      setStatusRow('editing')
-    }
-    if (rowStatusReceived === 'deleting') {
-      setStatusRow('deleting')
-    }
-    if (rowStatusReceived === 'available') {
-      setStatusRow('available')
-    }
+  const handleRowStatus = (rowStatusReceived: TRowStatus) => {
+    setStatusRow(rowStatusReceived)
   }
 
   const handleErrorMessage = (message: string) => {
