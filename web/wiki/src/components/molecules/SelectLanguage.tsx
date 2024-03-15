@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React, { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { colors, device, dimensions, font } from '../../styles'
+import { Select, colors, device, dimensions, font } from '@itacademy/ui'
+import { languages, type Language } from '../../constants'
 
-type Language = 'es' | 'cat' | 'en'
-
-const DropdownLang = styled.select<{ selectedLanguage: Language }>`
+const DropdownLang = styled(Select)<{ selectedLanguage: Language }>`
   font-size: ${font.base};
   border: none;
   border-radius: ${dimensions.borderRadius.base};
@@ -32,11 +31,11 @@ const DropdownLang = styled.select<{ selectedLanguage: Language }>`
     padding: 0.47rem;
     color: ${colors.gray.gray3};
     width: ${({ selectedLanguage }) =>
-      selectedLanguage === 'cat' ? '69px' : '55px'};
+      selectedLanguage === 'cat' ? '69px' : '56px'};
   }
 `
 
-export const SelectLanguage: React.FC = () => {
+export const SelectLanguage: FC = () => {
   const [selectedLanguage, setSelectedLanguage] = useState<Language | string>(
     localStorage.getItem('lng') ?? 'cat'
   )
@@ -56,12 +55,10 @@ export const SelectLanguage: React.FC = () => {
   return (
     <DropdownLang
       selectedLanguage={selectedLanguage as Language}
+      placeholder=""
       value={selectedLanguage}
       onChange={handleLanguageChange}
-    >
-      <option value="cat">CAT</option>
-      <option value="es">ES</option>
-      <option value="en">EN</option>
-    </DropdownLang>
+      options={languages}
+    />
   )
 }

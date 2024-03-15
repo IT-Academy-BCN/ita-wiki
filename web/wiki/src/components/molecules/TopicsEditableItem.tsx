@@ -1,9 +1,16 @@
-import { Button } from '@itacademy/ui'
+import {
+  Button,
+  Icon,
+  Input,
+  FlexBox,
+  Text,
+  colors,
+  dimensions,
+  font,
+} from '@itacademy/ui'
 import { useRef } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { colors, dimensions, FlexBox, font } from '../../styles'
-import { Icon, Input, Text } from '../atoms'
 import icons from '../../assets/icons'
 import { TTopic } from '../../types'
 
@@ -222,7 +229,7 @@ export const TopicsEditableItem = ({
               }}
               data-testid={`confirm${id}`}
             >
-              <StyledIcon name="done" color={`${colors.success}`} wght={600} />
+              <StyledIcon name="done" color={`${colors.success}`} $wght={600} />
             </StyledButton>
             <StyledButton
               outline
@@ -232,7 +239,7 @@ export const TopicsEditableItem = ({
                 setAvailable()
               }}
             >
-              <StyledIcon name="close" color={`${colors.error}`} wght={600} />
+              <StyledIcon name="close" color={`${colors.error}`} $wght={600} />
             </StyledButton>
           </FlexBoxRow>
         </StyledFlexBox>

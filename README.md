@@ -86,7 +86,13 @@ While we encourage collaboration and support among team members, it's important 
 
 ```
 {
-    "eslint.workingDirectories": ["services_sso", "services_wiki", "web_wiki", "web_usuaris", "packages/ui"]
+  "eslint.workingDirectories": [
+    "web/wiki",
+    "web/usuaris",
+    "services/wiki",
+    "services/sso",
+    "packages/ui"
+  ]
 }
 ```
 

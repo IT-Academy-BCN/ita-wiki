@@ -15,7 +15,6 @@ const name = 'nameExample'
 const password = 'hashedPassword'
 const role = UserRole.REGISTERED
 const status = UserStatus.INACTIVE
-let itineraryId: string = ''
 const route = `${pathRoot.v1.users}`
 let authToken = ''
 
@@ -30,7 +29,7 @@ beforeAll(async () => {
   const { rows: itineraryRows } = await client.query(
     'SELECT id FROM "itinerary" LIMIT 1'
   )
-  itineraryId = itineraryRows[0].id
+  const itineraryId = itineraryRows[0].id
 
   const createUserQuery = {
     text: 'INSERT INTO "user"(id, dni, email, name, password, itinerary_id) VALUES($1, $2, $3, $4, $5, $6)',

@@ -2,11 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.30.0] - 2024-03-07
+## [0.30.0] - 2024-03-15
 
 ### Added
 
 - Icon Dropdown
+
+## [0.29.3] - 2024-03-13
+
+### Fixed
+
+- Fixed type in EditableItem
 
 ## [0.29.2] - 2024-03-07
 

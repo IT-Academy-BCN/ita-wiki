@@ -21,6 +21,9 @@ export const loginController: Middleware = async (ctx: Context) => {
   if (!isValid) {
     throw new InvalidCredentials()
   }
+  if (user.status === UserStatus.BLOCKED) {
+    throw new ForbiddenError('The user is Blocked')
+  }
   if (user.status !== UserStatus.ACTIVE) {
     throw new ForbiddenError('Only active users can login')
   }

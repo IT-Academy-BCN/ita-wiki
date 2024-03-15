@@ -145,5 +145,8 @@
   "Aceptar": "Accept",
   "Bloquear": "Block",
   "Desbloquear": "Unblock",
-  "No hay usuarios para mostrar": "There are no users to display"
+  "No hay usuarios para mostrar": "There are no users to display",
+
+  "Mentores": "Mentors",
+  "Connector": "Connector"
 }

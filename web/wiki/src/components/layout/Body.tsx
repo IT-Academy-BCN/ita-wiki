@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { FlexBox, colors } from '../../styles'
+import { FlexBox, colors } from '@itacademy/ui'
 
 type TBodyStyled = {
   minHeight: number
