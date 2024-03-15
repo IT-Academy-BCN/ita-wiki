@@ -48,7 +48,7 @@ export const Default: DropdownStory = {
 export const WithSelectedOption: DropdownStory = {
   args: {
     placeholder: 'Select an option',
-    defaultValue: 'id',
+    defaultValue: '2',
     options: [
       {
         id: '1',

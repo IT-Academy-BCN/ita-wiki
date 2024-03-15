@@ -5,6 +5,7 @@ import React, {
   useEffect,
   HTMLAttributes,
   useCallback,
+  useMemo,
 } from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions, font } from '../../styles'
@@ -145,6 +146,11 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
       return () => document.removeEventListener('mousedown', handleClickOutside)
     }, [dropdownListRef, dropdownCloseOutsideRef])
 
+    const selectedOption = useMemo(
+      () => options.find((option) => option.id === selectedValue),
+      [options, selectedValue]
+    )
+
     return (
       <div ref={ref}>
         <StyledDropdown data-testid="dropdown" ref={dropdownCloseOutsideRef}>
@@ -152,17 +158,18 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
             data-testid="dropdown-header"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            { selectedValue ? options.map(option => { 
-              if (option.id === selectedValue){
-                return(
-                  <FlexBox direction='row' key={option.id}>
-                  {option.icon && <StyledIcon name={option.icon} />}
-                  {option.iconSvg && <StyledImage src={option.iconSvg} alt={option.name} />}
-                  <span>{option.name}</span>
+            { selectedOption ? ( 
+                  <FlexBox direction='row' key={selectedOption.id}>
+                  {selectedOption.icon && (
+                  <StyledIcon name={selectedOption.icon} />
+                  )}
+                  {selectedOption.iconSvg && (
+                  <StyledImage 
+                  src={selectedOption.iconSvg} alt={selectedOption.name} />
+                  )}
+                  <span>{selectedOption.name}</span>
                   </FlexBox>
-                )
-              }
-              }) : placeholder }
+              ) : ( <span>{defaultValue || placeholder}</span> )}
             
             <StyledIcon
               name={isDropdownOpen ? 'expand_less' : 'expand_more'}

@@ -5,11 +5,9 @@ import userEvent from '@testing-library/user-event'
 import { Dropdown } from '../../components/atoms/Dropdown'
 
 describe('Dropdown', () => {
-  it('renders correctly', () => {
+  it('renders correctly', async () => {
     render(
-      <Dropdown>
-        <p>Test children content</p>
-      </Dropdown>
+      <Dropdown options={[]} />
     )
 
     const dropdown = screen.getByTestId('dropdown')
@@ -18,6 +16,7 @@ describe('Dropdown', () => {
     expect(dropdown).toBeInTheDocument()
     expect(dropdown).toHaveStyle(`cursor: pointer;`)
     expect(dropdownHeader).toHaveTextContent(/selecciona/i)
+    await userEvent.click(dropdownHeader)
     expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
     expect(screen.queryByText('Test children content')).not.toBeInTheDocument()
     expect(screen.queryByTitle('Cerrar')).not.toBeInTheDocument()
@@ -25,27 +24,22 @@ describe('Dropdown', () => {
 
   it('renders dropdown children when user clicks on it', async () => {
     render(
-      <Dropdown>
-        <p>Test children content</p>
-      </Dropdown>
+      <Dropdown options={[]} />
     )
-
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
     expect(screen.queryByText('Test children content')).not.toBeInTheDocument()
 
-    expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
     await userEvent.click(dropdownHeader)
+    expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
 
-    expect(screen.queryByText('Test children content')).toBeVisible()
+    expect(screen.queryByText('Test children content')).toBeVisible() 
     expect(screen.getByTitle('Cerrar')).toBeInTheDocument()
   })
 
-  it('renders placeholder provided instead of default', () => {
+  it('renders placeholder provided instead of default', () => { 
     render(
-      <Dropdown placeholder="Test placeholder">
-        <p>Test children content</p>
-      </Dropdown>
+      <Dropdown placeholder="Test placeholder" options={[]} />
     )
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
@@ -54,28 +48,27 @@ describe('Dropdown', () => {
     expect(dropdownHeader).not.toHaveTextContent(/selecciona/i)
   })
 
-  it('renders value provided instead of placeholder', () => {
+  it('renders value provided instead of placeholder', async () => {
     render(
-      <Dropdown defaultValue="Test selected value">
-        <p>Test children content</p>
-      </Dropdown>
+      <Dropdown defaultValue="Test selected value" options={[]} />
     )
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
     expect(dropdownHeader).toHaveTextContent(/Test selected value/i)
     expect(dropdownHeader).not.toHaveTextContent(/selecciona/i)
+    
   })
 
   it('a click outside the dropdown closes its menu', async () => {
     render(
-      <Dropdown>
-        <p>Test children content</p>
-      </Dropdown>
+      <Dropdown options={[]} />
     )
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
+    expect(screen.queryByText('Test children content')).not.toBeInTheDocument()
+    
     await userEvent.click(dropdownHeader)
     expect(screen.getByText('Test children content')).toBeVisible()
 
@@ -85,10 +78,7 @@ describe('Dropdown', () => {
 
   it('renders the selected value in the DropdownHeader on initial load', () => {
     render(
-      <Dropdown defaultValue="Preselected Item">
-        <p data-value="Preselected Item">Preselected Item</p>
-        <p data-value="Item 2">Item 2</p>
-      </Dropdown>
+      <Dropdown defaultValue="Preselected Item" options={[]} />
     )
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
@@ -104,10 +94,7 @@ describe('Dropdown', () => {
 
     return (
       <div>
-        <Dropdown onValueChange={handleChange}>
-          <p data-value="Option 1">Option 1</p>
-          <p data-value="Option 2">Option 2</p>
-        </Dropdown>
+        <Dropdown onValueChange={handleChange} options={[]} />
         <p data-testid="selected-value">{selectedOption}</p>
       </div>
     )
@@ -118,7 +105,7 @@ describe('Dropdown', () => {
     const dropdownHeader = screen.getByTestId('dropdown-header')
     await userEvent.click(dropdownHeader)
 
-    const optionToSelect = screen.getByText('Option 2')
+    const optionToSelect = screen.getByTestId('Option 2')
     await userEvent.click(optionToSelect)
 
     await waitFor(() => {
