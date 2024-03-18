@@ -10,6 +10,28 @@ import { errorHandlers } from '../../__mocks__/handlers'
 import { urls } from '../../constants'
 import { server } from '../../__mocks__/server'
 
+const userMentor = {
+  name: 'Name',
+  avatarId: 'Avatar',
+  role: 'MENTOR',
+}
+
+const userStudent = {
+  name: 'Name',
+  avatarId: 'Avatar',
+  role: 'REGISTERED',
+}
+
+const slugReact = { slug: 'react' }
+
+const locationStateReact = {
+  pathname: '',
+  search: '',
+  hash: '',
+  key: '',
+  state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
+}
+
 beforeEach(() => {
   vi.mock('../../context/AuthProvider', async () => {
     const actual = await vi.importActual('../../context/AuthProvider')
@@ -48,16 +70,10 @@ const renderWithQueryClient = (component: React.ReactNode) =>
 
 describe('TopicsManagerBoard component', () => {
   it('renders correctly without user', async () => {
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
+    vi.mocked(useParams).mockReturnValue(slugReact as Readonly<Params>)
+    vi
+      .mocked(useLocation)
+      .mockReturnValue(locationStateReact) as unknown as Location
     vi.mocked(useAuth).mockReturnValue({
       user: null,
     } as TAuthContext)
@@ -77,11 +93,7 @@ describe('TopicsManagerBoard component', () => {
       slug: undefined,
     } as Readonly<Params>)
     vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatarId: 'Avatar',
-        role: 'MENTOR',
-      },
+      user: userMentor,
     } as TAuthContext)
     vi.mocked(useLocation).mockReturnValue({
       pathname: '',
@@ -100,22 +112,12 @@ describe('TopicsManagerBoard component', () => {
   })
 
   it('renders correctly with category slug', async () => {
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
+    vi.mocked(useParams).mockReturnValue(slugReact as Readonly<Params>)
+    vi
+      .mocked(useLocation)
+      .mockReturnValue(locationStateReact) as unknown as Location
     vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatarId: 'Avatar',
-        role: 'MENTOR',
-      },
+      user: userMentor,
     } as TAuthContext)
     render(<TopicsManagerBoard />)
 
@@ -135,19 +137,11 @@ describe('TopicsManagerBoard component', () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'empty-topics',
     } as Readonly<Params>)
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
+    vi
+      .mocked(useLocation)
+      .mockReturnValue(locationStateReact) as unknown as Location
     vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatarId: 'Avatar',
-        role: 'MENTOR',
-      },
+      user: userMentor,
     } as TAuthContext)
     render(<TopicsManagerBoard />)
 
@@ -174,19 +168,11 @@ describe('TopicsManagerBoard component', () => {
     vi.mocked(useParams).mockReturnValue({
       slug: 'invalid-slug',
     } as Readonly<Params>)
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
+    vi
+      .mocked(useLocation)
+      .mockReturnValue(locationStateReact) as unknown as Location
     vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatarId: 'Avatar',
-        role: 'MENTOR',
-      },
+      user: userMentor,
     } as TAuthContext)
     render(<TopicsManagerBoard />)
 
@@ -199,21 +185,17 @@ describe('TopicsManagerBoard component', () => {
     })
   })
 
-  it('shows error message on create error', async () => {
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
+  it('shows error message on create error if user is not a mentor/admin (error 403)', async () => {
+    vi.mocked(useParams).mockReturnValue(slugReact as Readonly<Params>)
+    vi
+      .mocked(useLocation)
+      .mockReturnValue(locationStateReact) as unknown as Location
     vi.mocked(useAuth).mockReturnValue({
-      user: null,
+      user: userStudent,
     } as TAuthContext)
-    server.use(...errorHandlers)
+    server.use(
+      http.post(urls.postTopics, () => HttpResponse.json(null, { status: 403 }))
+    )
 
     render(<TopicsManagerBoard />)
 
@@ -222,23 +204,37 @@ describe('TopicsManagerBoard component', () => {
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
-      expect(screen.getByText('Hi ha hagut un error...')).toBeInTheDocument()
+      const createButton = screen.getByText('+ Crea un nou tema')
+      expect(createButton).toBeInTheDocument()
+      fireEvent.click(createButton)
     })
+
+    const newTopic = screen.getByPlaceholderText('Nom del tema nou')
+
+    await userEvent.type(newTopic, 'New topic created')
+
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: "Confirma l'edició",
+      })
+    )
+
+    await waitFor(() =>
+      expect(
+        screen.getByText(
+          "Accés denegat. No tens els permisos necessaris per realitzar l'operació."
+        )
+      ).toBeInTheDocument()
+    )
   })
 
   it('shows error message on update topic if user is not a mentor/admin (error 403)', async () => {
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
+    vi.mocked(useParams).mockReturnValue(slugReact as Readonly<Params>)
+    vi
+      .mocked(useLocation)
+      .mockReturnValue(locationStateReact) as unknown as Location
     vi.mocked(useAuth).mockReturnValue({
-      user: { name: 'Name', avatarId: 'Avatar', role: 'REGISTERED' },
+      user: userStudent,
     } as TAuthContext)
     server.use(
       http.patch(urls.patchTopics, () =>
@@ -272,18 +268,12 @@ describe('TopicsManagerBoard component', () => {
   })
 
   it('updates topics list on update topic', async () => {
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
+    vi.mocked(useParams).mockReturnValue(slugReact as Readonly<Params>)
+    vi
+      .mocked(useLocation)
+      .mockReturnValue(locationStateReact) as unknown as Location
     vi.mocked(useAuth).mockReturnValue({
-      user: { name: 'Name', avatarId: 'Avatar', role: 'MENTOR' },
+      user: userMentor,
     } as TAuthContext)
 
     render(<TopicsManagerBoard />)
@@ -310,18 +300,12 @@ describe('TopicsManagerBoard component', () => {
   })
 
   it('shows error message on update topic in case of server error (error 500)', async () => {
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
+    vi.mocked(useParams).mockReturnValue(slugReact as Readonly<Params>)
+    vi
+      .mocked(useLocation)
+      .mockReturnValue(locationStateReact) as unknown as Location
     vi.mocked(useAuth).mockReturnValue({
-      user: { name: 'Name', avatarId: 'Avatar', role: 'MENTOR' },
+      user: userMentor,
     } as TAuthContext)
     server.use(
       http.patch(urls.patchTopics, () =>
@@ -355,18 +339,12 @@ describe('TopicsManagerBoard component', () => {
   })
 
   it('shows message when trying to save empty topic', async () => {
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
+    vi.mocked(useParams).mockReturnValue(slugReact as Readonly<Params>)
+    vi
+      .mocked(useLocation)
+      .mockReturnValue(locationStateReact) as unknown as Location
     vi.mocked(useAuth).mockReturnValue({
-      user: { name: 'Name', avatarId: 'Avatar', role: 'MENTOR' },
+      user: userMentor,
     } as TAuthContext)
 
     render(<TopicsManagerBoard />)
@@ -378,10 +356,10 @@ describe('TopicsManagerBoard component', () => {
       fireEvent.click(editButton)
     })
 
-    const itemInput = screen.getByDisplayValue('Listas') as HTMLInputElement
-    await userEvent.clear(itemInput)
+    const topicInput = screen.getByDisplayValue('Listas') as HTMLInputElement
+    await userEvent.clear(topicInput)
 
-    expect(itemInput.placeholder).toBe('Nom del tema')
+    expect(topicInput.placeholder).toBe('Nom del tema')
 
     fireEvent.click(
       screen.getByRole('button', {
@@ -398,18 +376,12 @@ describe('TopicsManagerBoard component', () => {
 
   // TODO: Update this test when delete topic is available
   it('shows message when trying to delete', async () => {
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
+    vi.mocked(useParams).mockReturnValue(slugReact as Readonly<Params>)
+    vi
+      .mocked(useLocation)
+      .mockReturnValue(locationStateReact) as unknown as Location
     vi.mocked(useAuth).mockReturnValue({
-      user: { name: 'Name', avatarId: 'Avatar', role: 'MENTOR' },
+      user: userMentor,
     } as TAuthContext)
 
     render(<TopicsManagerBoard />)
@@ -435,22 +407,12 @@ describe('TopicsManagerBoard component', () => {
   })
 
   it('renders correctly on error', async () => {
-    vi.mocked(useParams).mockReturnValue({
-      slug: 'react',
-    } as Readonly<Params>)
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
+    vi.mocked(useParams).mockReturnValue(slugReact as Readonly<Params>)
+    vi
+      .mocked(useLocation)
+      .mockReturnValue(locationStateReact) as unknown as Location
     vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Name',
-        avatarId: 'Avatar',
-        role: 'MENTOR',
-      },
+      user: userMentor,
     } as TAuthContext)
     server.use(...errorHandlers)
 
