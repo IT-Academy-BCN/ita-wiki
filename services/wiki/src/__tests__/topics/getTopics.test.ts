@@ -1,7 +1,7 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll } from 'vitest'
 import { Category } from '@prisma/client'
-import { server } from '../globalSetup'
+import { server, testCategoryData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 
@@ -31,7 +31,7 @@ describe('Testing topics endpoint', () => {
     beforeAll(async () => {
       // A testing Topic on testing Category has been created for this test on globalSetup.
       category = (await prisma.category.findUnique({
-        where: { name: 'Testing' },
+        where: { name: testCategoryData.name },
       })) as Category
     })
 
