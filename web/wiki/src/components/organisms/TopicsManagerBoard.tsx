@@ -2,11 +2,18 @@ import { FC, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
-import { colors, FlexBox, Spinner, Text } from '@itacademy/ui'
-import { TopicsEditableItem } from '../molecules'
+import {
+  colors,
+  FlexBox,
+  Spinner,
+  Text,
+  EditableItem,
+  TRowStatus,
+} from '@itacademy/ui'
 import { useAuth } from '../../context/AuthProvider'
 import { useGetTopics, useManageTopic } from '../../hooks'
 import { TTopic } from '../../types'
+import deleteIcon from '../../assets/icons/delete-icon.svg'
 
 const StyledFlexBox = styled(FlexBox)`
   width: 100%;
@@ -28,6 +35,7 @@ export const TopicsManagerBoard: FC = () => {
     setRowStatus,
     setErrorMessage,
   } = useManageTopic()
+
   if (slug === undefined) {
     return (
       <Text color={`${colors.error}`}>
@@ -38,17 +46,17 @@ export const TopicsManagerBoard: FC = () => {
   }
 
   const rowStatusCalculator = (
-    rowStatusReceived: string,
+    rowStatusReceived: TRowStatus,
     idClicked: string,
     rowTopicId: string
-  ): string => {
+  ): TRowStatus => {
     if (rowStatusReceived !== 'available') {
       return idClicked === rowTopicId ? rowStatusReceived : 'disabled'
     }
     return rowStatusReceived
   }
 
-  const handleRowStatus = (selectedStatus: string, id: string) => {
+  const handleRowStatus = (selectedStatus: TRowStatus, id: string) => {
     setRowStatus(selectedStatus)
     if (selectedStatus === 'available') return
 
@@ -56,14 +64,21 @@ export const TopicsManagerBoard: FC = () => {
   }
 
   const handleErrorMessage = (message: string) => {
-    setErrorMessage(message)
+    const messageTxt =
+      message === 'errorEmptyTxt'
+        ? `${t('Por favor, no dejes vacío el nombre del tema.')}`
+        : message
+    setErrorMessage(messageTxt)
   }
 
-  const handleTopicChange = (actionTopic: string, changedTopic: TTopic) => {
+  const handleItemChange = (actionTopic: string, changedTopic: TTopic) => {
     // eslint-disable-next-line no-param-reassign
     changedTopic.categoryId = `${state?.id}`
 
-    if (actionTopic === 'update') {
+    if (actionTopic === 'delete') {
+      // TODO: Delete topic when DELETE endpoint exists
+      handleErrorMessage(t('No es posible borrar el tema.'))
+    } else if (actionTopic === 'update') {
       updateTopic.mutate(changedTopic)
     } else {
       createTopic.mutate(changedTopic)
@@ -83,21 +98,30 @@ export const TopicsManagerBoard: FC = () => {
           {data
             ?.concat([
               {
-                id: 'newTopic',
+                id: 'newItem',
                 name: '',
                 categoryId: `${state?.id}`,
                 slug: `${state?.slug}`,
               },
             ])
             .map((topic) => (
-              <TopicsEditableItem
+              <EditableItem
                 key={topic.id}
                 id={topic.id}
                 name={topic.name}
                 rowStatus={rowStatusCalculator(rowStatus, selectedId, topic.id)}
                 handleRowStatus={handleRowStatus}
                 handleErrorMessage={handleErrorMessage}
-                handleTopicChange={handleTopicChange}
+                handleItemChange={handleItemChange}
+                newItemTxt={t('+ Crear nuevo tema')}
+                placeholderTxt={t('Nombre del tema')}
+                newPlaceholderTxt={t('Nombre del nuevo tema')}
+                editTxt={t('Editar')}
+                cancelTxt={t('Cancelar')}
+                confirmEditTxt={t('Confirmar edición')}
+                cancelEditTxt={t('Cancelar edición')}
+                deleteTxt={t('Borrar tema')}
+                deleteIcon={deleteIcon}
               />
             ))
             .reverse()}

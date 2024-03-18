@@ -1,10 +1,11 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { TRowStatus } from '@itacademy/ui'
 import { createTopicFetcher, updateTopicFetcher } from '../helpers/fetchers'
 import { TGetTopics } from '../types'
 
 export const useManageTopic = () => {
-  const [rowStatus, setRowStatus] = useState<string>('available')
+  const [rowStatus, setRowStatus] = useState<TRowStatus>('available')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const queryClient = useQueryClient()
 

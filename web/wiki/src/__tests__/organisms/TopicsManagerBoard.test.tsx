@@ -34,7 +34,10 @@ beforeEach(() => {
 
 afterEach(() => {
   vi.restoreAllMocks()
+  server.resetHandlers()
 })
+
+afterAll(() => server.close())
 
 const queryClient = new QueryClient()
 
@@ -44,6 +47,31 @@ const renderWithQueryClient = (component: React.ReactNode) =>
   )
 
 describe('TopicsManagerBoard component', () => {
+  it('renders correctly without user', async () => {
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'react',
+    } as Readonly<Params>)
+    vi.mocked(useLocation).mockReturnValue({
+      pathname: '',
+      search: '',
+      hash: '',
+      key: '',
+      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
+    }) as unknown as Location
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+    } as TAuthContext)
+    render(<TopicsManagerBoard />)
+
+    await waitFor(() =>
+      expect(
+        screen.getByText(
+          'No tens els permisos necessaris per accedir a aquest contingut.'
+        )
+      ).toBeInTheDocument()
+    )
+  })
+
   it('renders correctly without category slug', () => {
     vi.mocked(useParams).mockReturnValue({
       slug: undefined,
@@ -322,6 +350,86 @@ describe('TopicsManagerBoard component', () => {
         screen.getByText(
           'Error en la base de dades. Per favor, intenta-ho més tard.'
         )
+      ).toBeInTheDocument()
+    )
+  })
+
+  it('shows message when trying to save empty topic', async () => {
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'react',
+    } as Readonly<Params>)
+    vi.mocked(useLocation).mockReturnValue({
+      pathname: '',
+      search: '',
+      hash: '',
+      key: '',
+      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
+    }) as unknown as Location
+    vi.mocked(useAuth).mockReturnValue({
+      user: { name: 'Name', avatarId: 'Avatar', role: 'MENTOR' },
+    } as TAuthContext)
+
+    render(<TopicsManagerBoard />)
+
+    await waitFor(() => {
+      const editButton = screen.getByTestId('editcli04v2l0000008mq5pwx7w5j')
+      expect(screen.getByText('Listas')).toBeInTheDocument()
+      expect(editButton).toBeInTheDocument()
+      fireEvent.click(editButton)
+    })
+
+    const itemInput = screen.getByDisplayValue('Listas') as HTMLInputElement
+    await userEvent.clear(itemInput)
+
+    expect(itemInput.placeholder).toBe('Nom del tema')
+
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: "Confirma l'edició",
+      })
+    )
+
+    await waitFor(() =>
+      expect(
+        screen.getByText('Per favor, no deixis buit el nom del tema.')
+      ).toBeInTheDocument()
+    )
+  })
+
+  // TODO: Update this test when delete topic is available
+  it('shows message when trying to delete', async () => {
+    vi.mocked(useParams).mockReturnValue({
+      slug: 'react',
+    } as Readonly<Params>)
+    vi.mocked(useLocation).mockReturnValue({
+      pathname: '',
+      search: '',
+      hash: '',
+      key: '',
+      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
+    }) as unknown as Location
+    vi.mocked(useAuth).mockReturnValue({
+      user: { name: 'Name', avatarId: 'Avatar', role: 'MENTOR' },
+    } as TAuthContext)
+
+    render(<TopicsManagerBoard />)
+
+    await waitFor(() => {
+      const deleteButtons = screen.getAllByTitle('Esborra el tema')
+      expect(deleteButtons).toHaveLength(2)
+      const deleteListasBtn = deleteButtons[0]
+      expect(deleteListasBtn).toBeInTheDocument()
+      fireEvent.click(deleteListasBtn)
+    })
+
+    const deleteAndConfirmButtons = screen.getAllByTitle('Esborra el tema')
+    expect(deleteAndConfirmButtons).toHaveLength(2)
+    const deleteListasConfirm = deleteAndConfirmButtons[0]
+    expect(deleteListasConfirm).toBeInTheDocument()
+    fireEvent.click(deleteListasConfirm)
+    await waitFor(() =>
+      expect(
+        screen.getByText('No és possible esborrar el tema.')
       ).toBeInTheDocument()
     )
   })
