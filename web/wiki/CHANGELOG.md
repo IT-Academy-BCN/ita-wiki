@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.16.0] - 2024-03-18
+
+### Added
+
+- Added missing tests from CardResource component
+
 ## [0.15.0] - 2024-03-12
 
 ### Removed
