@@ -49,7 +49,7 @@ describe('Dropdown', () => {
     await userEvent.click(dropdownHeader)
     expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
     
-    expect(screen.queryByText('Test children content')).toBeVisible() 
+    expect(screen.queryByText('Option 1')).toBeVisible() 
     await userEvent.click(dropdownHeader)
   
     expect(screen.getByTitle('Cerrar')).toBeInTheDocument()
@@ -88,7 +88,7 @@ describe('Dropdown', () => {
     expect(screen.queryByText('Test children content')).not.toBeInTheDocument()
     
     await userEvent.click(dropdownHeader)
-    expect(screen.getByText('Test children content')).toBeVisible()
+    expect(screen.getByText('Option 1')).toBeVisible()
 
     await userEvent.click(document.body)
     expect(screen.queryByText('Test children content')).not.toBeInTheDocument()
