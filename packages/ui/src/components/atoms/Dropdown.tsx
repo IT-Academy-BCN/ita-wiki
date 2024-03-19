@@ -180,7 +180,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
           {isDropdownOpen && (
             <DropdownList ref={dropdownListRef}>
               {options.map(({ name, id, icon, iconSvg }) => (
-                <DropdownItem key={id} id={id} onClick={() => handleSelect(id)}>
+                <DropdownItem key={id} data-testid={id} id={id} onClick={() => handleSelect(id)}>
                   {icon && <StyledIcon name={icon} />}
                   {iconSvg && <StyledImage src={iconSvg} alt={name} />}
                   <span>{name}</span>

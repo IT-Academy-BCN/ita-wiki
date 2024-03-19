@@ -4,10 +4,26 @@ import { expect } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { Dropdown } from '../../components/atoms/Dropdown'
 
+
+const mockOptions = [
+  {
+    id: '1',
+    name: 'Option 1',
+  },
+  {
+    id: '2',
+    name: 'Option 2',
+  },
+  {
+    id: '3',
+    name: 'Option 3',
+  },
+  ]
+
 describe('Dropdown', () => {
   it('renders correctly', async () => {
     render(
-      <Dropdown options={[]} />
+      <Dropdown options={mockOptions} />
     )
 
     const dropdown = screen.getByTestId('dropdown')
@@ -24,22 +40,24 @@ describe('Dropdown', () => {
 
   it('renders dropdown children when user clicks on it', async () => {
     render(
-      <Dropdown options={[]} />
+      <Dropdown options={mockOptions} />
     )
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
     expect(screen.queryByText('Test children content')).not.toBeInTheDocument()
-
+    
     await userEvent.click(dropdownHeader)
     expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
-
+    
     expect(screen.queryByText('Test children content')).toBeVisible() 
+    await userEvent.click(dropdownHeader)
+  
     expect(screen.getByTitle('Cerrar')).toBeInTheDocument()
   })
 
   it('renders placeholder provided instead of default', () => { 
     render(
-      <Dropdown placeholder="Test placeholder" options={[]} />
+      <Dropdown placeholder="Test placeholder" options={mockOptions} />
     )
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
@@ -50,7 +68,7 @@ describe('Dropdown', () => {
 
   it('renders value provided instead of placeholder', async () => {
     render(
-      <Dropdown defaultValue="Test selected value" options={[]} />
+      <Dropdown defaultValue="Test selected value" options={mockOptions} />
     )
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
@@ -62,7 +80,7 @@ describe('Dropdown', () => {
 
   it('a click outside the dropdown closes its menu', async () => {
     render(
-      <Dropdown options={[]} />
+      <Dropdown options={mockOptions} />
     )
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
@@ -78,7 +96,7 @@ describe('Dropdown', () => {
 
   it('renders the selected value in the DropdownHeader on initial load', () => {
     render(
-      <Dropdown defaultValue="Preselected Item" options={[]} />
+      <Dropdown defaultValue="Preselected Item" options={mockOptions} />
     )
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
@@ -91,10 +109,9 @@ describe('Dropdown', () => {
     const handleChange = (value: string) => {
       setSelectedOption(value)
     }
-
     return (
       <div>
-        <Dropdown onValueChange={handleChange} options={[]} />
+        <Dropdown onValueChange={handleChange} options={mockOptions} />
         <p data-testid="selected-value">{selectedOption}</p>
       </div>
     )
@@ -105,11 +122,11 @@ describe('Dropdown', () => {
     const dropdownHeader = screen.getByTestId('dropdown-header')
     await userEvent.click(dropdownHeader)
 
-    const optionToSelect = screen.getByTestId('Option 2')
+    const optionToSelect = screen.getByTestId('2')
     await userEvent.click(optionToSelect)
 
     await waitFor(() => {
-      expect(screen.getByTestId('selected-value')).toHaveTextContent('Option 2')
+      expect(screen.getByTestId('selected-value')).toHaveTextContent('2')
     })
   })
 })
