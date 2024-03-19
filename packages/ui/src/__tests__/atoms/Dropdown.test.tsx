@@ -21,7 +21,7 @@ const mockOptions = [
   ]
 
 describe('Dropdown', () => {
-  it.only('renders correctly', async () => {
+  it('renders correctly', async () => {
     render(
       <Dropdown options={mockOptions} />
     )
