@@ -43,38 +43,3 @@ export const getResourcesByTopicId: Middleware = async (ctx: Koa.Context) => {
   ctx.status = 200
   ctx.body = { resources: parsedResources }
 }
-
-export const getResourcesByTopicSlug: Middleware = async (ctx: Koa.Context) => {
-  const { slug } = ctx.params
-
-  if (!slug) throw new MissingParamError('slug')
-
-  const slugFound = await prisma.topic.findUnique({ where: { slug } })
-
-  if (!slugFound) throw new NotFoundError('Topic not found')
-
-  const resourcesList = await prisma.resource.findMany({
-    where: {
-      topics: {
-        some: {
-          topic: {
-            slug,
-          },
-        },
-      },
-    },
-    include: {
-      vote: { select: { vote: true } },
-      topics: { select: { topic: true } },
-    },
-  })
-
-  const resourcesWithUserName = await attachUserNamesToResources(resourcesList)
-  const parsedResources = resourcesWithUserName.map((resource) => {
-    const resourceWithVote = transformResourceToAPI(resource)
-    return resourceGetSchema.parse(resourceWithVote)
-  })
-
-  ctx.status = 200
-  ctx.body = { resources: parsedResources }
-}

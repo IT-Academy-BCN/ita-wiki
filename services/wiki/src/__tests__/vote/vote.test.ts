@@ -1,7 +1,7 @@
 import { Category, Resource, User } from '@prisma/client'
 import supertest from 'supertest'
 import { expect, describe, it, beforeAll, afterAll } from 'vitest'
-import { server, testUserData } from '../globalSetup'
+import { server, testCategoryData, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { voteCountSchema } from '../../schemas'
@@ -17,7 +17,7 @@ beforeAll(async () => {
   })) as User
 
   const category = (await prisma.category.findUnique({
-    where: { slug: 'testing' },
+    where: { slug: testCategoryData.slug },
   })) as Category
 
   resource = await prisma.resource.create({

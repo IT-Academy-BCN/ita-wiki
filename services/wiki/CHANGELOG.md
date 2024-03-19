@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.11.0] - 2024-03-18
+
+### Removed
+
+- Endpoint `GET /resources/topic/slug/{slug}` removed. Use `topicSlug` query parameter on `GET /resources` for topic-based filtering.
+
+### Changed
+
+- Query parameter `slug` in `GET /resources` renamed to `categorySlug` for clarity in category filtering.
+- Renamed `resources` controller method from `get` to `list` to better reflect the action of listing resources.
+
+### Added
+
+- Support for `topicSlug` query parameter in `GET /resources` for enhanced topic-specific resource filtering.
+
 ## [0.10.2] - 2024-03-13
 
 ### Fixed

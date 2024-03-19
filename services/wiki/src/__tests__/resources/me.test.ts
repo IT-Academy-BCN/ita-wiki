@@ -1,7 +1,7 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { Category, User, Prisma } from '@prisma/client'
-import { server, testUserData } from '../globalSetup'
+import { server, testCategoryData, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
 import { resourceGetSchema } from '../../schemas'
@@ -14,7 +14,7 @@ let userWithNoName: User | null
 
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
-    where: { slug: 'testing' },
+    where: { slug: testCategoryData.slug },
   })) as Category
   user = await prisma.user.findFirst({
     where: { id: testUserData.user.id },

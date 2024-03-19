@@ -25,7 +25,7 @@ describe('Testing category POST method', () => {
     const response = await supertest(server)
       .post(`${pathRoot.v1.categories}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
-      .send({ name: 'Testing' })
+      .send({ name: 'Testing category' })
 
     expect(response.status).toBe(409)
   })

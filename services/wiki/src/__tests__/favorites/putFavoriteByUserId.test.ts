@@ -1,7 +1,7 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeEach, afterEach } from 'vitest'
 import { Favorites, User, Resource } from '@prisma/client'
-import { server, testUserData } from '../globalSetup'
+import { server, testCategoryData, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
 import { authToken } from '../mocks/ssoHandlers/authToken'
@@ -16,7 +16,7 @@ describe('Testing resource modify endpoint', () => {
     })
 
     const category = await prisma.category.findUnique({
-      where: { slug: 'testing' },
+      where: { slug: testCategoryData.slug },
     })
 
     const resource = await prisma.resource.create({

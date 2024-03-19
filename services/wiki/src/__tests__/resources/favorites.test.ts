@@ -1,7 +1,7 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { Category, User, Prisma } from '@prisma/client'
-import { server, testUserData } from '../globalSetup'
+import { server, testCategoryData, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { resourceTestData } from '../mocks/resources'
 import { pathRoot } from '../../routes/routes'
@@ -9,13 +9,13 @@ import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
 
 const url: string = `${pathRoot.v1.resources}/favorites`
-const categorySlug = 'testing'
+const categorySlug = testCategoryData.slug
 let adminUser: User | null
 let user: User | null
 let userWithNoName: User | null
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
-    where: { slug: 'testing' },
+    where: { slug: testCategoryData.slug },
   })) as Category
   user = await prisma.user.findFirst({
     where: { id: testUserData.user.id },
