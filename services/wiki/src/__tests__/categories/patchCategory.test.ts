@@ -2,7 +2,7 @@ import supertest from 'supertest'
 import { expect, it, describe, afterAll } from 'vitest'
 import { Category } from '@prisma/client'
 import { prisma } from '../../prisma/client'
-import { server } from '../globalSetup'
+import { server, testCategoryData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
@@ -45,7 +45,7 @@ describe('Testing category PATCH method', async () => {
     const response = await supertest(server)
       .patch(baseURL!)
       .set('Cookie', [`authToken=${authToken.admin}`])
-      .send({ name: 'Testing' })
+      .send({ name: testCategoryData.name })
 
     expect(response.status).toBe(409)
   })

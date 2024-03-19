@@ -6,9 +6,9 @@ const resourceTypeEnum = z.nativeEnum(RESOURCE_TYPE)
 const status = ['SEEN', 'NOT_SEEN'] as const
 const statusEnum = z.enum(status)
 
-export const resourcesGetParamsSchema = z
+export const resourcesListParamsSchema = z
   .object({
-    slug: z
+    categorySlug: z
       .string()
       .optional()
       .openapi({
@@ -17,6 +17,16 @@ export const resourcesGetParamsSchema = z
           example: 'react',
         },
         example: 'react',
+      }),
+    topicSlug: z
+      .string()
+      .optional()
+      .openapi({
+        param: {
+          description: 'Slug of the topic for which to retrieve resources',
+          example: 'jsx',
+        },
+        example: 'jsx',
       }),
     resourceTypes: z
       .union([resourceTypeEnum, z.array(resourceTypeEnum)])
@@ -68,4 +78,6 @@ export const resourcesGetParamsSchema = z
   })
   .strict()
 
-export type TResourcesGetParamsSchema = z.infer<typeof resourcesGetParamsSchema>
+export type TResourcesListParamsSchema = z.infer<
+  typeof resourcesListParamsSchema
+>

@@ -60,7 +60,10 @@ export const testUserData = {
     avatarId: null,
   },
 }
-
+export const testCategoryData = {
+  name: 'Testing category',
+  slug: 'testing-category',
+}
 export async function setup() {
   // Cleanup database
   await prisma.topicsOnResources.deleteMany()
@@ -75,10 +78,7 @@ export async function setup() {
   // Create required test data
 
   const testCategory = await prisma.category.create({
-    data: {
-      name: 'Testing',
-      slug: 'testing',
-    },
+    data: testCategoryData,
   })
 
   const users = Object.values(testUserData).map((userData) => {

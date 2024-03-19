@@ -1,7 +1,7 @@
 import supertest from 'supertest'
 import { expect, describe, beforeAll, afterAll, it, afterEach } from 'vitest'
 import { Category, Resource, User } from '@prisma/client'
-import { server, testUserData } from '../globalSetup'
+import { server, testCategoryData, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { resourceTestData } from '../mocks/resources'
@@ -13,7 +13,7 @@ const uri = `${pathRoot.v1.seen}/`
 let user: User | null
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
-    where: { slug: 'testing' },
+    where: { slug: testCategoryData.slug },
   })) as Category
   user = await prisma.user.findFirst({
     where: { id: testUserData.user.id },
