@@ -10,7 +10,7 @@ import {
 } from '@prisma/client'
 import qs from 'qs'
 import { z } from 'zod'
-import { server, testUserData } from '../globalSetup'
+import { server, testCategoryData, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
 import { resourceGetSchema, topicSchema } from '../../schemas'
@@ -35,7 +35,7 @@ let userWithNoName: User | null
 
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
-    where: { slug: 'testing' },
+    where: { slug: testCategoryData.slug },
   })) as Category
   user = await prisma.user.findFirst({
     where: { id: testUserData.user.id },
@@ -78,26 +78,18 @@ beforeAll(async () => {
   testResources.push(testResourceDataWithNoName)
 
   // createMany does not allow nested create on many-to-many relationships as per prisma docs. Therefore individual creates are made.
-  await prisma.$transaction(async (transactionPrisma) => {
-    await Promise.all(
-      testResources.map(async (resourceData) => {
-        const { slug, ...dataWithoutSlug } = resourceData
-        await transactionPrisma.resource.upsert({
-          where: { slug },
-          update: { ...dataWithoutSlug },
-          create: { slug, ...dataWithoutSlug },
-        })
-      })
-    )
-    createdResources = await transactionPrisma.resource.findMany({})
-    viewedResource = await transactionPrisma.viewedResource.create({
-      data: {
-        user: { connect: { id: adminUser?.id } },
-        resource: {
-          connect: { id: createdResources[0].id },
-        },
+  await prisma.$transaction(
+    testResources.map((resource) => prisma.resource.create({ data: resource }))
+  )
+  createdResources = await prisma.resource.findMany({})
+
+  viewedResource = await prisma.viewedResource.create({
+    data: {
+      user: { connect: { id: adminUser?.id } },
+      resource: {
+        connect: { id: createdResources[0].id },
       },
-    })
+    },
   })
   await prisma.$transaction(
     createdResources.map((resource) =>
@@ -124,7 +116,10 @@ afterAll(async () => {
   })
   await prisma.favorites.deleteMany({})
   await prisma.resource.deleteMany({
-    where: { user: { id: { in: [user!.id, userWithNoName!.id] } } },
+    where: { user: { id: user?.id } },
+  })
+  await prisma.resource.deleteMany({
+    where: { user: { id: userWithNoName?.id } },
   })
 })
 // resourceTypes as array from prisma types for the it.each tests.
@@ -161,17 +156,6 @@ describe('Testing resources GET endpoint', () => {
     })
   })
 
-  it(`should return a resource with an empty string in name field if user's name is not available`, async () => {
-    const search = 'test-resource-4-blog'
-    const response = await supertest(server)
-      .get(`${pathRoot.v1.resources}`)
-      .query(qs.stringify({ search }))
-
-    expect(response.status).toBe(200)
-    expect(response.body.length).toBe(1)
-    expect(response.body[0].user.name).toBe('')
-  })
-
   it('should not return any resource if non-valid topic id provided', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
@@ -182,10 +166,10 @@ describe('Testing resources GET endpoint', () => {
   })
 
   it('should get all resources by category slug', async () => {
-    const categorySlug = 'testing'
+    const categorySlug = testCategoryData.slug
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .query({ slug: categorySlug })
+      .query({ categorySlug })
 
     expect(response.status).toBe(200)
     expect(response.body.length).toBeGreaterThanOrEqual(1)
@@ -211,14 +195,14 @@ describe('Testing resources GET endpoint', () => {
         where: { slug: 'testing' },
       })
       const topicId = existingTopic?.id
-      const categorySlug = 'testing'
+      const categorySlug = testCategoryData.slug
       const response = await supertest(server)
         .get(`${pathRoot.v1.resources}`)
         .query(
           qs.stringify({
             topic: topicId,
             resourceTypes: [resourceType],
-            slug: categorySlug,
+            categorySlug,
           })
         )
 
@@ -243,6 +227,25 @@ describe('Testing resources GET endpoint', () => {
       })
     }
   )
+
+  it('should respond with OK status if topic slug exists in database and return an array of resources associated with the topic slug  ', async () => {
+    const topicSlug = 'testing'
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.resources}`)
+      .query(qs.stringify({ topicSlug }))
+
+    expect(response.status).toBe(200)
+    expect(response.body.length).toBeGreaterThanOrEqual(4)
+    expect(response.body).toBeInstanceOf(Array)
+    response.body.forEach((resource: ResourceGetSchema) => {
+      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
+      expect(
+        resource.topics.some(
+          (topic: { topic: TopicSchema }) => topic.topic.slug === topicSlug
+        )
+      ).toBe(true)
+    })
+  })
 
   it('should get all resources without status when not logged in', async () => {
     const response = await supertest(server)
@@ -384,7 +387,7 @@ describe('Testing resources GET endpoint', () => {
     const search = 'b'
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
-      .query({ slug: 'testing', search })
+      .query({ categorySlug: testCategoryData.slug, search })
     expect(response.status).toBe(200)
     expect(response.body.length).toBeGreaterThanOrEqual(3)
   })

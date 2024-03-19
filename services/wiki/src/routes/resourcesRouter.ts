@@ -2,15 +2,14 @@ import Router from '@koa/router'
 import { z } from 'zod'
 import { authenticate, getUserFromToken, parse, validate } from '../middleware'
 import {
-  getResources,
+  listResources,
   getResourcesById,
   getResourcesByUserId,
   getResourcesByTopicId,
-  getResourcesByTopicSlug,
   getFavoriteResources,
   postResource,
 } from '../controllers'
-import { resourceCreateSchema, resourcesGetParamsSchema } from '../schemas'
+import { resourceCreateSchema, resourcesListParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
 import { patchResource } from '../controllers/resources/patchResource'
 import { resourcePatchSchema } from '../schemas/resource/resourcePatchSchema'
@@ -31,11 +30,11 @@ resourcesRouter.get(
   getUserFromToken,
   parse(
     z.object({
-      query: resourcesGetParamsSchema,
+      query: resourcesListParamsSchema,
     }),
     { useQueryString: true, useQsParser: true }
   ),
-  getResources
+  listResources
 )
 
 resourcesRouter.get(
@@ -86,18 +85,6 @@ resourcesRouter.get(
     })
   ),
   getResourcesByTopicId
-)
-
-resourcesRouter.get(
-  '/topic/slug/:slug',
-  validate(
-    z.object({
-      params: z.object({
-        slug: z.string().trim().min(1),
-      }),
-    })
-  ),
-  getResourcesByTopicSlug
 )
 
 resourcesRouter.patch(

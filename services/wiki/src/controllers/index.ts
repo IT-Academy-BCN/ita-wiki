@@ -3,12 +3,9 @@ export { logoutController } from './auth/logoutController'
 export { registerController } from './auth/register'
 export { authMeController } from './auth/authMeController'
 export { postResource } from './resources/postResource'
-export { getResources } from './resources/get'
+export { listResources } from './resources/list'
 export { getResourcesById } from './resources/getResourcesById'
-export {
-  getResourcesByTopicId,
-  getResourcesByTopicSlug,
-} from './resources/getResourcesByTopic'
+export { getResourcesByTopicId } from './resources/getResourcesByTopic'
 export { getResourcesByUserId } from './resources/getResourcesByUserId'
 export { getFavoriteResources } from './resources/getFavoriteResources'
 export { getVote } from './vote/get'

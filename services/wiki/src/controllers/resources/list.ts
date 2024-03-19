@@ -2,22 +2,23 @@ import { Prisma, User } from '@prisma/client'
 import Koa, { Middleware } from 'koa'
 import { prisma } from '../../prisma/client'
 import { resourceGetSchema } from '../../schemas'
-import { TResourcesGetParamsSchema } from '../../schemas/resource/resourcesGetParamsSchema'
+import { TResourcesListParamsSchema } from '../../schemas/resource/resourcesListParamsSchema'
 import {
   attachUserNamesToResources,
   markFavorites,
   transformResourceToAPI,
 } from '../../helpers'
 
-export const getResources: Middleware = async (ctx: Koa.Context) => {
+export const listResources: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User | null
   const {
     resourceTypes,
     topic: topicId,
-    slug,
+    categorySlug,
+    topicSlug,
     status,
     search,
-  } = ctx.query as TResourcesGetParamsSchema
+  } = ctx.query as TResourcesListParamsSchema
   let statusCondition: Prisma.Enumerable<Prisma.ResourceWhereInput> = {}
   if (user && status) {
     const viewedFilter = { userId: user.id }
@@ -30,7 +31,11 @@ export const getResources: Middleware = async (ctx: Koa.Context) => {
   const where: Prisma.ResourceWhereInput = {
     topics: {
       some: {
-        topic: { category: { slug }, id: topicId },
+        topic: {
+          category: { slug: categorySlug },
+          id: topicId,
+          slug: topicSlug,
+        },
       },
     },
     resourceType: { in: resourceTypes },

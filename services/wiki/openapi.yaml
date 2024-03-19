@@ -1,5 +1,5 @@
 info:
-  version: 0.10.2
+  version: 0.11.0
   title: IT Academy Wiki
   description: Our app implements a Wiki to be used as a knowledge base by the
     students of the Barcelona Activa's IT Academy
@@ -833,13 +833,21 @@ paths:
       summary: Returns a collection of resources
       parameters:
         - in: query
-          name: slug
+          name: categorySlug
           schema:
             type: string
             example: react
           required: false
           description: Slug of the category for which to retrieve resources
           example: react
+        - in: query
+          name: topicSlug
+          schema:
+            type: string
+            example: jsx
+          required: false
+          description: Slug of the topic for which to retrieve resources
+          example: jsx
         - in: query
           name: resourceTypes
           schema:
@@ -1335,153 +1343,6 @@ paths:
           description: Resources found
         "404":
           description: Topic not found
-  "/api/v1/resources/topic/slug/{slug}":
-    get:
-      tags:
-        - resources
-      summary: Returns a list of resources by topic slug
-      description: Takes in a valid topic slug and returns a list of resources
-        associated with that topic slug
-      parameters:
-        - in: path
-          name: slug
-          schema:
-            type: string
-            minLength: 1
-            description: topic slug associated with the resources
-          required: true
-      responses:
-        "200":
-          description: Resources found
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  title:
-                    type: string
-                    example: My Resource in Javascript
-                  slug:
-                    type: string
-                    example: my-resource-in-javascript
-                  description:
-                    type: string
-                    nullable: true
-                    example: Lorem ipsum javascript
-                  url:
-                    type: string
-                    format: uri
-                    example: https://tutorials.cat/learn/javascript
-                  resourceType:
-                    type: string
-                    enum: *a2
-                  userId:
-                    type: string
-                  categoryId:
-                    type: string
-                    example: clocr0bi20000h8vwipfbazso
-                  createdAt:
-                    anyOf:
-                      - type: string
-                        format: date-time
-                      - type: string
-                  updatedAt:
-                    anyOf:
-                      - type: string
-                        format: date-time
-                      - type: string
-                  user:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                  topics:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        topic:
-                          type: object
-                          properties:
-                            id:
-                              type: string
-                            name:
-                              type: string
-                              example: React Props
-                            slug:
-                              type: string
-                              example: react-props
-                            categoryId:
-                              type: string
-                            createdAt:
-                              anyOf:
-                                - type: string
-                                  format: date-time
-                                - type: string
-                            updatedAt:
-                              anyOf:
-                                - type: string
-                                  format: date-time
-                                - type: string
-                          required:
-                            - id
-                            - name
-                            - categoryId
-                            - createdAt
-                            - updatedAt
-                      required:
-                        - topic
-                  voteCount:
-                    type: object
-                    properties:
-                      upvote:
-                        type: integer
-                        minimum: 0
-                        example: 14
-                      downvote:
-                        type: integer
-                        minimum: 0
-                        example: 2
-                      total:
-                        type: integer
-                        example: 12
-                      userVote:
-                        type: integer
-                        minimum: -1
-                        maximum: 1
-                    required:
-                      - upvote
-                      - downvote
-                      - total
-                      - userVote
-                  isFavorite:
-                    type: boolean
-                    default: false
-                required:
-                  - id
-                  - title
-                  - slug
-                  - url
-                  - resourceType
-                  - userId
-                  - categoryId
-                  - createdAt
-                  - updatedAt
-                  - user
-                  - topics
-                  - voteCount
-                  - isFavorite
-        "404":
-          description: Topic not found
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/MissingUserError"
-                  - example:
-                      message: Topic not found
   /api/v1/resources/me:
     get:
       tags:
