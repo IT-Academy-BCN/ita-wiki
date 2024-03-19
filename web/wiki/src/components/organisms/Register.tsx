@@ -7,24 +7,23 @@ import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import {
   Button,
-  Title,
-  Text,
   Checkbox,
-  ValidationMessage,
-  Spinner,
+  FlexBox,
   Icon,
   InputGroup,
+  SelectGroup,
+  Spinner,
+  Title,
+  Text,
+  ValidationMessage,
   colors,
   device,
   dimensions,
-  FlexBox,
 } from '@itacademy/ui'
-import SelectGroup from '../molecules/SelectGroup'
 import { TItinerary, TRegisterForm } from '../../types'
 import { useGetItineraries, useRegister } from '../../hooks'
 
 const RegisterStyled = styled(FlexBox)`
-  gap: ${dimensions.spacing.sm};
   padding: ${dimensions.spacing.lg};
 `
 
@@ -36,6 +35,7 @@ const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
+
   @media ${device.Tablet} {
     display: grid;
     grid-template-areas:
@@ -86,6 +86,7 @@ const ButtonStyled = styled(Button)<TButton>`
   background-color: ${(props) => props.backgroundColor};
   border: 2px solid ${(props) => props.backgroundColor};
   padding: ${(props) => props.padding};
+
   &:hover,
   &:disabled {
     background-color: ${(props) => props.backgroundColor};
@@ -108,7 +109,10 @@ type TRegister = {
   handleRegisterModal: () => void
 }
 
-const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
+export const Register: FC<TRegister> = ({
+  handleLoginModal,
+  handleRegisterModal,
+}) => {
   const [visibility, setVisibility] = useState(false)
   const { t } = useTranslation()
   const {
@@ -149,7 +153,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
   })
 
   return (
-    <RegisterStyled>
+    <RegisterStyled gap={dimensions.spacing.sm}>
       <TitleStyled as="h1" fontWeight="bold">
         {t('Registre')}
       </TitleStyled>
@@ -173,6 +177,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             onBlur={() => {
               trigger('dni')
             }}
+            hiddenLabel
           />
         </GridAreaStyled>
         <GridAreaStyled gridArea="email">
@@ -189,6 +194,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             onBlur={() => {
               trigger('email')
             }}
+            hiddenLabel
           />
         </GridAreaStyled>
         <GridAreaStyled gridArea="name">
@@ -205,6 +211,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             onBlur={() => {
               trigger('name')
             }}
+            hiddenLabel
           />
         </GridAreaStyled>
         <GridAreaStyled gridArea="password">
@@ -224,6 +231,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             onBlur={() => {
               trigger('password')
             }}
+            hiddenLabel
           />
         </GridAreaStyled>
         <GridAreaStyled gridArea="confirmPassword">
@@ -245,6 +253,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             onBlur={() => {
               trigger('confirmPassword')
             }}
+            hiddenLabel
           />
         </GridAreaStyled>
         <GridAreaStyled gridArea="itineraryId">
@@ -253,7 +262,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             id="itineraryId"
             label="itineraryId"
             placeholder={t('Especialidad')}
-            error={!!errors.itineraryId}
+            $error={!!errors.itineraryId}
             options={itinerariesMap}
             validationMessage={
               errors.itineraryId?.message && t('camp obligatori')
@@ -262,6 +271,7 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
             onBlur={() => {
               trigger('itineraryId')
             }}
+            hiddenLabel
           />
         </GridAreaStyled>
         <GridAreaStyled gridArea="accept">
@@ -320,4 +330,3 @@ const Register: FC<TRegister> = ({ handleLoginModal, handleRegisterModal }) => {
     </RegisterStyled>
   )
 }
-export default Register

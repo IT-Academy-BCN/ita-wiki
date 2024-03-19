@@ -1,9 +1,9 @@
 import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
-import { Icon } from '../atoms'
-import { colors } from '../../styles'
+import { Icon, colors } from '@itacademy/ui'
+import { FC } from 'react'
 import { favMutation } from '../../helpers/fetchers'
-import { TFavorites, TResource } from '../../types'
+import { type TFavorites, type TResource } from '../../types'
 
 type TResourceFav = {
   resourceId: string
@@ -11,11 +11,11 @@ type TResourceFav = {
   fromProfile?: boolean
 }
 
-export const FavoritesIcon = ({
+export const FavoritesIcon: FC<TResourceFav> = ({
   resourceId,
   isFavorite,
   fromProfile,
-}: TResourceFav) => {
+}) => {
   const queryClient = useQueryClient()
   const { t } = useTranslation()
 
@@ -86,7 +86,7 @@ export const FavoritesIcon = ({
     <Icon
       name="favorite"
       onClick={() => handleFavorite(resourceId)}
-      fill={isFavorite ? 1 : 0}
+      $fill={isFavorite ? 1 : 0}
       color={`${colors.gray.gray3}`}
       aria-label={
         isFavorite ? t('Eliminar de favoritos') : t('Añadir a favoritos')

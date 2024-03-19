@@ -18,7 +18,7 @@ const responseSchema = userSchema
   })
   .array()
 
-let authToken = ''
+let authAdminToken = ''
 let users: DashboardUsersList
 
 beforeAll(async () => {
@@ -27,7 +27,7 @@ beforeAll(async () => {
     dni: testUserData.admin.dni,
     password: testUserData.admin.password,
   })
-  ;[authToken] = responseAdmin.header['set-cookie'][0].split(';')
+  ;[authAdminToken] = responseAdmin.header['set-cookie'][0].split(';')
   const queryResult = await client.query(
     `SELECT
     u.id,
@@ -39,13 +39,32 @@ beforeAll(async () => {
     "user" u
   JOIN itinerary i ON u.itinerary_id = i.id;`
   )
+
   users = queryResult.rows
 })
 describe('Testing get users endpoint', () => {
+  it('should fail to return a collection of users with a blocked logged-in admin', async () => {
+    const adminDni = testUserData.admin.dni
+    let newStatus = UserStatus.BLOCKED
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      newStatus,
+      adminDni,
+    ])
+    const response = await supertest(server)
+      .get(route)
+      .set('Cookie', [authAdminToken])
+    expect(response.status).toBe(403)
+
+    newStatus = UserStatus.ACTIVE
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      newStatus,
+      adminDni,
+    ])
+  })
   it('returns a  collection of users successfully with a logged-in admin user', async () => {
     const response = await supertest(server)
       .get(route)
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     expect(response.status).toBe(200)
     expect(response.body).toHaveLength(users.length)
     expect(response.body).toEqual(users)
@@ -55,7 +74,7 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server)
       .get(route)
       .query({ itinerarySlug: itinerariesData[3].slug })
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     expect(response.status).toBe(200)
     expect(response.body).toHaveLength(1)
     expect(response.body).toEqual([
@@ -66,8 +85,8 @@ describe('Testing get users endpoint', () => {
   it('returns an empty collection of users for an itinerary slug when no users are assigned, with admin logged in', async () => {
     const response = await supertest(server)
       .get(route)
-      .query({ itinerarySlug: itinerariesData[4].slug })
-      .set('Cookie', [authToken])
+      .query({ itinerarySlug: itinerariesData[6].slug })
+      .set('Cookie', [authAdminToken])
     expect(response.status).toBe(200)
     expect(response.body).toHaveLength(0)
     expect(response.body).toEqual([])
@@ -78,10 +97,10 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server)
       .get(route)
       .query({ status: UserStatus.ACTIVE })
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
-    expect(body).toHaveLength(3)
+    expect(body).toHaveLength(4)
     body.forEach((user) => {
       expect(user.status).toBe(UserStatus.ACTIVE)
     })
@@ -113,10 +132,10 @@ describe('Testing get users endpoint', () => {
         startDate,
         endDate,
       })
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
-    expect(body).toHaveLength(4)
+    expect(body).toHaveLength(6)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
   it('returns a collection of users successfully with a name query of 2 or more characters', async () => {
@@ -124,11 +143,11 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server)
       .get(route)
       .query({ name: validName })
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toBeInstanceOf(Array)
-    expect(body).toHaveLength(4)
+    expect(body).toHaveLength(6)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
   it('returns only the user that match the exact name when searched', async () => {
@@ -136,7 +155,7 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server)
       .get(route)
       .query({ name: exactName })
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toBeInstanceOf(Array)
@@ -148,7 +167,7 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server)
       .get(route)
       .query({ name: 'a' })
-      .set('Cookie', [authToken])
+      .set('Cookie', [authAdminToken])
     expect(response.status).toBe(400)
     expect(response.body.message[0].message).toContain(
       'String must contain at least 2 character(s)'

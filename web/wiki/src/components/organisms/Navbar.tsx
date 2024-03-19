@@ -1,16 +1,16 @@
 import {
   Button,
   Icon,
-  Title,
-  HamburgerMenu,
   FlexBox,
+  HamburgerMenu,
+  Modal,
+  Title,
   colors,
   device,
   dimensions,
-  Modal,
   type TFlexBox,
 } from '@itacademy/ui'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, FC } from 'react'
 import styled from 'styled-components'
 import { useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -30,11 +30,8 @@ const NavbarStyled = styled(FlexBox).withConfig<TNavbarStyled>({
     isInCategoryPage ? `${colors.gray.gray5}` : `${colors.white}`};
 
   padding: ${dimensions.spacing.none} 0.5rem;
-  justify-content: end;
-  align-items: center;
   width: 100%;
   height: 4rem;
-  gap: 15px;
   position: relative;
 
   ${Title} {
@@ -47,16 +44,13 @@ const NavbarStyled = styled(FlexBox).withConfig<TNavbarStyled>({
     gap: 15px;
   }
 `
-const IconStyled = styled.div`
+const IconStyled = styled(FlexBox)`
   padding: 6px;
   width: 3rem;
   height: ${dimensions.spacing.xxl};
   border-radius: ${dimensions.borderRadius.base};
-  background-color: ${colors.white};
-  justify-content: center;
-  align-items: center;
+  background-color: ${colors.white}
   cursor: pointer;
-  display: flex;
   transition: transform 0.3s ease;
 
   &:hover {
@@ -66,18 +60,19 @@ const IconStyled = styled.div`
 
 const AddButton = styled(IconStyled)`
   display: none;
+
   @media ${device.Mobile} {
     display: flex;
   }
 `
 const SearchButton = styled(IconStyled)`
   display: flex;
+
   @media ${device.Tablet} {
     display: none;
   }
 `
 const MenuItems = styled(FlexBox)<{ open: boolean }>`
-  flex-direction: column;
   background-color: ${colors.white};
   position: absolute;
   top: 0;
@@ -87,6 +82,7 @@ const MenuItems = styled(FlexBox)<{ open: boolean }>`
   z-index: 20;
   transition: transform 0.3s ease-in-out;
   transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(-100%)')};
+
   @media ${device.Tablet} {
     display: none;
   }
@@ -96,6 +92,7 @@ const StyledButton = styled(Button)`
   margin: ${dimensions.spacing.none} ${dimensions.spacing.md}
     ${dimensions.spacing.md} ${dimensions.spacing.md};
   width: 90%;
+
   @media ${device.Tablet} {
     width: 12rem;
   }
@@ -107,11 +104,11 @@ type TNavbar = {
   toggleSearch?: () => void
 }
 
-export const Navbar = ({
+export const Navbar: FC<TNavbar> = ({
   toggleModal,
   handleAccessModal,
   toggleSearch,
-}: TNavbar) => {
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   const { user } = useAuth()
@@ -130,6 +127,9 @@ export const Navbar = ({
     <>
       <NavbarStyled
         direction="row"
+        justify="flex-end"
+        align="center"
+        gap="15px"
         data-testid="navbar"
         isInCategoryPage={shouldRenderIcons}
       >
@@ -162,6 +162,8 @@ export const Navbar = ({
         <SelectLanguage />
         {user && user.role !== 'REGISTERED' ? (
           <IconStyled
+            justify="center"
+            align="center"
             data-testid="settings-button"
             onClick={() => handleSettingsModal()}
             title={t('Configuración')}
@@ -173,7 +175,11 @@ export const Navbar = ({
         ) : null}
 
         <UserButton />
-        <MenuItems open={isMenuOpen} data-testid="menu-items">
+        <MenuItems
+          direction="column"
+          open={isMenuOpen}
+          data-testid="menu-items"
+        >
           <CategoriesList />
         </MenuItems>
       </NavbarStyled>

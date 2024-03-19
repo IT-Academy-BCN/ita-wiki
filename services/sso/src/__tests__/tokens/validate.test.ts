@@ -1,24 +1,44 @@
 import supertest from 'supertest'
-import { expect, it, describe, beforeAll } from 'vitest'
+import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { userSchema } from '../../schemas'
+import { client } from '../../models/db'
+import { UserStatus } from '../../schemas/users/userSchema'
 
 const route = `${pathRoot.v1.tokens}/validate`
-let authToken = ''
+let userAuthToken = ''
+let adminAuthToken = ''
+
 beforeAll(async () => {
-  const response = await supertest(server)
+  const response1 = await supertest(server)
     .post(`${pathRoot.v1.auth}/login`)
     .send({
       dni: testUserData.admin.dni,
       password: testUserData.admin.password,
     })
-  authToken = response.body.authToken
+  adminAuthToken = response1.body.authToken
+
+  const response2 = await supertest(server)
+    .post(`${pathRoot.v1.auth}/login`)
+    .send({
+      dni: testUserData.userToBeBlocked.dni,
+      password: testUserData.userToBeBlocked.password,
+    })
+  userAuthToken = response2.body.authToken
+})
+afterAll(async () => {
+  const userDni = testUserData.userToBeBlocked.dni
+  const newStatus = UserStatus.ACTIVE
+  await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+    newStatus,
+    userDni,
+  ])
 })
 describe('Testing validate token endpoint', () => {
   it('should succeed with a valid token', async () => {
     const response = await supertest(server).post(route).send({
-      authToken,
+      authToken: adminAuthToken,
     })
     expect(response.status).toBe(200)
     expect(response.body.id).toBeTypeOf('string')
@@ -55,5 +75,22 @@ describe('Testing validate token endpoint', () => {
 
     expect(response.status).toBe(498)
     expect(response.body.message).toBe('Token is not valid')
+  })
+  it('should fail with ForbbidenError when blocking the user', async () => {
+    const response1 = await supertest(server).post(route).send({
+      authToken: userAuthToken,
+    })
+    expect(response1.status).toBe(200)
+    const userDni = testUserData.userToBeBlocked.dni
+    const newStatus = UserStatus.BLOCKED
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      newStatus,
+      userDni,
+    ])
+    const response2 = await supertest(server).post(route).send({
+      authToken: userAuthToken,
+    })
+    expect(response2.status).toBe(403)
+    expect(response2.body.message).toBe('The user is Blocked')
   })
 })

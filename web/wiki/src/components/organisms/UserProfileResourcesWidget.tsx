@@ -1,17 +1,17 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
-  colors,
-  dimensions,
-  device,
   FlexBox,
   Spinner,
   Title,
+  colors,
+  dimensions,
+  device,
 } from '@itacademy/ui'
 import { useSortByDate, useSortByVotes } from '../../hooks'
 import { TFavorites, TResource, TSortOrder } from '../../types'
-import CardResource from './CardResource'
+import { CardResource } from './CardResource'
 import { VotesDateController } from './VotesDateController'
 
 type TResourcesWidget = {
@@ -49,7 +49,6 @@ const WidgetContainer = styled(FlexBox)`
 `
 
 const TitleContainer = styled(FlexBox)`
-  align-items: stretch;
   align-self: flex-start;
 `
 
@@ -57,14 +56,10 @@ const CardsList = styled(FlexBox)`
   width: 100vw;
   overflow: hidden;
   overflow-x: auto;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
 
   @media only ${device.Tablet} {
     width: 100%;
     flex-direction: column;
-    align-items: flex-start;
     overflow: hidden;
     overflow-y: auto;
   }
@@ -76,6 +71,7 @@ const CardsList = styled(FlexBox)`
 
 const StyledTitle = styled(Title)`
   display: none;
+
   @media only ${device.Tablet} {
     display: block;
   }
@@ -83,6 +79,7 @@ const StyledTitle = styled(Title)`
 
 const StyledTitleMobile = styled(Title)`
   display: block;
+
   @media only ${device.Tablet} {
     display: none;
   }
@@ -93,13 +90,13 @@ const StyledFlexbox = styled(FlexBox)`
   align-self: center;
 `
 
-export const UserProfileResourcesWidget = ({
+export const UserProfileResourcesWidget: FC<TResourcesWidget> = ({
   title,
   titleMobile,
   resourcesArray,
   isLoading,
   isError,
-}: TResourcesWidget) => {
+}) => {
   const { t } = useTranslation()
 
   const [sortOrder, setSortOrder] = useState<TSortOrder>('desc')
@@ -131,7 +128,7 @@ export const UserProfileResourcesWidget = ({
 
   return (
     <WidgetContainer justify="flex-start">
-      <TitleContainer data-testid="title">
+      <TitleContainer data-testid="title" align="stretch">
         <StyledTitleMobile as="h3" fontWeight="bold">
           {titleMobile}
         </StyledTitleMobile>
@@ -156,7 +153,12 @@ export const UserProfileResourcesWidget = ({
               handleSortByVotes={handleSortByVotes}
               handleSortByDates={handleSortByDates}
             />
-            <CardsList gap={`${dimensions.spacing.xs}`} justify="flex-start">
+            <CardsList
+              direction="row"
+              justify="flex-start"
+              align="start"
+              gap={`${dimensions.spacing.xs}`}
+            >
               {selectedSortOrder?.map((resource) => (
                 <CardResource
                   key={resource.id}

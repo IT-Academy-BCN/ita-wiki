@@ -1,9 +1,7 @@
-import Category from './Category'
-import { Home } from './Home'
-import { Information } from './Information'
-import ErrorPage from './ErrorPage'
-import Login from '../components/organisms/Login'
-import Register from '../components/organisms/Register'
-import { UserProfile } from './UserProfile'
-
-export { Category, Home, Login, Register, ErrorPage, Information, UserProfile }
+export { Category } from './Category'
+export { ErrorPage } from './ErrorPage'
+export { Home } from './Home'
+export { Information } from './Information'
+export { Login } from '../components/organisms/Login'
+export { Register } from '../components/organisms/Register'
+export { UserProfile } from './UserProfile'

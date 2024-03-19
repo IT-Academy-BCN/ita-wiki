@@ -1,5 +1,4 @@
 import { Favorites, Resource, Topic } from '@prisma/client'
-import { ServiceFail } from './errors'
 import { ssoHandler } from './ssoHandler'
 
 type ResourceWithTopicsVote = Resource & {
@@ -29,13 +28,12 @@ export async function attachUserNamesToResources(resources: UnifiedResources) {
     resources.map((resource) => resource.userId)
   )
   return resources.map((resource) => {
-    const usersWithName = names.find((u) => u.id === resource.userId)
-    if (!usersWithName) throw new ServiceFail()
+    const name = names.find((u) => u.id === resource.userId)?.name ?? ''
     const updatedResource = {
       ...resource,
       user: {
         ...('user' in resource ? resource.user : {}),
-        name: usersWithName.name,
+        name,
       },
       favorites: 'favorites' in resource ? resource.favorites : [],
     }

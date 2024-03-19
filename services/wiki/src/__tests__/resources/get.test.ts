@@ -78,18 +78,26 @@ beforeAll(async () => {
   testResources.push(testResourceDataWithNoName)
 
   // createMany does not allow nested create on many-to-many relationships as per prisma docs. Therefore individual creates are made.
-  await prisma.$transaction(
-    testResources.map((resource) => prisma.resource.create({ data: resource }))
-  )
-  createdResources = await prisma.resource.findMany({})
-
-  viewedResource = await prisma.viewedResource.create({
-    data: {
-      user: { connect: { id: adminUser?.id } },
-      resource: {
-        connect: { id: createdResources[0].id },
+  await prisma.$transaction(async (transactionPrisma) => {
+    await Promise.all(
+      testResources.map(async (resourceData) => {
+        const { slug, ...dataWithoutSlug } = resourceData
+        await transactionPrisma.resource.upsert({
+          where: { slug },
+          update: { ...dataWithoutSlug },
+          create: { slug, ...dataWithoutSlug },
+        })
+      })
+    )
+    createdResources = await transactionPrisma.resource.findMany({})
+    viewedResource = await transactionPrisma.viewedResource.create({
+      data: {
+        user: { connect: { id: adminUser?.id } },
+        resource: {
+          connect: { id: createdResources[0].id },
+        },
       },
-    },
+    })
   })
   await prisma.$transaction(
     createdResources.map((resource) =>
@@ -116,10 +124,7 @@ afterAll(async () => {
   })
   await prisma.favorites.deleteMany({})
   await prisma.resource.deleteMany({
-    where: { user: { id: user?.id } },
-  })
-  await prisma.resource.deleteMany({
-    where: { user: { id: userWithNoName?.id } },
+    where: { user: { id: { in: [user!.id, userWithNoName!.id] } } },
   })
 })
 // resourceTypes as array from prisma types for the it.each tests.
@@ -154,6 +159,17 @@ describe('Testing resources GET endpoint', () => {
         resource.topics.map((t: { topic: TopicSchema }) => t.topic.id)
       ).toContain(topicId)
     })
+  })
+
+  it(`should return a resource with an empty string in name field if user's name is not available`, async () => {
+    const search = 'test-resource-4-blog'
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.resources}`)
+      .query(qs.stringify({ search }))
+
+    expect(response.status).toBe(200)
+    expect(response.body.length).toBe(1)
+    expect(response.body[0].user.name).toBe('')
   })
 
   it('should not return any resource if non-valid topic id provided', async () => {

@@ -1,16 +1,14 @@
 import styled from 'styled-components'
-import { useState } from 'react'
+import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { FlexBox, colors, dimensions, Button } from '@itacademy/ui'
+import { Button, FlexBox, Modal, colors, dimensions } from '@itacademy/ui'
 import { ResourceForm } from './ResourceForm'
 import icons from '../../assets/icons'
-import { Modal } from '../molecules'
 import { TEditResourceProps, TMappedTopics } from '../../types'
 import { useGetTopics } from '../../hooks'
 
 const ButtonContainerStyled = styled(FlexBox)`
-  gap: ${dimensions.spacing.xs};
   margin: ${dimensions.spacing.xs} 0;
 `
 
@@ -40,7 +38,7 @@ const StyledSvg = styled.div<{ isInCardResource: boolean }>`
   }
 `
 
-const EditResource = ({
+export const EditResource: FC<TEditResourceProps> = ({
   description,
   id,
   title,
@@ -48,7 +46,7 @@ const EditResource = ({
   resourceType,
   topics,
   isInCardResource = false,
-}: TEditResourceProps) => {
+}) => {
   const { t } = useTranslation()
   const { slug } = useParams()
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -83,8 +81,8 @@ const EditResource = ({
           }}
           resourceId={id}
         />
-        <ButtonContainerStyled>
-          <ButtonStyled outline>Eliminar</ButtonStyled>
+        <ButtonContainerStyled gap={dimensions.spacing.xs}>
+          <ButtonStyled outline>{t('Eliminar')}</ButtonStyled>
         </ButtonContainerStyled>
       </Modal>
       <StyledSvg onClick={openModal} isInCardResource={isInCardResource}>
@@ -97,4 +95,3 @@ const EditResource = ({
     </>
   )
 }
-export default EditResource

@@ -3,27 +3,25 @@ import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import {
-  Title,
+  FlexBox,
+  Modal,
+  ResourceTitleLink,
   Spinner,
   Text,
-  FlexBox,
+  Title,
   colors,
   device,
   dimensions,
   font,
   responsiveSizes,
-  Modal,
 } from '@itacademy/ui'
 import { useGetFavorites } from '../../hooks/useGetFavorites'
 import { useAuth } from '../../context/AuthProvider'
-import { ResourceTitleLink } from '../molecules'
-import Login from './Login'
-import Register from './Register'
+import { Login } from './Login'
+import { Register } from './Register'
 import { TFavorites } from '../../types'
 
 const TitleContainer = styled(FlexBox)`
-  align-items: stretch;
-
   @media only ${device.Tablet} {
     margin-top: ${dimensions.spacing.md};
     margin-bottom: ${dimensions.spacing.xs};
@@ -31,7 +29,6 @@ const TitleContainer = styled(FlexBox)`
 `
 
 const FavoritesContainer = styled(FlexBox)`
-  flex-direction: row;
   overflow: hidden;
   overflow-x: auto;
 
@@ -99,7 +96,7 @@ export const MyFavoritesList: FC = () => {
 
   return (
     <>
-      <TitleContainer data-testid="title">
+      <TitleContainer data-testid="title" align="stretch">
         {isMobile ? (
           <Title as="h3" fontWeight="bold">
             {t('Recursos que te gustan')}
@@ -127,7 +124,7 @@ export const MyFavoritesList: FC = () => {
 
       {data &&
         (data?.length > 0 ? (
-          <FavoritesContainer>
+          <FavoritesContainer direction="row">
             {data?.map((fav: TFavorites) => (
               <FavoritesCardList key={fav.id}>
                 <ResourceTitleLink
