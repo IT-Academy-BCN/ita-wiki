@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.16.0] - 2024-03-18
+
+### Removed
+
+- Import EditableItem from UI
+
 ## [0.15.0] - 2024-03-12
 
 ### Removed
