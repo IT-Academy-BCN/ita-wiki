@@ -17,23 +17,9 @@ beforeEach(() => {
       useAuth: vi.fn(),
     }
   })
-
-  // vi.mock('@tanstack/react-query', async () => {
-  //   const actual = await vi.importActual('@tanstack/react-query')
-  //   return {
-  //     ...actual,
-  //     useMutation: vi.fn(),
-  //   }
-  // })
-
-  // vi.mock('../../helpers/fetchers', () => ({
-  //   updateVote: vi.fn(),
-  // }))
 })
 
 const handleAccessModal = vi.fn()
-
-const handleClick = vi.fn()
 
 afterEach(() => {
   vi.resetAllMocks()
@@ -90,6 +76,7 @@ describe('CardResource component', () => {
     } as TAuthContext)
 
     render(<CardResource {...mockCardResource} />)
+
     expect(screen.getByText('Test resource title')).toBeInTheDocument()
     expect(
       screen.getByText('Test resource description 12345')
@@ -104,6 +91,7 @@ describe('CardResource component', () => {
         avatarId: 'profileAvatar.jpg',
       },
     } as TAuthContext)
+
     render(<CardResource {...mockCardResource} />)
 
     expect(screen.getByText('Test resource title')).toBeInTheDocument()
@@ -114,6 +102,7 @@ describe('CardResource component', () => {
 
     const editIcon = screen.getByTestId('edit-icon')
     expect(editIcon).toBeInTheDocument()
+
     const favIcon = screen.getByTitle('Afegeix a preferits')
     expect(favIcon).toBeInTheDocument()
   })
@@ -125,6 +114,7 @@ describe('CardResource component', () => {
         avatarId: 'Adios',
       },
     } as TAuthContext)
+
     render(<CardResource {...mockCardResource} editable={false} />)
 
     expect(screen.getByText('Test resource title')).toBeInTheDocument()
@@ -135,6 +125,7 @@ describe('CardResource component', () => {
 
     const editIcon = screen.queryByTestId('edit-icon')
     expect(editIcon).not.toBeInTheDocument()
+
     const favIcon = screen.getByTitle('Afegeix a preferits')
     expect(favIcon).toBeInTheDocument()
   })
@@ -147,7 +138,10 @@ describe('CardResource component', () => {
     render(<CardResource {...mockCardResource} />)
 
     const upvoteBtn = screen.getByTestId('increase')
+    expect(upvoteBtn).toBeInTheDocument()
+
     fireEvent.click(upvoteBtn)
+
     await waitFor(() => {
       expect(handleAccessModal).toHaveBeenCalled()
     })
@@ -161,11 +155,11 @@ describe('CardResource component', () => {
       },
     } as TAuthContext)
 
-    queryClient.setQueryData(['getResources'], [mockCardResource.id])
+    queryClient.setQueryData(['getResources'], [mockCardResource])
     const queryData = queryClient.getQueryData(['getResources']) as TResource[]
 
-    const { rerender } = render(
-      <CardResource voteCount={queryData[0].voteCount} {...mockCardResource} />
+    render(
+      <CardResource {...mockCardResource} voteCount={queryData[0].voteCount} />
     )
 
     const upvoteBtn = screen.getByTestId('increase')
@@ -177,22 +171,10 @@ describe('CardResource component', () => {
     fireEvent.click(upvoteBtn)
 
     await waitFor(() => {
-      expect(handleClick).toHaveBeenCalled()
-      expect(screen.getByText('125')).toBeInTheDocument()
-    })
-    await waitFor(() => {
       const queryDataUpdated = queryClient.getQueryData([
         'getResources',
       ]) as TResource[]
-
-      rerender(
-        <CardResource
-          voteCount={queryDataUpdated[0].voteCount}
-          {...mockCardResource}
-        />
-      )
-
-      expect(screen.getByText('125')).toBeInTheDocument()
+      expect(queryDataUpdated[0].voteCount.total).toBe(125)
     })
   })
 
@@ -204,15 +186,16 @@ describe('CardResource component', () => {
       },
     } as TAuthContext)
 
-    queryClient.setQueryData(['getFavorites'], [mockFavCardResource.id])
+    queryClient.setQueryData(['getFavorites'], [mockFavCardResource])
     const queryFavData = queryClient.getQueryData([
       'getFavorites',
     ]) as TFavorites[]
 
-    const { rerender } = render(
+    render(
       <CardResource
-        voteCount={queryFavData[0].voteCount}
         {...mockFavCardResource}
+        voteCount={queryFavData[0].voteCount}
+        fromProfile
       />
     )
 
@@ -224,14 +207,7 @@ describe('CardResource component', () => {
       const queryFavDataUpdated = queryClient.getQueryData([
         'getFavorites',
       ]) as TFavorites[]
-
-      rerender(
-        <CardResource
-          voteCount={queryFavDataUpdated[0].voteCount}
-          {...mockFavCardResource}
-        />
-      )
-      expect(screen.getByText('66')).toBeInTheDocument()
+      expect(queryFavDataUpdated[0].voteCount.total).toBe(66)
     })
   })
 
@@ -242,36 +218,32 @@ describe('CardResource component', () => {
         avatarId: 'profileAvatar.jpg',
       },
     } as TAuthContext)
-    queryClient.setQueryData(['getResourcesByUser'], [mockCardResource.id])
+
+    queryClient.setQueryData(['getResourcesByUser'], [mockCardResource])
     const queryResourcesByUser = queryClient.getQueryData([
       'getResourcesByUser',
     ]) as TResource[]
 
-    const { rerender } = render(
+    render(
       <CardResource
-        voteCount={queryResourcesByUser[0].voteCount}
         {...mockCardResource}
+        voteCount={queryResourcesByUser[0].voteCount}
+        fromProfile
       />
     )
 
     const downvoteBtn = screen.getByTestId('decrease')
     expect(downvoteBtn).toBeInTheDocument()
-
     expect(screen.getByText('124')).toBeInTheDocument()
 
     fireEvent.click(downvoteBtn)
+
     await waitFor(() => {
       const queryResourcesByUserUpdated = queryClient.getQueryData([
         'getResourcesByUser',
       ]) as TResource[]
 
-      rerender(
-        <CardResource
-          voteCount={queryResourcesByUserUpdated[0].voteCount}
-          {...mockCardResource}
-        />
-      )
-      expect(screen.getByText('123')).toBeInTheDocument()
+      expect(queryResourcesByUserUpdated[0].voteCount.total).toBe(123)
     })
   })
 })
