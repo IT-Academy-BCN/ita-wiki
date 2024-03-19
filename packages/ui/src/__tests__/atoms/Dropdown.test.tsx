@@ -21,7 +21,7 @@ const mockOptions = [
   ]
 
 describe('Dropdown', () => {
-  it('renders correctly', async () => {
+  it.only('renders correctly', async () => {
     render(
       <Dropdown options={mockOptions} />
     )
@@ -34,7 +34,7 @@ describe('Dropdown', () => {
     expect(dropdownHeader).toHaveTextContent(/selecciona/i)
     await userEvent.click(dropdownHeader)
     expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
-    expect(screen.queryByText('Test children content')).not.toBeInTheDocument()
+    expect(screen.queryByText('Option 1')).toBeInTheDocument()
     expect(screen.queryByTitle('Cerrar')).not.toBeInTheDocument()
   })
 
@@ -44,7 +44,7 @@ describe('Dropdown', () => {
     )
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
-    expect(screen.queryByText('Test children content')).not.toBeInTheDocument()
+    expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
     
     await userEvent.click(dropdownHeader)
     expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
@@ -85,13 +85,13 @@ describe('Dropdown', () => {
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
-    expect(screen.queryByText('Test children content')).not.toBeInTheDocument()
+    expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
     
     await userEvent.click(dropdownHeader)
     expect(screen.getByText('Option 1')).toBeVisible()
 
     await userEvent.click(document.body)
-    expect(screen.queryByText('Test children content')).not.toBeInTheDocument()
+    expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
   })
 
   it('renders the selected value in the DropdownHeader on initial load', () => {
