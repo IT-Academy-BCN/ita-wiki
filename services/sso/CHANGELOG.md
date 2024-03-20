@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.16.1] - 2024-03-20
+
+### Changed
+
+- User status `Inactive` renamed to `Pending`.
+
 ## [1.16.0] - 2024-03-12
 
 ### Added
