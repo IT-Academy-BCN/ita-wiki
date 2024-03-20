@@ -55,8 +55,8 @@ describe('Testing authentication endpoint', () => {
 
 it('should fail if user not active', async () => {
   const response = await supertest(server).post(route).send({
-    dni: testUserData.inactiveUser.dni,
-    password: testUserData.inactiveUser.password,
+    dni: testUserData.pendingUser.dni,
+    password: testUserData.pendingUser.password,
   })
   expect(response.status).toBe(403)
   expect(response.body.message).toBe('Only active users can login')

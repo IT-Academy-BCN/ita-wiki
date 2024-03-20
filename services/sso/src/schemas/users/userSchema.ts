@@ -8,7 +8,7 @@ export enum UserRole {
 }
 export enum UserStatus {
   ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
+  PENDING = 'PENDING',
   BLOCKED = 'BLOCKED',
 }
 export const userStatusSchema = z.nativeEnum(UserStatus)
