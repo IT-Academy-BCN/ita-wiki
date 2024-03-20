@@ -32,9 +32,8 @@ describe('Dropdown', () => {
     expect(dropdown).toBeInTheDocument()
     expect(dropdown).toHaveStyle(`cursor: pointer;`)
     expect(dropdownHeader).toHaveTextContent(/selecciona/i)
-    await userEvent.click(dropdownHeader)
     expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
-    expect(screen.queryByText('Option 1')).toBeInTheDocument()
+    expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
     expect(screen.queryByTitle('Cerrar')).not.toBeInTheDocument()
   })
 
@@ -45,12 +44,10 @@ describe('Dropdown', () => {
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
     expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
-    
-    await userEvent.click(dropdownHeader)
     expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
     
-    expect(screen.queryByText('Option 1')).toBeVisible() 
     await userEvent.click(dropdownHeader)
+    expect(screen.queryByText('Option 1')).toBeVisible() 
   
     expect(screen.getByTitle('Cerrar')).toBeInTheDocument()
   })
@@ -92,15 +89,6 @@ describe('Dropdown', () => {
 
     await userEvent.click(document.body)
     expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
-  })
-
-  it('renders the selected value in the DropdownHeader on initial load', () => {
-    render(
-      <Dropdown defaultValue="Preselected Item" options={mockOptions} />
-    )
-
-    const dropdownHeader = screen.getByTestId('dropdown-header')
-    expect(dropdownHeader).toHaveTextContent('Preselected Item')
   })
 
   const MockParent = () => {

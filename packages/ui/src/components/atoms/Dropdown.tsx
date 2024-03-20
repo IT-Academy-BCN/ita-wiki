@@ -174,7 +174,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
             <StyledIcon
               name={isDropdownOpen ? 'expand_less' : 'expand_more'}
               aria-hidden="true"
-              title={isDropdownOpen ? openText : closeText}
+              title={isDropdownOpen ? closeText : openText}
             />
           </DropdownHeader>
           {isDropdownOpen && (
