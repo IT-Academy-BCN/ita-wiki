@@ -2,14 +2,14 @@ import qs from 'qs'
 import { TFilters } from '../types'
 
 export const buildQueryString = ({
-  slug,
+  categorySlug,
   resourceTypes,
   status,
   topic,
   search,
 }: TFilters) =>
   qs.stringify({
-    slug,
+    categorySlug,
     resourceTypes,
     status,
     topic,

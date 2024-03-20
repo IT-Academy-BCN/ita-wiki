@@ -350,7 +350,7 @@ export const Category: FC = () => {
 
   const [topic, setTopic] = useState('todos')
   const [filters, setFilters] = useState<TFilters>({
-    slug,
+    categorySlug: slug,
     resourceTypes: [],
     status: [],
     topic: topic === 'todos' ? undefined : topic,
@@ -381,6 +381,13 @@ export const Category: FC = () => {
   const handleFiltersClose = () => {
     setIsFiltersOpen(false)
   }
+
+  useEffect(() => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      categorySlug: slug,
+    }))
+  }, [slug])
 
   useEffect(() => {
     setFilters((prevFilters) => ({
