@@ -1324,25 +1324,6 @@ paths:
                   - $ref: "#/components/schemas/MissingUserError"
                   - example:
                       message: Resource not found
-  "/api/v1/resources/topic/{topicId}":
-    get:
-      tags:
-        - resources
-      summary: Returns a list of resources by topic ID
-      description: Takes in a valid topic ID and returns a list of resources by topic
-      parameters:
-        - in: path
-          name: topicId
-          schema:
-            type: string
-            minLength: 1
-            description: ID of topic for which to retrieve resources
-          required: true
-      responses:
-        "200":
-          description: Resources found
-        "404":
-          description: Topic not found
   /api/v1/resources/me:
     get:
       tags:

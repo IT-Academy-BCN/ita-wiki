@@ -7,7 +7,6 @@ import {
   Resource,
   User,
   ViewedResource,
-  Topic,
 } from '@prisma/client'
 import qs from 'qs'
 import { z } from 'zod'
@@ -33,15 +32,12 @@ let viewedResource: ViewedResource
 let user: User | null
 let adminUser: User | null
 let userWithNoName: User | null
-let testTopic: Topic
+// let testTopic: Topic
 
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
     where: { slug: testCategoryData.slug },
   })) as Category
-  testTopic = (await prisma.topic.findUnique({
-    where: { slug: 'testing' },
-  })) as Topic
   user = await prisma.user.findFirst({
     where: { id: testUserData.user.id },
   })
@@ -125,9 +121,6 @@ afterAll(async () => {
   await prisma.resource.deleteMany({
     where: { user: { id: userWithNoName?.id } },
   })
-  // await prisma.topicsOnResources.deleteMany({
-  //   where: { topic: { id: testTopic.id } },
-  // })
 })
 // resourceTypes as array from prisma types for the it.each tests.
 const resourceTypes = Object.keys(RESOURCE_TYPE)
@@ -135,8 +128,6 @@ type ResourceGetSchema = z.infer<typeof resourceGetSchema>
 type TopicSchema = z.infer<typeof topicSchema>
 
 describe('Testing resources GET endpoint', () => {
-  const baseUrl = `${pathRoot.v1.resources}/topic`
-
   it('should fail with wrong resourceType', async () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}`)
@@ -399,29 +390,6 @@ describe('Testing resources GET endpoint', () => {
       .query({ categorySlug: testCategoryData.slug, search })
     expect(response.status).toBe(200)
     expect(response.body.length).toBeGreaterThanOrEqual(3)
-  })
-
-  it('should respond with OK status if topic ID exists in database and return an array of resources associated with the topic ID  ', async () => {
-    const response = await supertest(server).get(`${baseUrl}/${testTopic.id}`)
-
-    expect(response.status).toBe(200)
-    expect(response.body.resources).toBeInstanceOf(Array)
-    expect(response.body.resources.length).toBeGreaterThan(0)
-    response.body.resources.forEach((resource: any) => {
-      expect(() => resourceGetSchema.parse(resource)).not.toThrow()
-      expect(
-        resource.topics.some((topic: any) => topic.topic.id === testTopic.id)
-      ).toBe(true)
-    })
-  })
-
-  it('should fail if topic ID does not exist in database ', async () => {
-    const response = await supertest(server).get(
-      `${baseUrl}/this-topicId-does-not-exist`
-    )
-
-    expect(response.status).toBe(404)
-    expect(response.body.message).toEqual('Topic not found')
   })
 
   checkInvalidToken(`${pathRoot.v1.resources}`, 'get')
