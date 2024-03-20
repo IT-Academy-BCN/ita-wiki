@@ -32,7 +32,6 @@ let viewedResource: ViewedResource
 let user: User | null
 let adminUser: User | null
 let userWithNoName: User | null
-// let testTopic: Topic
 
 beforeAll(async () => {
   const testCategory = (await prisma.category.findUnique({
@@ -77,7 +76,7 @@ beforeAll(async () => {
     category: { connect: { id: testCategory.id } },
   }
   testResources.push(testResourceDataWithNoName)
-  // createMany does not allow nested create on many-to-many relationships as per æprisma docs. Therefore individual creates are made.
+  // createMany does not allow nested create on many-to-many relationships as per prisma docs. Therefore individual creates are made.
   await prisma.$transaction(
     testResources.map((resource) => prisma.resource.create({ data: resource }))
   )
