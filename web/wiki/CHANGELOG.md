@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.16.1] - 2024-03-20
+
+### Changed
+
+- Change query parameter `slug` to `categorySlug` in Category filters according to changed endpoint `GET/resources`
+
 ## [0.16.0] - 2024-03-18
 
 ### Removed

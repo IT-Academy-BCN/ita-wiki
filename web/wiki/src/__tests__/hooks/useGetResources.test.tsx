@@ -17,7 +17,7 @@ describe('useGetResources', () => {
   })
   it('handles filters correctly', async () => {
     const filters: TFilters = {
-      slug: 'example-slug',
+      categorySlug: 'example-slug',
       resourceTypes: ['type1', 'type2'],
       status: ['published'],
       topic: 'example-topic',
