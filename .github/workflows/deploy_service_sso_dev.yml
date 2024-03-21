@@ -7,7 +7,7 @@ on:
     types:
       - closed
     paths:
-      - "config/dev/sso.yml"
+      - "config/dev/service_sso.yml"
 
 jobs:
   deploy_sso_dev:
