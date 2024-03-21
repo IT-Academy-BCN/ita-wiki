@@ -8,18 +8,17 @@ const mockClick = vi.fn()
 describe('Button', () => {
     it('renders correctly',async () => {
         render(
-            <Button data-testid="button" onClick={mockClick}>
+            <Button data-testid="button" onClick={mockClick} style={{backgroundColor: `${colors.primary}`}}>
                 Test text
             </Button>
         )
         const button = screen.getByTestId('button')
-        // TODO
-        //  comprobar errores en los estilos que se renderiza con el btn active
+        
         expect(button).toBeInTheDocument()
         expect(screen.getByText('Test text')).toBeInTheDocument()
         expect(button).toHaveStyle(`border-radius: ${dimensions.borderRadius.base}`)
         expect(button).toHaveStyle(`padding: ${dimensions.spacing.base}`)
-        // expect(button).toHaveStyle(`background-color: ${colors.primary}`)
+        expect(button).toHaveStyle(`background-color: ${colors.primary}`)
         expect(button).toHaveStyle(`color: ${colors.white}`)
         expect(button).toHaveStyle('cursor: pointer')
 
@@ -29,27 +28,27 @@ describe('Button', () => {
 
     it('renders correctly with secondary', () => {
         render(
-            <Button data-testid="button" secondary>
+            <Button data-testid="button" secondary style={{backgroundColor: `${colors.secondary}`, border: `2px solid ${colors.secondary}`}}>
                 Test text
             </Button>
         )
         const button = screen.getByTestId('button')
 
-        // expect(button).toHaveStyle(`background-color: ${colors.secondary}`)
-        // expect(button).toHaveStyle(`border: 2px solid ${colors.secondary}`)
+        expect(button).toHaveStyle(`background-color: ${colors.secondary}`)
+        expect(button).toHaveStyle(`border: 2px solid ${colors.secondary}`)
         expect(button).toHaveStyle(`color: ${colors.white}`)
     })
 
     it('renders correctly with outline', () => {
         render(
-            <Button data-testid="button" outline>
+            <Button data-testid="button" outline style={{backgroundColor: `${colors.white}`, border: `2px solid ${colors.gray.gray4}`}}>
                 Test text
             </Button>
         )
         const button = screen.getByTestId('button')
 
-        // expect(button).toHaveStyle(`background-color: ${colors.white}`)
-        // expect(button).toHaveStyle(`border: 2px solid ${colors.gray.gray4}`)
+        expect(button).toHaveStyle(`background-color: ${colors.white}`)
+        expect(button).toHaveStyle(`border: 2px solid ${colors.gray.gray4}`)
         expect(button).toHaveStyle(`color: ${colors.gray.gray2}`)
     })
 })
