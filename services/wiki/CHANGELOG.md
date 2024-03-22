@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.12.0] - 2024-03-19
+
+### Changed
+
+- Endpoint `GET /resources/topic/{topicId}` removed. Consolidated in GET/resources/list
+
 ## [0.11.0] - 2024-03-18
 
 ### Removed

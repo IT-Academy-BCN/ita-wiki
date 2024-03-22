@@ -39,13 +39,13 @@ export const testUserData = {
     status: UserStatus.ACTIVE,
     user_meta: {},
   },
-  inactiveUser: {
-    email: 'testingInactiveUser@user.cat',
-    name: 'testingInactiveUser',
+  pendingUser: {
+    email: 'testingPendingUser@user.cat',
+    name: 'testingPendingUser',
     dni: 'Z4503536A',
     password: 'testingPswd3',
     role: UserRole.REGISTERED,
-    status: UserStatus.INACTIVE,
+    status: UserStatus.PENDING,
     user_meta: {},
   },
   blockedUser: {
@@ -92,7 +92,7 @@ export async function setup() {
   const [
     userItineraryId,
     mentorItineraryId,
-    inactiveUserItineraryId,
+    pendingUserItineraryId,
     adminUserItineraryId,
     blockedUserItineraryId,
     userToBeBlockedItineraryId,
@@ -115,8 +115,8 @@ export async function setup() {
       itineraryId = userItineraryId
     } else if (user.email === 'testingMentor@user.cat') {
       itineraryId = mentorItineraryId
-    } else if (user.email === 'testingInactiveUser@user.cat') {
-      itineraryId = inactiveUserItineraryId
+    } else if (user.email === 'testingPendingUser@user.cat') {
+      itineraryId = pendingUserItineraryId
     } else if (user.email === 'testingAdmin@user.cat') {
       itineraryId = adminUserItineraryId
     } else if (user.email === 'testingBlockedUser@user.cat') {

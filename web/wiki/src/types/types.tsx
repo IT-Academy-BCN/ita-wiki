@@ -100,7 +100,7 @@ export type TResource = {
 }
 
 export type TFilters = {
-  slug?: string
+  categorySlug?: string
   resourceTypes?: string[]
   status?: string[]
   topic?: string

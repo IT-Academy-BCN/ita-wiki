@@ -1,15 +1,14 @@
 import React, {
-  Children,
-  isValidElement,
   useState,
   useRef,
   forwardRef,
   useEffect,
   HTMLAttributes,
   useCallback,
+  useMemo,
 } from 'react'
 import styled from 'styled-components'
-import { colors, dimensions, font } from '../../styles'
+import { FlexBox, colors, dimensions, font } from '../../styles'
 import { Button } from './Button'
 import { Icon } from './Icon'
 
@@ -19,27 +18,35 @@ const StyledDropdown = styled.div`
   position: relative;
 `
 
+const StyledIcon = styled(Icon)`
+  color: ${colors.gray.gray3};
+`
+
+const StyledImage = styled.img`
+width: 24px;
+height: 24px;
+margin-right: 10px;
+`
+
 const DropdownHeader = styled(Button)`
+  justify-content: space-between;
   background-color: ${colors.white};
-  justify-content: start;
-  margin: 0;
   padding: ${dimensions.spacing.base};
   border-radius: ${dimensions.borderRadius.base};
   border: 1px solid ${colors.gray.gray4};
   color: ${colors.black.black3};
-  font-family: ${font.fontFamily};
   width: 320px;
 
   &:hover {
+    transition: all 0.2s ease;
     color: ${colors.white};
-  }
-`
+    border: 1px solid;
 
-const StyledIcon = styled(Icon)`
-  position: absolute;
-  top: ${dimensions.spacing.base};
-  right: ${dimensions.spacing.xxs};
-  color: ${colors.gray.gray3};
+    ${StyledIcon} {
+      transition: all 0.2s ease;
+      color: ${colors.white};
+    }
+  }
 `
 
 const DropdownList = styled.div`
@@ -60,6 +67,8 @@ const DropdownItem = styled.div`
   cursor: pointer;
   font-family: ${font.fontFamily};
   font-size: ${font.xss};
+  display: flex;
+  align-items: center;
 
   &:hover {
     background-color: ${colors.primary};
@@ -67,10 +76,17 @@ const DropdownItem = styled.div`
   }
 `
 
+export type TDropdownOption = {
+  id: string
+  name: string
+  icon?: string
+  iconSvg?: string
+}
+
 export type TDropdown = HTMLAttributes<HTMLElement> & {
+  options: TDropdownOption[]
   placeholder?: string
   defaultValue?: string
-  children: React.ReactNode
   onValueChange?: (value: string) => void
   openText?: string
   closeText?: string
@@ -79,9 +95,9 @@ export type TDropdown = HTMLAttributes<HTMLElement> & {
 export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
   (
     {
+      options = [],
       defaultValue = '',
       placeholder = 'Selecciona',
-      children,
       onValueChange,
       openText = 'Ampliar',
       closeText = 'Cerrar',
@@ -91,6 +107,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [selectedValue, setSelectedValue] = useState(defaultValue)
     const dropdownListRef = useRef<HTMLDivElement>(null)
+    const dropdownCloseOutsideRef = useRef<HTMLDivElement>(null)
 
     const handleSelect = useCallback(
       (value: string) => {
@@ -102,9 +119,8 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
 
         const handleClick = (event: MouseEvent) => {
           const target = event.target as HTMLElement
-          const innerValue = target.innerText
           if (dropdownListRef.current?.contains(target)) {
-            handleSelect(innerValue)
+            handleSelect(value);
           }
         }
 
@@ -121,53 +137,55 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
 
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
-        if (!dropdownListRef.current?.contains(event.target as Node)) {
+        if (!dropdownCloseOutsideRef.current?.contains(event.target as Node)) {
           setIsDropdownOpen(false)
         }
       }
 
       document.addEventListener('mousedown', handleClickOutside)
       return () => document.removeEventListener('mousedown', handleClickOutside)
-    }, [dropdownListRef])
+    }, [dropdownListRef, dropdownCloseOutsideRef])
+
+    const selectedOption = useMemo(
+      () => options.find((option) => option.id === selectedValue),
+      [options, selectedValue]
+    )
 
     return (
       <div ref={ref}>
-        <StyledDropdown data-testid="dropdown">
+        <StyledDropdown data-testid="dropdown" ref={dropdownCloseOutsideRef}>
           <DropdownHeader
             data-testid="dropdown-header"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            <span>{selectedValue || placeholder}</span>
-            {isDropdownOpen ? (
-              <StyledIcon
-                name="expand_less"
-                aria-hidden="true"
-                title={closeText}
-              />
-            ) : (
-              <StyledIcon
-                name="expand_more"
-                aria-hidden="true"
-                title={openText}
-              />
-            )}
+            { selectedOption ? ( 
+                  <FlexBox direction='row' key={selectedOption.id}>
+                  {selectedOption.icon && (
+                  <StyledIcon name={selectedOption.icon} />
+                  )}
+                  {selectedOption.iconSvg && (
+                  <StyledImage 
+                  src={selectedOption.iconSvg} alt={selectedOption.name} />
+                  )}
+                  <span>{selectedOption.name}</span>
+                  </FlexBox>
+              ) : ( <span>{defaultValue || placeholder}</span> )}
+            
+            <StyledIcon
+              name={isDropdownOpen ? 'expand_less' : 'expand_more'}
+              aria-hidden="true"
+              title={isDropdownOpen ? closeText : openText}
+            />
           </DropdownHeader>
           {isDropdownOpen && (
             <DropdownList ref={dropdownListRef}>
-              {Children.map(children, (child) => {
-                if (isValidElement(child)) {
-                  return (
-                    <DropdownItem
-                      onClick={() =>
-                        handleSelect(child.props.children.toString())
-                      }
-                    >
-                      {child}
-                    </DropdownItem>
-                  )
-                }
-                return null
-              })}
+              {options.map(({ name, id, icon, iconSvg }) => (
+                <DropdownItem key={id} data-testid={id} id={id} onClick={() => handleSelect(id)}>
+                  {icon && <StyledIcon name={icon} />}
+                  {iconSvg && <StyledImage src={iconSvg} alt={name} />}
+                  <span>{name}</span>
+                </DropdownItem>
+              ))}
             </DropdownList>
           )}
         </StyledDropdown>

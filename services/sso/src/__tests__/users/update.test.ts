@@ -14,7 +14,7 @@ const email = 'example@example.com'
 const name = 'nameExample'
 const password = 'hashedPassword'
 const role = UserRole.REGISTERED
-const status = UserStatus.INACTIVE
+const status = UserStatus.PENDING
 const route = `${pathRoot.v1.users}`
 let authToken = ''
 

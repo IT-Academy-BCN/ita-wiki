@@ -7,7 +7,7 @@ on:
     types:
       - closed
     paths:
-      - "config/dev/sso.yml"
+      - "config/dev/service_sso.yml"
 
 jobs:
   deploy_sso_dev:
@@ -21,10 +21,10 @@ jobs:
       - name: Get versions
         id: versions
         run: |
-          sso_version=$(grep version: ./config/dev/sso.yml | awk '{print $2}')
-          sso_front_version=$(grep version: ./config/dev/sso_front.yml | awk '{print $2}')
-          echo "::set-output name=sso_version::$sso_version"
-          echo "::set-output name=sso_front_version::$sso_front_version"
+          sso_service_version=$(grep version: ./config/dev/service_sso.yml | awk '{print $2}')
+          usuaris_web_version=$(grep version: ./config/dev/web_usuaris.yml | awk '{print $2}')
+          echo "::set-output name=sso_service_version::$sso_service_version"
+          echo "::set-output name=usuaris_web_version::$usuaris_web_version"
 
       - name: Execute SSH Command
         uses: appleboy/ssh-action@master
@@ -33,7 +33,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            echo "Deploying SSO Version: ${{ steps.versions.outputs.sso_version }}"
-            echo "Deploying SSO Front Version: ${{ steps.versions.outputs.sso_front_version }}"
+            echo "Deploying SSO SERVICE VERSION: ${{ steps.versions.outputs.sso_service_version }}"
+            echo "Deploying USUARIS WEB VERSION: ${{ steps.versions.outputs.usuaris_web_version }}"
             cd ${{ secrets.SSO_PATH }}/dev
-            bash deploy.sh sso ${{ steps.versions.outputs.sso_version }} ${{ steps.versions.outputs.sso_front_version }}
+            bash deploy.sh sso ${{ steps.versions.outputs.sso_service_version }} ${{ steps.versions.outputs.usuaris_web_version }}

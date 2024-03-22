@@ -448,7 +448,7 @@ paths:
                   type: string
                   enum:
                     - ACTIVE
-                    - INACTIVE
+                    - PENDING
                     - BLOCKED
                 itineraryId:
                   type: string
@@ -635,7 +635,7 @@ paths:
             type: string
             enum:
               - ACTIVE
-              - INACTIVE
+              - PENDING
               - BLOCKED
           required: false
           description: Status to filter by
@@ -686,7 +686,7 @@ paths:
                       type: string
                       enum:
                         - ACTIVE
-                        - INACTIVE
+                        - PENDING
                         - BLOCKED
                     createdAt:
                       type: string
