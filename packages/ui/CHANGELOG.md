@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.31.0] - 2024-03-22
+
+### Added
+
+- Added Search molecule with debounce
+
 ## [0.30.0] - 2024-03-15
 
 ### Added
