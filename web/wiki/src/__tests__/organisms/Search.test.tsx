@@ -9,7 +9,7 @@ describe('Search component ', () => {
       <Search
         resourcesData={[]}
         toggleSearch={vi.fn()}
-        isSearch={false}
+        $isSearch={false}
         searchValue=""
         handleSearch={vi.fn()}
         isSearchError={false}
@@ -23,7 +23,7 @@ describe('Search component ', () => {
       <Search
         resourcesData={[]}
         toggleSearch={vi.fn()}
-        isSearch
+        $isSearch
         searchValue=""
         handleSearch={vi.fn()}
         isSearchError={false}
@@ -37,7 +37,7 @@ describe('Search component ', () => {
       <Search
         resourcesData={[]}
         toggleSearch={vi.fn()}
-        isSearch
+        $isSearch
         searchValue=""
         handleSearch={vi.fn()}
         isSearchError={false}
@@ -52,7 +52,7 @@ describe('Search component ', () => {
       <Search
         resourcesData={[]}
         toggleSearch={vi.fn()}
-        isSearch
+        $isSearch
         searchValue=""
         handleSearch={handleSearch}
         isSearchError={false}
@@ -68,7 +68,7 @@ describe('Search component ', () => {
       <Search
         resourcesData={[]}
         toggleSearch={toggleSearch}
-        isSearch
+        $isSearch
         searchValue=""
         handleSearch={vi.fn()}
         isSearchError={false}
@@ -108,7 +108,7 @@ describe('Search component ', () => {
       <Search
         resourcesData={mockedResourcesData}
         toggleSearch={vi.fn()}
-        isSearch
+        $isSearch
         searchValue="test"
         handleSearch={vi.fn()}
         isSearchError={false}
@@ -123,7 +123,7 @@ describe('Search component ', () => {
       <Search
         resourcesData={[]}
         toggleSearch={vi.fn()}
-        isSearch
+        $isSearch
         searchValue=""
         handleSearch={vi.fn()}
         isSearchError

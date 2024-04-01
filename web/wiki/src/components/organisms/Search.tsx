@@ -16,7 +16,7 @@ import { TResource } from '../../types'
 type TSearch = {
   searchValue: string | null
   isSearchError: boolean
-  isSearch: boolean
+  $isSearch: boolean
   resourcesData: TResource[] | undefined
   toggleSearch: () => void
   handleSearch: (value: string) => void
@@ -88,7 +88,7 @@ const CancelSearchButton = styled(Button)`
 const Search: FC<TSearch> = ({
   resourcesData,
   toggleSearch,
-  isSearch,
+  $isSearch,
   searchValue,
   isSearchError,
   handleSearch,
@@ -105,7 +105,7 @@ const Search: FC<TSearch> = ({
     toggleSearch()
     handleSearch('')
   }
-  if (isSearch) {
+  if ($isSearch) {
     return (
       <SearchContainer>
         <Title as="h2" fontWeight="bold">
