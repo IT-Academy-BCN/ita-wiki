@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.19.0] - 2024-05-15
+
+### Added
+
+- Added SelectLanguage molecule
+
 ## [0.18.0] - 2024-05-13
 
 ### Added

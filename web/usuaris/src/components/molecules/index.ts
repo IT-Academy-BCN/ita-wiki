@@ -5,3 +5,4 @@ export { StatusDropdown } from './StatusDropdown'
 export { RoleFilter } from './RoleFilter'
 
 export { Table, type TTable } from './Table'
+export { SelectLanguage } from './SelectLanguage'
