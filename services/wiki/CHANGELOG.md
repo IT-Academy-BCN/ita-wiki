@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.13.0] - 2024-04-03
+
+### Changed
+
+- Endpoint `GET /resources/id/{resourcesId}` change to /resources/{id}
+
 ## [0.12.0] - 2024-03-19
 
 ### Changed
