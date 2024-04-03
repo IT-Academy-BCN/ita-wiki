@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.18.0] - 2024-04-01
+
+### Changed
+
+- Change Cateory page structure to separate styles
+
+### Fixed
+
+- Fix console warnings in SelectLanguage, Search and ResouceCardList
+- Fix resources scroll in Category page
+- Fix style details in Navbar and UserButton
+
+### Added
+
+- Add test to ResouceCardList
+
 ## [0.17.1] - 2024-03-20
 
 ### Changed

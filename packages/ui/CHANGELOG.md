@@ -2,11 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.30.1] - 2024-01-31
+## [0.31.1] - 2024-04-03
 
 ### Fixed
 
-- Fix tests button
+- Fix test Button
+
+## [0.31.0] - 2024-03-22
+
+### Added
+
+- Added Search molecule with debounce
 
 ## [0.30.0] - 2024-03-15
 

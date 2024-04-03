@@ -76,7 +76,6 @@ beforeAll(async () => {
     category: { connect: { id: testCategory.id } },
   }
   testResources.push(testResourceDataWithNoName)
-
   // createMany does not allow nested create on many-to-many relationships as per prisma docs. Therefore individual creates are made.
   await prisma.$transaction(
     testResources.map((resource) => prisma.resource.create({ data: resource }))

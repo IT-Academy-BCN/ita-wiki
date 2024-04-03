@@ -5,7 +5,6 @@ import {
   listResources,
   getResourcesById,
   getResourcesByUserId,
-  getResourcesByTopicId,
   getFavoriteResources,
   postResource,
 } from '../controllers'
@@ -73,18 +72,6 @@ resourcesRouter.get(
     })
   ),
   getResourcesById
-)
-
-resourcesRouter.get(
-  '/topic/:topicId',
-  validate(
-    z.object({
-      params: z.object({
-        topicId: z.string().trim().min(1),
-      }),
-    })
-  ),
-  getResourcesByTopicId
 )
 
 resourcesRouter.patch(
