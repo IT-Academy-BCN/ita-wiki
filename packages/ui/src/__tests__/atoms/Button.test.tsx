@@ -16,7 +16,7 @@ describe('Button', () => {
         const button = screen.getByTestId('button')
         expect(button).toBeInTheDocument()
 
-        //NOTE: WaitFor is needed to wait for the styles to be applied
+        // NOTE: WaitFor is needed to wait for the styles to be applied
         waitFor(() => {
             expect(screen.getByText('Test text')).toBeInTheDocument()
             expect(button).toHaveStyle(`border-radius: ${dimensions.borderRadius.base}`)
@@ -38,7 +38,7 @@ describe('Button', () => {
         )
         const button = screen.getByTestId('button')
 
-        //NOTE: WaitFor is needed to wait for the styles to be applied
+        // NOTE: WaitFor is needed to wait for the styles to be applied
         waitFor(() =>{
             expect(button).toHaveStyle(`background-color: ${colors.secondary}`)
             expect(button).toHaveStyle(`border: 2px solid ${colors.secondary}`)
@@ -54,7 +54,7 @@ describe('Button', () => {
         )
         const button = screen.getByTestId('button')
 
-        //NOTE: WaitFor is needed to wait for the styles to be applied
+        // NOTE: WaitFor is needed to wait for the styles to be applied
         waitFor(() =>{
             expect(button).toHaveStyle(`background-color: ${colors.white}`)
             expect(button).toHaveStyle(`border: 2px solid ${colors.gray.gray4}`)
