@@ -46,7 +46,7 @@ describe('Button', () => {
         })
     })
 
-    it.only('renders correctly with outline', () => {
+    it('renders correctly with outline', () => {
         render(
             <Button data-testid="button" outline>
                 Test text
