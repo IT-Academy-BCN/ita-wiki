@@ -10,6 +10,7 @@ import { TResource, TSortOrder } from '../../types'
 const SpinnerStyled = styled(Spinner)`
   align-self: center;
   justify-content: center;
+  margin-top: ${dimensions.spacing.xxl};
 `
 const StyledFlexBox = styled(FlexBox)`
   overflow: scroll;
@@ -30,11 +31,9 @@ type TResourceCardList = {
   resourcesData: TResource[] | undefined
   resourcesError: Error | unknown
   resourcesLoading: boolean
-  onSelectedSortOrderChange: (selectedSortOrder: Array<TResource>) => void
 }
 
 const ResourceCardList: FC<TResourceCardList> = ({
-  onSelectedSortOrderChange,
   handleAccessModal,
   sortOrder,
   isSortByVotesActive,
@@ -53,10 +52,8 @@ const ResourceCardList: FC<TResourceCardList> = ({
 
   const selectedSortOrder = isSortByVotesActive ? sortedVotes : sortedItems
 
-  if (resourcesError) return <p>Ha habido un error...</p>
-  if (onSelectedSortOrderChange) {
-    onSelectedSortOrderChange(selectedSortOrder)
-  }
+  if (resourcesError)
+    return <p style={{ marginTop: '2rem' }}>{t('Ha habido un error...')}</p>
 
   return (
     <StyledFlexBox
@@ -68,40 +65,41 @@ const ResourceCardList: FC<TResourceCardList> = ({
       {resourcesLoading && (
         <SpinnerStyled size="medium" as="output" data-testid="spinner" />
       )}
-      {resourcesData && resourcesData?.length > 0 ? (
-        selectedSortOrder.map((resource: TResource) => (
-          <CardResource
-            key={resource.id}
-            id={resource.id}
-            img=""
-            title={resource.title}
-            url={resource.url}
-            description={resource.description}
-            voteCount={resource.voteCount}
-            createdBy={resource.user ? resource.user.name : ''}
-            createdAt={resource.createdAt}
-            updatedAt={resource.updatedAt}
-            handleAccessModal={handleAccessModal}
-            isFavorite={user ? resource.isFavorite : false}
-            editable={
-              resource.user
-                ? user?.name === resource.user.name
-                : user?.id === resource.userId
-            }
-            resourceType={resource.resourceType}
-            topics={resource.topics}
-          />
-        ))
-      ) : (
-        <FlexBox>
-          <StyledText data-testid="emptyResource">
-            {t('¡Vaya! :/')}
-            <br />
-            <br />
-            {t('Todavía no hay recursos de este tipo.')}
-          </StyledText>
-        </FlexBox>
-      )}
+      {resourcesData &&
+        (resourcesData?.length > 0 ? (
+          selectedSortOrder.map((resource: TResource) => (
+            <CardResource
+              key={resource.id}
+              id={resource.id}
+              img=""
+              title={resource.title}
+              url={resource.url}
+              description={resource.description}
+              voteCount={resource.voteCount}
+              createdBy={resource.user ? resource.user.name : ''}
+              createdAt={resource.createdAt}
+              updatedAt={resource.updatedAt}
+              handleAccessModal={handleAccessModal}
+              isFavorite={user ? resource.isFavorite : false}
+              editable={
+                resource.user
+                  ? user?.name === resource.user.name
+                  : user?.id === resource.userId
+              }
+              resourceType={resource.resourceType}
+              topics={resource.topics}
+            />
+          ))
+        ) : (
+          <FlexBox>
+            <StyledText data-testid="emptyResource">
+              {t('¡Vaya! :/')}
+              <br />
+              <br />
+              {t('Todavía no hay recursos de este tipo.')}
+            </StyledText>
+          </FlexBox>
+        ))}
     </StyledFlexBox>
   )
 }

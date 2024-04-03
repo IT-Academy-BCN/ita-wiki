@@ -33,6 +33,11 @@ export const UserButton: FC = () => {
     width: '48px',
   }
 
+  const defaultMediaQuery = {
+    ...mediaQuery,
+    padding: '8px',
+  }
+
   const handleLoginModal = () => {
     setIsLoginOpen(!isLoginOpen)
   }
@@ -53,7 +58,7 @@ export const UserButton: FC = () => {
           alt="Avatar"
           avatarCss={avatarCss}
           forwardedRef={avatarRef}
-          mediaQuery={mediaQuery}
+          mediaQuery={defaultMediaQuery}
           onClick={handleLoginModal}
         />
       )}

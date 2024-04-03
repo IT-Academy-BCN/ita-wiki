@@ -49,7 +49,7 @@ const IconStyled = styled(FlexBox)`
   width: 3rem;
   height: ${dimensions.spacing.xxl};
   border-radius: ${dimensions.borderRadius.base};
-  background-color: ${colors.white}
+  background-color: ${colors.white};
   cursor: pointer;
   transition: transform 0.3s ease;
 
