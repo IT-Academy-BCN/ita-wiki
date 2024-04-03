@@ -11,7 +11,7 @@ import { resourceId } from '../../components/paramSchemas'
 registry.registerPath({
   method: 'get',
   tags: ['resources'],
-  path: `${pathRoot.v1.resources}/id/{resourceId}`,
+  path: `${pathRoot.v1.resources}/{resourceId}`,
   summary: 'Returns a resource by its ID',
   description:
     'Takes in a valid resource ID and returns the resource related to it.',

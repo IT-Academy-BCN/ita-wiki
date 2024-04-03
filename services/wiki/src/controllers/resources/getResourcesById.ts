@@ -9,7 +9,8 @@ import {
 } from '../../helpers'
 
 export const getResourcesById: Middleware = async (ctx: Koa.Context) => {
-  const { resourceId } = ctx.params
+  const resourceId = ctx.params.id
+
   const user = ctx.user as User | null
   const voteSelect =
     ctx.user !== null ? { userId: true, vote: true } : { vote: true }
