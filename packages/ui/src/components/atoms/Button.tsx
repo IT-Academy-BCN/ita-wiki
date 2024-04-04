@@ -45,6 +45,7 @@ const StyledButton = styled('button').withConfig<TButton>({
     `
         background-color: ${colors.secondary};
         border: 2px solid ${colors.secondary};
+        
         &:hover {
             background-color: ${colors.secondaryDark};
             border: 2px solid ${colors.secondaryDark};
@@ -66,6 +67,7 @@ const StyledButton = styled('button').withConfig<TButton>({
         background-color: ${colors.white};
         color: ${colors.gray.gray2};
         border: 2px solid ${colors.gray.gray4};
+
         &:hover {
             background-color: ${colors.outlineHover};
         }

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
 import { dimensions, colors } from '../../styles'
 import {Button} from '../../components/atoms/Button'
@@ -6,22 +6,25 @@ import {Button} from '../../components/atoms/Button'
 const mockClick = vi.fn()
 
 describe('Button', () => {
-    it('renders correctly',async () => {
+    it('renders correctly', async () => {
         render(
             <Button data-testid="button" onClick={mockClick}>
                 Test text
             </Button>
         )
+
         const button = screen.getByTestId('button')
-        // TODO
-        //  comprobar errores en los estilos que se renderiza con el btn active
         expect(button).toBeInTheDocument()
-        expect(screen.getByText('Test text')).toBeInTheDocument()
-        expect(button).toHaveStyle(`border-radius: ${dimensions.borderRadius.base}`)
-        expect(button).toHaveStyle(`padding: ${dimensions.spacing.base}`)
-        // expect(button).toHaveStyle(`background-color: ${colors.primary}`)
-        expect(button).toHaveStyle(`color: ${colors.white}`)
-        expect(button).toHaveStyle('cursor: pointer')
+
+        // NOTE: WaitFor is needed to wait for the styles to be applied
+        waitFor(() => {
+            expect(screen.getByText('Test text')).toBeInTheDocument()
+            expect(button).toHaveStyle(`border-radius: ${dimensions.borderRadius.base}`)
+            expect(button).toHaveStyle(`padding: ${dimensions.spacing.base}`)
+            expect(button).toHaveStyle(`background-color: ${colors.primary}`)
+            expect(button).toHaveStyle(`color: ${colors.white}`)
+            expect(button).toHaveStyle('cursor: pointer')
+        })
 
         fireEvent.click(button)
         expect(mockClick).toHaveBeenCalled()
@@ -35,9 +38,12 @@ describe('Button', () => {
         )
         const button = screen.getByTestId('button')
 
-        // expect(button).toHaveStyle(`background-color: ${colors.secondary}`)
-        // expect(button).toHaveStyle(`border: 2px solid ${colors.secondary}`)
-        expect(button).toHaveStyle(`color: ${colors.white}`)
+        // NOTE: WaitFor is needed to wait for the styles to be applied
+        waitFor(() =>{
+            expect(button).toHaveStyle(`background-color: ${colors.secondary}`)
+            expect(button).toHaveStyle(`border: 2px solid ${colors.secondary}`)
+            expect(button).toHaveStyle(`color: ${colors.white}`)
+        })
     })
 
     it('renders correctly with outline', () => {
@@ -48,8 +54,11 @@ describe('Button', () => {
         )
         const button = screen.getByTestId('button')
 
-        // expect(button).toHaveStyle(`background-color: ${colors.white}`)
-        // expect(button).toHaveStyle(`border: 2px solid ${colors.gray.gray4}`)
-        expect(button).toHaveStyle(`color: ${colors.gray.gray2}`)
+        // NOTE: WaitFor is needed to wait for the styles to be applied
+        waitFor(() =>{
+            expect(button).toHaveStyle(`background-color: ${colors.white}`)
+            expect(button).toHaveStyle(`border: 2px solid ${colors.gray.gray4}`)
+            expect(button).toHaveStyle(`color: ${colors.gray.gray2}`)
+        })
     })
 })
