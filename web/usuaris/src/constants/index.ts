@@ -1,4 +1,2 @@
-import { urls } from './urls'
-import { paths } from './paths'
-
-export { paths, urls }
+export { urls } from './urls'
+export { paths } from './paths'

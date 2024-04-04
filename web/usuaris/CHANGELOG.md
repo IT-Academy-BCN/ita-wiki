@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.0] - 2024-04-04
+
+### Added
+
+- Added Login in Home page only accessible to ADMIN users
+
 ## [0.5.0] - 2024-03-10
 
 ### Added

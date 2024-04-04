@@ -148,5 +148,10 @@
   "No hay usuarios para mostrar": "No hi ha usuaris per mostrar",
 
   "Mentores": "Mentors",
-  "Connector": "Connector"
+  "Connector": "Connector",
+
+  "Identificador o contraseña incorrectos": "Identificador o contrasenya incorrectes",
+
+  "Credenciales incorrectas.": "Credencials incorrectes.",
+  "Sólo accesible a usuarios administradores activos.": "Només accessible a usuaris administradors actius."
 }
