@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.14.0] - 2024-04-05
+
+### Added
+
+- Implement endpoint `GET /api/v1/api-docs/openapi.yaml` to serve `openapi.yaml` file
+
 ## [0.13.0] - 2024-04-03
 
 ### Changed
