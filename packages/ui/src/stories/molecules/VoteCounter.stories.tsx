@@ -8,36 +8,33 @@ import {
 
 const MockedVoteCounter: FC<TVoteCounter> = ({ voteCount }) => {
   const [voteCountUpdated, setVoteCountUpdated] =
-    useState<TVoteCount>(voteCount)
-
+  useState<TVoteCount>(voteCount)
+  
   const onVote = (vote: 'up' | 'down') => {
-    if (
-      (vote === 'up' && voteCountUpdated.userVote !== 1) ||
-      (vote === 'down' && voteCountUpdated.userVote === -1)
-    ) {
-      const newVoteUp = {
-        ...voteCountUpdated,
-        total: voteCountUpdated.total + 1,
-        userVote: voteCountUpdated.userVote + 1,
+    let newTotal: number
+    let newUserVote: number
+
+    if (vote === 'up') {
+        newTotal = voteCountUpdated.total + 1
+        newUserVote = voteCountUpdated.userVote + 1
+      }else if(vote === 'down') {
+        newTotal = voteCountUpdated.total - 1;
+        newUserVote = voteCountUpdated.userVote - 1
+      }else {
+        return
       }
-      setVoteCountUpdated(newVoteUp)
-    }
-    if (
-      (vote === 'up' && voteCountUpdated.userVote === 1) ||
-      (vote === 'down' && voteCountUpdated.userVote !== -1)
-    ) {
-      const newVoteDown = {
+      
+      const newVoteCount: TVoteCount = {
         ...voteCountUpdated,
-        total: voteCountUpdated.total - 1,
-        userVote: voteCountUpdated.userVote - 1,
+        total: newTotal,
+        userVote: newUserVote,
       }
-      setVoteCountUpdated(newVoteDown)
-    }
+
+      setVoteCountUpdated(newVoteCount)
   }
 
   return <VoteCounter voteCount={voteCountUpdated} onClick={onVote} />
 }
-
 const meta = {
   title: 'Molecules/VoteCounter',
   component: MockedVoteCounter,

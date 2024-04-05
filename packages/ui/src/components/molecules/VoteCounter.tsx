@@ -28,7 +28,6 @@ export type TVoteCounter = {
   voteCount: TVoteCount
   onClick: (vote: 'up' | 'down') => void
 }
-
 export const VoteCounter: FC<TVoteCounter> = ({ voteCount, onClick }) => (
   <FlexBox data-testid="voteCounter">
     <StyledIcon

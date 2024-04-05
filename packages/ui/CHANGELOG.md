@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.31.2] - 2024-04-03
+
+### Fixed
+
+- Fix VoteCounter
+
 ## [0.31.1] - 2024-04-03
 
 ### Fixed
