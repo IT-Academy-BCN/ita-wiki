@@ -1,7 +1,7 @@
 /* eslint-disable no-ex-assign */
 import { Context, Next } from 'koa'
 import { ZodError } from 'zod'
-import { JsonWebTokenError } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import { Prisma } from '@prisma/client'
 import {
   DuplicateError,
@@ -19,7 +19,7 @@ const errorMiddleware = async (ctx: Context, next: Next) => {
       error = new ValidationError(error.errors)
     } else if (error?.errorInfo?.code === 'auth/id-token-expired') {
       error = new UnauthorizedError('refresh_token')
-    } else if (error instanceof JsonWebTokenError) {
+    } else if (error instanceof jwt.JsonWebTokenError) {
       error = new InvalidToken()
       ctx.cookies.set('token', null, { expires: new Date(0), overwrite: true })
     } else if (error.code === 'P2002') {

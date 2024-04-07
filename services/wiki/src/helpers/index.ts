@@ -4,7 +4,7 @@ export { ssoHandler } from './ssoHandler'
 export {
   transformResourceToAPI,
   calculateVoteCount,
-  TVoteCount,
+  type TVoteCount,
 } from './transformResourceToAPI'
 export { attachUserNamesToResources } from './attachUserNamesToResources'
 export { markFavorites } from './markFavorites'

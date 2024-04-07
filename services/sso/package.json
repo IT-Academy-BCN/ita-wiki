@@ -5,8 +5,9 @@
   "directories": {
     "test": "test"
   },
+  "type": "module",
   "scripts": {
-    "dev": "nodemon -I --exec node --experimental-specifier-resolution=node  --loader ts-node/esm src/app.ts",
+    "dev": "tsx watch src/app.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "lint": "eslint --ext .ts src",
@@ -39,7 +40,7 @@
     "nodemon": "3.0.1",
     "prettier": "2.8.4",
     "supertest": "6.3.3",
-    "tsx": "^3.12.6",
+    "tsx": "3.14.0",
     "typescript": "5.0.2",
     "vitest": "0.30.1"
   },
@@ -58,7 +59,6 @@
     "koa2-swagger-ui": "^5.7.0",
     "pg": "^8.11.3",
     "qs": "^6.11.2",
-    "ts-node": "^10.9.1",
     "yaml": "^2.2.2",
     "yamljs": "^0.3.0",
     "zod": "3.22.3"
