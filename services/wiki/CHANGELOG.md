@@ -1,7 +1,12 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [0.14.0] - 2024-04-03
 
+### Added
+
+- Implement Hexagonal Architecture for Category Creation feature
+  
 ## [0.13.0] - 2024-04-03
 
 ### Changed
