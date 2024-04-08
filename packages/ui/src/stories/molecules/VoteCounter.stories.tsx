@@ -8,29 +8,28 @@ import {
 
 const MockedVoteCounter: FC<TVoteCounter> = ({ voteCount }) => {
   const [voteCountUpdated, setVoteCountUpdated] =
-  useState<TVoteCount>(voteCount)
-  
+    useState<TVoteCount>(voteCount)
+
   const onVote = (vote: 'up' | 'down') => {
     let newTotal: number
     let newUserVote: number
 
     if (vote === 'up') {
-        newTotal = voteCountUpdated.total + 1
-        newUserVote = voteCountUpdated.userVote + 1
-      }else if(vote === 'down') {
-        newTotal = voteCountUpdated.total - 1;
-        newUserVote = voteCountUpdated.userVote - 1
-      }else {
-        return
-      }
-      
-      const newVoteCount: TVoteCount = {
-        ...voteCountUpdated,
-        total: newTotal,
-        userVote: newUserVote,
-      }
+      newTotal = voteCountUpdated.total + 1
+      newUserVote = voteCountUpdated.userVote + 1
+    } else if (vote === 'down') {
+      newTotal = voteCountUpdated.total - 1
+      newUserVote = voteCountUpdated.userVote - 1
+    } else {
+      return
+    }
 
-      setVoteCountUpdated(newVoteCount)
+    const newVoteCount: TVoteCount = {
+      ...voteCountUpdated,
+      total: newTotal,
+      userVote: newUserVote,
+    }
+    setVoteCountUpdated(newVoteCount)
   }
 
   return <VoteCounter voteCount={voteCountUpdated} onClick={onVote} />
