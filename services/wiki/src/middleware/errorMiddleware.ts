@@ -6,6 +6,7 @@ import { Prisma } from '@prisma/client'
 import {
   DuplicateError,
   InvalidToken,
+  NotFoundError,
   ServiceUnavailable,
   UnauthorizedError,
   ValidationError,
@@ -29,6 +30,8 @@ const errorMiddleware = async (ctx: Context, next: Next) => {
       error = new ValidationError('Invalid data input')
     } else if (error.message === 'fetch failed') {
       error = new ServiceUnavailable()
+    } else if (error.code === 'ENOENT') {
+      error = new NotFoundError('File does not exist')
     }
     ctx.status = error.status || 500
     ctx.body = {
