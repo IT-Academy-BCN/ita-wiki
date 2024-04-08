@@ -8,13 +8,22 @@ import { UserStatus } from '../schemas/users/userSchema'
 
 export const authenticate = async (ctx: Context, next: Next) => {
   const { authToken } = ctx.request.body as ValidateSchema
-  if (!authToken) {
+  const authCookie = ctx.cookies.get('authToken')
+  if (!authToken && !authCookie) {
     throw new InvalidCredentials()
   }
-  const { id } = jwt.verify(authToken, appConfig.jwtKey) as JwtPayload
+  let authId
+  if (authToken) {
+    const { id } = jwt.verify(authToken, appConfig.jwtKey) as JwtPayload
+    authId = id
+  }
+  if (authCookie) {
+    const { id } = jwt.verify(authCookie, appConfig.jwtKey) as JwtPayload
+    authId = id
+  }
   const userResult = await client.query(
     'SELECT id, role, status FROM "user" WHERE id = $1',
-    [id]
+    [authId]
   )
   const user = userResult.rows[0]
   if (!user) {
@@ -24,26 +33,6 @@ export const authenticate = async (ctx: Context, next: Next) => {
     throw new ForbiddenError('The user is Blocked')
   }
   ctx.state.user = user
-  await next()
-}
 
-export const authenticateCookie = async (ctx: Context, next: Next) => {
-  const authToken = ctx.cookies.get('authToken')
-  if (!authToken) {
-    throw new InvalidCredentials()
-  }
-  const { id } = jwt.verify(authToken, appConfig.jwtKey) as JwtPayload
-  const userResult = await client.query(
-    'SELECT id, role, status FROM "user" WHERE id = $1',
-    [id]
-  )
-  const user = userResult.rows[0]
-  if (!user) {
-    throw new InvalidCredentials()
-  }
-  if (user.status === UserStatus.BLOCKED) {
-    throw new ForbiddenError('The user is Blocked')
-  }
-  ctx.state.user = user
   await next()
 }
