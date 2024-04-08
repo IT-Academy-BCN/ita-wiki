@@ -214,7 +214,7 @@ describe('Testing patch user endpoint', () => {
   it('Should NOT be able to access if the ADMIN loses "active" status', async () => {
     const response1 = await supertest(server)
       .patch(`${route}/${id}`)
-      .send({ authToken: authToken, email: 'example1@example.com' })
+      .send({ authToken, email: 'example1@example.com' })
     expect(response1.status).toBe(204)
     const adminDni = testUserData.admin.dni
     let newStatus = UserStatus.PENDING
@@ -224,7 +224,7 @@ describe('Testing patch user endpoint', () => {
     ])
     const response2 = await supertest(server)
       .patch(`${route}/${id}`)
-      .send({ authToken: authToken, email: 'example1@example.com' })
+      .send({ authToken, email: 'example1@example.com' })
     expect(response2.status).toBe(403)
     expect(response2.body.message).toBe('Only active users can proceed')
     newStatus = UserStatus.ACTIVE
