@@ -26,6 +26,9 @@ export const authenticate = async (ctx: Context, next: Next) => {
   if (user.status === UserStatus.BLOCKED) {
     throw new ForbiddenError('The user is Blocked')
   }
+  if (user.status !== UserStatus.ACTIVE) {
+    throw new ForbiddenError('Only active users can proceed')
+  }
   ctx.state.user = user
 
   await next()
