@@ -1,6 +1,13 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+
+## [1.17.0] - 2024-04-09
+
+### Added
+
+- GET `dashboard/users/me` endpoint.
+
 ## [1.16.2] - 2024-04-08
 
 ### Changed
