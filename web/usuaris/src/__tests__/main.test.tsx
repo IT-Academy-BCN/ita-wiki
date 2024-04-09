@@ -6,6 +6,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './setup'
 import { ErrorPage, Home } from '../pages'
 import { Layout } from '../components/layout'
+import { AuthProvider } from '../context/AuthProvider'
 
 describe('main', () => {
   it('renders correctly', () => {
@@ -28,15 +29,20 @@ describe('main', () => {
     })
 
     render(
-      <QueryClientProvider client={queryClient}>
-        <Layout>
-          <GlobalStyle />
-          <RouterProvider router={router} />
-        </Layout>
-      </QueryClientProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClient}>
+          <Layout>
+            <GlobalStyle />
+            <RouterProvider router={router} />
+          </Layout>
+        </QueryClientProvider>
+      </AuthProvider>
     )
 
-    const HomeElement = screen.getByText('Configuración')
-    expect(HomeElement).toBeInTheDocument()
+    const navBarElement = screen.getByText(/ESP/i)
+    const ITALogo = screen.getByAltText(/IT Academy/i)
+
+    expect(navBarElement).toBeInTheDocument()
+    expect(ITALogo).toBeInTheDocument()
   })
 })
