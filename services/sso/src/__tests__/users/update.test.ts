@@ -211,4 +211,26 @@ describe('Testing patch user endpoint', () => {
       "Access denied. You don't have permissions"
     )
   })
+  it('Should NOT be able to access if the ADMIN loses "active" status', async () => {
+    const response1 = await supertest(server)
+      .patch(`${route}/${id}`)
+      .send({ authToken, email: 'example1@example.com' })
+    expect(response1.status).toBe(204)
+    const adminDni = testUserData.admin.dni
+    let newStatus = UserStatus.PENDING
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      newStatus,
+      adminDni,
+    ])
+    const response2 = await supertest(server)
+      .patch(`${route}/${id}`)
+      .send({ authToken, email: 'example1@example.com' })
+    expect(response2.status).toBe(403)
+    expect(response2.body.message).toBe('Only active users can proceed')
+    newStatus = UserStatus.ACTIVE
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      newStatus,
+      adminDni,
+    ])
+  })
 })

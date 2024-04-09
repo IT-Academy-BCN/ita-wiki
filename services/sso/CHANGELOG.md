@@ -1,6 +1,11 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.16.2] - 2024-04-08
+
+### Changed
+
+- `authenticate` middleware refactored in one function.
 
 ## [1.16.1] - 2024-03-20
 
