@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.31.1] - 2024-04-03
+
+### Fixed
+
+- Fix test Button
+
 ## [0.31.0] - 2024-03-22
 
 ### Added

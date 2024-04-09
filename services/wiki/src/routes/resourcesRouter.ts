@@ -63,11 +63,11 @@ resourcesRouter.get(
 )
 
 resourcesRouter.get(
-  '/id/:resourceId',
+  '/:id',
   validate(
     z.object({
       params: z.object({
-        resourceId: z.string().cuid(),
+        id: z.string().cuid(),
       }),
     })
   ),

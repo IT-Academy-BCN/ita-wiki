@@ -1,20 +1,34 @@
 import { useParams } from 'react-router-dom'
 import { ChangeEvent, FC, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import styled, { keyframes } from 'styled-components'
 import {
   AccessModalContent,
   Button,
-  FlexBox,
   Modal,
-  SelectGroup,
   Text,
   Title,
-  colors,
-  device,
-  dimensions,
   responsiveSizes,
 } from '@itacademy/ui'
+import {
+  CloseFilterButton,
+  Container,
+  ContainerMain,
+  ContainerResourcesAside,
+  FilterButton,
+  FiltersContainer,
+  MainContainer,
+  MobileFiltersContainer,
+  MobileSearchContainer,
+  MobileTopicsContainer,
+  NewResourceButton,
+  ResourcesAside,
+  ResourcesContainer,
+  ScrollDiv,
+  ScrollTopics,
+  StyledSelectGroup,
+  TitleResourcesContainer,
+  WiderContainer,
+} from './Category.styles'
 import {
   DesktopSideMenu,
   Login,
@@ -27,312 +41,16 @@ import {
   Search,
   TopicsRadioWidget,
   VotesDateController,
-} from '../components/organisms'
-import { StatusFilterWidget, TypesFilterWidget } from '../components/molecules'
-import { useAuth } from '../context/AuthProvider'
-import { useGetResources, useGetTopics } from '../hooks'
-import { TFilters, TResource, TSortOrder } from '../types'
-import icons from '../assets/icons'
+} from '../../components/organisms'
+import {
+  StatusFilterWidget,
+  TypesFilterWidget,
+} from '../../components/molecules'
+import { useAuth } from '../../context/AuthProvider'
+import { useGetResources, useGetTopics } from '../../hooks'
+import { TFilters, TSortOrder } from '../../types'
+import icons from '../../assets/icons'
 
-const Container = styled(FlexBox)`
-  background-color: ${colors.white};
-  width: 100%;
-
-  @media only ${device.Tablet} {
-    height: 100vh;
-    justify-content: flex-start;
-    flex-direction: row;
-    align-items: center;
-    background-color: ${colors.gray.gray5};
-    padding: ${dimensions.spacing.none} ${dimensions.spacing.md}
-      ${dimensions.spacing.xl} ${dimensions.spacing.sm};
-  }
-`
-
-const ContainerMain = styled(FlexBox)`
-  width: 100%;
-  height: 90%;
-
-  @media ${device.Tablet} {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: ${dimensions.spacing.xs};
-    justify-content: flex-end;
-  }
-
-  @media ${device.Laptop} {
-    gap: ${dimensions.spacing.md};
-  }
-
-  @media ${device.Desktop} {
-    gap: ${dimensions.spacing.xl};
-  }
-`
-
-const WiderContainer = styled(FlexBox)`
-  width: 100%;
-  height: 100%;
-`
-
-const MainContainer = styled(FlexBox)`
-  height: 100%;
-  width: 100%;
-  background-color: ${colors.white};
-  padding: ${dimensions.spacing.sm} ${dimensions.spacing.xxs};
-  border-radius: ${dimensions.borderRadius.base};
-
-  @media ${device.Tablet} {
-    flex-direction: row;
-    padding: ${dimensions.spacing.md} ${dimensions.spacing.xxs};
-  }
-
-  @media ${device.Desktop} {
-    flex-direction: row;
-    padding: ${dimensions.spacing.md} ${dimensions.spacing.xxxl};
-  }
-`
-
-const FiltersContainer = styled(FlexBox)`
-  display: none;
-
-  @media ${device.Tablet} {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    flex: 1 2 9rem;
-  }
-
-  @media ${device.Laptop} {
-    flex: 1 2 28rem;
-  }
-
-  @media ${device.Desktop} {
-    flex: 1 2 34rem;
-  }
-`
-
-const ScrollTopics = styled(FlexBox)`
-  overflow-y: scroll;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`
-
-const ResourcesContainer = styled(FlexBox)`
-  padding-left: ${dimensions.spacing.xxxs};
-  overflow-y: auto;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  @media ${device.Laptop} {
-    width: 100%;
-    padding-left: ${dimensions.spacing.md};
-  }
-`
-
-const TitleResourcesContainer = styled(FlexBox)`
-  width: 100%;
-  padding: ${dimensions.spacing.none};
-`
-
-const ScrollDiv = styled(FlexBox)`
-  overflow: hidden;
-  overflow-x: auto;
-  width: 100%;
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`
-
-const ContainerResourcesAside = styled(FlexBox)`
-  display: none;
-
-  @media ${device.Tablet} {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    align-content: flex-end;
-    gap: ${dimensions.spacing.xs};
-    height: 100%;
-    flex: 1 1 22rem;
-  }
-
-  @media ${device.Laptop} {
-    gap: ${dimensions.spacing.md};
-    flex: 1 1 24rem;
-  }
-
-  @media ${device.Desktop} {
-    gap: ${dimensions.spacing.xl};
-    flex: 1 1 27rem;
-  }
-`
-
-const ResourcesAside = styled(FlexBox)`
-  flex: 1 2 19rem;
-  overflow: hidden;
-  overflow-x: auto;
-  width: 100%;
-  background-color: ${colors.white};
-  border-radius: ${dimensions.borderRadius.base};
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-
-  @media ${device.Tablet} {
-    padding: ${dimensions.spacing.none} ${dimensions.spacing.xs}
-      ${dimensions.spacing.xl} ${dimensions.spacing.xs};
-  }
-
-  @media ${device.Laptop} {
-    padding: ${dimensions.spacing.none} ${dimensions.spacing.xs}
-      ${dimensions.spacing.xl} ${dimensions.spacing.lg};
-  }
-`
-const MobileContainer = styled(FlexBox)`
-  justify-content: flex-start;
-  align-items: flex-start;
-  background-color: ${colors.gray.gray5};
-  padding: ${dimensions.spacing.none} ${dimensions.spacing.xs}
-    ${dimensions.spacing.md} ${dimensions.spacing.base};
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  height: 100%;
-  width: 100%;
-
-  @media ${device.Tablet} {
-    display: none;
-  }
-`
-
-const MobileTopicsContainer = styled(MobileContainer)<{ isSearch: boolean }>`
-  display: ${({ isSearch }) => (isSearch ? 'none' : 'flex')};
-
-  @media ${device.Tablet} {
-    display: none;
-  }
-`
-const MobileSearchContainer = styled(MobileContainer)<{ isSearch: boolean }>`
-  display: ${({ isSearch }) => (isSearch ? 'flex' : 'none')};
-
-  @media ${device.Tablet} {
-    display: none;
-  }
-`
-
-const NewResourceButton = styled(Button)`
-  display: flex;
-  border-radius: ${dimensions.borderRadius.sm};
-  padding: ${dimensions.spacing.md};
-  color: ${colors.gray.gray3};
-  background-color: ${colors.white};
-  border: 1px dashed ${colors.gray.gray3};
-  margin-bottom: ${dimensions.spacing.xs};
-
-  &:hover {
-    background-color: ${colors.white};
-    border: 1px dashed ${colors.gray.gray3};
-  }
-
-  @media ${device.Mobile} {
-    display: none;
-  }
-`
-
-const StyledSelectGroup = styled(SelectGroup)`
-  border: none;
-
-  &:focus {
-    outline: 0 none;
-  }
-`
-
-const FilterButton = styled(Button)`
-  color: ${colors.black.black1};
-  background-color: ${colors.white};
-  border: 1.5px solid ${colors.gray.gray3};
-  width: fit-content;
-  padding: ${dimensions.spacing.xs} ${dimensions.spacing.lg};
-  margin-bottom: ${dimensions.spacing.xs};
-
-  &:hover {
-    background-color: ${colors.white};
-    border: 1.5px solid ${colors.primary};
-  }
-
-  @media ${device.Tablet} {
-    display: none;
-  }
-`
-
-const slideInAnimation = keyframes`
-  0% {
-    transform: translateY(100%);
-  }
-
-  100% {
-    transform: translateY(0);
-  }
-`
-
-const slideOutAnimation = keyframes`
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
-    transform: translateY(100%);
-  }
-`
-
-const MobileFiltersContainer = styled.div`
-  display: block;
-  align-items: flex-start;
-  justify-content: flex-start;
-  padding: ${dimensions.spacing.md};
-  height: 50%;
-  width: 100%;
-  position: sticky;
-  bottom: 0;
-  z-index: 1;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-top-left-radius: ${dimensions.borderRadius.sm};
-  border-top-right-radius: ${dimensions.borderRadius.sm};
-  box-shadow: ${dimensions.spacing.none} -0.2rem ${dimensions.spacing.base} ${colors.gray.gray3};
-
-  &.open {
-    transform: translateY(100%);
-    animation: ${slideInAnimation} 1s forwards;
-  }
-
-  &.close {
-    transform: translateY(0%);
-    animation: ${slideOutAnimation} 1s forwards;
-  }
-
-  @media ${device.Tablet} {
-    display: none;
-  }
-`
-
-const CloseFilterButton = styled(Button)`
-  color: ${colors.black.black1};
-  background-color: ${colors.white};
-  border: none;
-  font-size: larger;
-  margin-top: ${dimensions.spacing.base};
-
-  &:hover {
-    background-color: ${colors.white};
-    border: none;
-  }
-`
 const getWindowIsMobile = () =>
   window.innerWidth <= parseInt(responsiveSizes.tablet, 10)
 
@@ -364,9 +82,7 @@ export const Category: FC = () => {
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string | null>('')
   const [isSearchError, setIsSearchError] = useState<boolean>(false)
-  const [selectedSortOrderValue, setSelectedSortOrderValue] = useState<
-    TResource[]
-  >([])
+
   const [isMobile, setIsMobile] = useState(getWindowIsMobile())
   const { t } = useTranslation()
 
@@ -386,13 +102,6 @@ export const Category: FC = () => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       categorySlug: slug,
-    }))
-  }, [slug])
-
-  useEffect(() => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      slug,
       search: searchValue ?? undefined,
     }))
   }, [searchValue, slug])
@@ -473,11 +182,6 @@ export const Category: FC = () => {
   const handleSortByDates = () => {
     setIsSortByVotesActive(false)
   }
-  const handleSelectedSortOrderChange = (
-    selectedSortOrder: Array<TResource>
-  ) => {
-    setSelectedSortOrderValue(selectedSortOrder)
-  }
 
   const { data: fetchedTopics } = useGetTopics(slug ?? '')
 
@@ -505,7 +209,7 @@ export const Category: FC = () => {
             handleAccessModal={handleAccessModal}
             toggleSearch={toggleSearch}
           />
-          <MobileTopicsContainer isSearch={isSearch}>
+          <MobileTopicsContainer $isSearch={isSearch}>
             <Title as="h2" fontWeight="bold">
               {t('Temas')}
             </Title>
@@ -519,14 +223,14 @@ export const Category: FC = () => {
             />
           </MobileTopicsContainer>
           <MobileSearchContainer
-            isSearch={isSearch}
+            $isSearch={isSearch}
             data-testid="mobile-search-component"
           >
             <Search
               searchValue={searchValue}
               toggleSearch={toggleSearch}
               isSearchError={isSearchError}
-              isSearch={isSearch}
+              $isSearch={isSearch}
               resourcesData={resourcesData}
               handleSearch={handleSearch}
             />
@@ -565,7 +269,7 @@ export const Category: FC = () => {
                       searchValue={searchValue}
                       toggleSearch={toggleSearch}
                       isSearchError={isSearchError}
-                      isSearch={isSearch}
+                      $isSearch={isSearch}
                       resourcesData={resourcesData}
                       handleSearch={handleSearch}
                     />
@@ -577,7 +281,7 @@ export const Category: FC = () => {
                     {t('Filtrar')}
                   </FilterButton>
                 </TitleResourcesContainer>
-                {selectedSortOrderValue?.length > 0 && (
+                {resourcesData && resourcesData.length > 0 && (
                   <VotesDateController
                     sortOrder={sortOrder}
                     handleSortOrder={handleSortOrder}
@@ -608,7 +312,6 @@ export const Category: FC = () => {
                     resourcesData={resourcesData}
                     resourcesError={resourcesError}
                     resourcesLoading={resourcesLoading}
-                    onSelectedSortOrderChange={handleSelectedSortOrderChange}
                   />
                 </ScrollDiv>
               </ResourcesContainer>
@@ -634,7 +337,7 @@ export const Category: FC = () => {
               <ResourcesAside justify="flex-start" align="start">
                 <MyFavoritesList />
               </ResourcesAside>
-              <ResourcesAside>
+              <ResourcesAside justify="flex-start" align="start">
                 <MyResources />
               </ResourcesAside>
             </ContainerResourcesAside>

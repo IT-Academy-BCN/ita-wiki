@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { Select, colors, device, dimensions, font } from '@itacademy/ui'
+import { Select, colors, dimensions, font } from '@itacademy/ui'
 import { languages, type Language } from '../../constants'
 
 const DropdownLang = styled(Select)<{ selectedLanguage: Language }>`
@@ -9,11 +9,13 @@ const DropdownLang = styled(Select)<{ selectedLanguage: Language }>`
   border: none;
   border-radius: ${dimensions.borderRadius.base};
   font-weight: ${font.regular};
-  color: ${colors.black.black1};
   background-color: ${colors.white};
-  height: 40px;
+  margin: 0;
+  padding: 0.47rem;
+  color: ${colors.gray.gray3};
   width: ${({ selectedLanguage }) =>
-    selectedLanguage === 'cat' ? '62px' : '46px'};
+    selectedLanguage === 'cat' ? '69px' : '57px'};
+  height: 40px;
   transition: transform 0.3s ease;
 
   &:hover {
@@ -23,15 +25,6 @@ const DropdownLang = styled(Select)<{ selectedLanguage: Language }>`
 
   &:focus {
     outline: 0 none;
-  }
-
-  @media ${device.Mobile} {
-    background-color: ${colors.white};
-    margin: 0;
-    padding: 0.47rem;
-    color: ${colors.gray.gray3};
-    width: ${({ selectedLanguage }) =>
-      selectedLanguage === 'cat' ? '69px' : '56px'};
   }
 `
 
@@ -56,7 +49,7 @@ export const SelectLanguage: FC = () => {
     <DropdownLang
       selectedLanguage={selectedLanguage as Language}
       placeholder=""
-      value={selectedLanguage}
+      defaultValue={selectedLanguage}
       onChange={handleLanguageChange}
       options={languages}
     />

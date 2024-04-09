@@ -113,9 +113,9 @@ it('modal opens and closes correctly when user is not logged', async () => {
   fireEvent.click(screen.getByTestId('new-resource-text'))
   const modalTitle = screen.getByRole('heading', {
     name: /accés restringit/i,
-  });
-  expect(modalTitle).toBeInTheDocument();
-  fireEvent.keyDown(document, { key: 'Escape' });
+  })
+  expect(modalTitle).toBeInTheDocument()
+  fireEvent.keyDown(document, { key: 'Escape' })
   await waitFor(() => {
     expect(modalTitle).not.toBeInTheDocument()
   })

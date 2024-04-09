@@ -1,8 +1,32 @@
 import { vi } from 'vitest'
-import { Route, Routes } from 'react-router-dom'
 import { render, screen, waitFor } from '../test-utils'
 import { ResourceCardList } from '../../components/organisms'
 import { TResource } from '../../types'
+
+const mockedResourcesData: TResource[] = [
+  {
+    id: '1',
+    title: 'Resource Test',
+    slug: 'resource-test',
+    description: 'Resource test description',
+    url: 'http://www.example.com/resourceTest',
+    createdAt: '2023-01-01T12:00:00Z',
+    updatedAt: '2023-01-02T12:00:00Z',
+    user: {
+      name: 'Author Name',
+      avatarId: 'avatar.jpg',
+    },
+    voteCount: {
+      upvote: 5,
+      downvote: 2,
+      total: 3,
+      userVote: 1,
+    },
+    resourceType: 'Tipo 1',
+    topics: [],
+    isFavorite: true,
+  },
+]
 
 describe('ResourceCardList', () => {
   const handleAccessModal = vi.fn()
@@ -13,50 +37,15 @@ describe('ResourceCardList', () => {
   })
 
   it('renders ResourceCard correctly on success', async () => {
-    const mockedResourcesData: TResource[] = [
-      {
-        id: '1',
-        title: 'Resource Test',
-        slug: 'resource-test',
-        description: 'Resource test description',
-        url: 'http://www.example.com/resourceTest',
-        createdAt: '2023-01-01T12:00:00Z',
-        updatedAt: '2023-01-02T12:00:00Z',
-        user: {
-          name: 'Author Name',
-          avatarId: 'avatar.jpg',
-        },
-        voteCount: {
-          upvote: 5,
-          downvote: 2,
-          total: 3,
-          userVote: 1,
-        },
-        resourceType: 'Tipo 1',
-        topics: [],
-        isFavorite: true,
-      },
-    ]
     render(
-      <Routes>
-        <Route
-          path="/category/:slug"
-          element={
-            <ResourceCardList
-              handleAccessModal={handleAccessModal}
-              sortOrder="desc"
-              isSortByVotesActive
-              onSelectedSortOrderChange={() => ''}
-              resourcesError={undefined}
-              resourcesLoading
-              resourcesData={mockedResourcesData}
-            />
-          }
-        />
-      </Routes>,
-      {
-        initialEntries: ['/category/resourceTest'],
-      }
+      <ResourceCardList
+        handleAccessModal={handleAccessModal}
+        sortOrder="desc"
+        isSortByVotesActive
+        resourcesError={undefined}
+        resourcesLoading
+        resourcesData={mockedResourcesData}
+      />
     )
 
     const spinnerComponent = screen.queryByTestId('spinner') as HTMLDivElement
@@ -77,25 +66,14 @@ describe('ResourceCardList', () => {
 
   it('renders message when Category does not have Resources', async () => {
     render(
-      <Routes>
-        <Route
-          path="/category/:slug"
-          element={
-            <ResourceCardList
-              handleAccessModal={handleAccessModal}
-              sortOrder="desc"
-              isSortByVotesActive
-              onSelectedSortOrderChange={() => ''}
-              resourcesError={undefined}
-              resourcesLoading
-              resourcesData={[]}
-            />
-          }
-        />
-      </Routes>,
-      {
-        initialEntries: ['/category/emptyResource'],
-      }
+      <ResourceCardList
+        handleAccessModal={handleAccessModal}
+        sortOrder="desc"
+        isSortByVotesActive
+        resourcesError={undefined}
+        resourcesLoading
+        resourcesData={[]}
+      />
     )
 
     const spinnerComponent = screen.queryByTestId('spinner') as HTMLDivElement
@@ -106,5 +84,21 @@ describe('ResourceCardList', () => {
       expect(screen.getByTestId('emptyResource')).toBeInTheDocument()
       expect(screen.queryByText('Resource Test')).not.toBeInTheDocument()
     })
+  })
+
+  it('renders correctly on error', () => {
+    render(
+      <ResourceCardList
+        handleAccessModal={handleAccessModal}
+        sortOrder="desc"
+        isSortByVotesActive
+        resourcesError
+        resourcesLoading={false}
+        resourcesData={undefined}
+      />
+    )
+
+    expect(screen.getByText('Hi ha hagut un error...')).toBeInTheDocument()
+    expect(screen.queryByText('Resource Test')).not.toBeInTheDocument()
   })
 })

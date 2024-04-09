@@ -1,5 +1,5 @@
 import Router from '@koa/router'
-import { authenticateCookie } from '../../middleware/authenticate'
+import { authenticate } from '../../middleware/authenticate'
 import { authorize } from '../../middleware/authorize'
 import { pathRoot } from '../routes'
 import { dashboardListUsers } from '../../controllers/dashboard/users/list'
@@ -13,7 +13,7 @@ dashboardUsersRoutes.prefix(pathRoot.v1.dashboard.users)
 
 dashboardUsersRoutes.get(
   '/',
-  authenticateCookie,
+  authenticate,
   authorize('ADMIN'),
   parse(z.object({ query: dashboardUsersListQuerySchema }), {
     useQsParser: true,
