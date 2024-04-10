@@ -37,6 +37,24 @@ const mockOptionsWithImage = [
   },
 ]
 
+const mockOptionsWithIcon = [
+  {
+    id: '1',
+    name: 'Option Favorite',
+    icon: 'favorite',
+  },
+  {
+    id: '2',
+    name: 'Option Close',
+    icon: 'close',
+  },
+  {
+    id: '3',
+    name: 'Option Search',
+    icon: 'search',
+  },
+]
+
 describe('Dropdown', () => {
   it('renders correctly', async () => {
     render(<Dropdown options={mockOptions} />)
@@ -79,6 +97,23 @@ describe('Dropdown', () => {
     expect(screen.getByTitle('Cerrar')).toBeInTheDocument()
   })
 
+  it('renders dropdown children with icon when user clicks on it', async () => {
+    render(<Dropdown options={mockOptionsWithIcon} />)
+    const dropdownHeader = screen.getByTestId('dropdown-header')
+
+    expect(screen.queryByText('Option Favorite')).not.toBeInTheDocument()
+    expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
+
+    await userEvent.click(dropdownHeader)
+    expect(screen.queryByText('Option Favorite')).toBeVisible()
+    const icon = screen.getByText('favorite')
+    expect(icon).toHaveAttribute('name', 'favorite')
+    expect(icon).toHaveClass('material-symbols-outlined')
+    expect(icon).toBeVisible()
+
+    expect(screen.getByTitle('Cerrar')).toBeInTheDocument()
+  })
+
   it('renders placeholder provided instead of default', () => {
     render(<Dropdown placeholder="Test placeholder" options={mockOptions} />)
 
@@ -113,6 +148,25 @@ describe('Dropdown', () => {
 
     const image = screen.getByRole('img')
     expect(image).toHaveAttribute('src', 'option3image.jpg')
+    expect(image).toBeVisible()
+  })
+
+  it('renders option with icon provided instead of placeholder', async () => {
+    render(
+      <Dropdown
+        defaultSelectedOption={mockOptionsWithIcon[2]}
+        options={mockOptionsWithIcon}
+      />
+    )
+
+    const dropdownHeader = screen.getByTestId('dropdown-header')
+    expect(dropdownHeader).toHaveTextContent(/option search/i)
+    expect(dropdownHeader).not.toHaveTextContent(/selecciona/i)
+
+    const icon = screen.getByText('search')
+    expect(icon).toHaveAttribute('name', 'search')
+    expect(icon).toHaveClass('material-symbols-outlined')
+    expect(icon).toBeVisible()
   })
 
   it('a click outside the dropdown closes its menu', async () => {
@@ -152,7 +206,7 @@ describe('Dropdown', () => {
     await userEvent.click(optionToSelect)
 
     await waitFor(() => {
-      expect(screen.getByTestId('selected-value')).toHaveTextContent('2')
+      expect(screen.getByTestId('selected-value')).toHaveTextContent('Option 2')
     })
   })
 })
