@@ -95,7 +95,6 @@ export type TDropdown = HTMLAttributes<HTMLElement> & {
   openText?: string
   closeText?: string
   className?: string
-  headerClassname?: string
 }
 
 export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(

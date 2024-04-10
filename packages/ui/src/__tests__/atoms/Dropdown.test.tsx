@@ -130,15 +130,15 @@ describe('Dropdown', () => {
   })
 
   const MockParent = () => {
-    const [selectedOption, setSelectedOption] = useState('')
+    const [selectedValue, setSelectedValue] = useState('')
 
     const handleChange = (selectedOption: TDropdownOption) => {
-      setSelectedOption(selectedOption.name)
+      setSelectedValue(selectedOption.name)
     }
     return (
       <div>
         <Dropdown onValueChange={handleChange} options={mockOptions} />
-        <p data-testid="selected-value">{selectedOption}</p>
+        <p data-testid="selected-value">{selectedValue}</p>
       </div>
     )
   }
