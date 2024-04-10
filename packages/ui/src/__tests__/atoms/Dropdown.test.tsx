@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { queryByText, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { expect } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { Dropdown, type TDropdownOption } from '../../components/atoms/Dropdown'
