@@ -2,8 +2,7 @@ import { useState } from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
 import { expect } from 'vitest'
 import userEvent from '@testing-library/user-event'
-import { Dropdown } from '../../components/atoms/Dropdown'
-
+import { Dropdown, type TDropdownOption } from '../../components/atoms/Dropdown'
 
 const mockOptions = [
   {
@@ -18,13 +17,29 @@ const mockOptions = [
     id: '3',
     name: 'Option 3',
   },
-  ]
+]
+
+const mockOptionsWithImage = [
+  {
+    id: '1',
+    name: 'Option 1',
+    iconSvg: 'option1image.jpg',
+  },
+  {
+    id: '2',
+    name: 'Option 2',
+    iconSvg: 'option2image.jpg',
+  },
+  {
+    id: '3',
+    name: 'Option 3',
+    iconSvg: 'option3image.jpg',
+  },
+]
 
 describe('Dropdown', () => {
   it('renders correctly', async () => {
-    render(
-      <Dropdown options={mockOptions} />
-    )
+    render(<Dropdown options={mockOptions} />)
 
     const dropdown = screen.getByTestId('dropdown')
     const dropdownHeader = screen.getByTestId('dropdown-header')
@@ -38,24 +53,34 @@ describe('Dropdown', () => {
   })
 
   it('renders dropdown children when user clicks on it', async () => {
-    render(
-      <Dropdown options={mockOptions} />
-    )
+    render(<Dropdown options={mockOptions} />)
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
     expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
     expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
-    
+
     await userEvent.click(dropdownHeader)
-    expect(screen.queryByText('Option 1')).toBeVisible() 
-  
+    expect(screen.queryByText('Option 1')).toBeVisible()
+
     expect(screen.getByTitle('Cerrar')).toBeInTheDocument()
   })
 
-  it('renders placeholder provided instead of default', () => { 
-    render(
-      <Dropdown placeholder="Test placeholder" options={mockOptions} />
-    )
+  it('renders dropdown children with image when user clicks on it', async () => {
+    render(<Dropdown options={mockOptionsWithImage} />)
+    const dropdownHeader = screen.getByTestId('dropdown-header')
+
+    expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
+    expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
+
+    await userEvent.click(dropdownHeader)
+    expect(screen.queryByText('Option 1')).toBeVisible()
+    expect(screen.queryByAltText('Option 1')).toBeVisible()
+
+    expect(screen.getByTitle('Cerrar')).toBeInTheDocument()
+  })
+
+  it('renders placeholder provided instead of default', () => {
+    render(<Dropdown placeholder="Test placeholder" options={mockOptions} />)
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
@@ -63,27 +88,40 @@ describe('Dropdown', () => {
     expect(dropdownHeader).not.toHaveTextContent(/selecciona/i)
   })
 
-  it('renders value provided instead of placeholder', async () => {
+  it('renders option provided instead of placeholder', async () => {
     render(
-      <Dropdown defaultValue="Test selected value" options={mockOptions} />
+      <Dropdown defaultSelectedOption={mockOptions[1]} options={mockOptions} />
     )
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
-    expect(dropdownHeader).toHaveTextContent(/Test selected value/i)
+    expect(dropdownHeader).toHaveTextContent(/option 2/i)
     expect(dropdownHeader).not.toHaveTextContent(/selecciona/i)
-    
+  })
+
+  it('renders option with image provided instead of placeholder', async () => {
+    render(
+      <Dropdown
+        defaultSelectedOption={mockOptionsWithImage[2]}
+        options={mockOptionsWithImage}
+      />
+    )
+
+    const dropdownHeader = screen.getByTestId('dropdown-header')
+    expect(dropdownHeader).toHaveTextContent(/option 3/i)
+    expect(dropdownHeader).not.toHaveTextContent(/selecciona/i)
+
+    const image = screen.getByRole('img')
+    expect(image).toHaveAttribute('src', 'option3image.jpg')
   })
 
   it('a click outside the dropdown closes its menu', async () => {
-    render(
-      <Dropdown options={mockOptions} />
-    )
+    render(<Dropdown options={mockOptions} />)
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
     expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
-    
+
     await userEvent.click(dropdownHeader)
     expect(screen.getByText('Option 1')).toBeVisible()
 
@@ -94,8 +132,8 @@ describe('Dropdown', () => {
   const MockParent = () => {
     const [selectedOption, setSelectedOption] = useState('')
 
-    const handleChange = (value: string) => {
-      setSelectedOption(value)
+    const handleChange = (selectedOption: TDropdownOption) => {
+      setSelectedOption(selectedOption.name)
     }
     return (
       <div>
