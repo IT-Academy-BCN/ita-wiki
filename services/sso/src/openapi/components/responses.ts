@@ -121,6 +121,15 @@ export const getUserResponse = {
   },
 }
 
+export const getDashboardUserResponse = {
+  description: 'Token is valid and user information is returned.',
+  content: {
+    'application/json': {
+      schema: userSchema.pick({ dni: true, email: true }),
+    },
+  },
+}
+
 export const listUsersIdNameResponse = {
   description: 'Token is valid and user information is returned.',
   content: {

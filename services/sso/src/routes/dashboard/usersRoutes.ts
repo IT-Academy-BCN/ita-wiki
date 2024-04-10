@@ -6,6 +6,7 @@ import { dashboardListUsers } from '../../controllers/dashboard/users/list'
 import { parse } from '../../middleware/validate'
 import { z } from '../../openapi/zod'
 import { dashboardUsersListQuerySchema } from '../../schemas'
+import { getMe } from '../../controllers/dashboard/users/getMe'
 
 export const dashboardUsersRoutes = new Router()
 
@@ -21,3 +22,4 @@ dashboardUsersRoutes.get(
   }),
   dashboardListUsers
 )
+dashboardUsersRoutes.get('/me', authenticate, authorize('ADMIN'), getMe)
