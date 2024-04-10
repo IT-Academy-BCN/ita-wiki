@@ -190,7 +190,6 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
                       <StyledImage
                         src={defaultSelectedOption.iconSvg}
                         alt={defaultSelectedOption.name}
-                        color="green"
                       />
                     )}
                     <span>{defaultSelectedOption.name}</span>

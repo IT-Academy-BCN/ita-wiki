@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { queryByText, render, screen, waitFor } from '@testing-library/react'
 import { expect } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { Dropdown, type TDropdownOption } from '../../components/atoms/Dropdown'
@@ -39,17 +39,17 @@ const mockOptionsWithImage = [
 
 const mockOptionsWithIcon = [
   {
-    id: '1',
+    id: 'fav',
     name: 'Option Favorite',
     icon: 'favorite',
   },
   {
-    id: '2',
+    id: 'close',
     name: 'Option Close',
     icon: 'close',
   },
   {
-    id: '3',
+    id: 'search',
     name: 'Option Search',
     icon: 'search',
   },
@@ -121,17 +121,25 @@ describe('Dropdown', () => {
 
     expect(dropdownHeader).toHaveTextContent(/Test placeholder/i)
     expect(dropdownHeader).not.toHaveTextContent(/selecciona/i)
+    expect(dropdownHeader).not.toHaveTextContent(/option 1/i)
   })
 
   it('renders option provided instead of placeholder', async () => {
     render(
-      <Dropdown defaultSelectedOption={mockOptions[1]} options={mockOptions} />
+      <Dropdown
+        defaultSelectedOption={mockOptions[1]}
+        options={mockOptions}
+        placeholder="Placeholder"
+      />
     )
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
     expect(dropdownHeader).toHaveTextContent(/option 2/i)
+    expect(screen.queryByTestId('option-image-2')).not.toBeInTheDocument()
     expect(dropdownHeader).not.toHaveTextContent(/selecciona/i)
+
+    expect(screen.queryByText(/placeholder/i)).not.toBeInTheDocument()
   })
 
   it('renders option with image provided instead of placeholder', async () => {
@@ -139,6 +147,7 @@ describe('Dropdown', () => {
       <Dropdown
         defaultSelectedOption={mockOptionsWithImage[2]}
         options={mockOptionsWithImage}
+        placeholder="Placeholder"
       />
     )
 
@@ -148,7 +157,10 @@ describe('Dropdown', () => {
 
     const image = screen.getByRole('img')
     expect(image).toHaveAttribute('src', 'option3image.jpg')
+    expect(image).toHaveAttribute('alt', 'Option 3')
     expect(image).toBeVisible()
+
+    expect(screen.queryByText(/placeholder/i)).not.toBeInTheDocument()
   })
 
   it('renders option with icon provided instead of placeholder', async () => {
@@ -156,6 +168,7 @@ describe('Dropdown', () => {
       <Dropdown
         defaultSelectedOption={mockOptionsWithIcon[2]}
         options={mockOptionsWithIcon}
+        placeholder="Placeholder"
       />
     )
 
@@ -167,6 +180,8 @@ describe('Dropdown', () => {
     expect(icon).toHaveAttribute('name', 'search')
     expect(icon).toHaveClass('material-symbols-outlined')
     expect(icon).toBeVisible()
+
+    expect(screen.queryByText(/placeholder/i)).not.toBeInTheDocument()
   })
 
   it('a click outside the dropdown closes its menu', async () => {
@@ -174,13 +189,13 @@ describe('Dropdown', () => {
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
-    expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
+    expect(screen.queryByText(/option 1/i)).not.toBeInTheDocument()
 
     await userEvent.click(dropdownHeader)
-    expect(screen.getByText('Option 1')).toBeVisible()
+    expect(screen.getByText(/option 1/i)).toBeVisible()
 
     await userEvent.click(document.body)
-    expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
+    expect(screen.queryByText(/option 1/i)).not.toBeInTheDocument()
   })
 
   const MockParent = () => {
@@ -206,7 +221,9 @@ describe('Dropdown', () => {
     await userEvent.click(optionToSelect)
 
     await waitFor(() => {
-      expect(screen.getByTestId('selected-value')).toHaveTextContent('Option 2')
+      expect(screen.getByTestId('selected-value')).toHaveTextContent(
+        /option 2/i
+      )
     })
   })
 })
