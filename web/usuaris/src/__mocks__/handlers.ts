@@ -16,6 +16,18 @@ export const handlers = [
       { status: 200 }
     )
   ),
+  http.get(urls.getItineraries, () =>
+    HttpResponse.json(
+      [
+        {
+          id: '1',
+          name: 'React',
+          slug: 'react',
+        },
+      ],
+      { status: 200 }
+    )
+  ),
 ]
 
 export const errorHandlers = [
@@ -23,6 +35,9 @@ export const errorHandlers = [
     HttpResponse.json({ message: 'Invalid Credentials' }, { status: 401 })
   ),
   http.get(urls.getUsers, () =>
+    HttpResponse.json({ message: 'Database error' }, { status: 500 })
+  ),
+  http.get(urls.getItineraries, () =>
     HttpResponse.json({ message: 'Database error' }, { status: 500 })
   ),
 ]
