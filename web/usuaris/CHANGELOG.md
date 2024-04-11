@@ -8,6 +8,12 @@ All notable changes to this project will be documented in this file.
 
 - Added Itineraries Dropdown filter selector
 
+## [0.6.1] - 2024-04-11
+
+### Fixed
+
+- Fixed access to Home page after login successful
+
 ## [0.6.0] - 2024-04-04
 
 ### Added
