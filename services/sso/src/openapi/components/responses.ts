@@ -22,10 +22,10 @@ export const missingTokenResponse = {
 }
 
 export const invalidTokenResponse = {
-  description: 'Invalid token',
+  description: 'Invalid token or missing token',
   content: {
     'application/json': {
-      schema: InvalidTokenError,
+      schema: z.union([InvalidTokenError, MissingTokenError]),
     },
   },
 }
