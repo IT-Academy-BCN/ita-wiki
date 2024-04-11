@@ -29,7 +29,7 @@ describe('UsersTable', () => {
 
     expect(testUser).toBeInTheDocument()
     expect(screen.getByText('Pendent')).toBeInTheDocument()
-    expect(screen.getByText('Node')).toBeInTheDocument()
+    expect(screen.getByText('backend-node')).toBeInTheDocument()
   })
 
   it('renders error message when fetching users has error', async () => {

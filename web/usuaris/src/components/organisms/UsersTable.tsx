@@ -72,14 +72,8 @@ export const UsersTable: FC = () => {
       header: `${t('Especialización')}`,
       cell: ({ row }) => {
         const itineraryName: string = row.getValue('itineraryName')
-        let formattedName: string = ''
 
-        if (itineraryName !== null) {
-          formattedName =
-            itineraryName.split('-')[1].charAt(0).toUpperCase() +
-            itineraryName.split('-')[1].slice(1)
-        }
-        return <CellStyled>{formattedName}</CellStyled>
+        return <CellStyled>{itineraryName}</CellStyled>
       },
     }),
     columHelper.accessor('status', {

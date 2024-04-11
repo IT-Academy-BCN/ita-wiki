@@ -1,1 +1,1 @@
-export { getUsers, loginUserFetcher, userInfoFetcher } from './fetchers'
+export { getUsers, loginUserFetcher } from './fetchers'
