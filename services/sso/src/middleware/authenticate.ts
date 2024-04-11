@@ -8,31 +8,13 @@ import { UserStatus } from '../schemas/users/userSchema'
 
 export const authenticate = async (ctx: Context, next: Next) => {
   const { authToken } = ctx.request.body as ValidateSchema
-  if (!authToken) {
+  const authCookie = ctx.cookies.get('authToken')
+  const token = authToken || authCookie
+  if (!token) {
     throw new InvalidCredentials()
   }
-  const { id } = jwt.verify(authToken, appConfig.jwtKey) as JwtPayload
-  const userResult = await client.query(
-    'SELECT id, role, status FROM "user" WHERE id = $1',
-    [id]
-  )
-  const user = userResult.rows[0]
-  if (!user) {
-    throw new InvalidCredentials()
-  }
-  if (user.status === UserStatus.BLOCKED) {
-    throw new ForbiddenError('The user is Blocked')
-  }
-  ctx.state.user = user
-  await next()
-}
+  const { id } = jwt.verify(token, appConfig.jwtKey) as JwtPayload
 
-export const authenticateCookie = async (ctx: Context, next: Next) => {
-  const authToken = ctx.cookies.get('authToken')
-  if (!authToken) {
-    throw new InvalidCredentials()
-  }
-  const { id } = jwt.verify(authToken, appConfig.jwtKey) as JwtPayload
   const userResult = await client.query(
     'SELECT id, role, status FROM "user" WHERE id = $1',
     [id]
@@ -44,6 +26,10 @@ export const authenticateCookie = async (ctx: Context, next: Next) => {
   if (user.status === UserStatus.BLOCKED) {
     throw new ForbiddenError('The user is Blocked')
   }
+  if (user.status !== UserStatus.ACTIVE) {
+    throw new ForbiddenError('Only active users can proceed')
+  }
   ctx.state.user = user
+
   await next()
 }

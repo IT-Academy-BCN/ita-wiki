@@ -13,6 +13,7 @@ import { errorMiddleware } from './middleware'
 import { generateOpenapiFile } from './openapi/generateFile'
 import { openapiFilename, swaggeruiUrl } from './openapi/config'
 import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
+import { serveOpenApiFile } from './middleware/serveOpenApiFile'
 
 dotenv.config()
 
@@ -54,7 +55,7 @@ app.use(swaggeruiCSPMiddleware)
 generateOpenapiFile()
 const spec = yamljs.load(openapiFilename)
 app.use(koaSwagger({ routePrefix: swaggeruiUrl, swaggerOptions: { spec } }))
-
+app.use(serveOpenApiFile)
 // Only listen if launched from terminal
 // eslint-disable-next-line @typescript-eslint/naming-convention, no-underscore-dangle
 if (process.env.NODE_ENV !== 'test') {
