@@ -4,7 +4,7 @@ import { renderHook, waitFor } from '../test-utils'
 import { queryClient } from '../setup'
 
 describe('useGetItineraries', () => {
-  it.only('fetches itineraries successfully', async () => {
+  it('fetches itineraries successfully', async () => {
     const { result } = renderHook(() => useGetItineraries(), {
       wrapper: ({ children }) => (
         <QueryClientProvider client={queryClient}>
