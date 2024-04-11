@@ -1,4 +1,4 @@
-import React, {
+import {
   useState,
   useRef,
   forwardRef,
@@ -23,12 +23,12 @@ const StyledIcon = styled(Icon)`
 `
 
 const StyledImage = styled.img`
-width: 24px;
-height: 24px;
-margin-right: 10px;
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
 `
 
-const DropdownHeader = styled(Button)`
+export const DropdownHeader = styled(Button)`
   justify-content: space-between;
   background-color: ${colors.white};
   padding: ${dimensions.spacing.base};
@@ -63,16 +63,20 @@ const DropdownList = styled.div`
 `
 
 const DropdownItem = styled.div`
-  padding: 10px;
+  padding: 12px 10px;
   cursor: pointer;
   font-family: ${font.fontFamily};
-  font-size: ${font.xss};
+  font-size: ${font.xs};
   display: flex;
   align-items: center;
 
   &:hover {
     background-color: ${colors.primary};
     color: ${colors.white};
+
+    ${StyledIcon} {
+      color: ${colors.white};
+    }
   }
 `
 
@@ -86,53 +90,42 @@ export type TDropdownOption = {
 export type TDropdown = HTMLAttributes<HTMLElement> & {
   options: TDropdownOption[]
   placeholder?: string
-  defaultValue?: string
-  onValueChange?: (value: string) => void
+  defaultSelectedOption?: TDropdownOption
+  onValueChange?: (selectedOption: TDropdownOption) => void
   openText?: string
   closeText?: string
+  className?: string
 }
 
 export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
   (
     {
       options = [],
-      defaultValue = '',
+      defaultSelectedOption,
       placeholder = 'Selecciona',
       onValueChange,
       openText = 'Ampliar',
       closeText = 'Cerrar',
+      className = '',
     },
     ref
   ) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const [selectedValue, setSelectedValue] = useState(defaultValue)
+    const [selectedValue, setSelectedValue] = useState<
+      TDropdownOption | undefined
+    >(defaultSelectedOption)
     const dropdownListRef = useRef<HTMLDivElement>(null)
     const dropdownCloseOutsideRef = useRef<HTMLDivElement>(null)
 
     const handleSelect = useCallback(
-      (value: string) => {
-        setSelectedValue(value)
+      (selectedOption: TDropdownOption) => {
+        setSelectedValue(selectedOption)
         setIsDropdownOpen(false)
         if (onValueChange) {
-          onValueChange(value)
+          onValueChange(selectedOption)
         }
-
-        const handleClick = (event: MouseEvent) => {
-          const target = event.target as HTMLElement
-          if (dropdownListRef.current?.contains(target)) {
-            handleSelect(value);
-          }
-        }
-
-        if (dropdownListRef.current) {
-          dropdownListRef.current.addEventListener('click', handleClick)
-          return () => {
-            dropdownListRef.current?.removeEventListener('click', handleClick)
-          }
-        }
-        return () => {}
       },
-      [dropdownListRef, onValueChange]
+      [onValueChange]
     )
 
     useEffect(() => {
@@ -147,30 +140,34 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
     }, [dropdownListRef, dropdownCloseOutsideRef])
 
     const selectedOption = useMemo(
-      () => options.find((option) => option.id === selectedValue),
+      () => options.find((option) => option.id === selectedValue?.id),
       [options, selectedValue]
     )
 
     return (
-      <div ref={ref}>
+      <div ref={ref} className={className}>
         <StyledDropdown data-testid="dropdown" ref={dropdownCloseOutsideRef}>
           <DropdownHeader
             data-testid="dropdown-header"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
-            { selectedOption ? ( 
-                  <FlexBox direction='row' key={selectedOption.id}>
-                  {selectedOption.icon && (
+            {selectedOption ? (
+              <FlexBox direction="row" key={selectedOption.id}>
+                {selectedOption.icon && (
                   <StyledIcon name={selectedOption.icon} />
-                  )}
-                  {selectedOption.iconSvg && (
-                  <StyledImage 
-                  src={selectedOption.iconSvg} alt={selectedOption.name} />
-                  )}
-                  <span>{selectedOption.name}</span>
-                  </FlexBox>
-              ) : ( <span>{defaultValue || placeholder}</span> )}
-            
+                )}
+                {selectedOption.iconSvg && (
+                  <StyledImage
+                    src={selectedOption.iconSvg}
+                    alt={selectedOption.name}
+                  />
+                )}
+                <span>{selectedOption.name}</span>
+              </FlexBox>
+            ) : (
+              <span>{placeholder}</span>
+            )}
+
             <StyledIcon
               name={isDropdownOpen ? 'expand_less' : 'expand_more'}
               aria-hidden="true"
@@ -179,11 +176,18 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
           </DropdownHeader>
           {isDropdownOpen && (
             <DropdownList ref={dropdownListRef}>
-              {options.map(({ name, id, icon, iconSvg }) => (
-                <DropdownItem key={id} data-testid={id} id={id} onClick={() => handleSelect(id)}>
-                  {icon && <StyledIcon name={icon} />}
-                  {iconSvg && <StyledImage src={iconSvg} alt={name} />}
-                  <span>{name}</span>
+              {options.map((option) => (
+                <DropdownItem
+                  key={option.id}
+                  data-testid={option.id}
+                  id={option.id}
+                  onClick={() => handleSelect(option)}
+                >
+                  {option.icon && <StyledIcon name={option.icon} />}
+                  {option.iconSvg && (
+                    <StyledImage src={option.iconSvg} alt={option.name} />
+                  )}
+                  <span>{option.name}</span>
                 </DropdownItem>
               ))}
             </DropdownList>

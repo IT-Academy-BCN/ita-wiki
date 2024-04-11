@@ -1,2 +1,1 @@
-export { getItineraries } from './fetchers'
-export { getUsers } from './fetchers'
+export { getItineraries, getUsers, loginUserFetcher, userInfoFetcher } from './fetchers'

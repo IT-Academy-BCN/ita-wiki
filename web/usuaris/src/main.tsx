@@ -9,6 +9,7 @@ import { paths } from './constants/paths'
 import { ErrorPage, Home } from './pages'
 import { Layout } from './components/layout'
 import './i18n'
+import { AuthProvider } from './context/AuthProvider'
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -27,11 +28,13 @@ const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <Layout>
-        <GlobalStyle />
-        <RouterProvider router={router} />
-      </Layout>
-    </QueryClientProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <Layout>
+          <GlobalStyle />
+          <RouterProvider router={router} />
+        </Layout>
+      </QueryClientProvider>
+    </AuthProvider>
   </React.StrictMode>
 )

@@ -16,6 +16,7 @@ export const handlers = [
       { status: 200 }
     )
   ),
+  
   http.get(urls.getItineraries, () =>
     HttpResponse.json(
       [
@@ -23,6 +24,21 @@ export const handlers = [
           id: '1',
           name: 'Frontend React',
           slug: 'react',
+        },
+      ],
+      { status: 200 }
+    )
+  ),
+
+  http.post(urls.logIn, () => new HttpResponse(null, { status: 204 })),
+
+  http.get(urls.getMe, () =>
+    HttpResponse.json(
+      [
+        {
+          dni: '12345678A',
+          email: 'test@example.cat',
+          role: 'ADMIN',
         },
       ],
       { status: 200 }

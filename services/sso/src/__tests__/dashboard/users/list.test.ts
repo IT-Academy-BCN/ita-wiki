@@ -61,6 +61,33 @@ describe('Testing get users endpoint', () => {
       adminDni,
     ])
   })
+  it('should fail to return a collection of users when the logged-in admin loses "active" status', async () => {
+    const response1 = await supertest(server)
+      .get(route)
+      .set('Cookie', [authAdminToken])
+    expect(response1.status).toBe(200)
+    expect(response1.body).toHaveLength(users.length)
+    expect(response1.body).toEqual(users)
+    expect(responseSchema.safeParse(response1.body).success).toBeTruthy()
+
+    const adminDni = testUserData.admin.dni
+    let newStatus = UserStatus.PENDING
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      newStatus,
+      adminDni,
+    ])
+    const response2 = await supertest(server)
+      .get(route)
+      .set('Cookie', [authAdminToken])
+    expect(response2.body.message).toBe('Only active users can proceed')
+    expect(response2.status).toBe(403)
+
+    newStatus = UserStatus.ACTIVE
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      newStatus,
+      adminDni,
+    ])
+  })
   it('returns a  collection of users successfully with a logged-in admin user', async () => {
     const response = await supertest(server)
       .get(route)
