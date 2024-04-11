@@ -124,23 +124,8 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
         if (onValueChange) {
           onValueChange(selectedOption)
         }
-
-        const handleClick = (event: MouseEvent) => {
-          const target = event.target as HTMLElement
-          if (dropdownListRef.current?.contains(target)) {
-            handleSelect(selectedOption)
-          }
-        }
-
-        if (dropdownListRef.current) {
-          dropdownListRef.current.addEventListener('click', handleClick)
-          return () => {
-            dropdownListRef.current?.removeEventListener('click', handleClick)
-          }
-        }
-        return () => {}
       },
-      [dropdownListRef, onValueChange]
+      [onValueChange]
     )
 
     useEffect(() => {
@@ -180,23 +165,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
                 <span>{selectedOption.name}</span>
               </FlexBox>
             ) : (
-              <span>
-                {(defaultSelectedOption && (
-                  <FlexBox direction="row" key={defaultSelectedOption.id}>
-                    {defaultSelectedOption.icon && (
-                      <StyledIcon name={defaultSelectedOption.icon} />
-                    )}
-                    {defaultSelectedOption.iconSvg && (
-                      <StyledImage
-                        src={defaultSelectedOption.iconSvg}
-                        alt={defaultSelectedOption.name}
-                      />
-                    )}
-                    <span>{defaultSelectedOption.name}</span>
-                  </FlexBox>
-                )) ||
-                  placeholder}
-              </span>
+              <span>{placeholder}</span>
             )}
 
             <StyledIcon

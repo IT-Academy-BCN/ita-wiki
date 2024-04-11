@@ -55,6 +55,20 @@ const mockOptionsWithIcon = [
   },
 ]
 
+const MockParent = () => {
+  const [selectedValue, setSelectedValue] = useState('')
+
+  const handleChange = (selectedOption: TDropdownOption) => {
+    setSelectedValue(selectedOption.name)
+  }
+  return (
+    <div>
+      <Dropdown onValueChange={handleChange} options={mockOptions} />
+      <p data-testid="selected-value">{selectedValue}</p>
+    </div>
+  )
+}
+
 describe('Dropdown', () => {
   it('renders correctly', async () => {
     render(<Dropdown options={mockOptions} />)
@@ -197,20 +211,6 @@ describe('Dropdown', () => {
     await userEvent.click(document.body)
     expect(screen.queryByText(/option 1/i)).not.toBeInTheDocument()
   })
-
-  const MockParent = () => {
-    const [selectedValue, setSelectedValue] = useState('')
-
-    const handleChange = (selectedOption: TDropdownOption) => {
-      setSelectedValue(selectedOption.name)
-    }
-    return (
-      <div>
-        <Dropdown onValueChange={handleChange} options={mockOptions} />
-        <p data-testid="selected-value">{selectedValue}</p>
-      </div>
-    )
-  }
 
   it('passes selected option to parent via onChange', async () => {
     render(<MockParent />)
