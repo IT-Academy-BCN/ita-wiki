@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Dropdown } from '../../../components/atoms/Dropdown'
-import  angular  from './angular.svg'
+import angular from './angular.svg'
 
 const meta: Meta<typeof Dropdown> = {
   title: 'Atoms/Dropdown',
@@ -10,7 +10,7 @@ const meta: Meta<typeof Dropdown> = {
   },
   tags: ['autodocs'],
   argTypes: {
-    defaultValue: { control: 'text' },
+    defaultSelectedOption: { control: 'object' },
     placeholder: { control: 'text' },
     onValueChange: { action: 'onValueChange' },
     options: [
@@ -48,7 +48,10 @@ export const Default: DropdownStory = {
 export const WithSelectedOption: DropdownStory = {
   args: {
     placeholder: 'Select an option',
-    defaultValue: '2',
+    defaultSelectedOption: {
+      id: '2',
+      name: 'Option 2',
+    },
     options: [
       {
         id: '1',
@@ -149,6 +152,29 @@ export const WithIcon: DropdownStory = {
 export const WithImg: DropdownStory = {
   args: {
     placeholder: 'Select an option',
+    options: [
+      {
+        id: '1',
+        name: 'Option 1',
+        iconSvg: angular,
+      },
+      {
+        id: '2',
+        name: 'Option 2',
+        iconSvg: angular,
+      },
+    ],
+  },
+  render: (args) => <Dropdown {...args} />,
+}
+
+export const WithImgAndSelectedOption: DropdownStory = {
+  args: {
+    defaultSelectedOption: {
+      id: '2',
+      name: 'Option 2',
+      iconSvg: angular,
+    },
     options: [
       {
         id: '1',
