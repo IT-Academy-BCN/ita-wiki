@@ -21,7 +21,7 @@ export const handlers = [
       [
         {
           id: '1',
-          name: 'React',
+          name: 'Frontend React',
           slug: 'react',
         },
       ],

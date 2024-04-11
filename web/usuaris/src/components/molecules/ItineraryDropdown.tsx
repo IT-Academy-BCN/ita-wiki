@@ -1,28 +1,17 @@
+import { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
-//import { Dropdown } from '@itacademy/ui'
 import {
-  Button,
   colors,
   dimensions,
+  Dropdown,
   font,
   Spinner,
-  Dropdown,
   type TDropdownOption,
 } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
-//import { DropdownHeader } from '../../../../../packages/ui/src/components/atoms/Dropdown'
 import { useGetItineraries } from '../../hooks'
+import { type TItinerary } from '../../types'
 import { icons } from '../../assets/icons'
-import { FC, useEffect, useState } from 'react'
-import {} from '@itacademy/ui'
-import { type TItinerary } from './../../types'
-
-//TODO:
-/// 1.fetch getItineraries and pass to the component - from here??
-//2. add imgs hardcaoded or ask for server
-//3. adjust styles of dropdown
-//4. pass selected item info to parent
-//5. test all
 
 const StyledDropdown = styled(Dropdown)`
   && button {
@@ -70,15 +59,12 @@ export const ItineraryDropdown: FC<TItineraryDropdown> = ({
   const { isLoading, error, data } = useGetItineraries()
 
   useEffect(() => {
-    console.log(data)
     const newData = data?.map((cat: TItinerary) => ({
       ...cat,
       iconSvg: itineraryImg[cat.name],
     }))
     setItinerariesList(newData)
   }, [data])
-
-  console.log(itinerariesList)
 
   const handleSelectedValue = (selectedOption: TDropdownOption) => {
     const selectedItinerary = data.find(
@@ -90,17 +76,14 @@ export const ItineraryDropdown: FC<TItineraryDropdown> = ({
   if (isLoading) {
     return <Spinner size="small" as="output" data-testid="spinner" />
   }
+
   if (error) return <p>{t('Ha habido un error...')} </p>
-  return (
-    <>
-      {itinerariesList && itinerariesList?.length > 0 ? (
-        <StyledDropdown
-          options={itinerariesList}
-          placeholder={t('Especialidad')}
-          onValueChange={handleSelectedValue}
-          // className={customDropdown}
-        />
-      ) : null}
-    </>
-  )
+
+  return itinerariesList && itinerariesList.length > 0 ? (
+    <StyledDropdown
+      options={itinerariesList}
+      placeholder={t('Especialidad')}
+      onValueChange={handleSelectedValue}
+    />
+  ) : null
 }

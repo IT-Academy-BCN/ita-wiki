@@ -4,7 +4,7 @@ import { FlexBox, dimensions } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
 import { DateRange } from '../molecules'
 import { ItineraryDropdown } from '../molecules/ItineraryDropdown'
-import { type TItinerary } from './../../types'
+import { type TItinerary } from '../../types'
 
 const FiltersContainer = styled(FlexBox)`
   width: 100%;
@@ -14,6 +14,8 @@ export const FiltersWidget: FC = () => {
   const { t } = useTranslation()
 
   const handleItinerary = (itineraryId: TItinerary) => {
+    // TODO: Use this info to filter
+    // eslint-disable-next-line no-console
     console.log('selected', itineraryId)
   }
 
