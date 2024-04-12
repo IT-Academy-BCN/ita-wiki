@@ -7,6 +7,7 @@ import { parse } from '../../middleware/validate'
 import { z } from '../../openapi/zod'
 import { dashboardUsersListQuerySchema } from '../../schemas'
 import { getMe } from '../../controllers/dashboard/users/getMe'
+import { dashboardUpdateUser } from '../../controllers/dashboard/users/update'
 
 export const dashboardUsersRoutes = new Router()
 
@@ -23,3 +24,10 @@ dashboardUsersRoutes.get(
   dashboardListUsers
 )
 dashboardUsersRoutes.get('/me', authenticate, authorize('ADMIN'), getMe)
+
+dashboardUsersRoutes.patch(
+  '/users/:userId',
+  authenticate,
+  authorize('ADMIN'),
+  dashboardUpdateUser
+)
