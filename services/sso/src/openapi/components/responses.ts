@@ -137,3 +137,12 @@ export const listDashboardUsersResponse = {
     },
   },
 }
+
+export const userUpdatedResponse = {
+  description: 'User information updated successfully.',
+  content: {
+    'application/json': {
+      schema: userSchema.pick({ id: true, dni: true, email: true, name: true }),
+    },
+  },
+}
