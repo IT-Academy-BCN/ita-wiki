@@ -21,7 +21,7 @@ const MockedVoteCounter: FC<TVoteCounter> = ({ voteCount }) => {
         userVote: voteCountUpdated.userVote + 1,
       }
       setVoteCountUpdated(newVoteUp)
-      }
+    }
     if (
       (vote === 'up' && voteCountUpdated.userVote === 1) ||
       (vote === 'down' && voteCountUpdated.userVote !== -1)
@@ -37,6 +37,7 @@ const MockedVoteCounter: FC<TVoteCounter> = ({ voteCount }) => {
 
   return <VoteCounter voteCount={voteCountUpdated} onClick={onVote} />
 }
+
 const meta = {
   title: 'Molecules/VoteCounter',
   component: MockedVoteCounter,
