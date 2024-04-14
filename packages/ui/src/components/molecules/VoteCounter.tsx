@@ -15,6 +15,7 @@ const StyledIcon = styled(Icon)<ArrowProp>`
 
 export type ArrowProp = {
   color: string
+  disabled: boolean
 }
 
 export type TVoteCount = {
@@ -27,15 +28,17 @@ export type TVoteCount = {
 export type TVoteCounter = {
   voteCount: TVoteCount
   onClick: (vote: 'up' | 'down') => void
+  disabled: boolean
 }
 
-export const VoteCounter: FC<TVoteCounter> = ({ voteCount, onClick }) => (
+export const VoteCounter: FC<TVoteCounter> = ({ voteCount, onClick, disabled }) => (
   <FlexBox data-testid="voteCounter">
     <StyledIcon
       name="expand_less"
       data-testid="increase"
       color={voteCount.userVote > 0 ? colors.success : colors.gray.gray3}
       onClick={() => onClick('up')}
+      disabled={disabled}
     />
     <Text
       fontWeight="bold"
@@ -50,6 +53,7 @@ export const VoteCounter: FC<TVoteCounter> = ({ voteCount, onClick }) => (
       data-testid="decrease"
       color={voteCount.userVote < 0 ? colors.error : colors.gray.gray3}
       onClick={() => onClick('down')}
+      disabled={disabled}
     />
   </FlexBox>
 )
