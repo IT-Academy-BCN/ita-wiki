@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useState,
 } from 'react'
-import { urls } from '../constants/urls'
+import { urls } from '../constants'
 
 export type TUser = {
   dni: string

@@ -1,6 +1,7 @@
 import angular from './angular.svg'
 import bbdd from './bbdd.svg'
 import calendar from './calendar.svg'
+import deleteIcon from './delete.svg'
 import dataScience from './data-science.svg'
 import itLogo from './it-logo.svg'
 import java from './java.svg'
@@ -16,6 +17,7 @@ export const icons = {
   bbdd,
   calendar,
   dataScience,
+  deleteIcon,
   itLogo,
   java,
   javascript,
