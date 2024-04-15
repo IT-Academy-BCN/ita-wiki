@@ -6,9 +6,10 @@ import { DeletedError, NotFoundError } from '../../../utils/errors'
 
 export const dashboardDeleteUser: Middleware = async (ctx: Context) => {
   const id = userIdSchema.parse(ctx.params.id)
-  const userResult = await client.query('SELECT id, deleted_at FROM "user" WHERE id = $1', [
-    id,
-  ])
+  const userResult = await client.query(
+    'SELECT id, deleted_at FROM "user" WHERE id = $1',
+    [id]
+  )
   if (!userResult.rows.length) {
     throw new NotFoundError('User not found')
   }
@@ -17,7 +18,6 @@ export const dashboardDeleteUser: Middleware = async (ctx: Context) => {
   }
   const updateQuery =
     'UPDATE "user" SET deleted_at = CURRENT_TIMESTAMP WHERE id = $1'
-  await client.query(updateQuery,[id])
+  await client.query(updateQuery, [id])
   ctx.status = 204
 }
-  

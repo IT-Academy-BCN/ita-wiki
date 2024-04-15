@@ -62,7 +62,6 @@ describe('Testing dashboard delete endpoint', () => {
       'SELECT deleted_at FROM "user" WHERE dni = $1',
       [testUserData.userToDelete.dni]
     )
-    console.log(deletedAt.rows[0].deleted_at)
     expect(deletedAt.rows[0].deleted_at).toBe(null)
     const response1 = await supertest(server)
       .delete(`${route}/${userToDeleteId}`)
@@ -73,7 +72,6 @@ describe('Testing dashboard delete endpoint', () => {
       'SELECT deleted_at FROM "user" WHERE dni = $1',
       [testUserData.userToDelete.dni]
     )
-    console.log(deletedAt.rows[0].deleted_at)
     expect(deletedAt.rows[0].deleted_at).toContain(Date)
 
     const response2 = await supertest(server)
@@ -84,7 +82,6 @@ describe('Testing dashboard delete endpoint', () => {
       'SELECT deleted_at FROM "user" WHERE dni = $1',
       [testUserData.userToDelete.dni]
     )
-    console.log(deletedAt.rows[0].deleted_at)
     expect(response2.status).toBe(410)
     expect(response2.body.message).toBe('User already deleted')
     expect(deletedAt.rows[0].deleted_at).toContain(Date)
@@ -94,15 +91,15 @@ describe('Testing dashboard delete endpoint', () => {
     const response = await supertest(server)
       .delete(`${route}/${falseId}`)
       .set('Cookie', [authAdminToken])
-      expect(response.status).toBe(404)
-      expect(response.body.message).toBe('User not found')
+    expect(response.status).toBe(404)
+    expect(response.body.message).toBe('User not found')
   })
   it('Should return error if no id is provided', async () => {
     const response = await supertest(server)
       .delete(`${route}/${undefined}`)
       .set('Cookie', [authAdminToken])
-      expect(response.status).toBe(404)
-      expect(response.body.message).toBe('User not found')
+    expect(response.status).toBe(404)
+    expect(response.body.message).toBe('User not found')
   })
   it('Should fail if user level is not ADMIN', async () => {
     await client.query('UPDATE "user" SET role = $1 WHERE dni = $2', [
@@ -112,8 +109,10 @@ describe('Testing dashboard delete endpoint', () => {
     const response = await supertest(server)
       .delete(`${route}/${userToDeleteId}`)
       .set('Cookie', [authAdminToken])
-      expect(response.status).toBe(403)
-      expect(response.body.message).toBe("Access denied. You don't have permissions")
+    expect(response.status).toBe(403)
+    expect(response.body.message).toBe(
+      "Access denied. You don't have permissions"
+    )
 
     await client.query('UPDATE "user" SET role = $1 WHERE dni = $2', [
       UserRole.ADMIN,
@@ -122,18 +121,18 @@ describe('Testing dashboard delete endpoint', () => {
   })
   it('should fail when the logged-in admin loses "active" status', async () => {
     await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-        UserStatus.PENDING,
-        testUserData.admin.dni,
-      ])
+      UserStatus.PENDING,
+      testUserData.admin.dni,
+    ])
     const response = await supertest(server)
       .delete(`${route}/${userToDeleteId}`)
       .set('Cookie', [authAdminToken])
-      expect(response.status).toBe(403)
-      expect(response.body.message).toBe('Only active users can proceed')
+    expect(response.status).toBe(403)
+    expect(response.body.message).toBe('Only active users can proceed')
 
-      await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-        UserStatus.ACTIVE,
-        testUserData.admin.dni,
-      ])
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      UserStatus.ACTIVE,
+      testUserData.admin.dni,
+    ])
   })
 })
