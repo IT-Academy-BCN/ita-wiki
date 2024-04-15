@@ -10,7 +10,7 @@ import { cookieAuth } from '../../../components/cookieAuth'
 registry.registerPath({
   method: 'patch',
   tags: ['dashboard'],
-  path: `${pathRoot.v1.dashboard.users}/{userId}`,
+  path: `${pathRoot.v1.dashboard.users}/userId`,
   description: 'Updates specific fields of a user.',
   summary: 'Update user information',
   security: [{ [cookieAuth.name]: [] }],

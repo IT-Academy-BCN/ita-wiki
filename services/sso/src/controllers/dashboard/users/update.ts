@@ -1,12 +1,16 @@
 import { Context, Middleware } from 'koa'
 import { client } from '../../../models/db'
 import { userIdSchema } from '../../../schemas/users/userSchema'
+import {
+  userUpdateSchema,
+  optionalUserUpdateSchema,
+} from '../../../schemas/users/userUpdateSchema'
 
 export const dashboardUpdateUser: Middleware = async (ctx: Context) => {
   const userId = userIdSchema.parse(ctx.params.userId)
-  const updates = ctx.request.body
+  const updates = userUpdateSchema.parse(ctx.request.body)
 
-  const allowedUpdates = ['dni', 'email', 'name']
+  const allowedUpdates = Object.keys(optionalUserUpdateSchema.shape)
 
   const fieldsToUpdate = Object.keys(updates).filter((key) =>
     allowedUpdates.includes(key)
@@ -19,7 +23,7 @@ export const dashboardUpdateUser: Middleware = async (ctx: Context) => {
   const queryParams = []
   const querySet = fieldsToUpdate
     .map((field, index) => {
-      queryParams.push(updates[field])
+      queryParams.push(updates[field as keyof typeof updates])
       return `"${field}" = $${index + 1}`
     })
     .join(', ')
@@ -30,7 +34,6 @@ export const dashboardUpdateUser: Middleware = async (ctx: Context) => {
     WHERE id = $${queryParams.length + 1}
     RETURNING *;
   `
-
   queryParams.push(userId)
   const result = await client.query(query, queryParams)
 

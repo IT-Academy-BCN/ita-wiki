@@ -1,3 +1,9 @@
+### Added
+
+- PATCH `dashboard/users/userId` endpoint.
+
+## [1.19.0] - 2024-04-15
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
