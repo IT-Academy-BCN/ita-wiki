@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import { expect } from 'vitest'
+import { vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { Dropdown, type TDropdownOption } from '../../components/atoms/Dropdown'
+
+const mockedOnValueChange = vi.fn()
 
 const mockOptions = [
   {
@@ -58,8 +60,8 @@ const mockOptionsWithIcon = [
 const MockParent = () => {
   const [selectedValue, setSelectedValue] = useState('')
 
-  const handleChange = (selectedOption: TDropdownOption) => {
-    setSelectedValue(selectedOption.name)
+  const handleChange = (selectedOption: TDropdownOption | undefined) => {
+    if (selectedOption) setSelectedValue(selectedOption.name)
   }
   return (
     <div>
@@ -138,7 +140,7 @@ describe('Dropdown', () => {
     expect(dropdownHeader).not.toHaveTextContent(/option 1/i)
   })
 
-  it('renders option provided instead of placeholder', async () => {
+  it('renders option provided instead of placeholder', () => {
     render(
       <Dropdown
         defaultSelectedOption={mockOptions[1]}
@@ -156,7 +158,7 @@ describe('Dropdown', () => {
     expect(screen.queryByText(/placeholder/i)).not.toBeInTheDocument()
   })
 
-  it('renders option with image provided instead of placeholder', async () => {
+  it('renders option with image provided instead of placeholder', () => {
     render(
       <Dropdown
         defaultSelectedOption={mockOptionsWithImage[2]}
@@ -177,7 +179,7 @@ describe('Dropdown', () => {
     expect(screen.queryByText(/placeholder/i)).not.toBeInTheDocument()
   })
 
-  it('renders option with icon provided instead of placeholder', async () => {
+  it('renders option with icon provided instead of placeholder', () => {
     render(
       <Dropdown
         defaultSelectedOption={mockOptionsWithIcon[2]}
@@ -196,6 +198,67 @@ describe('Dropdown', () => {
     expect(icon).toBeVisible()
 
     expect(screen.queryByText(/placeholder/i)).not.toBeInTheDocument()
+  })
+
+  it('renders selected option in header', async () => {
+    render(
+      <Dropdown
+        placeholder="Test placeholder"
+        options={mockOptions}
+        onValueChange={mockedOnValueChange}
+      />
+    )
+
+    const dropdownHeader = screen.getByTestId('dropdown-header')
+
+    expect(dropdownHeader).toHaveTextContent(/Test placeholder/i)
+    expect(dropdownHeader).not.toHaveTextContent(/option 2/i)
+
+    await userEvent.click(dropdownHeader)
+
+    const option2 = screen.getByText(/option 2/i)
+
+    expect(option2).toBeInTheDocument()
+
+    await userEvent.click(option2)
+
+    expect(dropdownHeader).toHaveTextContent(/option 2/i)
+
+    expect(screen.queryByText(/test placeholder/i)).not.toBeInTheDocument()
+
+    expect(mockedOnValueChange).toHaveBeenCalledWith({
+      id: '2',
+      name: 'Option 2',
+    })
+  })
+
+  it('a click in deselect icon deselects option', async () => {
+    render(
+      <Dropdown
+        defaultSelectedOption={mockOptionsWithIcon[2]}
+        options={mockOptionsWithIcon}
+        placeholder="Placeholder"
+        onValueChange={mockedOnValueChange}
+      />
+    )
+
+    const dropdownHeader = screen.getByTestId('dropdown-header')
+    expect(dropdownHeader).toHaveTextContent(/option search/i)
+    expect(dropdownHeader).not.toHaveTextContent(/placeholder/i)
+
+    await userEvent.click(dropdownHeader)
+
+    expect(screen.getAllByText(/option search/i)).toHaveLength(2)
+
+    const deselectIcon = screen.getByTitle(/borra la selección/i)
+
+    expect(deselectIcon).toBeVisible()
+
+    await userEvent.click(deselectIcon)
+
+    expect(screen.queryByText(/option search/i)).not.toBeInTheDocument()
+    expect(dropdownHeader).toHaveTextContent(/placeholder/i)
+    expect(mockedOnValueChange).toHaveBeenCalledWith(undefined)
   })
 
   it('a click outside the dropdown closes its menu', async () => {
