@@ -66,6 +66,15 @@ export const testUserData = {
     status: UserStatus.ACTIVE,
     user_meta: {},
   },
+  userToDelete: {
+    email: 'userToDelete@user.cat',
+    name: 'userToDelete',
+    dni: '45825710G',
+    password: 'testingPswd7',
+    role: UserRole.REGISTERED,
+    status: UserStatus.ACTIVE,
+    user_meta: {},
+  },
 }
 export const itinerariesData = [
   { name: 'Frontend Angular', slug: 'frontend-angular' },
@@ -122,6 +131,8 @@ export async function setup() {
     } else if (user.email === 'testingBlockedUser@user.cat') {
       itineraryId = blockedUserItineraryId
     } else if (user.email === 'testingUserToBeBlocked@user.cat') {
+      itineraryId = userToBeBlockedItineraryId
+    } else if (user.email === 'userToDelete@user.cat') {
       itineraryId = userToBeBlockedItineraryId
     }
 

@@ -450,6 +450,9 @@ paths:
                     - ACTIVE
                     - PENDING
                     - BLOCKED
+                deletedAt:
+                  type: string
+                  format: date-time
                 itineraryId:
                   type: string
               required:

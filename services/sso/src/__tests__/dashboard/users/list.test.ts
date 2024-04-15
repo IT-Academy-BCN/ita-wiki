@@ -127,7 +127,7 @@ describe('Testing get users endpoint', () => {
       .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
-    expect(body).toHaveLength(4)
+    expect(body).toHaveLength(5)
     body.forEach((user) => {
       expect(user.status).toBe(UserStatus.ACTIVE)
     })
@@ -162,7 +162,7 @@ describe('Testing get users endpoint', () => {
       .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
-    expect(body).toHaveLength(6)
+    expect(body).toHaveLength(7)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
   it('returns a collection of users successfully with a name query of 2 or more characters', async () => {
