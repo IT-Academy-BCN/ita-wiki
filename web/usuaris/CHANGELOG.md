@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.0] - 2024-04-11
+
+### Added
+
+- Added Itineraries Dropdown filter selector
+
 ## [0.6.1] - 2024-04-11
 
 ### Fixed
