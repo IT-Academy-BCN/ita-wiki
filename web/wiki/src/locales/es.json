@@ -113,11 +113,13 @@
   "¡Vaya! :/": "¡Vaya! :/",
   "Todavía no hay recursos de este tipo.": "Todavía no hay recursos de este tipo.",
 
+  "Error 401 - Credenciales incorrectas": "Identificador o contraseña incorrectas.",
   "Error 401 - No autorizado": "Operación no autorizada. Es necesario iniciar sesión de usuario.",
   "Error 403 - Acceso denegado": "Acceso denegado. No tienes los permisos necesarios para realizar la operación.",
   "Error 404 - No se puede guardar": "Error al guardar en la base de datos. Por favor, inténtalo de nuevo y si el error persiste, contacta con el administrador.",
   "Error 405 - Id de usuario inválido": "Identificador de usuario no válido.",
   "Error 500 - Error bbdd": "Error en la base de datos. Por favor, inténtalo más tarde.",
+  "Error inesperado": "Error inesperado. Por favor, inténtelo más tarde.",
 
   "Volver": "Volver",
   "Cerrar sesión": "Cerrar sesión",

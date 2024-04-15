@@ -113,11 +113,13 @@
   "¡Vaya! :/": "Oops! :/",
   "Todavía no hay recursos de este tipo.": "There are no available resources of this kind yet.",
 
+  "Error 401 - Credenciales incorrectas": "Invalid password or user ID.",
   "Error 401 - No autorizado": "Unauthorized operation. User login required.",
   "Error 403 - Acceso denegado": "Access denied. You do not have the necessary permissions to perform the operation.",
   "Error 404 - No se puede guardar": "Error saving to database. Please try again and if the error persists, contact the administrator.",
   "Error 405 - Id de usuario inválido": "Invalid user ID.",
   "Error 500 - Error bbdd": "Database error. Please try again later.",
+  "Error inesperado": "An unexpected error occurred. Please try again later.",
 
   "Volver": "Back",
   "Cerrar sesión": "Logout",

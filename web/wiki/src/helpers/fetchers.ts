@@ -39,6 +39,7 @@ export const createTopicFetcher = (createdTopic: TTopic) =>
     },
   }).then((res) => {
     if (!res.ok) {
+      //RETOCAR AIXÒ PQ I SI NO TROBA ERROR?????
       throw new Error(errorMessageStatus[res.status])
     }
     return res.status === 204 ? {} : res.json()
@@ -198,10 +199,16 @@ export const updateVote = async ({ resourceId, vote }: TVoteMutationData) => {
 
 export const loginUserFetcher = async (user: object) => {
   const errorMessage: { [key: number]: string } = {
-    403: 'Usuario en proceso de activación. Por favor, póngase en contacto con el administrador.',
-    404: 'Acceso restringido. Por favor, contacte con el personal de IT Academy.',
-    422: 'Identificador o contraseña incorrectos.',
+    //THIS IS THE PROBLEM: FIX SWAGGER AND CHECK EVERY RESPONSE; INCLUDING 200/204 AS GOOD IN USUARIS! FALTA TRADUCCIÑO!
+    400: 'Error 400 - Error de validación ZOD',
+    401: 'Error 401 - Credenciales incorrectas',
+    403: 'Error 403 - Acceso denegado',
+    500: 'Error 500 - Error bbdd',
   }
+
+  //FIX THIS , AND ADD AT USUARIS
+
+  //OJU TREADUCCIO; PQ NO ËS UIGUAL LA RESPOSTA AQUÏ QUE AL $01 D?ERORRMESSAGESTATUS!!!!!!!!! SEPARAR-HO
 
   const response = await fetch(urls.logIn, {
     method: 'POST',
@@ -209,15 +216,16 @@ export const loginUserFetcher = async (user: object) => {
     headers: { 'Content-Type': 'application/json' },
   })
 
-  if (
-    !response.ok &&
-    Object.hasOwnProperty.call(errorMessage, response.status)
-  ) {
-    throw new Error(errorMessage[response.status])
+  if (!response.ok) {
+    if (Object.hasOwnProperty.call(errorMessage, response.status)) {
+      throw new Error(errorMessage[response.status])
+    } else {
+      throw new Error('Error inesperado')
+    }
   }
-
   return response.status === 204 ? null : response.json()
 }
+
 export const registerUserFetcher = async (useData: TRegisterForm) => {
   const response = await fetch(urls.register, {
     method: 'POST',
