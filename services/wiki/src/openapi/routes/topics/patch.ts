@@ -2,12 +2,9 @@ import { z } from 'zod'
 import { pathRoot } from '../../../routes/routes'
 import { topicPatchSchema } from '../../../schemas'
 import { cookieAuth } from '../../components/cookieAuth'
-import {
-  invalidTokenResponse,
-  missingTokenResponse,
-} from '../../components/responses/authMiddleware'
-import { registry } from '../../registry'
+import { invalidTokenResponse } from '../../components/responses/authMiddleware'
 import { deniedAccessResponse } from '../../components/responses/authorize'
+import { registry } from '../../registry'
 
 registry.registerPath({
   method: 'patch',
@@ -30,12 +27,11 @@ registry.registerPath({
     204: {
       description: 'Topic successfully modified.',
     },
-    401: missingTokenResponse,
+    401: invalidTokenResponse,
     403: deniedAccessResponse,
     404: {
       description: 'Topic not found',
     },
-    498: invalidTokenResponse,
     500: {
       description: 'Other error',
       content: {

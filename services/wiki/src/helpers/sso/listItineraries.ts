@@ -1,5 +1,5 @@
 import { TSsoListItinerariesResponse } from '../../schemas/sso/ssoListItineraries'
-import { ServiceUnavailable } from '../errors'
+import { DefaultError } from '../errors'
 import { pathSso } from './pathSso'
 
 export async function listItineraries() {
@@ -7,10 +7,11 @@ export async function listItineraries() {
     method: 'GET',
   })
 
-  const fetchData = (await fetchSSO.json()) as TSsoListItinerariesResponse
+  const fetchData = await fetchSSO.json()
 
-  if (fetchSSO.status === 200) {
-    return fetchData
+  const { status, ok } = fetchSSO
+  if (!ok) {
+    throw new DefaultError(status, fetchData.message)
   }
-  throw new ServiceUnavailable()
+  return fetchData as TSsoListItinerariesResponse
 }

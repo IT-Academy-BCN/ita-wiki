@@ -2,10 +2,7 @@ import { registry } from '../registry'
 import { z } from '../zod'
 import { pathRoot } from '../../routes/routes'
 import { cookieAuth } from '../components/cookieAuth'
-import {
-  invalidTokenResponse,
-  missingTokenResponse,
-} from '../components/responses/authMiddleware'
+import { invalidTokenResponse } from '../components/responses/authMiddleware'
 
 registry.registerPath({
   method: 'post',
@@ -48,7 +45,7 @@ registry.registerPath({
         },
       },
     },
-    401: missingTokenResponse,
+    401: invalidTokenResponse,
     404: {
       description: 'User not found',
       content: {
@@ -79,7 +76,6 @@ registry.registerPath({
         },
       },
     },
-    498: invalidTokenResponse,
     500: {
       description: 'Other error',
       content: {

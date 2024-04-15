@@ -14,7 +14,7 @@ export const validateTokenHandler = http.post(
     if (!isValidToken) {
       return HttpResponse.json(
         {
-          message: 'Invalid Credentials',
+          message: 'Token is not valid',
         } as ValidationResponse,
         { status: 401 }
       )

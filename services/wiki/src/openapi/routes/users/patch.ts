@@ -1,15 +1,14 @@
-import { userPatchSchema } from '../../../schemas'
-import { registry } from '../../registry'
-import { z } from '../../zod'
 import { pathRoot } from '../../../routes/routes'
+import { userPatchSchema } from '../../../schemas'
 import { cookieAuth } from '../../components/cookieAuth'
 import {
   invalidTokenResponse,
-  missingTokenResponse,
   upstreamServiceFailResponse,
   zodValidationErrorResponse,
 } from '../../components/responses/authMiddleware'
 import { deniedAccessResponse } from '../../components/responses/authorize'
+import { registry } from '../../registry'
+import { z } from '../../zod'
 
 registry.registerPath({
   method: 'patch',
@@ -36,7 +35,7 @@ registry.registerPath({
       description: 'User has been modified',
     },
     400: zodValidationErrorResponse,
-    401: missingTokenResponse,
+    401: invalidTokenResponse,
     403: deniedAccessResponse,
     404: {
       description: 'Not found',
@@ -44,7 +43,6 @@ registry.registerPath({
     409: {
       description: 'Conflict, data already exists.',
     },
-    498: invalidTokenResponse,
     500: {
       description: 'Other error',
       content: {

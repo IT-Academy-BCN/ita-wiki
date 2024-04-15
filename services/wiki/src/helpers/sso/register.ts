@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-throw-literal */
-import { ZodIssue } from 'zod'
-import { ValidationError, ServiceUnavailable } from '../errors'
+import { DefaultError } from '../errors'
 import {
   TSsoRegisterRequest,
   TSsoRegisterResponse,
@@ -16,19 +15,11 @@ export async function register(data: TSsoRegisterRequest) {
     body: JSON.stringify(data),
   })
 
-  const { status } = fetchSSO
+  const { status, ok } = fetchSSO
   const fetchData = await fetchSSO.json()
-
-  switch (status) {
-    case 200:
-      return { ...(fetchData as TSsoRegisterResponse) }
-    case 400:
-      throw new ValidationError(fetchData.message as ZodIssue[])
-    case 409:
-      throw new ValidationError(fetchData.message as string)
-    case 422:
-      throw new ValidationError(fetchData.message as string)
-    default:
-      throw new ServiceUnavailable()
+  if (!ok) {
+    throw new DefaultError(status, fetchData.message)
   }
+
+  return fetchData as TSsoRegisterResponse
 }

@@ -1,10 +1,7 @@
 import { pathRoot } from '../../../routes/routes'
 import { resourcePatchSchema } from '../../../schemas/resource/resourcePatchSchema'
 import { cookieAuth } from '../../components/cookieAuth'
-import {
-  invalidTokenResponse,
-  missingTokenResponse,
-} from '../../components/responses/authMiddleware'
+import { invalidTokenResponse } from '../../components/responses/authMiddleware'
 import { registry } from '../../registry'
 
 registry.registerPath({
@@ -27,10 +24,9 @@ registry.registerPath({
     204: {
       description: 'Resource has been modified',
     },
-    401: missingTokenResponse,
+    401: invalidTokenResponse,
     404: {
       description: 'Not found',
     },
-    498: invalidTokenResponse,
   },
 })
