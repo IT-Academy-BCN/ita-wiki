@@ -1,5 +1,5 @@
 info:
-  version: 1.17.0
+  version: 1.18.0
   title: IT Academy SSO Service
   description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
@@ -465,23 +465,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/ValidationError"
         "401":
-          description: Missing token
+          description: Invalid token or missing token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: User not found
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/MissingUserError"
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
         "500":
           description: Other error
           content:

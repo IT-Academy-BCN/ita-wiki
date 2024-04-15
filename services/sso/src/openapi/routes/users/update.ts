@@ -4,7 +4,6 @@ import { userIdSchema } from '../../../schemas/users/userSchema'
 import { userUpdateSchema } from '../../../schemas/users/userUpdateSchema'
 import {
   invalidTokenResponse,
-  missingTokenResponse,
   userNotFoundResponse,
   zodValidationResponse,
 } from '../../components/responses'
@@ -35,9 +34,8 @@ registry.registerPath({
       description: 'User has been modified',
     },
     400: zodValidationResponse,
-    401: missingTokenResponse,
+    401: invalidTokenResponse,
     404: userNotFoundResponse,
-    498: invalidTokenResponse,
     500: {
       description: 'Other error',
       content: {
