@@ -22,7 +22,6 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
   FROM
     "user" u
   JOIN itinerary i ON u.itinerary_id = i.id
-  WHERE u.deleted_at IS NULL;
 `
   const queryParams = []
   const conditions = []

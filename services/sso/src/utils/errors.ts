@@ -1,4 +1,5 @@
 /* eslint max-classes-per-file: 0 */
+import { measureMemory } from 'vm'
 import { ZodIssue } from 'zod'
 
 /* eslint-disable max-classes-per-file */
@@ -49,6 +50,12 @@ class DuplicateError extends DefaultError {
   }
 }
 
+class DeletedError extends DefaultError {
+  constructor(message: string = 'User already deleted') {
+    super(410, `${message}`)
+  }
+}
+
 class UnsupportedMediaType extends DefaultError {
   constructor(message?: string) {
     super(415, message ?? 'Unsupported media type')
@@ -83,4 +90,5 @@ export {
   MissingParamError,
   InvalidParamError,
   InvalidToken,
+  DeletedError,
 }

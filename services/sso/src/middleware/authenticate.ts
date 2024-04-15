@@ -7,7 +7,7 @@ import { ValidateSchema } from '../schemas'
 import { UserStatus } from '../schemas/users/userSchema'
 
 export const authenticate = async (ctx: Context, next: Next) => {
-  const { authToken } = ctx.request.body as ValidateSchema
+  const authToken = (ctx.request.body as ValidateSchema)?.authToken;
   const authCookie = ctx.cookies.get('authToken')
   const token = authToken || authCookie
   if (!token) {

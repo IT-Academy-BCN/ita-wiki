@@ -28,7 +28,7 @@ dashboardUsersRoutes.get('/me', authenticate, authorize('ADMIN'), getMe)
 
 dashboardUsersRoutes.delete(
   '/:id',
-  validate(z.object({ id: userIdSchema })),
+  validate(z.object({ params: z.object ({id: userIdSchema}) })),
   authenticate,
   authorize('ADMIN'),
   dashboardDeleteUser
