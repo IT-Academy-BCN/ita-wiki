@@ -7,6 +7,13 @@ All notable changes to this project will be documented in this file.
 - Endpoint  `DELETE /dashboard/users/:id` for admin users.
 - DB: `deleted_at` timestamp column to users talbe for soft delete
 
+## [1.18.0] - 2024-04-11
+
+### Changed
+
+- Changed the response code for unauthorized access attempts from 498 to 401 to align with standard HTTP status codes.
+
+
 ## [1.17.0] - 2024-04-09
 
 ### Added

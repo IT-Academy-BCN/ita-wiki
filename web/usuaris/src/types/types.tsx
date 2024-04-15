@@ -5,3 +5,9 @@ export type TUserData = {
   createdAt: string
   itineraryName: string
 }
+
+export type TItinerary = {
+  id: string
+  name: string
+  slug: string
+}

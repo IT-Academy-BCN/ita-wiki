@@ -468,23 +468,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/ValidationError"
         "401":
-          description: Missing token
+          description: Invalid token or missing token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: User not found
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/MissingUserError"
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
         "500":
           description: Other error
           content:
