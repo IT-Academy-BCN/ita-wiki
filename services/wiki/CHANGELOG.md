@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.15.0] - 2024-04-15
+
+### Changed
+
+- Unified error handling using htpp status and `DefaultError` in sso functions.
+- Changed the response code for unauthorized access attempts from 498 to 401 to align with standard HTTP status codes.
+
 ## [0.14.0] - 2024-04-05
 
 ### Added

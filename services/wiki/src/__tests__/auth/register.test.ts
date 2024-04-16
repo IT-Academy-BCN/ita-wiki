@@ -47,7 +47,7 @@ describe('Testing registration endpoint', () => {
           accept: true,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
-      expect(response.status).toBe(400)
+      expect(response.status).toBe(409)
       expect(response.body.message).toBe('email or dni already exists')
     })
 
@@ -63,7 +63,7 @@ describe('Testing registration endpoint', () => {
           accept: true,
           itineraryId: 'clq2d13xz000008jyfowt0l16',
         })
-      expect(response.status).toBe(400)
+      expect(response.status).toBe(409)
       expect(response.body.message).toBe('email or dni already exists')
     })
   })
