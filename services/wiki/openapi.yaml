@@ -1,5 +1,5 @@
 info:
-  version: 0.14.0
+  version: 0.15.0
   title: IT Academy Wiki
   description: Our app implements a Wiki to be used as a knowledge base by the
     students of the Barcelona Activa's IT Academy
@@ -190,6 +190,15 @@ paths:
                     example: Invalid password
                 required:
                   - message
+        "503":
+          description: The SSO server is not available.
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/ServiceUnavailableError"
+                  - example: &a3
+                      message: Service Unavailable
   /api/v1/auth/register:
     post:
       tags:
@@ -309,23 +318,19 @@ paths:
                   - role
                   - status
         "401":
-          description: Missing token
+          description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: User not found
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/MissingUserError"
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
         "500":
           description: Other error
           content:
@@ -398,11 +403,13 @@ paths:
         "204":
           description: New category created succesfully.
         "401":
-          description: Missing token
+          description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "403":
           description: Forbidden. Acces denied.
           content:
@@ -412,12 +419,6 @@ paths:
                   - $ref: "#/components/schemas/ForbiddenError"
                   - example: &a1
                       message: Access denied. You don't have permissions
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
         "500":
           description: Other error
           content:
@@ -462,11 +463,13 @@ paths:
         "204":
           description: Category modified succesfully.
         "401":
-          description: Missing token
+          description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "403":
           description: Forbidden. Acces denied.
           content:
@@ -477,12 +480,6 @@ paths:
                   - example: *a1
         "404":
           description: Category not found
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
         "500":
           description: Other error
           content:
@@ -574,11 +571,13 @@ paths:
         "204":
           description: New topic created succesfully.
         "401":
-          description: Missing token
+          description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "403":
           description: Forbidden. Acces denied.
           content:
@@ -587,12 +586,6 @@ paths:
                 allOf:
                   - $ref: "#/components/schemas/ForbiddenError"
                   - example: *a1
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
         "500":
           description: Other error
           content:
@@ -633,11 +626,13 @@ paths:
         "204":
           description: Topic successfully modified.
         "401":
-          description: Missing token
+          description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "403":
           description: Forbidden. Acces denied.
           content:
@@ -648,12 +643,6 @@ paths:
                   - example: *a1
         "404":
           description: Topic not found
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
         "500":
           description: Other error
           content:
@@ -806,23 +795,19 @@ paths:
                     - voteCount
                     - topics
         "401":
-          description: Missing token
+          description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: User not found
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/MissingUserError"
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/resources:
     get:
       tags:
@@ -1019,12 +1004,14 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ValidationError"
-        "498":
+        "401":
           description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
     post:
       tags:
         - resources
@@ -1070,17 +1057,13 @@ paths:
         "204":
           description: Resource has been posted
         "401":
-          description: Missing token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MissingTokenError"
-        "498":
           description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
     patch:
       tags:
         - resources
@@ -1117,19 +1100,15 @@ paths:
         "204":
           description: Resource has been modified
         "401":
-          description: Missing token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MissingTokenError"
-        "404":
-          description: Not found
-        "498":
           description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: Not found
   "/api/v1/seen/{resourceId}":
     post:
       tags:
@@ -1151,17 +1130,13 @@ paths:
         "204":
           description: Resource marked as viewed
         "401":
-          description: Missing token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/MissingTokenError"
-        "498":
           description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
   "/api/v1/resources/{resourceId}":
     get:
       tags:
@@ -1472,23 +1447,19 @@ paths:
                 required:
                   - resources
         "401":
-          description: Missing token
+          description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: User not found
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/MissingUserError"
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
   "/api/v1/vote/{resourceId}":
     get:
       tags:
@@ -1534,6 +1505,14 @@ paths:
                   - downvote
                   - total
                   - userVote
+        "401":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: Resource not found
           content:
@@ -1546,12 +1525,6 @@ paths:
                     example: Resource not found
                 required:
                   - error
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/vote:
     put:
       tags:
@@ -1590,11 +1563,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/ValidationError"
         "401":
-          description: Missing token
+          description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: User or resource not found
           content:
@@ -1609,12 +1584,6 @@ paths:
                       - Resource not found
                 required:
                   - message
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/media:
     post:
       tags:
@@ -1651,11 +1620,13 @@ paths:
                 required:
                   - filePath
         "401":
-          description: Missing token
+          description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: User not found
           content:
@@ -1692,12 +1663,6 @@ paths:
                     example: Missing media
                 required:
                   - message
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
         "500":
           description: Other error
           content:
@@ -1790,11 +1755,13 @@ paths:
                     - createdAt
                     - updatedAt
         "401":
-          description: Missing token
+          description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "403":
           description: Forbidden. Acces denied.
           content:
@@ -1803,12 +1770,6 @@ paths:
                 allOf:
                   - $ref: "#/components/schemas/ForbiddenError"
                   - example: *a1
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
         "500":
           description: Other error
           content:
@@ -1879,11 +1840,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/ValidationError"
         "401":
-          description: Missing token
+          description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "403":
           description: Forbidden. Acces denied.
           content:
@@ -1896,12 +1859,6 @@ paths:
           description: Not found
         "409":
           description: Conflict, data already exists.
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
         "500":
           description: Other error
           content:
@@ -1950,23 +1907,19 @@ paths:
                   - $ref: "#/components/schemas/ValidationError"
                   - $ref: "#/components/schemas/InputError"
         "401":
-          description: Missing token
+          description: Invalid token
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingTokenError"
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: User not found
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/MissingUserError"
-        "498":
-          description: Invalid token
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/InvalidTokenError"
   /api/v1/itinerary:
     get:
       tags:
@@ -2002,5 +1955,4 @@ paths:
               schema:
                 allOf:
                   - $ref: "#/components/schemas/ServiceUnavailableError"
-                  - example:
-                      message: Service Unavailable
+                  - example: *a3

@@ -1,11 +1,11 @@
-import { registry } from '../../registry'
-import { z } from '../../zod'
 import { pathRoot } from '../../../routes/routes'
 import { resourceGetSchema, resourcesListParamsSchema } from '../../../schemas'
 import {
   invalidTokenResponse,
   zodValidationErrorResponse,
 } from '../../components/responses/authMiddleware'
+import { registry } from '../../registry'
+import { z } from '../../zod'
 
 registry.registerPath({
   method: 'get',
@@ -27,6 +27,6 @@ registry.registerPath({
       },
     },
     400: zodValidationErrorResponse,
-    498: invalidTokenResponse,
+    401: invalidTokenResponse,
   },
 })

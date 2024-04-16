@@ -37,7 +37,7 @@ describe('Testing authentication endpoint', () => {
         password: 'wrong password',
       })
     expect(response.status).toBe(401)
-    expect(response.body.message).toBe('Invalid credentials')
+    expect(response.body.message).toBe('Invalid Credentials')
   })
 
   test('should fail with user not found', async () => {
@@ -48,6 +48,6 @@ describe('Testing authentication endpoint', () => {
         password: 'password1',
       })
     expect(response.status).toBe(401)
-    expect(response.body.message).toBe('Invalid credentials')
+    expect(response.body.message).toBe('Invalid Credentials')
   })
 })

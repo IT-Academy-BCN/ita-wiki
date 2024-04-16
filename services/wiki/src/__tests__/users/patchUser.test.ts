@@ -99,10 +99,8 @@ describe('Testing user patch endpoint', () => {
       .set('Cookie', [`authToken=${authToken.admin}`])
       .send(modifiedUser)
 
-    expect(response.status).toBe(502)
-    expect(response.body.message).toBe(
-      'Upstream service failed to respond with the required data'
-    )
+    expect(response.status).toBe(404)
+    expect(response.body.message).toBe('User not found')
   })
   it('User patch should fail if attempted with invalid data', async () => {
     const modifiedUser = {

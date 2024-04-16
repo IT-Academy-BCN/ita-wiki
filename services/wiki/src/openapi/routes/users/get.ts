@@ -1,13 +1,10 @@
+import { pathRoot } from '../../../routes/routes'
 import { userSchema } from '../../../schemas'
+import { cookieAuth } from '../../components/cookieAuth'
+import { invalidTokenResponse } from '../../components/responses/authMiddleware'
+import { deniedAccessResponse } from '../../components/responses/authorize'
 import { registry } from '../../registry'
 import { z } from '../../zod'
-import { pathRoot } from '../../../routes/routes'
-import { cookieAuth } from '../../components/cookieAuth'
-import {
-  invalidTokenResponse,
-  missingTokenResponse,
-} from '../../components/responses/authMiddleware'
-import { deniedAccessResponse } from '../../components/responses/authorize'
 
 registry.registerPath({
   method: 'get',
@@ -30,9 +27,8 @@ registry.registerPath({
         },
       },
     },
-    401: missingTokenResponse,
+    401: invalidTokenResponse,
     403: deniedAccessResponse,
-    498: invalidTokenResponse,
     500: {
       description: 'Other error',
       content: {
