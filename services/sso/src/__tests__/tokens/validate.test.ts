@@ -73,7 +73,7 @@ describe('Testing validate token endpoint', () => {
       .post(route)
       .send({ authToken: 'invalid_token' })
 
-    expect(response.status).toBe(498)
+    expect(response.status).toBe(401)
     expect(response.body.message).toBe('Token is not valid')
   })
   it('should fail with ForbbidenError when blocking the user', async () => {

@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import { FlexBox, dimensions } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
 import { DateRange } from '../molecules'
+import { ItineraryDropdown } from '../molecules/ItineraryDropdown'
+import { type TItinerary } from '../../types'
 
 const FiltersContainer = styled(FlexBox)`
   width: 100%;
@@ -11,12 +13,19 @@ const FiltersContainer = styled(FlexBox)`
 export const FiltersWidget: FC = () => {
   const { t } = useTranslation()
 
+  const handleItinerary = (itineraryId: TItinerary) => {
+    // TODO: Use this info to filter
+    // eslint-disable-next-line no-console
+    console.log('selected', itineraryId)
+  }
+
   return (
     <FiltersContainer
       direction="row"
       justify="flex-start"
       gap={dimensions.spacing.xs}
     >
+      <ItineraryDropdown handleItinerary={handleItinerary} />
       <DateRange
         labelStartDate={t('Fecha de inicio')}
         labelEndDate={t('Fecha final')}

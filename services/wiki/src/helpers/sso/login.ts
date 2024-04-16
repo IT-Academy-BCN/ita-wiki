@@ -1,11 +1,5 @@
-import { ZodIssue } from 'zod'
 import { TSsoLoginRequest, TSsoLoginResponse } from '../../schemas/sso/ssoLogin'
-import {
-  ValidationError,
-  InvalidCredentials,
-  ServiceUnavailable,
-  ForbiddenError,
-} from '../errors'
+import { DefaultError } from '../errors'
 import { pathSso } from './pathSso'
 
 export async function login(data: TSsoLoginRequest) {
@@ -19,20 +13,10 @@ export async function login(data: TSsoLoginRequest) {
     body: JSON.stringify(requestData),
   })
 
-  const { status } = fetchSSO
+  const { status, ok } = fetchSSO
   const fetchData = await fetchSSO.json()
-
-  switch (status) {
-    case 200:
-      return { ...(fetchData as TSsoLoginResponse) }
-    case 400:
-      // eslint-disable-next-line @typescript-eslint/no-throw-literal
-      throw new ValidationError(fetchData.message as ZodIssue[])
-    case 401:
-      throw new InvalidCredentials()
-    case 403:
-      throw new ForbiddenError(fetchData.message)
-    default:
-      throw new ServiceUnavailable()
+  if (!ok) {
+    throw new DefaultError(status, fetchData.message)
   }
+  return fetchData as TSsoLoginResponse
 }

@@ -2,11 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.31.2] - 2024-04-14
+## [0.31.4] - 2024-04-16
 
 ### Changed
 
 - Update VoteCounter
+## [0.31.3] - 2024-04-15
+
+### Changed
+
+- Update Dropdown to add deselect feature
+
+## [0.31.2] - 2024-04-10
+
+### Changed
+
+- Update Dropdown to add features
 
 ## [0.31.1] - 2024-04-03
 
@@ -45,7 +56,6 @@ All notable changes to this project will be documented in this file.
 
 - Fixed icon position in InputGroup
 - Fixed type error with Icon onClick in InputGroup
-
 
 ## [0.29.0] - 2024-02-27
 

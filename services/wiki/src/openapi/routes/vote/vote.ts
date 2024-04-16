@@ -1,14 +1,11 @@
+import { pathRoot } from '../../../routes/routes'
+import { voteCountSchema } from '../../../schemas'
+import { cookieAuth } from '../../components/cookieAuth'
+import { ZodValidationError } from '../../components/errorSchemas'
+import { resourceId } from '../../components/paramSchemas'
+import { invalidTokenResponse } from '../../components/responses/authMiddleware'
 import { registry } from '../../registry'
 import { z } from '../../zod'
-import { pathRoot } from '../../../routes/routes'
-import { cookieAuth } from '../../components/cookieAuth'
-import {
-  invalidTokenResponse,
-  missingTokenResponse,
-} from '../../components/responses/authMiddleware'
-import { ZodValidationError } from '../../components/errorSchemas'
-import { voteCountSchema } from '../../../schemas'
-import { resourceId } from '../../components/paramSchemas'
 
 registry.registerPath({
   method: 'get',
@@ -32,6 +29,7 @@ registry.registerPath({
         },
       },
     },
+    401: invalidTokenResponse,
     404: {
       description: 'Resource not found',
       content: {
@@ -42,7 +40,6 @@ registry.registerPath({
         },
       },
     },
-    498: invalidTokenResponse,
   },
 })
 
@@ -83,7 +80,7 @@ registry.registerPath({
         },
       },
     },
-    401: missingTokenResponse,
+    401: invalidTokenResponse,
     404: {
       description: 'User or resource not found',
       content: {
@@ -96,6 +93,5 @@ registry.registerPath({
         },
       },
     },
-    498: invalidTokenResponse,
   },
 })

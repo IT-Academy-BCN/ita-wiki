@@ -1,5 +1,17 @@
 import { urls } from '../constants'
 
+export const getItineraries = async () =>
+  fetch(urls.getItineraries)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`Error fetching itineraries: ${res.statusText}`)
+      }
+      return res.json()
+    })
+    .catch((err) => {
+      throw new Error(`Error fetching itineraries: ${err.message}`)
+    })
+
 export const getUsers = async () => {
   const response = await fetch(urls.getUsers)
   if (!response.ok) {
@@ -29,14 +41,4 @@ export const loginUserFetcher = async (user: object) => {
   }
 
   return response.status === 204 ? null : response.json()
-}
-
-export const userInfoFetcher = async () => {
-  const response = await fetch(urls.getMe)
-
-  if (!response.ok) {
-    throw new Error(`Error fetching user info`)
-  }
-
-  return response.json()
 }

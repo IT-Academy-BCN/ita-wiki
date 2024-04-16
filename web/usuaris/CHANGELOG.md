@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.8.0] - 2024-04-15
+
+### Added
+
+- Added Checkbox and Delete Button to UsersTable
+
+## [0.7.0] - 2024-04-11
+
+### Added
+
+- Added Itineraries Dropdown filter selector
+
+## [0.6.1] - 2024-04-11
+
+### Fixed
+
+- Fixed access to Home page after login successful
+
 ## [0.6.0] - 2024-04-04
 
 ### Added

@@ -17,11 +17,25 @@ describe('useGetUsers', () => {
 
     expect(result.current.data).toEqual([
       {
-        id: 'TestId',
-        name: 'Test Name',
-        status: 'INACTIVE',
-        createdAt: '2023-11-15T15:36:02.234Z',
-        itineraryName: 'backend-node',
+        id: '1',
+        name: 'Ona Sitgar',
+        status: 'PENDING',
+        createdAt: '2023/11/05 00:00:00.000',
+        itineraryName: 'Backend Node',
+      },
+      {
+        id: '2',
+        name: 'Marc Bofill',
+        status: 'ACTIVE',
+        createdAt: '2023/11/05 00:00:00.000',
+        itineraryName: 'Frontend React',
+      },
+      {
+        id: '3',
+        name: 'Montserrat Capdevila',
+        status: 'BLOCKED',
+        createdAt: '2023/11/05 00:00:00.000',
+        itineraryName: 'Fullstack Php',
       },
     ])
   })

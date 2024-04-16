@@ -30,7 +30,11 @@ class UnauthorizedError extends DefaultError {
     super(401, `${message}`)
   }
 }
-
+class InvalidToken extends DefaultError {
+  constructor(message: string = 'Token is not valid') {
+    super(401, `${message}`)
+  }
+}
 class ForbiddenError extends DefaultError {
   constructor(message: string = 'Forbidden') {
     super(403, `${message}`)
@@ -63,11 +67,6 @@ class MissingParamError extends DefaultError {
 class InvalidParamError extends DefaultError {
   constructor(parameter: string) {
     super(422, `Invalid ${parameter}`)
-  }
-}
-class InvalidToken extends DefaultError {
-  constructor(message: string = 'Token is not valid') {
-    super(498, `${message}`)
   }
 }
 

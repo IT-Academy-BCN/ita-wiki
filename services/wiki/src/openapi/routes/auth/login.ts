@@ -8,6 +8,7 @@ import {
   userNotFoundResponse,
   zodValidationErrorResponse,
 } from '../../components/responses/authMiddleware'
+import { serviceUnavailableResponse } from '../../components/responses/itinerary'
 
 registry.registerPath({
   method: 'post',
@@ -42,5 +43,6 @@ registry.registerPath({
         },
       },
     },
+    503: serviceUnavailableResponse,
   },
 })

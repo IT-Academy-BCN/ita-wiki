@@ -1,3 +1,4 @@
+import { z } from '../../zod'
 import {
   ForbiddenError,
   InvalidTokenError,
@@ -22,7 +23,7 @@ export const invalidTokenResponse = {
   description: 'Invalid token',
   content: {
     'application/json': {
-      schema: InvalidTokenError,
+      schema: z.union([InvalidTokenError, MissingTokenError]),
     },
   },
 }

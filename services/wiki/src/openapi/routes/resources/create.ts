@@ -1,10 +1,7 @@
 import { pathRoot } from '../../../routes/routes'
 import { resourceCreateSchema } from '../../../schemas'
 import { cookieAuth } from '../../components/cookieAuth'
-import {
-  invalidTokenResponse,
-  missingTokenResponse,
-} from '../../components/responses/authMiddleware'
+import { invalidTokenResponse } from '../../components/responses/authMiddleware'
 import { registry } from '../../registry'
 
 registry.registerPath({
@@ -27,7 +24,6 @@ registry.registerPath({
     204: {
       description: 'Resource has been posted',
     },
-    401: missingTokenResponse,
-    498: invalidTokenResponse,
+    401: invalidTokenResponse,
   },
 })

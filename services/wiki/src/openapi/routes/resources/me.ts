@@ -1,13 +1,12 @@
-import { resourceGetSchema } from '../../../schemas'
-import { registry } from '../../registry'
-import { z } from '../../zod'
 import { pathRoot } from '../../../routes/routes'
+import { resourceGetSchema } from '../../../schemas'
 import { cookieAuth } from '../../components/cookieAuth'
 import {
   invalidTokenResponse,
-  missingTokenResponse,
   userNotFoundResponse,
 } from '../../components/responses/authMiddleware'
+import { registry } from '../../registry'
+import { z } from '../../zod'
 
 registry.registerPath({
   method: 'get',
@@ -33,8 +32,7 @@ registry.registerPath({
         },
       },
     },
-    401: missingTokenResponse,
+    401: invalidTokenResponse,
     404: userNotFoundResponse,
-    498: invalidTokenResponse,
   },
 })

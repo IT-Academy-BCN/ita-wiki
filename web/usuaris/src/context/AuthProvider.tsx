@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useState,
 } from 'react'
-import { userInfoFetcher } from '../helpers'
+import { urls } from '../constants'
 
 export type TUser = {
   dni: string
@@ -44,7 +44,7 @@ export const AuthProvider: React.FC<
   )
 
   useEffect(() => {
-    userInfoFetcher()
+    fetch(urls.getMe)
       .then((res) => {
         if (!res.ok) {
           throw new Error(res.statusText)
