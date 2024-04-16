@@ -250,7 +250,7 @@ describe('Dropdown', () => {
 
     expect(screen.getAllByText(/option search/i)).toHaveLength(2)
 
-    const deselectIcon = screen.getByTitle(/borra la selección/i)
+    const deselectIcon = screen.getByTestId('deselect-search')
 
     expect(deselectIcon).toBeVisible()
 

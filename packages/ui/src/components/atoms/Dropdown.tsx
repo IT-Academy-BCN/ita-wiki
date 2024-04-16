@@ -227,6 +227,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
                       name="close"
                       onClick={() => handleDeselect()}
                       title={deselectText}
+                      data-testid={`deselect-${option.id}`}
                     />
                   ) : null}
                 </DropdownItem>
