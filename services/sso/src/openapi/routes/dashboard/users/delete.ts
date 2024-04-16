@@ -16,7 +16,7 @@ registry.registerPath({
   description: 'Soft deletes a user',
   summary: 'Delete a user',
   request: {
-    params: z.object({ id: userIdSchema}),
+    params: z.object({ id: userIdSchema }),
   },
   security: [{ [cookieAuth.name]: [] }],
   responses: {
