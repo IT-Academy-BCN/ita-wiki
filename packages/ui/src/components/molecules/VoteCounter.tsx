@@ -33,7 +33,7 @@ export type TVoteCounter = {
 
 export const VoteCounter: FC<TVoteCounter> = ({ voteCount, onClick, disabled }) => (
   <FlexBox data-testid="voteCounter">
-    <StyledIcon
+    <StyledIcon as="button"
       name="expand_less"
       data-testid="increase"
       color={voteCount.userVote > 0 ? colors.success : colors.gray.gray3}
@@ -47,7 +47,7 @@ export const VoteCounter: FC<TVoteCounter> = ({ voteCount, onClick, disabled }) 
     >
       {voteCount.total}
     </Text>
-    <StyledIcon
+    <StyledIcon as="button"
       name="expand_more"
       id="decrease"
       data-testid="decrease"

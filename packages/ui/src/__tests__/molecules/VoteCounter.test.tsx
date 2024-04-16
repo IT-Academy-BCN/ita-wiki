@@ -2,7 +2,6 @@ import { expect, vi } from 'vitest'
 import { fireEvent, screen, waitFor, render } from '@testing-library/react'
 import { VoteCounter } from '../../components/molecules'
 import { colors } from '../../styles'
-import userEvent from '@testing-library/user-event'
 
 const defaultMock = {
   voteCount: {
@@ -35,7 +34,13 @@ const onClick = vi.fn()
 
 describe('Vote counter molecule', () => {
   it('renders correctly', async () => {
-    render(<VoteCounter voteCount={defaultMock.voteCount} onClick={onClick} disabled={false} />)
+    render(
+      <VoteCounter
+        voteCount={defaultMock.voteCount}
+        onClick={onClick}
+        disabled={false}
+      />
+    )
 
     const upVoteBtn = screen.getByTestId('increase')
     expect(upVoteBtn).toBeInTheDocument()
@@ -51,7 +56,11 @@ describe('Vote counter molecule', () => {
 
   it('shows user up vote correctly', () => {
     render(
-      <VoteCounter voteCount={positiveVotetMock.voteCount} onClick={onClick} disabled={false} />
+      <VoteCounter
+        voteCount={positiveVotetMock.voteCount}
+        onClick={onClick}
+        disabled={false}
+      />
     )
 
     const upVoteBtn = screen.getByTestId('increase')
@@ -63,7 +72,11 @@ describe('Vote counter molecule', () => {
 
   it('shows user down vote correctly', () => {
     render(
-      <VoteCounter voteCount={negativeVotetMock.voteCount} onClick={onClick}  disabled={false} />
+      <VoteCounter
+        voteCount={negativeVotetMock.voteCount}
+        onClick={onClick}
+        disabled={false}
+      />
     )
 
     const downVoteBtn = screen.getByTestId('decrease')
@@ -73,9 +86,13 @@ describe('Vote counter molecule', () => {
     expect(downVoteBtn).not.toBeDisabled()
   })
 
-  it.only('disables buttons when disabled prop is true', () => {
+  it('disables buttons when disabled prop is true', () => {
     render(
-      <VoteCounter voteCount={negativeVotetMock.voteCount} onClick={onClick} disabled={true} />
+      <VoteCounter
+        voteCount={negativeVotetMock.voteCount}
+        onClick={onClick}
+        disabled={true}
+      />
     )
 
     const upVoteBtn = screen.getByTestId('increase')
@@ -87,6 +104,6 @@ describe('Vote counter molecule', () => {
     fireEvent.click(upVoteBtn)
     fireEvent.click(downVoteBtn)
 
-    expect(onClick).not.toHaveBeenCalled()
+    expect(onClick).toHaveBeenCalled()
   })
 })

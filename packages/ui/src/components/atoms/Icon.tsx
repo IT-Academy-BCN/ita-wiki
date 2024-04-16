@@ -34,7 +34,7 @@ export const Icon: React.FC<TIcon> = ({
   color = '',
   ...rest
 }) => (
-  <IconStyled as="button"
+  <IconStyled
     className={`material-symbols-outlined ${className}`}
     $fill={$fill}
     $wght={$wght}
