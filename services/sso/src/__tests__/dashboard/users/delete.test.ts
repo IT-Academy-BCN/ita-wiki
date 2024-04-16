@@ -42,7 +42,7 @@ describe('Testing dashboard delete endpoint', () => {
     )
     expect(deletedAt.rows[0].deleted_at).toContain(Date)
   })
-  it('should fail with no cokkies', async () => {
+  it('should fail with no cookies', async () => {
     const response = await supertest(server).delete(
       `${route}/${userToDeleteId}`
     )
