@@ -11,7 +11,7 @@ import { registry } from '../../../registry'
 registry.registerPath({
   method: 'delete',
   tags: ['dashboard'],
-  path: `${pathRoot.v1.dashboard.users}/:id`,
+  path: `${pathRoot.v1.dashboard.users}/{id}`,
   description: 'Soft deletes a user',
   summary: 'delete a user',
   security: [{ [cookieAuth.name]: [] }],
