@@ -2,6 +2,7 @@ import { expect, vi } from 'vitest'
 import { fireEvent, screen, waitFor, render } from '@testing-library/react'
 import { VoteCounter } from '../../components/molecules'
 import { colors } from '../../styles'
+import userEvent from '@testing-library/user-event'
 
 const defaultMock = {
   voteCount: {
@@ -34,7 +35,7 @@ const onClick = vi.fn()
 
 describe('Vote counter molecule', () => {
   it('renders correctly', async () => {
-    render(<VoteCounter voteCount={defaultMock.voteCount} onClick={onClick} />)
+    render(<VoteCounter voteCount={defaultMock.voteCount} onClick={onClick} disabled={false} />)
 
     const upVoteBtn = screen.getByTestId('increase')
     expect(upVoteBtn).toBeInTheDocument()
@@ -50,23 +51,42 @@ describe('Vote counter molecule', () => {
 
   it('shows user up vote correctly', () => {
     render(
-      <VoteCounter voteCount={positiveVotetMock.voteCount} onClick={onClick} />
+      <VoteCounter voteCount={positiveVotetMock.voteCount} onClick={onClick} disabled={false} />
     )
 
     const upVoteBtn = screen.getByTestId('increase')
     expect(upVoteBtn).toBeInTheDocument()
     expect(screen.getByText('5')).toBeInTheDocument()
     expect(upVoteBtn).toHaveStyle(`color: ${colors.success}`)
+    expect(upVoteBtn).not.toBeDisabled()
   })
 
   it('shows user down vote correctly', () => {
     render(
-      <VoteCounter voteCount={negativeVotetMock.voteCount} onClick={onClick} />
+      <VoteCounter voteCount={negativeVotetMock.voteCount} onClick={onClick}  disabled={false} />
     )
 
     const downVoteBtn = screen.getByTestId('decrease')
     expect(downVoteBtn).toBeInTheDocument()
     expect(screen.getByText('-5')).toBeInTheDocument()
     expect(downVoteBtn).toHaveStyle(`color: ${colors.error}`)
+    expect(downVoteBtn).not.toBeDisabled()
+  })
+
+  it.only('disables buttons when disabled prop is true', () => {
+    render(
+      <VoteCounter voteCount={negativeVotetMock.voteCount} onClick={onClick} disabled={true} />
+    )
+
+    const upVoteBtn = screen.getByTestId('increase')
+    const downVoteBtn = screen.getByTestId('decrease')
+
+    expect(upVoteBtn).toBeDisabled()
+    expect(downVoteBtn).toBeDisabled()
+
+    fireEvent.click(upVoteBtn)
+    fireEvent.click(downVoteBtn)
+
+    expect(onClick).not.toHaveBeenCalled()
   })
 })

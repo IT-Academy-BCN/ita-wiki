@@ -8,7 +8,7 @@ import {
   colors,
   dimensions,
 } from '@itacademy/ui'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { EditResource } from './EditResource'
 import { useAuth } from '../../context/AuthProvider'
@@ -77,7 +77,6 @@ export const CardResource: FC<TCardResource> = ({
 }) => {
   const { user } = useAuth()
   const queryClient = useQueryClient()
-  const [isMutating, setIsMutating] = useState(false)
 
   const castVote = useMutation({
     mutationFn: updateVote,
@@ -118,12 +117,10 @@ export const CardResource: FC<TCardResource> = ({
           return newData
         })
       }
-      setIsMutating(false)
     },
     onError: () => {
       // eslint-disable-next-line no-console
       console.error('Error voting')
-      setIsMutating(false)
     },
   })
 
@@ -133,17 +130,13 @@ export const CardResource: FC<TCardResource> = ({
       return
     }
 
-    if (!isMutating) {
-      setIsMutating(true)
-
-      if (
-        (voteCount?.userVote === 1 && vote === 'up') ||
-        (voteCount?.userVote === -1 && vote === 'down')
-      ) {
-        castVote.mutate({ resourceId: id, vote: 'cancel' })
-      } else {
-        castVote.mutate({ resourceId: id, vote })
-      }
+    if (
+      (voteCount?.userVote === 1 && vote === 'up') ||
+      (voteCount?.userVote === -1 && vote === 'down')
+    ) {
+      castVote.mutate({ resourceId: id, vote: 'cancel' })
+    } else {
+      castVote.mutate({ resourceId: id, vote })
     }
   }
 
@@ -158,11 +151,7 @@ export const CardResource: FC<TCardResource> = ({
     >
       {voteCount && (
         <CounterContainerStyled>
-          <VoteCounter
-            voteCount={voteCount}
-            onClick={handleClick}
-            disabled={isMutating}
-          />
+          <VoteCounter voteCount={voteCount} onClick={handleClick} />
         </CounterContainerStyled>
       )}
 
