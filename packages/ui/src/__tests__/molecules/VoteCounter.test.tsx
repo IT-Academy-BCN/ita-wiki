@@ -91,7 +91,7 @@ describe('Vote counter molecule', () => {
       <VoteCounter
         voteCount={negativeVotetMock.voteCount}
         onClick={onClick}
-        disabled={true}
+        disabled
       />
     )
 
