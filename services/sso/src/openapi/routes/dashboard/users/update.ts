@@ -1,22 +1,24 @@
 import z from 'zod'
 import { pathRoot } from '../../../../routes/routes'
-import {
-  invalidCredentialsResponse,
-  userUpdatedResponse,
-} from '../../../components/responses'
+import { invalidCredentialsResponse } from '../../../components/responses'
 import { registry } from '../../../registry'
 import { cookieAuth } from '../../../components/cookieAuth'
+import { userIdSchema } from '../../../../schemas/users/userSchema'
 
 registry.registerPath({
   method: 'patch',
   tags: ['dashboard'],
-  path: `${pathRoot.v1.dashboard.users}/userId`,
+  path: `${pathRoot.v1.dashboard.users}/{id}`,
   description: 'Updates specific fields of a user.',
   summary: 'Update user information',
   security: [{ [cookieAuth.name]: [] }],
-
+  request: {
+    params: z.object({ id: userIdSchema }),
+  },
   responses: {
-    200: userUpdatedResponse,
+    204: {
+      description: 'User has been updated',
+    },
     400: {
       description: 'Invalid request',
       content: {

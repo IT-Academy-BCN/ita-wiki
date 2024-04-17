@@ -154,8 +154,8 @@ export const userUpdatedResponse = {
   content: {
     'application/json': {
       schema: userSchema.pick({ id: true, dni: true, email: true, name: true }),
-    }
-  }
+    },
+  },
 }
 
 export const deletedUsersResponse = {
