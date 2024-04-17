@@ -1,5 +1,5 @@
 info:
-  version: 1.19.0
+  version: 1.20.0
   title: IT Academy SSO Service
   description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
@@ -99,6 +99,14 @@ components:
         message:
           type: string
           example: Invalid Credentials
+      required:
+        - message
+    DeletedUserError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: User already deleted
       required:
         - message
   parameters: {}
@@ -749,6 +757,61 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidCredentialsError"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingUserError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
+  /api/v1/dashboard/users/{id}:
+    delete:
+      tags:
+        - dashboard
+      description: Soft deletes a user
+      summary: Delete a user
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+          required: true
+      responses:
+        "204":
+          description: User has been soft deleted
+        "401":
+          description: Invalid token or missing token
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingUserError"
+        "410":
+          description: User is already soft deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletedUserError"
         "500":
           description: Other error
           content:
