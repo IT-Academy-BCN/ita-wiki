@@ -110,4 +110,22 @@ describe('UsersTable', () => {
       })
     })
   })
+
+  it('updates status and action button when user status changes', async () => {
+    render(<UsersTable />)
+
+    await waitFor(() => {
+      const acceptButton = screen.getByText('Acceptar')
+      const pendingStatus = screen.getByText(/Pendent/i)
+
+      expect(pendingStatus).toHaveTextContent(/Pendent/i)
+
+      fireEvent.click(acceptButton)
+
+      waitFor(() => {
+        expect(acceptButton).toHaveTextContent('Bloquejar')
+        expect(pendingStatus).toHaveTextContent(/Actiu/i)
+      })
+    })
+  })
 })

@@ -1,4 +1,5 @@
 import { urls } from '../constants'
+import { TUpdatedUser } from '../types'
 
 export const getItineraries = async () =>
   fetch(urls.getItineraries)
@@ -41,4 +42,16 @@ export const loginUserFetcher = async (user: object) => {
   }
 
   return response.status === 204 ? null : response.json()
+}
+
+export const patchUser = async (updatedUser: TUpdatedUser) => {
+  const response = await fetch(`${urls.patchUser}${updatedUser.id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(updatedUser),
+    headers: { 'Content-Type': 'application/json' },
+  })
+  if (!response.ok) {
+    throw new Error('Failed to update user')
+  }
+  return response.status === 204 ? {} : response.json()
 }
