@@ -7,10 +7,10 @@ import { parse, validate } from '../../middleware/validate'
 import { z } from '../../openapi/zod'
 import { getMe } from '../../controllers/dashboard/users/getMe'
 import { dashboardUsersListQuerySchema } from '../../schemas'
-import { dashboardUpdateUser } from '../../controllers/dashboard/users/update'
 import { dashboardUserUpdateSchema } from '../../schemas/users/dashboardUserUpdateSchema'
 import { userIdSchema } from '../../schemas/users/userSchema'
 import { dashboardDeleteUser } from '../../controllers/dashboard/users/delete'
+import { updateUser } from '../../controllers/users/update'
 
 export const dashboardUsersRoutes = new Router()
 
@@ -38,7 +38,7 @@ dashboardUsersRoutes.patch(
       body: dashboardUserUpdateSchema,
     })
   ),
-  dashboardUpdateUser
+  updateUser
 )
 
 dashboardUsersRoutes.delete(
