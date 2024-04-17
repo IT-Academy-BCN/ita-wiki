@@ -2,10 +2,8 @@ import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { pathRoot } from '../../../routes/routes'
 import { server, testUserData } from '../../globalSetup'
-import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
 import { client } from '../../../models/db'
 import { hashPassword } from '../../../utils/passwordHash'
-import { dashboardUserUpdateSchema } from '../../../schemas/users/dashboardUserUpdateSchema'
 
 const id = 'nmfg3bvexwotarwcpl6t5qjy'
 const dni = 'Y1868974P'
@@ -42,51 +40,50 @@ afterAll(async () => {
 describe('Testing patch dashboard endpoint', () => {
   it('should update the user successfully', async () => {
     const body = {
+      name: 'newUserName',
       email: 'example@get.com',
     }
-    dashboardUserUpdateSchema.parse(body)
     const response = await supertest(server)
       .patch(`${route}/${id}`)
       .set('Cookie', [adminAuthToken])
       .send(body)
 
-    const newEmail = await client.query(
-      ' SELECT email FROM "user" WHERE id = $1',
+    const newData = await client.query(
+      ' SELECT name, email FROM "user" WHERE id = $1',
       [id]
     )
     expect(response.status).toBe(204)
-    expect(body.email).toBe(newEmail.rows[0].email)
+    expect(body.name).toBe(newData.rows[0].name)
+    expect(body.email).toBe(newData.rows[0].email)
   })
 
   it('should return an error if the user does not exist', async () => {
-    const nonExistingUserId = 'nonExistingUserId'
-    const updates = { name: 'Name', email: 'email@example.com' }
-
+    const nonExistingUserId = 'nthtnkrnwuvfpflw87r9fnx9'
+    const body = { name: 'nonExistingUser', email: 'email@example.com' }
     const response = await supertest(server)
       .patch(`${route}/${nonExistingUserId}`)
       .set('Cookie', [adminAuthToken])
-      .send(updates)
+      .send(body)
 
     expect(response.status).toBe(404)
   })
 
   it('should return an error if no valid fields are provided for update', async () => {
-    const updates = { invalidField: 'value' }
-
+    const body = { invalidField: 'value' }
     const response = await supertest(server)
-      .patch(route)
+      .patch(`${route}/${id}`)
       .set('Cookie', [adminAuthToken])
-      .send(updates)
+      .send(body)
 
     expect(response.status).toBe(400)
   })
 
   it('should return a 401 error due to invalid credentials', async () => {
-    const updates = { name: 'New Name', email: 'another@example.com' }
+    const body = { name: 'New Name', email: 'another@example.com' }
     const response = await supertest(server)
-      .patch(route)
+      .patch(`${route}/${id}`)
       .set('Cookie', ['invalidAuthToken'])
-      .send(updates)
+      .send(body)
 
     expect(response.status).toBe(401)
   })
