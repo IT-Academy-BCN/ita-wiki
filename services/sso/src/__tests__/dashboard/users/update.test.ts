@@ -12,8 +12,6 @@ const dni = 'Y1868974P'
 const email = 'example@example.com'
 const name = 'nameExample'
 const password = 'hashedPassword'
-const role = UserRole.REGISTERED
-const status = UserStatus.PENDING
 const route = `${pathRoot.v1.dashboard.users}`
 let adminAuthToken = ''
 
