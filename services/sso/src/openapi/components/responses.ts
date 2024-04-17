@@ -149,15 +149,6 @@ export const listDashboardUsersResponse = {
   },
 }
 
-export const userUpdatedResponse = {
-  description: 'User information updated successfully.',
-  content: {
-    'application/json': {
-      schema: userSchema.pick({ id: true, dni: true, email: true, name: true }),
-    },
-  },
-}
-
 export const deletedUsersResponse = {
   description: 'User is already soft deleted.',
   content: {
