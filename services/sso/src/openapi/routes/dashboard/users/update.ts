@@ -4,6 +4,7 @@ import { invalidCredentialsResponse } from '../../../components/responses'
 import { registry } from '../../../registry'
 import { cookieAuth } from '../../../components/cookieAuth'
 import { userIdSchema } from '../../../../schemas/users/userSchema'
+import { dashboardUserUpdateSchema } from '../../../../schemas/users/dashboardUserUpdateSchema'
 
 registry.registerPath({
   method: 'patch',
@@ -14,7 +15,18 @@ registry.registerPath({
   security: [{ [cookieAuth.name]: [] }],
   request: {
     params: z.object({ id: userIdSchema }),
+    body: {
+      required: true,
+      description:
+        'Updates an existing user. The ID is mandatory, and all other fields are optional. Provide only the fields that need to be updated.',
+      content: {
+        'application/json': {
+          schema: dashboardUserUpdateSchema,
+        },
+      },
+    },
   },
+
   responses: {
     204: {
       description: 'User has been updated',
