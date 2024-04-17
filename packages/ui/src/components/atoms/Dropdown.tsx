@@ -12,6 +12,10 @@ import { FlexBox, colors, dimensions, font } from '../../styles'
 import { Button } from './Button'
 import { Icon } from './Icon'
 
+const StyledFlexBox = styled(FlexBox)`
+  width: 100%;
+`
+
 const StyledDropdown = styled.div`
   cursor: pointer;
   width: 100%;
@@ -26,6 +30,10 @@ const StyledImage = styled.img`
   width: 24px;
   height: 24px;
   margin-right: 10px;
+`
+
+const DeselectIcon = styled(Icon)`
+  margin-left: auto;
 `
 
 export const DropdownHeader = styled(Button)`
@@ -62,13 +70,22 @@ const DropdownList = styled.div`
   overflow-y: auto;
 `
 
-const DropdownItem = styled.div`
+const DropdownItem = styled.div<{ $isSelected: boolean }>`
   padding: 12px 10px;
   cursor: pointer;
   font-family: ${font.fontFamily};
   font-size: ${font.xs};
   display: flex;
   align-items: center;
+  color: ${({ $isSelected }) =>
+    $isSelected ? `${colors.white}` : `${colors.gray.gray3}`};
+  background-color: ${({ $isSelected }) =>
+    $isSelected ? `${colors.primaryLight}` : `${colors.white}`};
+
+  ${StyledIcon} {
+    color: ${({ $isSelected }) =>
+      $isSelected ? `${colors.white}` : `${colors.gray.gray3}`};
+  }
 
   &:hover {
     background-color: ${colors.primary};
@@ -91,9 +108,10 @@ export type TDropdown = HTMLAttributes<HTMLElement> & {
   options: TDropdownOption[]
   placeholder?: string
   defaultSelectedOption?: TDropdownOption
-  onValueChange?: (selectedOption: TDropdownOption) => void
+  onValueChange?: (selectedOption?: TDropdownOption | undefined) => void
   openText?: string
   closeText?: string
+  deselectText?: string
   className?: string
 }
 
@@ -106,6 +124,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
       onValueChange,
       openText = 'Ampliar',
       closeText = 'Cerrar',
+      deselectText = 'Borra la selección',
       className = '',
     },
     ref
@@ -127,6 +146,13 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
       },
       [onValueChange]
     )
+
+    const handleDeselect = () => {
+      setSelectedValue(undefined)
+      if (onValueChange) {
+        onValueChange(undefined)
+      }
+    }
 
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
@@ -152,7 +178,11 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
           >
             {selectedOption ? (
-              <FlexBox direction="row" key={selectedOption.id}>
+              <StyledFlexBox
+                direction="row"
+                key={selectedOption.id}
+                justify="flex-start"
+              >
                 {selectedOption.icon && (
                   <StyledIcon name={selectedOption.icon} />
                 )}
@@ -163,11 +193,10 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
                   />
                 )}
                 <span>{selectedOption.name}</span>
-              </FlexBox>
+              </StyledFlexBox>
             ) : (
               <span>{placeholder}</span>
             )}
-
             <StyledIcon
               name={isDropdownOpen ? 'expand_less' : 'expand_more'}
               aria-hidden="true"
@@ -181,13 +210,26 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
                   key={option.id}
                   data-testid={option.id}
                   id={option.id}
-                  onClick={() => handleSelect(option)}
+                  onClick={
+                    option.id === selectedOption?.id
+                      ? () => setIsDropdownOpen(false)
+                      : () => handleSelect(option)
+                  }
+                  $isSelected={option.id === selectedOption?.id}
                 >
                   {option.icon && <StyledIcon name={option.icon} />}
                   {option.iconSvg && (
                     <StyledImage src={option.iconSvg} alt={option.name} />
                   )}
                   <span>{option.name}</span>
+                  {option.id === selectedOption?.id ? (
+                    <DeselectIcon
+                      name="close"
+                      onClick={() => handleDeselect()}
+                      title={deselectText}
+                      data-testid={`deselect-${option.id}`}
+                    />
+                  ) : null}
                 </DropdownItem>
               ))}
             </DropdownList>
