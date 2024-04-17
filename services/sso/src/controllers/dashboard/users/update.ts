@@ -4,44 +4,34 @@ import { userIdSchema } from '../../../schemas/users/userSchema'
 import {
   userUpdateSchema,
   optionalUserUpdateSchema,
+  UserPatch,
 } from '../../../schemas/users/userUpdateSchema'
+import { NotFoundError } from '../../../utils/errors'
+import { hashPassword } from '../../../utils/passwordHash'
 
 export const dashboardUpdateUser: Middleware = async (ctx: Context) => {
-  const userId = userIdSchema.parse(ctx.params.userId)
-  const updates = userUpdateSchema.parse(ctx.request.body)
-
-  const allowedUpdates = Object.keys(optionalUserUpdateSchema.shape)
-
-  const fieldsToUpdate = Object.keys(updates).filter((key) =>
-    allowedUpdates.includes(key)
-  )
-
-  if (fieldsToUpdate.length === 0) {
-    ctx.throw(400, 'No valid fields provided for update')
+  const id = userIdSchema.parse(ctx.params.id)
+  const { ...data }: UserPatch = userUpdateSchema.parse(ctx.request.body)
+  const userResult = await client.query('SELECT id FROM "user" WHERE id = $1', [
+    id,
+  ])
+  if (!userResult.rows.length) {
+    throw new NotFoundError('User not found')
   }
-
-  const queryParams = []
-  const querySet = fieldsToUpdate
-    .map((field, index) => {
-      queryParams.push(updates[field as keyof typeof updates])
-      return `"${field}" = $${index + 1}`
-    })
-    .join(', ')
-
-  const query = `
-    UPDATE "user"
-    SET ${querySet}
-    WHERE id = $${queryParams.length + 1}
-    RETURNING *;
-  `
-  queryParams.push(userId)
-  const result = await client.query(query, queryParams)
-
-  if (result.rows.length === 0) {
-    ctx.throw(404, 'User not found')
+  if (data.password) {
+    data.password = await hashPassword(data.password)
   }
-
-  ctx.status = 200
-  const [user] = result.rows
-  ctx.body = user
+  const validColumns: string[] = optionalUserUpdateSchema.keyof().options
+  const updateParts = Object.entries(data)
+    .filter(([key]) => validColumns.includes(key))
+    .map(([key, value], index) => ({
+      setPart: `${key} = $${index + 1}`,
+      value,
+    }))
+  const updateSet = updateParts.map((part) => part.setPart).join(', ')
+  const values = updateParts.map((part) => part.value)
+  values.push(id)
+  const updateQuery = `UPDATE "user" SET ${updateSet} WHERE id = $${values.length}`
+  await client.query(updateQuery, values)
+  ctx.status = 204
 }

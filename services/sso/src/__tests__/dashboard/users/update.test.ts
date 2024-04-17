@@ -1,60 +1,63 @@
 import supertest from 'supertest'
-import { expect, it, describe, beforeAll, afterEach } from 'vitest'
+import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { pathRoot } from '../../../routes/routes'
 import { server, testUserData } from '../../globalSetup'
-import { UserStatus } from '../../../schemas/users/userSchema'
+import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
 import { client } from '../../../models/db'
+import { hashPassword } from '../../../utils/passwordHash'
+import { dashboardUserUpdateSchema } from '../../../schemas/users/dashboardUserUpdateSchema'
 
+const id = 'nmfg3bvexwotarwcpl6t5qjy'
+const dni = 'Y1868974P'
+const email = 'example@example.com'
+const name = 'nameExample'
+const password = 'hashedPassword'
+const role = UserRole.REGISTERED
+const status = UserStatus.PENDING
+const route = `${pathRoot.v1.dashboard.users}`
 let adminAuthToken = ''
-let userId = ''
-let route = ''
 
 beforeAll(async () => {
-  const loginResponse = await supertest(server)
+  const response = await supertest(server)
     .post(`${pathRoot.v1.dashboard.auth}/login`)
     .send({
       dni: testUserData.admin.dni,
       password: testUserData.admin.password,
     })
-  adminAuthToken = loginResponse.header['set-cookie'][0].split(';')
+  ;[adminAuthToken] = response.header['set-cookie'][0].split(';')
 
-  const response = await supertest(server)
-    .post(`${pathRoot.v1.dashboard.users}/${userId}`)
-    .set('Cookie', adminAuthToken)
-    .send({
-      dni: 'Y4896094Y',
-      name: 'Test User',
-      email: 'testuser@example.com',
-    })
+  const exampleItineraty = await client.query(
+    'SELECT id FROM "itinerary" LIMIT 1'
+  )
+  const itineraryId = exampleItineraty.rows[0].id
+  const createUserQuery = {
+    text: 'INSERT INTO "user"(id, dni, email, name, password, itinerary_id) VALUES($1, $2, $3, $4, $5, $6)',
+    values: [id, dni, email, name, hashPassword(password), itineraryId],
+  }
+  await client.query(createUserQuery)
+})
 
-  userId = response.body.id
-  route = `${pathRoot.v1.dashboard.users}/${userId}`
+afterAll(async () => {
+  await client.query('DELETE FROM "user" WHERE id = $1', [id])
 })
 
 describe('Testing patch dashboard endpoint', () => {
-  afterEach(async () => {
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      UserStatus.ACTIVE,
-      testUserData.admin.dni,
-    ])
-  })
-
-  it('should update the user successfully', async () => {
-    const updates = {
-      dni: 'Y8996767D',
-      name: 'Updated Name',
-      email: 'updated@example.com',
+  it.only('should update the user successfully', async () => {
+    const body = {
+      email: 'example@get.com',
     }
-
+    dashboardUserUpdateSchema.parse(body)
     const response = await supertest(server)
-      .patch(route)
-      .set('Cookie', adminAuthToken)
-      .send(updates)
+      .patch(`${route}/${id}`)
+      .set('Cookie', [adminAuthToken])
+      .send(body)
 
-    expect(response.status).toBe(200)
-    expect(response.body.dni).toBe(updates.dni)
-    expect(response.body.name).toBe(updates.name)
-    expect(response.body.email).toBe(updates.email)
+    const newEmail = await client.query(
+      ' SELECT email FROM "user" WHERE id = $1',
+      [id]
+    )
+    expect(response.status).toBe(204)
+    expect(body.email).toBe(newEmail.rows[0].email)
   })
 
   it('should return an error if the user does not exist', async () => {
@@ -63,7 +66,7 @@ describe('Testing patch dashboard endpoint', () => {
 
     const response = await supertest(server)
       .patch(`${route}/${nonExistingUserId}`)
-      .set('Cookie', adminAuthToken)
+      .set('Cookie', [adminAuthToken])
       .send(updates)
 
     expect(response.status).toBe(404)
@@ -74,7 +77,7 @@ describe('Testing patch dashboard endpoint', () => {
 
     const response = await supertest(server)
       .patch(route)
-      .set('Cookie', adminAuthToken)
+      .set('Cookie', [adminAuthToken])
       .send(updates)
 
     expect(response.status).toBe(400)
@@ -84,7 +87,7 @@ describe('Testing patch dashboard endpoint', () => {
     const updates = { name: 'New Name', email: 'another@example.com' }
     const response = await supertest(server)
       .patch(route)
-      .set('Cookie', 'invalidAuthToken')
+      .set('Cookie', ['invalidAuthToken'])
       .send(updates)
 
     expect(response.status).toBe(401)

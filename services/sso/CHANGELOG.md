@@ -1,19 +1,17 @@
-### Added
-
-- PATCH `dashboard/users/userId` endpoint.
+All notable changes to this project will be documented in this file.
+# Changelog
 
 ## [1.19.0] - 2024-04-15
 
-# Changelog
+### Added
 
-All notable changes to this project will be documented in this file.
+- PATCH `dashboard/users/userId` endpoint.
 
 ## [1.18.0] - 2024-04-11
 
 ### Changed
 
 - Changed the response code for unauthorized access attempts from 498 to 401 to align with standard HTTP status codes.
-
 
 ## [1.17.0] - 2024-04-09
 
