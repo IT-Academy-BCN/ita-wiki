@@ -3,11 +3,10 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import { ForbiddenError, InvalidCredentials } from '../utils/errors'
 import { appConfig } from '../config'
 import { client } from '../models/db'
-import { ValidateSchema } from '../schemas'
 import { UserStatus } from '../schemas/users/userSchema'
 
 export const authenticate = async (ctx: Context, next: Next) => {
-  const { authToken } = ctx.request.body as ValidateSchema
+  const authToken = ctx.request.body?.authToken
   const authCookie = ctx.cookies.get('authToken')
   const token = authToken || authCookie
   if (!token) {

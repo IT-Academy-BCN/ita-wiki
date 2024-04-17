@@ -1,24 +1,31 @@
 import z from 'zod'
-import { registry } from '../../../registry'
 import { pathRoot } from '../../../../routes/routes'
 import { cookieAuth } from '../../../components/cookieAuth'
 import {
-  getDashboardUserResponse,
-  invalidCredentialsResponse,
+  deletedUsersResponse,
+  invalidTokenResponse,
   userNotFoundResponse,
 } from '../../../components/responses'
+import { registry } from '../../../registry'
+import { userIdSchema } from '../../../../schemas/users/userSchema'
 
 registry.registerPath({
-  method: 'get',
+  method: 'delete',
   tags: ['dashboard'],
-  path: `${pathRoot.v1.dashboard.users}/me`,
-  description: 'Returns information of a logged in user.',
-  summary: 'Get user information',
+  path: `${pathRoot.v1.dashboard.users}/{id}`,
+  description: 'Soft deletes a user',
+  summary: 'Delete a user',
+  request: {
+    params: z.object({ id: userIdSchema }),
+  },
   security: [{ [cookieAuth.name]: [] }],
   responses: {
-    200: getDashboardUserResponse,
-    401: invalidCredentialsResponse,
+    204: {
+      description: 'User has been soft deleted',
+    },
+    401: invalidTokenResponse,
     404: userNotFoundResponse,
+    410: deletedUsersResponse,
     500: {
       description: 'Other error',
       content: {
