@@ -9,6 +9,7 @@ export const authenticate = async (ctx: Context, next: Next) => {
   const authToken = ctx.request.body?.authToken
   const authCookie = ctx.cookies.get('authToken')
   const token = authToken || authCookie
+
   if (!token) {
     throw new InvalidCredentials()
   }
@@ -29,6 +30,5 @@ export const authenticate = async (ctx: Context, next: Next) => {
     throw new ForbiddenError('Only active users can proceed')
   }
   ctx.state.user = user
-
   await next()
 }

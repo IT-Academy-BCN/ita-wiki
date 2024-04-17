@@ -1,8 +1,6 @@
 import { Context, Middleware } from 'koa'
 import { client } from '../../../models/db'
-import { userIdSchema } from '../../../schemas/users/userSchema'
 import {
-  userUpdateSchema,
   optionalUserUpdateSchema,
   UserPatch,
 } from '../../../schemas/users/userUpdateSchema'
@@ -10,8 +8,8 @@ import { NotFoundError } from '../../../utils/errors'
 import { hashPassword } from '../../../utils/passwordHash'
 
 export const dashboardUpdateUser: Middleware = async (ctx: Context) => {
-  const id = userIdSchema.parse(ctx.params.id)
-  const { ...data }: UserPatch = userUpdateSchema.parse(ctx.request.body)
+  const id = ctx.params.id as string
+  const data: UserPatch = ctx.request.body as UserPatch
   const userResult = await client.query('SELECT id FROM "user" WHERE id = $1', [
     id,
   ])

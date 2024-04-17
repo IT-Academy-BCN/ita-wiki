@@ -40,7 +40,7 @@ afterAll(async () => {
 })
 
 describe('Testing patch dashboard endpoint', () => {
-  it.only('should update the user successfully', async () => {
+  it('should update the user successfully', async () => {
     const body = {
       email: 'example@get.com',
     }

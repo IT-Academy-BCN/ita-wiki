@@ -1,6 +1,7 @@
 import { optionalUserUpdateSchema } from './userUpdateSchema'
 
 const optionalKeys = optionalUserUpdateSchema.keyof().options
+
 export const dashboardUserUpdateSchema = optionalUserUpdateSchema.refine(
   (data) => {
     return optionalKeys.some((key) => data[key] !== undefined)
