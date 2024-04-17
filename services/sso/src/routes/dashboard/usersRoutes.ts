@@ -8,8 +8,9 @@ import { z } from '../../openapi/zod'
 import { getMe } from '../../controllers/dashboard/users/getMe'
 import { dashboardUsersListQuerySchema } from '../../schemas'
 import { dashboardUpdateUser } from '../../controllers/dashboard/users/update'
-import { userIdSchema } from '../../schemas/users/userSchema'
 import { dashboardUserUpdateSchema } from '../../schemas/users/dashboardUserUpdateSchema'
+import { userIdSchema } from '../../schemas/users/userSchema'
+import { dashboardDeleteUser } from '../../controllers/dashboard/users/delete'
 
 export const dashboardUsersRoutes = new Router()
 
@@ -38,4 +39,12 @@ dashboardUsersRoutes.patch(
     })
   ),
   dashboardUpdateUser
+)
+
+dashboardUsersRoutes.delete(
+  '/:id',
+  validate(z.object({ params: z.object({ id: userIdSchema }) })),
+  authenticate,
+  authorize('ADMIN'),
+  dashboardDeleteUser
 )

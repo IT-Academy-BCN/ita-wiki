@@ -1,6 +1,7 @@
 import { dashboardUsersListSchema, userSchema } from '../../schemas'
 import { z } from '../zod'
 import {
+  DeletedUser,
   EmailDniError,
   ForbiddenError,
   InvalidCredentials,
@@ -138,6 +139,7 @@ export const listUsersIdNameResponse = {
     },
   },
 }
+
 export const listDashboardUsersResponse = {
   description: 'Token is valid and user information is returned.',
   content: {
@@ -152,6 +154,15 @@ export const userUpdatedResponse = {
   content: {
     'application/json': {
       schema: userSchema.pick({ id: true, dni: true, email: true, name: true }),
+    }
+  }
+}
+
+export const deletedUsersResponse = {
+  description: 'User is already soft deleted.',
+  content: {
+    'application/json': {
+      schema: DeletedUser,
     },
   },
 }

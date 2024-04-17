@@ -53,6 +53,12 @@ class DuplicateError extends DefaultError {
   }
 }
 
+class DeletedError extends DefaultError {
+  constructor(message: string = 'User already deleted') {
+    super(410, `${message}`)
+  }
+}
+
 class UnsupportedMediaType extends DefaultError {
   constructor(message?: string) {
     super(415, message ?? 'Unsupported media type')
@@ -82,4 +88,5 @@ export {
   MissingParamError,
   InvalidParamError,
   InvalidToken,
+  DeletedError,
 }

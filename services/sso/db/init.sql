@@ -24,7 +24,8 @@ CREATE TABLE IF NOT EXISTS "user" (
     status USER_STATUS NOT NULL DEFAULT 'PENDING',
     user_meta JSONB NOT NULL DEFAULT '{}',
     created_at TIMESTAMPTZ DEFAULT NOW (),
-    updated_at TIMESTAMPTZ
+    updated_at TIMESTAMPTZ,
+    deleted_at TIMESTAMPTZ DEFAULT NULL
 );
 
 CREATE TRIGGER set_timestamp BEFORE

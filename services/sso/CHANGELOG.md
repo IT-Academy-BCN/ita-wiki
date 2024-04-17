@@ -7,6 +7,13 @@ All notable changes to this project will be documented in this file.
 
 - PATCH `dashboard/users/userId` endpoint.
 
+## [1.19.0] - 2024-04-15
+
+### Added
+
+- Endpoint  `DELETE /dashboard/users/:id` for admin users.
+- DB: `deleted_at` timestamp column to users talbe for soft delete
+
 ## [1.18.0] - 2024-04-11
 
 ### Changed
