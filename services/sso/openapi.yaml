@@ -1,5 +1,5 @@
 info:
-  version: 1.20.0
+  version: 1.18.0
   title: IT Academy SSO Service
   description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
