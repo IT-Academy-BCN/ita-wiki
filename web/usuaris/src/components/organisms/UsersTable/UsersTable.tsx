@@ -6,7 +6,7 @@ import { Checkbox, Spinner, dimensions } from '@itacademy/ui'
 import { Table } from '../../molecules'
 import { TUserData } from '../../../types'
 import { icons } from '../../../assets/icons'
-import { useGetUsers } from '../../../hooks'
+import { useGetUsers, useUpdateUser } from '../../../hooks'
 import {
   ActionsContainer,
   ActionsHeader,
@@ -27,6 +27,18 @@ export const UsersTable: FC = () => {
     undefined
   )
   const [selectedUsers, setSelectedUsers] = useState<TUserData[]>([])
+
+  const { changeUserStatus } = useUpdateUser()
+
+  const handleStatus = (id: string, status: string) => {
+    const updatedStatus = status === 'ACTIVE' ? 'BLOCKED' : 'ACTIVE'
+
+    const updatedUser = {
+      id,
+      status: updatedStatus,
+    }
+    changeUserStatus.mutate(updatedUser)
+  }
 
   const handleSelectedUsers = (allSelectedUsers: TUserData[]) => {
     // TO DO: Add action to do after selection
@@ -194,6 +206,7 @@ export const UsersTable: FC = () => {
       ),
       cell: ({ row }) => {
         const status: string = row.getValue('status')
+        const id: string = row.getValue('id')
         let isDisabled: boolean | undefined
         let buttonTxt: string = ''
 
@@ -217,7 +230,12 @@ export const UsersTable: FC = () => {
             justify="flex-end"
             gap={dimensions.spacing.xs}
           >
-            <ButtonStyled size="small" outline disabled={isDisabled}>
+            <ButtonStyled
+              size="small"
+              outline
+              disabled={isDisabled}
+              onClick={() => handleStatus(id, status)}
+            >
               {buttonTxt}
             </ButtonStyled>
             <DeleteButton size="small" outline disabled={isDisabled}>

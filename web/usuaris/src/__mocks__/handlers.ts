@@ -30,7 +30,7 @@ export const handlers = [
       { status: 200 }
     )
   ),
-  
+
   http.get(urls.getItineraries, () =>
     HttpResponse.json(
       [
@@ -57,6 +57,11 @@ export const handlers = [
       ],
       { status: 200 }
     )
+  ),
+
+  http.patch(
+    `${urls.patchUser}1`,
+    () => new HttpResponse(null, { status: 204 })
   ),
 ]
 

@@ -11,3 +11,15 @@ export type TItinerary = {
   name: string
   slug: string
 }
+
+export type TUpdatedUser = {
+  id: string
+  dni?: string
+  email?: string
+  name?: string
+  password?: string
+  role?: string
+  status?: string
+  deletedAt?: string
+  itineraryId?: string
+}
