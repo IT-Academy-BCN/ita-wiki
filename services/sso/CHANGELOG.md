@@ -1,11 +1,17 @@
 All notable changes to this project will be documented in this file.
 # Changelog
 
-## [1.20.1] - 2024-04-17
+## [1.21.1] - 2024-04-18
 
 ### Changed
 
 - Refactor `auth/login` and `users/list` controllers query to filter soft deleted users.
+
+## [1.21.0] - 2024-04-18
+
+### Changed
+
+- dni value added to the GET `dashboard/users` enpoint response.
 
 ## [1.20.0] - 2024-04-17
 
