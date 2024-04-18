@@ -206,4 +206,16 @@ describe('Testing get users endpoint', () => {
     expect(response.status).toBe(401)
     expect(response.body.message).toBe('Invalid Credentials')
   })
+  it('returns a collection of users successfully with a dni query of 2 or more characters', async () => {
+    const validDni = 'Z45035'
+    const response = await supertest(server)
+      .get(route)
+      .query({ dni: validDni })
+      .set('Cookie', [authAdminToken])
+    const { body }: { body: DashboardUsersList } = response
+    expect(response.status).toBe(200)
+    expect(body).toBeInstanceOf(Array)
+    expect(body).toHaveLength(1)
+    expect(responseSchema.safeParse(body).success).toBeTruthy()
+  })
 })

@@ -9,7 +9,7 @@ import {
   endDateSchema,
   startDateSchema,
 } from '../../../schemas/users/dashboardUsersListQuerySchema'
-import { dniSchema } from '../../../schemas'
+import { dniQueryStringSchema } from '../../../schemas/dniQueryStringSchema'
 
 export const dashboardListUsers: Middleware = async (ctx: Context) => {
   const { itinerarySlug, status, startDate, endDate, name, dni } =
@@ -34,7 +34,7 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
     queryParams.push(`%${parsedName}%`)
   }
   if (dni) {
-    const parsedDni = dniSchema.parse(dni)
+    const parsedDni = dniQueryStringSchema.parse(dni)
     conditions.push(`u.dni ILIKE $${conditions.length + 1}`)
     queryParams.push(`%${parsedDni}%`)
   }
