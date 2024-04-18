@@ -206,7 +206,7 @@ describe('Testing get users endpoint', () => {
     expect(response.status).toBe(401)
     expect(response.body.message).toBe('Invalid Credentials')
   })
-  it('returns a collection of users successfully with a dni query of 2 or more characters', async () => {
+  it('returns a user successfully with a dni query of 2 or more characters', async () => {
     const validDni = 'Z45035'
     const response = await supertest(server)
       .get(route)
