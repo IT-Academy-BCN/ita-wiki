@@ -8,6 +8,7 @@ export const handlers = [
         {
           id: '1',
           name: 'Ona Sitgar',
+          dni: '12345678A',
           status: 'PENDING',
           createdAt: '2023/11/05 00:00:00.000',
           itineraryName: 'Backend Node',
@@ -15,6 +16,7 @@ export const handlers = [
         {
           id: '2',
           name: 'Marc Bofill',
+          dni: '87654321B',
           status: 'ACTIVE',
           createdAt: '2023/11/05 00:00:00.000',
           itineraryName: 'Frontend React',
@@ -22,6 +24,7 @@ export const handlers = [
         {
           id: '3',
           name: 'Montserrat Capdevila',
+          dni: '45678912C',
           status: 'BLOCKED',
           createdAt: '2023/11/05 00:00:00.000',
           itineraryName: 'Fullstack Php',

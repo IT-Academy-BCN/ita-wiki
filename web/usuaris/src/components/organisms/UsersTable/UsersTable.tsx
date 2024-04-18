@@ -129,6 +129,21 @@ export const UsersTable: FC = () => {
         return <DisabledStyled disabled={isDisabled}>{name}</DisabledStyled>
       },
     }),
+    columHelper.accessor('dni', {
+      header: 'DNI/NIE',
+      cell: ({ row }) => {
+        const dni: string = row.getValue('dni')
+        const status: string = row.getValue('status')
+        let isDisabled: boolean | undefined
+
+        if (selectedStatus && selectedStatus !== status) {
+          isDisabled = true
+        } else {
+          isDisabled = undefined
+        }
+        return <DisabledStyled disabled={isDisabled}>{dni}</DisabledStyled>
+      },
+    }),
     columHelper.accessor('itineraryName', {
       header: `${t('Especialización')}`,
       cell: ({ row }) => {

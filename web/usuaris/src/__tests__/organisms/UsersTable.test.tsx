@@ -27,16 +27,19 @@ describe('UsersTable', () => {
 
     await waitFor(() => {
       expect(screen.getByLabelText(/Ona Sitgar/i)).toBeInTheDocument()
+      expect(screen.getByText('12345678A')).toBeInTheDocument()
       expect(screen.getByText(/Pendent/i)).toBeInTheDocument()
       expect(screen.getByText(/Backend Node/i)).toBeInTheDocument()
       expect(screen.getByText(/Acceptar/i)).toBeInTheDocument()
 
       expect(screen.getByLabelText(/Marc Bofill/i)).toBeInTheDocument()
+      expect(screen.getByText('87654321B')).toBeInTheDocument()
       expect(screen.getByText(/Actiu/i)).toBeInTheDocument()
       expect(screen.getByText(/Frontend React/i)).toBeInTheDocument()
       expect(screen.getByText('Bloquejar')).toBeInTheDocument()
 
       expect(screen.getByLabelText(/Montserrat Capdevila/i)).toBeInTheDocument()
+      expect(screen.getByText('45678912C')).toBeInTheDocument()
       expect(screen.getByText('Bloquejat')).toBeInTheDocument()
       expect(screen.getByText(/Fullstack Php/i)).toBeInTheDocument()
       expect(screen.getByText('Desbloquejar')).toBeInTheDocument()
