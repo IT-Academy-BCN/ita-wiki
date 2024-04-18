@@ -5,6 +5,7 @@ import { z } from '../../openapi/zod'
 export const dashboardUsersListSchema = userSchema
   .pick({
     id: true,
+    dni: true,
     name: true,
     status: true,
   })
