@@ -1,5 +1,5 @@
 info:
-  version: 1.21.0
+  version: 1.22.0
   title: IT Academy SSO Service
   description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
@@ -921,6 +921,53 @@ paths:
                     example: User not found
                 required:
                   - message
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
+  /api/v1/dashboard/users/status:
+    post:
+      tags:
+        - dashboard
+      description: Update a collection of users status
+      summary: Get list of users name information
+      security:
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+                status:
+                  type: string
+                  enum:
+                    - ACTIVE
+                    - BLOCKED
+              required:
+                - ids
+                - status
+      responses:
+        "204":
+          description: The user statuses have been updated successfully.
+        "401":
+          description: Invalid Credentials error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidCredentialsError"
         "500":
           description: Other error
           content:

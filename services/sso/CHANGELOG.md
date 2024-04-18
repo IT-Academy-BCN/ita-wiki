@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file.
 # Changelog
 
+## [1.22.0] - 2024-04-18
+
+### Added
+
+- POST `dashboard/users/status` endpoint.
+
 ## [1.21.0] - 2024-04-18
 
 ### Changed
