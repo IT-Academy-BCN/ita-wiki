@@ -9,26 +9,34 @@ import {
   endDateSchema,
   startDateSchema,
 } from '../../../schemas/users/dashboardUsersListQuerySchema'
+import { dniSchema } from '../../../schemas'
 
 export const dashboardListUsers: Middleware = async (ctx: Context) => {
-  const { itinerarySlug, status, startDate, endDate, name } = ctx.state.query
+  const { itinerarySlug, status, startDate, endDate, name, dni } =
+    ctx.state.query
   let query = `
   SELECT
     u.id,
     u.name AS name,
-    i.name AS "itineraryName",
+    u.dni AS dni,
     u.status,
-    TO_CHAR(u.created_at, 'YYYY-MM-DD') AS "createdAt"
+    TO_CHAR(u.created_at, 'YYYY-MM-DD') AS "createdAt",
+    i.name AS "itineraryName"
   FROM
     "user" u
   JOIN itinerary i ON u.itinerary_id = i.id
 `
   const queryParams = []
   const conditions = []
-  if (itinerarySlug) {
-    const parsedSlug = itinerarySlugSchema.parse(itinerarySlug)
-    conditions.push(`i.slug = $${conditions.length + 1}`)
-    queryParams.push(parsedSlug)
+  if (name) {
+    const parsedName = userNameSchema.parse(name)
+    conditions.push(`u.name ILIKE $${conditions.length + 1}`)
+    queryParams.push(`%${parsedName}%`)
+  }
+  if (dni) {
+    const parsedDni = dniSchema.parse(dni)
+    conditions.push(`u.dni ILIKE $${conditions.length + 1}`)
+    queryParams.push(`%${parsedDni}%`)
   }
   if (status) {
     const parsedStatus = userStatusSchema.parse(status)
@@ -45,10 +53,10 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
     conditions.push(`u.created_at <= $${conditions.length + 1}`)
     queryParams.push(parsedEndDate)
   }
-  if (name) {
-    const parsedName = userNameSchema.parse(name)
-    conditions.push(`u.name ILIKE $${conditions.length + 1}`)
-    queryParams.push(`%${parsedName}%`)
+  if (itinerarySlug) {
+    const parsedSlug = itinerarySlugSchema.parse(itinerarySlug)
+    conditions.push(`i.slug = $${conditions.length + 1}`)
+    queryParams.push(parsedSlug)
   }
   if (conditions.length > 0) {
     query += ` WHERE ${conditions.join(' AND ')}`

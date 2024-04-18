@@ -1,5 +1,5 @@
 info:
-  version: 1.20.0
+  version: 1.20.1
   title: IT Academy SSO Service
   description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
@@ -837,6 +837,46 @@ paths:
           schema:
             type: string
           required: true
+      requestBody:
+        required: true
+        description: Updates an existing user. The ID is mandatory, and all other fields
+          are optional. Provide only the fields that need to be updated.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                dni:
+                  type: string
+                email:
+                  type: string
+                  minLength: 1
+                  format: email
+                  example: user@example.cat
+                name:
+                  type: string
+                  minLength: 1
+                  example: John Doe
+                password:
+                  type: string
+                  minLength: 8
+                role:
+                  type: string
+                  enum:
+                    - ADMIN
+                    - MENTOR
+                    - REGISTERED
+                status:
+                  type: string
+                  enum:
+                    - ACTIVE
+                    - PENDING
+                    - BLOCKED
+                deletedAt:
+                  type: string
+                  format: date-time
+                itineraryId:
+                  type: string
       responses:
         "204":
           description: User has been updated

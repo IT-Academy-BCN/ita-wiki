@@ -11,7 +11,7 @@ import { UserStatus } from '../../../schemas/users/userSchema'
 const route = `${pathRoot.v1.dashboard.users}`
 
 const responseSchema = userSchema
-  .pick({ id: true, name: true, status: true })
+  .pick({ id: true, name: true, dni: true, status: true })
   .extend({
     createdAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     itineraryName: z.string(),
@@ -32,9 +32,10 @@ beforeAll(async () => {
     `SELECT
     u.id,
     u.name AS name,
-    i.name AS "itineraryName",
+    u.dni AS dni,
     u.status,
-    TO_CHAR(u.created_at, 'YYYY-MM-DD') AS "createdAt"
+    TO_CHAR(u.created_at, 'YYYY-MM-DD') AS "createdAt",
+    i.name AS "itineraryName"
   FROM
     "user" u
   JOIN itinerary i ON u.itinerary_id = i.id;`
