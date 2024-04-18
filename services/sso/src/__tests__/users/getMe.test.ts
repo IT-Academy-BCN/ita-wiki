@@ -7,32 +7,44 @@ import { client } from '../../models/db'
 import { UserStatus } from '../../schemas/users/userSchema'
 
 const route = `${pathRoot.v1.users}/me`
+const userToBeBlockedDni = testUserData.userToBeBlocked.dni
+const userToDeleteDni = testUserData.userToDelete.dni
 let adminAuthToken = ''
-let userAuthToken = ''
+let userToBlockAuthToken = ''
+let userToDeleteAuthToken = ''
 beforeAll(async () => {
-  const response = await supertest(server)
+  const responseAdmin = await supertest(server)
     .post(`${pathRoot.v1.auth}/login`)
     .send({
       dni: testUserData.admin.dni,
       password: testUserData.admin.password,
     })
-  adminAuthToken = response.body.authToken
-
-  const response2 = await supertest(server)
+  adminAuthToken = responseAdmin.body.authToken
+  const responseUserToBlock = await supertest(server)
     .post(`${pathRoot.v1.auth}/login`)
     .send({
       dni: testUserData.userToBeBlocked.dni,
       password: testUserData.userToBeBlocked.password,
     })
-  userAuthToken = response2.body.authToken
+  userToBlockAuthToken = responseUserToBlock.body.authToken
+  const responseUserToDelete = await supertest(server)
+    .post(`${pathRoot.v1.auth}/login`)
+    .send({
+      dni: testUserData.userToDelete.dni,
+      password: testUserData.userToDelete.password,
+    })
+  userToDeleteAuthToken = responseUserToDelete.body.authToken
 })
 
 afterAll(async () => {
-  const userDni = testUserData.userToBeBlocked.dni
   const newStatus = UserStatus.ACTIVE
   await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
     newStatus,
-    userDni,
+    userToBeBlockedDni,
+  ])
+  await client.query('UPDATE "user" SET deleted_at = $1 WHERE dni = $2', [
+    null,
+    userToDeleteDni,
   ])
 })
 
@@ -81,19 +93,39 @@ describe('Testing get user endpoint', () => {
   })
   it('should fail with ForbbidenError when blocking the user', async () => {
     const response1 = await supertest(server).post(route).send({
-      authToken: userAuthToken,
+      authToken: userToBlockAuthToken,
     })
     expect(response1.status).toBe(200)
-    const userDni = testUserData.userToBeBlocked.dni
     const newStatus = UserStatus.BLOCKED
     await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
       newStatus,
-      userDni,
+      userToBeBlockedDni,
     ])
     const response2 = await supertest(server).post(route).send({
-      authToken: userAuthToken,
+      authToken: userToBlockAuthToken,
     })
     expect(response2.status).toBe(403)
     expect(response2.body.message).toBe('The user is Blocked')
+
+    const newNewStatus = UserStatus.ACTIVE
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      newNewStatus,
+      userToBeBlockedDni,
+    ])
+  })
+  it('should fail if user is deleted', async () => {
+    const response1 = await supertest(server).post(route).send({
+      authToken: userToDeleteAuthToken,
+    })
+    expect(response1.status).toBe(200)
+    await client.query(
+      'UPDATE "user" SET deleted_at = CURRENT_TIMESTAMP WHERE dni = $1',
+      [userToDeleteDni]
+    )
+    const response2 = await supertest(server).post(route).send({
+      authToken: userToDeleteAuthToken,
+    })
+    expect(response2.status).toBe(404)
+    expect(response2.body.message).toBe('User Not found')
   })
 })

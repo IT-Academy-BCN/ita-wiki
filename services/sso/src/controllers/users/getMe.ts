@@ -6,7 +6,7 @@ import { User } from '../../schemas'
 export const getMe: Middleware = async (ctx: Context) => {
   const { id } = ctx.state.user as Pick<User, 'id' | 'role'>
   const queryResult = await client.query(
-    'SELECT dni, email, name, role FROM "user" WHERE id = $1',
+    'SELECT dni, email, name, role FROM "user" WHERE id = $1 AND deleted_at IS NULL',
     [id]
   )
 
