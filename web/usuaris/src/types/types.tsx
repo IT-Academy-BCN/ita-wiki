@@ -1,6 +1,7 @@
 export type TUserData = {
   id: string
   name: string
+  dni: string
   status: string
   createdAt: string
   itineraryName: string

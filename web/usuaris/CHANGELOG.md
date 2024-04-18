@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.0] - 2024-04-18
+
+### Added
+
+- Added DNI column to UsersTable
+
 ## [0.9.0] - 2024-04-17
 
 ### Added
