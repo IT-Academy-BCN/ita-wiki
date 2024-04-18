@@ -1,4 +1,5 @@
 import { z } from '../../openapi/zod'
+import { dniQueryStringSchema } from '../dniQueryStringSchema'
 import { itinerarySlugSchema } from '../itineraries/itinerarySchema'
 import { UserStatus, userNameSchema, userStatusSchema } from './userSchema'
 
@@ -39,4 +40,7 @@ export const dashboardUsersListQuerySchema = z.object({
     .openapi({
       param: { description: 'Partial or full name to filter the users by' },
     }),
+  dni: dniQueryStringSchema.optional().openapi({
+    param: { description: 'Partial or full dni to filter the users by' },
+  }),
 })
