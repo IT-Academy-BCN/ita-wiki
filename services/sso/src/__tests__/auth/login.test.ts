@@ -61,7 +61,7 @@ describe('Testing authentication endpoint', () => {
     expect(response.status).toBe(403)
     expect(response.body.message).toBe('Only active users can login')
   })
-  
+
   it('should fail if user is blocked', async () => {
     const response = await supertest(server).post(route).send({
       dni: testUserData.blockedUser.dni,
@@ -70,7 +70,7 @@ describe('Testing authentication endpoint', () => {
     expect(response.status).toBe(403)
     expect(response.body.message).toBe('The user is Blocked')
   })
-  
+
   it('should fail if user is deleted', async () => {
     await client.query(
       'UPDATE "user" SET deleted_at = CURRENT_TIMESTAMP WHERE dni = $1',
