@@ -1,7 +1,7 @@
 import { Context, Middleware } from 'koa'
 import { client } from '../../../models/db'
 import { NotFoundError } from '../../../utils/errors'
-import { DashboardUsersUpdateStatus } from '../../../schemas/users/dashboardUsersBlockBodySchema'
+import { DashboardUsersUpdateStatus } from '../../../schemas/users/dashboardUsersUpdateStatusSchema'
 
 export const dashboardUpdateStatusUsers: Middleware = async (ctx: Context) => {
   const { ids, status } = ctx.request.body as DashboardUsersUpdateStatus

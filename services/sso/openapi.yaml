@@ -220,6 +220,7 @@ paths:
                 properties:
                   id:
                     type: string
+                    example: b6z2od3ut12qs0ilem6njgjp
                 required:
                   - id
         "400":
@@ -286,6 +287,7 @@ paths:
                 properties:
                   id:
                     type: string
+                    example: b6z2od3ut12qs0ilem6njgjp
                 required:
                   - id
         "400":
@@ -419,6 +421,7 @@ paths:
           name: id
           schema:
             type: string
+            example: b6z2od3ut12qs0ilem6njgjp
           required: true
       requestBody:
         required: true
@@ -514,6 +517,7 @@ paths:
             type: array
             items:
               type: string
+              example: b6z2od3ut12qs0ilem6njgjp
           required: true
           description: user id
           explode: false
@@ -541,6 +545,7 @@ paths:
                   properties:
                     id:
                       type: string
+                      example: b6z2od3ut12qs0ilem6njgjp
                     name:
                       type: string
                       minLength: 1
@@ -693,6 +698,7 @@ paths:
                   properties:
                     id:
                       type: string
+                      example: b6z2od3ut12qs0ilem6njgjp
                     dni:
                       type: string
                     name:
@@ -799,6 +805,7 @@ paths:
           name: id
           schema:
             type: string
+            example: b6z2od3ut12qs0ilem6njgjp
           required: true
       responses:
         "204":
@@ -847,6 +854,7 @@ paths:
           name: id
           schema:
             type: string
+            example: b6z2od3ut12qs0ilem6njgjp
           required: true
       requestBody:
         required: true
@@ -951,6 +959,7 @@ paths:
                   type: array
                   items:
                     type: string
+                    example: b6z2od3ut12qs0ilem6njgjp
                 status:
                   type: string
                   enum:
@@ -968,6 +977,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidCredentialsError"
+        "404":
+          description: Users not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: b6z2od3ut12qs0ilem6njgjp not found
+                required:
+                  - message
         "500":
           description: Other error
           content:

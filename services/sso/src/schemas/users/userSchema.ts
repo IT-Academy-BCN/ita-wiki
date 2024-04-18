@@ -12,7 +12,9 @@ export enum UserStatus {
   BLOCKED = 'BLOCKED',
 }
 export const userStatusSchema = z.nativeEnum(UserStatus)
-export const userIdSchema = z.string().cuid2()
+export const userIdSchema = z.string().cuid2().openapi({
+  example: 'b6z2od3ut12qs0ilem6njgjp',
+})
 export const userNameSchema = z
   .string()
   .nonempty()

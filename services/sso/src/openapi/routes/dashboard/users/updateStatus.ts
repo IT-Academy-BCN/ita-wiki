@@ -1,9 +1,12 @@
 import z from 'zod'
 import { pathRoot } from '../../../../routes/routes'
-import { invalidCredentialsResponse } from '../../../components/responses'
+import {
+  invalidCredentialsResponse,
+  usersNotFoundResponse,
+} from '../../../components/responses'
 import { registry } from '../../../registry'
 import { cookieAuth } from '../../../components/cookieAuth'
-import { dashboardUsersUpdateStatusSchema } from '../../../../schemas/users/dashboardUsersBlockBodySchema'
+import { dashboardUsersUpdateStatusSchema } from '../../../../schemas/users/dashboardUsersUpdateStatusSchema'
 
 registry.registerPath({
   method: 'post',
@@ -24,6 +27,7 @@ registry.registerPath({
   responses: {
     204: { description: 'The user statuses have been updated successfully.' },
     401: invalidCredentialsResponse,
+    404: usersNotFoundResponse,
     500: {
       description: 'Other error',
       content: {
