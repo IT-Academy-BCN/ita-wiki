@@ -1,11 +1,17 @@
 import supertest from 'supertest'
-import { expect, it, describe } from 'vitest'
+import { expect, it, describe, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { tokenSchema } from '../../schemas/tokens/tokenSchema'
 import { client } from '../../models/db'
 
 const route = `${pathRoot.v1.auth}/login`
+afterAll(async () => {
+  await client.query('UPDATE "user" SET deleted_at = $1 WHERE dni = $2', [
+    null,
+    testUserData.userToDelete.dni,
+  ])
+})
 
 describe('Testing authentication endpoint', () => {
   it('should succeed with correct credentials', async () => {
@@ -82,9 +88,5 @@ describe('Testing authentication endpoint', () => {
     })
     expect(response.status).toBe(401)
     expect(response.body.message).toBe('Invalid Credentials')
-    await client.query('UPDATE "user" SET deleted_at = $1 WHERE dni = $2', [
-      null,
-      testUserData.userToDelete.dni,
-    ])
   })
 })

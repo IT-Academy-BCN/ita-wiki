@@ -1,5 +1,5 @@
 import supertest from 'supertest'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import qs from 'qs'
 import { userSchema } from '../../schemas'
 import { server, testUserData } from '../globalSetup'
@@ -28,7 +28,12 @@ const stringData = (data: string[]) =>
     { id: data, fields: ['id', 'name'] },
     { indices: false, arrayFormat: 'comma' }
   )
-
+afterEach(async () => {
+  await client.query('UPDATE "user" SET deleted_at = $1 WHERE dni = $2', [
+    null,
+    testUserData.userToDelete.dni,
+  ])
+})
 describe('Testing get users name by Id endpoint', () => {
   it('returns a user successfully with a single valid ID', async () => {
     const response = await supertest(server).get(`${route}?${stringData(id)}`)
@@ -88,10 +93,6 @@ describe('Testing get users name by Id endpoint', () => {
     )
     expect(response.status).toBe(200)
     expect(response.body).toHaveLength(0)
-    await client.query('UPDATE "user" SET deleted_at = $1 WHERE dni = $2', [
-      null,
-      testUserData.userToDelete.dni,
-    ])
   })
 
   it('returns just the not deleted user', async () => {
@@ -104,9 +105,5 @@ describe('Testing get users name by Id endpoint', () => {
     )
     expect(response.status).toBe(200)
     expect(response.body).toHaveLength(1)
-    await client.query('UPDATE "user" SET deleted_at = $1 WHERE dni = $2', [
-      null,
-      testUserData.userToDelete.dni,
-    ])
   })
 })
