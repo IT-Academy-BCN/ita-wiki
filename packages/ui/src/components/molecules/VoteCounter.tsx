@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { FC } from 'react'
 import { FlexBox, colors } from '../../styles'
 import { Icon, Text } from '../atoms'
@@ -11,11 +11,18 @@ const StyledIcon = styled(Icon)<ArrowProp>`
       (name === 'expand_less' && colors.success) ||
       (name === 'expand_more' && colors.error)};
   }
+
+  ${({disabled}) => 
+    disabled && css`
+    pointer-events: none;
+    opacity: 0.5;
+  `
+  }
 `
 
 export type ArrowProp = {
   color: string
-  disabled: boolean
+  disabled?: boolean
 }
 
 export type TVoteCount = {
@@ -28,17 +35,19 @@ export type TVoteCount = {
 export type TVoteCounter = {
   voteCount: TVoteCount
   onClick: (vote: 'up' | 'down') => void
-  disabled: boolean
+  disabledUp?: boolean
+  disabledDown?: boolean
 }
 
-export const VoteCounter: FC<TVoteCounter> = ({ voteCount, onClick, disabled }) => (
+export const VoteCounter: FC<TVoteCounter> = ({ voteCount, onClick, disabledUp, disabledDown }) => (
   <FlexBox data-testid="voteCounter">
-    <StyledIcon as="button"
+    <StyledIcon
       name="expand_less"
       data-testid="increase"
+      className={disabledUp ? 'disabled' : ''}
       color={voteCount.userVote > 0 ? colors.success : colors.gray.gray3}
       onClick={() => onClick('up')}
-      disabled={disabled}
+      disabled={disabledUp}
     />
     <Text
       fontWeight="bold"
@@ -47,13 +56,14 @@ export const VoteCounter: FC<TVoteCounter> = ({ voteCount, onClick, disabled }) 
     >
       {voteCount.total}
     </Text>
-    <StyledIcon as="button"
+    <StyledIcon
       name="expand_more"
       id="decrease"
+      className={disabledDown ? 'disabled' : ''}
       data-testid="decrease"
       color={voteCount.userVote < 0 ? colors.error : colors.gray.gray3}
       onClick={() => onClick('down')}
-      disabled={disabled}
+      disabled={disabledDown}
     />
   </FlexBox>
-)
+  )

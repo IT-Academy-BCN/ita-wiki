@@ -6,9 +6,15 @@ import {
   type TVoteCounter,
 } from '../../components/molecules'
 
-const MockedVoteCounter: FC<TVoteCounter> = ({ voteCount }) => {
+const MockedVoteCounter: FC<TVoteCounter> = ({
+  voteCount,
+  disabledUp,
+  disabledDown,
+}) => {
   const [voteCountUpdated, setVoteCountUpdated] =
     useState<TVoteCount>(voteCount)
+  const [isUpVoteDisabled, setIsUpVoteDisabled] = useState(false)
+  const [isDownVoteDisabled, setIsDownVoteDisabled] = useState(false)
 
   const onVote = (vote: 'up' | 'down') => {
     if (
@@ -21,6 +27,10 @@ const MockedVoteCounter: FC<TVoteCounter> = ({ voteCount }) => {
         userVote: voteCountUpdated.userVote + 1,
       }
       setVoteCountUpdated(newVoteUp)
+      setIsUpVoteDisabled(true)
+      setTimeout(() => {
+        setIsUpVoteDisabled(false)
+      }, 1000)
     }
     if (
       (vote === 'up' && voteCountUpdated.userVote === 1) ||
@@ -32,10 +42,21 @@ const MockedVoteCounter: FC<TVoteCounter> = ({ voteCount }) => {
         userVote: voteCountUpdated.userVote - 1,
       }
       setVoteCountUpdated(newVoteDown)
+      setIsDownVoteDisabled(true)
+      setTimeout(() => {
+        setIsDownVoteDisabled(false)
+      }, 1000)
     }
   }
 
-  return <VoteCounter voteCount={voteCountUpdated} onClick={onVote} />
+  return (
+    <VoteCounter
+      voteCount={voteCountUpdated}
+      onClick={onVote}
+      disabledUp={disabledUp && isUpVoteDisabled}
+      disabledDown={disabledDown && isDownVoteDisabled}
+    />
+  )
 }
 
 const meta = {
@@ -88,6 +109,19 @@ export const VoteDown: VoteCounterStory = {
       upvote: 8,
       total: 5,
       userVote: -1,
+    },
+  },
+}
+
+export const VoteDisabled: VoteCounterStory = {
+  args: {
+    disabledUp: true,
+    disabledDown: true,
+    voteCount: {
+      downvote: 0,
+      upvote: 0,
+      total: 0,
+      userVote: 0,
     },
   },
 }

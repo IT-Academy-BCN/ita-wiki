@@ -38,7 +38,6 @@ describe('Vote counter molecule', () => {
       <VoteCounter
         voteCount={defaultMock.voteCount}
         onClick={onClick}
-        disabled={false}
       />
     )
 
@@ -59,7 +58,6 @@ describe('Vote counter molecule', () => {
       <VoteCounter
         voteCount={positiveVotetMock.voteCount}
         onClick={onClick}
-        disabled={false}
       />
     )
 
@@ -75,7 +73,6 @@ describe('Vote counter molecule', () => {
       <VoteCounter
         voteCount={negativeVotetMock.voteCount}
         onClick={onClick}
-        disabled={false}
       />
     )
 
@@ -86,24 +83,33 @@ describe('Vote counter molecule', () => {
     expect(downVoteBtn).not.toBeDisabled()
   })
 
-  it('disables buttons when disabled prop is true', () => {
+  it('disable buttonUp when disabled prop is true', () => {
     render(
       <VoteCounter
         voteCount={negativeVotetMock.voteCount}
         onClick={onClick}
-        disabled
+        disabledUp
       />
     )
 
     const upVoteBtn = screen.getByTestId('increase')
-    const downVoteBtn = screen.getByTestId('decrease')
-
-    expect(upVoteBtn).toBeDisabled()
-    expect(downVoteBtn).toBeDisabled()
 
     fireEvent.click(upVoteBtn)
-    fireEvent.click(downVoteBtn)
+    expect(upVoteBtn).toHaveClass("disabled")
+  })
 
-    expect(onClick).toHaveBeenCalled()
+  it('disable buttonDown when disabled prop is true', () => {
+    render(
+      <VoteCounter
+        voteCount={negativeVotetMock.voteCount}
+        onClick={onClick}
+        disabledDown
+      />
+    )
+
+    const downVoteBtn = screen.getByTestId('decrease')
+
+    fireEvent.click(downVoteBtn)
+    expect(downVoteBtn).toHaveClass("disabled")
   })
 })
