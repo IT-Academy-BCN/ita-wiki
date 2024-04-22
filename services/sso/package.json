@@ -1,6 +1,6 @@
 {
   "name": "sso-service",
-  "version": "1.21.1",
+  "version": "1.22.1",
   "description": "",
   "directories": {
     "test": "test"

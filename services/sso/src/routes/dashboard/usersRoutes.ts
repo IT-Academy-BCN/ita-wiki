@@ -11,6 +11,8 @@ import { dashboardUserUpdateSchema } from '../../schemas/users/dashboardUserUpda
 import { userIdSchema } from '../../schemas/users/userSchema'
 import { dashboardDeleteUser } from '../../controllers/dashboard/users/delete'
 import { updateUser } from '../../controllers/users/update'
+import { dashboardUsersUpdateStatusSchema } from '../../schemas/users/dashboardUsersUpdateStatusSchema'
+import { dashboardUpdateStatusUsers } from '../../controllers/dashboard/users/updateStatus'
 
 export const dashboardUsersRoutes = new Router()
 
@@ -47,4 +49,11 @@ dashboardUsersRoutes.delete(
   authenticate,
   authorize('ADMIN'),
   dashboardDeleteUser
+)
+dashboardUsersRoutes.post(
+  '/status',
+  authenticate,
+  authorize('ADMIN'),
+  validate(z.object({ body: dashboardUsersUpdateStatusSchema })),
+  dashboardUpdateStatusUsers
 )
