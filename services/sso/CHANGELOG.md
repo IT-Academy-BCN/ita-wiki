@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file.
 # Changelog
 
+## [1.23.0] - 2024-04-22
+
+### Changed
+
+- role value added to the GET `dashboard/users` enpoint response.
+
 ## [1.22.0] - 2024-04-18
 
 ### Added
