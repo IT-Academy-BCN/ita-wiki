@@ -1,7 +1,13 @@
 import { z } from '../../openapi/zod'
 import { dniQueryStringSchema } from '../dniQueryStringSchema'
 import { itinerarySlugSchema } from '../itineraries/itinerarySchema'
-import { UserRole, UserStatus, userNameSchema, userRoleSchema, userStatusSchema } from './userSchema'
+import {
+  UserRole,
+  UserStatus,
+  userNameSchema,
+  userRoleSchema,
+  userStatusSchema,
+} from './userSchema'
 
 export const startDateSchema = z.coerce.date()
 export const endDateSchema = z.coerce.date()
@@ -48,5 +54,5 @@ export const dashboardUsersListQuerySchema = z.object({
       description: 'Role to filter by',
       example: UserRole.ADMIN,
     },
-  })
+  }),
 })
