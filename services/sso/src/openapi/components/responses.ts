@@ -40,6 +40,19 @@ export const userNotFoundResponse = {
   },
 }
 
+export const usersNotFoundResponse = {
+  description: 'Users not found',
+  content: {
+    'application/json': {
+      schema: z.object({
+        message: z
+          .string()
+          .openapi({ example: 'b6z2od3ut12qs0ilem6njgjp not found' }),
+      }),
+    },
+  },
+}
+
 export const zodValidationResponse = {
   description: 'Zod validation error',
   content: {
