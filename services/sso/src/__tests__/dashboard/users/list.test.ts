@@ -6,12 +6,12 @@ import { userSchema } from '../../../schemas'
 import { itinerariesData, server, testUserData } from '../../globalSetup'
 import { client } from '../../../models/db'
 import { DashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
-import { UserStatus } from '../../../schemas/users/userSchema'
+import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
 
 const route = `${pathRoot.v1.dashboard.users}`
 
 const responseSchema = userSchema
-  .pick({ id: true, name: true, dni: true, status: true })
+  .pick({ id: true, name: true, dni: true, status: true, role: true })
   .extend({
     createdAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     itineraryName: z.string(),
@@ -34,6 +34,7 @@ beforeAll(async () => {
     u.name AS name,
     u.dni AS dni,
     u.status,
+    u.role,
     TO_CHAR(u.created_at, 'YYYY-MM-DD') AS "createdAt",
     i.name AS "itineraryName"
   FROM
@@ -216,6 +217,25 @@ describe('Testing get users endpoint', () => {
     expect(response.status).toBe(200)
     expect(body).toBeInstanceOf(Array)
     expect(body).toHaveLength(1)
+    expect(responseSchema.safeParse(body).success).toBeTruthy()
+  })
+  it('returns a  collection of users by role successfully with a logged-in admin user ', async () => {
+    const registeredUsers = users.filter((u) => u.role === UserRole.REGISTERED)
+    const response = await supertest(server)
+      .get(route)
+      .query({ role: UserRole.REGISTERED })
+      .set('Cookie', [authAdminToken])
+    const { body }: { body: DashboardUsersList } = response
+    expect(response.status).toBe(200)
+    expect(body).toHaveLength(5)
+    body.forEach((user) => {
+      expect(user.role).toBe(UserRole.REGISTERED)
+    })
+    const sortedResponseBody = body.sort((a, b) => a.id.localeCompare(b.id))
+    const sortedExpected = registeredUsers.sort((a, b) =>
+      a.id.localeCompare(b.id)
+    )
+    expect(sortedResponseBody).toEqual(sortedExpected)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
 })

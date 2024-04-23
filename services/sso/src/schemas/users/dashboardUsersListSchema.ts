@@ -8,6 +8,7 @@ export const dashboardUsersListSchema = userSchema
     dni: true,
     name: true,
     status: true,
+    role: true,
   })
   .extend({
     createdAt: z.date().openapi({ example: '21/02/2024' }),
