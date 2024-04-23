@@ -11,7 +11,7 @@ afterAll(() => server.close())
 
 describe('UsersTable', () => {
   it('renders loading spinner while fetching users', async () => {
-    render(<UsersTable />)
+    render(<UsersTable filtersSelected={{}} />)
 
     const spinner = screen.getByRole('status') as HTMLDivElement
     expect(spinner).toBeInTheDocument()
@@ -23,7 +23,7 @@ describe('UsersTable', () => {
   })
 
   it('renders users correctly after fetching users succeeds', async () => {
-    render(<UsersTable />)
+    render(<UsersTable filtersSelected={{}} />)
 
     await waitFor(() => {
       expect(screen.getByLabelText(/Ona Sitgar/i)).toBeInTheDocument()
@@ -49,10 +49,25 @@ describe('UsersTable', () => {
     })
   })
 
+  it('renders filtered users correctly by itinerary', async () => {
+    render(<UsersTable filtersSelected={{ itinerarySlug: 'frontend-react' }} />)
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(/Marc Bofill/i)).toBeInTheDocument()
+      expect(screen.getByText('87654321B')).toBeInTheDocument()
+      expect(screen.getByText(/Actiu/i)).toBeInTheDocument()
+      expect(screen.getByText(/Frontend React/i)).toBeInTheDocument()
+      expect(screen.getByText('Bloquejar')).toBeInTheDocument()
+
+      expect(screen.queryByText(/Fullstack Php/i)).not.toBeInTheDocument()
+      expect(screen.queryByText(/Backend Node/i)).not.toBeInTheDocument()
+    })
+  })
+
   it('renders error message when fetching users has error', async () => {
     server.use(...errorHandlers)
 
-    render(<UsersTable />)
+    render(<UsersTable filtersSelected={{}} />)
 
     const spinner = screen.getByRole('status') as HTMLDivElement
     expect(spinner).toBeInTheDocument()
@@ -65,7 +80,7 @@ describe('UsersTable', () => {
   })
 
   it('disables/enables users with different status when checkboxes are checked/unchecked', async () => {
-    render(<UsersTable />)
+    render(<UsersTable filtersSelected={{}} />)
 
     await waitFor(() => {
       const checkboxPending = screen.getByLabelText(/Ona Sitgar/i)
@@ -115,7 +130,7 @@ describe('UsersTable', () => {
   })
 
   it('updates status and action button when user status changes', async () => {
-    render(<UsersTable />)
+    render(<UsersTable filtersSelected={{}} />)
 
     await waitFor(() => {
       const acceptButton = screen.getByText('Acceptar')

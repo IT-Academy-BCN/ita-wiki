@@ -1,10 +1,11 @@
-export type TUserData = {
-  id: string
-  name: string
-  dni: string
-  status: string
-  createdAt: string
-  itineraryName: string
+export type TFilters = {
+  itinerarySlug?: string
+  status?: string
+  startDate?: string
+  endDate?: string
+  name?: string
+  dni?: string
+  role?: string
 }
 
 export type TItinerary = {
@@ -23,4 +24,13 @@ export type TUpdatedUser = {
   status?: string
   deletedAt?: string
   itineraryId?: string
+}
+
+export type TUserData = {
+  id: string
+  name: string
+  dni: string
+  status: string
+  createdAt: string
+  itineraryName: string
 }

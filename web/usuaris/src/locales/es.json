@@ -153,5 +153,8 @@
   "Identificador o contraseña incorrectos": "Identificador o contraseña incorrectos",
 
   "Credenciales incorrectas.": "Credenciales incorrectas.",
-  "Sólo accesible a usuarios administradores activos.": "Sólo accesible a usuarios administradores activos."
+  "Sólo accesible a usuarios administradores activos.": "Sólo accesible a usuarios administradores activos.",
+
+  "Abrir": "Obre",
+  "Deseleccionar": "Deselecciona"
 }

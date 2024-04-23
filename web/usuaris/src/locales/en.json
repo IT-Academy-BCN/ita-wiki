@@ -153,5 +153,8 @@
   "Identificador o contraseña incorrectos": "Invalid Id or password",
 
   "Credenciales incorrectas.": "Wrong credentials.",
-  "Sólo accesible a usuarios administradores activos.": "Only accesible to active administrator users."
+  "Sólo accesible a usuarios administradores activos.": "Only accesible to active administrator users.",
+
+  "Abrir": "Open",
+  "Deseleccionar": "Deselect"
 }
