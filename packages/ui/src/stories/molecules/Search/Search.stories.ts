@@ -19,24 +19,12 @@ const meta = {
     placeholder: { control: 'text' },
     isSearchError: { control: 'boolean' },
     errorMessage: { control: 'text' },
-    searchData: [
-      {
-        id: { control: 'text' },
-        value: { control: 'text' },
-      },
-    ],
-    handleSearchResults: { control: 'action' },
+    handleSearchValue: { control: 'action' },
   },
 } satisfies Meta<typeof Search>
 
 export default meta
 type SearchStory = StoryObj<typeof Search>
-
-const searchData = [
-  { id: '1', value: 'Ona Sitgar' },
-  { id: '2', value: 'Marc Bofill' },
-  { id: '3', value: 'Montserrat Capdevila' },
-]
 
 export const Default: SearchStory = {
   args: {
@@ -44,8 +32,7 @@ export const Default: SearchStory = {
     name: 'default',
     label: 'Default search bar',
     placeholder: 'Default search bar',
-    searchData,
-    handleSearchResults: () => {},
+    handleSearchValue: () => {},
   },
 }
 
@@ -56,8 +43,7 @@ export const WithIcon: SearchStory = {
     label: 'Search bar with icon',
     searchIconName: 'search',
     placeholder: 'Search bar with icon',
-    searchData,
-    handleSearchResults: () => {},
+    handleSearchValue: () => {},
   },
 }
 
@@ -68,8 +54,7 @@ export const WithSvg: SearchStory = {
     label: 'Search bar with svg',
     searchSvgIcon: searchSvg,
     placeholder: 'Search bar with svg',
-    searchData,
-    handleSearchResults: () => {},
+    handleSearchValue: () => {},
   },
 }
 
@@ -81,8 +66,7 @@ export const WithLabel: SearchStory = {
     hiddenLabel: false,
     searchIconName: 'search',
     placeholder: 'Search bar with label',
-    searchData,
-    handleSearchResults: () => {},
+    handleSearchValue: () => {},
   },
 }
 
@@ -93,9 +77,8 @@ export const WithError: SearchStory = {
     label: 'Search bar with error',
     searchIconName: 'search',
     placeholder: 'Search bar with error',
-    searchData,
     isSearchError: true,
     errorMessage: 'Search error',
-    handleSearchResults: () => {},
+    handleSearchValue: () => {},
   },
 }
