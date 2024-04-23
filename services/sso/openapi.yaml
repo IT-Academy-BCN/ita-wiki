@@ -1,5 +1,5 @@
 info:
-  version: 1.22.1
+  version: 1.23.1
   title: IT Academy SSO Service
   description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
@@ -628,7 +628,8 @@ paths:
     get:
       tags:
         - dashboard
-      description: Returns id, name, itinerary, status and created at  information of users.
+      description: Returns id, name, dni, itinerary, status, role and created at
+        information of users.
       summary: Get list of users name information
       security:
         - cookieAuth: []
@@ -686,6 +687,17 @@ paths:
             maxLength: 9
           required: false
           description: Partial or full dni to filter the users by
+        - in: query
+          name: role
+          schema:
+            type: string
+            enum:
+              - ADMIN
+              - MENTOR
+              - REGISTERED
+          required: false
+          description: Role to filter by
+          example: ADMIN
       responses:
         "200":
           description: Token is valid and user information is returned.
@@ -711,6 +723,12 @@ paths:
                         - ACTIVE
                         - PENDING
                         - BLOCKED
+                    role:
+                      type: string
+                      enum:
+                        - ADMIN
+                        - MENTOR
+                        - REGISTERED
                     createdAt:
                       type: string
                       example: 21/02/2024
@@ -722,6 +740,7 @@ paths:
                     - dni
                     - name
                     - status
+                    - role
                     - createdAt
                     - itineraryName
         "401":

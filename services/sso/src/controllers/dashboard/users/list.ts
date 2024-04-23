@@ -3,6 +3,7 @@ import { client } from '../../../models/db'
 import { itinerarySlugSchema } from '../../../schemas/itineraries/itinerarySchema'
 import {
   userNameSchema,
+  userRoleSchema,
   userStatusSchema,
 } from '../../../schemas/users/userSchema'
 import {
@@ -12,7 +13,7 @@ import {
 import { dniQueryStringSchema } from '../../../schemas/dniQueryStringSchema'
 
 export const dashboardListUsers: Middleware = async (ctx: Context) => {
-  const { itinerarySlug, status, startDate, endDate, name, dni } =
+  const { itinerarySlug, status, startDate, endDate, name, dni, role } =
     ctx.state.query
   let query = `
   SELECT
@@ -20,6 +21,7 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
     u.name AS name,
     u.dni AS dni,
     u.status,
+    u.role,
     TO_CHAR(u.created_at, 'YYYY-MM-DD') AS "createdAt",
     i.name AS "itineraryName"
   FROM
@@ -42,6 +44,11 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
     const parsedStatus = userStatusSchema.parse(status)
     conditions.push(`u.status = $${conditions.length + 1}`)
     queryParams.push(parsedStatus)
+  }
+  if (role) {
+    const parsedRole = userRoleSchema.parse(role)
+    conditions.push(`u.role = $${conditions.length + 1}`)
+    queryParams.push(parsedRole)
   }
   if (startDate) {
     const parsedStartDate = startDateSchema.parse(startDate)
