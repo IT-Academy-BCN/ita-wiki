@@ -27,7 +27,7 @@ export {
   useNotifications,
 } from './Notifications'
 export { ResourceTitleLink, type TResourceTitleLink } from './ResourceTitleLink'
-export { Search, useDebounce, type TSearch, type TSearchData } from './Search'
+export { Search, useDebounce, type TSearch } from './Search'
 export { SelectGroup, type TSelectGroup } from './SelectGroup'
 export { Tabs, type TTabs } from './Tabs'
 export { TextareaGroup, type TTextareaGroup } from './TextareaGroup'

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.31.4] - 2024-04-23
+
+### Changed
+
+- Update Search to add callback function
+
 ## [0.31.3] - 2024-04-15
 
 ### Changed

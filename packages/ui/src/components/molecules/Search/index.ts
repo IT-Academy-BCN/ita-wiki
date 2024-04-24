@@ -1,2 +1,2 @@
-export { Search, type TSearch, type TSearchData } from './Search'
+export { Search, type TSearch } from './Search'
 export { useDebounce } from './useDebounce'
