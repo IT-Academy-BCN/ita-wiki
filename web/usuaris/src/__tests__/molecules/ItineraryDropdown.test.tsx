@@ -21,11 +21,12 @@ describe('ItineraryDropdown', () => {
     await waitFor(() =>
       expect(screen.getByText(/especialitat/i)).toBeInTheDocument()
     )
-    expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
+    expect(screen.getByTitle(/obre/i)).toBeInTheDocument()
   })
 
   it('renders all itineraries with logo and returns selected option to parent', async () => {
     render(<ItineraryDropdown handleItinerary={mockHandleClick} />)
+
     const spinnerComponent = screen.queryByTestId('spinner') as HTMLDivElement
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
@@ -36,20 +37,62 @@ describe('ItineraryDropdown', () => {
     fireEvent.click(dropdownHeader)
 
     await waitFor(() =>
-      expect(screen.getByText('Frontend React')).toBeVisible()
+      expect(screen.getByText(/frontend react/i)).toBeVisible()
     )
 
-    const reactLogo = screen.getByAltText('Frontend React')
+    expect(screen.getByTitle(/tanca/i)).toBeInTheDocument()
+
+    const reactLogo = screen.getByAltText(/frontend react/i)
     expect(reactLogo).toBeInTheDocument()
 
     fireEvent.click(reactLogo)
 
-    expect(dropdownHeader).toHaveTextContent('Frontend React')
+    expect(dropdownHeader).toHaveTextContent(/frontend react/i)
     expect(mockHandleClick).toHaveBeenCalledWith({
       id: '1',
       name: 'Frontend React',
       slug: 'react',
     })
+  })
+
+  it('should return undefined to parent when user deselects option', async () => {
+    render(<ItineraryDropdown handleItinerary={mockHandleClick} />)
+
+    const spinnerComponent = screen.queryByTestId('spinner') as HTMLDivElement
+    await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
+
+    await waitFor(() => expect(spinnerComponent).not.toBeInTheDocument())
+
+    const dropdownHeader = screen.getByTestId('dropdown-header')
+
+    fireEvent.click(dropdownHeader)
+
+    await waitFor(() =>
+      expect(screen.getByText(/frontend react/i)).toBeVisible()
+    )
+
+    const reactLogo = screen.getByAltText(/frontend react/i)
+
+    fireEvent.click(reactLogo)
+
+    expect(dropdownHeader).toHaveTextContent(/frontend react/i)
+
+    expect(mockHandleClick).toHaveBeenCalledWith({
+      id: '1',
+      name: 'Frontend React',
+      slug: 'react',
+    })
+
+    fireEvent.click(dropdownHeader)
+
+    expect(screen.getByTitle(/deselecciona/i)).toBeInTheDocument()
+    const deselectReact = screen.getByTestId('deselect-1')
+
+    fireEvent.click(deselectReact)
+
+    expect(dropdownHeader).toHaveTextContent(/especialitat/i)
+
+    expect(mockHandleClick).toHaveBeenCalledWith(undefined)
   })
 
   it('renders correctly on error', async () => {
@@ -61,7 +104,7 @@ describe('ItineraryDropdown', () => {
     await waitFor(() => expect(spinnerComponent).toBeInTheDocument())
 
     await waitFor(() => {
-      expect(screen.getByText('Hi ha hagut un error...')).toBeInTheDocument()
+      expect(screen.getByText(/hi ha hagut un error.../i)).toBeInTheDocument()
     })
   })
 })

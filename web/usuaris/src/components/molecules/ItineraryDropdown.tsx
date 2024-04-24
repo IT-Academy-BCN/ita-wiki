@@ -15,7 +15,7 @@ import { icons } from '../../assets/icons'
 
 const StyledDropdown = styled(Dropdown)`
   && button {
-    width: 210px;
+    width: 220px;
     padding: ${dimensions.spacing.xxs};
     font-size: ${font.xs};
     font-weight: 500;
@@ -47,7 +47,7 @@ type TItineraryItem = {
 } & TItinerary
 
 type TItineraryDropdown = {
-  handleItinerary: (value: TItinerary) => void
+  handleItinerary: (value: TItinerary | undefined) => void
 }
 
 export const ItineraryDropdown: FC<TItineraryDropdown> = ({
@@ -66,11 +66,15 @@ export const ItineraryDropdown: FC<TItineraryDropdown> = ({
     setItinerariesList(newData)
   }, [data])
 
-  const handleSelectedValue = (selectedOption: TDropdownOption) => {
-    const selectedItinerary = data.find(
-      (cat: TItinerary) => cat.id === selectedOption.id
-    )
-    handleItinerary(selectedItinerary)
+  const handleSelectedValue = (selectedOption: TDropdownOption | undefined) => {
+    if (selectedOption) {
+      const selectedItinerary = data.find(
+        (cat: TItinerary) => cat.id === selectedOption.id
+      )
+      handleItinerary(selectedItinerary)
+    } else {
+      handleItinerary(undefined)
+    }
   }
 
   if (isLoading) {
@@ -84,6 +88,9 @@ export const ItineraryDropdown: FC<TItineraryDropdown> = ({
       options={itinerariesList}
       placeholder={t('Especialidad')}
       onValueChange={handleSelectedValue}
+      openText={t('Abrir')}
+      closeText={t('Cerrar')}
+      deselectText={t('Deseleccionar')}
     />
   ) : null
 }

@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useState } from 'react'
 import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '@itacademy/ui'
 import {
@@ -9,6 +9,7 @@ import {
   UsersTable,
 } from '../components/organisms'
 import { useAuth } from '../context/AuthProvider'
+import { TFilters } from '../types'
 
 const Container = styled(FlexBox)`
   width: 100%;
@@ -43,6 +44,12 @@ const LoginContainer = styled(FlexBox)`
 export const Home: FC = () => {
   const { user } = useAuth()
 
+  const [filters, setFilters] = useState<TFilters>({})
+
+  const handleFilters = (selectedFilters: TFilters) => {
+    setFilters(selectedFilters)
+  }
+
   if (!user)
     return (
       <Container
@@ -69,8 +76,8 @@ export const Home: FC = () => {
           align="center"
           gap={dimensions.spacing.xxl}
         >
-          <FiltersWidget />
-          <UsersTable />
+          <FiltersWidget filters={filters} handleFilters={handleFilters} />
+          <UsersTable filtersSelected={filters} />
         </MainDiv>
       </ContainerMain>
     </Container>
