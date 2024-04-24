@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.12.0] - 2024-04-18
+
+### Added
+
+- Added Role column to UsersTable
+  
+  
 ## [0.10.0] - 2024-04-18
 
 ### Added

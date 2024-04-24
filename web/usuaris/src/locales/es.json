@@ -4,28 +4,23 @@
   "RegistrarmeBtn": "Registrarme",
   "EntrarBtn": "Entrar",
   "Funcionalitats": "Funcionalidades básicas que te ofrece esta plataforma:",
-
   "Guarda els teus recursos": "Guarda tus recursos favoritos",
   "Tingues els teus recursos": "Ten tus recursos bien organizados",
-
   "Col·labora": "Colabora con tus compañer@s",
   "Recursos compartits": "Recursos compartidos",
-
   "Vota els recursos": "Vota los recursos",
   "La comunitat decideix": "La comunidad decide cuáles son más relevantes",
-
   "Configuración": "Configuración",
   "Añadir recurso": "Añadir recurso",
   "Menú": "Menú",
   "Ajustes": "Ajustes",
   "Cerrar": "Cerrar",
   "camp obligatori": "Este campo es obligatorio",
-
   "Administrador de Usuarios": "Administrador de Usuarios",
-
   "Registre": "Registro",
   "DNI": "DNI o NIE",
   "Especialidad": "Especialidad",
+  "Rol": "Rol",
   "Password": "Contraseña",
   "repetirpassword": "Repetir contraseña",
   "password error": "La contraseña debe contener solo letras y números, mínimo 8 caracteres, un número, una mayúscula y una minúscula",
@@ -36,16 +31,13 @@
   "tienes una cuenta?": "¿Tienes una cuenta?, entrar",
   "recordar/cambiar": "Recordar/cambiar contraseña",
   "no tienes una cuenta?": "¿No tienes una cuenta?, crear una",
-
   "Acceso restringido": "Acceso restringido",
   "Regístrate para subir o votar contenido": "Regístrate para subir o votar contenido",
   "Registrarme": "Registrarme",
   "Entrar": "Entrar",
-
   "Editar recurso": "Editar recurso",
   "Eliminar de favoritos": "Eliminar de favoritos",
   "Añadir a favoritos": "Añadir a favoritos",
-
   "Recursos favoritos": "Recursos favoritos",
   "Recursos que te gustan": "Recursos que te gustan",
   "Regístrate": "Regístrate",
@@ -57,16 +49,13 @@
   "Mis recursos": "Mis recursos",
   "Tus recursos": "Tus recursos",
   "No has subido ningún recurso": "No has subido ningún recurso",
-
   "Temas": "Temas",
   "Usuarios": "Usuarios",
-
   "No hay temas disponibles.": "No hay temas disponibles.",
   "Accede desde una categoría para ver o gestionar sus temas.": "Accede desde una categoría para ver o gestionar sus temas.",
   "Temas de (category)": "Temas de {{name}}",
   "No tienes permiso de acceso": "No tienes los permisos necesarios para acceder a este contenido.",
   "Ha habido un error...": "Ha habido un error...",
-
   "Lista de usuarios": "Lista de usuarios",
   "Buscar por DNI:": "Buscar por DNI:",
   "Introduce el DNI": "Introduce el DNI",
@@ -76,7 +65,6 @@
   "Cambiar estado": "Cambiar estado",
   "Desactivar": "Desactivar",
   "Activar": "Activar",
-
   "+ Crear nuevo tema": "+ Crear nuevo tema",
   "Nombre del tema": "Nombre del tema",
   "Nombre del nuevo tema": "Nombre del nuevo tema",
@@ -87,7 +75,6 @@
   "Cancelar": "Cancelar",
   "Borrar tema": "Borrar tema",
   "No es posible borrar el tema.": "No es posible borrar el tema.",
-
   "Filtros": "Filtros",
   "Recursos de (category)": "Recursos de {{name}}",
   "Buscar recurso": "Buscar recurso",
@@ -96,28 +83,23 @@
   "Fecha": "Fecha",
   "Crear nuevo recurso": "Crear nuevo recurso",
   "searchErrorMessage": "Escribe al menos 2 carácteres",
-
   "Crear": "Crear",
   "Título": "Título",
   "Descripción": "Descripción",
   "Opciones": "Opciones",
   "Tema": "Tema",
   "Curso": "Curso",
-
   "Todos": "Todos",
   "Por ver": "Por ver",
   "Vistos": "Vistos",
   "Tipo": "Tipo",
-
   "¡Vaya! :/": "¡Vaya! :/",
   "Todavía no hay recursos de este tipo.": "Todavía no hay recursos de este tipo.",
-
   "Error 401 - No autorizado": "Operación no autorizada. Es necesario iniciar sesión de usuario.",
   "Error 403 - Acceso denegado": "Acceso denegado. No tienes los permisos necesarios para realizar la operación.",
   "Error 404 - No se puede guardar": "Error al guardar en la base de datos. Por favor, inténtalo de nuevo y si el error persiste, contacta con el administrador.",
   "Error 405 - Id de usuario inválido": "Identificador de usuario no válido.",
   "Error 500 - Error bbdd": "Error en la base de datos. Por favor, inténtalo más tarde.",
-
   "Volver": "Volver",
   "Cerrar sesión": "Cerrar sesión",
   "Sin imagen de usuario": "Sin imagen de usuario",
@@ -125,17 +107,14 @@
   "Votos recibidos": "Votos recibidos",
   "Favoritos guardados": "Favoritos guardados",
   "n/d": "n/d",
-
   "Mostrando": "Mostrando",
   "resultados para": "resultados para",
   "Nuevo Recurso": "Nuevo recurso",
-
   "Fecha de inicio": "Fecha de inicio",
   "Fecha final": "Fecha final",
   "De...": "De...",
   "Hasta...": "Hasta...",
   "calendarLanguage": "es",
-
   "Especialización": "Especialización",
   "Fecha alta": "Fecha alta",
   "Acciones": "Acciones",
@@ -145,13 +124,13 @@
   "Aceptar": "Aceptar",
   "Bloquear": "Bloquear",
   "Desbloquear": "Desbloquear",
+  "administrador": "Administrador",
+  "registrado": "Registrado",
+  "mentor": "Mentor",
   "No hay usuarios para mostrar": "No hay usuarios para mostrar",
-
   "Mentores": "Mentores",
   "Connector": "Conector",
-
   "Identificador o contraseña incorrectos": "Identificador o contraseña incorrectos",
-
   "Credenciales incorrectas.": "Credenciales incorrectas.",
   "Sólo accesible a usuarios administradores activos.": "Sólo accesible a usuarios administradores activos."
 }

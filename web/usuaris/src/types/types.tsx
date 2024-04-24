@@ -3,6 +3,7 @@ export type TUserData = {
   name: string
   dni: string
   status: string
+  role: string
   createdAt: string
   itineraryName: string
 }
@@ -11,6 +12,11 @@ export type TItinerary = {
   id: string
   name: string
   slug: string
+}
+
+export type TRol = {
+  id: string
+  name: string
 }
 
 export type TUpdatedUser = {

@@ -13,6 +13,8 @@ export const getItineraries = async () =>
       throw new Error(`Error fetching itineraries: ${err.message}`)
     })
 
+
+
 export const getUsers = async () => {
   const response = await fetch(urls.getUsers)
   if (!response.ok) {

@@ -26,6 +26,7 @@ export const UsersTable: FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(
     undefined
   )
+
   const [selectedUsers, setSelectedUsers] = useState<TUserData[]>([])
 
   const { changeUserStatus } = useUpdateUser()
@@ -212,6 +213,35 @@ export const UsersTable: FC = () => {
         )
       },
     }),
+
+    columHelper.accessor('role', {
+      header: `${t('Rol')}`,
+      cell: ({ row }) => {
+        const role: string = row.getValue('role')
+        const status: string = row.getValue('status')
+        let isDisabled: boolean | undefined
+        let displayedRole: string = ''
+
+        if (selectedStatus && selectedStatus !== status) {
+          isDisabled = true
+        } else {
+          isDisabled = undefined
+        }
+
+        if (role === 'ADMIN') {
+          displayedRole = t('administrador')
+        } else if (role === 'REGISTERED') {
+          displayedRole = t('registrado')
+        } else {
+          displayedRole = t('mentor')
+        }
+
+        return (
+          <DisabledStyled disabled={isDisabled}>{displayedRole}</DisabledStyled>
+        )
+      },
+    }),
+
     columHelper.display({
       id: 'actions',
       header: () => (

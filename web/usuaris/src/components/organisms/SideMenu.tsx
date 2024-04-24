@@ -83,6 +83,7 @@ const ImgStyled = styled(Icon)`
 
   &[data-testid] {
     content: attr(data-testid);
+  }
 `
 
 const LogoImage = styled.img`
