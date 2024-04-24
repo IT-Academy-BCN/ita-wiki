@@ -21,7 +21,7 @@ import {
 } from './UsersTable.styles'
 
 type TUsersTable = {
-  filtersSelected: TFilters
+  filtersSelected: TFilters | Record<string, never>
 }
 
 export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
