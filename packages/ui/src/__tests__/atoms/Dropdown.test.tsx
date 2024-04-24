@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { Dropdown, type TDropdownOption } from '../../components/atoms/Dropdown'
+import { dimensions } from '../../styles'
 
 const mockedOnValueChange = vi.fn()
 
@@ -72,7 +73,7 @@ const MockParent = () => {
 }
 
 describe('Dropdown', () => {
-  it('renders correctly', async () => {
+  it('renders correctly with normal size by default', () => {
     render(<Dropdown options={mockOptions} />)
 
     const dropdown = screen.getByTestId('dropdown')
@@ -81,9 +82,47 @@ describe('Dropdown', () => {
     expect(dropdown).toBeInTheDocument()
     expect(dropdown).toHaveStyle(`cursor: pointer;`)
     expect(dropdownHeader).toHaveTextContent(/selecciona/i)
+    expect(dropdownHeader).toHaveStyle('width: 320px')
+    expect(dropdownHeader).toHaveStyle(`padding: ${dimensions.spacing.base}`)
     expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
     expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
     expect(screen.queryByTitle('Cerrar')).not.toBeInTheDocument()
+  })
+
+  it('renders correctly in small size', async () => {
+    render(<Dropdown options={mockOptions} $size="small" />)
+
+    const dropdownHeader = screen.getByTestId('dropdown-header')
+
+    expect(dropdownHeader).toHaveStyle('width: 200px')
+    expect(dropdownHeader).toHaveStyle(
+      `padding: ${dimensions.spacing.xxxs} ${dimensions.spacing.xs}`
+    )
+
+    await userEvent.click(dropdownHeader)
+
+    const dropdownItem1 = screen.getByTestId('1')
+    expect(dropdownItem1).toBeInTheDocument()
+    expect(dropdownItem1).toHaveStyle('gap: 0.3rem')
+    expect(dropdownItem1).toHaveStyle('padding: 12px 10px')
+  })
+
+  it('renders correctly in large size', async () => {
+    render(<Dropdown options={mockOptions} $size="large" />)
+
+    const dropdown = screen.getByTestId('dropdown')
+    const dropdownHeader = screen.getByTestId('dropdown-header')
+
+    expect(dropdown).toBeInTheDocument()
+    expect(dropdownHeader).toHaveStyle('width: 400px')
+    expect(dropdownHeader).toHaveStyle(`padding: ${dimensions.spacing.base}`)
+
+    await userEvent.click(dropdownHeader)
+
+    const dropdownItem1 = screen.getByTestId('1')
+    expect(dropdownItem1).toBeInTheDocument()
+    expect(dropdownItem1).toHaveStyle(`gap: ${dimensions.spacing.xs}`)
+    expect(dropdownItem1).toHaveStyle('padding: 12px 18px')
   })
 
   it('renders dropdown children when user clicks on it', async () => {
@@ -232,7 +271,31 @@ describe('Dropdown', () => {
     })
   })
 
-  it('a click in deselect icon deselects option', async () => {
+  it('a click in deselect icon in header deselects option', async () => {
+    render(
+      <Dropdown
+        defaultSelectedOption={mockOptionsWithImage[2]}
+        options={mockOptionsWithImage}
+        placeholder="Placeholder"
+      />
+    )
+
+    const dropdownHeader = screen.getByTestId('dropdown-header')
+    expect(dropdownHeader).toHaveTextContent(/option 3/i)
+    expect(dropdownHeader).not.toHaveTextContent(/placeholder/i)
+
+    expect(screen.queryByTitle('Ampliar')).not.toBeInTheDocument()
+
+    const deselectIcon = screen.getByTestId('deselect-3')
+    expect(deselectIcon).toBeInTheDocument()
+
+    await userEvent.click(deselectIcon)
+
+    expect(dropdownHeader).toHaveTextContent(/placeholder/i)
+    expect(screen.queryByTestId('deselect-3')).not.toBeInTheDocument()
+  })
+
+  it('a click in deselect icon in items list deselects option', async () => {
     render(
       <Dropdown
         defaultSelectedOption={mockOptionsWithIcon[2]}
@@ -250,11 +313,11 @@ describe('Dropdown', () => {
 
     expect(screen.getAllByText(/option search/i)).toHaveLength(2)
 
-    const deselectIcon = screen.getByTestId('deselect-search')
+    const deselectIcons = screen.getAllByTestId('deselect-search')
 
-    expect(deselectIcon).toBeVisible()
+    expect(deselectIcons).toHaveLength(2)
 
-    await userEvent.click(deselectIcon)
+    await userEvent.click(deselectIcons[1])
 
     expect(screen.queryByText(/option search/i)).not.toBeInTheDocument()
     expect(dropdownHeader).toHaveTextContent(/placeholder/i)
