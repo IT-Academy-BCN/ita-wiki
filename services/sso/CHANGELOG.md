@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file.
 # Changelog
 
+## [1.23.1] - 2024-04-23
+
+### Changed
+
+- Refactor `auth/login`, `users/getMe` and `users/list` controllers query to filter soft deleted users.
+
 ## [1.23.0] - 2024-04-22
 
 ### Changed

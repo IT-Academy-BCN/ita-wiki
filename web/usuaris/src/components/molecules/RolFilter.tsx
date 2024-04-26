@@ -5,11 +5,10 @@ import {
   dimensions,
   Dropdown,
   font,
-  Spinner,
+  // Spinner,
   type TDropdownOption,
 } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
-import { useGetItineraries } from '../../hooks'
 import { TRol } from '../../types/types'
 
 const StyledDropdown = styled(Dropdown)`
@@ -39,9 +38,10 @@ export const RolFilter: FC<TRolDropdown> = ({ handleRole }) => {
   const { t } = useTranslation()
 
   const [RolesList, setRolesList] = useState<TRol[]>([
-    { id: '1', name: 'Admin' },
-    { id: '2', name: 'Registered' },
-    { id: '3', name: 'Mentor' },
+    { id: '1', name: 'TODOS' },
+    { id: '2', name: 'ADMIN' },
+    { id: '3', name: 'REGISTERED' },
+    { id: '4', name: 'MENTOR' },
   ])
 
   // const { isLoading, error, data } = useGetRoles()
@@ -57,9 +57,10 @@ export const RolFilter: FC<TRolDropdown> = ({ handleRole }) => {
     const selectedRole = RolesList.find(
       (cat: TRol) => cat.id === selectedOption.id
     )
+    handleRole(selectedRole)
   }
 
-  // if (isLoading) {
+  // if (isLoading)
   //   return <Spinner size="small" as="output" data-testid="spinner" />
   // }
 

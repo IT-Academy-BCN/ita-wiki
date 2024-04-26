@@ -43,11 +43,6 @@ const ErrorMessage = styled(ValidationMessage)`
   margin-bottom: ${dimensions.spacing.none};
 `
 
-export type TSearchData = {
-  id: string
-  value: string
-}
-
 export type TSearch = {
   id: string
   name: string
@@ -56,10 +51,9 @@ export type TSearch = {
   searchIconName?: string
   searchSvgIcon?: string
   placeholder?: string
-  searchData: TSearchData[]
   isSearchError: boolean
   errorMessage?: string
-  handleSearchResults: (searchResults: TSearchData[]) => void
+  handleSearchValue: (deboucedSearchValue: string) => void
 }
 
 export const Search: FC<TSearch> = ({
@@ -70,35 +64,17 @@ export const Search: FC<TSearch> = ({
   searchIconName,
   searchSvgIcon,
   placeholder,
-  searchData,
   isSearchError = false,
   errorMessage,
-  handleSearchResults,
+  handleSearchValue,
 }) => {
   const [searchValue, setSearchValue] = useState<string>('')
 
-  const debouncedSearch = useDebounce(searchValue, 500)
+  const debouncedSearchValue = useDebounce(searchValue, 500)
 
   useEffect(() => {
-    const handleData = () => {
-      const normalizedSearch = debouncedSearch
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase()
-
-      const filteredData = searchData.filter((item) =>
-        item.value
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .toLowerCase()
-          .includes(normalizedSearch)
-      )
-
-      handleSearchResults(filteredData)
-    }
-
-    if (debouncedSearch) handleData()
-  }, [searchData, debouncedSearch, handleSearchResults])
+    handleSearchValue(debouncedSearchValue)
+  }, [debouncedSearchValue, handleSearchValue])
 
   const handleChange = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement

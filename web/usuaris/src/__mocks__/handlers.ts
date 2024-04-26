@@ -2,8 +2,26 @@ import { HttpResponse, http } from 'msw'
 import { urls } from '../constants'
 
 export const handlers = [
-  http.get(urls.getUsers, () =>
-    HttpResponse.json(
+  http.get(urls.getUsers, ({ request }) => {
+    const url = new URL(request.url)
+    const itinerarySlug = url.searchParams.get('itinerarySlug')
+
+    if (itinerarySlug === 'frontend-react') {
+      return HttpResponse.json(
+        [
+          {
+            id: '2',
+            name: 'Marc Bofill',
+            dni: '87654321B',
+            status: 'ACTIVE',
+            createdAt: '2023/11/05 00:00:00.000',
+            itineraryName: 'Frontend React',
+          },
+        ],
+        { status: 200 }
+      )
+    }
+    return HttpResponse.json(
       [
         {
           id: '1',
@@ -35,7 +53,7 @@ export const handlers = [
       ],
       { status: 200 }
     )
-  ),
+  }),
 
   http.get(urls.getItineraries, () =>
     HttpResponse.json(

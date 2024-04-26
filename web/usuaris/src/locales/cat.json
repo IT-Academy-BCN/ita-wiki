@@ -132,5 +132,7 @@
   "Connector": "Connector",
   "Identificador o contraseña incorrectos": "Identificador o contrasenya incorrectes",
   "Credenciales incorrectas.": "Credencials incorrectes.",
-  "Sólo accesible a usuarios administradores activos.": "Només accessible a usuaris administradors actius."
+  "Sólo accesible a usuarios administradores activos.": "Només accessible a usuaris administradors actius.",
+  "Abrir": "Obre",
+  "Deseleccionar": "Deselecciona"
 }

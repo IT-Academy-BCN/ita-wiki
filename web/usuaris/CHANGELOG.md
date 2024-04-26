@@ -2,13 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.12.0] - 2024-04-18
+## [0.12.0] - 2024-04-26
 
 ### Added
 
-- Added Role column to UsersTable
+- Added Role column to UsersTable 
+- Added Roles filter feature
+- Add Test for Roles
   
   
+## [0.11.0] - 2024-04-23
+
+### Added
+
+- Updated Itinerary dropdown with deselect function
+- Added filters to fetch Users
+- Added Itinerary filter feature
+
 ## [0.10.0] - 2024-04-18
 
 ### Added

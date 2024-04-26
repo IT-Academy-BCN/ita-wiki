@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { Checkbox, Spinner, dimensions } from '@itacademy/ui'
 import { Table } from '../../molecules'
-import { TUserData } from '../../../types'
+import { TFilters, TUserData } from '../../../types'
 import { icons } from '../../../assets/icons'
 import { useGetUsers, useUpdateUser } from '../../../hooks'
 import {
@@ -20,9 +20,17 @@ import {
   TableContainer,
 } from './UsersTable.styles'
 
-export const UsersTable: FC = () => {
+type TUsersTable = {
+  filtersSelected: TFilters | Record<string, never>
+}
+
+export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
   const { t } = useTranslation()
-  const { isLoading, isError, data: users } = useGetUsers()
+
+  const [filters, setFilters] = useState<TFilters>({})
+
+  const { isLoading, isError, data: users } = useGetUsers(filters)
+
   const [selectedStatus, setSelectedStatus] = useState<string | undefined>(
     undefined
   )
@@ -30,6 +38,10 @@ export const UsersTable: FC = () => {
   const [selectedUsers, setSelectedUsers] = useState<TUserData[]>([])
 
   const { changeUserStatus } = useUpdateUser()
+
+  useEffect(() => {
+    setFilters(filtersSelected)
+  }, [filtersSelected])
 
   const handleStatus = (id: string, status: string) => {
     const updatedStatus = status === 'ACTIVE' ? 'BLOCKED' : 'ACTIVE'

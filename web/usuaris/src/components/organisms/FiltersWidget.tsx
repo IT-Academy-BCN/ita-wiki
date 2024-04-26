@@ -4,26 +4,42 @@ import { FlexBox, dimensions } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
 import { DateRange } from '../molecules'
 import { ItineraryDropdown } from '../molecules/ItineraryDropdown'
-import { type TItinerary } from '../../types'
 import { RolFilter } from '../molecules/RolFilter'
 import { TRol } from '../../types/types'
+import { type TFilters, TItinerary } from '../../types'
 
 const FiltersContainer = styled(FlexBox)`
   width: 100%;
 `
 
-export const FiltersWidget: FC = () => {
+type TFiltersWidget = {
+  filters: TFilters
+  handleFilters: (filters: TFilters) => void
+}
+
+export const FiltersWidget: FC<TFiltersWidget> = ({
+  filters,
+  handleFilters,
+}) => {
   const { t } = useTranslation()
 
-  const handleItinerary = (itineraryId: TItinerary) => {
-    // TODO: Use this info to filter
-    // eslint-disable-next-line no-console
-    console.log('selected', itineraryId)
+  const handleItinerary = (itinerary: TItinerary | undefined) => {
+    if (itinerary !== undefined) {
+      handleFilters({ ...filters, itinerarySlug: itinerary.slug })
+    } else {
+      const newFilters = { ...filters }
+      delete newFilters.itinerarySlug
+      handleFilters(newFilters)
+    }
   }
-  const handleRole = (RolId: TRol) => {
-    // TODO: Use this info to filter
-    // eslint-disable-next-line no-console
-    console.log('selectedRol', RolId)
+  const handleRole = (role: TRol | undefined) => {
+    if (role === undefined || role.name === 'TODOS') {
+      const newFilters = { ...filters }
+      delete newFilters.role
+      handleFilters(newFilters)
+    } else {
+      handleFilters({ ...filters, role: role.name })
+    }
   }
 
   return (
