@@ -7,6 +7,7 @@ export const useGetUsers = (filters: TFilters = {}) => {
     ['users', buildQueryString(filters) || ''],
     () => getUsers(buildQueryString(filters) || '')
   )
+  console.log(data)
 
   return { isLoading, isError, data }
 }

@@ -35,21 +35,16 @@ describe('UsersTable', () => {
 
       expect(screen.getByText(/Pendent/i)).toBeInTheDocument()
       expect(screen.getByText(/Backend Node/i)).toBeInTheDocument()
-      expect(screen.getByText('ADMIN')).toBeInTheDocument()
       expect(screen.getByText(/Acceptar/i)).toBeInTheDocument()
       expect(screen.getByText(/Actiu/i)).toBeInTheDocument()
-
-      expect(screen.getByText(/Frontend React/i)).toBeInTheDocument()
-      expect(screen.getByText('REGISTERED')).toBeInTheDocument()
-
-      expect(screen.getByText('Bloquejar')).toBeInTheDocument()
+      expect(screen.getByText(/Registrat/i)).toBeInTheDocument()
       expect(screen.getByText(/Fullstack Php/i)).toBeInTheDocument()
-
-      expect(screen.getByText('MENTOR')).toBeInTheDocument()
-      expect(screen.getByText('Desbloquejar')).toBeInTheDocument()
 
       const frontReact = screen.getAllByText(/Frontend React/i)
       frontReact.forEach((item) => expect(item).toBeInTheDocument())
+
+      const adminRol = screen.getAllByText(/Administrador/i)
+      adminRol.forEach((item) => expect(item).toBeInTheDocument())
 
       const blockedStatus = screen.getAllByText('Bloquejat')
       blockedStatus.forEach((status) => expect(status).toBeInTheDocument())
@@ -69,6 +64,7 @@ describe('UsersTable', () => {
           itinerarySlug: 'frontend-react',
           name: 'marc',
           dni: 'marc',
+          role: 'Administrador',
         }}
       />
     )
