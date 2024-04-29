@@ -183,7 +183,6 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       cell: ({ row }) => {
         const status: string = row.getValue('status')
         let isDisabled: boolean | undefined
-        let displayedStatus: string = ''
 
         if (selectedStatus && selectedStatus !== status) {
           isDisabled = true
@@ -191,16 +190,9 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
           isDisabled = undefined
         }
 
-        if (status === 'PENDING') {
-          displayedStatus = t('pendiente')
-        } else if (status === 'BLOCKED') {
-          displayedStatus = t('bloqueado')
-        } else {
-          displayedStatus = t('activo')
-        }
         return (
           <DisabledStyled disabled={isDisabled}>
-            <StatusStyled status={status}>{displayedStatus}</StatusStyled>
+            <StatusStyled status={status}>{t(`${status}`)}</StatusStyled>
           </DisabledStyled>
         )
       },

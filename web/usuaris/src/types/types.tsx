@@ -14,6 +14,11 @@ export type TItinerary = {
   slug: string
 }
 
+export type TStatus = {
+  id: string
+  name: string
+}
+
 export type TUpdatedUser = {
   id: string
   dni?: string

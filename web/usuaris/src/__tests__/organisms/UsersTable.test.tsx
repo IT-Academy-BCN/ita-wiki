@@ -78,6 +78,39 @@ describe('UsersTable', () => {
     })
   })
 
+  it('renders filtered users correctly by status', async () => {
+    render(<UsersTable filtersSelected={{ status: 'PENDING' }} />)
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(/ona sitgar/i)).toBeInTheDocument()
+      expect(screen.getByText('12345678A')).toBeInTheDocument()
+      expect(screen.getByText(/pendent/i)).toBeInTheDocument()
+      expect(screen.getByText(/backend node/i)).toBeInTheDocument()
+
+      expect(screen.queryByText(/fullstack php/i)).not.toBeInTheDocument()
+      expect(screen.queryByText(/frontend react/i)).not.toBeInTheDocument()
+    })
+  })
+
+  it('renders filtered users correctly by itinerary and status', async () => {
+    render(
+      <UsersTable
+        filtersSelected={{ itinerarySlug: 'fullstack-php', status: 'BLOCKED' }}
+      />
+    )
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(/montserrat capdevila/i)).toBeInTheDocument()
+      expect(screen.getByText('45678912C')).toBeInTheDocument()
+      expect(screen.getByText(/bloquejat/i)).toBeInTheDocument()
+      expect(screen.getByText(/fullstack php/i)).toBeInTheDocument()
+      expect(screen.getByText(/desbloquejar/i)).toBeInTheDocument()
+
+      expect(screen.queryByText(/frontend react/i)).not.toBeInTheDocument()
+      expect(screen.queryByText(/backend node/i)).not.toBeInTheDocument()
+    })
+  })
+
   it('renders error message when fetching users has error', async () => {
     server.use(...errorHandlers)
 

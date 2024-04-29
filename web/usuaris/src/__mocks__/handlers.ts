@@ -5,11 +5,13 @@ export const handlers = [
   http.get(urls.getUsers, ({ request }) => {
     const url = new URL(request.url)
     const itinerarySlug = url.searchParams.get('itinerarySlug')
+    const status = url.searchParams.get('status')
     const name = url.searchParams.get('name')
     const dni = url.searchParams.get('dni')
 
     if (
       itinerarySlug === 'frontend-react' &&
+      status === 'ACTIVE' &&
       (name?.includes('marc') || dni?.includes('marc'))
     ) {
       return HttpResponse.json(
@@ -26,6 +28,7 @@ export const handlers = [
         { status: 200 }
       )
     }
+
     return HttpResponse.json(
       [
         {
