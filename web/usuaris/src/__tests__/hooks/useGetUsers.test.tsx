@@ -41,6 +41,22 @@ describe('useGetUsers', () => {
         createdAt: '2023/11/05 00:00:00.000',
         itineraryName: 'Fullstack Php',
       },
+      {
+        id: '4',
+        name: 'Anna Brull',
+        dni: '45678912D',
+        status: 'BLOCKED',
+        createdAt: '2023/11/05 00:00:00.000',
+        itineraryName: 'Frontend React',
+      },
+      {
+        id: '5',
+        name: 'Marc Serra',
+        dni: '12378912D',
+        status: 'BLOCKED',
+        createdAt: '2023/11/05 00:00:00.000',
+        itineraryName: 'Frontend Angular',
+      },
     ])
   })
 

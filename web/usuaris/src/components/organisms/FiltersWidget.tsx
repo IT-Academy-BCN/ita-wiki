@@ -1,6 +1,6 @@
-import { FC } from 'react'
+import { FC, useCallback } from 'react'
 import styled from 'styled-components'
-import { FlexBox, dimensions } from '@itacademy/ui'
+import { FlexBox, Search, dimensions } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
 import { DateRange } from '../molecules'
 import { ItineraryDropdown } from '../molecules/ItineraryDropdown'
@@ -31,6 +31,25 @@ export const FiltersWidget: FC<TFiltersWidget> = ({
     }
   }
 
+  const handleSearch = useCallback(
+    (searchValue: string) => {
+      if (searchValue !== '') {
+        handleFilters({
+          ...filters,
+          name: searchValue,
+          dni: searchValue,
+        })
+      } else {
+        const newFilters = { ...filters }
+        delete newFilters.name
+        delete newFilters.dni
+        handleFilters(newFilters)
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  )
+
   return (
     <FiltersContainer
       direction="row"
@@ -45,6 +64,15 @@ export const FiltersWidget: FC<TFiltersWidget> = ({
         placeholderEndDate={t('Hasta...')}
         dateFormat="dd/MM/yyyy"
         calendarLanguage={t('calendarLanguage')}
+      />
+      <Search
+        id="usersSearch"
+        name="usersSearch"
+        label={t('Búsqueda de usuarios')}
+        placeholder={t('Buscar')}
+        isSearchError={false}
+        handleSearchValue={handleSearch}
+        searchIconName="search"
       />
     </FiltersContainer>
   )

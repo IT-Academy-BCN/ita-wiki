@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { TFilters, type TUserData } from '../types'
-import { getUsers } from '../helpers'
-import { buildQueryString } from '../helpers/filters'
+import { buildQueryString, getUsers } from '../helpers'
 
 export const useGetUsers = (filters: TFilters = {}) => {
   const { isLoading, isError, data } = useQuery<TUserData[]>(

@@ -79,7 +79,7 @@ export const Table = <TData, TValue>({
           ))
         ) : (
           <TRStyled>
-            <TDStyled>{noResultsMessage}</TDStyled>
+            <TDStyled colSpan={columns.length}>{noResultsMessage}</TDStyled>
           </TRStyled>
         )}
       </TBodyStyled>
