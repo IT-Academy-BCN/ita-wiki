@@ -156,5 +156,8 @@
   "Sólo accesible a usuarios administradores activos.": "Only accesible to active administrator users.",
 
   "Abrir": "Open",
-  "Deseleccionar": "Deselect"
+  "Deseleccionar": "Deselect",
+
+  "Búsqueda de usuarios": "Usears search",
+  "Buscar": "Search"
 }

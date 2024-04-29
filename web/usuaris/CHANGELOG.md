@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.12.0] - 2024-04-29
+
+### Added
+
+- Added Search component
+- Added search value to filters to fetch users
+
 ## [0.11.0] - 2024-04-23
 
 ### Added
