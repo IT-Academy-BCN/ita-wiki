@@ -1,6 +1,18 @@
 import { http, HttpResponse } from 'msw'
 import QueryString from 'qs'
+import { z } from 'zod'
 import { testUserData } from '../../globalSetup'
+import { ssoGetUsersNameByIdRequestSchema } from '../../../schemas/sso/ssoListUsers'
+
+const fieldsSchema = z.enum(['id', 'name'])
+const querySchema = z.object({
+  query: z
+    .object({
+      id: ssoGetUsersNameByIdRequestSchema,
+      fields: fieldsSchema.array().optional(),
+    })
+    .strict(),
+})
 
 export const listUsersHandler = http.get<
   never,
@@ -14,6 +26,14 @@ export const listUsersHandler = http.get<
     fields: string[]
   }
   if (typeof queryParse.id === 'string') queryParse.id = [queryParse.id]
+
+  const zodParse = querySchema.safeParse({ query: queryParse })
+  if (!zodParse.success) {
+    return HttpResponse.json(
+      { message: zodParse.error.issues },
+      { status: 400 }
+    )
+  }
   if (!queryParse.id) return HttpResponse.json([], { status: 200 })
   const uniqueIds = [...new Set(queryParse.id)]
   const findUsers = uniqueIds
