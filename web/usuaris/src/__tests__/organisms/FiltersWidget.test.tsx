@@ -69,9 +69,9 @@ describe('FiltersWidget', () => {
 
     fireEvent.click(dropdownHeader)
 
-    const deselectReact = screen.getByTestId('deselect-1')
+    const deselectReact = screen.getAllByTestId('deselect-1')
 
-    fireEvent.click(deselectReact)
+    fireEvent.click(deselectReact[0])
 
     expect(mockHandleFilters).toHaveBeenCalledWith({
       status: 'ACTIVE',
@@ -121,5 +121,60 @@ describe('FiltersWidget', () => {
         status: 'ACTIVE',
       })
     )
+  })
+
+  it('updates filters value when introducing dates', () => {
+    render(<FiltersWidget filters={{}} handleFilters={mockHandleFilters} />)
+
+    const startDateInput = screen.getByPlaceholderText('De...')
+    const endDateInput = screen.getByPlaceholderText('Fins...')
+
+    const mockStartDate = new Date()
+    const mockEndDate = new Date()
+
+    fireEvent.change(startDateInput, { target: { value: mockStartDate } })
+    fireEvent.change(endDateInput, { target: { value: mockEndDate } })
+
+    waitFor(() =>
+      expect(mockHandleFilters).toHaveBeenCalledWith({
+        startDate: mockStartDate.toISOString(),
+        endDate: mockEndDate.toISOString(),
+      })
+    )
+  })
+
+  it('deletes dates when closing dates inputs and updates filters accordingly', () => {
+    render(
+      <FiltersWidget
+        filters={{ status: 'ACTIVE' }}
+        handleFilters={mockHandleFilters}
+      />
+    )
+
+    const startDateInput = screen.getByPlaceholderText('De...')
+    const endDateInput = screen.getByPlaceholderText('Fins...')
+
+    const mockStartDate = new Date()
+    const mockEndDate = new Date()
+
+    fireEvent.change(startDateInput, { target: { value: mockStartDate } })
+    fireEvent.change(endDateInput, { target: { value: mockEndDate } })
+
+    waitFor(() =>
+      expect(mockHandleFilters).toHaveBeenCalledWith({
+        status: 'ACTIVE',
+        startDate: mockStartDate.toISOString(),
+        endDate: mockEndDate.toISOString(),
+      })
+    )
+
+    const closeIcon = screen.getByTestId('close-button-test')
+    fireEvent.click(closeIcon)
+
+    waitFor(() => {
+      expect(mockHandleFilters).toHaveBeenCalledWith({
+        status: 'ACTIVE',
+      })
+    })
   })
 })
