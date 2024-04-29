@@ -17,6 +17,7 @@ export type TItinerary = {
 export type TRol = {
   id: string
   name: string
+  slug: string
 }
 
 export type TUpdatedUser = {

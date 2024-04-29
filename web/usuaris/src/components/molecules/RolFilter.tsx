@@ -1,11 +1,10 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import styled from 'styled-components'
 import {
   colors,
   dimensions,
   Dropdown,
   font,
-  // Spinner,
   type TDropdownOption,
 } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
@@ -38,33 +37,20 @@ export const RolFilter: FC<TRolDropdown> = ({ handleRole }) => {
   const { t } = useTranslation()
 
   const [RolesList, setRolesList] = useState<TRol[]>([
-    { id: '1', name: 'TODOS' },
-    { id: '2', name: 'ADMIN' },
-    { id: '3', name: 'REGISTERED' },
-    { id: '4', name: 'MENTOR' },
+    { id: '1', name: t('administrador'), slug: 'ADMIN' },
+    { id: '2', name: t('registrado'), slug: 'REGISTERED' },
   ])
 
-  // const { isLoading, error, data } = useGetRoles()
-
-  // useEffect(() => {
-  //   const newData = data?.map((cat: TRol) => ({
-  //     ...cat,
-  //   }))
-  //   setRolesList(newData)
-  // }, [data])
-
-  const handleSelectedValue = (selectedOption: TDropdownOption) => {
-    const selectedRole = RolesList.find(
-      (cat: TRol) => cat.id === selectedOption.id
-    )
-    handleRole(selectedRole)
+  const handleSelectedValue = (selectedOption: TDropdownOption | undefined) => {
+    if (selectedOption) {
+      const selectedRole = RolesList.find(
+        (cat: TRol) => cat.id === selectedOption.id
+      )
+      handleRole(selectedRole)
+    } else {
+      handleRole(undefined)
+    }
   }
-
-  // if (isLoading)
-  //   return <Spinner size="small" as="output" data-testid="spinner" />
-  // }
-
-  // if (error) return <p>{t('Ha habido un error...')} </p>
 
   return RolesList && RolesList.length > 0 ? (
     <StyledDropdown

@@ -33,12 +33,12 @@ export const FiltersWidget: FC<TFiltersWidget> = ({
     }
   }
   const handleRole = (role: TRol | undefined) => {
-    if (role === undefined || role.name === 'TODOS') {
+    if (role === undefined) {
       const newFilters = { ...filters }
       delete newFilters.role
       handleFilters(newFilters)
     } else {
-      handleFilters({ ...filters, role: role.name })
+      handleFilters({ ...filters, role: role.slug })
     }
   }
 
