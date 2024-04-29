@@ -30,7 +30,7 @@ const StyledDropdown = styled(Dropdown)`
 `
 
 type TRolDropdown = {
-  handleRole: (value: TRol) => void
+  handleRole: (value: TRol | undefined) => void
 }
 
 export const RolFilter: FC<TRolDropdown> = ({ handleRole }) => {
@@ -44,9 +44,11 @@ export const RolFilter: FC<TRolDropdown> = ({ handleRole }) => {
   const handleSelectedValue = (selectedOption: TDropdownOption | undefined) => {
     if (selectedOption) {
       const selectedRole = RolesList.find(
-        (cat: TRol) => cat.id === selectedOption.id
+        (role: TRol) => role.id === selectedOption.id
       )
-      handleRole(selectedRole)
+      if (selectedRole) {
+        handleRole(selectedRole)
+      }
     } else {
       handleRole(undefined)
     }

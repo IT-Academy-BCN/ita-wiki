@@ -36,8 +36,8 @@ describe('UsersTable', () => {
       expect(screen.getByText(/Pendent/i)).toBeInTheDocument()
       expect(screen.getByText(/Backend Node/i)).toBeInTheDocument()
       expect(screen.getByText(/Acceptar/i)).toBeInTheDocument()
+      expect(screen.getByText('Bloquejar')).toBeInTheDocument()
       expect(screen.getByText(/Actiu/i)).toBeInTheDocument()
-      expect(screen.getByText(/Registrat/i)).toBeInTheDocument()
       expect(screen.getByText(/Fullstack Php/i)).toBeInTheDocument()
 
       const frontReact = screen.getAllByText(/Frontend React/i)
