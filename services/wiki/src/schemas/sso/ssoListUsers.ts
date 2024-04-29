@@ -1,7 +1,7 @@
 import { z } from '../../openapi/zod'
 import { userId, userSchema } from '../users/userSchema'
 
-const ssoGetUsersNameByIdRequestSchema = userId.array()
+export const ssoGetUsersNameByIdRequestSchema = userId.array()
 export type TSsoGetUsersNameByIdRequest = z.infer<
   typeof ssoGetUsersNameByIdRequestSchema
 >

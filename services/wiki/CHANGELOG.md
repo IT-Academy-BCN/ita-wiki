@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.15.1] - 2024-04-29
+
+### Fixed
+
+- Resolved an issue where an empty request was sent to the SSO user search endpoint (`GET /api/v1/users`) without IDs when no resources were found.
+
 ## [0.15.0] - 2024-04-15
 
 ### Changed
