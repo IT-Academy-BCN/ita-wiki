@@ -39,4 +39,5 @@ export type TUserData = {
   status: string
   createdAt: string
   itineraryName: string
+  role: string
 }
