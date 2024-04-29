@@ -1,4 +1,4 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import styled from 'styled-components'
 import {
   colors,
@@ -36,10 +36,10 @@ type TRolDropdown = {
 export const RolFilter: FC<TRolDropdown> = ({ handleRole }) => {
   const { t } = useTranslation()
 
-  const [RolesList, setRolesList] = useState<TRol[]>([
+  const RolesList: TRol[] = [
     { id: '1', name: t('administrador'), slug: 'ADMIN' },
     { id: '2', name: t('registrado'), slug: 'REGISTERED' },
-  ])
+  ]
 
   const handleSelectedValue = (selectedOption: TDropdownOption | undefined) => {
     if (selectedOption) {
