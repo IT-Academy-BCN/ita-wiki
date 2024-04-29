@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.13.0] - 2024-04-29
+
+### Added
+
+- Added close icon to deselect dates in DateRange
+- Added dates to filters to fetch users in FiltersWidget
+
 ## [0.12.0] - 2024-04-29
 
 ### Added

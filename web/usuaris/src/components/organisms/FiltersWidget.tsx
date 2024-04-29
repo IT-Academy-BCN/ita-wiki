@@ -50,6 +50,21 @@ export const FiltersWidget: FC<TFiltersWidget> = ({
     []
   )
 
+  const handleDates = (startDate: Date | null, endDate: Date | null) => {
+    if (startDate !== null || endDate != null) {
+      handleFilters({
+        ...filters,
+        startDate: startDate?.toISOString(),
+        endDate: endDate?.toISOString(),
+      })
+    } else {
+      const newFilters = { ...filters }
+      delete newFilters.startDate
+      delete newFilters.endDate
+      handleFilters(newFilters)
+    }
+  }
+
   return (
     <FiltersContainer
       direction="row"
@@ -64,6 +79,7 @@ export const FiltersWidget: FC<TFiltersWidget> = ({
         placeholderEndDate={t('Hasta...')}
         dateFormat="dd/MM/yyyy"
         calendarLanguage={t('calendarLanguage')}
+        handleDates={handleDates}
       />
       <Search
         id="usersSearch"

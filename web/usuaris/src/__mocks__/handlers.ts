@@ -5,11 +5,15 @@ export const handlers = [
   http.get(urls.getUsers, ({ request }) => {
     const url = new URL(request.url)
     const itinerarySlug = url.searchParams.get('itinerarySlug')
+    const startDate = url.searchParams.get('startDate')
+    const endDate = url.searchParams.get('endDate')
     const name = url.searchParams.get('name')
     const dni = url.searchParams.get('dni')
 
     if (
       itinerarySlug === 'frontend-react' &&
+      ((startDate && startDate <= '2023/11/06 00:00:00.000') ||
+        (endDate && endDate >= '2023/11/06 00:00:00.000')) &&
       (name?.includes('marc') || dni?.includes('marc'))
     ) {
       return HttpResponse.json(
@@ -19,7 +23,7 @@ export const handlers = [
             name: 'Marc Bofill',
             dni: '87654321B',
             status: 'ACTIVE',
-            createdAt: '2023/11/05 00:00:00.000',
+            createdAt: '2023/11/06 00:00:00.000',
             itineraryName: 'Frontend React',
           },
         ],
@@ -41,7 +45,7 @@ export const handlers = [
           name: 'Marc Bofill',
           dni: '87654321B',
           status: 'ACTIVE',
-          createdAt: '2023/11/05 00:00:00.000',
+          createdAt: '2023/11/06 00:00:00.000',
           itineraryName: 'Frontend React',
         },
         {
@@ -49,7 +53,7 @@ export const handlers = [
           name: 'Montserrat Capdevila',
           dni: '45678912C',
           status: 'BLOCKED',
-          createdAt: '2023/11/05 00:00:00.000',
+          createdAt: '2023/11/07 00:00:00.000',
           itineraryName: 'Fullstack Php',
         },
         {
@@ -57,7 +61,7 @@ export const handlers = [
           name: 'Anna Brull',
           dni: '45678912D',
           status: 'BLOCKED',
-          createdAt: '2023/11/05 00:00:00.000',
+          createdAt: '2023/11/08 00:00:00.000',
           itineraryName: 'Frontend React',
         },
         {
@@ -65,7 +69,7 @@ export const handlers = [
           name: 'Marc Serra',
           dni: '12378912D',
           status: 'BLOCKED',
-          createdAt: '2023/11/05 00:00:00.000',
+          createdAt: '2023/11/09 00:00:00.000',
           itineraryName: 'Frontend Angular',
         },
       ],
