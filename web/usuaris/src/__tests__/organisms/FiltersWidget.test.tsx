@@ -20,7 +20,9 @@ describe('FiltersWidget', () => {
       expect(screen.getByText(/especialitat/i)).toBeInTheDocument()
     )
 
-    const dropdownHeader = screen.getByTestId('dropdown-header')
+    const allDropdowns = screen.getAllByTestId('dropdown-header')
+
+    const dropdownHeader = allDropdowns[0]
 
     expect(dropdownHeader).toHaveTextContent(/especialitat/i)
 
@@ -51,7 +53,9 @@ describe('FiltersWidget', () => {
       expect(screen.getByText(/especialitat/i)).toBeInTheDocument()
     )
 
-    const dropdownHeader = screen.getByTestId('dropdown-header')
+    const allDropdowns = screen.getAllByTestId('dropdown-header')
+
+    const dropdownHeader = allDropdowns[0]
 
     fireEvent.click(dropdownHeader)
 
