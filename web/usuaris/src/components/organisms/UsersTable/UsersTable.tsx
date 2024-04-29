@@ -2,7 +2,7 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import { Checkbox, Spinner, dimensions } from '@itacademy/ui'
+import { Checkbox, FlexBox, Modal, Spinner, dimensions } from '@itacademy/ui'
 import { Table } from '../../molecules'
 import { TFilters, TUserData } from '../../../types'
 import { icons } from '../../../assets/icons'
@@ -16,6 +16,8 @@ import {
   DeleteIcon,
   DisabledStyled,
   IconStyled,
+  ModalButtonStyled,
+  ModalTextStyled,
   StatusStyled,
   TableContainer,
 } from './UsersTable.styles'
@@ -37,6 +39,8 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
   const [selectedUsers, setSelectedUsers] = useState<TUserData[]>([])
 
   const { changeUserStatus } = useUpdateUser()
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   useEffect(() => {
     setFilters(filtersSelected)
@@ -265,7 +269,12 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
             >
               {buttonTxt}
             </ButtonStyled>
-            <DeleteButton size="small" outline disabled={isDisabled}>
+            <DeleteButton
+              size="small"
+              outline
+              disabled={isDisabled}
+              onClick={() => setIsModalOpen(!isModalOpen)}
+            >
               <DeleteIcon src={icons.deleteIcon} alt="delete-icon" />
             </DeleteButton>
           </ActionsContainer>
@@ -283,6 +292,23 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         data={users || []}
         noResultsMessage={t('No hay usuarios para mostrar')}
       />
+      <Modal
+        title={t('¿Estás seguro de que deseas eliminar este usuario?')}
+        isOpen={isModalOpen}
+        toggleModal={() => setIsModalOpen(false)}
+      >
+        <ModalTextStyled>{t('Acción irreversible')}</ModalTextStyled>
+        <FlexBox direction="row" gap="24px">
+          <ModalButtonStyled size="small">Confirmar</ModalButtonStyled>
+          <ModalButtonStyled
+            outline
+            size="small"
+            onClick={() => setIsModalOpen(false)}
+          >
+            {t('Cancelar')}
+          </ModalButtonStyled>
+        </FlexBox>
+      </Modal>
     </TableContainer>
   )
 }

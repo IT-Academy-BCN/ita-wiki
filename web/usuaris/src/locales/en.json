@@ -159,5 +159,9 @@
   "Deseleccionar": "Deselect",
 
   "Búsqueda de usuarios": "Usears search",
-  "Buscar": "Search"
+  "Buscar": "Search",
+  
+  "Eliminar usuario": "Are you sure you want to delete this user?",
+  "Acción irreversible": "This action is irreversible, and the user cannot be recovered after deletion.",
+  "Confirmar" : "Confirm"
 }

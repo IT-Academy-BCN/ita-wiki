@@ -159,5 +159,9 @@
   "Deseleccionar": "Deselecciona",
 
   "Búsqueda de usuarios": "Cerca d'usuaris",
-  "Buscar": "Cercar"
+  "Buscar": "Cercar",
+
+  "Eliminar usuario": "Estàs segur que vols eliminar aquest usuari?",
+  "Acción irreversible": "Aquesta acció és irreversible i no es podrà recuperar l'usuari després de ser eliminat.",
+  "Confirmar": "Confirmar"
 }
