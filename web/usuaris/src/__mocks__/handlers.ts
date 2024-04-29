@@ -5,8 +5,13 @@ export const handlers = [
   http.get(urls.getUsers, ({ request }) => {
     const url = new URL(request.url)
     const itinerarySlug = url.searchParams.get('itinerarySlug')
+    const name = url.searchParams.get('name')
+    const dni = url.searchParams.get('dni')
 
-    if (itinerarySlug === 'frontend-react') {
+    if (
+      itinerarySlug === 'frontend-react' &&
+      (name?.includes('marc') || dni?.includes('marc'))
+    ) {
       return HttpResponse.json(
         [
           {
@@ -49,6 +54,22 @@ export const handlers = [
           role:'MENTOR',
           createdAt: '2023/11/05 00:00:00.000',
           itineraryName: 'Fullstack Php',
+        },
+        {
+          id: '4',
+          name: 'Anna Brull',
+          dni: '45678912D',
+          status: 'BLOCKED',
+          createdAt: '2023/11/05 00:00:00.000',
+          itineraryName: 'Frontend React',
+        },
+        {
+          id: '5',
+          name: 'Marc Serra',
+          dni: '12378912D',
+          status: 'BLOCKED',
+          createdAt: '2023/11/05 00:00:00.000',
+          itineraryName: 'Frontend Angular',
         },
       ],
       { status: 200 }
