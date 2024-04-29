@@ -156,5 +156,9 @@
   "Sólo accesible a usuarios administradores activos.": "Sólo accesible a usuarios administradores activos.",
 
   "Abrir": "Obre",
-  "Deseleccionar": "Deselecciona"
+  "Deseleccionar": "Deselecciona",
+
+  "Eliminar usuario": "¿Estás seguro de que deseas eliminar este usuario?",
+  "Acción irreversible": "Esta acción es irreversible y el usuario no podrá ser recuperado después de ser eliminado.",
+  "Confirmar": "Confirmar"
 }

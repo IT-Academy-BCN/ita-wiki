@@ -1,4 +1,4 @@
-import { Button, FlexBox, colors, dimensions, font } from '@itacademy/ui'
+import { Button, FlexBox, Text, colors, dimensions, font } from '@itacademy/ui'
 import styled from 'styled-components'
 
 export const TableContainer = styled.div`
@@ -86,4 +86,12 @@ export const DeleteButton = styled(Button)`
 
 export const DeleteIcon = styled.img`
   height: ${dimensions.spacing.base};
+`
+
+export const ModalButtonStyled = styled(Button)`
+  width: auto;
+`
+
+export const ModalTextStyled = styled(Text)`
+  padding-left: ${dimensions.spacing.base};
 `

@@ -156,5 +156,9 @@
   "Sólo accesible a usuarios administradores activos.": "Only accesible to active administrator users.",
 
   "Abrir": "Open",
-  "Deseleccionar": "Deselect"
+  "Deseleccionar": "Deselect",
+
+  "Eliminar usuario": "Are you sure you want to delete this user?",
+  "Acción irreversible": "This action is irreversible, and the user cannot be recovered after deletion.",
+  "Confirmar" : "Confirm"
 }
