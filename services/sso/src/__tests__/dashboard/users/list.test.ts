@@ -7,6 +7,7 @@ import { itinerariesData, server, testUserData } from '../../globalSetup'
 import { client } from '../../../models/db'
 import { DashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
 import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
+import { queryBuilder } from '../../../utils/queryBuilder'
 
 const route = `${pathRoot.v1.dashboard.users}`
 
@@ -20,7 +21,11 @@ const responseSchema = userSchema
 
 let authAdminToken = ''
 let users: DashboardUsersList
-
+const validName = 'testing'
+const validDni = '38826335N'
+const validRole = UserRole.REGISTERED
+const validStatus = UserStatus.ACTIVE
+const validDate = '2024-04-28T22:00:00.000Z'
 beforeAll(async () => {
   const loginRoute = `${pathRoot.v1.dashboard.auth}/login`
   const responseAdmin = await supertest(server).post(loginRoute).send({
@@ -237,5 +242,81 @@ describe('Testing get users endpoint', () => {
     )
     expect(sortedResponseBody).toEqual(sortedExpected)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
+  })
+  it('returns a colletion of users by 4 diferent search values', async () => {
+    const response = await supertest(server)
+      .get(route)
+      .query({
+        name: validName,
+        dni: validDni,
+        role: validRole,
+        status: validStatus,
+      })
+      .set('Cookie', [authAdminToken])
+    const { body }: { body: DashboardUsersList } = response
+    expect(response.status).toBe(200)
+    expect(body).toBeInstanceOf(Array)
+    expect(body).toHaveLength(2)
+    expect(responseSchema.safeParse(body).success).toBeTruthy()
+  })
+  it('returns a expected query calling the queryBuilder function with name, dni, role and status', async () => {
+    const searchValues = {
+      name: validName,
+      dni: validDni,
+      role: validRole,
+      status: validStatus,
+    }
+    const expectedWhere = `WHERE (u.name ILIKE $1 OR u.dni ILIKE $2) AND u.status = $3 AND u.role = $4`
+    const expectedParams = ['%testing%', '%38826335N%', 'ACTIVE', 'REGISTERED']
+    const resultQuery = queryBuilder(searchValues)
+    const resultWhere = resultQuery.query.substring(241)
+    expect(resultWhere).toBe(expectedWhere)
+    expect(resultQuery.queryParams).toEqual(expectedParams)
+  })
+  it('returns a expected query calling the queryBuilder function with name, startDate and endDate', async () => {
+    const searchValues = {
+      name: validName,
+      endDate: validDate,
+      startDate: validDate,
+    }
+    const expectedWhere = `WHERE (u.name ILIKE $1) AND u.created_at >= $2 AND u.created_at <= $3`
+    const expectedParams = [
+      '%testing%',
+      new Date('2024-04-28T22:00:00.000Z'),
+      new Date('2024-04-28T22:00:00.000Z'),
+    ]
+    const resultQuery = queryBuilder(searchValues)
+    const resultWhere = resultQuery.query.substring(241)
+    expect(resultWhere).toBe(expectedWhere)
+    expect(resultQuery.queryParams).toEqual(expectedParams)
+  })
+  it('returns a expected query calling the queryBuilder function with name and dni', async () => {
+    const searchValues = {
+      name: validName,
+      dni: validDni,
+    }
+    const expectedWhere = `WHERE (u.name ILIKE $1 OR u.dni ILIKE $2)`
+    const expectedParams = ['%testing%', '%38826335N%']
+    const resultQuery = queryBuilder(searchValues)
+    const resultWhere = resultQuery.query.substring(241)
+    expect(resultWhere).toBe(expectedWhere)
+    expect(resultQuery.queryParams).toEqual(expectedParams)
+  })
+  it('returns a expected query calling the queryBuilder function with dni, status and endDate', async () => {
+    const searchValues = {
+      dni: validDni,
+      status: validStatus,
+      endDate: validDate,
+    }
+    const expectedWhere = `WHERE (u.dni ILIKE $1) AND u.status = $2 AND u.created_at <= $3`
+    const expectedParams = [
+      '%38826335N%',
+      'ACTIVE',
+      new Date('2024-04-28T22:00:00.000Z'),
+    ]
+    const resultQuery = queryBuilder(searchValues)
+    const resultWhere = resultQuery.query.substring(241)
+    expect(resultWhere).toBe(expectedWhere)
+    expect(resultQuery.queryParams).toEqual(expectedParams)
   })
 })
