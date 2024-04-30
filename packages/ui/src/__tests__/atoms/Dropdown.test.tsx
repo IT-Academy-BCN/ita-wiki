@@ -125,6 +125,36 @@ describe('Dropdown', () => {
     expect(dropdownItem1).toHaveStyle('padding: 12px 18px')
   })
 
+  it('renders custom data-testid in dropdown header and allows a specific click', async () => {
+    render(
+      <>
+        <Dropdown
+          options={mockOptionsWithImage}
+          dataTestid="first-dropdown"
+          placeholder="Dropdown with image"
+        />
+        <Dropdown
+          options={mockOptions}
+          dataTestid="second-dropdown"
+          placeholder="Simple dropdown"
+        />
+      </>
+    )
+
+    const dropdownHeader1 = screen.getByTestId('first-dropdown')
+    expect(dropdownHeader1).toBeInTheDocument()
+    expect(dropdownHeader1).toHaveTextContent('Dropdown with image')
+    await userEvent.click(dropdownHeader1)
+    expect(screen.queryByText('Option 1')).toBeVisible()
+    expect(screen.queryByAltText('Option 1')).toBeVisible()
+
+    const dropdownHeader2 = screen.getByTestId('second-dropdown')
+    expect(dropdownHeader2).toBeInTheDocument()
+    expect(dropdownHeader2).toHaveTextContent('Simple dropdown')
+    await userEvent.click(dropdownHeader2)
+    expect(screen.queryByText('Option 1')).toBeVisible()
+  })
+
   it('renders dropdown children when user clicks on it', async () => {
     render(<Dropdown options={mockOptions} />)
     const dropdownHeader = screen.getByTestId('dropdown-header')

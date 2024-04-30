@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.31.6] - 2024-04-30
+
+### Fixed
+
+- Fix Dropdown to allow custom data-testid in header
+
 ## [0.31.5] - 2024-04-24
 
 ### Changed
