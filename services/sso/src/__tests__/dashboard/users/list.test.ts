@@ -21,11 +21,11 @@ const responseSchema = userSchema
 
 let authAdminToken = ''
 let users: DashboardUsersList
-const validName = 'testing'
-const validDni = '38826335N'
-const validRole = UserRole.REGISTERED
-const validStatus = UserStatus.ACTIVE
-const validDate = '2024-04-28T22:00:00.000Z'
+const testName = 'testing'
+const testDni = '38826335N'
+const testRole = UserRole.REGISTERED
+const testStatus = UserStatus.ACTIVE
+const testDate = '2024-04-28T22:00:00.000Z'
 beforeAll(async () => {
   const loginRoute = `${pathRoot.v1.dashboard.auth}/login`
   const responseAdmin = await supertest(server).post(loginRoute).send({
@@ -173,10 +173,9 @@ describe('Testing get users endpoint', () => {
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
   it('returns a collection of users successfully with a name query of 2 or more characters', async () => {
-    const validName = 'testing'
     const response = await supertest(server)
       .get(route)
-      .query({ name: validName })
+      .query({ name: testName })
       .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
@@ -247,10 +246,10 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server)
       .get(route)
       .query({
-        name: validName,
-        dni: validDni,
-        role: validRole,
-        status: validStatus,
+        name: testName,
+        dni: testDni,
+        role: testRole,
+        status: testStatus,
       })
       .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
@@ -261,10 +260,10 @@ describe('Testing get users endpoint', () => {
   })
   it('returns a expected query calling the queryBuilder function with name, dni, role and status', async () => {
     const searchValues = {
-      name: validName,
-      dni: validDni,
-      role: validRole,
-      status: validStatus,
+      name: testName,
+      dni: testDni,
+      role: testRole,
+      status: testStatus,
     }
     const expectedWhere = `WHERE (u.name ILIKE $1 OR u.dni ILIKE $2) AND u.status = $3 AND u.role = $4`
     const expectedParams = ['%testing%', '%38826335N%', 'ACTIVE', 'REGISTERED']
@@ -275,9 +274,9 @@ describe('Testing get users endpoint', () => {
   })
   it('returns a expected query calling the queryBuilder function with name, startDate and endDate', async () => {
     const searchValues = {
-      name: validName,
-      endDate: validDate,
-      startDate: validDate,
+      name: testName,
+      endDate: testDate,
+      startDate: testDate,
     }
     const expectedWhere = `WHERE (u.name ILIKE $1) AND u.created_at >= $2 AND u.created_at <= $3`
     const expectedParams = [
@@ -292,8 +291,8 @@ describe('Testing get users endpoint', () => {
   })
   it('returns a expected query calling the queryBuilder function with name and dni', async () => {
     const searchValues = {
-      name: validName,
-      dni: validDni,
+      name: testName,
+      dni: testDni,
     }
     const expectedWhere = `WHERE (u.name ILIKE $1 OR u.dni ILIKE $2)`
     const expectedParams = ['%testing%', '%38826335N%']
@@ -304,9 +303,9 @@ describe('Testing get users endpoint', () => {
   })
   it('returns a expected query calling the queryBuilder function with dni, status and endDate', async () => {
     const searchValues = {
-      dni: validDni,
-      status: validStatus,
-      endDate: validDate,
+      dni: testDni,
+      status: testStatus,
+      endDate: testDate,
     }
     const expectedWhere = `WHERE (u.dni ILIKE $1) AND u.status = $2 AND u.created_at <= $3`
     const expectedParams = [
