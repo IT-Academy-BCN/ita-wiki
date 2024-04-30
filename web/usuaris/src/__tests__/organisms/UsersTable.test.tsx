@@ -28,29 +28,42 @@ describe('UsersTable', () => {
     await waitFor(() => {
       expect(screen.getByLabelText(/Ona Sitgar/i)).toBeInTheDocument()
       expect(screen.getByText('12345678A')).toBeInTheDocument()
+      expect(screen.getByLabelText(/Marc Bofill/i)).toBeInTheDocument()
+      expect(screen.getByText('87654321B')).toBeInTheDocument()
+      expect(screen.getByLabelText(/Montserrat Capdevila/i)).toBeInTheDocument()
+      expect(screen.getByText('45678912C')).toBeInTheDocument()
+
       expect(screen.getByText(/Pendent/i)).toBeInTheDocument()
       expect(screen.getByText(/Backend Node/i)).toBeInTheDocument()
       expect(screen.getByText(/Acceptar/i)).toBeInTheDocument()
-
-      expect(screen.getByLabelText(/Marc Bofill/i)).toBeInTheDocument()
-      expect(screen.getByText('87654321B')).toBeInTheDocument()
       expect(screen.getByText(/Actiu/i)).toBeInTheDocument()
-      expect(screen.getByText(/Frontend React/i)).toBeInTheDocument()
       expect(screen.getByText('Bloquejar')).toBeInTheDocument()
-
-      expect(screen.getByLabelText(/Montserrat Capdevila/i)).toBeInTheDocument()
-      expect(screen.getByText('45678912C')).toBeInTheDocument()
-      expect(screen.getByText('Bloquejat')).toBeInTheDocument()
       expect(screen.getByText(/Fullstack Php/i)).toBeInTheDocument()
-      expect(screen.getByText('Desbloquejar')).toBeInTheDocument()
+
+      const frontReact = screen.getAllByText(/Frontend React/i)
+      frontReact.forEach((item) => expect(item).toBeInTheDocument())
+
+      const blockedStatus = screen.getAllByText('Bloquejat')
+      blockedStatus.forEach((status) => expect(status).toBeInTheDocument())
+
+      const unblockButton = screen.getAllByText('Desbloquejar')
+      unblockButton.forEach((button) => expect(button).toBeInTheDocument())
 
       const deleteIcons = screen.getAllByAltText(/delete-icon/i)
       deleteIcons.forEach((icon) => expect(icon).toBeInTheDocument())
     })
   })
 
-  it('renders filtered users correctly by itinerary', async () => {
-    render(<UsersTable filtersSelected={{ itinerarySlug: 'frontend-react' }} />)
+  it('renders filtered users correctly when filters applied', async () => {
+    render(
+      <UsersTable
+        filtersSelected={{
+          itinerarySlug: 'frontend-react',
+          name: 'marc',
+          dni: 'marc',
+        }}
+      />
+    )
 
     await waitFor(() => {
       expect(screen.getByLabelText(/Marc Bofill/i)).toBeInTheDocument()
@@ -61,6 +74,7 @@ describe('UsersTable', () => {
 
       expect(screen.queryByText(/Fullstack Php/i)).not.toBeInTheDocument()
       expect(screen.queryByText(/Backend Node/i)).not.toBeInTheDocument()
+      expect(screen.queryByText(/Marc Serra/i)).not.toBeInTheDocument()
     })
   })
 
@@ -89,10 +103,10 @@ describe('UsersTable', () => {
 
       const acceptButton = screen.getByText('Acceptar')
       const blockButton = screen.getByText('Bloquejar')
-      const unblockButton = screen.getByText('Desbloquejar')
+      const unblockButton = screen.getAllByText('Desbloquejar')
 
       const backend = screen.getByText(/Backend Node/i)
-      const frontend = screen.getByText(/Frontend React/i)
+      const frontReact = screen.getAllByText(/Frontend React/i)
       const fullstack = screen.getByText(/Fullstack Php/i)
 
       fireEvent.click(checkboxPending)
@@ -104,10 +118,10 @@ describe('UsersTable', () => {
 
         expect(acceptButton).not.toBeDisabled()
         expect(blockButton).toBeDisabled()
-        expect(unblockButton).toBeDisabled()
+        unblockButton.forEach((button) => expect(button).toBeDisabled())
 
         expect(backend).toHaveStyle('opacity: 1')
-        expect(frontend).toHaveStyle('opacity: 0.6')
+        frontReact.forEach((item) => expect(item).toHaveStyle('opacity: 0.6'))
         expect(fullstack).toHaveStyle('opacity: 0.6')
       })
 
@@ -120,10 +134,10 @@ describe('UsersTable', () => {
 
         expect(acceptButton).not.toBeDisabled()
         expect(blockButton).not.toBeDisabled()
-        expect(unblockButton).not.toBeDisabled()
+        unblockButton.forEach((button) => expect(button).not.toBeDisabled())
 
         expect(backend).toHaveStyle('opacity: 1')
-        expect(frontend).toHaveStyle('opacity: 1')
+        frontReact.forEach((item) => expect(item).toHaveStyle('opacity: 1'))
         expect(fullstack).toHaveStyle('opacity: 1')
       })
     })

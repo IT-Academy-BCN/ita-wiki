@@ -77,4 +77,49 @@ describe('FiltersWidget', () => {
       status: 'ACTIVE',
     })
   })
+
+  it('displays search bar and updates filters value when typing', () => {
+    render(<FiltersWidget filters={{}} handleFilters={mockHandleFilters} />)
+
+    const searchBar = screen.getByPlaceholderText(/Cercar/i)
+    expect(searchBar).toBeInTheDocument()
+
+    fireEvent.change(searchBar, { target: { value: 'marc' } })
+
+    waitFor(() =>
+      expect(mockHandleFilters).toHaveBeenCalledWith({
+        name: 'marc',
+        dni: 'marc',
+      })
+    )
+  })
+
+  it('deletes search value when closing search and updates filters accordingly', () => {
+    render(
+      <FiltersWidget
+        filters={{ status: 'ACTIVE' }}
+        handleFilters={mockHandleFilters}
+      />
+    )
+
+    const searchBar = screen.getByPlaceholderText(/Cercar/i)
+    fireEvent.change(searchBar, { target: { value: 'marc' } })
+
+    waitFor(() =>
+      expect(mockHandleFilters).toHaveBeenCalledWith({
+        status: 'ACTIVE',
+        name: 'marc',
+        dni: 'marc',
+      })
+    )
+
+    const closeButton = screen.getByText(/close/i)
+    fireEvent.click(closeButton)
+
+    waitFor(() =>
+      expect(mockHandleFilters).toHaveBeenCalledWith({
+        status: 'ACTIVE',
+      })
+    )
+  })
 })

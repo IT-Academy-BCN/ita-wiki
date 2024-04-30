@@ -12,8 +12,14 @@ import { FlexBox, colors, dimensions, font } from '../../styles'
 import { Button } from './Button'
 import { Icon } from './Icon'
 
-const StyledFlexBox = styled(FlexBox)`
+const StyledFlexBox = styled(FlexBox)<{
+  $size: 'small' | 'normal' | 'large'
+}>`
   width: 100%;
+  gap: ${({ $size }) =>
+    ($size === 'small' && '0.3rem') ||
+    ($size === 'large' && dimensions.spacing.xs) ||
+    dimensions.spacing.xxs};
 `
 
 const StyledDropdown = styled.div`
@@ -29,21 +35,40 @@ const StyledIcon = styled(Icon)`
 const StyledImage = styled.img`
   width: 24px;
   height: 24px;
-  margin-right: 10px;
 `
 
 const DeselectIcon = styled(Icon)`
   margin-left: auto;
 `
 
-export const DropdownHeader = styled(Button)`
+export const DropdownHeaderText = styled.span<{
+  $size: 'small' | 'normal' | 'large'
+}>`
+  font-size: ${({ $size }) =>
+    ($size === 'small' && font.xss) ||
+    ($size === 'large' && font.base) ||
+    font.xs};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
+export const DropdownHeader = styled(Button)<{
+  $size: 'small' | 'normal' | 'large'
+}>`
   justify-content: space-between;
   background-color: ${colors.white};
-  padding: ${dimensions.spacing.base};
+  padding: ${({ $size }) =>
+    $size === 'small'
+      ? `${dimensions.spacing.xxxs} ${dimensions.spacing.xs}`
+      : dimensions.spacing.base};
   border-radius: ${dimensions.borderRadius.base};
   border: 1px solid ${colors.gray.gray4};
   color: ${colors.black.black3};
-  width: 320px;
+  width: ${({ $size }) =>
+    ($size === 'small' && '200px') ||
+    ($size === 'large' && '400px') ||
+    '320px'};
 
   &:hover {
     transition: all 0.2s ease;
@@ -70,11 +95,24 @@ const DropdownList = styled.div`
   overflow-y: auto;
 `
 
-const DropdownItem = styled.div<{ $isSelected: boolean }>`
-  padding: 12px 10px;
+const DropdownItem = styled(FlexBox)<{
+  $isSelected: boolean
+  $size: 'small' | 'normal' | 'large'
+}>`
+  gap: ${({ $size }) =>
+    ($size === 'small' && '0.3rem') ||
+    ($size === 'large' && dimensions.spacing.xs) ||
+    dimensions.spacing.xxs};
+  padding: ${({ $size }) =>
+    ($size === 'small' && '12px 10px') ||
+    ($size === 'large' && '12px 18px') ||
+    '12px 16px'};
   cursor: pointer;
   font-family: ${font.fontFamily};
-  font-size: ${font.xs};
+  font-size: ${({ $size }) =>
+    ($size === 'small' && font.xss) ||
+    ($size === 'large' && font.base) ||
+    font.xs};
   display: flex;
   align-items: center;
   color: ${({ $isSelected }) =>
@@ -113,6 +151,7 @@ export type TDropdown = HTMLAttributes<HTMLElement> & {
   closeText?: string
   deselectText?: string
   className?: string
+  $size?: 'small' | 'normal' | 'large'
 }
 
 export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
@@ -126,6 +165,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
       closeText = 'Cerrar',
       deselectText = 'Borra la selección',
       className = '',
+      $size = 'normal',
     },
     ref
   ) => {
@@ -176,12 +216,14 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
           <DropdownHeader
             data-testid="dropdown-header"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            $size={$size}
           >
             {selectedOption ? (
               <StyledFlexBox
                 direction="row"
                 key={selectedOption.id}
                 justify="flex-start"
+                $size={$size}
               >
                 {selectedOption.icon && (
                   <StyledIcon name={selectedOption.icon} />
@@ -192,21 +234,35 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
                     alt={selectedOption.name}
                   />
                 )}
-                <span>{selectedOption.name}</span>
+                <DropdownHeaderText $size={$size}>
+                  {selectedOption.name}
+                </DropdownHeaderText>
+                <DeselectIcon
+                  name="close"
+                  onClick={() => handleDeselect()}
+                  title={deselectText}
+                  data-testid={`deselect-${selectedOption.id}`}
+                />
               </StyledFlexBox>
             ) : (
-              <span>{placeholder}</span>
+              <DropdownHeaderText $size={$size}>
+                {placeholder}
+              </DropdownHeaderText>
             )}
-            <StyledIcon
-              name={isDropdownOpen ? 'expand_less' : 'expand_more'}
-              aria-hidden="true"
-              title={isDropdownOpen ? closeText : openText}
-            />
+            {!selectedOption ? (
+              <StyledIcon
+                name={isDropdownOpen ? 'expand_less' : 'expand_more'}
+                aria-hidden="true"
+                title={isDropdownOpen ? closeText : openText}
+              />
+            ) : null}
           </DropdownHeader>
           {isDropdownOpen && (
             <DropdownList ref={dropdownListRef}>
               {options.map((option) => (
                 <DropdownItem
+                  direction="row"
+                  justify="flex-start"
                   key={option.id}
                   data-testid={option.id}
                   id={option.id}
@@ -216,6 +272,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
                       : () => handleSelect(option)
                   }
                   $isSelected={option.id === selectedOption?.id}
+                  $size={$size}
                 >
                   {option.icon && <StyledIcon name={option.icon} />}
                   {option.iconSvg && (
