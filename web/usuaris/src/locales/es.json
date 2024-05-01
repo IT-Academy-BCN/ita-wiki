@@ -162,6 +162,6 @@
   "Buscar": "Buscar",
   
   "Eliminar usuario": "¿Estás seguro de que deseas eliminar este usuario?",
-  "Acción irreversible": "Esta acción es irreversible y el usuario no podrá ser recuperado después de ser eliminado.",
-  "Confirmar": "Confirmar"
+  "Confirmar": "Confirmar",
+  "Error al eliminar el usuario": "Error al eliminar el usuario"
 }

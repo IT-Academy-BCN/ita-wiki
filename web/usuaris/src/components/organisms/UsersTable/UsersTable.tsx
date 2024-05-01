@@ -2,11 +2,19 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import { Checkbox, FlexBox, Modal, Spinner, dimensions } from '@itacademy/ui'
+import {
+  Checkbox,
+  FlexBox,
+  Icon,
+  Modal,
+  Spinner,
+  colors,
+  dimensions,
+} from '@itacademy/ui'
 import { Table } from '../../molecules'
 import { TFilters, TUserData } from '../../../types'
 import { icons } from '../../../assets/icons'
-import { useGetUsers, useUpdateUser } from '../../../hooks'
+import { useDeleteUser, useGetUsers, useUpdateUser } from '../../../hooks'
 import {
   ActionsContainer,
   ActionsHeader,
@@ -17,7 +25,7 @@ import {
   DisabledStyled,
   IconStyled,
   ModalButtonStyled,
-  ModalTextStyled,
+  ModalErrorTextStyled,
   StatusStyled,
   TableContainer,
 } from './UsersTable.styles'
@@ -41,6 +49,15 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
   const { changeUserStatus } = useUpdateUser()
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+  const [idToDelete, setIdToDelete] = useState<string>('')
+
+  const [showDeleteError, setShowDeleteError] = useState<boolean>(false)
+
+  const [isDeletionSuccessful, setIsDeletionSuccessful] =
+    useState<boolean>(false)
+
+  const { isLoading: isDeleteLoading, deleteUserMutation } = useDeleteUser()
 
   useEffect(() => {
     setFilters(filtersSelected)
@@ -95,6 +112,18 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
     setSelectedUsers(removeUsers)
 
     return removeUsers
+  }
+
+  const handleDelete = async (id: string) => {
+    deleteUserMutation(id)
+      .then(() => {
+        setIsDeletionSuccessful(true)
+        setTimeout(() => setIsModalOpen(false), 2000)
+      })
+      .catch(() => {
+        setShowDeleteError(true)
+        setIsDeletionSuccessful(false)
+      })
   }
 
   const columHelper = createColumnHelper<TUserData>()
@@ -273,7 +302,10 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
               size="small"
               outline
               disabled={isDisabled}
-              onClick={() => setIsModalOpen(!isModalOpen)}
+              onClick={() => {
+                setIdToDelete(id)
+                setIsModalOpen(!isModalOpen)
+              }}
             >
               <DeleteIcon src={icons.deleteIcon} alt="delete-icon" />
             </DeleteButton>
@@ -293,17 +325,46 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         noResultsMessage={t('No hay usuarios para mostrar')}
       />
       <Modal
-        title={t('¿Estás seguro de que deseas eliminar este usuario?')}
+        title={t('Eliminar usuario')}
         isOpen={isModalOpen}
-        toggleModal={() => setIsModalOpen(false)}
+        toggleModal={() => {
+          setShowDeleteError(false)
+          setIsModalOpen(false)
+          setIsDeletionSuccessful(false)
+        }}
       >
-        <ModalTextStyled>{t('Acción irreversible')}</ModalTextStyled>
-        <FlexBox direction="row" gap="24px">
-          <ModalButtonStyled size="small">Confirmar</ModalButtonStyled>
+        {showDeleteError ? (
+          <ModalErrorTextStyled>
+            {t('Error al eliminar el usuario')}
+          </ModalErrorTextStyled>
+        ) : (
+          ''
+        )}
+        <FlexBox direction="row" gap={dimensions.spacing.md}>
+          {isDeletionSuccessful ? (
+            <ModalButtonStyled
+              size="small"
+              backgroundColor={colors.success}
+              disabled={isDeleteLoading}
+              border={colors.success}
+            >
+              <Icon data-testid="done-icon" name="done" />
+            </ModalButtonStyled>
+          ) : (
+            <ModalButtonStyled
+              onClick={() => handleDelete(idToDelete)}
+              size="small"
+            >
+              {t('Confirmar')}
+            </ModalButtonStyled>
+          )}
           <ModalButtonStyled
             outline
             size="small"
-            onClick={() => setIsModalOpen(false)}
+            onClick={() => {
+              setShowDeleteError(false)
+              setIsModalOpen(false)
+            }}
           >
             {t('Cancelar')}
           </ModalButtonStyled>
