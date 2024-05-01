@@ -1,4 +1,5 @@
 import { Button, FlexBox, Text, colors, dimensions, font } from '@itacademy/ui'
+import { HTMLAttributes } from 'react'
 import styled from 'styled-components'
 
 export const TableContainer = styled.div`
@@ -88,10 +89,23 @@ export const DeleteIcon = styled.img`
   height: ${dimensions.spacing.base};
 `
 
-export const ModalButtonStyled = styled(Button)`
+type TButton = HTMLAttributes<HTMLParagraphElement> & {
+  backgroundColor?: string
+  border?: string
+  padding?: string
+}
+
+export const ModalButtonStyled = styled(Button).withConfig({
+  shouldForwardProp: (prop) => !['backgroundColor', 'padding'].includes(prop),
+}) <TButton>`
   width: auto;
+  margin: ${dimensions.spacing.sm} 0;
+  background-color: ${(props) => props.backgroundColor};
+  border:${(props) => props.border}
 `
 
-export const ModalTextStyled = styled(Text)`
-  padding-left: ${dimensions.spacing.base};
+export const ModalErrorTextStyled = styled(Text)`
+  text-align: center;
+  color:${colors.error};
+  margin: ${dimensions.spacing.none};
 `

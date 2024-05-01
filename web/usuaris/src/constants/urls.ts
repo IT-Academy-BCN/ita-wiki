@@ -4,4 +4,5 @@ export const urls = {
   logIn: '/api/v1/dashboard/auth/login',
   getMe: '/api/v1/dashboard/users/me',
   patchUser: '/api/v1/dashboard/users/',
+  deleteUser: '/api/v1/dashboard/users/'
 }

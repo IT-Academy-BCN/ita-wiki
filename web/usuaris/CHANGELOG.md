@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.14.0] - 2024-05-01
+
+### Added
+
+- Added delete user functionality to UsersTable
+
 ## [0.11.0] - 2024-04-23
 
 ### Added
