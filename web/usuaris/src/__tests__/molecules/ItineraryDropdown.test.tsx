@@ -85,11 +85,11 @@ describe('ItineraryDropdown', () => {
 
     fireEvent.click(dropdownHeader)
 
-    expect(screen.getByTitle(/deselecciona/i)).toBeInTheDocument()
-    const deselectReact = screen.getByTestId('deselect-1')
+    const deselectReact = screen.getAllByTestId('deselect-1')
 
-    fireEvent.click(deselectReact)
+    expect(deselectReact).toHaveLength(2)
 
+    fireEvent.click(deselectReact[0])
     expect(dropdownHeader).toHaveTextContent(/especialitat/i)
 
     expect(mockHandleClick).toHaveBeenCalledWith(undefined)

@@ -62,6 +62,8 @@ describe('UsersTable', () => {
       <UsersTable
         filtersSelected={{
           itinerarySlug: 'frontend-react',
+          startDate: '2023/11/06 00:00:00.000',
+          endDate: '2023/11/06 00:00:00.000',
           name: 'marc',
           dni: 'marc',
           role: 'ADMIN',

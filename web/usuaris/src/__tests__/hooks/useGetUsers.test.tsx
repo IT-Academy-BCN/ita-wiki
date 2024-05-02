@@ -32,7 +32,7 @@ describe('useGetUsers', () => {
         dni: '87654321B',
         status: 'ACTIVE',
         role: 'REGISTERED',
-        createdAt: '2023/11/05 00:00:00.000',
+        createdAt: '2023/11/06 00:00:00.000',
         itineraryName: 'Frontend React',
       },
       {
@@ -41,7 +41,7 @@ describe('useGetUsers', () => {
         dni: '45678912C',
         status: 'BLOCKED',
         role: 'REGISTERED',
-        createdAt: '2023/11/05 00:00:00.000',
+        createdAt: '2023/11/07 00:00:00.000',
         itineraryName: 'Fullstack Php',
       },
       {
@@ -50,7 +50,7 @@ describe('useGetUsers', () => {
         dni: '45678912D',
         status: 'BLOCKED',
         role: 'ADMIN',
-        createdAt: '2023/11/05 00:00:00.000',
+        createdAt: '2023/11/08 00:00:00.000',
         itineraryName: 'Frontend React',
       },
       {
@@ -59,7 +59,7 @@ describe('useGetUsers', () => {
         dni: '12378912D',
         status: 'BLOCKED',
         role: 'ADMIN',
-        createdAt: '2023/11/05 00:00:00.000',
+        createdAt: '2023/11/09 00:00:00.000',
         itineraryName: 'Frontend Angular',
       },
     ])
