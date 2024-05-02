@@ -10,12 +10,21 @@ export const buildQueryString = ({
   dni,
   role,
 }: TFilters) =>
-  qs.stringify({
-    itinerarySlug,
-    status,
-    startDate,
-    endDate,
-    name,
-    dni,
-    role,
-  })
+  qs.stringify(
+    {
+      itinerarySlug,
+      status,
+      startDate,
+      endDate,
+      name,
+      dni,
+      role,
+    },
+    {
+      skipNulls: true,
+      filter: (_prefix, value) => {
+        if (value === '') return undefined
+        return value
+      },
+    }
+  )
