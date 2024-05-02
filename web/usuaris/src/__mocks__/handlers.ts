@@ -12,7 +12,11 @@ export const handlers = [
 
     if (
       itinerarySlug === 'frontend-react' &&
-      ((startDate && startDate <= '2023/11/06 00:00:00.000') ||
+      ((startDate &&
+        startDate <= '2023/11/06 00:00:00.000' &&
+        endDate &&
+        endDate >= '2023/11/06 00:00:00.000') ||
+        (startDate && startDate <= '2023/11/06 00:00:00.000') ||
         (endDate && endDate >= '2023/11/06 00:00:00.000')) &&
       (name?.includes('marc') || dni?.includes('marc'))
     ) {
