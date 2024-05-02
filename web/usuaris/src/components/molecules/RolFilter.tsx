@@ -8,7 +8,7 @@ import {
   type TDropdownOption,
 } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
-import { TRol } from '../../types/types'
+import { TRol, UserRole } from '../../types/types'
 
 const StyledDropdown = styled(Dropdown)`
   && button {
@@ -37,8 +37,9 @@ export const RolFilter: FC<TRolDropdown> = ({ handleRole }) => {
   const { t } = useTranslation()
 
   const RolesList: TRol[] = [
-    { id: '1', name: t('administrador'), slug: 'ADMIN' },
-    { id: '2', name: t('registrado'), slug: 'REGISTERED' },
+    { id: '1', name: t('ADMIN'), slug: UserRole.ADMIN },
+    { id: '2', name: t('REGISTERED'), slug: UserRole.REGISTERED },
+    { id: '3', name: t('MENTOR'), slug: UserRole.MENTOR },
   ]
 
   const handleSelectedValue = (selectedOption: TDropdownOption | undefined) => {

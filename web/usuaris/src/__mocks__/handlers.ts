@@ -1,5 +1,6 @@
 import { HttpResponse, http } from 'msw'
 import { urls } from '../constants'
+import { UserRole } from '../types/types'
 
 export const handlers = [
   http.get(urls.getUsers, ({ request }) => {
@@ -33,7 +34,7 @@ export const handlers = [
           name: 'Ona Sitgar',
           dni: '12345678A',
           status: 'PENDING',
-          role:'ADMIN',
+          role: UserRole.ADMIN,
           createdAt: '2023/11/05 00:00:00.000',
           itineraryName: 'Backend Node',
         },
@@ -42,7 +43,7 @@ export const handlers = [
           name: 'Marc Bofill',
           dni: '87654321B',
           status: 'ACTIVE',
-          role:'REGISTERED',
+          role: UserRole.REGISTERED,
           createdAt: '2023/11/05 00:00:00.000',
           itineraryName: 'Frontend React',
         },
@@ -51,7 +52,7 @@ export const handlers = [
           name: 'Montserrat Capdevila',
           dni: '45678912C',
           status: 'BLOCKED',
-          role:'REGISTERED',
+          role: UserRole.REGISTERED,
           createdAt: '2023/11/05 00:00:00.000',
           itineraryName: 'Fullstack Php',
         },
@@ -60,7 +61,7 @@ export const handlers = [
           name: 'Anna Brull',
           dni: '45678912D',
           status: 'BLOCKED',
-          role:'ADMIN',
+          role: UserRole.ADMIN,
           createdAt: '2023/11/05 00:00:00.000',
           itineraryName: 'Frontend React',
         },
@@ -69,7 +70,7 @@ export const handlers = [
           name: 'Marc Serra',
           dni: '12378912D',
           status: 'BLOCKED',
-          role:'ADMIN',
+          role: UserRole.ADMIN,
           createdAt: '2023/11/05 00:00:00.000',
           itineraryName: 'Frontend Angular',
         },
@@ -99,7 +100,7 @@ export const handlers = [
         {
           dni: '12345678A',
           email: 'test@example.cat',
-          role: 'ADMIN',
+          role: UserRole,
         },
       ],
       { status: 200 }

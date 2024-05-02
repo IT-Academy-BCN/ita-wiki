@@ -64,7 +64,7 @@ describe('UsersTable', () => {
           itinerarySlug: 'frontend-react',
           name: 'marc',
           dni: 'marc',
-          role: 'Administrador',
+          role: 'ADMIN',
         }}
       />
     )

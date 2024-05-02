@@ -41,3 +41,9 @@ export type TUserData = {
   itineraryName: string
   role: string
 }
+
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  REGISTERED = 'REGISTERED',
+  MENTOR = 'MENTOR',
+}

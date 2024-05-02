@@ -1,6 +1,7 @@
 import { vi } from 'vitest'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { RolFilter } from '../../components/molecules/RolFilter'
+import { UserRole } from '../../types/types'
 
 const mockHandleClick = vi.fn()
 
@@ -34,14 +35,14 @@ describe('RolesFilter', () => {
 
     fireEvent.click(dropdown)
 
-    const roleOption = screen.getByText('Administrador')
+    const roleOption = screen.getByText(/ADMIN/i, { exact: false })
 
     fireEvent.click(roleOption)
 
     expect(mockHandleClick).toHaveBeenCalledWith({
       id: '1',
       name: 'Administrador',
-      slug: 'ADMIN',
+      slug: UserRole.ADMIN,
     })
   })
 })
