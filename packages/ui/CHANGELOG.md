@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.31.6] - 2024-05-02
+
+### Changed
+
+- Deleted unnecessary dependency in Search component
+
 ## [0.31.5] - 2024-04-24
 
 ### Changed

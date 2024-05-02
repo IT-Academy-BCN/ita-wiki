@@ -391,5 +391,15 @@ describe('Testing resources GET endpoint', () => {
     expect(response.body.length).toBeGreaterThanOrEqual(3)
   })
 
+  it('should not return any resources if the search query does not match any resource', async () => {
+    const search = 'unlikelysearchterm12345'
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.resources}`)
+      .query({ search })
+
+    expect(response.status).toBe(200)
+    expect(response.body).toHaveLength(0)
+  })
+
   checkInvalidToken(`${pathRoot.v1.resources}`, 'get')
 })

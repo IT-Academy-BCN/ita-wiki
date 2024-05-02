@@ -37,6 +37,11 @@ export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
       },
     },
   })
+  if (resources.length === 0) {
+    ctx.status = 200
+    ctx.body = []
+    return
+  }
 
   const resourcesWithUserName = await attachUserNamesToResources(resources)
 
