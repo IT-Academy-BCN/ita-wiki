@@ -51,12 +51,8 @@ export const handlers = [
           name: 'Marc Bofill',
           dni: '87654321B',
           status: 'ACTIVE',
-<<<<<<< HEAD
           role: UserRole.REGISTERED,
-          createdAt: '2023/11/05 00:00:00.000',
-=======
           createdAt: '2023/11/06 00:00:00.000',
->>>>>>> da50621207ec71e4a060584627ccd3e7347b8f0d
           itineraryName: 'Frontend React',
         },
         {
@@ -64,12 +60,8 @@ export const handlers = [
           name: 'Montserrat Capdevila',
           dni: '45678912C',
           status: 'BLOCKED',
-<<<<<<< HEAD
           role: UserRole.REGISTERED,
-          createdAt: '2023/11/05 00:00:00.000',
-=======
           createdAt: '2023/11/07 00:00:00.000',
->>>>>>> da50621207ec71e4a060584627ccd3e7347b8f0d
           itineraryName: 'Fullstack Php',
         },
         {
@@ -77,12 +69,8 @@ export const handlers = [
           name: 'Anna Brull',
           dni: '45678912D',
           status: 'BLOCKED',
-<<<<<<< HEAD
           role: UserRole.ADMIN,
-          createdAt: '2023/11/05 00:00:00.000',
-=======
           createdAt: '2023/11/08 00:00:00.000',
->>>>>>> da50621207ec71e4a060584627ccd3e7347b8f0d
           itineraryName: 'Frontend React',
         },
         {
@@ -90,12 +78,8 @@ export const handlers = [
           name: 'Marc Serra',
           dni: '12378912D',
           status: 'BLOCKED',
-<<<<<<< HEAD
           role: UserRole.ADMIN,
-          createdAt: '2023/11/05 00:00:00.000',
-=======
           createdAt: '2023/11/09 00:00:00.000',
->>>>>>> da50621207ec71e4a060584627ccd3e7347b8f0d
           itineraryName: 'Frontend Angular',
         },
       ],
