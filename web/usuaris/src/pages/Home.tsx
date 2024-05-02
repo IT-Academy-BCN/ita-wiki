@@ -46,10 +46,6 @@ export const Home: FC = () => {
 
   const [filters, setFilters] = useState<TFilters>({})
 
-  const handleFilters = (selectedFilters: TFilters) => {
-    setFilters(selectedFilters)
-  }
-
   if (!user)
     return (
       <Container
@@ -76,7 +72,7 @@ export const Home: FC = () => {
           align="center"
           gap={dimensions.spacing.xxl}
         >
-          <FiltersWidget filters={filters} handleFilters={handleFilters} />
+          <FiltersWidget filters={filters} setFilters={setFilters} />
           <UsersTable filtersSelected={filters} />
         </MainDiv>
       </ContainerMain>
