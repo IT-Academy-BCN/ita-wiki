@@ -52,12 +52,12 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
 
   const [idToDelete, setIdToDelete] = useState<string>('')
 
-  const [showDeleteError, setShowDeleteError] = useState<boolean>(false)
-
-  const [isDeletionSuccessful, setIsDeletionSuccessful] =
-    useState<boolean>(false)
-
-  const { isLoading: isDeleteLoading, deleteUserMutation } = useDeleteUser()
+  const {
+    deleteUserMutation,
+    isLoading: isDeleteLoading,
+    isSuccess: isDeleteSuccess,
+    isError: isDeleteError,
+  } = useDeleteUser()
 
   useEffect(() => {
     setFilters(filtersSelected)
@@ -114,17 +114,11 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
     return removeUsers
   }
 
-  const handleDelete = async (id: string) => {
-    deleteUserMutation(id)
-      .then(() => {
-        setIsDeletionSuccessful(true)
-        setTimeout(() => setIsModalOpen(false), 2000)
-      })
-      .catch(() => {
-        setShowDeleteError(true)
-        setIsDeletionSuccessful(false)
-      })
-  }
+  useEffect(() => {
+    if (isDeleteSuccess) {
+      setTimeout(() => setIsModalOpen(false), 2000)
+    }
+  }, [isDeleteSuccess])
 
   const columHelper = createColumnHelper<TUserData>()
 
@@ -328,12 +322,10 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         title={t('Eliminar usuario')}
         isOpen={isModalOpen}
         toggleModal={() => {
-          setShowDeleteError(false)
           setIsModalOpen(false)
-          setIsDeletionSuccessful(false)
         }}
       >
-        {showDeleteError ? (
+        {isDeleteError ? (
           <ModalErrorTextStyled>
             {t('Error al eliminar el usuario')}
           </ModalErrorTextStyled>
@@ -341,7 +333,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
           ''
         )}
         <FlexBox direction="row" gap={dimensions.spacing.md}>
-          {isDeletionSuccessful ? (
+          {isDeleteSuccess ? (
             <ModalButtonStyled
               size="small"
               backgroundColor={colors.success}
@@ -352,7 +344,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
             </ModalButtonStyled>
           ) : (
             <ModalButtonStyled
-              onClick={() => handleDelete(idToDelete)}
+              onClick={() => deleteUserMutation(idToDelete)}
               size="small"
             >
               {t('Confirmar')}
@@ -362,7 +354,6 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
             outline
             size="small"
             onClick={() => {
-              setShowDeleteError(false)
               setIsModalOpen(false)
             }}
           >

@@ -1,21 +1,15 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { TUserData } from '../types'
 import { deleteUser } from '../helpers/fetchers'
 
 export const useDeleteUser = () => {
   const queryClient = useQueryClient()
 
-  const { mutateAsync: deleteUserMutation, isLoading } = useMutation<
-    void,
-    Error,
-    string
-  >(deleteUser, {
-    onMutate: (id) => {
-      queryClient.setQueryData<TUserData[]>(['users'], (prevData) =>
-        prevData?.filter((user) => user.id !== id)
-      )
-    },
-
+  const {
+    mutateAsync: deleteUserMutation,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useMutation<void, Error, string>(deleteUser, {
     onSuccess: () => {
       queryClient.invalidateQueries(['users'])
     },
@@ -24,5 +18,7 @@ export const useDeleteUser = () => {
   return {
     deleteUserMutation,
     isLoading,
+    isSuccess,
+    isError,
   }
 }
