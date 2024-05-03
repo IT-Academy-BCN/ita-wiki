@@ -24,13 +24,7 @@ export const FiltersWidget: FC<TFiltersWidget> = ({ filters, setFilters }) => {
     setFilters({ ...filters, itinerarySlug: itinerary?.slug })
   }
   const handleRole = (role: TRol | undefined) => {
-    if (role === undefined) {
-      const newFilters = { ...filters }
-      delete newFilters.role
-      setFilters(newFilters)
-    } else {
-      setFilters({ ...filters, role: role.slug })
-    }
+      setFilters({ ...filters, role: role?.slug })
   }
 
   const handleSearch = useCallback(
