@@ -108,7 +108,7 @@ export const handlers = [
         {
           dni: '12345678A',
           email: 'test@example.cat',
-          role: UserRole,
+          role: UserRole.ADMIN,
         },
       ],
       { status: 200 }
