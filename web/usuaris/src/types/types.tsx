@@ -26,7 +26,7 @@ export type TUpdatedUser = {
   email?: string
   name?: string
   password?: string
-  role?: string
+  role?: UserRole
   status?: string
   deletedAt?: string
   itineraryId?: string
@@ -39,7 +39,7 @@ export type TUserData = {
   status: string
   createdAt: string
   itineraryName: string
-  role: string
+  role: UserRole
 }
 
 export enum UserRole {
