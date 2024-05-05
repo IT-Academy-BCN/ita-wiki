@@ -36,7 +36,7 @@ type TRolDropdown = {
 export const RolFilter: FC<TRolDropdown> = ({ handleRole }) => {
   const { t } = useTranslation()
 
-  const RolesList: TRol[] = [
+  const rolesList: TRol[] = [
     { id: '1', name: t('ADMIN'), slug: UserRole.ADMIN },
     { id: '2', name: t('REGISTERED'), slug: UserRole.REGISTERED },
     { id: '3', name: t('MENTOR'), slug: UserRole.MENTOR },
@@ -44,7 +44,7 @@ export const RolFilter: FC<TRolDropdown> = ({ handleRole }) => {
 
   const handleSelectedValue = (selectedOption: TDropdownOption | undefined) => {
     if (selectedOption) {
-      const selectedRole = RolesList.find(
+      const selectedRole = rolesList.find(
         (role: TRol) => role.id === selectedOption.id
       )
       if (selectedRole) {
@@ -55,9 +55,9 @@ export const RolFilter: FC<TRolDropdown> = ({ handleRole }) => {
     }
   }
 
-  return RolesList && RolesList.length > 0 ? (
+  return rolesList && rolesList.length > 0 ? (
     <StyledDropdown
-      options={RolesList}
+      options={rolesList}
       placeholder={t('Rol')}
       onValueChange={handleSelectedValue}
     />
