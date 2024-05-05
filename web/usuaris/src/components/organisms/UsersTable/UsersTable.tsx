@@ -293,6 +293,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
               {buttonTxt}
             </ButtonStyled>
             <DeleteButton
+              data-testid="delete-button"
               size="small"
               outline
               disabled={isDisabled}
@@ -344,6 +345,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
             </ModalButtonStyled>
           ) : (
             <ModalButtonStyled
+              data-testid="confirm-button"
               onClick={() => deleteUserMutation(idToDelete)}
               size="small"
             >
@@ -351,6 +353,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
             </ModalButtonStyled>
           )}
           <ModalButtonStyled
+            data-testid="cancel-button"
             outline
             size="small"
             onClick={() => {

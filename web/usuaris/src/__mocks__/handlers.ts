@@ -131,4 +131,16 @@ export const errorHandlers = [
   http.get(urls.getItineraries, () =>
     HttpResponse.json({ message: 'Database error' }, { status: 500 })
   ),
+  http.delete(urls.deleteUser, () =>
+    HttpResponse.json({ message: 'Invalid token or missing token' }, { status: 401 })
+  ),
+  http.delete(urls.deleteUser, () =>
+    HttpResponse.json({ message: 'User not found' }, { status: 404 })
+  ),
+  http.delete(urls.deleteUser, () =>
+    HttpResponse.json({ message: 'User is already soft deleted' }, { status: 410 })
+  ),
+  http.delete(urls.deleteUser, () =>
+    HttpResponse.json({ message: 'Other error' }, { status: 500 })
+  ),
 ]

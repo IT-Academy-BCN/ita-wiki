@@ -1,7 +1,10 @@
+import { HttpResponse, http } from 'msw'
+import { colors } from '@itacademy/ui'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { UsersTable } from '../../components/organisms'
 import { errorHandlers } from '../../__mocks__/handlers'
 import { server } from '../../__mocks__/server'
+import { urls } from '../../constants/urls'
 
 afterEach(() => {
   server.resetHandlers()
@@ -160,6 +163,137 @@ describe('UsersTable', () => {
         expect(acceptButton).toHaveTextContent('Bloquejar')
         expect(pendingStatus).toHaveTextContent(/Actiu/i)
       })
+    })
+  })
+
+  it('opens modal when delete button is clicked', async () => {
+    render(<UsersTable filtersSelected={{}} />)
+
+    await waitFor(() => {
+      const deleteButton = screen.getAllByTestId('delete-button')[0]
+
+      fireEvent.click(deleteButton)
+
+      waitFor(() => {
+        expect(screen.getByRole('dialog')).toBeInTheDocument()
+      })
+    })
+  })
+
+  it('closes modal when cancel button is clicked', async () => {
+    render(<UsersTable filtersSelected={{}} />)
+    await waitFor(() => {
+      const deleteButton = screen.getAllByTestId('delete-button')[0]
+      fireEvent.click(deleteButton)
+    })
+
+    waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+
+    const cancelButton = screen.getByTestId('cancel-button')
+    fireEvent.click(cancelButton)
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+  })
+
+  it('closes modal when close icon is clicked', async () => {
+    render(<UsersTable filtersSelected={{}} />)
+    await waitFor(() => {
+      const deleteButton = screen.getAllByTestId('delete-button')[0]
+      fireEvent.click(deleteButton)
+    })
+
+    waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+
+    const closeIcon = screen.getByTestId('cancel-button')
+    fireEvent.click(closeIcon)
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+  })
+
+  it('closes modal when  user is successfully deleted', async () => {
+    render(<UsersTable filtersSelected={{}} />)
+    server.use(
+      http.delete(urls.deleteUser, () =>
+        HttpResponse.json(null, { status: 402 })
+      )
+    )
+    await waitFor(() => {
+      const deleteButton = screen.getAllByTestId('delete-button')[0]
+      fireEvent.click(deleteButton)
+    })
+
+    waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+
+    const confirmButton = screen.getByTestId('confirm-button')
+
+    fireEvent.click(confirmButton)
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+  })
+
+  it('changes confirmation button to a icon and update the background color to green on sucessful deletion', async () => {
+    render(<UsersTable filtersSelected={{}} />)
+    server.use(
+      http.delete(urls.deleteUser, () =>
+        HttpResponse.json(null, { status: 402 })
+      )
+    )
+
+    await waitFor(() => {
+      const deleteButton = screen.getAllByTestId('delete-button')[0]
+      fireEvent.click(deleteButton)
+    })
+
+    waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+
+    const confirmButton = screen.getByTestId('confirm-button')
+
+    fireEvent.click(confirmButton)
+
+    waitFor(async () => {
+      const doneIcon = await screen.findByTestId('done-icon')
+      const doneButton = doneIcon.parentElement
+      expect(doneIcon).toBeInTheDocument()
+      expect(doneButton).toHaveStyle(`background-color: ${colors.success}`)
+    })
+  })
+
+  it('shows error message when user deletion fails', async () => {
+    render(<UsersTable filtersSelected={{}} />)
+
+    await waitFor(() => {
+      const deleteButton = screen.getAllByTestId('delete-button')[0]
+      fireEvent.click(deleteButton)
+    })
+
+    waitFor(() => {
+      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    })
+    const confirmButton = screen.getByTestId('confirm-button')
+    fireEvent.click(confirmButton)
+
+    server.use(
+      http.delete(urls.deleteUser, () =>
+        HttpResponse.json({ error: 'Deletion failed' }, { status: 500 })
+      )
+    )
+
+    waitFor(() => {
+      expect(screen.getByText(/Error/i)).toBeInTheDocument()
     })
   })
 })
