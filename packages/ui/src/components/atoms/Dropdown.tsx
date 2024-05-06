@@ -166,6 +166,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
       deselectText = 'Borra la selección',
       className = '',
       $size = 'normal',
+      ...rest
     },
     ref
   ) => {
@@ -212,7 +213,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
 
     return (
       <div ref={ref} className={className}>
-        <StyledDropdown data-testid="dropdown" ref={dropdownCloseOutsideRef}>
+        <StyledDropdown ref={dropdownCloseOutsideRef} {...rest}>
           <DropdownHeader
             data-testid="dropdown-header"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
