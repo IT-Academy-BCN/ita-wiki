@@ -1,5 +1,12 @@
 All notable changes to this project will be documented in this file.
+
 # Changelog
+
+## [1.25.0] - 2024-05-6
+
+### Added
+
+- Add `deletedAt` field to GET `dashboard/users` response body.
 
 ## [1.24.0] - 2024-04-30
 
@@ -41,7 +48,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Endpoint  `DELETE /dashboard/users/:id` for admin users.
+- Endpoint `DELETE /dashboard/users/:id` for admin users.
 - DB: `deleted_at` timestamp column to users talbe for soft delete
 
 ## [1.18.0] - 2024-04-11
@@ -77,14 +84,17 @@ All notable changes to this project will be documented in this file.
 ## [1.15.1] - 2024-03-07
 
 ### Fixed
+
 - Corrected DNI/NIE control letter validation in validation schemas to ensure data integrity.
 
 ## [1.15.0] - 2024-03-05
 
 ### Added
+
 - Name search filter for `GET /dashboard/users` endpoint allowing partial and case-insensitive name matching.
 
 ### Changed
+
 - Enhanced `startDate` and `endDate` query parameters documentation in OpenAPI to specify YYYY-MM-DD format.
 - `userNameSchema` validation in `dashboardUsersListQuerySchema` to require a minimum of 2 characters for name searches.
 
@@ -102,7 +112,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Date range filtering by `createdAt` for `GET /dashboard/users` 
+- Date range filtering by `createdAt` for `GET /dashboard/users`
 
 ## [1.13.0] - 2024-02-20
 
@@ -124,13 +134,13 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Endpoint  `GET /dashboard/users` for admin users.
+- Endpoint `GET /dashboard/users` for admin users.
 
 ## [1.10.0] - 2024-02-13
 
 ### Added
 
-- Endpoint  `POST /dashboard/login` and   ` POST /dashboard/logout` for admin users.
+- Endpoint `POST /dashboard/login` and ` POST /dashboard/logout` for admin users.
 
 ## [1.9.0] - 2024-02-12
 
@@ -181,7 +191,6 @@ All notable changes to this project will be documented in this file.
 ### Documentation
 
 - Added forbidden response for POST login user.
-
 
 ## [1.7.1] - 2024-01-24
 

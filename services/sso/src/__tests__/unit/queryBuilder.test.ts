@@ -7,8 +7,24 @@ const testDni = '38826335N'
 const testRole = UserRole.REGISTERED
 const testStatus = UserStatus.ACTIVE
 const testDate = '2024-04-28T22:00:00.000Z'
+const testDeletedAt = null
 
 describe('Testing query builder function', () => {
+  it('returns a expected query calling the queryBuilder function with name, dni, role, status and deleted_at', async () => {
+    const searchValues = {
+      name: testName,
+      dni: testDni,
+      role: testRole,
+      status: testStatus,
+      deleted_at: testDeletedAt,
+    }
+    const expectedWhere = `WHERE (u.name ILIKE $1 OR u.dni ILIKE $2) AND u.status = $3 AND u.role = $4`
+    const expectedParams = ['%testing%', '%38826335N%', 'ACTIVE', 'REGISTERED']
+    const resultQuery = queryBuilder(searchValues)
+    const resultWhere = resultQuery.query.substring(241)
+    expect(resultWhere).toBe(expectedWhere)
+    expect(resultQuery.queryParams).toEqual(expectedParams)
+  })
   it('returns a expected query calling the queryBuilder function with name, dni, role and status', async () => {
     const searchValues = {
       name: testName,

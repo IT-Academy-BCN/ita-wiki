@@ -40,9 +40,10 @@ describe('Testing get user endpoint', () => {
       .set('Cookie', [adminAuthToken])
     expect(response.status).toBe(200)
     expect(response.body.dni).toBeTypeOf('string')
+    expect(response.body.deleted_at).toBe(null)
     expect(
       userSchema
-        .pick({ dni: true, email: true, name: true })
+        .pick({ dni: true, email: true, name: true, deleted_at: true })
         .safeParse(response.body).success
     ).toBeTruthy()
   })
