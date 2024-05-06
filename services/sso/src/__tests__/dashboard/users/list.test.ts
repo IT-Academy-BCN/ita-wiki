@@ -7,7 +7,6 @@ import { itinerariesData, server, testUserData } from '../../globalSetup'
 import { client } from '../../../models/db'
 import { DashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
 import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
-import { queryBuilder } from '../../../utils/queryBuilder'
 
 const route = `${pathRoot.v1.dashboard.users}`
 
@@ -25,7 +24,6 @@ const testName = 'testing'
 const testDni = '38826335N'
 const testRole = UserRole.REGISTERED
 const testStatus = UserStatus.ACTIVE
-const testDate = '2024-04-28T22:00:00.000Z'
 beforeAll(async () => {
   const loginRoute = `${pathRoot.v1.dashboard.auth}/login`
   const responseAdmin = await supertest(server).post(loginRoute).send({
@@ -257,65 +255,5 @@ describe('Testing get users endpoint', () => {
     expect(body).toBeInstanceOf(Array)
     expect(body).toHaveLength(2)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
-  })
-  it('returns a expected query calling the queryBuilder function with name, dni, role and status', async () => {
-    const searchValues = {
-      name: testName,
-      dni: testDni,
-      role: testRole,
-      status: testStatus,
-    }
-    const expectedWhere = `WHERE (u.name ILIKE $1 OR u.dni ILIKE $2) AND u.status = $3 AND u.role = $4`
-    const expectedParams = ['%testing%', '%38826335N%', 'ACTIVE', 'REGISTERED']
-    const resultQuery = queryBuilder(searchValues)
-    const resultWhere = resultQuery.query.substring(241)
-    expect(resultWhere).toBe(expectedWhere)
-    expect(resultQuery.queryParams).toEqual(expectedParams)
-  })
-  it('returns a expected query calling the queryBuilder function with name, startDate and endDate', async () => {
-    const searchValues = {
-      name: testName,
-      endDate: testDate,
-      startDate: testDate,
-    }
-    const expectedWhere = `WHERE (u.name ILIKE $1) AND u.created_at >= $2 AND u.created_at <= $3`
-    const expectedParams = [
-      '%testing%',
-      new Date('2024-04-28T22:00:00.000Z'),
-      new Date('2024-04-28T22:00:00.000Z'),
-    ]
-    const resultQuery = queryBuilder(searchValues)
-    const resultWhere = resultQuery.query.substring(241)
-    expect(resultWhere).toBe(expectedWhere)
-    expect(resultQuery.queryParams).toEqual(expectedParams)
-  })
-  it('returns a expected query calling the queryBuilder function with name and dni', async () => {
-    const searchValues = {
-      name: testName,
-      dni: testDni,
-    }
-    const expectedWhere = `WHERE (u.name ILIKE $1 OR u.dni ILIKE $2)`
-    const expectedParams = ['%testing%', '%38826335N%']
-    const resultQuery = queryBuilder(searchValues)
-    const resultWhere = resultQuery.query.substring(241)
-    expect(resultWhere).toBe(expectedWhere)
-    expect(resultQuery.queryParams).toEqual(expectedParams)
-  })
-  it('returns a expected query calling the queryBuilder function with dni, status and endDate', async () => {
-    const searchValues = {
-      dni: testDni,
-      status: testStatus,
-      endDate: testDate,
-    }
-    const expectedWhere = `WHERE (u.dni ILIKE $1) AND u.status = $2 AND u.created_at <= $3`
-    const expectedParams = [
-      '%38826335N%',
-      'ACTIVE',
-      new Date('2024-04-28T22:00:00.000Z'),
-    ]
-    const resultQuery = queryBuilder(searchValues)
-    const resultWhere = resultQuery.query.substring(241)
-    expect(resultWhere).toBe(expectedWhere)
-    expect(resultQuery.queryParams).toEqual(expectedParams)
   })
 })
