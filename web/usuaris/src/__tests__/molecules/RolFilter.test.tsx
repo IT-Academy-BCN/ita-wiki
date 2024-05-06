@@ -41,7 +41,7 @@ describe('RolesFilter', () => {
 
     expect(mockHandleClick).toHaveBeenCalledWith({
       id: '1',
-      name: 'Administrador',
+      name: UserRole.ADMIN,
       slug: UserRole.ADMIN,
     })
   })
