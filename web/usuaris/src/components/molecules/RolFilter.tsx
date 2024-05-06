@@ -37,9 +37,9 @@ export const RolFilter: FC<TRolDropdown> = ({ handleRole }) => {
   const { t } = useTranslation()
 
   const rolesList: TRol[] = [
-    { id: '1', name: t('ADMIN'), slug: UserRole.ADMIN },
-    { id: '2', name: t('REGISTERED'), slug: UserRole.REGISTERED },
-    { id: '3', name: t('MENTOR'), slug: UserRole.MENTOR },
+    { id: '1', name: t('UserRole.ADMIN'), slug: UserRole.ADMIN },
+    { id: '2', name: t('UserRole.REGISTERED'), slug: UserRole.REGISTERED },
+    { id: '3', name: t('UserRole.MENTOR'), slug: UserRole.MENTOR },
   ]
 
   const handleSelectedValue = (selectedOption: TDropdownOption | undefined) => {
