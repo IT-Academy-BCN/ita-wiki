@@ -131,6 +131,9 @@ export const errorHandlers = [
   http.get(urls.getItineraries, () =>
     HttpResponse.json({ message: 'Database error' }, { status: 500 })
   ),
+]
+
+export const deleteErrorHandlers = [
   http.delete(urls.deleteUser, () =>
     HttpResponse.json({ message: 'Invalid token or missing token' }, { status: 401 })
   ),

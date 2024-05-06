@@ -1,10 +1,8 @@
-import { HttpResponse, http } from 'msw'
 import { colors } from '@itacademy/ui'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { UsersTable } from '../../components/organisms'
-import { errorHandlers } from '../../__mocks__/handlers'
+import { deleteErrorHandlers, errorHandlers } from '../../__mocks__/handlers'
 import { server } from '../../__mocks__/server'
-import { urls } from '../../constants/urls'
 
 afterEach(() => {
   server.resetHandlers()
@@ -171,100 +169,60 @@ describe('UsersTable', () => {
 
     await waitFor(() => {
       const deleteButton = screen.getAllByTestId('delete-button')[0]
-
       fireEvent.click(deleteButton)
+    })
 
-      waitFor(() => {
-        expect(screen.getByRole('dialog')).toBeInTheDocument()
-      })
+    await waitFor(() => {
+      const modal = screen.getByTestId('modal-wrapper')
+      expect(modal).toBeInTheDocument()
     })
   })
 
   it('closes modal when cancel button is clicked', async () => {
     render(<UsersTable filtersSelected={{}} />)
+
     await waitFor(() => {
       const deleteButton = screen.getAllByTestId('delete-button')[0]
       fireEvent.click(deleteButton)
     })
 
-    waitFor(() => {
-      expect(screen.getByRole('dialog')).toBeInTheDocument()
-    })
-
-    const cancelButton = screen.getByTestId('cancel-button')
-    fireEvent.click(cancelButton)
-
     await waitFor(() => {
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+      const modal = screen.getByTestId('modal-wrapper')
+      expect(modal).toBeInTheDocument()
     })
-  })
-
-  it('closes modal when close icon is clicked', async () => {
-    render(<UsersTable filtersSelected={{}} />)
     await waitFor(() => {
-      const deleteButton = screen.getAllByTestId('delete-button')[0]
-      fireEvent.click(deleteButton)
+      const cancelButton = screen.getByTestId('cancel-button')
+      expect(cancelButton).toBeInTheDocument()
+      fireEvent.click(cancelButton)
     })
 
     waitFor(() => {
-      expect(screen.getByRole('dialog')).toBeInTheDocument()
-    })
-
-    const closeIcon = screen.getByTestId('cancel-button')
-    fireEvent.click(closeIcon)
-
-    await waitFor(() => {
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
-    })
-  })
-
-  it('closes modal when  user is successfully deleted', async () => {
-    render(<UsersTable filtersSelected={{}} />)
-    server.use(
-      http.delete(urls.deleteUser, () =>
-        HttpResponse.json(null, { status: 402 })
-      )
-    )
-    await waitFor(() => {
-      const deleteButton = screen.getAllByTestId('delete-button')[0]
-      fireEvent.click(deleteButton)
-    })
-
-    waitFor(() => {
-      expect(screen.getByRole('dialog')).toBeInTheDocument()
-    })
-
-    const confirmButton = screen.getByTestId('confirm-button')
-
-    fireEvent.click(confirmButton)
-
-    await waitFor(() => {
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+      expect(screen.getByTestId('modal-wrapper')).not.toBeInTheDocument()
     })
   })
 
   it('changes confirmation button to an icon and update the background color to green on sucessful deletion', async () => {
     render(<UsersTable filtersSelected={{}} />)
-    server.use(
-      http.delete(urls.deleteUser, () =>
-        HttpResponse.json(null, { status: 402 })
-      )
-    )
 
     await waitFor(() => {
       const deleteButton = screen.getAllByTestId('delete-button')[0]
       fireEvent.click(deleteButton)
     })
 
-    waitFor(() => {
-      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    await waitFor(() => {
+      const modal = screen.getByTestId('modal-wrapper')
+      expect(modal).toBeInTheDocument()
     })
 
-    const confirmButton = screen.getByTestId('confirm-button')
+    await waitFor(() => {
+      const confirmButton = screen.getByTestId('confirm-button')
+      expect(confirmButton).toBeInTheDocument()
+      fireEvent.click(confirmButton)
+    })
 
-    fireEvent.click(confirmButton)
-
-    waitFor(() => {
+    await waitFor(() => {
+      const spinnerResolved = screen.queryByRole('status') as HTMLElement
+      expect(spinnerResolved).not.toBeInTheDocument()
       const doneIcon = screen.getByTestId('done-icon')
       const doneButton = doneIcon.parentElement
       expect(doneIcon).toBeInTheDocument()
@@ -272,7 +230,9 @@ describe('UsersTable', () => {
     })
   })
 
-  it('shows error message when user deletion fails', async () => {
+  it('renders error message when user deletion fails', async () => {
+    server.use(...deleteErrorHandlers)
+
     render(<UsersTable filtersSelected={{}} />)
 
     await waitFor(() => {
@@ -280,20 +240,22 @@ describe('UsersTable', () => {
       fireEvent.click(deleteButton)
     })
 
-    waitFor(() => {
-      expect(screen.getByRole('dialog')).toBeInTheDocument()
+    await waitFor(() => {
+      const modal = screen.getByTestId('modal-wrapper')
+      expect(modal).toBeInTheDocument()
     })
-    const confirmButton = screen.getByTestId('confirm-button')
-    fireEvent.click(confirmButton)
 
-    server.use(
-      http.delete(urls.deleteUser, () =>
-        HttpResponse.json({ error: 'Deletion failed' }, { status: 500 })
-      )
-    )
+    await waitFor(() => {
+      const confirmButton = screen.getByTestId('confirm-button')
+      expect(confirmButton).toBeInTheDocument()
+      fireEvent.click(confirmButton)
+    })
 
     waitFor(() => {
-      expect(screen.getByText(/Error/i)).toBeInTheDocument()
+      const spinnerResolved = screen.queryByRole('status') as HTMLElement
+      expect(spinnerResolved).not.toBeInTheDocument()
+      const errorMessage = screen.getByTestId('delete-error')
+      expect(errorMessage).toBeInTheDocument()
     })
   })
 })

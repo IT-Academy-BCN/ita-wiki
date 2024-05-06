@@ -1,28 +1,17 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act } from 'react-dom/test-utils'
-import { Mock, vi } from 'vitest'
 import { useDeleteUser } from '../../hooks'
 import { queryClient } from '../setup'
 import { server } from '../../__mocks__/server'
 
-let mockDeleteUserMutation: Mock
-
 beforeEach(() => {
   server.listen()
-  mockDeleteUserMutation = vi.fn()
-
-  vi.mock('../../hooks', () => ({
-    useDeleteUser: () => ({
-      deleteUserMutation: mockDeleteUserMutation,
-    }),
-  }))
 })
 
 afterEach(() => {
   server.resetHandlers()
   queryClient.clear()
-  vi.clearAllMocks()
 })
 
 afterAll(() => {
@@ -41,6 +30,9 @@ describe('useDeleteUser hook', () => {
 
     await waitFor(() => {
       expect(result.current.deleteUserMutation).toBeDefined()
+      expect(result.current.isError).toBe(false)
+      expect(result.current.isLoading).toBe(false)
+      expect(result.current.isSuccess).toBe(false)
     })
   })
 
@@ -52,7 +44,6 @@ describe('useDeleteUser hook', () => {
         </QueryClientProvider>
       ),
     })
-
     const mockUserId = '1'
 
     act(() => {
@@ -60,7 +51,9 @@ describe('useDeleteUser hook', () => {
     })
 
     await waitFor(() => {
-      expect(mockDeleteUserMutation).toHaveBeenCalledWith(mockUserId)
+      expect(result.current.isSuccess).toBe(true)
+      expect(result.current.isError).toBe(false)
+      expect(result.current.isLoading).toBe(false)
       expect(queryClient.getQueryData(['users'])).toBeUndefined()
     })
   })

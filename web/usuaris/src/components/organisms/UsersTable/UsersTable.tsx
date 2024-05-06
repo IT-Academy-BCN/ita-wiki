@@ -116,6 +116,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
 
   useEffect(() => {
     if (isDeleteSuccess) {
+      setSelectedUsers([])
       setTimeout(() => setIsModalOpen(false), 2000)
     }
   }, [isDeleteSuccess])
@@ -327,12 +328,15 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         }}
       >
         {isDeleteError ? (
-          <ModalErrorTextStyled>
+          <ModalErrorTextStyled data-testid="delete-error">
             {t('Error al eliminar el usuario')}
           </ModalErrorTextStyled>
         ) : (
           ''
         )}
+        <FlexBox direction="column" gap={dimensions.spacing.md}>
+          {isDeleteLoading ? <Spinner size="small" role="status" /> : ''}
+        </FlexBox>
         <FlexBox direction="row" gap={dimensions.spacing.md}>
           {isDeleteSuccess ? (
             <ModalButtonStyled
