@@ -698,6 +698,13 @@ paths:
           required: false
           description: Role to filter by
           example: ADMIN
+        - in: query
+          name: deletedAt
+          schema:
+            type: string
+            nullable: true
+          required: false
+          description: Status of deleted User
       responses:
         "200":
           description: Token is valid and user information is returned.
@@ -729,6 +736,9 @@ paths:
                         - ADMIN
                         - MENTOR
                         - REGISTERED
+                    deletedAt:
+                      type: string
+                      format: date-time
                     createdAt:
                       type: string
                       example: 21/02/2024
@@ -741,6 +751,7 @@ paths:
                     - name
                     - status
                     - role
+                    - deletedAt
                     - createdAt
                     - itineraryName
         "401":

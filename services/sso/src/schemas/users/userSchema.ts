@@ -33,5 +33,6 @@ export const userSchema = z.object({
   deletedAt: z.string().datetime(),
   itineraryId: z.string().cuid2(),
 })
+export const userDeletedAtSchema = z.string().nullable()
 
 export type User = z.infer<typeof userSchema>
