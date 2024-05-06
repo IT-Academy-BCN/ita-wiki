@@ -6,7 +6,7 @@ import { type Locale } from 'date-fns'
 import es from 'date-fns/locale/es'
 import ca from 'date-fns/locale/ca'
 import enIN from 'date-fns/locale/en-IN'
-import { FlexBox, Label, colors, dimensions, font } from '@itacademy/ui'
+import { FlexBox, Icon, Label, colors, dimensions, font } from '@itacademy/ui'
 import { icons } from '../../assets/icons'
 
 const ContainerStyled = styled(FlexBox)`
@@ -15,7 +15,11 @@ const ContainerStyled = styled(FlexBox)`
   border: 1px solid ${colors.gray.gray4};
 `
 
-const IconStyled = styled.img`
+const CloseIconStyled = styled(Icon)`
+  padding: ${dimensions.spacing.xxxs};
+`
+
+const CalendarIconStyled = styled.img`
   padding: ${dimensions.spacing.xs};
 `
 
@@ -44,6 +48,7 @@ export type TDateRange = {
   placeholderEndDate: string
   dateFormat: 'dd/MM/yyyy' | 'yyyy/MM/dd' | 'MM/dd/yyyy'
   calendarLanguage: 'ca' | 'es' | 'en-IN'
+  handleDates: (startDate: Date | null, endDate: Date | null) => void
 }
 
 export const DateRange: FC<TDateRange> = ({
@@ -53,6 +58,7 @@ export const DateRange: FC<TDateRange> = ({
   placeholderEndDate,
   dateFormat,
   calendarLanguage,
+  handleDates,
 }) => {
   const [dates, setDates] = useState({
     startDate: null,
@@ -80,6 +86,17 @@ export const DateRange: FC<TDateRange> = ({
     setDefaultLocale(calendarLanguage)
   }, [calendarLanguage, locale])
 
+  useEffect(() => {
+    handleDates(dates.startDate, dates.endDate)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dates])
+
+  const handleClose = () => {
+    setDates({
+      startDate: null,
+      endDate: null,
+    })
+  }
   const handleChangeDate = (
     date: Date | [Date | null, Date | null] | null,
     name: string
@@ -99,7 +116,15 @@ export const DateRange: FC<TDateRange> = ({
 
   return (
     <ContainerStyled direction="row">
-      <IconStyled src={icons.calendar} alt="Calendar" />
+      {dates.startDate !== null || dates.endDate !== null ? (
+        <CloseIconStyled
+          data-testid="close-button-test"
+          name="close"
+          onClick={handleClose}
+        />
+      ) : (
+        <CalendarIconStyled src={icons.calendar} alt="Calendar" />
+      )}
       <Label text={labelStartDate} htmlFor="startDate" hiddenLabel />
       <DatePickerStyled
         id="startDate"

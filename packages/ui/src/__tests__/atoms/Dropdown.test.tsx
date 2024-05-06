@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import { vi } from 'vitest'
 import userEvent from '@testing-library/user-event'
 import { Dropdown, type TDropdownOption } from '../../components/atoms/Dropdown'
@@ -25,17 +25,17 @@ const mockOptions = [
 const mockOptionsWithImage = [
   {
     id: '1',
-    name: 'Option 1',
+    name: 'Option 1 Image',
     iconSvg: 'option1image.jpg',
   },
   {
     id: '2',
-    name: 'Option 2',
+    name: 'Option 2 Image',
     iconSvg: 'option2image.jpg',
   },
   {
     id: '3',
-    name: 'Option 3',
+    name: 'Option 3 Image',
     iconSvg: 'option3image.jpg',
   },
 ]
@@ -74,7 +74,7 @@ const MockParent = () => {
 
 describe('Dropdown', () => {
   it('renders correctly with normal size by default', () => {
-    render(<Dropdown options={mockOptions} />)
+    render(<Dropdown options={mockOptions} data-testid="dropdown" />)
 
     const dropdown = screen.getByTestId('dropdown')
     const dropdownHeader = screen.getByTestId('dropdown-header')
@@ -108,7 +108,9 @@ describe('Dropdown', () => {
   })
 
   it('renders correctly in large size', async () => {
-    render(<Dropdown options={mockOptions} $size="large" />)
+    render(
+      <Dropdown options={mockOptions} $size="large" data-testid="dropdown" />
+    )
 
     const dropdown = screen.getByTestId('dropdown')
     const dropdownHeader = screen.getByTestId('dropdown-header')
@@ -123,6 +125,53 @@ describe('Dropdown', () => {
     expect(dropdownItem1).toBeInTheDocument()
     expect(dropdownItem1).toHaveStyle(`gap: ${dimensions.spacing.xs}`)
     expect(dropdownItem1).toHaveStyle('padding: 12px 18px')
+  })
+
+  it('renders custom data-testid in dropdown header and allows a specific click', async () => {
+    render(
+      <>
+        <Dropdown
+          options={mockOptionsWithImage}
+          data-testid="first-dropdown"
+          placeholder="Dropdown with image"
+          onValueChange={mockedOnValueChange}
+        />
+        <Dropdown
+          options={mockOptions}
+          data-testid="second-dropdown"
+          placeholder="Simple dropdown"
+          onValueChange={mockedOnValueChange}
+        />
+      </>
+    )
+
+    const firstDropdown = screen.getByTestId('first-dropdown')
+    const headerFirstDropdown =
+      within(firstDropdown).getByTestId('dropdown-header')
+    expect(headerFirstDropdown).toBeInTheDocument()
+    expect(headerFirstDropdown).toHaveTextContent('Dropdown with image')
+    await userEvent.click(headerFirstDropdown)
+    expect(screen.queryByText('Option 1 Image')).toBeVisible()
+    expect(screen.queryByAltText('Option 1 Image')).toBeVisible()
+    await userEvent.click(screen.getByTestId('1'))
+    expect(mockedOnValueChange).toHaveBeenCalledWith({
+      id: '1',
+      name: 'Option 1 Image',
+      iconSvg: 'option1image.jpg',
+    })
+
+    const secondDropdown = screen.getByTestId('second-dropdown')
+    const headerSecondDropdown =
+      within(secondDropdown).getByTestId('dropdown-header')
+    expect(headerSecondDropdown).toBeInTheDocument()
+    expect(headerSecondDropdown).toHaveTextContent('Simple dropdown')
+    await userEvent.click(headerSecondDropdown)
+    expect(screen.getByText('Option 1')).toBeVisible()
+    await userEvent.click(screen.getByTestId('1'))
+    expect(mockedOnValueChange).toHaveBeenCalledWith({
+      id: '1',
+      name: 'Option 1',
+    })
   })
 
   it('renders dropdown children when user clicks on it', async () => {
@@ -142,12 +191,12 @@ describe('Dropdown', () => {
     render(<Dropdown options={mockOptionsWithImage} />)
     const dropdownHeader = screen.getByTestId('dropdown-header')
 
-    expect(screen.queryByText('Option 1')).not.toBeInTheDocument()
+    expect(screen.queryByText('Option 1 Image')).not.toBeInTheDocument()
     expect(screen.getByTitle('Ampliar')).toBeInTheDocument()
 
     await userEvent.click(dropdownHeader)
-    expect(screen.queryByText('Option 1')).toBeVisible()
-    expect(screen.queryByAltText('Option 1')).toBeVisible()
+    expect(screen.queryByText('Option 1 Image')).toBeVisible()
+    expect(screen.queryByAltText('Option 1 Image')).toBeVisible()
 
     expect(screen.getByTitle('Cerrar')).toBeInTheDocument()
   })
@@ -207,12 +256,12 @@ describe('Dropdown', () => {
     )
 
     const dropdownHeader = screen.getByTestId('dropdown-header')
-    expect(dropdownHeader).toHaveTextContent(/option 3/i)
+    expect(dropdownHeader).toHaveTextContent(/option 3 image/i)
     expect(dropdownHeader).not.toHaveTextContent(/selecciona/i)
 
     const image = screen.getByRole('img')
     expect(image).toHaveAttribute('src', 'option3image.jpg')
-    expect(image).toHaveAttribute('alt', 'Option 3')
+    expect(image).toHaveAttribute('alt', 'Option 3 Image')
     expect(image).toBeVisible()
 
     expect(screen.queryByText(/placeholder/i)).not.toBeInTheDocument()

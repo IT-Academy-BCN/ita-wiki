@@ -74,7 +74,8 @@ export const Search: FC<TSearch> = ({
 
   useEffect(() => {
     handleSearchValue(debouncedSearchValue)
-  }, [debouncedSearchValue, handleSearchValue])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedSearchValue])
 
   const handleChange = (e: ChangeEvent) => {
     const target = e.target as HTMLInputElement

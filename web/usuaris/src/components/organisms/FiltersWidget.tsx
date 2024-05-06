@@ -12,43 +12,34 @@ const FiltersContainer = styled(FlexBox)`
 
 type TFiltersWidget = {
   filters: TFilters
-  handleFilters: (filters: TFilters) => void
+  setFilters: (filters: TFilters) => void
 }
 
-export const FiltersWidget: FC<TFiltersWidget> = ({
-  filters,
-  handleFilters,
-}) => {
+export const FiltersWidget: FC<TFiltersWidget> = ({ filters, setFilters }) => {
   const { t } = useTranslation()
 
   const handleItinerary = (itinerary: TItinerary | undefined) => {
-    if (itinerary !== undefined) {
-      handleFilters({ ...filters, itinerarySlug: itinerary.slug })
-    } else {
-      const newFilters = { ...filters }
-      delete newFilters.itinerarySlug
-      handleFilters(newFilters)
-    }
+    setFilters({ ...filters, itinerarySlug: itinerary?.slug })
   }
 
   const handleSearch = useCallback(
     (searchValue: string) => {
-      if (searchValue !== '') {
-        handleFilters({
-          ...filters,
-          name: searchValue,
-          dni: searchValue,
-        })
-      } else {
-        const newFilters = { ...filters }
-        delete newFilters.name
-        delete newFilters.dni
-        handleFilters(newFilters)
-      }
+      setFilters({
+        ...filters,
+        name: searchValue,
+        dni: searchValue,
+      })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [filters]
   )
+  const handleDates = (startDate: Date | null, endDate: Date | null) => {
+    setFilters({
+      ...filters,
+      startDate: startDate?.toISOString(),
+      endDate: endDate?.toISOString(),
+    })
+  }
 
   return (
     <FiltersContainer
@@ -64,6 +55,7 @@ export const FiltersWidget: FC<TFiltersWidget> = ({
         placeholderEndDate={t('Hasta...')}
         dateFormat="dd/MM/yyyy"
         calendarLanguage={t('calendarLanguage')}
+        handleDates={handleDates}
       />
       <Search
         id="usersSearch"
