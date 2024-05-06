@@ -243,7 +243,7 @@ describe('UsersTable', () => {
     })
   })
 
-  it('changes confirmation button to a icon and update the background color to green on sucessful deletion', async () => {
+  it('changes confirmation button to an icon and update the background color to green on sucessful deletion', async () => {
     render(<UsersTable filtersSelected={{}} />)
     server.use(
       http.delete(urls.deleteUser, () =>
@@ -264,8 +264,8 @@ describe('UsersTable', () => {
 
     fireEvent.click(confirmButton)
 
-    waitFor(async () => {
-      const doneIcon = await screen.findByTestId('done-icon')
+    waitFor(() => {
+      const doneIcon = screen.getByTestId('done-icon')
       const doneButton = doneIcon.parentElement
       expect(doneIcon).toBeInTheDocument()
       expect(doneButton).toHaveStyle(`background-color: ${colors.success}`)
