@@ -226,7 +226,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       ),
       cell: ({ row }) => {
         const status: UserStatus = row.getValue('status')
-        const id: UserStatus = row.getValue('id')
+        const id: string = row.getValue('id')
         let isDisabled: boolean | undefined
         let buttonTxt: string = ''
 
