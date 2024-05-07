@@ -5,6 +5,7 @@ import { setupServer } from 'msw/node'
 import { useUpdateUser } from '../../hooks'
 import { queryClient } from '../setup'
 import { handlers } from '../../__mocks__/handlers'
+import { UserStatus } from '../../types'
 
 const server = setupServer(...handlers)
 beforeEach(() => {
@@ -47,7 +48,7 @@ describe('useUpdateUser hook', () => {
     act(() => {
       result.current.changeUserStatus.mutate({
         id: '1',
-        status: 'BLOCKED',
+        status: UserStatus.BLOCKED,
       })
     })
     await waitFor(() => {
