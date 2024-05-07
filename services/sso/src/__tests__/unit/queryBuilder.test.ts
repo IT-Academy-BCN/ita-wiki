@@ -28,7 +28,6 @@ describe('Testing query builder function', () => {
     ]
     const resultQuery = queryBuilder(searchValues)
     const resultWhere = resultQuery.query.substring(241)
-    console.log('asd', resultWhere)
     expect(resultWhere).toBe(expectedWhere)
     expect(resultQuery.queryParams).toEqual(expectedParams)
   })
