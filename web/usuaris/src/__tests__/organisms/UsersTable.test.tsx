@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { UsersTable } from '../../components/organisms'
 import { errorHandlers } from '../../__mocks__/handlers'
 import { server } from '../../__mocks__/server'
+import { UserStatus } from '../../types'
 
 afterEach(() => {
   server.resetHandlers()
@@ -59,7 +60,9 @@ describe('UsersTable', () => {
       <UsersTable
         filtersSelected={{
           itinerarySlug: 'frontend-react',
-          status: 'ACTIVE',
+          status: UserStatus.ACTIVE,
+          startDate: '2023/11/06 00:00:00.000',
+          endDate: '2023/11/06 00:00:00.000',
           name: 'marc',
           dni: 'marc',
         }}

@@ -90,7 +90,6 @@ describe('ItineraryDropdown', () => {
     expect(deselectReact).toHaveLength(2)
 
     fireEvent.click(deselectReact[0])
-
     expect(dropdownHeader).toHaveTextContent(/especialitat/i)
 
     expect(mockHandleClick).toHaveBeenCalledWith(undefined)

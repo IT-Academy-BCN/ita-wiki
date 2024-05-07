@@ -8,7 +8,7 @@ import {
   type TDropdownOption,
 } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
-import { type TStatus } from '../../types'
+import { UserStatus } from '../../types'
 
 const StyledDropdown = styled(Dropdown)`
   && button {
@@ -29,14 +29,20 @@ const StyledDropdown = styled(Dropdown)`
   }
 `
 
-const statusOptions = ['ACTIVE', 'PENDING', 'BLOCKED']
-
 type TStatusItem = {
+  id: string
+  name: string
   icon?: string
-} & TStatus
+}
 
 type TStatusDropdown = {
-  handleStatus: (value: TStatusItem | undefined) => void
+  handleStatus: (value: UserStatus | undefined) => void
+}
+
+const statusIcon = {
+  [UserStatus.ACTIVE]: 'task_alt',
+  [UserStatus.PENDING]: 'pending',
+  [UserStatus.BLOCKED]: 'block',
 }
 
 export const StatusDropdown: FC<TStatusDropdown> = ({ handleStatus }) => {
@@ -44,32 +50,20 @@ export const StatusDropdown: FC<TStatusDropdown> = ({ handleStatus }) => {
 
   const [statusList, setStatusList] = useState<TStatusItem[]>([])
 
-  const getIconStatus = (statusOption: string) => {
-    if (statusOption === 'ACTIVE') {
-      return 'task_alt'
-    }
-    if (statusOption === 'BLOCKED') {
-      return 'block'
-    }
-    return 'pending'
-  }
-
   useEffect(() => {
-    const statusItems: TStatusItem[] = statusOptions.map((option) => ({
-      id: option,
-      name: t(`${option}`),
-      icon: getIconStatus(option),
+    const statusDropdownList = Object.values(UserStatus).map((status) => ({
+      id: status.toString(),
+      name: t(`${status}`),
+      icon: statusIcon[status],
     }))
-
-    setStatusList(statusItems)
+    setStatusList(statusDropdownList)
   }, [t])
 
   const handleSelectedValue = (selectedOption: TDropdownOption | undefined) => {
-    if (selectedOption) {
-      handleStatus(selectedOption)
-    } else {
-      handleStatus(undefined)
-    }
+    const selectedStatus: UserStatus | undefined = Object.values(
+      UserStatus
+    ).find((status) => status === selectedOption?.id)
+    handleStatus(selectedStatus)
   }
 
   return statusList && statusList.length > 0 ? (
@@ -80,6 +74,7 @@ export const StatusDropdown: FC<TStatusDropdown> = ({ handleStatus }) => {
       openText={t('Abrir')}
       closeText={t('Cerrar')}
       deselectText={t('Deseleccionar')}
+      data-testid="status-dropdown"
     />
   ) : null
 }

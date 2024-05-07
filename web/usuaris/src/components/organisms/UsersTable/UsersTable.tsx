@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { Checkbox, Spinner, dimensions } from '@itacademy/ui'
 import { Table } from '../../molecules'
-import { TFilters, TUserData } from '../../../types'
+import { TFilters, TUserData, UserStatus } from '../../../types'
 import { icons } from '../../../assets/icons'
 import { useGetUsers, useUpdateUser } from '../../../hooks'
 import {
@@ -31,7 +31,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
 
   const { isLoading, isError, data: users } = useGetUsers(filters)
 
-  const [selectedStatus, setSelectedStatus] = useState<string | undefined>(
+  const [selectedStatus, setSelectedStatus] = useState<UserStatus | undefined>(
     undefined
   )
   const [selectedUsers, setSelectedUsers] = useState<TUserData[]>([])
@@ -42,8 +42,9 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
     setFilters(filtersSelected)
   }, [filtersSelected])
 
-  const handleStatus = (id: string, status: string) => {
-    const updatedStatus = status === 'ACTIVE' ? 'BLOCKED' : 'ACTIVE'
+  const handleStatus = (id: string, status: UserStatus) => {
+    const updatedStatus =
+      status === UserStatus.ACTIVE ? UserStatus.BLOCKED : UserStatus.ACTIVE
 
     const updatedUser = {
       id,
@@ -70,7 +71,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
   const changeSelection = (
     e: ChangeEvent<HTMLInputElement>,
     id: string,
-    status: string
+    status: UserStatus
   ) => {
     if (e.target.checked) {
       setSelectedStatus(status)
@@ -95,13 +96,13 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
 
   const columHelper = createColumnHelper<TUserData>()
 
-  const columns: ColumnDef<TUserData, string>[] = [
+  const columns: ColumnDef<TUserData, UserStatus>[] = [
     columHelper.accessor('id', {
       header: '',
       cell: ({ row }) => {
         const id: string = row.getValue('id')
         const name: string = row.getValue('name')
-        const status: string = row.getValue('status')
+        const status: UserStatus = row.getValue('status')
         let isDisabled: boolean | undefined
 
         if (selectedStatus && selectedStatus !== status) {
@@ -130,7 +131,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       header: `${t('Nombre')}`,
       cell: ({ row }) => {
         const name: string = row.getValue('name')
-        const status: string = row.getValue('status')
+        const status: UserStatus = row.getValue('status')
         let isDisabled: boolean | undefined
 
         if (selectedStatus && selectedStatus !== status) {
@@ -145,7 +146,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       header: 'DNI/NIE',
       cell: ({ row }) => {
         const dni: string = row.getValue('dni')
-        const status: string = row.getValue('status')
+        const status: UserStatus = row.getValue('status')
         let isDisabled: boolean | undefined
 
         if (selectedStatus && selectedStatus !== status) {
@@ -160,7 +161,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       header: `${t('Especialización')}`,
       cell: ({ row }) => {
         const itineraryName: string = row.getValue('itineraryName')
-        const status: string = row.getValue('status')
+        const status: UserStatus = row.getValue('status')
         let isDisabled: boolean | undefined
 
         if (selectedStatus && selectedStatus !== status) {
@@ -181,7 +182,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         </CellStyled>
       ),
       cell: ({ row }) => {
-        const status: string = row.getValue('status')
+        const status: UserStatus = row.getValue('status')
         let isDisabled: boolean | undefined
 
         if (selectedStatus && selectedStatus !== status) {
@@ -201,7 +202,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       header: `${t('Fecha alta')}`,
       cell: ({ row }) => {
         const createdAt = row.getValue('createdAt')
-        const status: string = row.getValue('status')
+        const status: UserStatus = row.getValue('status')
         const formattedDate = new Date(createdAt as string).toLocaleDateString()
         let isDisabled: boolean | undefined
 
@@ -224,8 +225,8 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         </ActionsHeader>
       ),
       cell: ({ row }) => {
-        const status: string = row.getValue('status')
-        const id: string = row.getValue('id')
+        const status: UserStatus = row.getValue('status')
+        const id: UserStatus = row.getValue('id')
         let isDisabled: boolean | undefined
         let buttonTxt: string = ''
 
@@ -235,9 +236,9 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
           isDisabled = undefined
         }
 
-        if (status === 'PENDING') {
+        if (status === UserStatus.PENDING) {
           buttonTxt = t('Aceptar')
-        } else if (status === 'BLOCKED') {
+        } else if (status === UserStatus.BLOCKED) {
           buttonTxt = t('Desbloquear')
         } else {
           buttonTxt = t('Bloquear')

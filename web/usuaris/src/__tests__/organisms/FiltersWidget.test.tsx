@@ -1,11 +1,12 @@
-import { fireEvent, render, screen, waitFor } from '../test-utils'
+import { fireEvent, render, screen, waitFor, within } from '../test-utils'
 import { FiltersWidget } from '../../components/organisms'
+import { UserStatus } from '../../types'
 
-const mockHandleFilters = vi.fn()
+const mockSetFilters = vi.fn()
 
 describe('FiltersWidget', () => {
   it('renders correctly', async () => {
-    render(<FiltersWidget filters={{}} handleFilters={mockHandleFilters} />)
+    render(<FiltersWidget filters={{}} setFilters={mockSetFilters} />)
 
     await waitFor(() =>
       expect(screen.getByText(/especialitat/i)).toBeInTheDocument()
@@ -14,29 +15,30 @@ describe('FiltersWidget', () => {
   })
 
   it('shows itinerary selected in dropdown and sends it to parent', async () => {
-    render(<FiltersWidget filters={{}} handleFilters={mockHandleFilters} />)
+    render(<FiltersWidget filters={{}} setFilters={mockSetFilters} />)
 
     await waitFor(() =>
       expect(screen.getByText(/especialitat/i)).toBeInTheDocument()
     )
 
-    const allDropdowns = screen.getAllByTestId('dropdown-header')
+    const itineraryDropdown = screen.getByTestId('itinerary-dropdown')
 
-    const dropdownHeader = allDropdowns[0]
+    const itineraryDropdownHeader =
+      within(itineraryDropdown).getByTestId('dropdown-header')
 
-    expect(dropdownHeader).toHaveTextContent(/especialitat/i)
+    expect(itineraryDropdownHeader).toHaveTextContent(/especialitat/i)
 
-    fireEvent.click(dropdownHeader)
+    fireEvent.click(itineraryDropdownHeader)
 
-    const reactOption = screen.getByText('Frontend React')
+    const reactOption = screen.getByTestId('1')
     expect(reactOption).toBeInTheDocument()
 
     fireEvent.click(reactOption)
 
-    expect(dropdownHeader).toHaveTextContent('Frontend React')
+    expect(itineraryDropdown).toHaveTextContent('Frontend React')
     expect(screen.queryByText(/especialitat/i)).not.toBeInTheDocument()
 
-    expect(mockHandleFilters).toHaveBeenCalledWith({
+    expect(mockSetFilters).toHaveBeenCalledWith({
       itinerarySlug: 'react',
     })
   })
@@ -44,8 +46,8 @@ describe('FiltersWidget', () => {
   it('deletes itinerary deselected and sends other filters to parent', async () => {
     render(
       <FiltersWidget
-        filters={{ status: 'ACTIVE' }}
-        handleFilters={mockHandleFilters}
+        filters={{ status: UserStatus.ACTIVE }}
+        setFilters={mockSetFilters}
       />
     )
 
@@ -53,61 +55,60 @@ describe('FiltersWidget', () => {
       expect(screen.getByText(/especialitat/i)).toBeInTheDocument()
     )
 
-    const allDropdowns = screen.getAllByTestId('dropdown-header')
+    const itineraryDropdown = screen.getByTestId('itinerary-dropdown')
 
-    const dropdownHeader = allDropdowns[0]
+    const itineraryDropdownHeader =
+      within(itineraryDropdown).getByTestId('dropdown-header')
 
-    fireEvent.click(dropdownHeader)
+    expect(itineraryDropdownHeader).toHaveTextContent(/especialitat/i)
 
-    const reactOption = screen.getByText('Frontend React')
+    fireEvent.click(itineraryDropdownHeader)
+
+    const reactOption = screen.getByTestId('1')
     expect(reactOption).toBeInTheDocument()
 
     fireEvent.click(reactOption)
 
-    expect(dropdownHeader).toHaveTextContent('Frontend React')
+    expect(itineraryDropdownHeader).toHaveTextContent('Frontend React')
 
-    expect(mockHandleFilters).toHaveBeenCalledWith({
+    expect(mockSetFilters).toHaveBeenCalledWith({
       itinerarySlug: 'react',
-      status: 'ACTIVE',
+      status: UserStatus.ACTIVE,
     })
 
-    fireEvent.click(dropdownHeader)
+    const deselectReact = within(itineraryDropdownHeader).getByTestId(
+      'deselect-1'
+    )
 
-    const deselectReact = screen.getAllByTestId('deselect-1')
+    fireEvent.click(deselectReact)
 
-    fireEvent.click(deselectReact[0])
-
-    expect(mockHandleFilters).toHaveBeenCalledWith({
-      status: 'ACTIVE',
+    expect(mockSetFilters).toHaveBeenCalledWith({
+      status: UserStatus.ACTIVE,
     })
   })
 
   it('shows status selected in dropdown and sends it to parent', async () => {
-    render(<FiltersWidget filters={{}} handleFilters={mockHandleFilters} />)
+    render(<FiltersWidget filters={{}} setFilters={mockSetFilters} />)
 
-    await waitFor(() =>
-      expect(screen.getByText(/especialitat/i)).toBeInTheDocument()
-    )
-    expect(screen.getByText(/estat/i)).toBeInTheDocument()
+    const statusDropdown = screen.getByTestId('status-dropdown')
 
-    const allDropdowns = screen.getAllByTestId('dropdown-header')
+    const statusDropdownHeader =
+      within(statusDropdown).getByTestId('dropdown-header')
 
-    const dropdownHeader = allDropdowns[1]
+    expect(statusDropdownHeader).toHaveTextContent(/estat/i)
 
-    expect(dropdownHeader).toHaveTextContent(/estat/i)
+    fireEvent.click(statusDropdownHeader)
 
-    fireEvent.click(dropdownHeader)
-
-    const activeOption = screen.getByText('Actiu')
+    const activeOption = screen.getByTestId('ACTIVE')
     expect(activeOption).toBeInTheDocument()
 
     fireEvent.click(activeOption)
 
-    expect(dropdownHeader).toHaveTextContent('Actiu')
+    expect(statusDropdownHeader).toHaveTextContent('Actiu')
     expect(screen.queryByText(/estat/i)).not.toBeInTheDocument()
 
-    expect(mockHandleFilters).toHaveBeenCalledWith({
-      status: 'ACTIVE',
+    expect(mockSetFilters).toHaveBeenCalledWith({
+      status: UserStatus.ACTIVE,
     })
   })
 
@@ -115,45 +116,45 @@ describe('FiltersWidget', () => {
     render(
       <FiltersWidget
         filters={{ itinerarySlug: 'frontend-react' }}
-        handleFilters={mockHandleFilters}
+        setFilters={mockSetFilters}
       />
     )
 
-    expect(screen.getByText(/estat/i)).toBeInTheDocument()
+    const statusDropdown = screen.getByTestId('status-dropdown')
 
-    const allDropdowns = screen.getAllByTestId('dropdown-header')
+    const statusDropdownHeader =
+      within(statusDropdown).getByTestId('dropdown-header')
 
-    const dropdownHeader = allDropdowns[0]
+    expect(statusDropdownHeader).toHaveTextContent(/estat/i)
 
-    expect(dropdownHeader).toHaveTextContent(/estat/i)
+    fireEvent.click(statusDropdownHeader)
 
-    fireEvent.click(dropdownHeader)
+    const activeOption = screen.getByTestId('ACTIVE')
+    expect(activeOption).toBeInTheDocument()
 
-    const statusOption = screen.getByText('Actiu')
-    expect(statusOption).toBeInTheDocument()
+    fireEvent.click(activeOption)
 
-    fireEvent.click(statusOption)
+    expect(statusDropdownHeader).toHaveTextContent('Actiu')
 
-    expect(dropdownHeader).toHaveTextContent('Actiu')
-
-    expect(mockHandleFilters).toHaveBeenCalledWith({
+    expect(mockSetFilters).toHaveBeenCalledWith({
       itinerarySlug: 'frontend-react',
-      status: 'ACTIVE',
+      status: UserStatus.ACTIVE,
     })
 
-    fireEvent.click(dropdownHeader)
+    fireEvent.click(statusDropdownHeader)
 
-    const deselectActive = screen.getAllByTestId('deselect-ACTIVE')
+    const deselectActive =
+      within(statusDropdownHeader).getByTestId('deselect-ACTIVE')
 
-    fireEvent.click(deselectActive[0])
+    fireEvent.click(deselectActive)
 
-    expect(mockHandleFilters).toHaveBeenCalledWith({
+    expect(mockSetFilters).toHaveBeenCalledWith({
       itinerarySlug: 'frontend-react',
     })
   })
 
   it('displays search bar and updates filters value when typing', () => {
-    render(<FiltersWidget filters={{}} handleFilters={mockHandleFilters} />)
+    render(<FiltersWidget filters={{}} setFilters={mockSetFilters} />)
 
     const searchBar = screen.getByPlaceholderText(/Cercar/i)
     expect(searchBar).toBeInTheDocument()
@@ -161,7 +162,7 @@ describe('FiltersWidget', () => {
     fireEvent.change(searchBar, { target: { value: 'marc' } })
 
     waitFor(() =>
-      expect(mockHandleFilters).toHaveBeenCalledWith({
+      expect(mockSetFilters).toHaveBeenCalledWith({
         name: 'marc',
         dni: 'marc',
       })
@@ -171,8 +172,8 @@ describe('FiltersWidget', () => {
   it('deletes search value when closing search and updates filters accordingly', () => {
     render(
       <FiltersWidget
-        filters={{ status: 'ACTIVE' }}
-        handleFilters={mockHandleFilters}
+        filters={{ status: UserStatus.ACTIVE }}
+        setFilters={mockSetFilters}
       />
     )
 
@@ -180,8 +181,8 @@ describe('FiltersWidget', () => {
     fireEvent.change(searchBar, { target: { value: 'marc' } })
 
     waitFor(() =>
-      expect(mockHandleFilters).toHaveBeenCalledWith({
-        status: 'ACTIVE',
+      expect(mockSetFilters).toHaveBeenCalledWith({
+        status: UserStatus.ACTIVE,
         name: 'marc',
         dni: 'marc',
       })
@@ -191,9 +192,64 @@ describe('FiltersWidget', () => {
     fireEvent.click(closeButton)
 
     waitFor(() =>
-      expect(mockHandleFilters).toHaveBeenCalledWith({
+      expect(mockSetFilters).toHaveBeenCalledWith({
         status: 'ACTIVE',
       })
     )
+  })
+
+  it('updates filters value when introducing dates', () => {
+    render(<FiltersWidget filters={{}} setFilters={mockSetFilters} />)
+
+    const startDateInput = screen.getByPlaceholderText('De...')
+    const endDateInput = screen.getByPlaceholderText('Fins...')
+
+    const mockStartDate = new Date()
+    const mockEndDate = new Date()
+
+    fireEvent.change(startDateInput, { target: { value: mockStartDate } })
+    fireEvent.change(endDateInput, { target: { value: mockEndDate } })
+
+    waitFor(() =>
+      expect(mockSetFilters).toHaveBeenCalledWith({
+        startDate: mockStartDate.toISOString(),
+        endDate: mockEndDate.toISOString(),
+      })
+    )
+  })
+
+  it('deletes dates when closing dates inputs and updates filters accordingly', () => {
+    render(
+      <FiltersWidget
+        filters={{ status: UserStatus.ACTIVE }}
+        setFilters={mockSetFilters}
+      />
+    )
+
+    const startDateInput = screen.getByPlaceholderText('De...')
+    const endDateInput = screen.getByPlaceholderText('Fins...')
+
+    const mockStartDate = new Date()
+    const mockEndDate = new Date()
+
+    fireEvent.change(startDateInput, { target: { value: mockStartDate } })
+    fireEvent.change(endDateInput, { target: { value: mockEndDate } })
+
+    waitFor(() =>
+      expect(mockSetFilters).toHaveBeenCalledWith({
+        status: 'ACTIVE',
+        startDate: mockStartDate.toISOString(),
+        endDate: mockEndDate.toISOString(),
+      })
+    )
+
+    const closeIcon = screen.getByTestId('close-button-test')
+    fireEvent.click(closeIcon)
+
+    waitFor(() => {
+      expect(mockSetFilters).toHaveBeenCalledWith({
+        status: 'ACTIVE',
+      })
+    })
   })
 })

@@ -2,11 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.13.0] - 2024-04-29
+## [0.14.0] - 2024-05-07
 
 ### Added
 
 - Added Status filter
+
+## [0.13.0] - 2024-04-29
+
+### Added
+
+- Added close icon to deselect dates in DateRange
+- Added dates to filters to fetch users in FiltersWidget
+- Changed qs to handle null, undefined and empty string
 
 ## [0.12.0] - 2024-04-29
 

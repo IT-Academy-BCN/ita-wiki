@@ -1,6 +1,7 @@
 import { vi } from 'vitest'
-import { fireEvent, render, screen, waitFor } from '../test-utils'
+import { fireEvent, render, screen, waitFor, within } from '../test-utils'
 import { StatusDropdown } from '../../components/molecules'
+import { UserStatus } from '../../types'
 
 const mockHandleClick = vi.fn()
 
@@ -38,11 +39,7 @@ describe('StatusDropdown', () => {
     expect(icon).toHaveClass('material-symbols-outlined')
     expect(icon).toBeVisible()
 
-    expect(mockHandleClick).toHaveBeenCalledWith({
-      id: 'ACTIVE',
-      name: 'Actiu',
-      icon: 'task_alt',
-    })
+    expect(mockHandleClick).toHaveBeenCalledWith(UserStatus.ACTIVE)
   })
 
   it('should return undefined to parent when user deselects option', async () => {
@@ -60,19 +57,14 @@ describe('StatusDropdown', () => {
 
     expect(dropdownHeader).toHaveTextContent(/bloquejat/i)
 
-    expect(mockHandleClick).toHaveBeenCalledWith({
-      id: 'BLOCKED',
-      name: 'Bloquejat',
-      icon: 'block',
-    })
+    expect(mockHandleClick).toHaveBeenCalledWith(UserStatus.BLOCKED)
 
     fireEvent.click(dropdownHeader)
 
-    const deselectBlockedStatus = screen.getAllByTestId('deselect-BLOCKED')
+    const deselectBlocked =
+      within(dropdownHeader).getByTestId('deselect-BLOCKED')
 
-    expect(deselectBlockedStatus).toHaveLength(2)
-
-    fireEvent.click(deselectBlockedStatus[0])
+    fireEvent.click(deselectBlocked)
 
     expect(dropdownHeader).toHaveTextContent(/estat/i)
 
