@@ -20,7 +20,10 @@ const responseSchema = userSchema
 
 let authAdminToken = ''
 let users: DashboardUsersList
-
+const testName = 'testing'
+const testDni = '38826335N'
+const testRole = UserRole.REGISTERED
+const testStatus = UserStatus.ACTIVE
 beforeAll(async () => {
   const loginRoute = `${pathRoot.v1.dashboard.auth}/login`
   const responseAdmin = await supertest(server).post(loginRoute).send({
@@ -168,10 +171,9 @@ describe('Testing get users endpoint', () => {
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
   it('returns a collection of users successfully with a name query of 2 or more characters', async () => {
-    const validName = 'testing'
     const response = await supertest(server)
       .get(route)
-      .query({ name: validName })
+      .query({ name: testName })
       .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
@@ -236,6 +238,22 @@ describe('Testing get users endpoint', () => {
       a.id.localeCompare(b.id)
     )
     expect(sortedResponseBody).toEqual(sortedExpected)
+    expect(responseSchema.safeParse(body).success).toBeTruthy()
+  })
+  it('returns a colletion of users by 4 diferent search values', async () => {
+    const response = await supertest(server)
+      .get(route)
+      .query({
+        name: testName,
+        dni: testDni,
+        role: testRole,
+        status: testStatus,
+      })
+      .set('Cookie', [authAdminToken])
+    const { body }: { body: DashboardUsersList } = response
+    expect(response.status).toBe(200)
+    expect(body).toBeInstanceOf(Array)
+    expect(body).toHaveLength(2)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
 })
