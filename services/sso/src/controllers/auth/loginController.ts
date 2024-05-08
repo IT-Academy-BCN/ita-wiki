@@ -10,7 +10,7 @@ export const loginController: Middleware = async (ctx: Context) => {
   const { dni, password }: UserLogin = ctx.request.body
   const dniToUpperCase = dni.toUpperCase()
   const userResult = await client.query(
-    `SELECT id, password, status, FROM "user" WHERE dni = $1 AND deleted_at IS NULL`,
+    `SELECT id, password, status FROM "user" WHERE dni = $1 AND deleted_at IS NULL`,
     [dniToUpperCase]
   )
   const user = userResult.rows[0] as Pick<User, 'id' | 'password' | 'status'>
