@@ -6,7 +6,6 @@ import {
   startDateSchema,
 } from '../schemas/users/dashboardUsersListQuerySchema'
 import {
-  // userDeletedAtSchema,
   userNameSchema,
   userRoleSchema,
   userStatusSchema,
@@ -69,11 +68,6 @@ export const queryBuilder = (ctx: Context) => {
     conditions.push(`i.slug = $${queryParams.length + 1}`)
     queryParams.push(parsedSlug)
   }
-  // if (deletedAt) {
-  //   const parsedDeletedAt = userDeletedAtSchema.parse(deletedAt)
-  //   conditions.push(`u.deleted_at = $${queryParams.length + 1}`)
-  //   queryParams.push(parsedDeletedAt)
-  // }
   if (conditions.length > 0) {
     query += ` WHERE ${conditions.join(' AND ')}`
   }
