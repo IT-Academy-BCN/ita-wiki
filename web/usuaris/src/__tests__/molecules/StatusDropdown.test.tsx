@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { fireEvent, render, screen, waitFor, within } from '../test-utils'
+import { fireEvent, render, screen } from '../test-utils'
 import { StatusDropdown } from '../../components/molecules'
 import { UserStatus } from '../../types'
 
