@@ -4,12 +4,6 @@ import { errorHandlers } from '../../__mocks__/handlers'
 import { server } from '../../__mocks__/server'
 import { UserStatus } from '../../types'
 
-afterEach(() => {
-  server.resetHandlers()
-})
-
-afterAll(() => server.close())
-
 describe('UsersTable', () => {
   it('renders loading spinner while fetching users', async () => {
     render(<UsersTable filtersSelected={{}} />)

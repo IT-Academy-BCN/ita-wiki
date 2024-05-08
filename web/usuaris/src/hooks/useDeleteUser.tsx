@@ -11,11 +11,12 @@ export const useDeleteUser = (props?: TUseDeleteUser) => {
   const queryClient = useQueryClient()
 
   const {
-    mutateAsync: deleteUserMutation,
+    mutate: deleteUserMutation,
     isLoading,
     isSuccess,
     isError,
-  } = useMutation<void, Error, string>(deleteUser, {
+  } = useMutation<void, Error, string>({
+    mutationFn: (userId) => deleteUser(userId),
     onSuccess: () => {
       if (successCb) successCb()
       queryClient.invalidateQueries(['users'])

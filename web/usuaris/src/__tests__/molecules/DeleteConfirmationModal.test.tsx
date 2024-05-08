@@ -10,7 +10,7 @@ const defaultProps = {
 }
 
 describe('DeleteConfirmationModal', () => {
-  it.skip('renders correctly', async () => {
+  it('renders correctly', async () => {
     render(<DeleteConfirmationModal {...defaultProps} />)
 
     await waitFor(() => {
@@ -29,7 +29,7 @@ describe('DeleteConfirmationModal', () => {
     })
   })
 
-  it.skip('handles successful deletion', async () => {
+  it('handles successful deletion', async () => {
     render(<DeleteConfirmationModal {...defaultProps} />)
 
     await waitFor(() => {
