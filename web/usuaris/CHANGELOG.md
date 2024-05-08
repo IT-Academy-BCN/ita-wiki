@@ -2,11 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.14.0] - 2024-05-07
+## [0.15.0] - 2024-05-08
 
 ### Added
 
 - Added Status filter
+
+## [0.14.0] - 2024-05-06
+
+### Added
+
+- Refetch users after user status changes to update interface
 
 ## [0.13.0] - 2024-04-29
 

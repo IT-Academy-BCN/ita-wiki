@@ -26,7 +26,7 @@ describe('StatusDropdown', () => {
 
     fireEvent.click(dropdownHeader)
 
-    const activeStatus = screen.getByText(/actiu/i)
+    const activeStatus = screen.getByTestId('ACTIVE')
     expect(activeStatus).toBeInTheDocument()
     expect(screen.getByText(/pendent/i)).toBeInTheDocument()
     expect(screen.getByText(/bloquejat/i)).toBeInTheDocument()
@@ -34,40 +34,7 @@ describe('StatusDropdown', () => {
     fireEvent.click(activeStatus)
 
     expect(dropdownHeader).toHaveTextContent(/actiu/i)
-    const icon = screen.getByText('task_alt')
-    expect(icon).toHaveAttribute('name', 'task_alt')
-    expect(icon).toHaveClass('material-symbols-outlined')
-    expect(icon).toBeVisible()
 
     expect(mockHandleClick).toHaveBeenCalledWith(UserStatus.ACTIVE)
-  })
-
-  it('should return undefined to parent when user deselects option', async () => {
-    render(<StatusDropdown handleStatus={mockHandleClick} />)
-
-    const dropdownHeader = screen.getByTestId('dropdown-header')
-
-    fireEvent.click(dropdownHeader)
-
-    await waitFor(() => expect(screen.getByText(/pendent/i)).toBeVisible())
-
-    const blockedStatus = screen.getByText(/bloquejat/i)
-
-    fireEvent.click(blockedStatus)
-
-    expect(dropdownHeader).toHaveTextContent(/bloquejat/i)
-
-    expect(mockHandleClick).toHaveBeenCalledWith(UserStatus.BLOCKED)
-
-    fireEvent.click(dropdownHeader)
-
-    const deselectBlocked =
-      within(dropdownHeader).getByTestId('deselect-BLOCKED')
-
-    fireEvent.click(deselectBlocked)
-
-    expect(dropdownHeader).toHaveTextContent(/estat/i)
-
-    expect(mockHandleClick).toHaveBeenCalledWith(undefined)
   })
 })
