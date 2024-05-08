@@ -1,5 +1,6 @@
-import { fireEvent, render, screen, waitFor } from '../test-utils'
+import { fireEvent, render, screen, waitFor, within } from '../test-utils'
 import { FiltersWidget } from '../../components/organisms'
+import { UserStatus } from '../../types'
 
 const mockSetFilters = vi.fn()
 
@@ -20,18 +21,21 @@ describe('FiltersWidget', () => {
       expect(screen.getByText(/especialitat/i)).toBeInTheDocument()
     )
 
-    const dropdownHeader = screen.getByTestId('dropdown-header')
+    const itineraryDropdown = screen.getByTestId('itinerary-dropdown')
 
-    expect(dropdownHeader).toHaveTextContent(/especialitat/i)
+    const itineraryDropdownHeader =
+      within(itineraryDropdown).getByTestId('dropdown-header')
 
-    fireEvent.click(dropdownHeader)
+    expect(itineraryDropdownHeader).toHaveTextContent(/especialitat/i)
 
-    const reactOption = screen.getByText('Frontend React')
+    fireEvent.click(itineraryDropdownHeader)
+
+    const reactOption = screen.getByTestId('1')
     expect(reactOption).toBeInTheDocument()
 
     fireEvent.click(reactOption)
 
-    expect(dropdownHeader).toHaveTextContent('Frontend React')
+    expect(itineraryDropdown).toHaveTextContent('Frontend React')
     expect(screen.queryByText(/especialitat/i)).not.toBeInTheDocument()
 
     expect(mockSetFilters).toHaveBeenCalledWith({
@@ -42,7 +46,7 @@ describe('FiltersWidget', () => {
   it('deletes itinerary deselected and sends other filters to parent', async () => {
     render(
       <FiltersWidget
-        filters={{ status: 'ACTIVE' }}
+        filters={{ status: UserStatus.ACTIVE }}
         setFilters={mockSetFilters}
       />
     )
@@ -51,30 +55,101 @@ describe('FiltersWidget', () => {
       expect(screen.getByText(/especialitat/i)).toBeInTheDocument()
     )
 
-    const dropdownHeader = screen.getByTestId('dropdown-header')
+    const itineraryDropdown = screen.getByTestId('itinerary-dropdown')
 
-    fireEvent.click(dropdownHeader)
+    const itineraryDropdownHeader =
+      within(itineraryDropdown).getByTestId('dropdown-header')
 
-    const reactOption = screen.getByText('Frontend React')
+    expect(itineraryDropdownHeader).toHaveTextContent(/especialitat/i)
+
+    fireEvent.click(itineraryDropdownHeader)
+
+    const reactOption = screen.getByTestId('1')
     expect(reactOption).toBeInTheDocument()
 
     fireEvent.click(reactOption)
 
-    expect(dropdownHeader).toHaveTextContent('Frontend React')
+    expect(itineraryDropdownHeader).toHaveTextContent('Frontend React')
 
     expect(mockSetFilters).toHaveBeenCalledWith({
       itinerarySlug: 'react',
-      status: 'ACTIVE',
+      status: UserStatus.ACTIVE,
     })
 
-    fireEvent.click(dropdownHeader)
+    const deselectReact = within(itineraryDropdownHeader).getByTestId(
+      'deselect-1'
+    )
 
-    const deselectReact = screen.getAllByTestId('deselect-1')
-
-    fireEvent.click(deselectReact[0])
+    fireEvent.click(deselectReact)
 
     expect(mockSetFilters).toHaveBeenCalledWith({
-      status: 'ACTIVE',
+      status: UserStatus.ACTIVE,
+    })
+  })
+
+  it('shows status selected in dropdown and sends it to parent', async () => {
+    render(<FiltersWidget filters={{}} setFilters={mockSetFilters} />)
+
+    const statusDropdown = screen.getByTestId('status-dropdown')
+
+    const statusDropdownHeader =
+      within(statusDropdown).getByTestId('dropdown-header')
+
+    expect(statusDropdownHeader).toHaveTextContent(/estat/i)
+
+    fireEvent.click(statusDropdownHeader)
+
+    const activeOption = screen.getByTestId('ACTIVE')
+    expect(activeOption).toBeInTheDocument()
+
+    fireEvent.click(activeOption)
+
+    expect(statusDropdownHeader).toHaveTextContent('Actiu')
+    expect(screen.queryByText(/estat/i)).not.toBeInTheDocument()
+
+    expect(mockSetFilters).toHaveBeenCalledWith({
+      status: UserStatus.ACTIVE,
+    })
+  })
+
+  it('deletes status deselected and sends other filters to parent', () => {
+    render(
+      <FiltersWidget
+        filters={{ itinerarySlug: 'frontend-react' }}
+        setFilters={mockSetFilters}
+      />
+    )
+
+    const statusDropdown = screen.getByTestId('status-dropdown')
+
+    const statusDropdownHeader =
+      within(statusDropdown).getByTestId('dropdown-header')
+
+    expect(statusDropdownHeader).toHaveTextContent(/estat/i)
+
+    fireEvent.click(statusDropdownHeader)
+
+    const activeOption = screen.getByTestId('ACTIVE')
+    expect(activeOption).toBeInTheDocument()
+
+    fireEvent.click(activeOption)
+
+    expect(statusDropdownHeader).toHaveTextContent('Actiu')
+
+    expect(mockSetFilters).toHaveBeenCalledWith({
+      itinerarySlug: 'frontend-react',
+      status: UserStatus.ACTIVE,
+    })
+
+    fireEvent.click(statusDropdownHeader)
+
+    const deselectActive =
+      within(statusDropdownHeader).getByTestId('deselect-ACTIVE')
+
+    fireEvent.click(deselectActive)
+
+    expect(mockSetFilters).toHaveBeenCalledWith({
+      itinerarySlug: 'frontend-react',
     })
   })
 
@@ -97,7 +172,7 @@ describe('FiltersWidget', () => {
   it('deletes search value when closing search and updates filters accordingly', () => {
     render(
       <FiltersWidget
-        filters={{ status: 'ACTIVE' }}
+        filters={{ status: UserStatus.ACTIVE }}
         setFilters={mockSetFilters}
       />
     )
@@ -107,7 +182,7 @@ describe('FiltersWidget', () => {
 
     waitFor(() =>
       expect(mockSetFilters).toHaveBeenCalledWith({
-        status: 'ACTIVE',
+        status: UserStatus.ACTIVE,
         name: 'marc',
         dni: 'marc',
       })
@@ -146,7 +221,7 @@ describe('FiltersWidget', () => {
   it('deletes dates when closing dates inputs and updates filters accordingly', () => {
     render(
       <FiltersWidget
-        filters={{ status: 'ACTIVE' }}
+        filters={{ status: UserStatus.ACTIVE }}
         setFilters={mockSetFilters}
       />
     )

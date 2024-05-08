@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.15.0] - 2024-05-08
+
+### Added
+
+- Added Status filter
+
 ## [0.14.0] - 2024-05-06
 
 ### Added

@@ -1,7 +1,7 @@
 {
   "name": "web_usuaris",
   "private": true,
-  "version": "0.14.0",
+  "version": "0.15.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.0.0",
     "@itacademy/schemas": "^0.3.0",
-    "@itacademy/ui": "^0.31.6",
+    "@itacademy/ui": "^0.31.7",
     "@tanstack/react-query": "^4.29.5",
     "@tanstack/react-query-devtools": "^4.29.6",
     "@tanstack/react-table": "^8.13.2",
