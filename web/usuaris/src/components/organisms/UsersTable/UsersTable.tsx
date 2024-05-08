@@ -2,19 +2,11 @@
 import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
-import {
-  Checkbox,
-  FlexBox,
-  Icon,
-  Modal,
-  Spinner,
-  colors,
-  dimensions,
-} from '@itacademy/ui'
+import { Checkbox, Spinner, dimensions } from '@itacademy/ui'
 import { Table } from '../../molecules'
 import { TFilters, TUserData } from '../../../types'
 import { icons } from '../../../assets/icons'
-import { useDeleteUser, useGetUsers, useUpdateUser } from '../../../hooks'
+import { useGetUsers, useUpdateUser } from '../../../hooks'
 import {
   ActionsContainer,
   ActionsHeader,
@@ -24,11 +16,10 @@ import {
   DeleteIcon,
   DisabledStyled,
   IconStyled,
-  ModalButtonStyled,
-  ModalErrorTextStyled,
   StatusStyled,
   TableContainer,
 } from './UsersTable.styles'
+import { DeleteConfirmationModal } from '../../molecules/DeleteConfirmationModal'
 
 type TUsersTable = {
   filtersSelected: TFilters | Record<string, never>
@@ -51,13 +42,6 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   const [idToDelete, setIdToDelete] = useState<string>('')
-
-  const {
-    deleteUserMutation,
-    isLoading: isDeleteLoading,
-    isSuccess: isDeleteSuccess,
-    isError: isDeleteError,
-  } = useDeleteUser()
 
   useEffect(() => {
     setFilters(filtersSelected)
@@ -113,13 +97,6 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
 
     return removeUsers
   }
-
-  useEffect(() => {
-    if (isDeleteSuccess) {
-      setSelectedUsers([])
-      setTimeout(() => setIsModalOpen(false), 2000)
-    }
-  }, [isDeleteSuccess])
 
   const columHelper = createColumnHelper<TUserData>()
 
@@ -320,54 +297,11 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         data={users || []}
         noResultsMessage={t('No hay usuarios para mostrar')}
       />
-      <Modal
-        title={t('Eliminar usuario')}
-        isOpen={isModalOpen}
-        toggleModal={() => {
-          setIsModalOpen(false)
-        }}
-      >
-        {isDeleteError ? (
-          <ModalErrorTextStyled data-testid="delete-error">
-            {t('Error al eliminar el usuario')}
-          </ModalErrorTextStyled>
-        ) : (
-          ''
-        )}
-        <FlexBox direction="column" gap={dimensions.spacing.md}>
-          {isDeleteLoading ? <Spinner size="small" role="status" /> : ''}
-        </FlexBox>
-        <FlexBox direction="row" gap={dimensions.spacing.md}>
-          {isDeleteSuccess ? (
-            <ModalButtonStyled
-              size="small"
-              backgroundColor={colors.success}
-              disabled={isDeleteLoading}
-              border={colors.success}
-            >
-              <Icon data-testid="done-icon" name="done" />
-            </ModalButtonStyled>
-          ) : (
-            <ModalButtonStyled
-              data-testid="confirm-button"
-              onClick={() => deleteUserMutation(idToDelete)}
-              size="small"
-            >
-              {t('Confirmar')}
-            </ModalButtonStyled>
-          )}
-          <ModalButtonStyled
-            data-testid="cancel-button"
-            outline
-            size="small"
-            onClick={() => {
-              setIsModalOpen(false)
-            }}
-          >
-            {t('Cancelar')}
-          </ModalButtonStyled>
-        </FlexBox>
-      </Modal>
+      <DeleteConfirmationModal
+        open={isModalOpen}
+        toggleModal={() => setIsModalOpen(!isModalOpen)}
+        idToDelete={idToDelete}
+      />
     </TableContainer>
   )
 }

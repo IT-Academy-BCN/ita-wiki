@@ -1,7 +1,13 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { deleteUser } from '../helpers/fetchers'
 
-export const useDeleteUser = () => {
+type TUseDeleteUser = {
+  successCb?: () => void
+  errorCb?: () => void
+}
+
+export const useDeleteUser = (props?: TUseDeleteUser) => {
+  const { successCb, errorCb } = props || {}
   const queryClient = useQueryClient()
 
   const {
@@ -11,7 +17,11 @@ export const useDeleteUser = () => {
     isError,
   } = useMutation<void, Error, string>(deleteUser, {
     onSuccess: () => {
+      if (successCb) successCb()
       queryClient.invalidateQueries(['users'])
+    },
+    onError: () => {
+      if (errorCb) errorCb()
     },
   })
 

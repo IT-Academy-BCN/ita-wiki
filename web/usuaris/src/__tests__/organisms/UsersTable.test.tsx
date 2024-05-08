@@ -1,7 +1,6 @@
-import { colors } from '@itacademy/ui'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { UsersTable } from '../../components/organisms'
-import { deleteErrorHandlers, errorHandlers } from '../../__mocks__/handlers'
+import { errorHandlers } from '../../__mocks__/handlers'
 import { server } from '../../__mocks__/server'
 
 afterEach(() => {
@@ -161,101 +160,6 @@ describe('UsersTable', () => {
         expect(acceptButton).toHaveTextContent('Bloquejar')
         expect(pendingStatus).toHaveTextContent(/Actiu/i)
       })
-    })
-  })
-
-  it('opens modal when delete button is clicked', async () => {
-    render(<UsersTable filtersSelected={{}} />)
-
-    await waitFor(() => {
-      const deleteButton = screen.getAllByTestId('delete-button')[0]
-      fireEvent.click(deleteButton)
-    })
-
-    await waitFor(() => {
-      const modal = screen.getByTestId('modal-wrapper')
-      expect(modal).toBeInTheDocument()
-    })
-  })
-
-  it('closes modal when cancel button is clicked', async () => {
-    render(<UsersTable filtersSelected={{}} />)
-
-    await waitFor(() => {
-      const deleteButton = screen.getAllByTestId('delete-button')[0]
-      fireEvent.click(deleteButton)
-    })
-
-    await waitFor(() => {
-      const modal = screen.getByTestId('modal-wrapper')
-      expect(modal).toBeInTheDocument()
-    })
-    await waitFor(() => {
-      const cancelButton = screen.getByTestId('cancel-button')
-      expect(cancelButton).toBeInTheDocument()
-      fireEvent.click(cancelButton)
-    })
-
-    waitFor(() => {
-      expect(screen.getByTestId('modal-wrapper')).not.toBeInTheDocument()
-    })
-  })
-
-  it('changes confirmation button to an icon and update the background color to green on sucessful deletion', async () => {
-    render(<UsersTable filtersSelected={{}} />)
-
-    await waitFor(() => {
-      const deleteButton = screen.getAllByTestId('delete-button')[0]
-      fireEvent.click(deleteButton)
-    })
-
-    await waitFor(() => {
-      const modal = screen.getByTestId('modal-wrapper')
-      expect(modal).toBeInTheDocument()
-    })
-
-    await waitFor(() => {
-      const confirmButton = screen.getByTestId('confirm-button')
-      expect(confirmButton).toBeInTheDocument()
-      fireEvent.click(confirmButton)
-    })
-
-    await waitFor(() => {
-      const spinnerResolved = screen.queryByRole('status') as HTMLElement
-      expect(spinnerResolved).not.toBeInTheDocument()
-      const doneIcon = screen.getByTestId('done-icon')
-      const doneButton = doneIcon.parentElement
-      expect(doneIcon).toBeInTheDocument()
-      expect(doneButton).toHaveStyle(`background-color: ${colors.success}`)
-    })
-  })
-
-  it('renders error message when user deletion fails', async () => {
-    server.use(...deleteErrorHandlers)
-
-    render(<UsersTable filtersSelected={{}} />)
-
-    await waitFor(() => {
-      const deleteButton = screen.getAllByTestId('delete-button')[0]
-      fireEvent.click(deleteButton)
-    })
-
-    await waitFor(() => {
-      const modal = screen.getByTestId('modal-wrapper')
-      expect(modal).toBeInTheDocument()
-    })
-
-    await waitFor(() => {
-      const confirmButton = screen.getByTestId('confirm-button')
-      expect(confirmButton).toBeInTheDocument()
-      fireEvent.click(confirmButton)
-    })
-
-    waitFor(() => {
-      const spinnerResolved = screen.queryByRole('status') as HTMLElement
-      expect(spinnerResolved).not.toBeInTheDocument()
-      const errorMessage = screen.getByTestId('delete-error')
-      expect(errorMessage).toBeInTheDocument()
     })
   })
 })
