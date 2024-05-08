@@ -4,7 +4,6 @@ import { itinerarySlugSchema } from '../itineraries/itinerarySchema'
 import {
   UserRole,
   UserStatus,
-  userDeletedAtSchema,
   userNameSchema,
   userRoleSchema,
   userStatusSchema,
@@ -54,12 +53,6 @@ export const dashboardUsersListQuerySchema = z.object({
     param: {
       description: 'Role to filter by',
       example: UserRole.ADMIN,
-    },
-  }),
-  deletedAt: userDeletedAtSchema.optional().openapi({
-    param: {
-      description: 'Status of deleted User',
-      example: null,
     },
   }),
 })

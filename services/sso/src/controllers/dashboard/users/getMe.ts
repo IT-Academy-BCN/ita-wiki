@@ -6,7 +6,7 @@ import { NotFoundError } from '../../../utils/errors'
 export const getMe: Middleware = async (ctx: Context) => {
   const { id } = ctx.state.user as Pick<User, 'id' | 'role'>
   const queryResult = await client.query(
-    'SELECT dni, email, name, deleted_at FROM "user" WHERE id = $1',
+    'SELECT dni, email, name FROM "user" WHERE id = $1',
     [id]
   )
 

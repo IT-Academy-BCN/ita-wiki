@@ -9,11 +9,11 @@ export const dashboardUsersListSchema = userSchema
     name: true,
     status: true,
     role: true,
-    deletedAt: true,
   })
   .extend({
     createdAt: z.date().openapi({ example: '21/02/2024' }),
     itineraryName: itineraryNameSchema,
+    deletedAt: z.date().nullable().openapi({ example: null }),
   })
   .array()
 

@@ -38,6 +38,7 @@ beforeAll(async () => {
     u.dni AS dni,
     u.status,
     u.role,
+    u.deleted_at AS "deletedAt",
     TO_CHAR(u.created_at, 'YYYY-MM-DD') AS "createdAt",
     i.name AS "itineraryName"
   FROM

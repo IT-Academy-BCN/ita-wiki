@@ -13,7 +13,7 @@ registry.registerPath({
   tags: ['dashboard'],
   path: `${pathRoot.v1.dashboard.users}`,
   description:
-    'Returns id, name, dni, itinerary, status, role and created at information of users.',
+    'Returns id, name, dni, itinerary, status, role, deletedAt and created at information of users.',
   summary: 'Get list of users name information',
   security: [{ [cookieAuth.name]: [] }],
   request: { query: dashboardUsersListQuerySchema },

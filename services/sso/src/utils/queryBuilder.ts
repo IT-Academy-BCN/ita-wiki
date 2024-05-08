@@ -6,23 +6,14 @@ import {
   startDateSchema,
 } from '../schemas/users/dashboardUsersListQuerySchema'
 import {
-  userDeletedAtSchema,
+  // userDeletedAtSchema,
   userNameSchema,
   userRoleSchema,
   userStatusSchema,
 } from '../schemas/users/userSchema'
 
 export const queryBuilder = (ctx: Context) => {
-  const {
-    itinerarySlug,
-    status,
-    startDate,
-    endDate,
-    name,
-    dni,
-    role,
-    deletedAt,
-  } = ctx
+  const { itinerarySlug, status, startDate, endDate, name, dni, role } = ctx
   let query = `
   SELECT
     u.id,
@@ -30,6 +21,7 @@ export const queryBuilder = (ctx: Context) => {
     u.dni AS dni,
     u.status,
     u.role,
+    u.deleted_at AS "deletedAt",
     TO_CHAR(u.created_at, 'YYYY-MM-DD') AS "createdAt",
     i.name AS "itineraryName"
   FROM
@@ -77,11 +69,11 @@ export const queryBuilder = (ctx: Context) => {
     conditions.push(`i.slug = $${queryParams.length + 1}`)
     queryParams.push(parsedSlug)
   }
-  if (deletedAt) {
-    const parsedDeletedAt = userDeletedAtSchema.parse(deletedAt)
-    conditions.push(`u.deleted_at = $${queryParams.length + 1}`)
-    queryParams.push(parsedDeletedAt)
-  }
+  // if (deletedAt) {
+  //   const parsedDeletedAt = userDeletedAtSchema.parse(deletedAt)
+  //   conditions.push(`u.deleted_at = $${queryParams.length + 1}`)
+  //   queryParams.push(parsedDeletedAt)
+  // }
   if (conditions.length > 0) {
     query += ` WHERE ${conditions.join(' AND ')}`
   }
