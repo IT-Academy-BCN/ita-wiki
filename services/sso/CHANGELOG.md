@@ -1,6 +1,12 @@
 All notable changes to this project will be documented in this file.
 # Changelog
 
+## [1.24.0] - 2024-04-30
+
+### Added
+
+- `queryBuilder` function created in `utils` to help the `dashboard/users/list` controller.
+
 ## [1.23.1] - 2024-04-23
 
 ### Changed

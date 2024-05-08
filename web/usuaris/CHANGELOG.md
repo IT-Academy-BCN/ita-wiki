@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.14.0] - 2024-05-01
+## [0.14.0] - 2024-05-06
 
 ### Added
 
-- Added delete user functionality to UsersTable
+- Refetch users after user status changes to update interface
 
 ## [0.13.0] - 2024-04-29
 
