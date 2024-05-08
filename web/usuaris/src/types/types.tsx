@@ -1,6 +1,12 @@
+export enum UserStatus {
+  ACTIVE = 'ACTIVE',
+  PENDING = 'PENDING',
+  BLOCKED = 'BLOCKED',
+}
+
 export type TFilters = {
   itinerarySlug?: string
-  status?: string
+  status?: UserStatus
   startDate?: string
   endDate?: string
   name?: string
@@ -21,7 +27,7 @@ export type TUpdatedUser = {
   name?: string
   password?: string
   role?: string
-  status?: string
+  status?: UserStatus
   deletedAt?: string
   itineraryId?: string
 }
@@ -30,7 +36,7 @@ export type TUserData = {
   id: string
   name: string
   dni: string
-  status: string
+  status: UserStatus
   createdAt: string
   itineraryName: string
 }

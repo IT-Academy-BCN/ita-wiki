@@ -2,9 +2,9 @@ import { FC, useCallback } from 'react'
 import styled from 'styled-components'
 import { FlexBox, Search, dimensions } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
-import { DateRange } from '../molecules'
+import { DateRange, StatusDropdown } from '../molecules'
 import { ItineraryDropdown } from '../molecules/ItineraryDropdown'
-import { type TFilters, TItinerary } from '../../types'
+import { type TFilters, TItinerary, UserStatus } from '../../types'
 
 const FiltersContainer = styled(FlexBox)`
   width: 100%;
@@ -22,6 +22,10 @@ export const FiltersWidget: FC<TFiltersWidget> = ({ filters, setFilters }) => {
     setFilters({ ...filters, itinerarySlug: itinerary?.slug })
   }
 
+  const handleStatus = (selectedStatus: UserStatus | undefined) => {
+    setFilters({ ...filters, status: selectedStatus })
+  }
+
   const handleSearch = useCallback(
     (searchValue: string) => {
       setFilters({
@@ -33,6 +37,7 @@ export const FiltersWidget: FC<TFiltersWidget> = ({ filters, setFilters }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [filters]
   )
+
   const handleDates = (startDate: Date | null, endDate: Date | null) => {
     setFilters({
       ...filters,
@@ -48,6 +53,7 @@ export const FiltersWidget: FC<TFiltersWidget> = ({ filters, setFilters }) => {
       gap={dimensions.spacing.xs}
     >
       <ItineraryDropdown handleItinerary={handleItinerary} />
+      <StatusDropdown handleStatus={handleStatus} />
       <DateRange
         labelStartDate={t('Fecha de inicio')}
         labelEndDate={t('Fecha final')}
