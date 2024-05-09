@@ -60,6 +60,7 @@ export const FiltersWidget: FC<TFiltersWidget> = ({ filters, setFilters }) => {
       <ItineraryDropdown handleItinerary={handleItinerary} />
       <StatusDropdown handleStatus={handleStatus} />
       <RolFilter handleRole={handleRole} />
+
       <DateRange
         labelStartDate={t('Fecha de inicio')}
         labelEndDate={t('Fecha final')}
