@@ -1,11 +1,13 @@
 import { HttpResponse, http } from 'msw'
 import { urls } from '../constants'
 import { UserRole } from '../types/types'
+import { UserStatus } from '../types'
 
 export const handlers = [
   http.get(urls.getUsers, ({ request }) => {
     const url = new URL(request.url)
     const itinerarySlug = url.searchParams.get('itinerarySlug')
+    const status = url.searchParams.get('status')
     const startDate = url.searchParams.get('startDate')
     const endDate = url.searchParams.get('endDate')
     const name = url.searchParams.get('name')
@@ -13,6 +15,7 @@ export const handlers = [
 
     if (
       itinerarySlug === 'frontend-react' &&
+      status === UserStatus.ACTIVE &&
       ((startDate &&
         startDate <= '2023/11/06 00:00:00.000' &&
         endDate &&
@@ -35,6 +38,7 @@ export const handlers = [
         { status: 200 }
       )
     }
+
     return HttpResponse.json(
       [
         {

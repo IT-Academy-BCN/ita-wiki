@@ -5,6 +5,7 @@ import { setupServer } from 'msw/node'
 import { useUpdateUser } from '../../hooks'
 import { queryClient } from '../setup'
 import { handlers } from '../../__mocks__/handlers'
+import { UserStatus } from '../../types'
 
 const server = setupServer(...handlers)
 beforeEach(() => {
@@ -36,7 +37,7 @@ describe('useUpdateUser hook', () => {
     })
   })
 
-  it('should call changeUserStatus on user status update', async () => {
+  it('should call changeUserStatus on user status update and refetch users on success', async () => {
     const { result } = renderHook(() => useUpdateUser(), {
       wrapper: ({ children }) => (
         <QueryClientProvider client={queryClient}>
@@ -44,15 +45,19 @@ describe('useUpdateUser hook', () => {
         </QueryClientProvider>
       ),
     })
+
+    const invalidateQueriesSpy = vi.spyOn(queryClient, 'invalidateQueries')
+
     act(() => {
       result.current.changeUserStatus.mutate({
         id: '1',
-        status: 'BLOCKED',
+        status: UserStatus.BLOCKED,
       })
     })
     await waitFor(() => {
       expect(result.current.error).toBe(null)
       expect(result.current.isSuccess).toBe(true)
+      expect(invalidateQueriesSpy).toHaveBeenCalledWith(['users'])
     })
   })
 })

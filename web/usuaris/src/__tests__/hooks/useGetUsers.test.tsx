@@ -3,6 +3,7 @@ import { useGetUsers } from '../../hooks/useGetUsers'
 import { renderHook, waitFor } from '../test-utils'
 import { queryClient } from '../setup'
 import { type TFilters } from '../../types'
+import { UserStatus } from '../../types'
 
 describe('useGetUsers', () => {
   it('fetches users successfully', async () => {
@@ -68,7 +69,7 @@ describe('useGetUsers', () => {
   it('handles filters correctly', async () => {
     const filters: TFilters = {
       itinerarySlug: 'example-slug',
-      status: 'ACTIVE',
+      status: UserStatus.ACTIVE,
       startDate: '2023-03-05T00:00:00.000Z',
       endDate: '2026-03-05T00:00:00.000Z',
       name: 'John Doe',

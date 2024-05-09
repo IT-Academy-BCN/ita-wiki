@@ -91,6 +91,7 @@ export const ItineraryDropdown: FC<TItineraryDropdown> = ({
       openText={t('Abrir')}
       closeText={t('Cerrar')}
       deselectText={t('Deseleccionar')}
+      data-testid="itinerary-dropdown"
     />
   ) : null
 }
