@@ -37,7 +37,7 @@ export const ModalErrorTextStyled = styled(Text)`
   text-align: center;
   color: ${colors.error};
   margin: ${dimensions.spacing.none};
-  padding-top: ${dimensions.spacing.lg};
+  padding-top: ${dimensions.spacing.xs};
   padding-bottom: ${dimensions.spacing.lg};
 `
 
@@ -53,6 +53,7 @@ export const DeleteConfirmationModal: FC<TDeleteConfirmationModal> = ({
   const { t } = useTranslation()
   const { deleteUserMutation, isLoading, isSuccess, isError } = useDeleteUser({
     successCb: toggleModal,
+    errorCb: toggleModal,
   })
 
   return (
@@ -74,9 +75,11 @@ export const DeleteConfirmationModal: FC<TDeleteConfirmationModal> = ({
       <FlexBox direction="row" gap={dimensions.spacing.md}>
         <Button
           data-testid="confirm-button"
-          onClick={() => deleteUserMutation(idToDelete)}
+          onClick={() => {
+            deleteUserMutation(idToDelete)
+          }}
         >
-          {isLoading ? <Spinner /> : t('Confirmar')}
+          {isLoading ? <Spinner size="xsmall" /> : t('Confirmar')}
         </Button>
         <Button data-testid="cancel-button" outline onClick={toggleModal}>
           {t('Cancelar')}

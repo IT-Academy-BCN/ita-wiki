@@ -3,7 +3,7 @@ import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { Checkbox, Spinner, dimensions } from '@itacademy/ui'
-import { Table } from '../../molecules'
+import { DeleteConfirmationModal, Table } from '../../molecules'
 import { TFilters, TUserData, UserStatus } from '../../../types'
 import { icons } from '../../../assets/icons'
 import { useGetUsers, useUpdateUser } from '../../../hooks'
@@ -19,7 +19,6 @@ import {
   StatusStyled,
   TableContainer,
 } from './UsersTable.styles'
-import { DeleteConfirmationModal } from '../../molecules/DeleteConfirmationModal'
 
 type TUsersTable = {
   filtersSelected: TFilters | Record<string, never>
@@ -292,7 +291,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       />
       <DeleteConfirmationModal
         open={isModalOpen}
-        toggleModal={() => setIsModalOpen(!isModalOpen)}
+        toggleModal={() => setIsModalOpen(false)}
         idToDelete={idToDelete}
       />
     </TableContainer>
