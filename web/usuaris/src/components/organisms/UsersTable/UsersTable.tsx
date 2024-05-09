@@ -98,7 +98,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
 
   const columHelper = createColumnHelper<TUserData>()
 
-  const columns: ColumnDef<TUserData, UserStatus, UserRole>[] = [
+  const columns: ColumnDef<TUserData, UserStatus>[] = [
     columHelper.accessor('id', {
       header: '',
       cell: ({ row }) => {
