@@ -35,7 +35,7 @@ describe('RolesFilter', () => {
 
     fireEvent.click(dropdown)
 
-    const roleOption = screen.getByText(/ADMIN/i, { exact: false })
+    const roleOption = screen.getByText(/ADMIN/i)
 
     fireEvent.click(roleOption)
 
