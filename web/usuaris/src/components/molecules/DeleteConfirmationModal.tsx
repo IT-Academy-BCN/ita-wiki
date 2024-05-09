@@ -51,16 +51,19 @@ export const DeleteConfirmationModal: FC<TDeleteConfirmationModal> = ({
   idToDelete,
 }) => {
   const { t } = useTranslation()
-  const { deleteUserMutation, isLoading, isSuccess, isError } = useDeleteUser({
-    successCb: toggleModal,
-    errorCb: toggleModal,
-  })
+  const { deleteUserMutation, isLoading, isSuccess, isError, reset } =
+    useDeleteUser({
+      successCb: toggleModal,
+    })
 
   return (
     <Modal
       title={t('Eliminar usuario')}
       isOpen={open}
-      toggleModal={toggleModal}
+      toggleModal={() => {
+        toggleModal()
+        reset()
+      }}
     >
       {isSuccess && (
         <ModalSuccessTextStyled data-testid="success-message">
@@ -81,7 +84,14 @@ export const DeleteConfirmationModal: FC<TDeleteConfirmationModal> = ({
         >
           {isLoading ? <Spinner size="xsmall" /> : t('Confirmar')}
         </Button>
-        <Button data-testid="cancel-button" outline onClick={toggleModal}>
+        <Button
+          data-testid="cancel-button"
+          outline
+          onClick={() => {
+            toggleModal()
+            reset()
+          }}
+        >
           {t('Cancelar')}
         </Button>
       </FlexBox>

@@ -20,16 +20,14 @@ export const useDeleteUser = (props?: TUseDeleteUser) => {
     mutationFn: (userId) => deleteUser(userId),
     onSuccess: () => {
       queryClient.invalidateQueries(['users'])
-      setTimeout(() => {
-        if (successCb) successCb()
-        reset()
-      }, 3000)
+      if (successCb)
+        setTimeout(() => {
+          successCb()
+          reset()
+        }, 2000)
     },
     onError: () => {
-      setTimeout(() => {
-        if (errorCb) errorCb()
-        reset()
-      }, 3000)
+      if (errorCb) errorCb()
     },
   })
 
@@ -38,5 +36,6 @@ export const useDeleteUser = (props?: TUseDeleteUser) => {
     isLoading,
     isSuccess,
     isError,
+    reset,
   }
 }
