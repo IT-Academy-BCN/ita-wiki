@@ -37,12 +37,15 @@ describe('UsersTable', () => {
       expect(screen.getByText(/Pendent/i)).toBeInTheDocument()
       expect(screen.getByText(/Backend Node/i)).toBeInTheDocument()
       expect(screen.getByText(/Acceptar/i)).toBeInTheDocument()
-      expect(screen.getByText(/Actiu/i)).toBeInTheDocument()
       expect(screen.getByText('Bloquejar')).toBeInTheDocument()
+      expect(screen.getByText(/Actiu/i)).toBeInTheDocument()
       expect(screen.getByText(/Fullstack Php/i)).toBeInTheDocument()
 
       const frontReact = screen.getAllByText(/Frontend React/i)
       frontReact.forEach((item) => expect(item).toBeInTheDocument())
+
+      const adminRol = screen.getAllByText(/Administrador/i)
+      adminRol.forEach((item) => expect(item).toBeInTheDocument())
 
       const blockedStatus = screen.getAllByText('Bloquejat')
       blockedStatus.forEach((status) => expect(status).toBeInTheDocument())
@@ -65,6 +68,7 @@ describe('UsersTable', () => {
           endDate: '2023/11/06 00:00:00.000',
           name: 'marc',
           dni: 'marc',
+          role: 'ADMIN',
         }}
       />
     )

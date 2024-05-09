@@ -20,14 +20,20 @@ export type TItinerary = {
   slug: string
 }
 
+export type TRol = {
+  id: string
+  name: string
+  slug: string
+}
+
 export type TUpdatedUser = {
   id: string
   dni?: string
   email?: string
   name?: string
   password?: string
-  role?: string
   status?: UserStatus
+  role?: UserRole
   deletedAt?: string
   itineraryId?: string
 }
@@ -39,4 +45,11 @@ export type TUserData = {
   status: UserStatus
   createdAt: string
   itineraryName: string
+  role: UserRole
+}
+
+export enum UserRole {
+  ADMIN = 'ADMIN',
+  REGISTERED = 'REGISTERED',
+  MENTOR = 'MENTOR',
 }
