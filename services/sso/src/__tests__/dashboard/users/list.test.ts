@@ -15,6 +15,7 @@ const responseSchema = userSchema
   .extend({
     createdAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     itineraryName: z.string(),
+    deletedAt: z.string().nullable(),
   })
   .array()
 
