@@ -42,10 +42,10 @@ export type TUserData = {
   id: string
   name: string
   dni: string
-  status: UserStatus
+  status: string
   createdAt: string
   itineraryName: string
-  role: UserRole
+  role: string
 }
 
 export enum UserRole {

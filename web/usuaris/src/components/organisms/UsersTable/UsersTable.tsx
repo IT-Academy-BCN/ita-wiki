@@ -98,7 +98,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
 
   const columHelper = createColumnHelper<TUserData>()
 
-  const columns: ColumnDef<TUserData, UserStatus>[] = [
+  const columns: ColumnDef<TUserData, string>[] = [
     columHelper.accessor('id', {
       header: '',
       cell: ({ row }) => {
@@ -226,8 +226,6 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         const role: UserRole = row.getValue('role')
         const status: UserStatus = row.getValue('status')
         let isDisabled: boolean | undefined
-        const translatedRole = UserRole[role]
-        const traslate = t(translatedRole)
 
         if (selectedStatus && selectedStatus !== status) {
           isDisabled = true
@@ -235,7 +233,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
           isDisabled = undefined
         }
 
-        return <DisabledStyled disabled={isDisabled}>{traslate}</DisabledStyled>
+        return <DisabledStyled disabled={isDisabled}>{t(role)}</DisabledStyled>
       },
     }),
 
