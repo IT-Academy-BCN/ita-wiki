@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.15.2] - 2024-05-13
+
+### Fixed
+
+- Issue where auth-Refresh cookies was not well-cleared and remain it besides you logout `GET /api/v1/auth/logout`.
+
+## [0.15.1] - 2024-04-29
+
+### Fixed
+
+- Resolved an issue where an empty request was sent to the SSO user search endpoint (`GET /api/v1/users`) without IDs when no resources were found.
+
+## [0.15.0] - 2024-04-15
+
+### Changed
+
+- Unified error handling using htpp status and `DefaultError` in sso functions.
+- Changed the response code for unauthorized access attempts from 498 to 401 to align with standard HTTP status codes.
+
 ## [0.14.0] - 2024-04-05
 
 ### Added

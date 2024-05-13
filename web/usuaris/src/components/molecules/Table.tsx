@@ -23,11 +23,7 @@ const THeadStyled = styled.thead`
 
 const THStyled = styled.th`
   padding-bottom: ${dimensions.spacing.sm};
-  min-width: 8.3rem;
-
-  &:last-child {
-    text-align: center;
-  }
+  width: auto;
 `
 
 const TBodyStyled = styled.tbody``
@@ -83,7 +79,7 @@ export const Table = <TData, TValue>({
           ))
         ) : (
           <TRStyled>
-            <TDStyled>{noResultsMessage}</TDStyled>
+            <TDStyled colSpan={columns.length}>{noResultsMessage}</TDStyled>
           </TRStyled>
         )}
       </TBodyStyled>

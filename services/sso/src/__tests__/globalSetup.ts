@@ -13,6 +13,7 @@ server = app.listen()
 
 export const testUserData = {
   user: {
+    id: 'ayglpcuwwjou8r1m6fqv1fra',
     email: 'testingUser@user.cat',
     name: 'testingUser',
     dni: '38826335N',
@@ -22,6 +23,7 @@ export const testUserData = {
     user_meta: {},
   },
   admin: {
+    id: 'q28v1k1h9g8uk0pwzaek2hhx',
     email: 'testingAdmin@user.cat',
     name: 'testingAdmin',
     dni: '98917624Y',
@@ -31,6 +33,7 @@ export const testUserData = {
     user_meta: {},
   },
   mentor: {
+    id: 'mdigzoil44gafwd5aaxbb90a',
     email: 'testingMentor@user.cat',
     name: 'testingMentor',
     dni: '34508651A',
@@ -40,6 +43,7 @@ export const testUserData = {
     user_meta: {},
   },
   pendingUser: {
+    id: 'onk8ed4rzgscnac6rltyd8vs',
     email: 'testingPendingUser@user.cat',
     name: 'testingPendingUser',
     dni: 'Z4503536A',
@@ -49,6 +53,7 @@ export const testUserData = {
     user_meta: {},
   },
   blockedUser: {
+    id: 'bbiax2thm5usyfg7lus1sosp',
     email: 'testingBlockedUser@user.cat',
     name: 'testingBlockedUser',
     dni: '45744082A',
@@ -58,10 +63,21 @@ export const testUserData = {
     user_meta: {},
   },
   userToBeBlocked: {
+    id: 'jay0jlyn7p919e7uy4efbh7m',
     email: 'testingUserToBeBlocked@user.cat',
     name: 'testingUserToBeBlocked',
     dni: '90001685V',
     password: 'testingPswd6',
+    role: UserRole.REGISTERED,
+    status: UserStatus.ACTIVE,
+    user_meta: {},
+  },
+  userToDelete: {
+    id: 'b6z2od3ut12qs0ilem6njgjp',
+    email: 'userToDelete@user.cat',
+    name: 'userToDelete',
+    dni: '45825710G',
+    password: 'testingPswd7',
     role: UserRole.REGISTERED,
     status: UserStatus.ACTIVE,
     user_meta: {},
@@ -123,6 +139,8 @@ export async function setup() {
       itineraryId = blockedUserItineraryId
     } else if (user.email === 'testingUserToBeBlocked@user.cat') {
       itineraryId = userToBeBlockedItineraryId
+    } else if (user.email === 'userToDelete@user.cat') {
+      itineraryId = userToBeBlockedItineraryId
     }
 
     const query = `
@@ -130,7 +148,7 @@ export async function setup() {
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
       ON CONFLICT (dni) DO NOTHING;`
     await client.query(query, [
-      generateId(),
+      user.id,
       user.dni,
       user.email,
       user.name,

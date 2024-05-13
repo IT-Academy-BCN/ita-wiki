@@ -2,6 +2,78 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.17.0] - 2024-05-08
+
+### Added
+
+- Added Delete
+
+## [0.16.0] - 2024-05-09
+
+### Added
+
+- Added Role column to UsersTable
+- Added Roles filter feature
+
+## [0.15.0] - 2024-05-08
+
+### Added
+
+- Added Status filter
+
+## [0.14.0] - 2024-05-06
+
+### Added
+
+- Refetch users after user status changes to update interface
+
+## [0.13.0] - 2024-04-29
+
+### Added
+
+- Added close icon to deselect dates in DateRange
+- Added dates to filters to fetch users in FiltersWidget
+- Changed qs to handle null, undefined and empty string
+
+## [0.12.0] - 2024-04-29
+
+### Added
+
+- Added Search component
+- Added search value to filters to fetch users
+
+## [0.11.0] - 2024-04-23
+
+### Added
+
+- Updated Itinerary dropdown with deselect function
+- Added filters to fetch Users
+- Added Itinerary filter feature
+
+## [0.10.0] - 2024-04-18
+
+### Added
+
+- Added DNI column to UsersTable
+
+## [0.9.0] - 2024-04-17
+
+### Added
+
+- Added block/activate fuctionality to UsersTable
+
+## [0.8.0] - 2024-04-15
+
+### Added
+
+- Added Checkbox and Delete Button to UsersTable
+
+## [0.7.0] - 2024-04-11
+
+### Added
+
+- Added Itineraries Dropdown filter selector
+
 ## [0.6.1] - 2024-04-11
 
 ### Fixed

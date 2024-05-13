@@ -6,21 +6,25 @@ import { userSchema } from '../../../schemas'
 import { itinerariesData, server, testUserData } from '../../globalSetup'
 import { client } from '../../../models/db'
 import { DashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
-import { UserStatus } from '../../../schemas/users/userSchema'
+import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
 
 const route = `${pathRoot.v1.dashboard.users}`
 
 const responseSchema = userSchema
-  .pick({ id: true, name: true, status: true })
+  .pick({ id: true, name: true, dni: true, status: true, role: true })
   .extend({
     createdAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     itineraryName: z.string(),
+    deletedAt: z.string().nullable(),
   })
   .array()
 
 let authAdminToken = ''
 let users: DashboardUsersList
-
+const testName = 'testing'
+const testDni = '38826335N'
+const testRole = UserRole.REGISTERED
+const testStatus = UserStatus.ACTIVE
 beforeAll(async () => {
   const loginRoute = `${pathRoot.v1.dashboard.auth}/login`
   const responseAdmin = await supertest(server).post(loginRoute).send({
@@ -32,9 +36,12 @@ beforeAll(async () => {
     `SELECT
     u.id,
     u.name AS name,
-    i.name AS "itineraryName",
+    u.dni AS dni,
     u.status,
-    TO_CHAR(u.created_at, 'YYYY-MM-DD') AS "createdAt"
+    u.role,
+    u.deleted_at AS "deletedAt",
+    TO_CHAR(u.created_at, 'YYYY-MM-DD') AS "createdAt",
+    i.name AS "itineraryName"
   FROM
     "user" u
   JOIN itinerary i ON u.itinerary_id = i.id;`
@@ -127,7 +134,7 @@ describe('Testing get users endpoint', () => {
       .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
-    expect(body).toHaveLength(4)
+    expect(body).toHaveLength(5)
     body.forEach((user) => {
       expect(user.status).toBe(UserStatus.ACTIVE)
     })
@@ -162,14 +169,13 @@ describe('Testing get users endpoint', () => {
       .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
-    expect(body).toHaveLength(6)
+    expect(body).toHaveLength(7)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
   it('returns a collection of users successfully with a name query of 2 or more characters', async () => {
-    const validName = 'testing'
     const response = await supertest(server)
       .get(route)
-      .query({ name: validName })
+      .query({ name: testName })
       .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
@@ -204,5 +210,52 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server).get(route)
     expect(response.status).toBe(401)
     expect(response.body.message).toBe('Invalid Credentials')
+  })
+  it('returns a user successfully with a dni query of 2 or more characters', async () => {
+    const validDni = 'Z45035'
+    const response = await supertest(server)
+      .get(route)
+      .query({ dni: validDni })
+      .set('Cookie', [authAdminToken])
+    const { body }: { body: DashboardUsersList } = response
+    expect(response.status).toBe(200)
+    expect(body).toBeInstanceOf(Array)
+    expect(body).toHaveLength(1)
+    expect(responseSchema.safeParse(body).success).toBeTruthy()
+  })
+  it('returns a  collection of users by role successfully with a logged-in admin user ', async () => {
+    const registeredUsers = users.filter((u) => u.role === UserRole.REGISTERED)
+    const response = await supertest(server)
+      .get(route)
+      .query({ role: UserRole.REGISTERED })
+      .set('Cookie', [authAdminToken])
+    const { body }: { body: DashboardUsersList } = response
+    expect(response.status).toBe(200)
+    expect(body).toHaveLength(5)
+    body.forEach((user) => {
+      expect(user.role).toBe(UserRole.REGISTERED)
+    })
+    const sortedResponseBody = body.sort((a, b) => a.id.localeCompare(b.id))
+    const sortedExpected = registeredUsers.sort((a, b) =>
+      a.id.localeCompare(b.id)
+    )
+    expect(sortedResponseBody).toEqual(sortedExpected)
+    expect(responseSchema.safeParse(body).success).toBeTruthy()
+  })
+  it('returns a colletion of users by 4 diferent search values', async () => {
+    const response = await supertest(server)
+      .get(route)
+      .query({
+        name: testName,
+        dni: testDni,
+        role: testRole,
+        status: testStatus,
+      })
+      .set('Cookie', [authAdminToken])
+    const { body }: { body: DashboardUsersList } = response
+    expect(response.status).toBe(200)
+    expect(body).toBeInstanceOf(Array)
+    expect(body).toHaveLength(2)
+    expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
 })

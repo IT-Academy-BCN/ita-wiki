@@ -30,7 +30,11 @@ class UnauthorizedError extends DefaultError {
     super(401, `${message}`)
   }
 }
-
+class InvalidToken extends DefaultError {
+  constructor(message: string = 'Token is not valid') {
+    super(401, `${message}`)
+  }
+}
 class ForbiddenError extends DefaultError {
   constructor(message: string = 'Forbidden') {
     super(403, `${message}`)
@@ -46,6 +50,12 @@ class NotFoundError extends DefaultError {
 class DuplicateError extends DefaultError {
   constructor(resource: string) {
     super(409, `${resource} already exists`)
+  }
+}
+
+class DeletedError extends DefaultError {
+  constructor(message: string = 'User already deleted') {
+    super(410, `${message}`)
   }
 }
 
@@ -65,11 +75,6 @@ class InvalidParamError extends DefaultError {
     super(422, `Invalid ${parameter}`)
   }
 }
-class InvalidToken extends DefaultError {
-  constructor(message: string = 'Token is not valid') {
-    super(498, `${message}`)
-  }
-}
 
 export {
   DefaultError,
@@ -83,4 +88,5 @@ export {
   MissingParamError,
   InvalidParamError,
   InvalidToken,
+  DeletedError,
 }

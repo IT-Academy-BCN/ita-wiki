@@ -80,7 +80,7 @@ describe('Testing POST media endpoint', () => {
         .set('Cookie', 'authToken=invalidToken')
         .attach('media', `${pathUploadMedia}/testImage.png`)
 
-      expect(response.status).toBe(498)
+      expect(response.status).toBe(401)
       expect(response.body.message).toBe('Token is not valid')
       const cookieHeader = response.headers['set-cookie']
       expect(cookieHeader).toBeDefined()

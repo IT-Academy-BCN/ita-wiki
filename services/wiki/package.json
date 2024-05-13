@@ -1,7 +1,7 @@
 {
   "name": "service_wiki",
   "private": true,
-  "version": "0.14.0",
+  "version": "0.15.2",
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },

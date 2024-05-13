@@ -21,6 +21,10 @@ const meta: Meta<typeof Dropdown> = {
         iconSvg: { control: 'text' },
       },
     ],
+    $size: {
+      control: { type: 'select' },
+      options: ['small', 'normal', 'large'],
+    },
   },
 }
 
@@ -187,6 +191,50 @@ export const WithImgAndSelectedOption: DropdownStory = {
         iconSvg: angular,
       },
     ],
+  },
+  render: (args) => <Dropdown {...args} />,
+}
+
+export const WithSizeSmall: DropdownStory = {
+  args: {
+    placeholder: 'Select an option',
+    options: [
+      {
+        id: '1',
+        name: 'Option 1 with overflow text',
+        iconSvg: angular,
+      },
+      {
+        id: '2',
+        name: 'Option 2 normal',
+        iconSvg: angular,
+      },
+    ],
+    $size: 'small',
+  },
+  render: (args) => <Dropdown {...args} />,
+}
+
+export const WithSizeLarge: DropdownStory = {
+  args: {
+    defaultSelectedOption: {
+      id: '2',
+      name: 'Option with large text 2',
+      iconSvg: angular,
+    },
+    options: [
+      {
+        id: '1',
+        name: 'Option with large text 1',
+        iconSvg: angular,
+      },
+      {
+        id: '2',
+        name: 'Option with large text 2',
+        iconSvg: angular,
+      },
+    ],
+    $size: 'large',
   },
   render: (args) => <Dropdown {...args} />,
 }

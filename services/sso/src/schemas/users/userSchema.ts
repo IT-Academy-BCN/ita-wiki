@@ -12,7 +12,10 @@ export enum UserStatus {
   BLOCKED = 'BLOCKED',
 }
 export const userStatusSchema = z.nativeEnum(UserStatus)
-export const userIdSchema = z.string().cuid2()
+export const userRoleSchema = z.nativeEnum(UserRole)
+export const userIdSchema = z.string().cuid2().openapi({
+  example: 'b6z2od3ut12qs0ilem6njgjp',
+})
 export const userNameSchema = z
   .string()
   .nonempty()
@@ -23,10 +26,11 @@ export const userSchema = z.object({
   email: z.string().email().nonempty().openapi({ example: 'user@example.cat' }),
   name: userNameSchema,
   password: z.string().min(8),
-  role: z.nativeEnum(UserRole),
+  role: userRoleSchema,
   status: userStatusSchema,
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
+  deletedAt: z.string().datetime(),
   itineraryId: z.string().cuid2(),
 })
 

@@ -4,28 +4,23 @@
   "RegistrarmeBtn": "Registrar-me",
   "EntrarBtn": "Entrar",
   "Funcionalitats": "Funcionalitats bàsiques que t'ofereix aquesta plataforma:",
-
   "Guarda els teus recursos": "Guarda els teus recursos preferits",
   "Tingues els teus recursos": "Tingues els teus recursos ben organitzats",
-
   "Col·labora": "Col·labora amb els teus companys i companyes",
   "Recursos compartits": "Recursos compartits",
-
   "Vota els recursos": "Vota els recursos",
   "La comunitat decideix": "La comunitat decideix quins són més rellevants",
-
   "Configuración": "Configuració",
   "Añadir recurso": "Afegeix un recurs",
   "Menú": "Menú",
   "Ajustes": "Ajustaments",
   "Cerrar": "Tanca",
   "camp obligatori": "Aquest camp és obligatori",
-
   "Administrador de Usuarios": "Administrador d'Usuaris",
-
   "Registre": "Registre",
   "DNI": "DNI o NIE",
   "Especialidad": "Especialitat",
+  "Rol": "Rol",
   "Password": "Contrasenya",
   "repetirpassword": "Repetir contrasenya",
   "password error": "La contrasenya ha de contenir només lletres i números, mínim 8 caràcters, un número, una majúscula i una minúscula",
@@ -36,16 +31,13 @@
   "tienes una cuenta?": "Tens un compte?, entra",
   "recordar/cambiar": "Recordar/canviar la contrasenya",
   "no tienes una cuenta?": "No tens un compte?, crea'n un",
-
   "Acceso restringido": "Accés restringit",
   "Regístrate para subir o votar contenido": "Registra't per pujar o votar contingut",
   "Registrarme": "Registrar-me",
   "Entrar": "Entrar",
-
   "Editar recurso": "Edita el recurs",
   "Eliminar de favoritos": "Elimina de preferits",
   "Añadir a favoritos": "Afegeix a preferits",
-
   "Recursos favoritos": "Recursos preferits",
   "Recursos que te gustan": "Recursos que t'agraden",
   "Regístrate": "Registra't",
@@ -57,16 +49,13 @@
   "Mis recursos": "Els meus recursos",
   "Tus recursos": "Els teus recursos",
   "No has subido ningún recurso": "No has publicat cap recurs",
-
   "Temas": "Temes",
   "Usuarios": "Usuaris",
-
   "No hay temas disponibles.": "No hi ha temes disponibles.",
   "Accede desde una categoría para ver o gestionar sus temas.": "Accedeix des d'una categoria per veure o gestionar els temes.",
   "Temas de (category)": "Temes de {{name}}",
   "No tienes permiso de acceso": "No tens els permisos necessaris per accedir a aquest contingut.",
   "Ha habido un error...": "Hi ha hagut un error...",
-
   "Lista de usuarios": "Llista d'usuaris",
   "Buscar por DNI:": "Cerca per DNI:",
   "Introduce el DNI": "Introdueix el DNI",
@@ -76,7 +65,6 @@
   "Cambiar estado": "Canviar estat",
   "Desactivar": "Desactivar",
   "Activar": "Activar",
-
   "+ Crear nuevo tema": "+ Crea un nou tema",
   "Nombre del tema": "Nom del tema",
   "Nombre del nuevo tema": "Nom del tema nou",
@@ -87,7 +75,6 @@
   "Cancelar": "Cancel·la",
   "Borrar tema": "Esborra el tema",
   "No es posible borrar el tema.": "No és possible esborrar el tema.",
-
   "Filtros": "Filtres",
   "Recursos de (category)": "Recursos de {{name}}",
   "Buscar recurso": "Buscar recurs",
@@ -96,28 +83,23 @@
   "Fecha": "Data",
   "Crear nuevo recurso": "Crear nou recurs",
   "searchErrorMessage": "Escriu al menys 2 caràcters",
-
   "Crear": "Crear",
   "Título": "Títol",
   "Descripción": "Descripció",
   "Opciones": "Opcions",
   "Tema": "Tema",
   "Curso": "Curs",
-
   "Todos": "Tots",
   "Por ver": "Pendents",
   "Vistos": "Vistos",
   "Tipo": "Format",
-
   "¡Vaya! :/": "Vaja! :/",
   "Todavía no hay recursos de este tipo.": "Encara no hi ha recursos d'aquest tipus.",
-
   "Error 401 - No autorizado": "Operació no autoritzada. És necessari iniciar sessió d'usuari.",
   "Error 403 - Acceso denegado": "Accés denegat. No tens els permisos necessaris per realitzar l'operació.",
   "Error 404 - No se puede guardar": "Error en desar a la base de dades. Si us plau, torna a intentar-ho i si l'error persisteix, contacta amb l'administrador.",
   "Error 405 - Id de usuario inválido": "Identificador d'usuari no vàlid.",
   "Error 500 - Error bbdd": "Error en la base de dades. Per favor, intenta-ho més tard.",
-
   "Volver": "Torna",
   "Cerrar sesión": "Tanca sessió",
   "Sin imagen de usuario": "Sense imatge d'usuari",
@@ -125,33 +107,38 @@
   "Votos recibidos": "Vots rebuts",
   "Favoritos guardados": "Recursos preferits",
   "n/d": "n/d",
-
   "Mostrando": "Mostrant",
   "resultados para": "resultat per",
   "Nuevo Recurso": "Nou recurs",
-
   "Fecha de inicio": "Data d'inici",
   "Fecha final": "Data final",
   "De...": "De...",
   "Hasta...": "Fins...",
   "calendarLanguage": "ca",
-
   "Especialización": "Especialització",
   "Fecha alta": "Data alta",
   "Acciones": "Accions",
-  "pendiente": "Pendent",
-  "activo": "Actiu",
-  "bloqueado": "Bloquejat",
+  "PENDING": "Pendent",
+  "ACTIVE": "Actiu",
+  "BLOCKED": "Bloquejat",
   "Aceptar": "Acceptar",
   "Bloquear": "Bloquejar",
+  "ADMIN": "Administrador",
+  "REGISTERED": "Registrat",
+  "MENTOR": "Mentor",
   "Desbloquear": "Desbloquejar",
   "No hay usuarios para mostrar": "No hi ha usuaris per mostrar",
-
   "Mentores": "Mentors",
   "Connector": "Connector",
-
   "Identificador o contraseña incorrectos": "Identificador o contrasenya incorrectes",
-
   "Credenciales incorrectas.": "Credencials incorrectes.",
-  "Sólo accesible a usuarios administradores activos.": "Només accessible a usuaris administradors actius."
+  "Sólo accesible a usuarios administradores activos.": "Només accessible a usuaris administradors actius.",
+  "Abrir": "Obre",
+  "Deseleccionar": "Deselecciona",
+  "Búsqueda de usuarios": "Cerca d'usuaris",
+  "Buscar": "Cercar",
+
+  "Eliminar usuario": "Estàs segur que vols eliminar aquest usuari?",
+  "Confirmar": "Confirmar",
+  "Error al eliminar el usuario": "Error en eliminar l'usuari"
 }

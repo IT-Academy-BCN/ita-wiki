@@ -1,6 +1,7 @@
 import { dashboardUsersListSchema, userSchema } from '../../schemas'
 import { z } from '../zod'
 import {
+  DeletedUser,
   EmailDniError,
   ForbiddenError,
   InvalidCredentials,
@@ -22,10 +23,10 @@ export const missingTokenResponse = {
 }
 
 export const invalidTokenResponse = {
-  description: 'Invalid token',
+  description: 'Invalid token or missing token',
   content: {
     'application/json': {
-      schema: InvalidTokenError,
+      schema: z.union([InvalidTokenError, MissingTokenError]),
     },
   },
 }
@@ -35,6 +36,19 @@ export const userNotFoundResponse = {
   content: {
     'application/json': {
       schema: NotFoundError,
+    },
+  },
+}
+
+export const usersNotFoundResponse = {
+  description: 'Users not found',
+  content: {
+    'application/json': {
+      schema: z.object({
+        message: z
+          .string()
+          .openapi({ example: 'b6z2od3ut12qs0ilem6njgjp not found' }),
+      }),
     },
   },
 }
@@ -138,11 +152,21 @@ export const listUsersIdNameResponse = {
     },
   },
 }
+
 export const listDashboardUsersResponse = {
   description: 'Token is valid and user information is returned.',
   content: {
     'application/json': {
       schema: dashboardUsersListSchema,
+    },
+  },
+}
+
+export const deletedUsersResponse = {
+  description: 'User is already soft deleted.',
+  content: {
+    'application/json': {
+      schema: DeletedUser,
     },
   },
 }

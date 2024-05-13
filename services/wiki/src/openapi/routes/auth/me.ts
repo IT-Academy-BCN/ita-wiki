@@ -5,7 +5,6 @@ import { pathRoot } from '../../../routes/routes'
 import { cookieAuth } from '../../components/cookieAuth'
 import {
   invalidTokenResponse,
-  missingTokenResponse,
   userNotFoundResponse,
 } from '../../components/responses/authMiddleware'
 
@@ -28,9 +27,8 @@ registry.registerPath({
         },
       },
     },
-    401: missingTokenResponse,
+    401: invalidTokenResponse,
     404: userNotFoundResponse,
-    498: invalidTokenResponse,
     500: {
       description: 'Other error',
       content: {

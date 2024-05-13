@@ -5,6 +5,7 @@ import { cookieAuth } from '../../../components/cookieAuth'
 import {
   getDashboardUserResponse,
   invalidCredentialsResponse,
+  userNotFoundResponse,
 } from '../../../components/responses'
 
 registry.registerPath({
@@ -17,6 +18,7 @@ registry.registerPath({
   responses: {
     200: getDashboardUserResponse,
     401: invalidCredentialsResponse,
+    404: userNotFoundResponse,
     500: {
       description: 'Other error',
       content: {

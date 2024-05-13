@@ -12,7 +12,7 @@ export const checkInvalidToken = (
   beforeEach(async () => {
     requestWithoutToken = supertest(server)
   })
-  it(`should return 498 for ${method.toUpperCase()} ${endpoint} without token`, async () => {
+  it(`should return 401 for ${method.toUpperCase()} ${endpoint} without token`, async () => {
     let response
 
     switch (method) {
@@ -55,7 +55,7 @@ export const checkInvalidToken = (
         throw new Error(`Unsupported method: ${method}`)
     }
 
-    expect(response.status).toBe(498)
+    expect(response.status).toBe(401)
     expect(response.body.message).toBe('Token is not valid')
 
     const cookieHeader = response.headers['set-cookie']

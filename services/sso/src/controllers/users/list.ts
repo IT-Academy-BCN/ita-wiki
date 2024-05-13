@@ -7,7 +7,7 @@ export const listUsers: Middleware = async (ctx: Context) => {
   const fieldsToSelect = fields.join(', ')
   const queryParams = id.map((_, index) => `$${index + 1}`).join(', ')
   const queryResult = await client.query(
-    `SELECT  ${fieldsToSelect} FROM "user" WHERE id IN (${queryParams})`,
+    `SELECT  ${fieldsToSelect} FROM "user" WHERE id IN (${queryParams}) AND deleted_at IS NULL`,
     id
   )
 

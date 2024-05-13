@@ -2,6 +2,36 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.31.7] - 2024-05-02
+
+### Fixed
+
+- Fix Dropdown to allow custom data-testid in header
+
+## [0.31.6] - 2024-05-02
+
+### Changed
+
+- Deleted unnecessary dependency in Search component
+
+## [0.31.5] - 2024-04-24
+
+### Changed
+
+- Update Dropdown to add deselect in header and sizes
+
+## [0.31.4] - 2024-04-23
+
+### Changed
+
+- Update Search to add callback function
+
+## [0.31.3] - 2024-04-15
+
+### Changed
+
+- Update Dropdown to add deselect feature
+
 ## [0.31.2] - 2024-04-10
 
 ### Changed
