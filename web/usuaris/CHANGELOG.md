@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## [0.16.0] - 2024-05-09
+
+### Added
+
+- Added Role column to UsersTable 
+- Added Roles filter feature
+  
+
 ## [0.15.0] - 2024-05-08
 
 ### Added
@@ -14,6 +23,7 @@ All notable changes to this project will be documented in this file.
 
 - Refetch users after user status changes to update interface
 
+
 ## [0.13.0] - 2024-04-29
 
 ### Added
@@ -21,6 +31,7 @@ All notable changes to this project will be documented in this file.
 - Added close icon to deselect dates in DateRange
 - Added dates to filters to fetch users in FiltersWidget
 - Changed qs to handle null, undefined and empty string
+
 
 ## [0.12.0] - 2024-04-29
 
