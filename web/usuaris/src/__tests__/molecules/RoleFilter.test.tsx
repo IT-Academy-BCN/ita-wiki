@@ -1,7 +1,8 @@
 import { vi } from 'vitest'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
-import { RolFilter } from '../../components/molecules/RolFilter'
+import { RoleFilter } from '../../components/molecules/RoleFilter'
 import { UserRole } from '../../types/types'
+import { roles } from '../../constants'
 
 const mockHandleClick = vi.fn()
 
@@ -11,25 +12,27 @@ afterEach(() => {
 
 describe('RolesFilter', () => {
   it('renders correctly', () => {
-    render(<RolFilter handleRole={mockHandleClick} />)
+    render(<RoleFilter handleRole={mockHandleClick} />)
 
     waitFor(() => expect(screen.getByText(/rol/i)).toBeInTheDocument())
   })
 
-  it('renders RoleList options when dropdown is clicked', () => {
-    render(<RolFilter handleRole={mockHandleClick} />)
+  it('renders RoleList options when dropdown is clicked', async () => {
+    render(<RoleFilter handleRole={mockHandleClick} />)
 
     const dropdown = screen.getByTestId('dropdown-header')
 
     fireEvent.click(dropdown)
 
-    const roleOptions = screen.getAllByTestId('dropdown-header')
+    const promises = roles.map((role) =>
+      waitFor(() => screen.getByTestId(role.id))
+    )
 
-    expect(roleOptions.length).toBeGreaterThan(0)
+    await Promise.all(promises)
   })
 
   it('calls handleRole with the correct role when an option is clicked', () => {
-    render(<RolFilter handleRole={mockHandleClick} />)
+    render(<RoleFilter handleRole={mockHandleClick} />)
 
     const dropdown = screen.getByTestId('dropdown-header')
 
@@ -40,7 +43,7 @@ describe('RolesFilter', () => {
     fireEvent.click(roleOption)
 
     expect(mockHandleClick).toHaveBeenCalledWith({
-      id: '1',
+      id: UserRole.ADMIN,
       name: 'Administrador',
       slug: UserRole.ADMIN,
     })

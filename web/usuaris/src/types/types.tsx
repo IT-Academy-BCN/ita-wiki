@@ -20,7 +20,7 @@ export type TItinerary = {
   slug: string
 }
 
-export type TRol = {
+export type TRole = {
   id: string
   name: string
   slug: string

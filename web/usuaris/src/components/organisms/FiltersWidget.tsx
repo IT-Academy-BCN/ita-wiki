@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { DateRange, StatusDropdown } from '../molecules'
 import { ItineraryDropdown } from '../molecules/ItineraryDropdown'
 import { type TFilters, TItinerary, UserStatus } from '../../types'
-import { RolFilter } from '../molecules/RolFilter'
+import { RolFilter } from '../molecules/RoleFilter'
 import { TRol } from '../../types/types'
 
 const FiltersContainer = styled(FlexBox)`

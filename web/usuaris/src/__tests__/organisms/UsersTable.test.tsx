@@ -3,6 +3,7 @@ import { UsersTable } from '../../components/organisms'
 import { errorHandlers } from '../../__mocks__/handlers'
 import { server } from '../../__mocks__/server'
 import { UserStatus } from '../../types'
+import { UserRole } from '../../types/types'
 
 afterEach(() => {
   server.resetHandlers()
@@ -68,7 +69,7 @@ describe('UsersTable', () => {
           endDate: '2023/11/06 00:00:00.000',
           name: 'marc',
           dni: 'marc',
-          role: 'ADMIN',
+          role: UserRole.ADMIN,
         }}
       />
     )

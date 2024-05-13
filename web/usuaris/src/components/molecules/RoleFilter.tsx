@@ -8,7 +8,8 @@ import {
   type TDropdownOption,
 } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
-import { TRol, UserRole } from '../../types/types'
+import { TRole } from '../../types/types'
+import { roles } from '../../constants'
 
 const StyledDropdown = styled(Dropdown)`
   && button {
@@ -29,23 +30,17 @@ const StyledDropdown = styled(Dropdown)`
   }
 `
 
-type TRolDropdown = {
-  handleRole: (value: TRol | undefined) => void
+type TRoleFilter = {
+  handleRole: (value: TRole | undefined) => void
 }
 
-export const RolFilter: FC<TRolDropdown> = ({ handleRole }) => {
+export const RoleFilter: FC<TRoleFilter> = ({ handleRole }) => {
   const { t } = useTranslation()
-
-  const rolesList: TRol[] = [
-    { id: '1', name: t('ADMIN'), slug: UserRole.ADMIN },
-    { id: '2', name: t('REGISTERED'), slug: UserRole.REGISTERED },
-    { id: '3', name: t('MENTOR'), slug: UserRole.MENTOR },
-  ]
 
   const handleSelectedValue = (selectedOption: TDropdownOption | undefined) => {
     if (selectedOption) {
-      const selectedRole = rolesList.find(
-        (role: TRol) => role.id === selectedOption.id
+      const selectedRole = roles.find(
+        (role: TRole) => role.id === selectedOption.id
       )
       if (selectedRole) {
         handleRole(selectedRole)
@@ -55,9 +50,9 @@ export const RolFilter: FC<TRolDropdown> = ({ handleRole }) => {
     }
   }
 
-  return rolesList && rolesList.length > 0 ? (
+  return roles && roles.length > 0 ? (
     <StyledDropdown
-      options={rolesList}
+      options={roles}
       placeholder={t('Rol')}
       onValueChange={handleSelectedValue}
     />
