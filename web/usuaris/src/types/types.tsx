@@ -46,7 +46,7 @@ export type TUserData = {
   createdAt: string
   itineraryName: string
   role: string
-  deletedAt?: string
+  deletedAt: string
 }
 
 export enum UserRole {
