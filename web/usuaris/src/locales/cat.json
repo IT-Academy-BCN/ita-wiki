@@ -136,5 +136,9 @@
   "Abrir": "Obre",
   "Deseleccionar": "Deselecciona",
   "Búsqueda de usuarios": "Cerca d'usuaris",
-  "Buscar": "Cercar"
+  "Buscar": "Cercar",
+
+  "Eliminar usuario": "Estàs segur que vols eliminar aquest usuari?",
+  "Confirmar": "Confirmar",
+  "Error al eliminar el usuario": "Error en eliminar l'usuari"
 }

@@ -56,3 +56,14 @@ export const patchUser = async (updatedUser: TUpdatedUser) => {
   }
   return response.status === 204 ? {} : response.json()
 }
+
+export const deleteUser = async (userId: string) => {
+  const response = await fetch(`${urls.deleteUser}${userId}`, {
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to delete user')
+  }
+  return response.status === 204 ? {} : response.json()
+}

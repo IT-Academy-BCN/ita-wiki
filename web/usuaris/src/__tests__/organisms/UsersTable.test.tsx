@@ -5,12 +5,6 @@ import { server } from '../../__mocks__/server'
 import { UserStatus } from '../../types'
 import { UserRole } from '../../types/types'
 
-afterEach(() => {
-  server.resetHandlers()
-})
-
-afterAll(() => server.close())
-
 describe('UsersTable', () => {
   it('renders loading spinner while fetching users', async () => {
     render(<UsersTable filtersSelected={{}} />)

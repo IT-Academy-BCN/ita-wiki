@@ -3,7 +3,7 @@ import { ChangeEvent, FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { Checkbox, Spinner, dimensions } from '@itacademy/ui'
-import { Table } from '../../molecules'
+import { DeleteConfirmationModal, Table } from '../../molecules'
 import { TFilters, TUserData, UserStatus } from '../../../types'
 import { icons } from '../../../assets/icons'
 import { useGetUsers, useUpdateUser } from '../../../hooks'
@@ -39,6 +39,10 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
   const [selectedUsers, setSelectedUsers] = useState<TUserData[]>([])
 
   const { changeUserStatus } = useUpdateUser()
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+  const [idToDelete, setIdToDelete] = useState<string>('')
 
   useEffect(() => {
     setFilters(filtersSelected)
@@ -278,7 +282,16 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
             >
               {buttonTxt}
             </ButtonStyled>
-            <DeleteButton size="small" outline disabled={isDisabled}>
+            <DeleteButton
+              data-testid="delete-button"
+              size="small"
+              outline
+              disabled={isDisabled}
+              onClick={() => {
+                setIdToDelete(id)
+                setIsModalOpen(!isModalOpen)
+              }}
+            >
               <DeleteIcon src={icons.deleteIcon} alt="delete-icon" />
             </DeleteButton>
           </ActionsContainer>
@@ -295,6 +308,11 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         columns={columns}
         data={users || []}
         noResultsMessage={t('No hay usuarios para mostrar')}
+      />
+      <DeleteConfirmationModal
+        open={isModalOpen}
+        toggleModal={() => setIsModalOpen(false)}
+        idToDelete={idToDelete}
       />
     </TableContainer>
   )

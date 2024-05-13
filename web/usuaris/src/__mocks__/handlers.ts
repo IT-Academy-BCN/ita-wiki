@@ -123,6 +123,11 @@ export const handlers = [
     `${urls.patchUser}1`,
     () => new HttpResponse(null, { status: 204 })
   ),
+
+  http.delete(
+    `${urls.deleteUser}1`,
+    () => new HttpResponse(null, { status: 204 })
+  ),
 ]
 
 export const errorHandlers = [
@@ -133,6 +138,9 @@ export const errorHandlers = [
     HttpResponse.json({ message: 'Database error' }, { status: 500 })
   ),
   http.get(urls.getItineraries, () =>
+    HttpResponse.json({ message: 'Database error' }, { status: 500 })
+  ),
+  http.delete(`${urls.deleteUser}1`, () =>
     HttpResponse.json({ message: 'Database error' }, { status: 500 })
   ),
 ]
