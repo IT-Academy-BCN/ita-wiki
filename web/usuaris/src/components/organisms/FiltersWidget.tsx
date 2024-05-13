@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next'
 import { DateRange, StatusDropdown } from '../molecules'
 import { ItineraryDropdown } from '../molecules/ItineraryDropdown'
 import { type TFilters, TItinerary, UserStatus } from '../../types'
-import { RolFilter } from '../molecules/RoleFilter'
-import { TRol } from '../../types/types'
+import { RoleFilter } from '../molecules/RoleFilter'
+import { TRole } from '../../types/types'
 
 const FiltersContainer = styled(FlexBox)`
   width: 100%;
@@ -23,7 +23,7 @@ export const FiltersWidget: FC<TFiltersWidget> = ({ filters, setFilters }) => {
   const handleItinerary = (itinerary: TItinerary | undefined) => {
     setFilters({ ...filters, itinerarySlug: itinerary?.slug })
   }
-  const handleRole = (role: TRol | undefined) => {
+  const handleRole = (role: TRole | undefined) => {
     setFilters({ ...filters, role: role?.slug })
   }
 
@@ -59,7 +59,7 @@ export const FiltersWidget: FC<TFiltersWidget> = ({ filters, setFilters }) => {
     >
       <ItineraryDropdown handleItinerary={handleItinerary} />
       <StatusDropdown handleStatus={handleStatus} />
-      <RolFilter handleRole={handleRole} />
+      <RoleFilter handleRole={handleRole} />
 
       <DateRange
         labelStartDate={t('Fecha de inicio')}

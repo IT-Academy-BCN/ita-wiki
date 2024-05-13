@@ -3,7 +3,6 @@ import { urls } from '../constants'
 import { UserStatus } from '../types'
 import { UserRole } from '../types/types'
 
-
 export const handlers = [
   http.get(urls.getUsers, ({ request }) => {
     const url = new URL(request.url)
