@@ -163,4 +163,19 @@ describe('UsersTable', () => {
       })
     })
   })
+
+  it('disables user when has been deleted', async () => {
+    render(<UsersTable filtersSelected={{}} />)
+
+    await waitFor(() => {
+      expect(screen.getByLabelText(/Ona Sitgar/i)).toBeDisabled()
+      expect(screen.getByText('12345678A')).toHaveStyle('opacity: 0.6')
+      expect(screen.getByText(/Backend Node/i)).toHaveStyle('opacity: 0.6')
+      expect(screen.getByText(/Pendent/i).parentElement).toHaveStyle(
+        'opacity: 0.6'
+      )
+      expect(screen.getByText('11/5/2023')).toHaveStyle('opacity: 0.6')
+      expect(screen.getByText('Acceptar')).toBeDisabled()
+    })
+  })
 })

@@ -109,9 +109,10 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         const id: string = row.getValue('id')
         const name: string = row.getValue('name')
         const status: UserStatus = row.getValue('status')
+        const { deletedAt } = row.original
         let isDisabled: boolean | undefined
 
-        if (selectedStatus && selectedStatus !== status) {
+        if ((selectedStatus && selectedStatus !== status) || deletedAt) {
           isDisabled = true
         } else {
           isDisabled = undefined
@@ -138,9 +139,10 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       cell: ({ row }) => {
         const name: string = row.getValue('name')
         const status: UserStatus = row.getValue('status')
+        const { deletedAt } = row.original
         let isDisabled: boolean | undefined
 
-        if (selectedStatus && selectedStatus !== status) {
+        if ((selectedStatus && selectedStatus !== status) || deletedAt) {
           isDisabled = true
         } else {
           isDisabled = undefined
@@ -153,9 +155,10 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       cell: ({ row }) => {
         const dni: string = row.getValue('dni')
         const status: UserStatus = row.getValue('status')
+        const { deletedAt } = row.original
         let isDisabled: boolean | undefined
 
-        if (selectedStatus && selectedStatus !== status) {
+        if ((selectedStatus && selectedStatus !== status) || deletedAt) {
           isDisabled = true
         } else {
           isDisabled = undefined
@@ -168,9 +171,10 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       cell: ({ row }) => {
         const itineraryName: string = row.getValue('itineraryName')
         const status: UserStatus = row.getValue('status')
+        const { deletedAt } = row.original
         let isDisabled: boolean | undefined
 
-        if (selectedStatus && selectedStatus !== status) {
+        if ((selectedStatus && selectedStatus !== status) || deletedAt) {
           isDisabled = true
         } else {
           isDisabled = undefined
@@ -189,9 +193,10 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       ),
       cell: ({ row }) => {
         const status: UserStatus = row.getValue('status')
+        const { deletedAt } = row.original
         let isDisabled: boolean | undefined
 
-        if (selectedStatus && selectedStatus !== status) {
+        if ((selectedStatus && selectedStatus !== status) || deletedAt) {
           isDisabled = true
         } else {
           isDisabled = undefined
@@ -210,9 +215,10 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         const createdAt = row.getValue('createdAt')
         const status: UserStatus = row.getValue('status')
         const formattedDate = new Date(createdAt as string).toLocaleDateString()
+        const { deletedAt } = row.original
         let isDisabled: boolean | undefined
 
-        if (selectedStatus && selectedStatus !== status) {
+        if ((selectedStatus && selectedStatus !== status) || deletedAt) {
           isDisabled = true
         } else {
           isDisabled = undefined
@@ -223,15 +229,15 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         )
       },
     }),
-
     columHelper.accessor('role', {
       header: `${t('Rol')}`,
       cell: ({ row }) => {
         const role: UserRole = row.getValue('role')
         const status: UserStatus = row.getValue('status')
+        const { deletedAt } = row.original
         let isDisabled: boolean | undefined
 
-        if (selectedStatus && selectedStatus !== status) {
+        if ((selectedStatus && selectedStatus !== status) || deletedAt) {
           isDisabled = true
         } else {
           isDisabled = undefined
@@ -240,7 +246,6 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         return <DisabledStyled disabled={isDisabled}>{t(role)}</DisabledStyled>
       },
     }),
-
     columHelper.display({
       id: 'actions',
       header: () => (
@@ -251,10 +256,11 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       cell: ({ row }) => {
         const status: UserStatus = row.getValue('status')
         const id: string = row.getValue('id')
+        const { deletedAt } = row.original
         let isDisabled: boolean | undefined
         let buttonTxt: string = ''
 
-        if (selectedStatus && selectedStatus !== status) {
+        if ((selectedStatus && selectedStatus !== status) || deletedAt) {
           isDisabled = true
         } else {
           isDisabled = undefined

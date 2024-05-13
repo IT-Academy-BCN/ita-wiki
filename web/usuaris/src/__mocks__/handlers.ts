@@ -49,6 +49,7 @@ export const handlers = [
           role: UserRole.ADMIN,
           createdAt: '2023/11/05 00:00:00.000',
           itineraryName: 'Backend Node',
+          deletedAt: '2023/13/05 00:00:00.000',
         },
         {
           id: '2',

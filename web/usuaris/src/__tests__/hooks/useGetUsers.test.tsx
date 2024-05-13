@@ -26,6 +26,7 @@ describe('useGetUsers', () => {
         status: 'PENDING',
         role: UserRole.ADMIN,
         createdAt: '2023/11/05 00:00:00.000',
+        deletedAt: '2023/13/05 00:00:00.000',
         itineraryName: 'Backend Node',
       },
       {
