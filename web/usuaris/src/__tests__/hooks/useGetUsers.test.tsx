@@ -37,6 +37,7 @@ describe('useGetUsers', () => {
         role: UserRole.REGISTERED,
         createdAt: '2023/11/06 00:00:00.000',
         itineraryName: 'Frontend React',
+        deletedAt: null,
       },
       {
         id: '3',
@@ -46,6 +47,7 @@ describe('useGetUsers', () => {
         role: UserRole.REGISTERED,
         createdAt: '2023/11/07 00:00:00.000',
         itineraryName: 'Fullstack Php',
+        deletedAt: null,
       },
       {
         id: '4',
@@ -55,6 +57,7 @@ describe('useGetUsers', () => {
         role: UserRole.ADMIN,
         createdAt: '2023/11/08 00:00:00.000',
         itineraryName: 'Frontend React',
+        deletedAt: null,
       },
       {
         id: '5',
@@ -64,6 +67,7 @@ describe('useGetUsers', () => {
         role: UserRole.ADMIN,
         createdAt: '2023/11/09 00:00:00.000',
         itineraryName: 'Frontend Angular',
+        deletedAt: null,
       },
     ])
   })
