@@ -15,6 +15,7 @@ const responseSchema = userSchema
   .extend({
     createdAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
     itineraryName: z.string(),
+    deletedAt: z.string().nullable(),
   })
   .array()
 
@@ -38,6 +39,7 @@ beforeAll(async () => {
     u.dni AS dni,
     u.status,
     u.role,
+    u.deleted_at AS "deletedAt",
     TO_CHAR(u.created_at, 'YYYY-MM-DD') AS "createdAt",
     i.name AS "itineraryName"
   FROM

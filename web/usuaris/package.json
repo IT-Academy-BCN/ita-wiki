@@ -1,7 +1,7 @@
 {
   "name": "web_usuaris",
   "private": true,
-  "version": "0.16.0",
+  "version": "0.17.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -57,7 +57,7 @@
     "msw": "2.1.5",
     "prettier": "2.8.4",
     "typescript": "^5.0.4",
-    "vite": "^5.0.13",
+    "vite": "5.0.13",
     "vitest": "1.2.1"
   }
 }

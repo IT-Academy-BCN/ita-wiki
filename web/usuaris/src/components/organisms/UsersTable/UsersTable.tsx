@@ -19,6 +19,7 @@ import {
   StatusStyled,
   TableContainer,
 } from './UsersTable.styles'
+import { UserRole } from '../../../types/types'
 
 type TUsersTable = {
   filtersSelected: TFilters | Record<string, never>
@@ -34,6 +35,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
   const [selectedStatus, setSelectedStatus] = useState<UserStatus | undefined>(
     undefined
   )
+
   const [selectedUsers, setSelectedUsers] = useState<TUserData[]>([])
 
   const { changeUserStatus } = useUpdateUser()
@@ -100,7 +102,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
 
   const columHelper = createColumnHelper<TUserData>()
 
-  const columns: ColumnDef<TUserData, UserStatus>[] = [
+  const columns: ColumnDef<TUserData, string>[] = [
     columHelper.accessor('id', {
       header: '',
       cell: ({ row }) => {
@@ -221,6 +223,24 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         )
       },
     }),
+
+    columHelper.accessor('role', {
+      header: `${t('Rol')}`,
+      cell: ({ row }) => {
+        const role: UserRole = row.getValue('role')
+        const status: UserStatus = row.getValue('status')
+        let isDisabled: boolean | undefined
+
+        if (selectedStatus && selectedStatus !== status) {
+          isDisabled = true
+        } else {
+          isDisabled = undefined
+        }
+
+        return <DisabledStyled disabled={isDisabled}>{t(role)}</DisabledStyled>
+      },
+    }),
+
     columHelper.display({
       id: 'actions',
       header: () => (

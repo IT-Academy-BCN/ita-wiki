@@ -11,6 +11,7 @@ export const getMe: Middleware = async (ctx: Context) => {
   )
 
   const user = queryResult.rows[0]
+
   if (!user) {
     throw new NotFoundError('User Not found')
   }

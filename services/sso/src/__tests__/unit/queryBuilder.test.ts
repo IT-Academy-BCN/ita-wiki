@@ -19,7 +19,7 @@ describe('Testing query builder function', () => {
     const expectedWhere = `WHERE (u.name ILIKE $1 OR u.dni ILIKE $2) AND u.status = $3 AND u.role = $4`
     const expectedParams = ['%testing%', '%38826335N%', 'ACTIVE', 'REGISTERED']
     const resultQuery = queryBuilder(searchValues)
-    const resultWhere = resultQuery.query.substring(241)
+    const resultWhere = resultQuery.query.substring(274)
     expect(resultWhere).toBe(expectedWhere)
     expect(resultQuery.queryParams).toEqual(expectedParams)
   })
@@ -36,7 +36,7 @@ describe('Testing query builder function', () => {
       new Date('2024-04-28T22:00:00.000Z'),
     ]
     const resultQuery = queryBuilder(searchValues)
-    const resultWhere = resultQuery.query.substring(241)
+    const resultWhere = resultQuery.query.substring(274)
     expect(resultWhere).toBe(expectedWhere)
     expect(resultQuery.queryParams).toEqual(expectedParams)
   })
@@ -48,7 +48,7 @@ describe('Testing query builder function', () => {
     const expectedWhere = `WHERE (u.name ILIKE $1 OR u.dni ILIKE $2)`
     const expectedParams = ['%testing%', '%38826335N%']
     const resultQuery = queryBuilder(searchValues)
-    const resultWhere = resultQuery.query.substring(241)
+    const resultWhere = resultQuery.query.substring(274)
     expect(resultWhere).toBe(expectedWhere)
     expect(resultQuery.queryParams).toEqual(expectedParams)
   })
@@ -65,7 +65,7 @@ describe('Testing query builder function', () => {
       new Date('2024-04-28T22:00:00.000Z'),
     ]
     const resultQuery = queryBuilder(searchValues)
-    const resultWhere = resultQuery.query.substring(241)
+    const resultWhere = resultQuery.query.substring(274)
     expect(resultWhere).toBe(expectedWhere)
     expect(resultQuery.queryParams).toEqual(expectedParams)
   })
