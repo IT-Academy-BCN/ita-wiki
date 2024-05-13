@@ -17,12 +17,13 @@ export const dashboardBatchDelete: Middleware = async (ctx: Context) => {
     throw new NotFoundError(`${notFoundIds} not found`)
   }
 
-  let alreadyDeletedUser: string[] = []
+  const alreadyDeletedUser: string[] = []
   const deletedAtList = verifyResult.rows.map((row) => row.deleted_at)
   deletedAtList.map((deletedAt, index) => {
     if (deletedAt !== null) {
       alreadyDeletedUser.push(existingIds[index])
     }
+    return alreadyDeletedUser
   })
   if (alreadyDeletedUser.length > 0) {
     throw new DeletedError(`${alreadyDeletedUser} already deleted`)
