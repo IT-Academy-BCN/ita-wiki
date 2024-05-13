@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.15.2] - 2024-05-13
+
+### Fixed
+
+- Issue where auth-Refresh cookies was not well-cleared and remain it besides you logout `GET /api/v1/auth/logout`.
+
 ## [0.15.1] - 2024-04-29
 
 ### Fixed
