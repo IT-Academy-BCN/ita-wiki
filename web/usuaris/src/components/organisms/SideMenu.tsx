@@ -80,6 +80,8 @@ const CategoryStyled = styled.span`
 const ImgStyled = styled(Icon)`
   height: 30px;
   margin-right: ${dimensions.spacing.xxxs};
+  &[data-testid] 
+    content: attr(data-testid);
 `
 
 const LogoImage = styled.img`
