@@ -8,8 +8,8 @@ describe('Testing authentication endpoint', () => {
     const response = await supertest(server).get(`${pathRoot.v1.auth}/logout`)
     const cookies = response.header['set-cookie']
 
-    expect(cookies[1]).toMatch(/authToken=;/)
-    expect(cookies[2]).toMatch(/refreshToken=;/)
+    expect(cookies[0]).toMatch(/authToken=;/)
+    expect(cookies[1]).toMatch(/refreshToken=;/)
     expect(response.status).toBe(204)
   })
 })
