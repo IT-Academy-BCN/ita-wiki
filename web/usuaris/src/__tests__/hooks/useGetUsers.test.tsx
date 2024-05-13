@@ -4,6 +4,7 @@ import { renderHook, waitFor } from '../test-utils'
 import { queryClient } from '../setup'
 import { type TFilters } from '../../types'
 import { UserStatus } from '../../types'
+import { UserRole } from '../../types/types'
 
 describe('useGetUsers', () => {
   it('fetches users successfully', async () => {
@@ -23,6 +24,7 @@ describe('useGetUsers', () => {
         name: 'Ona Sitgar',
         dni: '12345678A',
         status: 'PENDING',
+        role: UserRole.ADMIN,
         createdAt: '2023/11/05 00:00:00.000',
         itineraryName: 'Backend Node',
       },
@@ -31,6 +33,7 @@ describe('useGetUsers', () => {
         name: 'Marc Bofill',
         dni: '87654321B',
         status: 'ACTIVE',
+        role: UserRole.REGISTERED,
         createdAt: '2023/11/06 00:00:00.000',
         itineraryName: 'Frontend React',
       },
@@ -39,6 +42,7 @@ describe('useGetUsers', () => {
         name: 'Montserrat Capdevila',
         dni: '45678912C',
         status: 'BLOCKED',
+        role: UserRole.REGISTERED,
         createdAt: '2023/11/07 00:00:00.000',
         itineraryName: 'Fullstack Php',
       },
@@ -47,6 +51,7 @@ describe('useGetUsers', () => {
         name: 'Anna Brull',
         dni: '45678912D',
         status: 'BLOCKED',
+        role: UserRole.ADMIN,
         createdAt: '2023/11/08 00:00:00.000',
         itineraryName: 'Frontend React',
       },
@@ -55,6 +60,7 @@ describe('useGetUsers', () => {
         name: 'Marc Serra',
         dni: '12378912D',
         status: 'BLOCKED',
+        role: UserRole.ADMIN,
         createdAt: '2023/11/09 00:00:00.000',
         itineraryName: 'Frontend Angular',
       },
@@ -69,7 +75,6 @@ describe('useGetUsers', () => {
       endDate: '2026-03-05T00:00:00.000Z',
       name: 'John Doe',
       dni: '99999999R',
-      role: 'ADMIN',
     }
     const wrapper = ({ children }: { children: React.ReactNode }) => (
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

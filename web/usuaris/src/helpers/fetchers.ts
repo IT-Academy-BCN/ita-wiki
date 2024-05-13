@@ -13,6 +13,7 @@ export const getItineraries = async () =>
       throw new Error(`Error fetching itineraries: ${err.message}`)
     })
 
+
 export const getUsers = async (filters: string) => {
   const response = await fetch(`${urls.getUsers}?${filters}`)
   if (!response.ok) {
@@ -52,6 +53,17 @@ export const patchUser = async (updatedUser: TUpdatedUser) => {
   })
   if (!response.ok) {
     throw new Error('Failed to update user')
+  }
+  return response.status === 204 ? {} : response.json()
+}
+
+export const deleteUser = async (userId: string) => {
+  const response = await fetch(`${urls.deleteUser}${userId}`, {
+    method: 'DELETE',
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to delete user')
   }
   return response.status === 204 ? {} : response.json()
 }

@@ -3,12 +3,7 @@ import { UsersTable } from '../../components/organisms'
 import { errorHandlers } from '../../__mocks__/handlers'
 import { server } from '../../__mocks__/server'
 import { UserStatus } from '../../types'
-
-afterEach(() => {
-  server.resetHandlers()
-})
-
-afterAll(() => server.close())
+import { UserRole } from '../../types/types'
 
 describe('UsersTable', () => {
   it('renders loading spinner while fetching users', async () => {
@@ -37,12 +32,15 @@ describe('UsersTable', () => {
       expect(screen.getByText(/Pendent/i)).toBeInTheDocument()
       expect(screen.getByText(/Backend Node/i)).toBeInTheDocument()
       expect(screen.getByText(/Acceptar/i)).toBeInTheDocument()
-      expect(screen.getByText(/Actiu/i)).toBeInTheDocument()
       expect(screen.getByText('Bloquejar')).toBeInTheDocument()
+      expect(screen.getByText(/Actiu/i)).toBeInTheDocument()
       expect(screen.getByText(/Fullstack Php/i)).toBeInTheDocument()
 
       const frontReact = screen.getAllByText(/Frontend React/i)
       frontReact.forEach((item) => expect(item).toBeInTheDocument())
+
+      const adminRol = screen.getAllByText(/Administrador/i)
+      adminRol.forEach((item) => expect(item).toBeInTheDocument())
 
       const blockedStatus = screen.getAllByText('Bloquejat')
       blockedStatus.forEach((status) => expect(status).toBeInTheDocument())
@@ -65,6 +63,7 @@ describe('UsersTable', () => {
           endDate: '2023/11/06 00:00:00.000',
           name: 'marc',
           dni: 'marc',
+          role: UserRole.ADMIN,
         }}
       />
     )

@@ -1,5 +1,6 @@
 import { Button, FlexBox, colors, dimensions, font } from '@itacademy/ui'
 import styled from 'styled-components'
+import { UserStatus } from '../../../types'
 
 export const TableContainer = styled.div`
   width: 100%;
@@ -29,7 +30,7 @@ export const IconStyled = styled.img`
 `
 
 type TStatusStyled = {
-  status: string
+  status: UserStatus
 }
 
 export const StatusStyled = styled.div<TStatusStyled>`
@@ -39,9 +40,9 @@ export const StatusStyled = styled.div<TStatusStyled>`
   border-radius: ${dimensions.borderRadius.xs};
   background-color: ${({ status }) => {
     switch (status) {
-      case 'PENDING':
+      case UserStatus.PENDING:
         return '#FCD9D9'
-      case 'BLOCKED':
+      case UserStatus.BLOCKED:
         return '#FCDEC0'
       default:
         return '#C6F1DA'
