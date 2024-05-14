@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.26.0] - 2024-05-13
+
+### Added
+
+- Endpoint `DELETE /dashboard/users/` for a `batchDelete` for admin users.
+
 ## [1.25.0] - 2024-05-8
 
 ### Added
