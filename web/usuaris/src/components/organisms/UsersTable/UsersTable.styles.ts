@@ -31,6 +31,7 @@ export const IconStyled = styled.img`
 
 type TStatusStyled = {
   status: UserStatus
+  isDeleted: boolean
 }
 
 export const StatusStyled = styled.div<TStatusStyled>`
@@ -38,7 +39,8 @@ export const StatusStyled = styled.div<TStatusStyled>`
   padding: ${dimensions.spacing.xxxs} ${dimensions.spacing.base}
     ${dimensions.spacing.xxxs} ${dimensions.spacing.base};
   border-radius: ${dimensions.borderRadius.xs};
-  background-color: ${({ status }) => {
+  background-color: ${({ isDeleted, status }) => {
+    if (isDeleted) return '#EBEBEB'
     switch (status) {
       case UserStatus.PENDING:
         return '#FCD9D9'
