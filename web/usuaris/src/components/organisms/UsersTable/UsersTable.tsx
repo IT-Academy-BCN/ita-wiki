@@ -109,9 +109,10 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         const id: string = row.getValue('id')
         const name: string = row.getValue('name')
         const status: UserStatus = row.getValue('status')
+        const { deletedAt } = row.original
         let isDisabled: boolean | undefined
 
-        if (selectedStatus && selectedStatus !== status) {
+        if ((selectedStatus && selectedStatus !== status) || deletedAt) {
           isDisabled = true
         } else {
           isDisabled = undefined
@@ -188,9 +189,10 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         </CellStyled>
       ),
       cell: ({ row }) => {
-        const status: UserStatus = row.getValue('status')
+        let status: UserStatus = row.getValue('status')
         let isDisabled: boolean | undefined
         const { deletedAt } = row.original
+        if (deletedAt) status = UserStatus.DELETED
 
         if (selectedStatus && selectedStatus !== status) {
           isDisabled = true
@@ -201,7 +203,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         return (
           <DisabledStyled disabled={isDisabled}>
             <StatusStyled isDeleted={deletedAt !== null} status={status}>
-              {t(`${deletedAt ? 'Eliminado' : status}`)}
+              {t(`${status}`)}
             </StatusStyled>
           </DisabledStyled>
         )

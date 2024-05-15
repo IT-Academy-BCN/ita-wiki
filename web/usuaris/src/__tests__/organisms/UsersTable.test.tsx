@@ -168,7 +168,7 @@ describe('UsersTable', () => {
     render(<UsersTable filtersSelected={{}} />)
 
     await waitFor(() => {
-      const userDeletedRow = screen.getByLabelText(/Paula Font/i).closest('tr')
+      const userDeletedRow = screen.getByTestId('5')
       expect(userDeletedRow).toHaveStyle('opacity: 0.6')
     })
   })

@@ -2,6 +2,7 @@ export enum UserStatus {
   ACTIVE = 'ACTIVE',
   PENDING = 'PENDING',
   BLOCKED = 'BLOCKED',
+  DELETED = 'DELETED',
 }
 
 export type TFilters = {

@@ -72,7 +72,11 @@ export const Table = <TData, TValue>({
           table.getRowModel().rows.map((row) => {
             const { deletedAt } = row.original as { deletedAt: string }
             return (
-              <TRStyled key={row.id} isDeleted={deletedAt !== null}>
+              <TRStyled
+                key={row.id}
+                isDeleted={deletedAt !== null}
+                data-testid={row.id}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <TDStyled key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
