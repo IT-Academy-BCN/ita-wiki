@@ -20,7 +20,7 @@ describe('Navbar', () => {
     render(<Navbar />)
 
     const ITALogo = screen.getByAltText(/IT Academy/i)
-    const languageSelector = screen.getByText(/ESP/i)
+    const languageSelector = screen.getByText(/ES/i)
 
     expect(ITALogo).toBeInTheDocument()
     expect(languageSelector).toBeInTheDocument()
@@ -37,7 +37,7 @@ describe('Navbar', () => {
 
     render(<Navbar />)
 
-    const languageSelector = screen.getByText(/ESP/i)
+    const languageSelector = screen.getByText(/ES/i)
     const userButton = screen.getByAltText(/User icon/i)
 
     expect(languageSelector).toBeInTheDocument()
