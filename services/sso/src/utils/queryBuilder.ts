@@ -3,13 +3,11 @@ import { dniQueryStringSchema } from '../schemas/dniQueryStringSchema'
 import { itinerarySlugSchema } from '../schemas/itineraries/itinerarySchema'
 import {
   endDateSchema,
+  extendedUserStatus,
+  extendedUserStatusSchema,
   startDateSchema,
 } from '../schemas/users/dashboardUsersListQuerySchema'
-import {
-  userNameSchema,
-  userRoleSchema,
-  userStatusSchema,
-} from '../schemas/users/userSchema'
+import { userNameSchema, userRoleSchema } from '../schemas/users/userSchema'
 
 export const queryBuilder = (ctx: Context) => {
   const { itinerarySlug, status, startDate, endDate, name, dni, role } = ctx
@@ -44,9 +42,13 @@ export const queryBuilder = (ctx: Context) => {
     conditions.push(`(${orConditions.join(' OR ')})`)
   }
   if (status) {
-    const parsedStatus = userStatusSchema.parse(status)
-    conditions.push(`u.status = $${queryParams.length + 1}`)
-    queryParams.push(parsedStatus)
+    const parsedStatus = extendedUserStatusSchema.parse(status)
+    if (status === extendedUserStatus.DELETED) {
+      conditions.push(`u.deleted_at IS NOT NULL`)
+    } else {
+      conditions.push(`u.status = $${queryParams.length + 1}`)
+      queryParams.push(parsedStatus)
+    }
   }
   if (role) {
     const parsedRole = userRoleSchema.parse(role)

@@ -1,11 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import { queryBuilder } from '../../utils/queryBuilder'
-import { UserRole, UserStatus } from '../../schemas/users/userSchema'
+import { UserRole } from '../../schemas/users/userSchema'
+import { extendedUserStatus } from '../../schemas/users/dashboardUsersListQuerySchema'
 
 const testName = 'testing'
 const testDni = '38826335N'
 const testRole = UserRole.REGISTERED
-const testStatus = UserStatus.ACTIVE
+const testStatus = extendedUserStatus.ACTIVE
 const testDate = '2024-04-28T22:00:00.000Z'
 
 describe('Testing query builder function', () => {
@@ -64,6 +65,17 @@ describe('Testing query builder function', () => {
       'ACTIVE',
       new Date('2024-04-28T22:00:00.000Z'),
     ]
+    const resultQuery = queryBuilder(searchValues)
+    const resultWhere = resultQuery.query.substring(274)
+    expect(resultWhere).toBe(expectedWhere)
+    expect(resultQuery.queryParams).toEqual(expectedParams)
+  })
+  it('returns a expected query calling the queryBuilder function with DELETED status', async () => {
+    const searchValues = {
+      status: extendedUserStatus.DELETED,
+    }
+    const expectedWhere = `WHERE u.deleted_at IS NOT NULL`
+    const expectedParams = []
     const resultQuery = queryBuilder(searchValues)
     const resultWhere = resultQuery.query.substring(274)
     expect(resultWhere).toBe(expectedWhere)

@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.27.0] - 2024-05-15
+
+### Added
+
+- Search option `DELETED` as status in the `queryBuilder` util.
+
 ## [1.26.0] - 2024-05-13
 
 ### Added
