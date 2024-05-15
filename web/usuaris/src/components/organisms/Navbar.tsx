@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { FlexBox, colors, dimensions } from '@itacademy/ui'
 import { icons } from '../../assets/icons'
 import { useAuth } from '../../context/AuthProvider'
+import { SelectLanguage } from '../molecules/SelectLanguage'
 
 const Container = styled(FlexBox)`
   width: 100%;
@@ -44,7 +45,7 @@ export const Navbar: FC = () => {
         align="center"
         gap="15px"
       >
-        <NavbarItemContainer>ESP</NavbarItemContainer>
+        <SelectLanguage />
         {user && (
           <NavbarItemContainer>
             <UserImage src={icons.user} alt="User icon" />

@@ -39,7 +39,7 @@ describe('main', () => {
       </AuthProvider>
     )
 
-    const navBarElement = screen.getByText(/ESP/i)
+    const navBarElement = screen.getByText(/ES/i)
     const ITALogo = screen.getByAltText(/IT Academy/i)
 
     expect(navBarElement).toBeInTheDocument()
