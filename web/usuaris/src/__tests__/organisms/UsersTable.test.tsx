@@ -168,7 +168,7 @@ describe('UsersTable', () => {
     render(<UsersTable filtersSelected={{}} />)
 
     await waitFor(() => {
-      const userDeletedRow = screen.getByTestId('5')
+      const userDeletedRow = screen.getByTestId('6')
       expect(userDeletedRow).toHaveStyle('opacity: 0.6')
     })
   })

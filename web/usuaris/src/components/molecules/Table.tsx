@@ -71,11 +71,12 @@ export const Table = <TData, TValue>({
         {table.getRowModel().rows?.length ? (
           table.getRowModel().rows.map((row) => {
             const { deletedAt } = row.original as { deletedAt: string }
+            const { id } = row.original as { id: string }
             return (
               <TRStyled
                 key={row.id}
                 isDeleted={deletedAt !== null}
-                data-testid={row.id}
+                data-testid={id}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TDStyled key={cell.id}>
