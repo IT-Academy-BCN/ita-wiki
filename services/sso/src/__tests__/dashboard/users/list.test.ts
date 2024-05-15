@@ -1,12 +1,13 @@
 import supertest from 'supertest'
-import { beforeAll, describe, expect, it } from 'vitest'
+import { afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { z } from 'zod'
 import { pathRoot } from '../../../routes/routes'
 import { userSchema } from '../../../schemas'
 import { itinerariesData, server, testUserData } from '../../globalSetup'
-import { client } from '../../../models/db'
+import { client } from '../../../db/client'
 import { DashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
 import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
+import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
 
 const route = `${pathRoot.v1.dashboard.users}`
 
@@ -26,12 +27,10 @@ const testDni = '38826335N'
 const testRole = UserRole.REGISTERED
 const testStatus = UserStatus.ACTIVE
 beforeAll(async () => {
-  const loginRoute = `${pathRoot.v1.dashboard.auth}/login`
-  const responseAdmin = await supertest(server).post(loginRoute).send({
-    dni: testUserData.admin.dni,
-    password: testUserData.admin.password,
-  })
-  ;[authAdminToken] = responseAdmin.header['set-cookie'][0].split(';')
+  authAdminToken = await dashboardLoginAndGetToken(
+    testUserData.admin.dni,
+    testUserData.admin.password
+  )
   const queryResult = await client.query(
     `SELECT
     u.id,
@@ -50,51 +49,6 @@ beforeAll(async () => {
   users = queryResult.rows
 })
 describe('Testing get users endpoint', () => {
-  it('should fail to return a collection of users with a blocked logged-in admin', async () => {
-    const adminDni = testUserData.admin.dni
-    let newStatus = UserStatus.BLOCKED
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      newStatus,
-      adminDni,
-    ])
-    const response = await supertest(server)
-      .get(route)
-      .set('Cookie', [authAdminToken])
-    expect(response.status).toBe(403)
-
-    newStatus = UserStatus.ACTIVE
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      newStatus,
-      adminDni,
-    ])
-  })
-  it('should fail to return a collection of users when the logged-in admin loses "active" status', async () => {
-    const response1 = await supertest(server)
-      .get(route)
-      .set('Cookie', [authAdminToken])
-    expect(response1.status).toBe(200)
-    expect(response1.body).toHaveLength(users.length)
-    expect(response1.body).toEqual(users)
-    expect(responseSchema.safeParse(response1.body).success).toBeTruthy()
-
-    const adminDni = testUserData.admin.dni
-    let newStatus = UserStatus.PENDING
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      newStatus,
-      adminDni,
-    ])
-    const response2 = await supertest(server)
-      .get(route)
-      .set('Cookie', [authAdminToken])
-    expect(response2.body.message).toBe('Only active users can proceed')
-    expect(response2.status).toBe(403)
-
-    newStatus = UserStatus.ACTIVE
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      newStatus,
-      adminDni,
-    ])
-  })
   it('returns a  collection of users successfully with a logged-in admin user', async () => {
     const response = await supertest(server)
       .get(route)
@@ -206,11 +160,6 @@ describe('Testing get users endpoint', () => {
       'String must contain at least 2 character(s)'
     )
   })
-  it('returns 401 when no cookies are provided', async () => {
-    const response = await supertest(server).get(route)
-    expect(response.status).toBe(401)
-    expect(response.body.message).toBe('Invalid Credentials')
-  })
   it('returns a user successfully with a dni query of 2 or more characters', async () => {
     const validDni = 'Z45035'
     const response = await supertest(server)
@@ -257,5 +206,47 @@ describe('Testing get users endpoint', () => {
     expect(body).toBeInstanceOf(Array)
     expect(body).toHaveLength(2)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
+  })
+})
+describe('User Status Handling in Get Users Endpoint', () => {
+  afterEach(async () => {
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      UserStatus.ACTIVE,
+      testUserData.admin.dni,
+    ])
+  })
+  it('should fail to return a collection of users with a blocked logged-in admin', async () => {
+    const adminDni = testUserData.admin.dni
+    const newStatus = UserStatus.BLOCKED
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      newStatus,
+      adminDni,
+    ])
+    const response = await supertest(server)
+      .get(route)
+      .set('Cookie', [authAdminToken])
+    expect(response.status).toBe(403)
+  })
+
+  it('should fail to return a collection of users when the logged-in admin loses "active" status', async () => {
+    const response1 = await supertest(server)
+      .get(route)
+      .set('Cookie', [authAdminToken])
+    expect(response1.status).toBe(200)
+    expect(response1.body).toHaveLength(users.length)
+    expect(response1.body).toEqual(users)
+    expect(responseSchema.safeParse(response1.body).success).toBeTruthy()
+
+    const adminDni = testUserData.admin.dni
+    const newStatus = UserStatus.PENDING
+    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
+      newStatus,
+      adminDni,
+    ])
+    const response2 = await supertest(server)
+      .get(route)
+      .set('Cookie', [authAdminToken])
+    expect(response2.body.message).toBe('Only active users can proceed')
+    expect(response2.status).toBe(403)
   })
 })

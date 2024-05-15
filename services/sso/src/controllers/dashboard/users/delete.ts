@@ -1,7 +1,7 @@
 import { Middleware } from 'koa'
 import { Context } from 'vm'
 import { userIdSchema } from '../../../schemas/users/userSchema'
-import { client } from '../../../models/db'
+import { client } from '../../../db/client'
 import { DeletedError, NotFoundError } from '../../../utils/errors'
 
 export const dashboardDeleteUser: Middleware = async (ctx: Context) => {

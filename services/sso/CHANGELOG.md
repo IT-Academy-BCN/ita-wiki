@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file.
 
 # Changelog
+## [1.28.0] - 2024-05-15
+
+### Added
+
+- `/refresh` endpoint for secure token renewal using Bearer tokens.
+
+### Changed
+- Enhanced token handling to manage expired access tokens and refresh them using valid refresh tokens.
 
 ## [1.27.1] - 2024-05-15
 

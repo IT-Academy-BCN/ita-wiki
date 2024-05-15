@@ -1,9 +1,18 @@
 info:
-  version: 1.27.1
+  version: 1.28.0
   title: IT Academy SSO Service
   description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: authToken
   headers:
     Set-Cookie:
       schema:
@@ -11,11 +20,6 @@ components:
         example: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM;
           path=/; httponly
         description: Sets the JWT session cookie
-  securitySchemes:
-    cookieAuth:
-      type: apiKey
-      in: cookie
-      name: authToken
   schemas:
     EmailError:
       type: object
@@ -314,6 +318,49 @@ paths:
                     example: Database error
                 required:
                   - message
+  /api/v1/tokens/refresh:
+    post:
+      tags:
+        - tokens
+      description: Allows clients to obtain a new access token using a valid refresh
+        token. Ensure to send the refresh token as a Bearer token in the
+        Authorization header. This method extends user sessions securely without
+        re-entering login credentials.
+      summary: Renew Access Token
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: The token is valid
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  authToken:
+                    type: string
+                    minLength: 1
+                required:
+                  - authToken
+                additionalProperties: false
+        "401":
+          description: Invalid Credentials error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InvalidCredentialsError"
+        "500":
+          description: Other error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Database error
+                required:
+                  - message
   /api/v1/itineraries:
     get:
       tags:
@@ -463,6 +510,7 @@ paths:
                     - BLOCKED
                 deletedAt:
                   type: string
+                  nullable: true
                   format: date-time
                 itineraryId:
                   type: string
@@ -917,6 +965,7 @@ paths:
                     - BLOCKED
                 deletedAt:
                   type: string
+                  nullable: true
                   format: date-time
                 itineraryId:
                   type: string

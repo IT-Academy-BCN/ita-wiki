@@ -3,8 +3,8 @@ import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { userSchema } from '../../schemas'
-import { client } from '../../models/db'
 import { UserStatus } from '../../schemas/users/userSchema'
+import { client } from '../../db/client'
 
 const route = `${pathRoot.v1.tokens}/validate`
 let userAuthToken = ''

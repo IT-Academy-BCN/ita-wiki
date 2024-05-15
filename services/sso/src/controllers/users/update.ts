@@ -1,5 +1,5 @@
 import { Context, Middleware } from 'koa'
-import { client } from '../../models/db'
+import { client } from '../../db/client'
 import { hashPassword } from '../../utils/passwordHash'
 import { UserPatch, optionalUserUpdateSchema } from '../../schemas'
 import { NotFoundError } from '../../utils/errors'

@@ -1,5 +1,5 @@
 import { Context, Middleware } from 'koa'
-import { client } from '../../../models/db'
+import { client } from '../../../db/client'
 import { queryBuilder } from '../../../utils/queryBuilder'
 
 export const dashboardListUsers: Middleware = async (ctx: Context) => {

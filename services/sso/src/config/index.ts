@@ -1,11 +1,20 @@
 import 'dotenv/config'
 import z from 'zod'
+import ms from 'ms'
 
-const appConfigSchema = z.object({
-  port: z.string(),
-  jwtKey: z.string(),
-  jwtExpiration: z.string(),
-})
+const parseDuration = (value: string) => ms(value)
+
+const appConfigSchema = z
+  .object({
+    port: z.string(),
+    authJwtKey: z.string(),
+    refreshJwtKey: z.string(),
+    authJwtExpiration: z.string(),
+    refreshJwtExpiration: z.string(),
+    authCookieExpiration: z.string().transform(parseDuration),
+    refreshCookieExpiration: z.string().transform(parseDuration),
+  })
+  .strict()
 
 const dbConfigSchema = z.object({
   host: z.string(),
@@ -16,13 +25,15 @@ const dbConfigSchema = z.object({
   link: z.string(),
 })
 
-const appConfig = {
-  port: process.env.PORT ?? 8000,
-  jwtKey: process.env.JWT_KEY ?? 'secret',
-  jwtExpiration: process.env.JWT_EXPIRATION ?? '14d',
-}
-
-appConfigSchema.parse(appConfig)
+const appConfig = appConfigSchema.parse({
+  port: process.env.PORT,
+  authJwtKey: process.env.AUTH_JWT_KEY,
+  refreshJwtKey: process.env.REFRESH_JWT_KEY,
+  authJwtExpiration: process.env.AUTH_JWT_EXPIRATION,
+  refreshJwtExpiration: process.env.REFRESH_JWT_EXPIRATION,
+  authCookieExpiration: process.env.AUTH_COOKIE_EXPIRATION,
+  refreshCookieExpiration: process.env.REFRESH_COOKIE_EXPIRATION,
+})
 
 const dbConfig = {
   host: process.env.DB_HOST ?? 'localhost',

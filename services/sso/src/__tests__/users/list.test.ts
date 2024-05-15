@@ -4,7 +4,7 @@ import qs from 'qs'
 import { userSchema } from '../../schemas'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
-import { client } from '../../models/db'
+import { client } from '../../db/client'
 
 const route = `${pathRoot.v1.users}`
 const adminIdData = await client.query(

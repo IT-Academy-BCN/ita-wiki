@@ -1,6 +1,6 @@
 import { Context, Middleware } from 'koa'
-import { client } from '../../../models/db'
 import { DeletedError, NotFoundError } from '../../../utils/errors'
+import { client } from '../../../db/client'
 
 export const dashboardBatchDelete: Middleware = async (ctx: Context) => {
   const { ids } = ctx.request.body

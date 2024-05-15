@@ -1,6 +1,7 @@
 import './auth/login'
 import './auth/register'
 import './tokens/validate'
+import './tokens/refresh'
 import './itineraries/list'
 import './users/getMe'
 import './users/update'
