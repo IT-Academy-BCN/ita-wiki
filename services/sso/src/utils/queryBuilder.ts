@@ -48,6 +48,7 @@ export const queryBuilder = (ctx: Context) => {
     } else {
       conditions.push(`u.status = $${queryParams.length + 1}`)
       queryParams.push(parsedStatus)
+      conditions.push(`u.deleted_at IS NULL`)
     }
   }
   if (role) {

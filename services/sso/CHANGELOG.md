@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.27.1] - 2024-05-15
+
+### Fixed
+
+- Exclude DELETED Users from Responses for Non-DELETED Status Filters
+
 ## [1.27.0] - 2024-05-15
 
 ### Added
