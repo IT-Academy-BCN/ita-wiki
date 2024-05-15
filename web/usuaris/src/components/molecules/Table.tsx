@@ -14,7 +14,9 @@ const TableStyled = styled.table`
   font-weight: ${font.regular};
 `
 
-const TRStyled = styled.tr``
+const TRStyled = styled.tr<{ isDeleted?: boolean }>`
+  opacity: ${({ isDeleted }) => (isDeleted ? 0.6 : 1)};
+`
 
 const THeadStyled = styled.thead`
   text-align: left;
@@ -49,7 +51,6 @@ export const Table = <TData, TValue>({
     data,
     getCoreRowModel: getCoreRowModel(),
   })
-
   return (
     <TableStyled>
       <THeadStyled>
@@ -68,15 +69,23 @@ export const Table = <TData, TValue>({
       </THeadStyled>
       <TBodyStyled>
         {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map((row) => (
-            <TRStyled key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <TDStyled key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TDStyled>
-              ))}
-            </TRStyled>
-          ))
+          table.getRowModel().rows.map((row) => {
+            const { deletedAt } = row.original as { deletedAt: string }
+            const { id } = row.original as { id: string }
+            return (
+              <TRStyled
+                key={row.id}
+                isDeleted={deletedAt !== null}
+                data-testid={id}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TDStyled key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TDStyled>
+                ))}
+              </TRStyled>
+            )
+          })
         ) : (
           <TRStyled>
             <TDStyled colSpan={columns.length}>{noResultsMessage}</TDStyled>

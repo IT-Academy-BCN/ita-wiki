@@ -43,6 +43,7 @@ const statusIcon = {
   [UserStatus.ACTIVE]: 'task_alt',
   [UserStatus.PENDING]: 'pending',
   [UserStatus.BLOCKED]: 'block',
+  [UserStatus.DELETED]: 'delete',
 }
 
 export const StatusDropdown: FC<TStatusDropdown> = ({ handleStatus }) => {
