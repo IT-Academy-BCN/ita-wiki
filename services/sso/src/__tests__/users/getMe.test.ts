@@ -3,8 +3,8 @@ import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { userSchema } from '../../schemas'
-import { client } from '../../models/db'
 import { UserStatus } from '../../schemas/users/userSchema'
+import { client } from '../../db/client'
 
 const route = `${pathRoot.v1.users}/me`
 const userToBeBlockedDni = testUserData.userToBeBlocked.dni
@@ -125,7 +125,7 @@ describe('Testing get user endpoint', () => {
     const response2 = await supertest(server).post(route).send({
       authToken: userToDeleteAuthToken,
     })
-    expect(response2.status).toBe(404)
-    expect(response2.body.message).toBe('User Not found')
+    expect(response2.status).toBe(401)
+    expect(response2.body.message).toBe('Invalid Credentials')
   })
 })

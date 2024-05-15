@@ -1,5 +1,5 @@
 import { Context, Middleware } from 'koa'
-import { client } from '../../models/db'
+import { client } from '../../db/client'
 import { NotFoundError } from '../../utils/errors'
 import { User } from '../../schemas'
 

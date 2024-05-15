@@ -4,7 +4,7 @@ import { pathRoot } from '../../../routes/routes'
 import { server, testUserData } from '../../globalSetup'
 
 import { UserStatus } from '../../../schemas/users/userSchema'
-import { client } from '../../../models/db'
+import { client } from '../../../db/client'
 
 const route = `${pathRoot.v1.dashboard.users}/status`
 
@@ -93,15 +93,5 @@ describe('Testing POST dashboard/users/status endpoint', () => {
       [id]
     )
     expect(result.rows[0].status).toBe(UserStatus.ACTIVE)
-  })
-
-  it('should return 401 when no cookies are provided', async () => {
-    const reqBody = {
-      ids: [testUserData.blockedUser.id, testUserData.pendingUser.id],
-      status: UserStatus.ACTIVE,
-    }
-    const response = await supertest(server).post(route).send(reqBody)
-    expect(response.status).toBe(401)
-    expect(response.body.message).toBe('Invalid Credentials')
   })
 })

@@ -1,7 +1,7 @@
 import { IncomingMessage, Server, ServerResponse } from 'http'
 import fs from 'fs/promises'
 import { app } from '../app'
-import { client } from '../models/db'
+import { client } from '../db/client'
 import { generateId } from '../utils/cuidGenerator'
 import { hashPassword } from '../utils/passwordHash'
 import { UserRole, UserStatus } from '../schemas/users/userSchema'

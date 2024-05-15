@@ -2,7 +2,7 @@ import supertest from 'supertest'
 import { expect, it, describe, beforeEach, afterEach } from 'vitest'
 import { pathRoot } from '../../../routes/routes'
 import { server, testUserData } from '../../globalSetup'
-import { client } from '../../../models/db'
+import { client } from '../../../db/client'
 
 const route = `${pathRoot.v1.dashboard.users}`
 let authAdminToken = ''

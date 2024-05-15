@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { queryBuilder } from '../../utils/queryBuilder'
-import { UserRole } from '../../schemas/users/userSchema'
-import { extendedUserStatus } from '../../schemas/users/dashboardUsersListQuerySchema'
+import { UserRole } from '../../../schemas'
+import { extendedUserStatus } from '../../../schemas/users/dashboardUsersListQuerySchema'
+import { queryBuilder } from '../../../utils/queryBuilder'
 
 const testName = 'testing'
 const testDni = '38826335N'

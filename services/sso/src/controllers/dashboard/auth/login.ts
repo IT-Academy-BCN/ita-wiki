@@ -1,16 +1,15 @@
 import { Context, Middleware } from 'koa'
-import { client } from '../../../models/db'
+import { client } from '../../../db/client'
 import { User } from '../../../schemas'
 import { UserLogin } from '../../../schemas/auth/loginSchema'
 import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
-import { generateToken } from '../../../utils/auth'
+import { generateToken } from '../../../utils/jwtAuth'
 import { InvalidCredentials, ForbiddenError } from '../../../utils/errors'
 import { checkPassword } from '../../../utils/passwordHash'
 import { checkRoleAccess } from '../../../utils/checkRoleAccess'
+import { appConfig } from '../../../config'
 
 export const dashboardLoginController: Middleware = async (ctx: Context) => {
-  const expirationInMilliseconds = 86400000
-
   const { dni, password }: UserLogin = ctx.request.body
   const dniToUpperCase = dni.toUpperCase()
   const userResult = await client.query(
@@ -38,15 +37,15 @@ export const dashboardLoginController: Middleware = async (ctx: Context) => {
     throw new ForbiddenError()
   }
   checkRoleAccess(UserRole.ADMIN, user.role)
-  const authToken = generateToken(user.id, '15m')
-  const refreshToken = generateToken(user.id, '7d')
+  const authToken = generateToken(user.id, 'auth')
+  const refreshToken = generateToken(user.id, 'refresh')
   ctx.cookies.set('authToken', authToken, {
     httpOnly: true,
-    maxAge: expirationInMilliseconds,
+    maxAge: appConfig.authCookieExpiration,
   })
   ctx.cookies.set('refreshToken', refreshToken, {
     httpOnly: true,
-    maxAge: expirationInMilliseconds,
+    maxAge: appConfig.refreshCookieExpiration,
   })
   ctx.status = 204
 }
