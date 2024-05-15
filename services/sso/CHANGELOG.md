@@ -2,6 +2,24 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.27.1] - 2024-05-15
+
+### Fixed
+
+- Exclude DELETED Users from Responses for Non-DELETED Status Filters
+
+## [1.27.0] - 2024-05-15
+
+### Added
+
+- Search option `DELETED` as status in the `queryBuilder` util.
+
+## [1.26.0] - 2024-05-13
+
+### Added
+
+- Endpoint `DELETE /dashboard/users/` for a `batchDelete` for admin users.
+
 ## [1.25.0] - 2024-05-8
 
 ### Added

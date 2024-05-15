@@ -1,3 +1,3 @@
 service_sso:
-  version: 1.25.0
+  version: 1.27.1
   retrigger: 1
