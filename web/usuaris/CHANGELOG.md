@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.20.0] - 2024-05-16
+
+### Added
+
+- Added ActionsDropdown component
+- Added functionality to apply actions to multiple users
+
 ## [0.19.0] - 2024-05-15
 
 ### Added

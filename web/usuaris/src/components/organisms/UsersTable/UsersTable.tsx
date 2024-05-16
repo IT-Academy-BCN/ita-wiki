@@ -23,20 +23,24 @@ import { UserRole } from '../../../types/types'
 
 type TUsersTable = {
   filtersSelected: TFilters | Record<string, never>
+  selectedStatus: UserStatus | undefined
+  setSelectedStatus: (selectedStatus: UserStatus | undefined) => void
+  handleSelectedUsers: (selectedUsersIds: string[]) => void
 }
 
-export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
+export const UsersTable: FC<TUsersTable> = ({
+  filtersSelected,
+  selectedStatus,
+  setSelectedStatus,
+  handleSelectedUsers,
+}) => {
   const { t } = useTranslation()
 
   const [filters, setFilters] = useState<TFilters>({})
 
   const { isLoading, isError, data: users } = useGetUsers(filters)
 
-  const [selectedStatus, setSelectedStatus] = useState<UserStatus | undefined>(
-    undefined
-  )
-
-  const [selectedUsers, setSelectedUsers] = useState<TUserData[]>([])
+  const [selectedUsersIds, setSelectedUsersIds] = useState<string[]>([])
 
   const { changeUserStatus } = useUpdateUser()
 
@@ -59,20 +63,24 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
     changeUserStatus.mutate(updatedUser)
   }
 
-  const handleSelectedUsers = (allSelectedUsers: TUserData[]) => {
-    // TO DO: Add action to do after selection
-    // eslint-disable-next-line no-console
-    console.log('allSelectedUsers', allSelectedUsers)
-  }
-
   useEffect(() => {
-    if (selectedUsers?.length > 0) {
-      handleSelectedUsers(selectedUsers)
+    if (selectedUsersIds?.length > 0) {
+      handleSelectedUsers(selectedUsersIds)
     } else {
       handleSelectedUsers([])
       setSelectedStatus(undefined)
     }
-  }, [selectedUsers])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedUsersIds])
+
+  useEffect(() => {
+    if (selectedStatus === undefined) setSelectedUsersIds([])
+  }, [selectedStatus])
+
+  useEffect(() => {
+    setSelectedStatus(undefined)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters])
 
   const changeSelection = (
     e: ChangeEvent<HTMLInputElement>,
@@ -84,18 +92,20 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       const userSelected: TUserData | undefined = users?.find(
         (user) => user.id === id
       )
-      const addUsers = [...selectedUsers]
+      const addUsers = [...selectedUsersIds]
       if (userSelected) {
-        addUsers.push(userSelected)
+        addUsers.push(userSelected.id)
       }
-      setSelectedUsers(addUsers)
+      setSelectedUsersIds(addUsers)
 
       return addUsers
     }
 
     const userUnselected = users?.find((user) => user.id === id)
-    const removeUsers = selectedUsers.filter((user) => user !== userUnselected)
-    setSelectedUsers(removeUsers)
+    const removeUsers = selectedUsersIds.filter(
+      (user) => user !== userUnselected?.id
+    )
+    setSelectedUsersIds(removeUsers)
 
     return removeUsers
   }
@@ -110,13 +120,8 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         const name: string = row.getValue('name')
         const status: UserStatus = row.getValue('status')
         const { deletedAt } = row.original
-        let isDisabled: boolean | undefined
-
-        if ((selectedStatus && selectedStatus !== status) || deletedAt) {
-          isDisabled = true
-        } else {
-          isDisabled = undefined
-        }
+        const isDisabled =
+          (!!selectedStatus && selectedStatus !== status) || !!deletedAt
 
         return (
           <Checkbox
@@ -126,8 +131,8 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
             onChange={(e) =>
               handleSelectedUsers(changeSelection(e, id, status))
             }
-            defaultChecked={selectedUsers?.some(
-              (checkedUser) => checkedUser.id === id
+            defaultChecked={selectedUsersIds?.some(
+              (checkedUser) => checkedUser === id
             )}
             disabled={isDisabled}
           />
@@ -139,13 +144,8 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       cell: ({ row }) => {
         const name: string = row.getValue('name')
         const status: UserStatus = row.getValue('status')
-        let isDisabled: boolean | undefined
+        const isDisabled = !!selectedStatus && selectedStatus !== status
 
-        if (selectedStatus && selectedStatus !== status) {
-          isDisabled = true
-        } else {
-          isDisabled = undefined
-        }
         return <DisabledStyled disabled={isDisabled}>{name}</DisabledStyled>
       },
     }),
@@ -154,13 +154,8 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       cell: ({ row }) => {
         const dni: string = row.getValue('dni')
         const status: UserStatus = row.getValue('status')
-        let isDisabled: boolean | undefined
+        const isDisabled = !!selectedStatus && selectedStatus !== status
 
-        if (selectedStatus && selectedStatus !== status) {
-          isDisabled = true
-        } else {
-          isDisabled = undefined
-        }
         return <DisabledStyled disabled={isDisabled}>{dni}</DisabledStyled>
       },
     }),
@@ -169,13 +164,8 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       cell: ({ row }) => {
         const itineraryName: string = row.getValue('itineraryName')
         const status: UserStatus = row.getValue('status')
-        let isDisabled: boolean | undefined
+        const isDisabled = !!selectedStatus && selectedStatus !== status
 
-        if (selectedStatus && selectedStatus !== status) {
-          isDisabled = true
-        } else {
-          isDisabled = undefined
-        }
         return (
           <DisabledStyled disabled={isDisabled}>{itineraryName}</DisabledStyled>
         )
@@ -190,15 +180,9 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       ),
       cell: ({ row }) => {
         let status: UserStatus = row.getValue('status')
-        let isDisabled: boolean | undefined
+        const isDisabled = !!selectedStatus && selectedStatus !== status
         const { deletedAt } = row.original
         if (deletedAt) status = UserStatus.DELETED
-
-        if (selectedStatus && selectedStatus !== status) {
-          isDisabled = true
-        } else {
-          isDisabled = undefined
-        }
 
         return (
           <DisabledStyled disabled={isDisabled}>
@@ -214,14 +198,8 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       cell: ({ row }) => {
         const createdAt = row.getValue('createdAt')
         const status: UserStatus = row.getValue('status')
+        const isDisabled = !!selectedStatus && selectedStatus !== status
         const formattedDate = new Date(createdAt as string).toLocaleDateString()
-        let isDisabled: boolean | undefined
-
-        if (selectedStatus && selectedStatus !== status) {
-          isDisabled = true
-        } else {
-          isDisabled = undefined
-        }
 
         return (
           <DisabledStyled disabled={isDisabled}>{formattedDate}</DisabledStyled>
@@ -233,13 +211,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       cell: ({ row }) => {
         const role: UserRole = row.getValue('role')
         const status: UserStatus = row.getValue('status')
-        let isDisabled: boolean | undefined
-
-        if (selectedStatus && selectedStatus !== status) {
-          isDisabled = true
-        } else {
-          isDisabled = undefined
-        }
+        const isDisabled = !!selectedStatus && selectedStatus !== status
 
         return <DisabledStyled disabled={isDisabled}>{t(role)}</DisabledStyled>
       },
@@ -255,14 +227,8 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         const status: UserStatus = row.getValue('status')
         const id: string = row.getValue('id')
         const { deletedAt } = row.original
-        let isDisabled: boolean | undefined
+        const isDisabled = !!selectedStatus || !!deletedAt
         let buttonTxt: string = ''
-
-        if ((selectedStatus && selectedStatus !== status) || deletedAt) {
-          isDisabled = true
-        } else {
-          isDisabled = undefined
-        }
 
         if (deletedAt) {
           buttonTxt = t('Eliminado')

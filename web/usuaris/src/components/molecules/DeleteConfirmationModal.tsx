@@ -10,12 +10,13 @@ import {
 import { FC, HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
 import styled from 'styled-components'
-import { useDeleteUser } from '../../hooks'
+import { useDeleteMultipleUsers, useDeleteUser } from '../../hooks'
 
 type TDeleteConfirmationModal = {
   open: boolean
   toggleModal: () => void
-  idToDelete: string
+  idToDelete?: string
+  idsToDelete?: string[]
 }
 
 type TButton = HTMLAttributes<HTMLParagraphElement> & {
@@ -49,6 +50,7 @@ export const DeleteConfirmationModal: FC<TDeleteConfirmationModal> = ({
   open,
   toggleModal,
   idToDelete,
+  idsToDelete,
 }) => {
   const { t } = useTranslation()
   const { deleteUserMutation, isLoading, isSuccess, isError, reset } =
@@ -56,41 +58,68 @@ export const DeleteConfirmationModal: FC<TDeleteConfirmationModal> = ({
       successCb: toggleModal,
     })
 
+  const {
+    deleteMultipleUsersMutation,
+    isLoading: batchDeleteLoading,
+    isSuccess: batchDeleteSuccess,
+    isError: batchDeleteError,
+    reset: batchDeleteReset,
+  } = useDeleteMultipleUsers({
+    successCb: toggleModal,
+  })
+
+  const handleConfirm = () => {
+    if (idToDelete) {
+      deleteUserMutation(idToDelete)
+    } else if (idsToDelete) {
+      deleteMultipleUsersMutation(idsToDelete)
+    }
+  }
+
+  const handleCancel = () => {
+    toggleModal()
+    if (idToDelete) {
+      reset()
+    } else {
+      batchDeleteReset()
+    }
+  }
+
   return (
     <Modal
       title={t('Eliminar usuario')}
       isOpen={open}
       toggleModal={() => {
         toggleModal()
-        reset()
+        if (idToDelete) {
+          reset()
+        } else {
+          batchDeleteReset()
+        }
       }}
     >
-      {isSuccess && (
+      {(isSuccess || batchDeleteSuccess) && (
         <ModalSuccessTextStyled data-testid="success-message">
           {t('Usuario eliminado correctamente')}
         </ModalSuccessTextStyled>
       )}
-      {isError && (
+      {(isError || batchDeleteError) && (
         <ModalErrorTextStyled data-testid="error-message">
           {t('Error al eliminar el usuario')}
         </ModalErrorTextStyled>
       )}
       <FlexBox direction="row" gap={dimensions.spacing.md}>
-        <Button
-          data-testid="confirm-button"
-          onClick={() => {
-            deleteUserMutation(idToDelete)
-          }}
-        >
-          {isLoading ? <Spinner size="xsmall" /> : t('Confirmar')}
+        <Button data-testid="confirm-button" onClick={() => handleConfirm()}>
+          {isLoading || batchDeleteLoading ? (
+            <Spinner size="xsmall" />
+          ) : (
+            t('Confirmar')
+          )}
         </Button>
         <Button
           data-testid="cancel-button"
           outline
-          onClick={() => {
-            toggleModal()
-            reset()
-          }}
+          onClick={() => handleCancel()}
         >
           {t('Cancelar')}
         </Button>

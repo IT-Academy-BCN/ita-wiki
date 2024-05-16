@@ -124,6 +124,7 @@
   "Aceptar": "Accept",
   "Bloquear": "Block",
   "Desbloquear": "Unblock",
+  "Eliminar": "Delete",
   "ADMIN": "Admin",
   "REGISTERED": "Registered",
   "MENTOR": "Mentor",
@@ -139,7 +140,8 @@
   "Buscar": "Search",
   "DELETED": "Deleted",
   "Eliminado": "Deleted",
-  "Eliminar usuario": "Are you sure you want to delete this user?",
-  "Confirmar" : "Confirm",
-  "Error al eliminar el usuario": "Failed to delete user"
+  "Eliminar usuario": "Are you sure you want to delete this/these user/s?",
+  "Confirmar": "Confirm",
+  "Usuario eliminado correctamente": "User/s successfully deleted",
+  "Error al eliminar el usuario": "Failed to delete user/s"
 }

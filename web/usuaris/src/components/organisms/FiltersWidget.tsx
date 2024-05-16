@@ -10,6 +10,7 @@ import { TRole } from '../../types/types'
 
 const FiltersContainer = styled(FlexBox)`
   width: 100%;
+  flex-wrap: wrap;
 `
 
 type TFiltersWidget = {
@@ -55,6 +56,7 @@ export const FiltersWidget: FC<TFiltersWidget> = ({ filters, setFilters }) => {
     <FiltersContainer
       direction="row"
       justify="flex-start"
+      align="start"
       gap={dimensions.spacing.xs}
     >
       <ItineraryDropdown handleItinerary={handleItinerary} />

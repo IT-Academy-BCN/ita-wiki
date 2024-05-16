@@ -39,6 +39,11 @@ export type TUpdatedUser = {
   itineraryId?: string
 }
 
+export type TUpdatedUsersStatus = {
+  ids: string[]
+  status: string
+}
+
 export type TUserData = {
   id: string
   name: string

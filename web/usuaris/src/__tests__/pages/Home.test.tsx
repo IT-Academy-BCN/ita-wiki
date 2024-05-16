@@ -38,9 +38,11 @@ describe('Home page', () => {
     const mainDiv = screen.getByRole('main')
     const sideMenuElement = screen.getByText(/Mentors/i)
     const filtersWidgetElement = screen.getByAltText(/Calendar/i)
+    const actionsDropdown = screen.getByTestId('actions-dropdown')
 
     expect(mainDiv).toBeInTheDocument()
     expect(sideMenuElement).toBeInTheDocument()
     expect(filtersWidgetElement).toBeInTheDocument()
+    expect(actionsDropdown).toBeInTheDocument()
   })
 })

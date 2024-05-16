@@ -56,7 +56,7 @@ export const SelectLanguage: FC = () => {
     <DropdownLang
       selectedLanguage={selectedLanguage as Language}
       placeholder=""
-      value={selectedLanguage}
+      defaultValue={selectedLanguage}
       onChange={handleLanguageChange}
       options={languages}
     />
