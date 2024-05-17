@@ -5,7 +5,12 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  getSortedRowModel,
+  SortingState,
 } from '@tanstack/react-table'
+import { useState } from 'react'
+import { icons } from '../../assets/icons'
+import { IconStyled } from '../organisms/UsersTable/UsersTable.styles'
 
 const TableStyled = styled.table`
   width: 100%;
@@ -26,6 +31,7 @@ const THeadStyled = styled.thead`
 const THStyled = styled.th`
   padding-bottom: ${dimensions.spacing.sm};
   width: auto;
+  cursor: pointer;
 `
 
 const TBodyStyled = styled.tbody``
@@ -46,22 +52,35 @@ export const Table = <TData, TValue>({
   data,
   noResultsMessage,
 }: TTable<TData, TValue>) => {
+  const [sorting, setSorting] = useState<SortingState>([])
+
   const table = useReactTable({
     columns,
     data,
+    state: { sorting },
+    onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
   })
+
   return (
     <TableStyled>
       <THeadStyled>
         {table.getHeaderGroups().map((headerGroup) => (
           <TRStyled key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <THStyled key={header.id}>
+              <THStyled
+                key={header.id}
+                onClick={header.column.getToggleSortingHandler()}
+              >
                 {flexRender(
                   header.column.columnDef.header,
                   header.getContext()
                 )}
+                {{
+                  asc: <IconStyled src={icons.sortUp} />,
+                  desc: <IconStyled src={icons.sortDown} />,
+                }[header.column.getIsSorted() as string] ?? null}
               </THStyled>
             ))}
           </TRStyled>

@@ -10,6 +10,7 @@ import node from './nodejs-logo.svg'
 import php from './php.svg'
 import react from './react.svg'
 import sortDown from './sort-down.svg'
+import sortUp from './sort-up.svg'
 import user from './user.svg'
 
 export const icons = {
@@ -25,5 +26,6 @@ export const icons = {
   php,
   react,
   sortDown,
+  sortUp,
   user,
 }

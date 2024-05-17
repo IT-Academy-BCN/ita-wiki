@@ -182,12 +182,7 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       },
     }),
     columHelper.accessor('status', {
-      header: () => (
-        <CellStyled>
-          {t('Estado')}
-          <IconStyled src={icons.sortDown} alt="sort-down" />
-        </CellStyled>
-      ),
+      header: () => <CellStyled>{t('Estado')}</CellStyled>,
       cell: ({ row }) => {
         let status: UserStatus = row.getValue('status')
         let isDisabled: boolean | undefined
