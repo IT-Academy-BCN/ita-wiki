@@ -39,8 +39,11 @@ export const createTopicFetcher = (createdTopic: TTopic) =>
     },
   }).then((res) => {
     if (!res.ok) {
-      //RETOCAR AIXÒ PQ I SI NO TROBA ERROR?????
-      throw new Error(errorMessageStatus[res.status])
+      if (Object.hasOwnProperty.call(errorMessageStatus, res.status)) {
+        throw new Error(errorMessageStatus[res.status])
+      } else {
+        throw new Error('Error inesperado')
+      }
     }
     return res.status === 204 ? {} : res.json()
   })
@@ -54,7 +57,11 @@ export const updateTopicFetcher = (updatedTopic: TTopic) =>
     },
   }).then((res) => {
     if (!res.ok) {
-      throw new Error(errorMessageStatus[res.status])
+      if (Object.hasOwnProperty.call(errorMessageStatus, res.status)) {
+        throw new Error(errorMessageStatus[res.status])
+      } else {
+        throw new Error('Error inesperado')
+      }
     }
     return res.status === 204 ? null : res.json()
   })
@@ -199,16 +206,14 @@ export const updateVote = async ({ resourceId, vote }: TVoteMutationData) => {
 
 export const loginUserFetcher = async (user: object) => {
   const errorMessage: { [key: number]: string } = {
-    //THIS IS THE PROBLEM: FIX SWAGGER AND CHECK EVERY RESPONSE; INCLUDING 200/204 AS GOOD IN USUARIS! FALTA TRADUCCIÑO!
     400: 'Error 400 - Error de validación ZOD',
     401: 'Error 401 - Credenciales incorrectas',
-    403: 'Error 403 - Acceso denegado',
+    403: 'Error 403 - Acceso denegado (usuario no activo)',
+    404: 'Error 404 - Usuario no encontrado.',
+    422: 'Error 422 - Contraseña incorrecta.',
     500: 'Error 500 - Error bbdd',
+    503: 'Error 503 - "Servicio no disponible',
   }
-
-  //FIX THIS , AND ADD AT USUARIS
-
-  //OJU TREADUCCIO; PQ NO ËS UIGUAL LA RESPOSTA AQUÏ QUE AL $01 D?ERORRMESSAGESTATUS!!!!!!!!! SEPARAR-HO
 
   const response = await fetch(urls.logIn, {
     method: 'POST',

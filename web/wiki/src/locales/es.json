@@ -113,12 +113,17 @@
   "¡Vaya! :/": "¡Vaya! :/",
   "Todavía no hay recursos de este tipo.": "Todavía no hay recursos de este tipo.",
 
-  "Error 401 - Credenciales incorrectas": "Identificador o contraseña incorrectas.",
+  "Error 400 - Error de validación ZOD": "Error de validación. Por favor, revise los datos.",
+  "Error 401 - Credenciales incorrectas": "Identificador o contraseña incorrectos.",
   "Error 401 - No autorizado": "Operación no autorizada. Es necesario iniciar sesión de usuario.",
   "Error 403 - Acceso denegado": "Acceso denegado. No tienes los permisos necesarios para realizar la operación.",
+  "Error 403 - Acceso denegado (usuario no activo)": "Usuario en proceso de activación. Por favor, póngase en contacto con el administrador.",
   "Error 404 - No se puede guardar": "Error al guardar en la base de datos. Por favor, inténtalo de nuevo y si el error persiste, contacta con el administrador.",
+  "Error 404 - Usuario no encontrado.": "Usuario no encontrado.",
   "Error 405 - Id de usuario inválido": "Identificador de usuario no válido.",
+  "Error 422 - Contraseña incorrecta": "La contraseña es incorrecta.",
   "Error 500 - Error bbdd": "Error en la base de datos. Por favor, inténtalo más tarde.",
+  "Error 503 - Servicio no disponible": "El servicio no está disponible en este momento. Por favor, inténtalo más tarde.",
   "Error inesperado": "Error inesperado. Por favor, inténtelo más tarde.",
 
   "Volver": "Volver",

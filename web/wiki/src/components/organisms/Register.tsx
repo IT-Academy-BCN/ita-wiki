@@ -62,6 +62,7 @@ const CheckBoxStyled = styled(Checkbox)`
 
   > input {
     border: 1px solid ${colors.black.black1};
+    margin-right: ${dimensions.spacing.xxxs};
 
     &:checked {
       border: 2px solid ${colors.primary};
@@ -77,20 +78,20 @@ const LegalTermsLinkStyled = styled(Link)`
   color: inherit;
 `
 type TButton = HTMLAttributes<HTMLParagraphElement> & {
-  backgroundColor?: string
+  $backgroundColor?: string
   padding?: string
 }
 
 const ButtonStyled = styled(Button)<TButton>`
   margin: ${dimensions.spacing.none};
-  background-color: ${(props) => props.backgroundColor};
-  border: 2px solid ${(props) => props.backgroundColor};
+  background-color: ${(props) => props.$backgroundColor};
+  border: 2px solid ${(props) => props.$backgroundColor};
   padding: ${(props) => props.padding};
 
   &:hover,
   &:disabled {
-    background-color: ${(props) => props.backgroundColor};
-    border: 2px solid ${(props) => props.backgroundColor};
+    background-color: ${(props) => props.$backgroundColor};
+    border: 2px solid ${(props) => props.$backgroundColor};
   }
 `
 
@@ -302,7 +303,7 @@ export const Register: FC<TRegister> = ({
         <GridAreaStyled gridArea="button">
           {isSuccess ? (
             <ButtonStyled
-              backgroundColor={colors.success}
+              $backgroundColor={colors.success}
               padding={dimensions.spacing.xs}
               data-testid="registerSuccess"
               disabled

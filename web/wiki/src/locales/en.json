@@ -113,12 +113,16 @@
   "¡Vaya! :/": "Oops! :/",
   "Todavía no hay recursos de este tipo.": "There are no available resources of this kind yet.",
 
+  "Error 400 - Error de validación ZOD": "Validation error. Please, review the data.",
   "Error 401 - Credenciales incorrectas": "Invalid password or user ID.",
   "Error 401 - No autorizado": "Unauthorized operation. User login required.",
   "Error 403 - Acceso denegado": "Access denied. You do not have the necessary permissions to perform the operation.",
+  "Error 403 - Acceso denegado (usuario no activo)": "User in activation process. Please, contact the administrator.",
   "Error 404 - No se puede guardar": "Error saving to database. Please try again and if the error persists, contact the administrator.",
+  "Error 404 - Usuario no encontrado.": "User not found.",
   "Error 405 - Id de usuario inválido": "Invalid user ID.",
   "Error 500 - Error bbdd": "Database error. Please try again later.",
+  "Error 503 - Servicio no disponible": "Service unavailable. Please try again later.",
   "Error inesperado": "An unexpected error occurred. Please try again later.",
 
   "Volver": "Back",
