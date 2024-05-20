@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.20.0] - 2024-05-20
+
+### Added
+
+- Added sort option on headers table
+- 
 ## [0.19.0] - 2024-05-15
 
 ### Added
