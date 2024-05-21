@@ -152,6 +152,7 @@ export type TDropdown = HTMLAttributes<HTMLElement> & {
   deselectText?: string
   className?: string
   $size?: 'small' | 'normal' | 'large'
+  resetSelectedValue?: boolean
 }
 
 export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
@@ -166,6 +167,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
       deselectText = 'Borra la selección',
       className = '',
       $size = 'normal',
+      resetSelectedValue = undefined,
       ...rest
     },
     ref
@@ -194,6 +196,12 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
         onValueChange(undefined)
       }
     }
+
+    useEffect(() => {
+      if (resetSelectedValue) {
+        setSelectedValue(undefined)
+      }
+    }, [resetSelectedValue])
 
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {

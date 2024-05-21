@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.31.8] - 2024-05-21
+
+### Changed
+
+- Added optional prop resetSelectedValue to Dropdown
+
 ## [0.31.7] - 2024-05-02
 
 ### Fixed

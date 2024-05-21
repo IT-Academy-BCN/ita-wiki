@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/control-has-associated-label */
+/* eslint-disable react/button-has-type */
 import { useState } from 'react'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import { vi } from 'vitest'
@@ -60,14 +62,25 @@ const mockOptionsWithIcon = [
 
 const MockParent = () => {
   const [selectedValue, setSelectedValue] = useState('')
+  const [resetSelectedValue, setResetSelectedValue] = useState(false)
 
   const handleChange = (selectedOption: TDropdownOption | undefined) => {
     if (selectedOption) setSelectedValue(selectedOption.name)
   }
+
   return (
     <div>
-      <Dropdown onValueChange={handleChange} options={mockOptions} />
+      <Dropdown
+        placeholder="Test select"
+        onValueChange={handleChange}
+        options={mockOptions}
+        resetSelectedValue={resetSelectedValue}
+      />
       <p data-testid="selected-value">{selectedValue}</p>
+      <button
+        onClick={() => setResetSelectedValue(true)}
+        data-testid="reset-button"
+      />
     </div>
   )
 }
@@ -399,6 +412,27 @@ describe('Dropdown', () => {
       expect(screen.getByTestId('selected-value')).toHaveTextContent(
         /option 2/i
       )
+    })
+  })
+
+  it('resets selected value when prop passed changes', async () => {
+    render(<MockParent />)
+
+    const dropdownHeader = screen.getByTestId('dropdown-header')
+    await userEvent.click(dropdownHeader)
+
+    const optionToSelect = screen.getByTestId('3')
+    await userEvent.click(optionToSelect)
+
+    await waitFor(() => {
+      expect(screen.getByTestId('selected-value')).toHaveTextContent(
+        /option 3/i
+      )
+    })
+
+    await userEvent.click(screen.getByTestId('reset-button'))
+    await waitFor(() => {
+      expect(dropdownHeader).toHaveTextContent(/Test select/i)
     })
   })
 })
