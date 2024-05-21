@@ -84,7 +84,7 @@ describe('Table', () => {
       />
     )
 
-    fireEvent.click(screen.getByText('Nombre'))
+    fireEvent.click(screen.getByTestId('sort-name'))
 
     await waitFor(() => {
       const rows = screen.getAllByRole('row').slice(1)
@@ -93,7 +93,7 @@ describe('Table', () => {
       expect(within(rows[1]).getByText('Ona Sitgar')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByText('Nombre'))
+    fireEvent.click(screen.getByTestId('sort-name'))
 
     await waitFor(() => {
       const rows = screen.getAllByRole('row').slice(1)

@@ -71,6 +71,7 @@ export const Table = <TData, TValue>({
             {headerGroup.headers.map((header) => (
               <THStyled
                 key={header.id}
+                data-testid={`sort-${header.id}`}
                 onClick={header.column.getToggleSortingHandler()}
               >
                 {flexRender(
@@ -78,8 +79,8 @@ export const Table = <TData, TValue>({
                   header.getContext()
                 )}
                 {{
-                  asc: <IconStyled src={icons.sortUp} />,
-                  desc: <IconStyled src={icons.sortDown} />,
+                  asc: <IconStyled src={icons.sortUp} alt="sortUp" />,
+                  desc: <IconStyled src={icons.sortDown} alt="sortDown" />,
                 }[header.column.getIsSorted() as string] ?? null}
               </THStyled>
             ))}

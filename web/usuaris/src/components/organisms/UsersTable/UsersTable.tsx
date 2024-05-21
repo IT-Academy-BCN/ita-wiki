@@ -15,7 +15,6 @@ import {
   DeleteButton,
   DeleteIcon,
   DisabledStyled,
-  IconStyled,
   StatusStyled,
   TableContainer,
 } from './UsersTable.styles'
