@@ -114,11 +114,16 @@
   "¡Vaya! :/": "Vaja! :/",
   "Todavía no hay recursos de este tipo.": "Encara no hi ha recursos d'aquest tipus.",
 
+  "Error 400 - Error de validación ZOD": "Error de validació. Per favor, revisi les dades.",
+  "Error 401 - Credenciales incorrectas": "Identificador o contrasenya incorrectes.",
   "Error 401 - No autorizado": "Operació no autoritzada. És necessari iniciar sessió d'usuari.",
   "Error 403 - Acceso denegado": "Accés denegat. No tens els permisos necessaris per realitzar l'operació.",
+  "Error 403 - Acceso denegado (usuario no activo)": "Usuari en procés d'activació. Per favor, contacti amb l'administrador.",
   "Error 404 - No se puede guardar": "Error en desar a la base de dades. Si us plau, torna a intentar-ho i si l'error persisteix, contacta amb l'administrador.",
+  "Error 404 - Usuario no encontrado.": "Usuari no trobat.",
   "Error 405 - Id de usuario inválido": "Identificador d'usuari no vàlid.",
   "Error 500 - Error bbdd": "Error en la base de dades. Per favor, intenta-ho més tard.",
+  "Error inesperado": "Error inesperat. Per favor, intenta-ho més tard.",
 
   "Volver": "Torna",
   "Cerrar sesión": "Tanca sessió",

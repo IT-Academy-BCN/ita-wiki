@@ -101,7 +101,7 @@ export const Login: FC<TLogin> = ({
   const { loginUser, responseError, isLoading, isSuccess } = useLogin()
   const onSubmit = handleSubmit(async (data) => {
     const { dni, password } = data
-    await loginUser.mutateAsync({
+    loginUser.mutate({
       dni,
       password,
     })
@@ -118,17 +118,18 @@ export const Login: FC<TLogin> = ({
       </TitleStyled>
       {responseError && (
         <FlexErrorStyled align="start">
-          <ValidationMessage color="error" text={responseError} />
+          <ValidationMessage color="error" text={t(`${responseError}`)} />
         </FlexErrorStyled>
       )}
       {(errors.dni || errors.password) && (
         <FlexErrorStyled align="start">
           <ValidationMessage
             color="error"
-            text="Identificador o contraseña incorrectos"
+            text={t('Error 401 - Credenciales incorrectas')}
           />
         </FlexErrorStyled>
       )}
+
       <FormStyled onSubmit={onSubmit}>
         <InputGroup
           id="dni"
