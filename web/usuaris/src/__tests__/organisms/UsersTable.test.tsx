@@ -163,4 +163,13 @@ describe('UsersTable', () => {
       })
     })
   })
+
+  it('disables user when has been deleted', async () => {
+    render(<UsersTable filtersSelected={{}} />)
+
+    await waitFor(() => {
+      const userDeletedRow = screen.getByTestId('6')
+      expect(userDeletedRow).toHaveStyle('opacity: 0.6')
+    })
+  })
 })

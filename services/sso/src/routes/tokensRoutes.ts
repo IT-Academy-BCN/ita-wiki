@@ -5,6 +5,7 @@ import { validate } from '../middleware/validate'
 import { z } from '../openapi/zod'
 import { validateSchema } from '../schemas/tokens/validateSchema'
 import { authenticate } from '../middleware/authenticate'
+import { refresh } from '../controllers/tokens/refresh'
 
 export const tokensRoutes = new Router()
 
@@ -16,3 +17,4 @@ tokensRoutes.post(
   authenticate,
   validateToken
 )
+tokensRoutes.post('/refresh', authenticate, refresh)

@@ -11,7 +11,7 @@ import { generateOpenapiFile } from './openapi/generateFile'
 import { openapiFilename, swaggeruiUrl } from './openapi/config'
 import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
 import { appConfig } from './config/index'
-import { client } from './models/db'
+import { client } from './db/client'
 
 const app = new Koa()
 

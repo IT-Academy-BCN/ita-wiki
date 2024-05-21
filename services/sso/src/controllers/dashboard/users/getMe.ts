@@ -1,6 +1,6 @@
 import { Context, Middleware } from 'koa'
 import { User } from '../../../schemas'
-import { client } from '../../../models/db'
+import { client } from '../../../db/client'
 import { NotFoundError } from '../../../utils/errors'
 
 export const getMe: Middleware = async (ctx: Context) => {

@@ -1,6 +1,32 @@
 All notable changes to this project will be documented in this file.
 
 # Changelog
+## [1.28.0] - 2024-05-15
+
+### Added
+
+- `/refresh` endpoint for secure token renewal using Bearer tokens.
+
+### Changed
+- Enhanced token handling to manage expired access tokens and refresh them using valid refresh tokens.
+
+## [1.27.1] - 2024-05-15
+
+### Fixed
+
+- Exclude DELETED Users from Responses for Non-DELETED Status Filters
+
+## [1.27.0] - 2024-05-15
+
+### Added
+
+- Search option `DELETED` as status in the `queryBuilder` util.
+
+## [1.26.0] - 2024-05-13
+
+### Added
+
+- Endpoint `DELETE /dashboard/users/` for a `batchDelete` for admin users.
 
 ## [1.25.0] - 2024-05-8
 

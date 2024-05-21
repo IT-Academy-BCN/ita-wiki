@@ -30,7 +30,7 @@ export const userSchema = z.object({
   status: userStatusSchema,
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
-  deletedAt: z.string().datetime(),
+  deletedAt: z.string().datetime().nullable(),
   itineraryId: z.string().cuid2(),
 })
 

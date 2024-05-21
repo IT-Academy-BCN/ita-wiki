@@ -109,9 +109,10 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         const id: string = row.getValue('id')
         const name: string = row.getValue('name')
         const status: UserStatus = row.getValue('status')
+        const { deletedAt } = row.original
         let isDisabled: boolean | undefined
 
-        if (selectedStatus && selectedStatus !== status) {
+        if ((selectedStatus && selectedStatus !== status) || deletedAt) {
           isDisabled = true
         } else {
           isDisabled = undefined
@@ -188,8 +189,10 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         </CellStyled>
       ),
       cell: ({ row }) => {
-        const status: UserStatus = row.getValue('status')
+        let status: UserStatus = row.getValue('status')
         let isDisabled: boolean | undefined
+        const { deletedAt } = row.original
+        if (deletedAt) status = UserStatus.DELETED
 
         if (selectedStatus && selectedStatus !== status) {
           isDisabled = true
@@ -199,7 +202,9 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
 
         return (
           <DisabledStyled disabled={isDisabled}>
-            <StatusStyled status={status}>{t(`${status}`)}</StatusStyled>
+            <StatusStyled isDeleted={deletedAt !== null} status={status}>
+              {t(`${status}`)}
+            </StatusStyled>
           </DisabledStyled>
         )
       },
@@ -223,7 +228,6 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         )
       },
     }),
-
     columHelper.accessor('role', {
       header: `${t('Rol')}`,
       cell: ({ row }) => {
@@ -240,7 +244,6 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
         return <DisabledStyled disabled={isDisabled}>{t(role)}</DisabledStyled>
       },
     }),
-
     columHelper.display({
       id: 'actions',
       header: () => (
@@ -251,16 +254,19 @@ export const UsersTable: FC<TUsersTable> = ({ filtersSelected }) => {
       cell: ({ row }) => {
         const status: UserStatus = row.getValue('status')
         const id: string = row.getValue('id')
+        const { deletedAt } = row.original
         let isDisabled: boolean | undefined
         let buttonTxt: string = ''
 
-        if (selectedStatus && selectedStatus !== status) {
+        if ((selectedStatus && selectedStatus !== status) || deletedAt) {
           isDisabled = true
         } else {
           isDisabled = undefined
         }
 
-        if (status === UserStatus.PENDING) {
+        if (deletedAt) {
+          buttonTxt = t('Eliminado')
+        } else if (status === UserStatus.PENDING) {
           buttonTxt = t('Aceptar')
         } else if (status === UserStatus.BLOCKED) {
           buttonTxt = t('Desbloquear')

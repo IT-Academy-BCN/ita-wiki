@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.19.0] - 2024-05-15
+
+### Added
+
+- Added SelectLanguage molecule
+
+## [0.18.0] - 2024-05-13
+
+### Added
+
+- Added disabled style for deleted users
+
 ## [0.17.0] - 2024-05-08
 
 ### Added

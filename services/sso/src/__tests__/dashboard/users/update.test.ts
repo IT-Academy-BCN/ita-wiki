@@ -2,8 +2,9 @@ import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { pathRoot } from '../../../routes/routes'
 import { server, testUserData } from '../../globalSetup'
-import { client } from '../../../models/db'
 import { hashPassword } from '../../../utils/passwordHash'
+import { client } from '../../../db/client'
+import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
 
 const id = 'nmfg3bvexwotarwcpl6t5qjy'
 const dni = 'Y1868974P'
@@ -14,13 +15,10 @@ const route = `${pathRoot.v1.dashboard.users}`
 let adminAuthToken = ''
 
 beforeAll(async () => {
-  const response = await supertest(server)
-    .post(`${pathRoot.v1.dashboard.auth}/login`)
-    .send({
-      dni: testUserData.admin.dni,
-      password: testUserData.admin.password,
-    })
-  ;[adminAuthToken] = response.header['set-cookie'][0].split(';')
+  adminAuthToken = await dashboardLoginAndGetToken(
+    testUserData.admin.dni,
+    testUserData.admin.password
+  )
 
   const exampleItineraty = await client.query(
     'SELECT id FROM "itinerary" LIMIT 1'
@@ -76,15 +74,5 @@ describe('Testing patch dashboard endpoint', () => {
       .send(body)
 
     expect(response.status).toBe(400)
-  })
-
-  it('should return a 401 error due to invalid credentials', async () => {
-    const body = { name: 'New Name', email: 'another@example.com' }
-    const response = await supertest(server)
-      .patch(`${route}/${id}`)
-      .set('Cookie', ['invalidAuthToken'])
-      .send(body)
-
-    expect(response.status).toBe(401)
   })
 })

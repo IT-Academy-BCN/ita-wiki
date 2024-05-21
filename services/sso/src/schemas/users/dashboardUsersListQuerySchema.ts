@@ -6,9 +6,13 @@ import {
   UserStatus,
   userNameSchema,
   userRoleSchema,
-  userStatusSchema,
 } from './userSchema'
 
+export const extendedUserStatus = {
+  ...UserStatus,
+  DELETED: 'DELETED',
+} as const
+export const extendedUserStatusSchema = z.nativeEnum(extendedUserStatus)
 export const startDateSchema = z.coerce.date()
 export const endDateSchema = z.coerce.date()
 export const dashboardUsersListQuerySchema = z.object({
@@ -20,7 +24,7 @@ export const dashboardUsersListQuerySchema = z.object({
     },
     example: 'frontend-angular',
   }),
-  status: userStatusSchema.optional().openapi({
+  status: extendedUserStatusSchema.optional().openapi({
     param: {
       description: 'Status to filter by',
       example: UserStatus.ACTIVE,

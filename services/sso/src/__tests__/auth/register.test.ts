@@ -2,8 +2,8 @@ import supertest from 'supertest'
 import { expect, it, describe, afterAll, beforeAll, afterEach } from 'vitest'
 import { server } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
-import { client } from '../../models/db'
 import { UserRegister } from '../../schemas/auth/registerSchema'
+import { client } from '../../db/client'
 
 const route = `${pathRoot.v1.auth}/register`
 

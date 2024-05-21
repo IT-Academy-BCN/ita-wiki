@@ -1,5 +1,5 @@
 import { Context, Middleware } from 'koa'
-import { client } from '../../models/db'
+import { client } from '../../db/client'
 import { UsersList } from '../../schemas/users/usersListSchema'
 
 export const listUsers: Middleware = async (ctx: Context) => {

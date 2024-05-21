@@ -13,6 +13,7 @@ import { dashboardDeleteUser } from '../../controllers/dashboard/users/delete'
 import { updateUser } from '../../controllers/users/update'
 import { dashboardUsersUpdateStatusSchema } from '../../schemas/users/dashboardUsersUpdateStatusSchema'
 import { dashboardUpdateStatusUsers } from '../../controllers/dashboard/users/updateStatus'
+import { dashboardBatchDelete } from '../../controllers/dashboard/users/batchDelete'
 
 export const dashboardUsersRoutes = new Router()
 
@@ -44,12 +45,21 @@ dashboardUsersRoutes.patch(
 )
 
 dashboardUsersRoutes.delete(
+  '/',
+  validate(z.object({ body: z.object({ ids: userIdSchema.array() }) })),
+  authenticate,
+  authorize('ADMIN'),
+  dashboardBatchDelete
+)
+
+dashboardUsersRoutes.delete(
   '/:id',
   validate(z.object({ params: z.object({ id: userIdSchema }) })),
   authenticate,
   authorize('ADMIN'),
   dashboardDeleteUser
 )
+
 dashboardUsersRoutes.post(
   '/status',
   authenticate,

@@ -1,4 +1,8 @@
-import { dashboardUsersListSchema, userSchema } from '../../schemas'
+import {
+  dashboardUsersListSchema,
+  userSchema,
+  validateSchema,
+} from '../../schemas'
 import { z } from '../zod'
 import {
   DeletedUser,
@@ -122,6 +126,15 @@ export const validTokenResponse = {
   content: {
     'application/json': {
       schema: userSchema.pick({ id: true }),
+    },
+  },
+}
+
+export const refreshTokenResponse = {
+  description: 'The token is valid',
+  content: {
+    'application/json': {
+      schema: validateSchema,
     },
   },
 }

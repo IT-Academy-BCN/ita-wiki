@@ -3,7 +3,7 @@ import { expect, it, describe, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { tokenSchema } from '../../schemas/tokens/tokenSchema'
-import { client } from '../../models/db'
+import { client } from '../../db/client'
 
 const route = `${pathRoot.v1.auth}/login`
 afterAll(async () => {
