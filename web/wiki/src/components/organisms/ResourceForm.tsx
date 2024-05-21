@@ -6,6 +6,7 @@ import {
   Radio,
   SelectGroup,
   Spinner,
+  TextareaGroup,
   ValidationMessage,
   colors,
   dimensions,
@@ -83,6 +84,13 @@ export type TInitialValues = Omit<
 
 const StyledRadio = styled(Radio)`
   margin-top: ${dimensions.spacing.xl};
+`
+
+const StyledTextareaGroup = styled(TextareaGroup)<{ error?: boolean }>`
+  resize: none;
+  margin-top: ${dimensions.spacing.none}!important;
+  margin-bottom: ${({ error }) =>
+    error ? dimensions.spacing.none : dimensions.spacing.base}!important;
 `
 
 type TSelectOption = {
@@ -182,9 +190,10 @@ export const ResourceForm: FC<TResourceForm> = ({
         validationMessage={errors.title?.message}
         validationType="error"
       />
-      <InputGroup
+      <StyledTextareaGroup
         hiddenLabel
         id="description"
+        rows={3}
         data-testid="resourceDescription"
         label={t('Descripción')}
         placeholder={t('Descripción')}
