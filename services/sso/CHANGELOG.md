@@ -1,6 +1,14 @@
 All notable changes to this project will be documented in this file.
 
 # Changelog
+
+## [1.28.1] - 2024-05-22
+
+### Fix
+
+- Fixed `GET /users` endpoint to return only active users.
+
+
 ## [1.28.0] - 2024-05-15
 
 ### Added
