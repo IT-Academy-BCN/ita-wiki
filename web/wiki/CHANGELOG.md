@@ -2,11 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.18.2] - 2024-05-21
+
+### Fixed
+
+- Fix logging behavior and improve error messages
+- Fix style and warning in Register
+
+## [0.18.1] - 2024-05-19
+
+### Changed
+
+- Change height of the description field of Resource Form
+
 ## [0.18.0] - 2024-04-01
 
 ### Changed
 
-- Change Cateory page structure to separate styles
+- Change Category page structure to separate styles
 
 ### Fixed
 

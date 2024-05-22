@@ -11,11 +11,9 @@ import {
   ActionsContainer,
   ActionsHeader,
   ButtonStyled,
-  CellStyled,
   DeleteButton,
   DeleteIcon,
   DisabledStyled,
-  IconStyled,
   StatusStyled,
   TableContainer,
 } from './UsersTable.styles'
@@ -172,12 +170,7 @@ export const UsersTable: FC<TUsersTable> = ({
       },
     }),
     columHelper.accessor('status', {
-      header: () => (
-        <CellStyled>
-          {t('Estado')}
-          <IconStyled src={icons.sortDown} alt="sort-down" />
-        </CellStyled>
-      ),
+      header: `${t('Estado')}`,
       cell: ({ row }) => {
         let status: UserStatus = row.getValue('status')
         const isDisabled = !!selectedStatus && selectedStatus !== status
@@ -218,11 +211,7 @@ export const UsersTable: FC<TUsersTable> = ({
     }),
     columHelper.display({
       id: 'actions',
-      header: () => (
-        <ActionsHeader align="end">
-          <CellStyled>{t('Acciones')}</CellStyled>
-        </ActionsHeader>
-      ),
+      header: () => <ActionsHeader align="end">{t('Acciones')}</ActionsHeader>,
       cell: ({ row }) => {
         const status: UserStatus = row.getValue('status')
         const id: string = row.getValue('id')
