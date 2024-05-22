@@ -10,7 +10,6 @@ import {
 } from '@tanstack/react-table'
 import { useState } from 'react'
 import { icons } from '../../assets/icons'
-import { IconStyled } from '../organisms/UsersTable/UsersTable.styles'
 
 const TableStyled = styled.table`
   width: 100%;
@@ -39,6 +38,10 @@ const TBodyStyled = styled.tbody``
 const TDStyled = styled.td`
   padding-bottom: ${dimensions.spacing.xs};
   height: 3.1rem;
+`
+
+const IconStyled = styled.img`
+  padding-left: ${dimensions.spacing.xxxs};
 `
 
 export type TTable<TData, TValue> = {

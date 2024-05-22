@@ -12,7 +12,6 @@ export const TableContainer = styled.div`
     display: none;
   }
 `
-export const CellStyled = styled.span``
 
 type TDisabled = {
   disabled: boolean | undefined
@@ -25,9 +24,6 @@ export const DisabledStyled = styled.div<TDisabled>`
   }};
 `
 
-export const IconStyled = styled.img`
-  padding-left: ${dimensions.spacing.xxxs};
-`
 
 type TStatusStyled = {
   status: UserStatus
