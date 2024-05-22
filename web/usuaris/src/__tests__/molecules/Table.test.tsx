@@ -21,6 +21,7 @@ const testColumns: ColumnDef<
 ]
 const testData = [
   { name: 'Ona Sitgar', itineraryName: 'Node' },
+  { name: 'Eva Serra', itineraryName: 'Java' },
   { name: 'Marc Bofill', itineraryName: 'React' },
 ]
 
@@ -84,22 +85,34 @@ describe('Table', () => {
       />
     )
 
-    fireEvent.click(screen.getByTestId('sort-name'))
+    fireEvent.click(screen.getByTestId('sort-name-up'))
 
     await waitFor(() => {
       const rows = screen.getAllByRole('row').slice(1)
 
-      expect(within(rows[0]).getByText('Marc Bofill')).toBeInTheDocument()
-      expect(within(rows[1]).getByText('Ona Sitgar')).toBeInTheDocument()
+      expect(within(rows[0]).getByText('Eva Serra')).toBeInTheDocument()
+      expect(within(rows[1]).getByText('Marc Bofill')).toBeInTheDocument()
+      expect(within(rows[2]).getByText('Ona Sitgar')).toBeInTheDocument()
     })
 
-    fireEvent.click(screen.getByTestId('sort-name'))
+    fireEvent.click(screen.getByTestId('sort-name-down'))
 
     await waitFor(() => {
       const rows = screen.getAllByRole('row').slice(1)
 
       expect(within(rows[0]).getByText('Ona Sitgar')).toBeInTheDocument()
       expect(within(rows[1]).getByText('Marc Bofill')).toBeInTheDocument()
+      expect(within(rows[2]).getByText('Eva Serra')).toBeInTheDocument()
+    })
+
+    fireEvent.click(screen.getByTestId('cancel-sort-name'))
+
+    await waitFor(() => {
+      const rows = screen.getAllByRole('row').slice(1)
+
+      expect(within(rows[0]).getByText('Ona Sitgar')).toBeInTheDocument()
+      expect(within(rows[1]).getByText('Eva Serra')).toBeInTheDocument()
+      expect(within(rows[2]).getByText('Marc Bofill')).toBeInTheDocument()
     })
   })
 })

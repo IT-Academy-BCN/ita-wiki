@@ -30,7 +30,6 @@ const THeadStyled = styled.thead`
 const THStyled = styled.th`
   padding-bottom: ${dimensions.spacing.sm};
   width: auto;
-  cursor: pointer;
 `
 
 const TBodyStyled = styled.tbody``
@@ -42,6 +41,13 @@ const TDStyled = styled.td`
 
 const IconStyled = styled.img`
   padding-left: ${dimensions.spacing.xxxs};
+  cursor: pointer;
+`
+
+const IconDisableStyled = styled.img`
+  padding-left: ${dimensions.spacing.xxxs};
+  opacity: 0.4;
+  cursor: pointer;
 `
 
 export type TTable<TData, TValue> = {
@@ -72,19 +78,38 @@ export const Table = <TData, TValue>({
         {table.getHeaderGroups().map((headerGroup) => (
           <TRStyled key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <THStyled
-                key={header.id}
-                data-testid={`sort-${header.id}`}
-                onClick={header.column.getToggleSortingHandler()}
-              >
+              <THStyled key={header.id}>
                 {flexRender(
                   header.column.columnDef.header,
                   header.getContext()
                 )}
-                {{
-                  asc: <IconStyled src={icons.sortUp} alt="sortUp" />,
-                  desc: <IconStyled src={icons.sortDown} alt="sortDown" />,
-                }[header.column.getIsSorted() as string] ?? null}
+                {header.id !== 'id' &&
+                  header.id !== 'actions' &&
+                  ({
+                    asc: (
+                      <IconStyled
+                        src={icons.sortUp}
+                        alt="sortedUp"
+                        data-testid={`sort-${header.id}-down`}
+                        onClick={header.column.getToggleSortingHandler()}
+                      />
+                    ),
+                    desc: (
+                      <IconStyled
+                        src={icons.sortDown}
+                        alt="sortedDown"
+                        data-testid={`cancel-sort-${header.id}`}
+                        onClick={header.column.getToggleSortingHandler()}
+                      />
+                    ),
+                  }[header.column.getIsSorted() as string] ?? (
+                    <IconDisableStyled
+                      src={icons.sortUp}
+                      alt="sortUp"
+                      data-testid={`sort-${header.id}-up`}
+                      onClick={header.column.getToggleSortingHandler()}
+                    />
+                  ))}
               </THStyled>
             ))}
           </TRStyled>

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.21.1] - 2024-05-22
+
+### Changed
+
+- Added icon when column is not sorted
+- Changed sorting click to icons
+
 ## [0.21.0] - 2024-05-22
 
 ### Added
