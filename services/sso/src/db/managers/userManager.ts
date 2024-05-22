@@ -56,4 +56,61 @@ export const userManager = {
     }
     return null
   },
+
+  /**
+   * Retrieves a list of users from the database based on selected fields and optional status.
+   * This function queries the database for users and returns a dynamically typed array of objects
+   * based on the fields specified in the `fields` option and the optional `status` filter.
+   * The returned type is an array of `Pick` of the `User` type.
+   *
+   * @param {GetUserOptions<T>} options - Configuration options that specify which fields
+   *                                      of the `User` object should be returned. The `fields`
+   *                                      array must contain one or more keys of the `User` type.
+   * @param {boolean} [activeOnly=false] - Optional parameter to filter users by active status.
+   * @param {string[]} [ids] - Optional array of user IDs to filter the results. If not provided, all users will be returned.
+   * @returns {Promise<Pick<User, T>[]>} A promise that resolves to an array of `Pick` of the `User`
+   *                                     type with only the requested fields. Returns an empty array if no users are found.
+   *
+   * Example usage:
+   * ```typescript
+   * getUsers({ fields: ['id', 'email', 'status'] }, true).then(users => {
+   *   users.forEach(user => {
+   *     console.log(user.email); // Accessible
+   *     console.log(user.id); // Accessible
+   *   });
+   * });
+   * ```
+   *
+   * @throws {Error} Throws an error if the SQL query fails.
+   */
+  async getUsersByIds<T extends keyof User>(
+    options: GetUserOptions<T>,
+    activeOnly: boolean = false,
+    ids?: string[]
+  ): Promise<Pick<User, T>[]> {
+    const snakeCase = await getSnakeCase()
+    const fieldsToSelect = options.fields.map((f) => snakeCase(f)).join(', ')
+    let query = `SELECT ${fieldsToSelect} FROM "user" WHERE deleted_at IS NULL`
+    const values: string[] = []
+
+    if (activeOnly) {
+      query += ` AND status = $1`
+      values.push('ACTIVE')
+    }
+
+    if (ids && ids.length > 0) {
+      const idsPlaceholders = ids
+        .map((_, index) => `$${values.length + index + 1}`)
+        .join(', ')
+      query += ` AND id IN (${idsPlaceholders})`
+      values.push(...ids)
+    }
+
+    const result = await client.query(query, values)
+
+    if (result.rows.length) {
+      return result.rows.map((row) => row as Pick<User, T>)
+    }
+    return []
+  },
 }
