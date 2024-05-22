@@ -1,6 +1,7 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, within, waitFor } from '@testing-library/react'
 import { ColumnDef } from '@tanstack/react-table'
 import { dimensions } from '@itacademy/ui'
+import { fireEvent } from '../test-utils'
 import { Table } from '../../components/molecules'
 
 const testColumns: ColumnDef<
@@ -22,6 +23,7 @@ const testData = [
   { name: 'Ona Sitgar', itineraryName: 'Node' },
   { name: 'Marc Bofill', itineraryName: 'React' },
 ]
+
 describe('Table', () => {
   it('renders table header correctly', () => {
     render(
@@ -71,5 +73,33 @@ describe('Table', () => {
     )
 
     expect(screen.getByText('No data available')).toBeInTheDocument()
+  })
+
+  it('sorts columns correctly', async () => {
+    render(
+      <Table
+        columns={testColumns}
+        data={testData}
+        noResultsMessage="No data available"
+      />
+    )
+
+    fireEvent.click(screen.getByTestId('sort-name'))
+
+    await waitFor(() => {
+      const rows = screen.getAllByRole('row').slice(1)
+
+      expect(within(rows[0]).getByText('Marc Bofill')).toBeInTheDocument()
+      expect(within(rows[1]).getByText('Ona Sitgar')).toBeInTheDocument()
+    })
+
+    fireEvent.click(screen.getByTestId('sort-name'))
+
+    await waitFor(() => {
+      const rows = screen.getAllByRole('row').slice(1)
+
+      expect(within(rows[0]).getByText('Ona Sitgar')).toBeInTheDocument()
+      expect(within(rows[1]).getByText('Marc Bofill')).toBeInTheDocument()
+    })
   })
 })
