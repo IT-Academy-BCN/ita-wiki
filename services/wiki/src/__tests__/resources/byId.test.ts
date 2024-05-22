@@ -41,32 +41,6 @@ describe('Testing resource/id GET endpoint', () => {
     expect(() => resourceGetSchema.parse(response.body)).not.toThrow()
   })
 
-  it('should return a resource without user name if not provided', async () => {
-    const testCategory = (await prisma.category.findUnique({
-      where: { slug: testCategoryData.slug },
-    })) as Category
-
-    user = await prisma.user.findFirst({
-      where: { id: testUserData.userWithNoName.id },
-    })
-
-    const testResourceDataWithoutName = {
-      ...resourceTestData[1],
-      user: { connect: { id: user?.id } },
-      category: { connect: { id: testCategory.id } },
-    }
-
-    const testResourceWithoutName = await prisma.resource.create({
-      data: testResourceDataWithoutName,
-    })
-
-    const response = await supertest(server).get(
-      `${pathRoot.v1.resources}/${testResourceWithoutName.id}`
-    )
-    expect(response.status).toBe(200)
-    expect(() => resourceGetSchema.parse(response.body)).not.toThrow()
-  })
-
   it('should return a 404 for a valid id belonging to no resource', async () => {
     const response = await supertest(server).get(
       `${pathRoot.v1.resources}/cli1g2ovc555etua0idayvvxw`

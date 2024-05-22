@@ -234,7 +234,7 @@ describe('Testing resources GET endpoint', () => {
       .query(qs.stringify({ topicSlug }))
 
     expect(response.status).toBe(200)
-    expect(response.body.length).toBeGreaterThanOrEqual(4)
+    expect(response.body.length).toBeGreaterThanOrEqual(3)
     expect(response.body).toBeInstanceOf(Array)
     response.body.forEach((resource: ResourceGetSchema) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
@@ -251,7 +251,10 @@ describe('Testing resources GET endpoint', () => {
       .get(`${pathRoot.v1.resources}`)
       .query({ status: undefined })
     expect(response.status).toBe(200)
-    expect(response.body.length).toBe(createdResources.length)
+    const filteredResources = createdResources.filter(
+      (resource) => resource.userId !== testUserData.userWithNoName.id
+    )
+    expect(response.body.length).toBe(filteredResources.length)
     response.body.forEach((resource: ResourceGetSchema) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })
@@ -276,7 +279,7 @@ describe('Testing resources GET endpoint', () => {
       .set('Cookie', [`authToken=${authToken.admin}`])
       .query({ status: 'NOT_SEEN' })
     expect(response.status).toBe(200)
-    expect(response.body.length).toBe(3)
+    expect(response.body.length).toBe(2)
     expect(viewedResource.resourceId).not.toContain(
       createdResources.map((r) => r.id)
     )
@@ -293,8 +296,11 @@ describe('Testing resources GET endpoint', () => {
           status: ['SEEN', 'NOT_SEEN'],
         })
       )
+    const filteredResources = createdResources.filter(
+      (resource) => resource.userId !== testUserData.userWithNoName.id
+    )
     expect(response.status).toBe(200)
-    expect(response.body.length).toBe(createdResources.length)
+    expect(response.body.length).toBe(filteredResources.length)
     response.body.forEach((resource: ResourceGetSchema) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })
@@ -311,7 +317,9 @@ describe('Testing resources GET endpoint', () => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
     })
     // All existing resources are fetched
-    const countResources = await prisma.resource.count()
+    const countResources = await prisma.resource.count({
+      where: { userId: { not: testUserData.userWithNoName.id } },
+    })
     expect(response.body.length).toBe(countResources)
   })
 

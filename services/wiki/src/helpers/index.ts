@@ -8,3 +8,4 @@ export {
 } from './transformResourceToAPI'
 export { attachUserNamesToResources } from './attachUserNamesToResources'
 export { markFavorites } from './markFavorites'
+export { ExtendedFavoriteResourceWithName } from './markFavorites'
