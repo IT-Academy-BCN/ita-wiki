@@ -143,6 +143,16 @@ export const handlers = [
     `${urls.deleteUser}1`,
     () => new HttpResponse(null, { status: 204 })
   ),
+
+  http.delete(
+    urls.deleteMultipleUsers,
+    () => new HttpResponse(null, { status: 204 })
+  ),
+
+  http.post(
+    urls.changeUsersStatus,
+    () => new HttpResponse(null, { status: 204 })
+  ),
 ]
 
 export const errorHandlers = [
@@ -156,6 +166,9 @@ export const errorHandlers = [
     HttpResponse.json({ message: 'Database error' }, { status: 500 })
   ),
   http.delete(`${urls.deleteUser}1`, () =>
+    HttpResponse.json({ message: 'Database error' }, { status: 500 })
+  ),
+  http.delete(urls.deleteMultipleUsers, () =>
     HttpResponse.json({ message: 'Database error' }, { status: 500 })
   ),
 ]

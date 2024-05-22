@@ -124,6 +124,7 @@
   "Aceptar": "Aceptar",
   "Bloquear": "Bloquear",
   "Desbloquear": "Desbloquear",
+  "Eliminar": "Eliminar",
   "ADMIN": "Administrador",
   "REGISTERED": "Registrado",
   "MENTOR": "Mentor",
@@ -139,7 +140,8 @@
   "Buscar": "Buscar",
   "Eliminado": "Eliminado",
   "DELETED": "Eliminado",
-  "Eliminar usuario": "¿Estás seguro de que deseas eliminar este usuario?",
+  "Eliminar usuario": "¿Estás seguro de que deseas eliminar este/os usuario/s?",
   "Confirmar": "Confirmar",
-  "Error al eliminar el usuario": "Error al eliminar el usuario"
+  "Usuario eliminado correctamente": "Usuario/s eliminado/s correctamente",
+  "Error al eliminar el usuario": "Error al eliminar el/los usuario/s"
 }

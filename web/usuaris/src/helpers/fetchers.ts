@@ -1,5 +1,5 @@
 import { urls } from '../constants'
-import { TUpdatedUser } from '../types'
+import { TUpdatedUser, TUpdatedUsersStatus } from '../types'
 
 export const getItineraries = async () =>
   fetch(urls.getItineraries)
@@ -12,7 +12,6 @@ export const getItineraries = async () =>
     .catch((err) => {
       throw new Error(`Error fetching itineraries: ${err.message}`)
     })
-
 
 export const getUsers = async (filters: string) => {
   const response = await fetch(`${urls.getUsers}?${filters}`)
@@ -64,6 +63,33 @@ export const deleteUser = async (userId: string) => {
 
   if (!response.ok) {
     throw new Error('Failed to delete user')
+  }
+  return response.status === 204 ? {} : response.json()
+}
+
+export const updateUsersStatus = async (
+  updatedUsersStatus: TUpdatedUsersStatus
+) => {
+  const response = await fetch(urls.changeUsersStatus, {
+    method: 'POST',
+    body: JSON.stringify(updatedUsersStatus),
+    headers: { 'Content-Type': 'application/json' },
+  })
+  if (!response.ok) {
+    throw new Error('Failed to update users status')
+  }
+  return response.status === 204 ? {} : response.json()
+}
+
+export const deleteMultipleUsers = async (usersIds: string[]) => {
+  const response = await fetch(urls.deleteMultipleUsers, {
+    method: 'DELETE',
+    body: JSON.stringify({ ids: usersIds }),
+    headers: { 'Content-Type': 'application/json' },
+  })
+
+  if (!response.ok) {
+    throw new Error('Failed to delete users')
   }
   return response.status === 204 ? {} : response.json()
 }

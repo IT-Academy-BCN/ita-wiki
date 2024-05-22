@@ -5,9 +5,15 @@ import { server } from '../../__mocks__/server'
 import { UserStatus } from '../../types'
 import { UserRole } from '../../types/types'
 
+const defaultProps = {
+  filtersSelected: {},
+  selectedStatus: undefined,
+  setSelectedStatus: vi.fn(),
+  handleSelectedUsers: vi.fn(),
+}
 describe('UsersTable', () => {
   it('renders loading spinner while fetching users', async () => {
-    render(<UsersTable filtersSelected={{}} />)
+    render(<UsersTable {...defaultProps} />)
 
     const spinner = screen.getByRole('status') as HTMLDivElement
     expect(spinner).toBeInTheDocument()
@@ -19,7 +25,7 @@ describe('UsersTable', () => {
   })
 
   it('renders users correctly after fetching users succeeds', async () => {
-    render(<UsersTable filtersSelected={{}} />)
+    render(<UsersTable {...defaultProps} />)
 
     await waitFor(() => {
       expect(screen.getByLabelText(/Ona Sitgar/i)).toBeInTheDocument()
@@ -65,6 +71,9 @@ describe('UsersTable', () => {
           dni: 'marc',
           role: UserRole.ADMIN,
         }}
+        selectedStatus={undefined}
+        setSelectedStatus={vi.fn()}
+        handleSelectedUsers={vi.fn()}
       />
     )
 
@@ -84,7 +93,7 @@ describe('UsersTable', () => {
   it('renders error message when fetching users has error', async () => {
     server.use(...errorHandlers)
 
-    render(<UsersTable filtersSelected={{}} />)
+    render(<UsersTable {...defaultProps} />)
 
     const spinner = screen.getByRole('status') as HTMLDivElement
     expect(spinner).toBeInTheDocument()
@@ -97,7 +106,7 @@ describe('UsersTable', () => {
   })
 
   it('disables/enables users with different status when checkboxes are checked/unchecked', async () => {
-    render(<UsersTable filtersSelected={{}} />)
+    render(<UsersTable {...defaultProps} />)
 
     await waitFor(() => {
       const checkboxPending = screen.getByLabelText(/Ona Sitgar/i)
@@ -147,7 +156,7 @@ describe('UsersTable', () => {
   })
 
   it('updates status and action button when user status changes', async () => {
-    render(<UsersTable filtersSelected={{}} />)
+    render(<UsersTable {...defaultProps} />)
 
     await waitFor(() => {
       const acceptButton = screen.getByText('Acceptar')
@@ -165,7 +174,7 @@ describe('UsersTable', () => {
   })
 
   it('disables user when has been deleted', async () => {
-    render(<UsersTable filtersSelected={{}} />)
+    render(<UsersTable {...defaultProps} />)
 
     await waitFor(() => {
       const userDeletedRow = screen.getByTestId('6')

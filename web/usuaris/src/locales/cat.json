@@ -123,10 +123,11 @@
   "BLOCKED": "Bloquejat",
   "Aceptar": "Acceptar",
   "Bloquear": "Bloquejar",
+  "Desbloquear": "Desbloquejar",
+  "Eliminar": "Eliminar",
   "ADMIN": "Administrador",
   "REGISTERED": "Registrat",
   "MENTOR": "Mentor",
-  "Desbloquear": "Desbloquejar",
   "No hay usuarios para mostrar": "No hi ha usuaris per mostrar",
   "Mentores": "Mentors",
   "Connector": "Connector",
@@ -139,7 +140,8 @@
   "Buscar": "Cercar",
   "DELETED": "Eliminat",
   "Eliminado": "Eliminat",
-  "Eliminar usuario": "Estàs segur que vols eliminar aquest usuari?",
+  "Eliminar usuario": "Estàs segur que vols eliminar aquest/s usuari/s?",
   "Confirmar": "Confirmar",
-  "Error al eliminar el usuario": "Error en eliminar l'usuari"
+  "Usuario eliminado correctamente": "Usuari/s eliminat/s correctament",
+  "Error al eliminar el usuario": "Error en eliminar l'usuari/s"
 }
