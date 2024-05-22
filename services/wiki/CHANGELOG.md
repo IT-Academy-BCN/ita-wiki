@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.15.3] - 2024-05-22
+
+### Fixed
+
+- Include only resources with active and existing users in GET resources.
+
 ## [0.15.2] - 2024-05-13
 
 ### Fixed

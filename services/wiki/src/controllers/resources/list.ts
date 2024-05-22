@@ -7,6 +7,7 @@ import {
   attachUserNamesToResources,
   markFavorites,
   transformResourceToAPI,
+  ExtendedFavoriteResourceWithName,
 } from '../../helpers'
 
 export const listResources: Middleware = async (ctx: Koa.Context) => {
@@ -69,7 +70,13 @@ export const listResources: Middleware = async (ctx: Koa.Context) => {
   }
 
   const resourcesWithUserName = await attachUserNamesToResources(resources)
-  const resourcesWithFavorites = markFavorites(resourcesWithUserName, user)
+  const resourcesWithFavorites = markFavorites(
+    resourcesWithUserName.filter(
+      (resource): resource is ExtendedFavoriteResourceWithName =>
+        'favorites' in resource
+    ),
+    user
+  )
 
   const parsedResources = resourcesWithFavorites.map((resource) =>
     resourceGetSchema.parse(

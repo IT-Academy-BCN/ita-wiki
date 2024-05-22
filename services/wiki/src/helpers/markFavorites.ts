@@ -1,8 +1,8 @@
 import { User } from '@prisma/client'
 import { ExtendedResourceWithFavorites } from './attachUserNamesToResources'
 
-type ExtendedFavoriteResourceWithName = ExtendedResourceWithFavorites & {
-  user: { name: string }
+export type ExtendedFavoriteResourceWithName = ExtendedResourceWithFavorites & {
+  user: { name: string; avatar: string | null }
 }
 export function markFavorites(
   resources: ExtendedFavoriteResourceWithName[],
