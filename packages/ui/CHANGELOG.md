@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.31.8] - 2024-05-23
+
+### Changed
+
+- Frontpage
+
 ## [0.31.8] - 2024-05-21
 
 ### Changed
