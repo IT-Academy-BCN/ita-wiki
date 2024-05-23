@@ -6,7 +6,7 @@ import defaultImg from './defaultImg.svg'
 
 const BannerStyled = styled(FlexBox)`
   width: 34.65rem;
-  height: 14.45rem;
+  height: auto;
   background-color: ${colors.primary};
   border-radius: ${dimensions.borderRadius.base};
   padding: ${dimensions.spacing.lg};
@@ -19,11 +19,12 @@ const InfoStyled = styled(FlexBox)`
 const TitleStyled = styled(Title)`
   font-size: 32px;
   margin-top: ${dimensions.spacing.xxxs};
-  margin-bottom: ${dimensions.spacing.xxxs};
+  margin-bottom: 0;
 `
 
 const TextStyled = styled(Text)`
   color: ${colors.white};
+  margin: 0;
 `
 
 const ButtonStyled = styled(Button)`
@@ -40,7 +41,6 @@ const ImageContainer = styled(FlexBox)`
 
 const ImageStyled = styled.img`
   width: 100%;
-  height: 100%;
   border-radius: ${dimensions.borderRadius.base};
   object-fit: cover;
 `
@@ -62,11 +62,11 @@ export const Banner: FC<TBanner> = ({
   imgAltText = 'e-book',
   onClick,
 }) => (
-  <BannerStyled direction="row" align="stretch" gap={dimensions.spacing.sm}>
+  <BannerStyled direction="row" align="stretch" gap={dimensions.spacing.xs}>
     <InfoStyled
       align="start"
       justify="space-between"
-      gap={dimensions.spacing.xxs}
+      gap={dimensions.spacing.md}
     >
       <TitleStyled as="h1" fontWeight="bold" color={colors.white}>
         {title}
