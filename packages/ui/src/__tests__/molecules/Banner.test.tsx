@@ -1,6 +1,6 @@
+import { vi } from 'vitest'
 import { screen, render, fireEvent } from '@testing-library/react'
 import { Banner } from '../../components/molecules'
-import { vi } from 'vitest'
 
 const mockClick = vi.fn()
 
