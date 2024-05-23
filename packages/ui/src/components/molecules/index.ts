@@ -3,7 +3,7 @@ export {
   type TAccessModalContent,
 } from './AccessModalContent'
 export { BackButton, type TBackButton } from './BackButton'
-export { Banner, type TBanner } from './Banner'
+export { Banner, type TBanner } from './Banner/Banner'
 export { CardProfile, type TCardProfile } from './CardProfile'
 export { CardHome, type TCardHome } from './CardHome'
 export {
