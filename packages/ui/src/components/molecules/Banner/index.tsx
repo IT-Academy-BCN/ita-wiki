@@ -28,7 +28,7 @@ const TextStyled = styled(Text)`
 `
 
 const ButtonStyled = styled(Button)`
-  background-color: #1e1e1e;
+  background-color: ${colors.black.black1};
   width: 11rem;
   font-weight: 700;
   font-size: 16px;
