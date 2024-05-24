@@ -142,6 +142,14 @@ async function seedDB() {
     // @ts-ignore
     data: topicsOnResources,
   })
+
+  await prisma.banners.create({
+    data: {
+      title: 'ITAcademy',
+      description: 'Aprende a programar en 18 semanas y reprograma tu futuro',
+      url: 'https://www.barcelonactiva.cat/es/itacademy',
+    },
+  })
 }
 
 seedDB()
