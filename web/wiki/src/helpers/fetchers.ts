@@ -9,9 +9,8 @@ import {
   TVoteMutationData,
   TRegisterForm,
   TUserUpdatedStatus,
-  TBanner
+  TBannerData,
 } from '../types'
-
 
 const errorMessageStatus: { [key: number]: string } = {
   401: 'Error 401 - No autorizado',
@@ -199,7 +198,7 @@ export const getBanners = async () => {
   if (!response.ok) {
     throw new Error('Error fetching Banners')
   }
-  const data = await (response.json() as Promise<TBanner[]>)
+  const data = await (response.json() as Promise<TBannerData[]>)
   return data
 }
 
