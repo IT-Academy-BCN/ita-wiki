@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.19.0] - 2024-05-24
+
+### Added
+
+- Add Banners in Home Page
+
 ## [0.18.2] - 2024-05-21
 
 ### Fixed

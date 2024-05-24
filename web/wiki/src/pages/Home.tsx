@@ -21,7 +21,7 @@ import {
 } from '../components/organisms'
 import { useAuth } from '../context/AuthProvider'
 import { TBanner } from '../types'
-import { useGetBanners } from '../hooks'
+// import { useGetBanners } from '../hooks'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};

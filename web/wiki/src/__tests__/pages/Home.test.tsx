@@ -56,4 +56,12 @@ describe('Home page', () => {
 
     expect(screen.queryByText(/registrarme/i)).not.toBeInTheDocument()
   })
+
+  it('shows banners', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: null,
+    } as TAuthContext)
+    render(<Home />)
+    expect(screen.queryByText(/Aprende a programar/i)).toBeIntheDocument()
+  })
 })
