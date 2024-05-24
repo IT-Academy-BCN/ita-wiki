@@ -10,9 +10,8 @@ import {
   device,
   dimensions,
   font,
+  Banner,
 } from '@itacademy/ui'
-
-import { Banner } from '../../../../packages/ui/src/components/molecules/Banner'
 import icons from '../assets/icons'
 import {
   DesktopSideMenu,
@@ -20,8 +19,7 @@ import {
   UserAccessHome,
 } from '../components/organisms'
 import { useAuth } from '../context/AuthProvider'
-import { TBanner } from '../types'
-// import { useGetBanners } from '../hooks'
+import { useGetBanners } from '../hooks'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -126,29 +124,11 @@ const cardHomeContent = [
   },
 ]
 
-const bannersContent: TBanner[] = [
-  {
-    title: 'ITAcademy',
-    description: 'Aprende a programar en 18 semanas y reprograma tu futuro',
-    url: 'https://images.unsplash.com/photo-1601467295274-f2408b6e90f2?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  },
-  {
-    title: 'BANNER2',
-    description: 'Aprende a programar en 18 semanas y reprograma tu futuro',
-    url: 'https://images.unsplash.com/photo-1601467295274-f2408b6e90f2?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  },
-  {
-    title: 'BANNER3',
-    description: 'Aprende a programar en 18 semanas y reprograma tu futuro',
-    url: 'https://images.unsplash.com/photo-1601467295274-f2408b6e90f2?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-  },
-]
-
 export const Home: FC = () => {
   const { user } = useAuth()
-
   const { t } = useTranslation()
-  // const bannersContent = useGetBanners()
+  const { data: bannersContent, isSuccess } = useGetBanners()
+
   return (
     <Container direction="row" justify="flex-start" align="start">
       <DesktopSideMenu />
@@ -185,18 +165,20 @@ export const Home: FC = () => {
                   />
                 ))}
               </ResponsiveFlexBox>
-              <BannersFlexBox direction="row" align="start" gap="2rem">
-                {bannersContent.map((banner) => (
-                  <Banner
-                    key={banner.title}
-                    title={banner.title}
-                    description={banner.description}
-                    imgUrl={banner.url}
-                    buttonText="Acceptar"
-                    onClick={() => {}}
-                  />
-                ))}
-              </BannersFlexBox>
+              {isSuccess && (
+                <BannersFlexBox direction="row" align="start" gap="2rem">
+                  {bannersContent?.map((banner) => (
+                    <Banner
+                      key={banner.title}
+                      title={banner.title}
+                      description={banner.description}
+                      imgUrl={banner.url}
+                      buttonText="Acceptar"
+                      onClick={() => {}}
+                    />
+                  ))}
+                </BannersFlexBox>
+              )}
             </FlexBox>
           </MainContent>
         </MainDiv>
