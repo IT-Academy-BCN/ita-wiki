@@ -201,3 +201,9 @@ export type TFlexBox = {
 export type TSortOrder = 'asc' | 'desc'
 
 export type TRegisterForm = z.infer<typeof UserRegisterSchema>
+
+export type TBannerData = {
+  title: string
+  description: string
+  url: string
+}

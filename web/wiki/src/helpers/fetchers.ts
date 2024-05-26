@@ -9,6 +9,7 @@ import {
   TVoteMutationData,
   TRegisterForm,
   TUserUpdatedStatus,
+  TBannerData,
 } from '../types'
 
 const errorMessageStatus: { [key: number]: string } = {
@@ -189,6 +190,15 @@ export const getVotes = async (resourceId: string): Promise<TVoteCount> => {
     throw new Error('Error fetching votes')
   }
   const data = await (response.json() as Promise<TVoteCount>)
+  return data
+}
+
+export const getBanners = async () => {
+  const response = await fetch(urls.getBanners)
+  if (!response.ok) {
+    throw new Error('Error fetching Banners')
+  }
+  const data = await (response.json() as Promise<TBannerData[]>)
   return data
 }
 

@@ -21,6 +21,7 @@ import type {
   TRegisterForm,
   TUserUpdatedStatus,
   TFlexBox,
+  TBannerData,
 } from './types'
 
 export type {
@@ -46,4 +47,5 @@ export type {
   TRegisterForm,
   TUserUpdatedStatus,
   TFlexBox,
+  TBannerData,
 }

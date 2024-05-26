@@ -10,6 +10,7 @@ import {
   device,
   dimensions,
   font,
+  Banner,
 } from '@itacademy/ui'
 import icons from '../assets/icons'
 import {
@@ -18,6 +19,7 @@ import {
   UserAccessHome,
 } from '../components/organisms'
 import { useAuth } from '../context/AuthProvider'
+import { useGetBanners } from '../hooks'
 
 const Container = styled(FlexBox)`
   background-color: ${colors.white};
@@ -92,6 +94,11 @@ const ResponsiveFlexBox = styled(FlexBox)`
     gap: 2rem;
   }
 `
+const BannersFlexBox = styled(FlexBox)`
+  margin-top: ${dimensions.spacing.xl};
+  margin-bottom: ${dimensions.spacing.xs};
+  flex-wrap: wrap;
+`
 
 const cardHomeContent = [
   {
@@ -119,8 +126,8 @@ const cardHomeContent = [
 
 export const Home: FC = () => {
   const { user } = useAuth()
-
   const { t } = useTranslation()
+  const { data: bannersContent, isSuccess } = useGetBanners()
 
   return (
     <Container direction="row" justify="flex-start" align="start">
@@ -158,6 +165,20 @@ export const Home: FC = () => {
                   />
                 ))}
               </ResponsiveFlexBox>
+              {isSuccess && (
+                <BannersFlexBox direction="row" align="start" gap="2rem">
+                  {bannersContent?.map((banner) => (
+                    <Banner
+                      key={banner.title}
+                      title={banner.title}
+                      description={banner.description}
+                      imgUrl={banner.url}
+                      buttonText="Acceptar"
+                      onClick={() => {}}
+                    />
+                  ))}
+                </BannersFlexBox>
+              )}
             </FlexBox>
           </MainContent>
         </MainDiv>
