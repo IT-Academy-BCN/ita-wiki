@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { render, screen, waitFor } from '../test-utils'
+import { render, screen } from '../test-utils'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { Home } from '../../pages'
 
@@ -55,17 +55,5 @@ describe('Home page', () => {
     render(<Home />)
 
     expect(screen.queryByText(/registrarme/i)).not.toBeInTheDocument()
-  })
-
-  it('shows banners', async () => {
-    render(<Home />)
-    await waitFor(() =>
-      expect(screen.getByText('ITAcademy')).toBeInTheDocument()
-    )
-    expect(
-      screen.getByText(
-        /Aprende a programar en 18 semanas y reprograma tu futuro/i
-      )
-    ).toBeInTheDocument()
   })
 })

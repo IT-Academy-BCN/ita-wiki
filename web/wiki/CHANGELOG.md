@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.20.0] - 2024-05-28
+
+### Removed
+
+- Remove Banners from Home Page
+
 ## [0.19.0] - 2024-05-24
 
 ### Added
