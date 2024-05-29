@@ -236,6 +236,7 @@ export const ResourceForm: FC<TResourceForm> = ({
         direction="row"
         inputName="resourceType"
         data-testid="resourceType"
+        defaultChecked='VIDEO'
       />
       <FlexErrorStyled align="start">
         {errors?.title ||
