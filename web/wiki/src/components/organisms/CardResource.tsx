@@ -151,7 +151,11 @@ export const CardResource: FC<TCardResource> = ({
     >
       {voteCount && (
         <CounterContainerStyled>
-          <VoteCounter voteCount={voteCount} onClick={handleClick} />
+          {castVote.isLoading ? (
+            <VoteCounter voteCount={voteCount} />
+          ) : (
+            <VoteCounter voteCount={voteCount} onClick={handleClick} />
+          )}
         </CounterContainerStyled>
       )}
 

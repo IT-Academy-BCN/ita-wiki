@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.18.3] - 2024-05-29
+
+### Fixed
+
+- Fix vote race codition
+ 
 ## [0.18.2] - 2024-05-21
 
 ### Fixed
