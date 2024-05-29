@@ -119,7 +119,6 @@ const cardHomeContent = [
 
 export const Home: FC = () => {
   const { user } = useAuth()
-
   const { t } = useTranslation()
 
   return (

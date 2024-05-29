@@ -2,12 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.18.3] - 2024-05-29
+
+## [0.20.1] - 2024-05-29
 
 ### Fixed
 
 - Fix vote race codition
- 
+
+
+## [0.20.0] - 2024-05-28
+
+### Removed
+
+- Remove Banners from Home Page
+
+## [0.19.0] - 2024-05-24
+
+### Added
+
+- Add Banners in Home Page
+
 ## [0.18.2] - 2024-05-21
 
 ### Fixed
