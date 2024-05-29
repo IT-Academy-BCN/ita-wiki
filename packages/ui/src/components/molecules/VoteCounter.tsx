@@ -26,7 +26,7 @@ export type TVoteCount = {
 
 export type TVoteCounter = {
   voteCount: TVoteCount
-  onClick: (vote: 'up' | 'down') => void
+  onClick?: (vote: 'up' | 'down') => void
 }
 
 export const VoteCounter: FC<TVoteCounter> = ({ voteCount, onClick }) => (
