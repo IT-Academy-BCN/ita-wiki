@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.29.0] - 2024-05-30
+
+### Added
+
+- `POST dashboard/login` endpoint to allows `MENTOR` role to log in
+
 ## [1.28.1] - 2024-05-22
 
 ### Fix
