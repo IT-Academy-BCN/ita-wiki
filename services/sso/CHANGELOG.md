@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.28.2] - 2024-06-03
+
+### Changed
+
+- Error handler of `batchDelete` to be idempotent.
+
 ## [1.28.1] - 2024-05-22
 
 ### Fix
