@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.33.1] - 2024-05-29
+
+### Changed
+
+- Improve Banner molecule
+
 ## [0.33.0] - 2024-05-23
 
 ### Added
