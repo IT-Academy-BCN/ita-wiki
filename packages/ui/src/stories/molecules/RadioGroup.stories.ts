@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { RadioGroup } from '../../components/molecules/RadioGroup'
+import { RadioGroup } from '../../components/molecules'
 
  const meta = {
   title: 'Molecules/RadioGroup',

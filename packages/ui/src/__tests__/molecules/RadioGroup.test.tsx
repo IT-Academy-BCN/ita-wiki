@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { RadioGroup } from '../../components/molecules/RadioGroup'
+import { RadioGroup } from '../../components/molecules'
 
 const mockRadioGroupProps = {
   id: 'testid',
@@ -17,20 +17,24 @@ const mockRadioGroupProps = {
 describe('RadioGroupText', () => {
   it('renders correctly', () => {
     render(
-      <RadioGroup {...mockRadioGroupProps} />
+      <RadioGroup {...mockRadioGroupProps} direction={'row'} />
     )
-
     expect(screen.getByText('testid')).toBeInTheDocument()
-    expect(screen.getByText('Test1')).toBeInTheDocument()
-    expect(screen.getByText('Test2')).toBeInTheDocument()
-    expect(screen.getByText('Test3')).toBeInTheDocument()
   })
+
+  it('displays all options', () => {
+    render(
+      <RadioGroup {...mockRadioGroupProps} direction={'row'} />
+    );
+    mockRadioGroupProps.options.forEach(option => {
+      expect(screen.getByLabelText(option.name)).toBeInTheDocument();
+    });
+  });
 
   it('renders correctly with error message', () => {
     render(
-      <RadioGroup {...mockRadioGroupProps} error />
+      <RadioGroup {...mockRadioGroupProps} direction={'row'} error />
     )
-
     expect(screen.getByText('error')).toBeInTheDocument()    
   })
 })
