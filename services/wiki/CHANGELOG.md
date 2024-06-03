@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.16.1] - 2024-05-23
+
+### Remove
+
+- Remove `GET banners` endpoint
+
 ## [0.16.0] - 2024-05-23
 
 ### Add
