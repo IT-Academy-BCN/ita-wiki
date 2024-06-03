@@ -1,7 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react'
-import { vi } from 'vitest'
+import { render, screen } from '@testing-library/react'
 import { RadioGroup } from '../../components/molecules/RadioGroup'
-
 
 const mockRadioGroupProps = {
   id: 'testid',
@@ -33,8 +31,6 @@ describe('RadioGroupText', () => {
       <RadioGroup {...mockRadioGroupProps} error />
     )
 
-    expect(screen.getByText('error')).toBeInTheDocument()      
-    
+    expect(screen.getByText('error')).toBeInTheDocument()    
   })
-
 })

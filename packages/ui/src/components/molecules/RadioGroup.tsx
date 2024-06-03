@@ -1,8 +1,8 @@
 
-import { forwardRef, Ref, useEffect } from "react";
+import { forwardRef, Ref } from "react";
 import styled from "styled-components";
-import { colors, dimensions, FlexBox, font } from "../../styles";
-import { Label, Radio, TRadio, TValidationMessage, ValidationMessage } from "../atoms";
+import { colors, dimensions, FlexBox } from "../../styles";
+import { Label, Radio, TRadio, ValidationMessage } from "../atoms";
 
 
 export type TRadioGroup = {
