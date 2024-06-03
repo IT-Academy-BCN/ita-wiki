@@ -52,21 +52,18 @@ export const RadioGroup = forwardRef(
       ...rest
     }: TRadioGroup,
     ref: Ref<HTMLInputElement>
-  ) => {
-
-    return (
-      <RadioGroupContainer>
-        <RadioGroupStyled direction='column' error={!!error} align='start' >
-          <Label text={label} htmlFor={id} hiddenLabel={hiddenLabelGroup} />
-          <RadioStyled {...rest} direction={direction} inputName={inputName} options={options} ref={ref}
-            data-testid="resourceType"
-          />
-        </RadioGroupStyled>
-        <ValidationMessageStyled
-          text={typeof error === "string" ? error : errorMessage}
-          color='error'
+  ) => (
+    <RadioGroupContainer>
+      <RadioGroupStyled direction='column' error={!!error} align='start' >
+        <Label text={label} htmlFor={id} hiddenLabel={hiddenLabelGroup} />
+        <RadioStyled {...rest} direction={direction} inputName={inputName} options={options} ref={ref}
+          data-testid="resourceType"
         />
-      </RadioGroupContainer>
-    )
-  }
+      </RadioGroupStyled>
+      <ValidationMessageStyled
+        text={typeof error === "string" ? error : errorMessage}
+        color='error'
+      />
+    </RadioGroupContainer>
+  )
 )
