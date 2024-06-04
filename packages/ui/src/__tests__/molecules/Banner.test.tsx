@@ -8,6 +8,7 @@ describe('Banner', () => {
   it('renders correctly and button can be clicked', () => {
     render(
       <Banner
+        id="1"
         title="Banner title"
         description="Fake text for banner description"
         buttonText="Accept"
@@ -30,22 +31,41 @@ describe('Banner', () => {
     expect(mockClick).toHaveBeenCalled()
   })
 
-  it('renders placeholder image and alt attribute when not provided', () => {
+  it('renders default props when not provided', () => {
     render(
       <Banner
+        id="2"
         title="No image title"
         description="Fake text for a banner without image"
         buttonText="Accept"
+        imgAltText="fake-alt-text"
         onClick={mockClick}
       />
     )
-
+    const banner = screen.getByTestId('baner-2')
     const defaultImage: HTMLImageElement = screen.getByRole('img')
     expect(defaultImage).toBeInTheDocument()
+    expect(banner).toHaveStyle('width: 34.65rem')
     expect(defaultImage).toHaveAttribute(
       'src',
       '/src/components/molecules/Banner/defaultImg.svg'
     )
-    expect(defaultImage).toHaveAttribute('alt', 'e-book')
+  })
+
+  it('renders small banner when size is small', () => {
+    render(
+      <Banner
+        id="3"
+        title="Banner title"
+        description="Fake text for banner description"
+        buttonText="Accept"
+        imgUrl="https://picsum.photos/200"
+        imgAltText="Alt text for img"
+        onClick={mockClick}
+        size="small"
+      />
+    )
+    const banner = screen.getByTestId('baner-3')
+    expect(banner).toHaveStyle('width: 24.5rem')
   })
 })
