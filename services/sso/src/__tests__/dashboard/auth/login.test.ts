@@ -18,6 +18,18 @@ describe('Testing authentication endpoint', () => {
     expect(cookie[1]).toMatch(/refreshToken/)
   })
 
+  test('should succeed with a MENTOR user', async () => {
+    const response = await supertest(server).post(route).send({
+      dni: testUserData.mentor.dni,
+      password: testUserData.mentor.password,
+    })
+    expect(response.status).toBe(204)
+
+    const cookie = response.header['set-cookie'] as string[]
+    expect(cookie[0]).toMatch(/authToken/)
+    expect(cookie[1]).toMatch(/refreshToken/)
+  })
+
   test('should fail if user not active', async () => {
     const response = await supertest(server).post(route).send({
       dni: testUserData.pendingUser.dni,
