@@ -56,9 +56,7 @@ export const RadioGroup = forwardRef(
     <RadioGroupContainer>
       <RadioGroupStyled direction='column' error={!!error} align='start' >
         <Label text={label} htmlFor={id} hiddenLabel={hiddenLabelGroup} />
-        <RadioStyled {...rest} direction={direction} inputName={inputName} options={options} ref={ref}
-          data-testid="resourceType"
-        />
+        <RadioStyled {...rest} direction={direction} inputName={inputName} options={options} ref={ref} />
       </RadioGroupStyled>
       {
         error &&
