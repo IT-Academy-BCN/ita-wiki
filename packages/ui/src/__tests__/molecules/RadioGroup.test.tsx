@@ -17,14 +17,14 @@ const mockRadioGroupProps = {
 describe('RadioGroupText', () => {
   it('renders correctly', () => {
     render(
-      <RadioGroup {...mockRadioGroupProps} direction={'row'} />
+      <RadioGroup {...mockRadioGroupProps} direction='row' />
     )
     expect(screen.getByText('testid')).toBeInTheDocument()
   })
 
   it('displays all options', () => {
     render(
-      <RadioGroup {...mockRadioGroupProps} direction={'row'} />
+      <RadioGroup {...mockRadioGroupProps} direction='row' />
     );
     mockRadioGroupProps.options.forEach(option => {
       expect(screen.getByLabelText(option.name)).toBeInTheDocument();
@@ -33,7 +33,7 @@ describe('RadioGroupText', () => {
 
   it('renders correctly with error message', () => {
     render(
-      <RadioGroup {...mockRadioGroupProps} direction={'row'} error />
+      <RadioGroup {...mockRadioGroupProps} direction='row' error />
     )
     expect(screen.getByText('error')).toBeInTheDocument()    
   })
