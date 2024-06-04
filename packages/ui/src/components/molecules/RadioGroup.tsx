@@ -60,10 +60,13 @@ export const RadioGroup = forwardRef(
           data-testid="resourceType"
         />
       </RadioGroupStyled>
-      <ValidationMessageStyled
-        text={typeof error === "string" ? error : errorMessage}
-        color='error'
-      />
+      {
+        error &&
+        <ValidationMessageStyled
+          text={errorMessage}
+          color='error'
+        />
+      }
     </RadioGroupContainer>
   )
 )
