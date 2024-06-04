@@ -1,7 +1,7 @@
 import { vi } from 'vitest'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { RoleFilter } from '../../components/molecules/RoleFilter'
-import { UserRole } from '../../types/types'
+import { UserRole } from '../../types'
 import { roles } from '../../constants'
 
 const mockHandleClick = vi.fn()

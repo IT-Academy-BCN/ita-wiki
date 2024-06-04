@@ -3,8 +3,7 @@ import { useGetUsers } from '../../hooks/useGetUsers'
 import { renderHook, waitFor } from '../test-utils'
 import { queryClient } from '../setup'
 import { type TFilters } from '../../types'
-import { UserStatus } from '../../types'
-import { UserRole } from '../../types/types'
+import { UserRole, UserStatus } from '../../types'
 
 describe('useGetUsers', () => {
   it('fetches users successfully', async () => {

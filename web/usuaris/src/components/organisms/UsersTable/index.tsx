@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { ColumnDef, createColumnHelper } from '@tanstack/react-table'
 import { Checkbox, Spinner, dimensions } from '@itacademy/ui'
 import { DeleteConfirmationModal, Table } from '../../molecules'
-import { TFilters, TUserData, UserStatus } from '../../../types'
+import { TFilters, TUserData, UserRole, UserStatus } from '../../../types'
 import { icons } from '../../../assets/icons'
 import { useGetUsers, useUpdateUser } from '../../../hooks'
 import {
@@ -17,7 +17,6 @@ import {
   StatusStyled,
   TableContainer,
 } from './UsersTable.styles'
-import { UserRole } from '../../../types/types'
 
 type TUsersTable = {
   filtersSelected: TFilters | Record<string, never>

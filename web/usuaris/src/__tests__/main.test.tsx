@@ -4,9 +4,10 @@ import { createGlobalStyle } from 'styled-components'
 import { font } from '@itacademy/ui'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './setup'
-import { ErrorPage, Home } from '../pages'
+import { ErrorPage, Home, Mentors } from '../pages'
 import { Layout } from '../components/layout'
 import { AuthProvider } from '../context/AuthProvider'
+import { paths } from '../constants'
 
 describe('main', () => {
   it('renders correctly', () => {
@@ -18,9 +19,13 @@ describe('main', () => {
 
     const routes = [
       {
-        path: '/',
+        path: paths.home,
         element: <Home />,
         errorElement: <ErrorPage />,
+      },
+      {
+        path: paths.mentors,
+        element: <Mentors />,
       },
     ]
 

@@ -2,11 +2,12 @@ import { ReactElement } from 'react'
 import { renderHook } from '@testing-library/react'
 import { act } from 'react-dom/test-utils'
 import { AuthProvider, useAuth, type TUser } from '../../context/AuthProvider'
+import { UserRole } from '../../types'
 
 const mockUser: TUser = {
   dni: '12345678A',
   email: 'user@example.cat',
-  role: 'ADMIN',
+  role: UserRole.ADMIN,
 }
 describe('AuthProvider', () => {
   it('should render children', () => {
