@@ -240,7 +240,6 @@ export const ResourceForm: FC<TResourceForm> = ({
         ]}
         direction="row"
         inputName="resourceType"
-        //data-testid="resourceType"
         error={errors.resourceType && true}
         errorMessage={errors.resourceType && t(`${errors.resourceType?.message}`)}
       />
