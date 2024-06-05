@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.34.0] - 2024-06-03
+
+### Added
+
+- Create RadioGroup Molecule
 ## [0.33.1] - 2024-05-29
 
 ### Changed
