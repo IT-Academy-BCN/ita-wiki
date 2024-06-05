@@ -239,6 +239,7 @@ export const ResourceForm: FC<TResourceForm> = ({
           { id: 'BLOG', name: 'Blog' },
         ]}
         direction="row"
+        data-testid="resourceType"
         inputName="resourceType"
         error={errors.resourceType && true}
         errorMessage={errors.resourceType && t(`${errors.resourceType?.message}`)}

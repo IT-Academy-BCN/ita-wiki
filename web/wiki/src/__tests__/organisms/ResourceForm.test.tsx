@@ -107,7 +107,7 @@ describe('ResourceForm', () => {
     })
     fireEvent.click(screen.getByText(/crear/i))
     await waitFor(() =>
-      expect(screen.getAllByText('Este campo es obligatorio')).toHaveLength(2)
+      expect(screen.getAllByText('Aquest camp es obligatori')).toHaveLength(2)
     )
   })
 
@@ -242,7 +242,7 @@ describe('ResourceForm', () => {
     fireEvent.click(button)
 
     await waitFor(() =>
-      expect(screen.getByText('Este campo es obligatorio')).toBeInTheDocument()
+      expect(screen.getByText('Aquest camp es obligatori')).toBeInTheDocument()
     )
     reloadPage()
   })
