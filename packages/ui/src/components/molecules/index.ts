@@ -27,6 +27,7 @@ export {
   NotificationsProvider,
   useNotifications,
 } from './Notifications'
+export { RadioGroup, type TRadioGroup } from './RadioGroup'
 export { ResourceTitleLink, type TResourceTitleLink } from './ResourceTitleLink'
 export { Search, useDebounce, type TSearch } from './Search'
 export { SelectGroup, type TSelectGroup } from './SelectGroup'

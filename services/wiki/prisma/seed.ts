@@ -12,7 +12,7 @@ async function seedDB() {
   const categoryReact = await prisma.category.findUnique({
     where: { name: 'React' },
   })
-  if (!categoryReact) throw new Error('Category React not found');
+  if (!categoryReact) throw new Error('Category React not found')
   const categoryNode = await prisma.category.findUnique({
     where: { name: 'Node' },
   })
@@ -141,14 +141,6 @@ async function seedDB() {
   await prisma.topicsOnResources.createMany({
     // @ts-ignore
     data: topicsOnResources,
-  })
-
-  await prisma.banners.create({
-    data: {
-      title: 'ITAcademy',
-      description: 'Aprende a programar en 18 semanas y reprograma tu futuro',
-      url: 'https://www.barcelonactiva.cat/es/itacademy',
-    },
   })
 }
 

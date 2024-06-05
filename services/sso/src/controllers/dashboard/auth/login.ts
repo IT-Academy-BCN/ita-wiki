@@ -36,7 +36,7 @@ export const dashboardLoginController: Middleware = async (ctx: Context) => {
   if (!user.role) {
     throw new ForbiddenError()
   }
-  checkRoleAccess(UserRole.ADMIN, user.role)
+  checkRoleAccess(UserRole.MENTOR, user.role)
   const authToken = generateToken(user.id, 'auth')
   const refreshToken = generateToken(user.id, 'refresh')
   ctx.cookies.set('authToken', authToken, {

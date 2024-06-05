@@ -137,12 +137,3 @@ model Vote {
   @@id([userId, resourceId])
   @@map("vote")
 }
-
-model Banners {
-  id         String   @id @default(cuid())
-  title      String     
-  description String      
-  url         String      
-
-  @@map("banners")
-}
