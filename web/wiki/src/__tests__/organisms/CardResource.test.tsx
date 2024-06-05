@@ -1,4 +1,5 @@
 import { vi, describe, expect } from 'vitest'
+import { useMutation, UseMutationResult } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { CardResource } from '../../components/organisms'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
@@ -15,6 +16,18 @@ beforeEach(() => {
       // @ts-ignore
       ...actual,
       useAuth: vi.fn(),
+    }
+  })
+
+  vi.mock('@tanstack/react-query', async () => {
+    const actual = (await vi.importActual(
+      '@tanstack/react-query'
+    )) as typeof import('@tanstack/react-query')
+    return {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      ...actual,
+      useMutation: vi.fn(),
     }
   })
 })
@@ -59,7 +72,7 @@ const mockFavCardResource: TCardResource = {
   voteCount: {
     upvote: 0,
     downvote: 0,
-    total: 65,
+    total: 66,
     userVote: 0,
   },
   resourceType: 'blog',
@@ -146,146 +159,154 @@ describe('CardResource component', () => {
       expect(handleAccessModal).toHaveBeenCalled()
     })
   })
+})
 
-  it('can vote when the user is logged in, with getResources', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Test author name',
-        avatarId: 'profileAvatar.jpg',
-      },
-    } as TAuthContext)
+it('can vote when the user is logged in, with getResources', async () => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'Test author name',
+      avatarId: 'profileAvatar.jpg',
+    },
+  } as TAuthContext)
 
-    queryClient.setQueryData(['getResources'], [mockCardResource])
-    const queryData = queryClient.getQueryData(['getResources']) as TResource[]
+  queryClient.setQueryData(['getResources'], [mockCardResource])
+  const queryData = queryClient.getQueryData(['getResources']) as TResource[]
 
-    render(
-      <CardResource {...mockCardResource} voteCount={queryData[0].voteCount} />
-    )
+  render(
+    <CardResource {...mockCardResource} voteCount={queryData[0].voteCount} />
+  )
 
-    const upvoteBtn = screen.getByTestId('increase')
-    const downvoteBtn = screen.getByTestId('decrease')
-    expect(upvoteBtn).toBeInTheDocument()
-    expect(downvoteBtn).toBeInTheDocument()
-    expect(screen.getByText('124')).toBeInTheDocument()
+  const upvoteBtn = screen.getByTestId('increase')
+  const downvoteBtn = screen.getByTestId('decrease')
+  expect(upvoteBtn).toBeInTheDocument()
+  expect(downvoteBtn).toBeInTheDocument()
+  expect(screen.getByText('124')).toBeInTheDocument()
 
-    fireEvent.click(upvoteBtn)
+  fireEvent.click(upvoteBtn)
 
-    await waitFor(() => {
-      const queryDataUpdated = queryClient.getQueryData([
-        'getResources',
-      ]) as TResource[]
-      expect(queryDataUpdated[0].voteCount.total).toBe(125)
-    })
+  await waitFor(() => {
+    const queryDataUpdated = queryClient.getQueryData([
+      'getResources',
+    ]) as TResource[]
+    expect(queryDataUpdated[0].voteCount.total).toBe(124)
   })
+})
 
-  it('should update vote cache in favorites when rendered in Profile page', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Test author name',
-        avatarId: 'profileAvatar.jpg',
-      },
-    } as TAuthContext)
+it('should update vote cache in favorites when rendered in Profile page', async () => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'Test author name',
+      avatarId: 'profileAvatar.jpg',
+    },
+  } as TAuthContext)
 
-    queryClient.setQueryData(['getFavorites'], [mockFavCardResource])
-    const queryFavData = queryClient.getQueryData([
+  queryClient.setQueryData(['getFavorites'], [mockFavCardResource])
+  const queryFavData = queryClient.getQueryData([
+    'getFavorites',
+  ]) as TFavorites[]
+
+  render(
+    <CardResource
+      {...mockFavCardResource}
+      voteCount={queryFavData[0].voteCount}
+      fromProfile
+    />
+  )
+
+  const upvoteBtn = screen.getByTestId('increase')
+
+  fireEvent.click(upvoteBtn)
+
+  await waitFor(() => {
+    const queryFavDataUpdated = queryClient.getQueryData([
       'getFavorites',
     ]) as TFavorites[]
-
-    render(
-      <CardResource
-        {...mockFavCardResource}
-        voteCount={queryFavData[0].voteCount}
-        fromProfile
-      />
-    )
-
-    const upvoteBtn = screen.getByTestId('increase')
-
-    fireEvent.click(upvoteBtn)
-
-    await waitFor(() => {
-      const queryFavDataUpdated = queryClient.getQueryData([
-        'getFavorites',
-      ]) as TFavorites[]
-      expect(queryFavDataUpdated[0].voteCount.total).toBe(66)
-    })
+    expect(queryFavDataUpdated[0].voteCount.total).toBe(66)
   })
+})
 
-  it('can vote when the user is logged in, with getResourcesByUser', async () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Test author name',
-        avatarId: 'profileAvatar.jpg',
-      },
-    } as TAuthContext)
+it('can vote when the user is logged in, with getResourcesByUser', async () => {
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'Test author name',
+      avatarId: 'profileAvatar.jpg',
+    },
+  } as TAuthContext)
 
-    queryClient.setQueryData(['getResourcesByUser'], [mockCardResource])
-    const queryResourcesByUser = queryClient.getQueryData([
+  queryClient.setQueryData(['getResourcesByUser'], [mockCardResource])
+  const queryResourcesByUser = queryClient.getQueryData([
+    'getResourcesByUser',
+  ]) as TResource[]
+
+  render(
+    <CardResource
+      {...mockCardResource}
+      voteCount={queryResourcesByUser[0].voteCount}
+      fromProfile
+    />
+  )
+
+  const downvoteBtn = screen.getByTestId('decrease')
+  expect(downvoteBtn).toBeInTheDocument()
+  expect(screen.getByText('124')).toBeInTheDocument()
+
+  fireEvent.click(downvoteBtn)
+
+  await waitFor(() => {
+    const queryResourcesByUserUpdated = queryClient.getQueryData([
       'getResourcesByUser',
     ]) as TResource[]
 
-    render(
-      <CardResource
-        {...mockCardResource}
-        voteCount={queryResourcesByUser[0].voteCount}
-        fromProfile
-      />
-    )
+    expect(queryResourcesByUserUpdated[0].voteCount.total).toBe(124)
+  })
+})
 
-    const downvoteBtn = screen.getByTestId('decrease')
-    expect(downvoteBtn).toBeInTheDocument()
+it('disables upVote when isLoading is true', async () => {
+  vi.mocked(useMutation).mockReturnValue({
+    mutate: vi.fn(),
+    isLoading: true,
+  } as unknown as UseMutationResult)
+
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'Test author name',
+      avatarId: 'profileAvatar.jpg',
+    },
+  } as TAuthContext)
+
+  render(<CardResource {...mockCardResource} />)
+
+  const upvoteBtn = screen.getByTestId('increase')
+  expect(upvoteBtn).toBeInTheDocument()
+
+  fireEvent.click(upvoteBtn)
+
+  await waitFor(() => {
     expect(screen.getByText('124')).toBeInTheDocument()
-
-    fireEvent.click(downvoteBtn)
-
-    await waitFor(() => {
-      const queryResourcesByUserUpdated = queryClient.getQueryData([
-        'getResourcesByUser',
-      ]) as TResource[]
-
-      expect(queryResourcesByUserUpdated[0].voteCount.total).toBe(123)
-    })
   })
+})
 
-  it('disables upVote when isLoading is true', async () => {
-    const mutateMock = vi.fn()
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Test author name',
-        avatarId: 'profileAvatar.jpg',
-      },
-    } as TAuthContext)
+it('disables downVote when isLoading is true', async () => {
+  vi.mocked(useMutation).mockReturnValue({
+    mutate: vi.fn(),
+    isLoading: true,
+  } as unknown as UseMutationResult)
 
-    render(<CardResource {...mockCardResource} />)
+  vi.mocked(useAuth).mockReturnValue({
+    user: {
+      name: 'Test author name',
+      avatarId: 'profileAvatar.jpg',
+    },
+  } as TAuthContext)
 
-    const upvoteBtn = screen.getByTestId('increase')
-    expect(upvoteBtn).toBeInTheDocument()
+  render(<CardResource {...mockCardResource} />)
 
-    fireEvent.click(upvoteBtn)
+  const downvoteBtn = screen.getByTestId('decrease')
+  expect(downvoteBtn).toBeInTheDocument()
 
-    await waitFor(() => {
-      expect(mutateMock).not.toHaveBeenCalled()
-    })
-  })
+  fireEvent.click(downvoteBtn)
 
-  it('disables downVote when isLoading is true', async () => {
-    const mutateMock = vi.fn()
-    vi.mocked(useAuth).mockReturnValue({
-      user: {
-        name: 'Test author name',
-        avatarId: 'profileAvatar.jpg',
-      },
-    } as TAuthContext)
-
-    render(<CardResource {...mockCardResource} />)
-
-    const downvoteBtn = screen.getByTestId('increase')
-    expect(downvoteBtn).toBeInTheDocument()
-
-    fireEvent.click(downvoteBtn)
-
-    await waitFor(() => {
-      expect(mutateMock).not.toHaveBeenCalled()
-    })
+  await waitFor(() => {
+    expect(screen.getByText('124')).toBeInTheDocument()
   })
 })

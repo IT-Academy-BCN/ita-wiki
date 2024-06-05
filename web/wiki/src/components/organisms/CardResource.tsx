@@ -1,4 +1,3 @@
-// Ajustes en CardResource para manejar el estado de carga
 import styled from 'styled-components'
 import {
   CreateAuthor,
@@ -126,12 +125,12 @@ export const CardResource: FC<TCardResource> = ({
   })
 
   const handleClick = (vote: TUserVote) => {
-    if (castVote.isLoading) {
+    if (!user) {
+      handleAccessModal()
       return
     }
 
-    if (!user) {
-      handleAccessModal()
+    if (castVote.isLoading) {
       return
     }
 
