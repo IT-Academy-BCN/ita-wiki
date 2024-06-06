@@ -140,7 +140,7 @@ export async function setup() {
     } else if (user.email === 'testingUserToBeBlocked@user.cat') {
       itineraryId = userToBeBlockedItineraryId
     } else if (user.email === 'userToDelete@user.cat') {
-      itineraryId = userToBeBlockedItineraryId
+      itineraryId = mentorItineraryId
     }
 
     const query = `
