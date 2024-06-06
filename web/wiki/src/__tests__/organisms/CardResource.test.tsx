@@ -27,7 +27,12 @@ beforeEach(() => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       ...actual,
-      useMutation: vi.fn(),
+      useMutation: vi.fn(() => ({
+        mutate: vi.fn(),
+        isLoading: false,
+        isError: false,
+        isSuccess: false,
+      })),
     }
   })
 })
@@ -265,6 +270,8 @@ it('disables upVote when isLoading is true', async () => {
   vi.mocked(useMutation).mockReturnValue({
     mutate: vi.fn(),
     isLoading: true,
+    isError: false,
+    isSuccess: false,
   } as unknown as UseMutationResult)
 
   vi.mocked(useAuth).mockReturnValue({
@@ -290,6 +297,8 @@ it('disables downVote when isLoading is true', async () => {
   vi.mocked(useMutation).mockReturnValue({
     mutate: vi.fn(),
     isLoading: true,
+    isError: false,
+    isSuccess: false,
   } as unknown as UseMutationResult)
 
   vi.mocked(useAuth).mockReturnValue({
