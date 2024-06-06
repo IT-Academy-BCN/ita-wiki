@@ -7,7 +7,6 @@ import {
   SelectGroup,
   Spinner,
   TextareaGroup,
-  ValidationMessage,
   colors,
   dimensions,
 } from '@itacademy/ui'
@@ -46,11 +45,6 @@ const ButtonContainerStyled = styled(FlexBox)`
     font-weight: 500;
     margin: 0rem;
   }
-`
-
-const FlexErrorStyled = styled(FlexBox)`
-  height: ${dimensions.spacing.xxxs};
-  margin-left: 0.2rem;
 `
 
 const ResourceFormSchema = z.object({
@@ -245,15 +239,6 @@ export const ResourceForm: FC<TResourceForm> = ({
         error={errors.resourceType && true}
         errorMessage={errors.resourceType && t(`${errors.resourceType?.message}`)}
       />
-      <FlexErrorStyled align="start">
-        {errors?.title ||
-        errors?.description ||
-        errors?.url ||
-        errors?.topics ||
-        errors?.resourceType ? (
-          <ValidationMessage />
-        ) : null}
-      </FlexErrorStyled>
       <ButtonContainerStyled align="stretch" gap={dimensions.spacing.xs}>
         {isCreateSuccess || isUpdateSuccess ? (
           <ButtonStyled
