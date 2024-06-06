@@ -86,6 +86,7 @@ export type TInitialValues = Omit<
 
 const StyledRadio = styled(RadioGroup)`
   padding: ${dimensions.spacing.sm};
+  margin: auto;
 `
 
 const StyledTextareaGroup = styled(TextareaGroup)<{ error?: boolean }>`
