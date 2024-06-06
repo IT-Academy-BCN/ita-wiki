@@ -2,8 +2,7 @@ import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { UsersTable } from '../../components/organisms'
 import { errorHandlers } from '../../__mocks__/handlers'
 import { server } from '../../__mocks__/server'
-import { UserStatus } from '../../types'
-import { UserRole } from '../../types/types'
+import { UserRole, UserStatus } from '../../types'
 
 const defaultProps = {
   filtersSelected: {},

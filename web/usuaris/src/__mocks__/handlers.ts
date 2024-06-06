@@ -1,7 +1,6 @@
 import { HttpResponse, http } from 'msw'
 import { urls } from '../constants'
-import { UserStatus } from '../types'
-import { UserRole } from '../types/types'
+import { UserRole, UserStatus } from '../types'
 
 export const handlers = [
   http.get(urls.getUsers, ({ request }) => {

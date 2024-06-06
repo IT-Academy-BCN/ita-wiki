@@ -1,87 +1,55 @@
 import { FC } from 'react'
 import { FlexBox, Icon, colors, dimensions, font } from '@itacademy/ui'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { icons } from '../../assets/icons'
-
-const LinkCategory = styled(Link)`
-  color: ${colors.gray.gray3};
-  font-size: ${font.xs};
-  font-weight: 600;
-  font-family: ${font.fontFamily};
-  cursor: pointer;
-  text-decoration: none;
-
-  &:hover {
-    color: ${colors.primary};
-  }
-`
-
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: ${dimensions.spacing.xxxs};
-  align-items: center;
-`
+import { paths, sections } from '../../constants'
 
 const SideMenuStyled = styled(FlexBox)`
   height: 100%;
   min-width: 12rem;
-  margin-top: ${dimensions.spacing.lg};
-
-  ul {
-    list-style: none;
-    padding: ${dimensions.spacing.xxxs};
-  }
-
-  li {
-    font-size: ${font.xs};
-    font-weight: ${font.medium};
-    margin-bottom: ${dimensions.spacing.xxl};
-
-    &::before {
-      font-size: larger;
-      color: ${colors.primary};
-      margin-right: 0.3rem;
-    }
-  }
+  margin-top: ${dimensions.spacing.xxs};
 `
 
-const CategoryStyled = styled.span`
-  color: ${colors.gray.gray3};
+const LinkSection = styled(Link)`
+  text-decoration: none;
+  margin: ${dimensions.spacing.none};
+  padding: ${dimensions.spacing.xxxs};
+`
+
+type TSectionStyled = {
+  active?: boolean
+}
+
+const SectionStyled = styled.span<TSectionStyled>`
+  color: ${({ active }) => (active ? colors.black.black3 : colors.gray.gray3)};
   font-size: ${font.xs};
-  font-weight: 600;
+  font-weight: ${font.medium};
   font-family: ${font.fontFamily};
   cursor: pointer;
   transition: transform 0.3s ease;
   outline: none;
-  display: inline-block;
-  border: 0px solid black;
-  tabindex: 0;
 
   &:hover {
-    color: ${colors.primary};
+    color: ${({ active }) => (active ? colors.black.black3 : colors.primary)};
     transform: scale(1.05);
   }
 
-  &:focus {
-    color: ${colors.black.black1};
-  }
-
-  &:focus::before {
-    content: '●';
+  &::before {
+    content: '${({ active }) => (active ? '●' : '')}';
     font-size: larger;
     color: ${colors.primary};
-    margin-right: 0.3rem;
+    margin-right: ${dimensions.spacing.xxxs};
   }
 `
 
 const ImgStyled = styled(Icon)`
-  height: 30px;
-  margin-right: ${dimensions.spacing.xxxs};
-  &[data-testid] 
+  height: ${dimensions.spacing.lg};
+
+  &[data-testid] {
     content: attr(data-testid);
+  }
 `
 
 const LogoImage = styled.img`
@@ -89,55 +57,43 @@ const LogoImage = styled.img`
   height: auto;
 `
 
-const menu = [
-  {
-    id: 1,
-    title: 'Usuarios',
-    icon: 'person',
-    link: '/#',
-  },
-  {
-    id: 2,
-    title: 'Mentores',
-    icon: 'person',
-    link: '/#',
-  },
-  {
-    id: 3,
-    title: 'Connector',
-    icon: 'bolt',
-    link: '/#',
-  },
-  {
-    id: 4,
-    title: 'Configuración',
-    icon: 'settings',
-    link: '/#',
-  },
-]
-
 export const SideMenu: FC = () => {
   const { t } = useTranslation()
+  const { pathname } = useLocation()
 
   return (
-    <SideMenuStyled justify="space-between" align="start">
-      <LogoImage src={icons.itLogo} alt="IT Academy" />
-      <ul>
-        {menu.map((item) => (
-          <li key={item.id}>
-            <Grid>
+    <SideMenuStyled
+      justify="space-between"
+      align="start"
+      data-testid={`test-path-${pathname}`}
+    >
+      <Link to={paths.home}>
+        <LogoImage src={icons.itLogo} alt="IT Academy" />
+      </Link>
+      <FlexBox align="start" gap={dimensions.spacing.sm}>
+        {sections.map((item) => (
+          <LinkSection
+            to={item.path}
+            tabIndex={0}
+            key={item.id}
+            data-testid={`test-link-${item.title}`}
+          >
+            <FlexBox direction="row" gap={dimensions.spacing.xxxs}>
               <ImgStyled
-                data-testid={item.icon}
+                data-testid={`test-icon-${item.icon}`}
                 name={item.icon}
-                color={`${colors.black.black1}`}
+                color={`${colors.black.black3}`}
               />
-              <LinkCategory to={item.link} state={{}} key={1} tabIndex={0}>
-                <CategoryStyled tabIndex={0}>{t(item.title)}</CategoryStyled>
-              </LinkCategory>
-            </Grid>
-          </li>
+              <SectionStyled
+                active={pathname === item.path}
+                data-testid={`test-title-${item.title}`}
+              >
+                {t(item.title)}
+              </SectionStyled>
+            </FlexBox>
+          </LinkSection>
         ))}
-      </ul>
+      </FlexBox>
       <div style={{ height: '79px' }} />
     </SideMenuStyled>
   )

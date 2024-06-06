@@ -1,10 +1,11 @@
 import { screen } from '@testing-library/react'
 import { render } from '../test-utils'
-import { Home } from '../../pages'
+import { Mentors } from '../../pages'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
 import { UserRole } from '../../types'
+import { paths } from '../../constants'
 
-describe('Home page', () => {
+describe('Mentors page', () => {
   beforeEach(() => {
     vi.mock('../../context/AuthProvider', async () => {
       const actual = await vi.importActual('../../context/AuthProvider')
@@ -15,17 +16,7 @@ describe('Home page', () => {
     })
   })
 
-  it('renders Login if user is not logged in', () => {
-    vi.mocked(useAuth).mockReturnValue({
-      user: null,
-    } as TAuthContext)
-
-    render(<Home />)
-
-    expect(screen.getByTestId('login-test')).toBeInTheDocument()
-  })
-
-  it('renders Dashboard if user is logged in', () => {
+  it('renders correctly Mentors page if Admin user is logged in', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         dni: '12345678A',
@@ -34,8 +25,8 @@ describe('Home page', () => {
       },
     } as TAuthContext)
 
-    render(<Home />)
+    render(<Mentors />, { initialEntries: [paths.mentors] })
 
-    expect(screen.getByTestId('dashboard-test')).toBeInTheDocument()
+    expect(screen.getByTestId('test-mentors-page')).toBeInTheDocument()
   })
 })

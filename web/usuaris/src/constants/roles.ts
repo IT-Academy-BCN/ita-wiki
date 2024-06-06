@@ -1,5 +1,5 @@
 import i18n from '../i18n'
-import { TRole, UserRole } from '../types/types'
+import { TRole, UserRole } from '../types'
 
 type TRoleKey = keyof typeof UserRole
 
