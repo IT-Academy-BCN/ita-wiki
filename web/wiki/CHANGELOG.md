@@ -2,10 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.20.1] - 2024-05-29
-### Change 
+## [0.20.1] - 2024-06-06
 
-- Radio buttons defaultChecked
+###  Added
+
+- Added missing resourceType error message
+- Added error message translations
 
 ## [0.20.0] - 2024-05-28
 
