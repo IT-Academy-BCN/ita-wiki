@@ -17,12 +17,9 @@ export const dashboardBatchDelete: Middleware = async (ctx: Context) => {
     throw new NotFoundError('No user found')
   }
 
-  const alreadyDeletedUser: string[] = []
   const toBeDeletedUser: string[] = []
   verifyResult.rows.forEach((row) => {
-    if (row.deleted_at !== null) {
-      alreadyDeletedUser.push(row.id)
-    } else {
+    if (row.deleted_at === null) {
       toBeDeletedUser.push(row.id)
     }
   })
