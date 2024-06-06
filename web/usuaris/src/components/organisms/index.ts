@@ -1,5 +1,6 @@
+export { Dashboard } from './Dashboard'
 export { FiltersWidget } from './FiltersWidget'
 export { Login } from './Login'
 export { Navbar } from './Navbar'
 export { SideMenu } from './SideMenu'
-export { UsersTable } from './UsersTable/UsersTable'
+export { UsersTable } from './UsersTable'

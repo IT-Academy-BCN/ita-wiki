@@ -1,48 +1,69 @@
-import { fireEvent, screen } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { colors } from '@itacademy/ui'
-import { describe, beforeEach, it, expect } from 'vitest'
 import { render } from '../test-utils'
 import { SideMenu } from '../../components/organisms'
+import { paths } from '../../constants'
 
 describe('SideMenu', () => {
   beforeEach(() => {
     render(<SideMenu />)
   })
 
-  it('renders correctly', () => {
+  it('renders correctly', async () => {
     expect(screen.getByAltText('IT Academy')).toBeInTheDocument()
-    expect(screen.getByText('Usuaris')).toBeInTheDocument()
-    expect(screen.getByText('Mentors')).toBeInTheDocument()
-    expect(screen.getByText('Connector')).toBeInTheDocument()
-    expect(screen.getByText('Configuració')).toBeInTheDocument()
+    const usersItem = screen.getByTestId('test-title-Usuarios')
+    const mentorsItem = screen.getByTestId('test-title-Mentores')
+    const connectorItem = screen.getByTestId('test-title-Connector')
+    const settingsItem = screen.getByTestId('test-title-Configuración')
+
+    expect(usersItem).toBeInTheDocument()
+    expect(mentorsItem).toBeInTheDocument()
+    expect(connectorItem).toBeInTheDocument()
+    expect(settingsItem).toBeInTheDocument()
+
+    expect(screen.getAllByTestId('test-icon-person').length).toBe(2)
+    expect(screen.getByTestId('test-icon-bolt')).toBeInTheDocument()
+    expect(screen.getByTestId('test-icon-settings')).toBeInTheDocument()
+
+    waitFor(() => {
+      expect(usersItem).toHaveStyle(`color: ${colors.black.black3}`)
+      expect(mentorsItem).toHaveStyle(`color: ${colors.gray.gray3}`)
+      expect(connectorItem).toHaveStyle(`color: ${colors.gray.gray3}`)
+      expect(settingsItem).toHaveStyle(`color: ${colors.gray.gray3}`)
+    })
   })
 
-  it('navigates to the correct page when a menu item is clicked', () => {
-    const firstMenuItem = screen.getByText('Usuaris')
-    fireEvent.click(firstMenuItem)
-    expect(window.location.pathname).toEqual('/')
+  it('navigates to the correct page when a menu item is clicked and changes styles', async () => {
+    const mentorsMenuItemLink = screen.getByTestId('test-link-Mentores')
+    const mentorsTitle = screen.getByTestId('test-title-Mentores')
+
+    expect(screen.getByTestId(`test-path-${paths.home}`)).toBeInTheDocument()
+    waitFor(() => {
+      expect(mentorsTitle).toHaveStyle(`color: ${colors.gray.gray3}`)
+    })
+
+    await userEvent.click(mentorsMenuItemLink)
+
+    expect(screen.getByTestId(`test-path-${paths.mentors}`)).toBeInTheDocument()
+    waitFor(() => {
+      expect(mentorsTitle).toHaveStyle(`color: ${colors.black.black3}`)
+    })
   })
 
   it('changes style on hover over a category', () => {
-    const category = screen.getByText('Usuaris')
-    fireEvent.mouseOver(category)
-    expect(category).toHaveStyle(`color: ${colors.primary}`)
-  })
+    const activeCategory = screen.getByText('Usuaris')
+    fireEvent.mouseOver(activeCategory)
+    expect(activeCategory).toHaveStyle(`color: ${colors.black.black3}`)
 
-  it('displays the correct icons for each menu item', () => {
-    const personIcons = screen.getAllByTestId('person')
-    expect(personIcons.length).toBe(2)
-
-    const boltIcon = screen.getByTestId('bolt')
-    expect(boltIcon).toBeInTheDocument()
-
-    const settingsIcon = screen.getByTestId('settings')
-    expect(settingsIcon).toBeInTheDocument()
+    const inactiveCategory = screen.getByText('Mentors')
+    fireEvent.mouseOver(inactiveCategory)
+    expect(inactiveCategory).toHaveStyle(`color: ${colors.primary}`)
   })
 
   it('ensures menu items are focusable for accessibility', () => {
-    const firstMenuItem = screen.getByText('Usuaris')
-    firstMenuItem.focus()
-    expect(firstMenuItem).toHaveFocus()
+    const usersMenuItem = screen.getByTestId('test-link-Usuarios')
+    usersMenuItem.focus()
+    expect(usersMenuItem).toHaveFocus()
   })
 })

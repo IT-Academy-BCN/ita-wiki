@@ -8,15 +8,26 @@ import {
   type TDropdownOption,
 } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
-import { TRole } from '../../types/types'
-import { roles } from '../../constants'
+import { useLocation } from 'react-router-dom'
+import { TRole, UserRole } from '../../types'
+import { paths, roles } from '../../constants'
 
-const StyledDropdown = styled(Dropdown)`
+type TStyledDropdown = {
+  disabled?: boolean
+}
+
+const StyledDropdown = styled(Dropdown)<TStyledDropdown>`
+  && div {
+    cursor: ${({ disabled }) => (disabled && 'not-allowed') || 'pointer'};
+  }
+
   && button {
     width: 210px;
     padding: ${dimensions.spacing.xxs};
     font-size: ${font.xs};
     font-weight: 500;
+    opacity: ${({ disabled }) => (disabled && '0.6') || '1'};
+    pointer-events: ${({ disabled }) => (disabled && 'none') || 'auto'};
 
     &:hover {
       background-color: ${colors.primary};
@@ -36,6 +47,7 @@ type TRoleFilter = {
 
 export const RoleFilter: FC<TRoleFilter> = ({ handleRole }) => {
   const { t } = useTranslation()
+  const { pathname } = useLocation()
 
   const handleSelectedValue = (selectedOption: TDropdownOption | undefined) => {
     if (selectedOption) {
@@ -49,6 +61,15 @@ export const RoleFilter: FC<TRoleFilter> = ({ handleRole }) => {
       handleRole(undefined)
     }
   }
+
+  if (pathname === paths.mentors)
+    return (
+      <StyledDropdown
+        options={roles}
+        placeholder={t(UserRole.MENTOR)}
+        disabled
+      />
+    )
 
   return roles && roles.length > 0 ? (
     <StyledDropdown
