@@ -4,10 +4,10 @@ All notable changes to this project will be documented in this file.
 
 ## [0.20.1] - 2024-06-06
 
-###  Added
+###  Fixed
 
-- Added missing resourceType error message
-- Added error message translations
+- Fixed missing resourceType error message
+- Fixed error message translations
 
 ## [0.20.0] - 2024-05-28
 
