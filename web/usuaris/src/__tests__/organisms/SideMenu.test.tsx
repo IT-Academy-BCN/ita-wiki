@@ -6,6 +6,7 @@ import { SideMenu } from '../../components/organisms'
 import { paths } from '../../constants'
 
 describe('SideMenu', () => {
+
   beforeEach(() => {
     render(<SideMenu />)
   })
@@ -65,5 +66,14 @@ describe('SideMenu', () => {
     const usersMenuItem = screen.getByTestId('test-link-Usuarios')
     usersMenuItem.focus()
     expect(usersMenuItem).toHaveFocus()
+  })
+
+  it('Mentor title is not rendered while Mentor role is clicked', () =>{
+    const roleOption = screen.getByText(/MENTOR/i)
+    fireEvent.click(roleOption)
+    waitFor(() => {
+    const mentorsTitle = screen.queryByTestId('test-title-Mentores')
+    expect(mentorsTitle).not.toBeInTheDocument()
+    })
   })
 })

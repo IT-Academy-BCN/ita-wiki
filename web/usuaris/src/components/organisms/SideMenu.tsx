@@ -5,11 +5,13 @@ import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { icons } from '../../assets/icons'
 import { paths, sections } from '../../constants'
+import { useAuth } from '../../context/AuthProvider'
 
 const SideMenuStyled = styled(FlexBox)`
   height: 100%;
   min-width: 12rem;
   margin-top: ${dimensions.spacing.xxs};
+
 `
 
 const LinkSection = styled(Link)`
@@ -60,7 +62,8 @@ const LogoImage = styled.img`
 export const SideMenu: FC = () => {
   const { t } = useTranslation()
   const { pathname } = useLocation()
-
+  const { role } = useAuth()
+ 
   return (
     <SideMenuStyled
       justify="space-between"
@@ -71,28 +74,22 @@ export const SideMenu: FC = () => {
         <LogoImage src={icons.itLogo} alt="IT Academy" />
       </Link>
       <FlexBox align="start" gap={dimensions.spacing.sm}>
-        {sections.map((item) => (
-          <LinkSection
-            to={item.path}
-            tabIndex={0}
-            key={item.id}
-            data-testid={`test-link-${item.title}`}
-          >
+        {sections.map((item) => {
+         if (role?.name === 'Mentor' && item.title === 'Mentores') {
+          return null
+        }
+
+        return (
+          <LinkSection to={item.path} tabIndex={0} key={item.id} data-testid={`test-link-${item.title}`}>
             <FlexBox direction="row" gap={dimensions.spacing.xxxs}>
-              <ImgStyled
-                data-testid={`test-icon-${item.icon}`}
-                name={item.icon}
-                color={`${colors.black.black3}`}
-              />
-              <SectionStyled
-                active={pathname === item.path}
-                data-testid={`test-title-${item.title}`}
-              >
+              <ImgStyled data-testid={`test-icon-${item.icon}`} name={item.icon} color={`${colors.black.black3}`} />
+              <SectionStyled active={pathname === item.path} data-testid={`test-title-${item.title}`}>
                 {t(item.title)}
               </SectionStyled>
             </FlexBox>
           </LinkSection>
-        ))}
+        )
+      })}
       </FlexBox>
       <div style={{ height: '79px' }} />
     </SideMenuStyled>
