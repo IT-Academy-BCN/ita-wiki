@@ -49,19 +49,4 @@ describe('RolesFilter', () => {
     })
   })
 
-  it('Mentor title is rendered while Admin role is clicked', async () => {
-    render(<RoleFilter handleRole={mockHandleClick} />)
-
-    const dropdown = screen.getByTestId('dropdown-header')
-    fireEvent.click(dropdown)
-
-    const roleOption = screen.getByText(/ADMIN/i)
-    fireEvent.click(roleOption)
-
-     waitFor(() => {
-      const mentorsTitle = screen.queryByTestId('test-title-Mentores')
-      expect(mentorsTitle).toBeInTheDocument()
-    })
-      
-  })
 })

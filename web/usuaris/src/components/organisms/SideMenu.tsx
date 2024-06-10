@@ -5,7 +5,8 @@ import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { icons } from '../../assets/icons'
 import { paths, sections } from '../../constants'
-import { useAuth } from '../../context/AuthProvider'
+import { TUser, useAuth } from '../../context/AuthProvider'
+import { TSection } from '../../constants/sections'
 
 const SideMenuStyled = styled(FlexBox)`
   height: 100%;
@@ -58,11 +59,17 @@ const LogoImage = styled.img`
   max-width: 7.25rem;
   height: auto;
 `
+const filterSectionsByUserRole = (user: TUser, item: TSection) => {
+  if (user?.role === 'MENTOR' && item.title === 'Mentores'){
+    return null
+  }
+  return item.title
+}
 
 export const SideMenu: FC = () => {
   const { t } = useTranslation()
   const { pathname } = useLocation()
-  const { role } = useAuth()
+  const { user } = useAuth()
  
   return (
     <SideMenuStyled
@@ -74,12 +81,8 @@ export const SideMenu: FC = () => {
         <LogoImage src={icons.itLogo} alt="IT Academy" />
       </Link>
       <FlexBox align="start" gap={dimensions.spacing.sm}>
-        {sections.map((item) => {
-         if (role?.name === 'Mentor' && item.title === 'Mentores') {
-          return null
-        }
-
-        return (
+        {sections.filter((item)=>filterSectionsByUserRole(user, item))
+        .map((item) => (
           <LinkSection to={item.path} tabIndex={0} key={item.id} data-testid={`test-link-${item.title}`}>
             <FlexBox direction="row" gap={dimensions.spacing.xxxs}>
               <ImgStyled data-testid={`test-icon-${item.icon}`} name={item.icon} color={`${colors.black.black3}`} />
@@ -89,7 +92,7 @@ export const SideMenu: FC = () => {
             </FlexBox>
           </LinkSection>
         )
-      })}
+      )}
       </FlexBox>
       <div style={{ height: '79px' }} />
     </SideMenuStyled>

@@ -11,7 +11,6 @@ import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import { TRole, UserRole } from '../../types'
 import { paths, roles } from '../../constants'
-import { useAuth } from '../../context/AuthProvider'
 
 type TStyledDropdown = {
   disabled?: boolean
@@ -49,7 +48,7 @@ type TRoleFilter = {
 export const RoleFilter: FC<TRoleFilter> = ({ handleRole }) => {
   const { t } = useTranslation()
   const { pathname } = useLocation()
-  const { setRole } = useAuth()
+
   const handleSelectedValue = (selectedOption: TDropdownOption | undefined) => {
     if (selectedOption) {
       const selectedRole = roles.find(
@@ -57,11 +56,10 @@ export const RoleFilter: FC<TRoleFilter> = ({ handleRole }) => {
       )
       if (selectedRole) {
         handleRole(selectedRole)
-        setRole(selectedRole)
       }
     } else {
       handleRole(undefined)
-      setRole(undefined)
+      
     }
   }
 

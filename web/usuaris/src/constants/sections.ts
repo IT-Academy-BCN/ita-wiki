@@ -1,6 +1,6 @@
 import { paths } from './paths'
 
-type TSection = {
+export type TSection = {
   id: number
   title: string
   icon: string
