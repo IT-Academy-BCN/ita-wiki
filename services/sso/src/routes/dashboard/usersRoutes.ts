@@ -22,7 +22,7 @@ dashboardUsersRoutes.prefix(pathRoot.v1.dashboard.users)
 dashboardUsersRoutes.get(
   '/',
   authenticate,
-  authorize('ADMIN'),
+  authorize('MENTOR'),
   parse(z.object({ query: dashboardUsersListQuerySchema }), {
     useQsParser: true,
     useQueryString: true,

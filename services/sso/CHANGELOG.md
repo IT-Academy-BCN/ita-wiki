@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.30.0] - 2024-05-30
+
+### Added
+
+- `GET /dashboard/users` endpoint to allow mentors to access the list of users filtered by the same itinerary as the logged-in mentor.
+
 ## [1.29.0] - 2024-05-30
 
 ### Added
