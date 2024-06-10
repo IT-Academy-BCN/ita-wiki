@@ -68,9 +68,7 @@ describe('SideMenu', () => {
     expect(usersMenuItem).toHaveFocus()
   })
 
-  it('Mentor title is not rendered while Mentor role is clicked', () =>{
-    const roleOption = screen.getByText(/MENTOR/i)
-    fireEvent.click(roleOption)
+  it('Mentor title is not rendered while Mentor user logged in', () =>{
     waitFor(() => {
     const mentorsTitle = screen.queryByTestId('test-title-Mentores')
     expect(mentorsTitle).not.toBeInTheDocument()

@@ -59,7 +59,6 @@ export const RoleFilter: FC<TRoleFilter> = ({ handleRole }) => {
       }
     } else {
       handleRole(undefined)
-      
     }
   }
 
