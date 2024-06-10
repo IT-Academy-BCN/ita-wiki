@@ -3,11 +3,10 @@ import {
   FlexBox,
   Icon,
   InputGroup,
-  Radio,
+  RadioGroup,
   SelectGroup,
   Spinner,
   TextareaGroup,
-  ValidationMessage,
   colors,
   dimensions,
 } from '@itacademy/ui'
@@ -48,11 +47,6 @@ const ButtonContainerStyled = styled(FlexBox)`
   }
 `
 
-const FlexErrorStyled = styled(FlexBox)`
-  height: ${dimensions.spacing.xxxs};
-  margin-left: 0.2rem;
-`
-
 const ResourceFormSchema = z.object({
   title: z
     .string({ required_error: 'Este campo es obligatorio' })
@@ -64,13 +58,15 @@ const ResourceFormSchema = z.object({
     .string({ required_error: 'Este campo es obligatorio' })
     .url({ message: 'La URL proporcionada no es válida' }),
   topics: z.string().refine((val) => val !== '', {
-    message: 'Debe seleccionar al menos un tema',
+    message: 'Debe seleccionar un tema',
   }),
   topicId: z
     .string()
     .optional()
     .refine((val) => val !== '', 'Debe seleccionar un tema válido'),
-  resourceType: z.string(),
+  resourceType: z
+    .union([z.string().min(1, { message: 'Debe seleccionar una opción válida' }), z.null()])
+    .refine(val => val !== null, { message: 'Debe seleccionar una opción válida' }),
 })
 
 export type TInitialValues = Omit<
@@ -82,8 +78,9 @@ export type TInitialValues = Omit<
   id?: string
 }
 
-const StyledRadio = styled(Radio)`
-  margin-top: ${dimensions.spacing.xl};
+const StyledRadio = styled(RadioGroup)`
+  padding: ${dimensions.spacing.sm};
+  margin: auto;
 `
 
 const StyledTextareaGroup = styled(TextareaGroup)<{ error?: boolean }>`
@@ -187,7 +184,7 @@ export const ResourceForm: FC<TResourceForm> = ({
         {...register('title')}
         data-testid="resourceTitle"
         error={errors.title && true}
-        validationMessage={errors.title?.message}
+        validationMessage={errors.title && t(`${errors.title?.message}`)}
         validationType="error"
       />
       <StyledTextareaGroup
@@ -199,7 +196,7 @@ export const ResourceForm: FC<TResourceForm> = ({
         placeholder={t('Descripción')}
         {...register('description')}
         error={errors.description && true}
-        validationMessage={errors.description?.message}
+        validationMessage={errors.description && t(`${errors.description?.message}`)}
         validationType="error"
       />
       <InputGroup
@@ -210,7 +207,7 @@ export const ResourceForm: FC<TResourceForm> = ({
         placeholder="URL"
         {...register('url')}
         error={errors.url && true}
-        validationMessage={errors.url?.message}
+        validationMessage={errors.url && t(`${errors.url?.message}`)}
         validationType="error"
       />
       <SelectGroup
@@ -222,11 +219,14 @@ export const ResourceForm: FC<TResourceForm> = ({
         {...register('topics')}
         defaultValue={initialTopicLabel ?? ''}
         $error={!!errors.topics}
-        validationMessage={errors.topics?.message}
+        validationMessage={errors.topics && t(`${errors.topics?.message}`)}
         onChange={handleTopicChange}
         hiddenLabel
       />
       <StyledRadio
+        id="resourceType"
+        label="Resource Type"
+        hiddenLabelGroup
         {...register('resourceType')}
         options={[
           { id: 'VIDEO', name: 'Video' },
@@ -234,17 +234,11 @@ export const ResourceForm: FC<TResourceForm> = ({
           { id: 'BLOG', name: 'Blog' },
         ]}
         direction="row"
-        inputName="resourceType"
         data-testid="resourceType"
+        inputName="resourceType"
+        error={errors.resourceType && true}
+        errorMessage={errors.resourceType && t(`${errors.resourceType?.message}`)}
       />
-      <FlexErrorStyled align="start">
-        {errors?.title ||
-        errors?.description ||
-        errors?.url ||
-        errors?.topics ? (
-          <ValidationMessage />
-        ) : null}
-      </FlexErrorStyled>
       <ButtonContainerStyled align="stretch" gap={dimensions.spacing.xs}>
         {isCreateSuccess || isUpdateSuccess ? (
           <ButtonStyled

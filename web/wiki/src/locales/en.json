@@ -135,5 +135,11 @@
 
   "Mostrando": "Showing",
   "resultados para": "results for",
-  "Nuevo Recurso": "New resource"
+  "Nuevo Recurso": "New resource",
+
+  "Este campo es obligatorio": "This field is mandatory",
+  "La URL proporcionada no es válida": "The URL provided is not valid",
+  "Debe seleccionar un tema": "You must select a topic",
+  "Debe seleccionar un tema válido": "You must select a valid topic",
+  "Debe seleccionar una opción válida": "You must select a valid option"
 }
