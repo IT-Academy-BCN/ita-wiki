@@ -21,6 +21,7 @@ const responseSchema = userSchema
   .array()
 
 let authAdminToken = ''
+let authMentorToken = ''
 let users: DashboardUsersList
 const testName = 'testing'
 const testDni = '38826335N'
@@ -30,6 +31,10 @@ beforeAll(async () => {
   authAdminToken = await dashboardLoginAndGetToken(
     testUserData.admin.dni,
     testUserData.admin.password
+  )
+  authMentorToken = await dashboardLoginAndGetToken(
+    testUserData.mentor.dni,
+    testUserData.mentor.password
   )
   const queryResult = await client.query(
     `SELECT
@@ -57,6 +62,20 @@ describe('Testing get users endpoint', () => {
     expect(response.body).toHaveLength(users.length)
     expect(response.body).toEqual(users)
     expect(responseSchema.safeParse(response.body).success).toBeTruthy()
+  })
+  it('Returns a collection of users successfully with a logged-in mentor user, where the collection must contain users with the same itinerary.', async () => {
+    const response = await supertest(server)
+      .get(route)
+      .set('Cookie', [authMentorToken])
+    expect(response.status).toBe(200)
+    expect(response.body).toHaveLength(2)
+    expect(responseSchema.safeParse(response.body).success).toBeTruthy()
+
+    const firstItineraryName = response.body[0].itineraryName
+    const allSameItinerary = responseSchema
+      .parse(response.body)
+      .every((user) => user.itineraryName === firstItineraryName)
+    expect(allSameItinerary).toBe(true)
   })
   it('returns a  collection of users by itinerary slug successfully with a logged-in admin user ', async () => {
     const response = await supertest(server)
