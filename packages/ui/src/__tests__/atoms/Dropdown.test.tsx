@@ -435,4 +435,10 @@ describe('Dropdown', () => {
       expect(dropdownHeader).toHaveTextContent(/Test select/i)
     })
   })
+
+  it('disables dropdown when prop is passed', () => {
+    render(<Dropdown options={mockOptions} disabled />)
+
+    expect(screen.getByTestId('dropdown-header')).toBeDisabled()
+  })
 })

@@ -153,6 +153,7 @@ export type TDropdown = HTMLAttributes<HTMLElement> & {
   className?: string
   $size?: 'small' | 'normal' | 'large'
   resetSelectedValue?: boolean
+  disabled?: boolean
 }
 
 export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
@@ -168,6 +169,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
       className = '',
       $size = 'normal',
       resetSelectedValue = undefined,
+      disabled = undefined,
       ...rest
     },
     ref
@@ -226,6 +228,7 @@ export const Dropdown = forwardRef<HTMLDivElement, TDropdown>(
             data-testid="dropdown-header"
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             $size={$size}
+            disabled={disabled}
           >
             {selectedOption ? (
               <StyledFlexBox
