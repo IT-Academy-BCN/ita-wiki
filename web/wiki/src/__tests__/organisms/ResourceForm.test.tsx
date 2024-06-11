@@ -30,6 +30,13 @@ beforeEach(() => {
   })
 })
 
+afterEach(() => {
+  vi.restoreAllMocks()
+  server.resetHandlers()
+})
+
+afterAll(() => server.close())
+
 const options = [
   {
     value: 'cli04v2l0000008mq5pwx7w5j',
