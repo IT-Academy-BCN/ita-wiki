@@ -25,6 +25,7 @@ const meta: Meta<typeof Dropdown> = {
       control: { type: 'select' },
       options: ['small', 'normal', 'large'],
     },
+    disabled: { control: 'boolean' },
   },
 }
 
@@ -235,6 +236,24 @@ export const WithSizeLarge: DropdownStory = {
       },
     ],
     $size: 'large',
+  },
+  render: (args) => <Dropdown {...args} />,
+}
+
+export const DisabledDropdown: DropdownStory = {
+  args: {
+    placeholder: 'Disabled dropdown',
+    options: [
+      {
+        id: '1',
+        name: 'Option 1',
+      },
+      {
+        id: '2',
+        name: 'Option 2',
+      },
+    ],
+    disabled: true,
   },
   render: (args) => <Dropdown {...args} />,
 }
