@@ -45,9 +45,10 @@ describe('useUpdateResource hook', () => {
     expect(result.current.updateResource).toBeDefined()
     expect(result.current.isLoading).toBe(false)
     expect(result.current.isSuccess).toBe(false)
+    expect(result.current.responseError).toBe('')
   })
 
-  it.skip('should call updateResourceFetcher on resource update', async () => {
+  it('should call updateResourceFetcher on resource update', async () => {
     const { result } = renderHook(() => useUpdateResource(), {
       wrapper: ({ children }) => (
         <QueryClientProvider client={queryClient}>
@@ -57,7 +58,7 @@ describe('useUpdateResource hook', () => {
     })
 
     act(() => {
-      result.current.updateResource.mutateAsync({
+      result.current.updateResource.mutate({
         title: 'updatedTitle',
         description: 'updatedDescription',
         url: 'updatedUrl',
@@ -72,6 +73,7 @@ describe('useUpdateResource hook', () => {
       expect(result.current.updateResource).toBeTruthy()
       expect(result.current.updateResource.isLoading).toBe(false)
       expect(result.current.updateResource.isSuccess).toBe(true)
+      expect(result.current.responseError).toBe('')
     })
   })
 })

@@ -7,6 +7,7 @@ import {
   SelectGroup,
   Spinner,
   TextareaGroup,
+  ValidationMessage,
   colors,
   dimensions,
 } from '@itacademy/ui'
@@ -20,21 +21,25 @@ import { useTranslation } from 'react-i18next'
 import { useCreateResource, useUpdateResource } from '../../hooks'
 
 type TButton = HTMLAttributes<HTMLParagraphElement> & {
-  backgroundColor?: string
+  $backgroundColor?: string
   padding?: string
 }
 
 const FormStyled = styled.form``
 
+const ErrorStyled = styled(FlexBox)`
+  margin-bottom: ${dimensions.spacing.base};
+`
+
 const ButtonStyled = styled(Button)<TButton>`
   margin: ${dimensions.spacing.none};
-  background-color: ${({ backgroundColor }) => backgroundColor};
-  border: 2px solid ${({ backgroundColor }) => backgroundColor};
+  background-color: ${({ $backgroundColor }) => $backgroundColor};
+  border: 2px solid ${({ $backgroundColor }) => $backgroundColor};
   padding: ${({ padding }) => padding};
   &:hover,
   &:disabled {
-    background-color: ${({ backgroundColor }) => backgroundColor};
-    border: 2px solid ${({ backgroundColor }) => backgroundColor};
+    background-color: ${({ $backgroundColor }) => $backgroundColor};
+    border: 2px solid ${({ $backgroundColor }) => $backgroundColor};
   }
 `
 
@@ -53,7 +58,7 @@ const ResourceFormSchema = z.object({
     .min(1, { message: 'Este campo es obligatorio' }),
   description: z
     .string({ required_error: 'Este campo es obligatorio' })
-    .min(1, { message: 'Este campo es obligatorio' }),
+    .min(3, { message: 'Este campo es obligatorio' }),
   url: z
     .string({ required_error: 'Este campo es obligatorio' })
     .url({ message: 'La URL proporcionada no es válida' }),
@@ -65,8 +70,13 @@ const ResourceFormSchema = z.object({
     .optional()
     .refine((val) => val !== '', 'Debe seleccionar un tema válido'),
   resourceType: z
-    .union([z.string().min(1, { message: 'Debe seleccionar una opción válida' }), z.null()])
-    .refine(val => val !== null, { message: 'Debe seleccionar una opción válida' }),
+    .union([
+      z.string().min(1, { message: 'Debe seleccionar una opción válida' }),
+      z.null(),
+    ])
+    .refine((val) => val !== null, {
+      message: 'Debe seleccionar una opción válida',
+    }),
 })
 
 export type TInitialValues = Omit<
@@ -124,17 +134,21 @@ export const ResourceForm: FC<TResourceForm> = ({
   const {
     isLoading: isCreateLoading,
     isSuccess: isCreateSuccess,
+    responseError: responseCreateError,
     createResource,
   } = useCreateResource()
+
   const {
     isLoading: isUpdateLoading,
     isSuccess: isUpdateSuccess,
+    responseError: responseUpdateError,
     updateResource,
   } = useUpdateResource()
 
   const create = handleSubmit(async (data) => {
     const { title, description, url, topics, resourceType } = data
-    await createResource.mutateAsync({
+
+    createResource.mutate({
       title,
       description,
       url,
@@ -154,19 +168,22 @@ export const ResourceForm: FC<TResourceForm> = ({
       topicId: topicId ?? initialValues?.topicId,
       resourceType,
     }
-    await updateResource.mutateAsync(updatedData)
+    updateResource.mutate(updatedData)
   })
 
   const handleTopicChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const selectedTopicId = event.target.value
     const selectedTopic = selectOptions.find(
-      (option) => option.label === selectedTopicId
+      (option) => option.id === selectedTopicId
     )
-    if (selectedTopic) {
-      setValue('topics', selectedTopic.label)
-      setValue('topicId', selectedTopic.value)
+    if (selectedTopic && selectedTopic.id) {
+      setValue('topics', selectedTopic.id, {
+        shouldValidate: true,
+      })
+      setValue('topicId', selectedTopic.id)
     }
   }
+
   const initialTopicLabel = selectOptions.find(
     (option) => option.value === initialValues?.topicId
   )?.label
@@ -176,6 +193,14 @@ export const ResourceForm: FC<TResourceForm> = ({
       onSubmit={initialValues ? update : create}
       data-testid="resource-form"
     >
+      {responseCreateError || responseUpdateError ? (
+        <ErrorStyled data-testid="error-message">
+          <ValidationMessage
+            color="error"
+            text={t(`${responseCreateError || responseUpdateError}`)}
+          />
+        </ErrorStyled>
+      ) : null}
       <InputGroup
         hiddenLabel
         id="title"
@@ -196,7 +221,9 @@ export const ResourceForm: FC<TResourceForm> = ({
         placeholder={t('Descripción')}
         {...register('description')}
         error={errors.description && true}
-        validationMessage={errors.description && t(`${errors.description?.message}`)}
+        validationMessage={
+          errors.description && t(`${errors.description?.message}`)
+        }
         validationType="error"
       />
       <InputGroup
@@ -237,12 +264,14 @@ export const ResourceForm: FC<TResourceForm> = ({
         data-testid="resourceType"
         inputName="resourceType"
         error={errors.resourceType && true}
-        errorMessage={errors.resourceType && t(`${errors.resourceType?.message}`)}
+        errorMessage={
+          errors.resourceType && t(`${errors.resourceType?.message}`)
+        }
       />
       <ButtonContainerStyled align="stretch" gap={dimensions.spacing.xs}>
         {isCreateSuccess || isUpdateSuccess ? (
           <ButtonStyled
-            backgroundColor={colors.success}
+            $backgroundColor={colors.success}
             padding={dimensions.spacing.xs}
             disabled
           >

@@ -121,6 +121,7 @@
   "Error 404 - No se puede guardar": "Error al guardar en la base de datos. Por favor, inténtalo de nuevo y si el error persiste, contacta con el administrador.",
   "Error 404 - Usuario no encontrado.": "Usuario no encontrado.",
   "Error 405 - Id de usuario inválido": "Identificador de usuario no válido.",
+  "Error 409 - El recurso ya existe": "Este recurso ya existe. Por favor, introduzca un recurso diferente.",
   "Error 422 - Contraseña incorrecta": "La contraseña es incorrecta.",
   "Error 500 - Error bbdd": "Error en la base de datos. Por favor, inténtalo más tarde.",
   "Error 503 - Servicio no disponible": "El servicio no está disponible en este momento. Por favor, inténtalo más tarde.",
