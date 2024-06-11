@@ -176,7 +176,7 @@ export const ResourceForm: FC<TResourceForm> = ({
     const selectedTopic = selectOptions.find(
       (option) => option.id === selectedTopicId
     )
-    if (selectedTopic && selectedTopic.id) {
+    if (selectedTopic?.id) {
       setValue('topics', selectedTopic.id, {
         shouldValidate: true,
       })
