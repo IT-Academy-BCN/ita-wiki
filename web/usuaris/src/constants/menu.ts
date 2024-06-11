@@ -1,13 +1,13 @@
 import { paths } from './paths'
 
-export type TSection = {
+export type TMenu = {
   id: number
   title: string
   icon: string
   path: string
 }
 
-export const sections: TSection[] = [
+export const menu: TMenu[] = [
   {
     id: 1,
     title: 'Usuarios',
