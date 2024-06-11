@@ -8,17 +8,16 @@ import { server } from '../../__mocks__/server'
 
 const reload = vi.fn(() => reloadPage)
 
-vi.mock('../utils/navigation', async () => {
-  const actual: Record<number, unknown> = await vi.importActual(
-    '../../utils/navigation'
-  )
-  return {
-    ...actual,
-    reloadPage: reload,
-  }
-})
-
 beforeEach(() => {
+  vi.mock('../utils/navigation', async () => {
+    const actual: Record<number, unknown> = await vi.importActual(
+      '../../utils/navigation'
+    )
+    return {
+      ...actual,
+      reloadPage: reload,
+    }
+  })
   vi.mock('react-router-dom', async () => {
     const actual: Record<number, unknown> = await vi.importActual(
       'react-router-dom'
@@ -28,6 +27,13 @@ beforeEach(() => {
       useLocation: vi.fn(),
     }
   })
+  vi.mocked(useLocation).mockReturnValue({
+    pathname: '',
+    search: '',
+    hash: '',
+    key: '',
+    state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
+  }) as unknown as Location
 })
 
 afterEach(() => {
@@ -78,13 +84,6 @@ const resourceId = 'resource-id'
 
 describe('ResourceForm', () => {
   it('renders correctly', () => {
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
     render(<ResourceForm selectOptions={options} />)
 
     expect(screen.getByLabelText(/títol/i)).toBeInTheDocument()
@@ -97,14 +96,6 @@ describe('ResourceForm', () => {
   })
 
   it('renders correctly on edit resource with initial values', () => {
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
-
     render(
       <ResourceForm selectOptions={options} initialValues={initialValues} />
     )
@@ -129,13 +120,6 @@ describe('ResourceForm', () => {
   })
 
   it('should correctly submit the form when all fields requested are complete', async () => {
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
     render(<ResourceForm selectOptions={options} />)
 
     const titleInput = screen.getByLabelText(/títol/i) as HTMLInputElement
@@ -180,16 +164,7 @@ describe('ResourceForm', () => {
   })
 
   it('should show an error if the POST request fails', async () => {
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
-
     server.use(...errorHandlers)
-
     render(<ResourceForm selectOptions={options} />)
 
     fireEvent.change(screen.getByLabelText(/títol/i), {
@@ -223,16 +198,7 @@ describe('ResourceForm', () => {
   })
 
   it('should show an error if the PATCH request fails', async () => {
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
-
     server.use(...errorHandlers)
-
     render(
       <ResourceForm
         selectOptions={options}
@@ -261,14 +227,6 @@ describe('ResourceForm', () => {
   })
 
   it('should submit the form for updating a resource when initialValues is provided', async () => {
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
-
     render(
       <ResourceForm
         selectOptions={options}
@@ -301,14 +259,6 @@ describe('ResourceForm', () => {
   })
 
   it('should show error message when updating a resource with invalid input', async () => {
-    vi.mocked(useLocation).mockReturnValue({
-      pathname: '',
-      search: '',
-      hash: '',
-      key: '',
-      state: { name: 'React', id: 'cln1er1vn000008mk79bs02c5' },
-    }) as unknown as Location
-
     render(
       <ResourceForm
         selectOptions={options}
