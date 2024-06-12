@@ -4,7 +4,9 @@ import styled from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { icons } from '../../assets/icons'
-import { paths, sections } from '../../constants'
+import { paths, menu, TMenu } from '../../constants'
+import { useAuth } from '../../context/AuthProvider'
+import { filterMenuByUserRole } from '../../helpers/filters'
 
 const SideMenuStyled = styled(FlexBox)`
   height: 100%;
@@ -12,17 +14,17 @@ const SideMenuStyled = styled(FlexBox)`
   margin-top: ${dimensions.spacing.lg};
 `
 
-const LinkSection = styled(Link)`
+const MenuOptions = styled(Link)`
   text-decoration: none;
   margin: ${dimensions.spacing.none};
   padding: ${dimensions.spacing.xxxs} ${dimensions.spacing.none};
 `
 
-type TSectionStyled = {
+type TMenuOptionStyled = {
   active?: boolean
 }
 
-const SectionStyled = styled.span<TSectionStyled>`
+const MenuOptionStyled = styled.span<TMenuOptionStyled>`
   color: ${({ active }) => (active ? colors.black.black3 : colors.gray.gray3)};
   font-size: ${font.xs};
   font-weight: ${font.medium};
@@ -56,43 +58,57 @@ const LogoImage = styled.img`
   max-width: 7.25rem;
   height: auto;
 `
-
-export const SideMenu: FC = () => {
+const MenuOptionsComponent: FC<{ item: TMenu; pathname: string }> = ({
+  item,
+  pathname,
+}) => {
   const { t } = useTranslation()
+  return (
+    <MenuOptions
+      to={item.path}
+      tabIndex={0}
+      key={item.id}
+      data-testid={`menu-link-${item.title.toLowerCase()}`}
+    >
+      <FlexBox direction="row" gap={dimensions.spacing.xxxs}>
+        <ImgStyled
+          data-testid={`menu-icon-${item.icon}`}
+          name={item.icon}
+          color={`${colors.black.black3}`}
+        />
+        <MenuOptionStyled
+          active={pathname === item.path}
+          data-testid={`menu-title-${item.title.toLowerCase()}`}
+        >
+          {t(item.title)}
+        </MenuOptionStyled>
+      </FlexBox>
+    </MenuOptions>
+  )
+}
+export const SideMenu: FC = () => {
   const { pathname } = useLocation()
+  const { user } = useAuth()
 
   return (
     <SideMenuStyled
       justify="space-between"
       align="start"
-      data-testid={`test-path-${pathname}`}
+      data-testid={`menu-path-${pathname}`}
     >
       <Link to={paths.home}>
         <LogoImage src={icons.itLogo} alt="IT Academy" />
       </Link>
       <FlexBox align="start" gap={dimensions.spacing.sm}>
-        {sections.map((item) => (
-          <LinkSection
-            to={item.path}
-            tabIndex={0}
-            key={item.id}
-            data-testid={`test-link-${item.title}`}
-          >
-            <FlexBox direction="row" gap={dimensions.spacing.xxxs}>
-              <ImgStyled
-                data-testid={`test-icon-${item.icon}`}
-                name={item.icon}
-                color={`${colors.black.black3}`}
-              />
-              <SectionStyled
-                active={pathname === item.path}
-                data-testid={`test-title-${item.title}`}
-              >
-                {t(item.title)}
-              </SectionStyled>
-            </FlexBox>
-          </LinkSection>
-        ))}
+        {menu
+          .filter((item) => filterMenuByUserRole(user, item))
+          .map((item) => (
+            <MenuOptionsComponent
+              key={item.id}
+              item={item}
+              pathname={pathname}
+            />
+          ))}
       </FlexBox>
       <div style={{ height: '79px' }} />
     </SideMenuStyled>
