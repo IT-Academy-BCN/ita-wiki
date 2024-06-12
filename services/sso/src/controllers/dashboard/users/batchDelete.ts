@@ -12,8 +12,7 @@ export const dashboardBatchDelete: Middleware = async (ctx: Context) => {
   `
   const verifyResult = await client.query(verifyQuery, [ids])
   const existingIds = verifyResult.rows.map((row) => row.id)
-  const notFoundIds = ids.filter((id: any) => !existingIds.includes(id))
-  if (notFoundIds.length === ids.length) {
+  if (existingIds.length === 0) {
     throw new NotFoundError('No user found')
   }
 
