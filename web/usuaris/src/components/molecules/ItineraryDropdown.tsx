@@ -12,13 +12,20 @@ import { useTranslation } from 'react-i18next'
 import { useGetItineraries } from '../../hooks'
 import { type TItinerary } from '../../types'
 import { icons } from '../../assets/icons'
+import { useAuth } from '../../context/AuthProvider'
 
 const StyledDropdown = styled(Dropdown)`
+  && div {
+    cursor: ${({ disabled }) => (disabled && 'not-allowed') || 'pointer'};
+  }
+  
   && button {
     width: 220px;
     padding: ${dimensions.spacing.xxs};
     font-size: ${font.xs};
     font-weight: 500;
+    opacity: ${({ disabled }) => (disabled && '0.6') || '1'};
+    pointer-events: ${({ disabled }) => (disabled && 'none') || 'auto'};
 
     &:hover {
       background-color: ${colors.primary};
@@ -57,6 +64,7 @@ export const ItineraryDropdown: FC<TItineraryDropdown> = ({
 
   const [itinerariesList, setItinerariesList] = useState<TItineraryItem[]>([])
   const { isLoading, error, data } = useGetItineraries()
+  const { user } = useAuth()
 
   useEffect(() => {
     const newData = data?.map((cat: TItinerary) => ({
@@ -92,6 +100,7 @@ export const ItineraryDropdown: FC<TItineraryDropdown> = ({
       closeText={t('Cerrar')}
       deselectText={t('Deseleccionar')}
       data-testid="itinerary-dropdown"
+      disabled={user?.role === 'MENTOR'}
     />
   ) : null
 }
