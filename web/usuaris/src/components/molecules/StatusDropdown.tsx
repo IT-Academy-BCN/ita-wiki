@@ -9,20 +9,13 @@ import {
 } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
 import { UserStatus } from '../../types'
-import { useAuth } from '../../context/AuthProvider'
 
 const StyledDropdown = styled(Dropdown)`
-  && div {
-    cursor: ${({ disabled }) => (disabled && 'not-allowed') || 'pointer'};
-  }
-  
   && button {
     width: 210px;
     padding: ${dimensions.spacing.xxs};
     font-size: ${font.xs};
     font-weight: 500;
-    opacity: ${({ disabled }) => (disabled && '0.6') || '1'};
-    pointer-events: ${({ disabled }) => (disabled && 'none') || 'auto'};
 
     &:hover {
       background-color: ${colors.primary};
@@ -57,7 +50,6 @@ export const StatusDropdown: FC<TStatusDropdown> = ({ handleStatus }) => {
   const { t } = useTranslation()
 
   const [statusList, setStatusList] = useState<TStatusItem[]>([])
-  const { user } = useAuth()
 
   useEffect(() => {
     const statusDropdownList = Object.values(UserStatus).map((status) => ({
@@ -84,7 +76,6 @@ export const StatusDropdown: FC<TStatusDropdown> = ({ handleStatus }) => {
       closeText={t('Cerrar')}
       deselectText={t('Deseleccionar')}
       data-testid="status-dropdown"
-      disabled={user?.role === 'MENTOR'}
     />
   ) : null
 }

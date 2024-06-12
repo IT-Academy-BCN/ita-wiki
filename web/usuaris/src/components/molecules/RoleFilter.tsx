@@ -66,9 +66,9 @@ export const RoleFilter: FC<TRoleFilter> = ({ handleRole }) => {
   return roles && roles.length > 0 ? (
     <StyledDropdown
       options={roles}
-      placeholder={t('Rol')}
+      placeholder={user?.role === UserRole.MENTOR ? t(UserRole.REGISTERED) : t('Rol')}
       onValueChange={handleSelectedValue}
-      disabled={user?.role === 'MENTOR'}
+      disabled={user?.role === UserRole.MENTOR}
     />
   ) : null
 }
