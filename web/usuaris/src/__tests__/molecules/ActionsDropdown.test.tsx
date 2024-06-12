@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { fireEvent, render, screen } from '../test-utils'
+import { fireEvent, render, screen, within } from '../test-utils'
 import { ActionsDropdown } from '../../components/molecules'
 import { UserStatus } from '../../types'
 
@@ -21,7 +21,9 @@ describe('ActionsDropdown', () => {
     const actionsDropdown = screen.getByTestId('actions-dropdown')
 
     expect(actionsDropdown).toHaveTextContent(/accions/i)
-    expect(actionsDropdown).toHaveAttribute('disabled')
+    expect(
+      within(actionsDropdown).getByTestId('dropdown-header')
+    ).toBeDisabled()
     expect(screen.getByTitle(/obre/i)).toBeInTheDocument()
   })
 

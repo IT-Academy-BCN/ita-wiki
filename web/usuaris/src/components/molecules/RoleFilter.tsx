@@ -13,22 +13,12 @@ import { TRole, UserRole } from '../../types'
 import { paths, roles } from '../../constants'
 import { useAuth } from '../../context/AuthProvider'
 
-type TStyledDropdown = {
-  disabled?: boolean
-}
-
-const StyledDropdown = styled(Dropdown)<TStyledDropdown>`
-  && div {
-    cursor: ${({ disabled }) => (disabled && 'not-allowed') || 'pointer'};
-  }
-
+const StyledDropdown = styled(Dropdown)`
   && button {
     width: 210px;
     padding: ${dimensions.spacing.xxs};
     font-size: ${font.xs};
     font-weight: 500;
-    opacity: ${({ disabled }) => (disabled && '0.6') || '1'};
-    pointer-events: ${({ disabled }) => (disabled && 'none') || 'auto'};
 
     &:hover {
       background-color: ${colors.primary};
