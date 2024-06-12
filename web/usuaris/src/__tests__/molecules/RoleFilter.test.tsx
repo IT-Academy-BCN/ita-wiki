@@ -48,5 +48,4 @@ describe('RolesFilter', () => {
       slug: UserRole.ADMIN,
     })
   })
-
 })

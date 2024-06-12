@@ -122,7 +122,7 @@ describe('SideMenu', () => {
     expect(mentorsItem).toBeInTheDocument()
   })
 
-  it('does not render Mentors option for mentor user', async () => {
+  it('does not render Mentors option for mentor user', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         dni: '12345678A',
@@ -132,9 +132,7 @@ describe('SideMenu', () => {
     } as TAuthContext)
     render(<SideMenu />)
 
-    await waitFor(() => {
-      const mentorsMenuOption = screen.queryByTestId('menu-title-mentores')
-      expect(mentorsMenuOption).not.toBeInTheDocument()
-    })
+    const mentorsItem = screen.queryByTestId('menu-title-mentores')
+    expect(mentorsItem).not.toBeInTheDocument()
   })
 })
