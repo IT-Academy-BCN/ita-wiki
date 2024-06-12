@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.30.1] - 2024-06-12
+
+### Added
+
+- Add user role to `GET dashboard/users/me` endpoint response
+
 ## [1.30.0] - 2024-05-30
 
 ### Added
@@ -20,7 +26,6 @@ All notable changes to this project will be documented in this file.
 
 - Fixed `GET /users` endpoint to return only active users.
 
-
 ## [1.28.0] - 2024-05-15
 
 ### Added
@@ -28,6 +33,7 @@ All notable changes to this project will be documented in this file.
 - `/refresh` endpoint for secure token renewal using Bearer tokens.
 
 ### Changed
+
 - Enhanced token handling to manage expired access tokens and refresh them using valid refresh tokens.
 
 ## [1.27.1] - 2024-05-15
