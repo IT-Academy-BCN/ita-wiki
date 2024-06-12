@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.22.2] - 2024-06-12
+
+### Fixed
+
+- Fixed styles to match ITA-Wiki layout
+
 ## [0.22.1] - 2024-06-10
 
 ### Changed
