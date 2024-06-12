@@ -5,12 +5,20 @@ import { checkRoleAccess } from '../utils/checkRoleAccess'
 
 type Roles = keyof typeof UserRole
 export const authorize =
-  (requestedRole: Roles) => async (ctx: Koa.Context, next: Koa.Next) => {
+  (requestedRole: Roles[]) => async (ctx: Koa.Context, next: Koa.Next) => {
     const { role } = ctx.state.user as Pick<User, 'id' | 'role'>
     if (!role) {
       throw new ForbiddenError()
     }
-    const roleValue = UserRole[requestedRole]
-    checkRoleAccess(roleValue, role)
+
+    const roleValues = requestedRole.map((r) => UserRole[r])
+    const hasAccess = roleValues.some((roleValue) =>
+      checkRoleAccess(roleValue, role)
+    )
+
+    if (!hasAccess) {
+      throw new ForbiddenError()
+    }
+
     await next()
   }

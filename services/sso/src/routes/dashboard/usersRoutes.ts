@@ -22,19 +22,19 @@ dashboardUsersRoutes.prefix(pathRoot.v1.dashboard.users)
 dashboardUsersRoutes.get(
   '/',
   authenticate,
-  authorize('MENTOR'),
+  authorize(['MENTOR']),
   parse(z.object({ query: dashboardUsersListQuerySchema }), {
     useQsParser: true,
     useQueryString: true,
   }),
   dashboardListUsers
 )
-dashboardUsersRoutes.get('/me', authenticate, authorize('ADMIN'), getMe)
+dashboardUsersRoutes.get('/me', authenticate, authorize(['ADMIN']), getMe)
 
 dashboardUsersRoutes.patch(
   '/:id',
   authenticate,
-  authorize('ADMIN'),
+  authorize(['ADMIN']),
   validate(
     z.object({
       params: z.object({ id: userIdSchema }),
@@ -48,7 +48,7 @@ dashboardUsersRoutes.delete(
   '/',
   validate(z.object({ body: z.object({ ids: userIdSchema.array() }) })),
   authenticate,
-  authorize('ADMIN'),
+  authorize(['ADMIN']),
   dashboardBatchDelete
 )
 
@@ -56,14 +56,14 @@ dashboardUsersRoutes.delete(
   '/:id',
   validate(z.object({ params: z.object({ id: userIdSchema }) })),
   authenticate,
-  authorize('ADMIN'),
+  authorize(['ADMIN']),
   dashboardDeleteUser
 )
 
 dashboardUsersRoutes.post(
   '/status',
   authenticate,
-  authorize('ADMIN'),
+  authorize(['ADMIN', 'MENTOR']),
   validate(z.object({ body: dashboardUsersUpdateStatusSchema })),
   dashboardUpdateStatusUsers
 )

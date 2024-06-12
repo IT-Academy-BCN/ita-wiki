@@ -94,4 +94,27 @@ describe('Testing POST dashboard/users/status endpoint', () => {
     )
     expect(result.rows[0].status).toBe(UserStatus.ACTIVE)
   })
+
+  it('should allow access for ADMIN user', async () => {
+    const reqBody = {
+      ids: [testUserData.admin.id],
+      status: UserStatus.ACTIVE,
+    }
+    const adminResponse = await supertest(server)
+      .post(route)
+      .set('Cookie', [authAdminToken])
+      .send(reqBody)
+    expect(adminResponse.status).toBe(200)
+  })
+  it('should allow access for MENTOR user', async () => {
+    const reqBody = {
+      ids: [testUserData.mentor.id],
+      status: UserStatus.ACTIVE,
+    }
+    const mentorResponse = await supertest(server)
+      .post(route)
+      .set('Cookie', [authAdminToken])
+      .send(reqBody)
+    expect(mentorResponse.status).toBe(200)
+  })
 })
