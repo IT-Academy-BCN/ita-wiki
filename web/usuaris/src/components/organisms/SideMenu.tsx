@@ -4,10 +4,9 @@ import styled from 'styled-components'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { icons } from '../../assets/icons'
-import { paths } from '../../constants'
+import { paths, menu, TMenu } from '../../constants'
 import { useAuth } from '../../context/AuthProvider'
 import { filterMenuByUserRole } from '../../helpers/filters'
-import { TMenu, menu } from '../../constants/menu'
 
 const SideMenuStyled = styled(FlexBox)`
   height: 100%;
