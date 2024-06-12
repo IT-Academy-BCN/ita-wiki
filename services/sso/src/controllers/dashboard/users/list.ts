@@ -1,9 +1,15 @@
 import { Context, Middleware } from 'koa'
 import { client } from '../../../db/client'
 import { queryBuilder } from '../../../utils/queryBuilder'
+import { User, UserRole } from '../../../schemas'
 
 export const dashboardListUsers: Middleware = async (ctx: Context) => {
-  const { query, queryParams } = queryBuilder(ctx.state.query)
+  const { role, id } = ctx.state.user as Pick<User, 'id' | 'role'>
+  let mentorUserId: string | undefined
+  if (role === UserRole.MENTOR) {
+    mentorUserId = id
+  }
+  const { query, queryParams } = queryBuilder(ctx.state.query, mentorUserId)
 
   const queryResult = await client.query(query, queryParams)
 

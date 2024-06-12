@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.22.1] - 2024-06-10
+
+### Changed
+
+- Changed disabled styles for disabled prop in Dropdowns
+
+## [0.22.0] - 2024-06-04
+
+### Added
+
+- Added Mentors page
+- Added Dashboard component
+
 ## [0.21.1] - 2024-05-22
 
 ### Changed

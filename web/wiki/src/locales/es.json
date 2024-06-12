@@ -136,5 +136,11 @@
 
   "Mostrando": "Mostrando",
   "resultados para": "resultados para",
-  "Nuevo Recurso": "Nuevo recurso"
+  "Nuevo Recurso": "Nuevo recurso",
+
+  "Este campo es obligatorio": "Este campo es obligatorio",
+  "La URL proporcionada no es válida": "La URL proporcionada no es válida",
+  "Debe seleccionar un tema": "Debe seleccionar un tema",
+  "Debe seleccionar un tema válido": "Debe seleccionar un tema válido",
+  "Debe seleccionar una opción válida": "Debe seleccionar una opción válida"
 }

@@ -2,11 +2,17 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
-## [1.29.1] - 2024-06-03
+## [1.30.1] - 2024-06-12
 
 ### Changed
 
 - Error handler of `batchDelete` to be idempotent.
+
+## [1.30.0] - 2024-05-30
+
+### Added
+
+- `GET /dashboard/users` endpoint to allow mentors to access the list of users filtered by the same itinerary as the logged-in mentor.
 
 ## [1.29.0] - 2024-05-30
 
@@ -19,7 +25,6 @@ All notable changes to this project will be documented in this file.
 ### Fix
 
 - Fixed `GET /users` endpoint to return only active users.
-
 
 ## [1.28.0] - 2024-05-15
 

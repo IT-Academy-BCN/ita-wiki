@@ -86,4 +86,17 @@ describe('Testing query builder function', () => {
     expect(resultWhere).toBe(expectedWhere)
     expect(resultQuery.queryParams).toEqual(expectedParams)
   })
+
+  it('returns a expected query calling the queryBuilder function with mentorUserId', async () => {
+    const searchValues = {
+      name: testName,
+    }
+    const mentorUserId = 'mentor-id-123'
+    const expectedWhere = `u.itinerary_id = (SELECT itinerary_id FROM "user" WHERE id = $1) AND (u.name ILIKE $2)`
+    const expectedParams = ['mentor-id-123', '%testing%']
+    const resultQuery = queryBuilder(searchValues, mentorUserId)
+    const resultWhere = extractWhereClause(resultQuery.query)
+    expect(resultWhere).toBe(expectedWhere)
+    expect(resultQuery.queryParams).toEqual(expectedParams)
+  })
 })

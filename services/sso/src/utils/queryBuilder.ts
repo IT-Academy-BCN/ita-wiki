@@ -9,7 +9,7 @@ import {
 } from '../schemas/users/dashboardUsersListQuerySchema'
 import { userNameSchema, userRoleSchema } from '../schemas/users/userSchema'
 
-export const queryBuilder = (ctx: Context) => {
+export const queryBuilder = (ctx: Context, mentorUserId?: string) => {
   const { itinerarySlug, status, startDate, endDate, name, dni, role } = ctx
   let query = `
   SELECT
@@ -28,6 +28,14 @@ export const queryBuilder = (ctx: Context) => {
   const queryParams = []
   const conditions = []
   const orConditions = []
+
+  if (mentorUserId) {
+    queryParams.push(mentorUserId)
+    conditions.push(
+      `u.itinerary_id = (SELECT itinerary_id FROM "user" WHERE id = $${queryParams.length})`
+    )
+  }
+
   if (name) {
     const parsedName = userNameSchema.parse(name)
     orConditions.push(`u.name ILIKE $${queryParams.length + 1}`)

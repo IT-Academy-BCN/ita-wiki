@@ -6,11 +6,12 @@ import React, {
   useState,
 } from 'react'
 import { urls } from '../constants'
+import { UserRole } from '../types'
 
 export type TUser = {
   dni: string
   email: string
-  role: 'ADMIN'
+  role: UserRole
 } | null
 
 export type TAuthContext = {
