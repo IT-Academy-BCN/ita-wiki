@@ -38,7 +38,7 @@ export const AuthProvider: React.FC<
 > = ({ children }) => {
   const [user, setUser] = useState<TUser>(null)
   const [error, setError] = useState('')
-
+  
   const value = useMemo(
     () => ({ children, user, setUser, error, setError }),
     [children, user, error]
