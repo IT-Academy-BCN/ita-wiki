@@ -2,7 +2,6 @@ import z from 'zod'
 import { pathRoot } from '../../../../routes/routes'
 import { cookieAuth } from '../../../components/cookieAuth'
 import {
-  deletedUsersResponse,
   invalidTokenResponse,
   userNotFoundResponse,
 } from '../../../components/responses'
@@ -31,7 +30,6 @@ registry.registerPath({
     },
     401: invalidTokenResponse,
     404: userNotFoundResponse,
-    410: deletedUsersResponse,
     500: {
       description: 'Other error',
       content: {
