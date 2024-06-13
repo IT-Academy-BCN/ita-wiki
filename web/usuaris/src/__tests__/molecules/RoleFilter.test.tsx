@@ -10,16 +10,16 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
+beforeEach(() => {
+  render(<RoleFilter handleRole={mockHandleClick} />)
+})
+
 describe('RolesFilter', () => {
   it('renders correctly', () => {
-    render(<RoleFilter handleRole={mockHandleClick} />)
-
     waitFor(() => expect(screen.getByText(/rol/i)).toBeInTheDocument())
   })
 
   it('renders RoleList options when dropdown is clicked', async () => {
-    render(<RoleFilter handleRole={mockHandleClick} />)
-
     const dropdown = screen.getByTestId('dropdown-header')
 
     fireEvent.click(dropdown)
@@ -32,8 +32,6 @@ describe('RolesFilter', () => {
   })
 
   it('calls handleRole with the correct role when an option is clicked', () => {
-    render(<RoleFilter handleRole={mockHandleClick} />)
-
     const dropdown = screen.getByTestId('dropdown-header')
 
     fireEvent.click(dropdown)

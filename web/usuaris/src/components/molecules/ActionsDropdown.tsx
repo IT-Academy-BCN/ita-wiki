@@ -8,7 +8,7 @@ import {
   type TDropdownOption,
 } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
-import { UserStatus } from '../../types'
+import { UserRole, UserStatus } from '../../types'
 import { useAuth } from '../../context/AuthProvider'
 
 const StyledDropdown = styled(Dropdown)`
@@ -49,36 +49,36 @@ export const ActionsDropdown: FC<TActionsDropdown> = ({
   useEffect(() => {
     switch (selectedStatus) {
       case UserStatus.ACTIVE:
-        if(user?.role === 'ADMIN'){
+        if (user?.role === UserRole.ADMIN) {
           setActionsList([
             { id: UserStatus.BLOCKED, name: t('Bloquear'), icon: 'block' },
             { id: 'DELETE', name: t('Eliminar'), icon: 'delete_forever' },
           ])
-        } else if(user?.role === 'MENTOR') {
+        } else if (user?.role === UserRole.MENTOR) {
           setActionsList([
             { id: UserStatus.BLOCKED, name: t('Bloquear'), icon: 'block' },
           ])
         }
         break
       case UserStatus.PENDING:
-        if(user?.role === 'ADMIN'){
+        if (user?.role === UserRole.ADMIN) {
           setActionsList([
             { id: UserStatus.ACTIVE, name: t('Aceptar'), icon: 'task_alt' },
             { id: 'DELETE', name: t('Eliminar'), icon: 'delete_forever' },
           ])
-        } else if(user?.role === 'MENTOR') {
+        } else if (user?.role === UserRole.MENTOR) {
           setActionsList([
             { id: UserStatus.ACTIVE, name: t('Aceptar'), icon: 'task_alt' },
           ])
         }
         break
       case UserStatus.BLOCKED:
-        if(user?.role === 'ADMIN'){
+        if (user?.role === UserRole.ADMIN) {
           setActionsList([
             { id: UserStatus.ACTIVE, name: t('Desbloquear'), icon: 'task_alt' },
             { id: 'DELETE', name: t('Eliminar'), icon: 'delete_forever' },
           ])
-        } else if(user?.role === 'MENTOR') {
+        } else if (user?.role === UserRole.MENTOR) {
           setActionsList([
             { id: UserStatus.ACTIVE, name: t('Desbloquear'), icon: 'task_alt' },
           ])

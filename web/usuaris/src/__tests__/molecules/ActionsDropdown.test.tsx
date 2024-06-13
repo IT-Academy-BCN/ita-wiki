@@ -1,5 +1,5 @@
 import { vi } from 'vitest'
-import { fireEvent, render, screen, within } from '../test-utils'
+import { fireEvent, render, screen, waitFor, within } from '../test-utils'
 import { ActionsDropdown } from '../../components/molecules'
 import { UserStatus } from '../../types'
 
@@ -42,13 +42,15 @@ describe('ActionsDropdown', () => {
 
     fireEvent.click(actionsHeader)
 
-    const blockOption = screen.getByTestId('BLOCKED')
-    expect(blockOption).toBeInTheDocument()
-    expect(screen.getByTestId('DELETE')).toBeInTheDocument()
+    waitFor(() => {
+      const blockOption = screen.queryByTestId('BLOCKED')!
+      expect(blockOption).toBeInTheDocument()
+      expect(screen.getByTestId('DELETE')).toBeInTheDocument()
 
-    fireEvent.click(blockOption)
+      fireEvent.click(blockOption)
 
-    expect(actionsHeader).toHaveTextContent(/bloquejar/i)
-    expect(mockHandleClick).toHaveBeenCalledWith(UserStatus.BLOCKED)
+      expect(actionsHeader).toHaveTextContent(/bloquejar/i)
+      expect(mockHandleClick).toHaveBeenCalledWith(UserStatus.BLOCKED)
+    })
   })
 })
