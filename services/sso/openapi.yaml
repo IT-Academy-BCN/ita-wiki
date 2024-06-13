@@ -1057,12 +1057,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/MissingUserError"
-        "410":
-          description: User is already soft deleted.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DeletedUserError"
         "500":
           description: Other error
           content:

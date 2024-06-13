@@ -55,45 +55,66 @@ describe('Testing dashboard delete endpoint', () => {
     expect(response.status).toBe(404)
     expect(response.body.message).toBe('No user found')
   })
-  it('should fail if the provided ids does not exist', async () => {
+  it('should return 404 if the provided ids does not exist', async () => {
     const nonExistingId1 = 'ydmicpzwt2ss8zoo0o9oavax'
     const nonExistingId2 = 'q81ky22cpayhprqmn0a2slmn'
-    const ids = [nonExistingId1, userToDeleteId, nonExistingId2]
+    const ids = [nonExistingId1, nonExistingId2]
     const response = await supertest(server)
       .delete(`${route}/`)
       .set('Cookie', [authAdminToken])
       .send({ ids })
     expect(response.status).toBe(404)
-    expect(response.body.message).toBe(
-      `${nonExistingId1},${nonExistingId2} not found`
-    )
+    expect(response.body.message).toBe('No user found')
   })
-  it('should retun 410 if the provided user is already deleted', async () => {
-    let deletedAt = await client.query(
+  it('should succeed if the same data is provided twice but keeping the first deletedAt value', async () => {
+    let deletedAt1 = await client.query(
       'SELECT deleted_at FROM "user" WHERE id IN ( $1, $2 )',
       [userToDeleteId, userToBeBlockedId]
     )
-    expect(deletedAt.rows[0].deleted_at).toBe(null)
-    expect(deletedAt.rows[1].deleted_at).toBe(null)
+    expect(deletedAt1.rows[0].deleted_at).toBe(null)
+    expect(deletedAt1.rows[1].deleted_at).toBe(null)
     const ids = [userToDeleteId, userToBeBlockedId]
     const response1 = await supertest(server)
       .delete(`${route}/`)
       .set('Cookie', [authAdminToken])
       .send({ ids })
     expect(response1.status).toBe(204)
-    deletedAt = await client.query(
+    deletedAt1 = await client.query(
       'SELECT deleted_at FROM "user" WHERE id IN ( $1, $2 )',
       [userToDeleteId, userToBeBlockedId]
     )
-    expect(deletedAt.rows[0].deleted_at).toContain(Date)
-    expect(deletedAt.rows[1].deleted_at).toContain(Date)
+    expect(deletedAt1.rows[0].deleted_at).toContain(Date)
+    expect(deletedAt1.rows[1].deleted_at).toContain(Date)
     const response2 = await supertest(server)
       .delete(`${route}/`)
       .set('Cookie', [authAdminToken])
       .send({ ids })
-    expect(response2.status).toBe(410)
-    expect(response2.body.message).toBe(
-      `${userToBeBlockedId},${userToDeleteId} already deleted`
+    expect(response2.status).toBe(204)
+    const deletedAt2 = await client.query(
+      'SELECT deleted_at FROM "user" WHERE id IN ( $1, $2 )',
+      [userToDeleteId, userToBeBlockedId]
     )
+    expect(deletedAt1.rows[0].deleted_at).toEqual(deletedAt2.rows[0].deleted_at)
+    expect(deletedAt1.rows[1].deleted_at).toEqual(deletedAt2.rows[1].deleted_at)
+  })
+  it('should succeed if one of the provided ids exist', async () => {
+    let deletedAt = await client.query(
+      'SELECT deleted_at FROM "user" WHERE id IN ( $1 )',
+      [userToDeleteId]
+    )
+    expect(deletedAt.rows[0].deleted_at).toBe(null)
+    const nonExistingId1 = 'ydmicpzwt2ss8zoo0o9oavax'
+    const nonExistingId2 = 'q81ky22cpayhprqmn0a2slmn'
+    const ids = [userToDeleteId, nonExistingId1, nonExistingId2]
+    const response = await supertest(server)
+      .delete(`${route}/`)
+      .set('Cookie', [authAdminToken])
+      .send({ ids })
+    expect(response.status).toBe(204)
+    deletedAt = await client.query(
+      'SELECT deleted_at FROM "user" WHERE id IN ( $1 )',
+      [userToDeleteId]
+    )
+    expect(deletedAt.rows[0].deleted_at).toContain(Date)
   })
 })
