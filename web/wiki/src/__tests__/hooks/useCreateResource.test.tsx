@@ -57,7 +57,7 @@ describe('useCreateResource hook', () => {
     expect(result.current.createResource).toBeDefined()
     expect(result.current.isLoading).toBe(false)
     expect(result.current.isSuccess).toBe(false)
-    expect(result.current.responseError).toBe('')
+    expect(result.current.createResource.error).toBe(null)
   })
 
   it('should call createResourceFetcher on resource creation', async () => {
@@ -84,7 +84,7 @@ describe('useCreateResource hook', () => {
       expect(result.current.createResource).toBeTruthy()
       expect(result.current.createResource.isLoading).toBe(false)
       expect(result.current.createResource.isSuccess).toBe(true)
-      expect(result.current.responseError).toBe('')
+      expect(result.current.createResource.error).toBe(null)
     })
   })
 })

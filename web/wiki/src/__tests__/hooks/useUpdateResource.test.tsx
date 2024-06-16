@@ -45,7 +45,7 @@ describe('useUpdateResource hook', () => {
     expect(result.current.updateResource).toBeDefined()
     expect(result.current.isLoading).toBe(false)
     expect(result.current.isSuccess).toBe(false)
-    expect(result.current.responseError).toBe('')
+    expect(result.current.updateResource.error).toBe(null)
   })
 
   it('should call updateResourceFetcher on resource update', async () => {
@@ -73,7 +73,7 @@ describe('useUpdateResource hook', () => {
       expect(result.current.updateResource).toBeTruthy()
       expect(result.current.updateResource.isLoading).toBe(false)
       expect(result.current.updateResource.isSuccess).toBe(true)
-      expect(result.current.responseError).toBe('')
+      expect(result.current.updateResource.error).toBe(null)
     })
   })
 })

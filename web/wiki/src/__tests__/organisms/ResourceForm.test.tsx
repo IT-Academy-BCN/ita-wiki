@@ -237,21 +237,45 @@ describe('ResourceForm', () => {
     const titleInput = screen.getByLabelText(/títol/i) as HTMLInputElement
 
     fireEvent.change(titleInput, { target: { value: 'Updated Title' } })
-    expect(titleInput.value).toBe('Updated Title')
 
-    fireEvent.change(screen.getByLabelText(/descripció/i), {
+    const descriptionInput = screen.getByLabelText(
+      /descripció/i
+    ) as HTMLInputElement
+
+    fireEvent.change(descriptionInput, {
       target: { value: 'Updated Description' },
     })
 
-    fireEvent.change(screen.getByLabelText(/url/i), {
+    const urlInput = screen.getByLabelText(/url/i) as HTMLInputElement
+
+    fireEvent.change(urlInput, {
       target: { value: 'https://updated-example.com' },
     })
 
-    const temaSelect = screen.getByLabelText(/tema/i) as HTMLSelectElement
-    fireEvent.change(temaSelect, { target: { value: initialValues.topicId } })
+    const temaSelect = screen.getByTestId(/resourceTopic/i) as HTMLSelectElement
+    expect(temaSelect).toHaveDisplayValue('Listas')
+
+    fireEvent.change(temaSelect, {
+      target: { value: 'cli04ukio000309k3eqr02v4s' },
+    })
 
     const button = screen.getByTestId('submit-button')
     fireEvent.click(button)
+
+    await waitFor(() => {
+      expect(titleInput.value).toBe('Updated Title')
+      expect(descriptionInput.value).toBe('Updated Description')
+      expect(urlInput.value).toBe('https://updated-example.com')
+      expect(
+        (
+          screen.getByRole('option', {
+            name: 'Components',
+          }) as HTMLOptionElement
+        ).selected
+      ).toBe(true)
+      expect(screen.getByLabelText('Video')).toBeChecked()
+      expect(button).toBeEnabled()
+    })
 
     await waitFor(() => {
       expect(screen.getByTestId('done-icon')).toBeInTheDocument()

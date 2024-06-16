@@ -16,7 +16,7 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
-import { ChangeEvent, FC, HTMLAttributes } from 'react'
+import { FC, HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useCreateResource, useUpdateResource } from '../../hooks'
 
@@ -121,7 +121,6 @@ export const ResourceForm: FC<TResourceForm> = ({
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<TInitialValues>({
     resolver: zodResolver(ResourceFormSchema),
     defaultValues: initialValues ?? undefined,
@@ -134,14 +133,12 @@ export const ResourceForm: FC<TResourceForm> = ({
   const {
     isLoading: isCreateLoading,
     isSuccess: isCreateSuccess,
-    responseError: responseCreateError,
     createResource,
   } = useCreateResource()
 
   const {
     isLoading: isUpdateLoading,
     isSuccess: isUpdateSuccess,
-    responseError: responseUpdateError,
     updateResource,
   } = useUpdateResource()
 
@@ -157,47 +154,40 @@ export const ResourceForm: FC<TResourceForm> = ({
       categoryId: `${state.id}`,
     })
   })
+
   const update = handleSubmit(async (data) => {
-    const { title, description, url, topicId, resourceType } = data
+    const { title, description, url, topics, resourceType } = data
 
     const updatedData = {
       id: resourceId,
       title,
       description,
       url,
-      topicId: topicId ?? initialValues?.topicId,
+      topicId: (topics as string) ?? initialValues?.topicId,
       resourceType,
     }
     updateResource.mutate(updatedData)
   })
 
-  const handleTopicChange = (event: ChangeEvent<HTMLSelectElement>) => {
-    const selectedTopicId = event.target.value
-    const selectedTopic = selectOptions.find(
-      (option) => option.id === selectedTopicId
-    )
-    if (selectedTopic?.id) {
-      setValue('topics', selectedTopic.id, {
-        shouldValidate: true,
-      })
-      setValue('topicId', selectedTopic.id)
-    }
-  }
-
   const initialTopicLabel = selectOptions.find(
     (option) => option.value === initialValues?.topicId
-  )?.label
+  )?.value
 
   return (
     <FormStyled
       onSubmit={initialValues ? update : create}
       data-testid="resource-form"
     >
-      {responseCreateError || responseUpdateError ? (
+      {createResource?.error || updateResource?.error ? (
         <ErrorStyled data-testid="error-message">
           <ValidationMessage
             color="error"
-            text={t(`${responseCreateError || responseUpdateError}`)}
+            text={t(
+              `${
+                (createResource.error as Error)?.message ||
+                (updateResource.error as Error)?.message
+              }`
+            )}
           />
         </ErrorStyled>
       ) : null}
@@ -237,6 +227,7 @@ export const ResourceForm: FC<TResourceForm> = ({
         validationMessage={errors.url && t(`${errors.url?.message}`)}
         validationType="error"
       />
+
       <SelectGroup
         id="topics"
         label={t('Tema')}
@@ -247,7 +238,6 @@ export const ResourceForm: FC<TResourceForm> = ({
         defaultValue={initialTopicLabel ?? ''}
         $error={!!errors.topics}
         validationMessage={errors.topics && t(`${errors.topics?.message}`)}
-        onChange={handleTopicChange}
         hiddenLabel
       />
       <StyledRadio
