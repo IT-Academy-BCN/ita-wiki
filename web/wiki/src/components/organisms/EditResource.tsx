@@ -56,6 +56,7 @@ export const EditResource: FC<TEditResourceProps> = ({
   const { data: fetchedTopics } = useGetTopics(slug)
   const mappedTopics =
     fetchedTopics?.map((topic: TMappedTopics) => ({
+      id: topic.id,
       value: topic.id,
       label: topic.name,
     })) ?? []

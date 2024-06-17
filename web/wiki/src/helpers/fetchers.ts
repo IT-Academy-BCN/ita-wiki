@@ -253,39 +253,49 @@ export const registerUserFetcher = async (useData: TRegisterForm) => {
   }
 }
 
-export const createResourceFetcher = (resource: object) =>
-  fetch(urls.createResource, {
+const errorResourceMutations: { [key: number]: string } = {
+  409: 'Error 409 - El recurso ya existe',
+  500: 'Error 500 - Error bbdd',
+}
+
+export const createResourceFetcher = async (resource: object) => {
+  const res = await fetch(urls.createResource, {
     method: 'POST',
     body: JSON.stringify(resource),
     headers: {
       'Content-type': 'application/json',
     },
   })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('Error al crear el recurso')
-      }
-      return res.status === 204 ? {} : res.json()
-    })
-    // eslint-disable-next-line no-console
-    .catch((error) => console.error(error))
 
-export const updateResourceFetcher = (resource: object) =>
-  fetch(urls.updateResource, {
+  if (!res.ok) {
+    if (Object.hasOwnProperty.call(errorResourceMutations, res.status)) {
+      throw new Error(errorResourceMutations[res.status])
+    } else {
+      throw new Error('Error inesperado')
+    }
+  }
+  return res.status === 204 ? {} : res.json()
+}
+
+export const updateResourceFetcher = async (resource: object) => {
+  const res = await fetch(urls.updateResource, {
     method: 'PATCH',
     body: JSON.stringify(resource),
     headers: {
       'Content-type': 'application/json',
     },
   })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error('Error al actualizar el recurso')
-      }
-      return res.status === 204 ? {} : res.json()
-    })
-    // eslint-disable-next-line no-console
-    .catch((error) => console.error(error))
+
+  if (!res.ok) {
+    if (Object.hasOwnProperty.call(errorResourceMutations, res.status)) {
+      throw new Error(errorResourceMutations[res.status])
+    } else {
+      throw new Error('Error inesperado')
+    }
+  }
+
+  return res.status === 204 ? {} : res.json()
+}
 
 export const updateStatus = async (id: string) => {
   const response = await fetch(`${urls.postStatus}/${id}`, {

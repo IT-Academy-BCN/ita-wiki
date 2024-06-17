@@ -433,5 +433,12 @@ export const errorHandlers = [
     HttpResponse.json({ message: 'Internal server error' }, { status: 500 })
   ),
 
+  http.post(urls.createResource, () =>
+    HttpResponse.json({ message: 'Conflict' }, { status: 409 })
+  ),
+
+  http.patch(urls.updateResource, () =>
+    HttpResponse.json({ message: 'Internal server error' }, { status: 500 })
+  ),
   ...voteErrorHandlers,
 ]
