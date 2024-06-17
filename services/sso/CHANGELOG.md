@@ -2,7 +2,7 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
-## [1.30.2] - 2024-06-12
+## [1.31.0] - 2024-06-12
 
 ### Added
 

@@ -837,9 +837,16 @@ paths:
                     minLength: 1
                     format: email
                     example: user@example.cat
+                  role:
+                    type: string
+                    enum:
+                      - ADMIN
+                      - MENTOR
+                      - REGISTERED
                 required:
                   - dni
                   - email
+                  - role
         "401":
           description: Invalid Credentials error
           content:
