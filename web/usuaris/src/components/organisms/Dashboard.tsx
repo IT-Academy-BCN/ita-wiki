@@ -20,7 +20,7 @@ const Container = styled(FlexBox)`
   width: 100%;
   height: 100vh;
   background-color: ${colors.gray.gray5};
-  padding: ${dimensions.spacing.xxs} ${dimensions.spacing.xxxl}
+  padding: ${dimensions.spacing.none} ${dimensions.spacing.md}
     ${dimensions.spacing.xl} ${dimensions.spacing.sm};
 `
 
@@ -32,8 +32,9 @@ const ContainerMain = styled(FlexBox)`
 const MainDiv = styled(FlexBox)`
   background-color: ${colors.white};
   width: 100%;
-  height: 100%;
-  padding: ${dimensions.spacing.lg} ${dimensions.spacing.xxxl};
+  height: 93.5%;
+  padding: ${dimensions.spacing.lg} ${dimensions.spacing.xxxl}
+    ${dimensions.spacing.xxxs} ${dimensions.spacing.xxxl};
   border-radius: ${dimensions.borderRadius.base};
   color: ${colors.gray.gray3};
 `
