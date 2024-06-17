@@ -7,7 +7,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { font } from '@itacademy/ui'
 import { paths } from './constants/paths'
 import { ErrorPage, Home, Mentors } from './pages'
-import { Layout } from './components/layout'
 import './i18n'
 import { AuthProvider } from './context/AuthProvider'
 
@@ -34,10 +33,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <AuthProvider>
       <QueryClientProvider client={queryClient}>
-        <Layout>
-          <GlobalStyle />
-          <RouterProvider router={router} />
-        </Layout>
+        <GlobalStyle />
+        <RouterProvider router={router} />
       </QueryClientProvider>
     </AuthProvider>
   </React.StrictMode>

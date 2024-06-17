@@ -10,14 +10,14 @@ import { filterMenuByUserRole } from '../../helpers/filters'
 
 const SideMenuStyled = styled(FlexBox)`
   height: 100%;
-  min-width: 12rem;
-  margin-top: ${dimensions.spacing.xxs};
+  min-width: 11.2rem;
+  margin-top: ${dimensions.spacing.lg};
 `
 
 const MenuOptions = styled(Link)`
   text-decoration: none;
   margin: ${dimensions.spacing.none};
-  padding: ${dimensions.spacing.xxxs};
+  padding: ${dimensions.spacing.xxxs} ${dimensions.spacing.none};
 `
 
 type TMenuOptionStyled = {
