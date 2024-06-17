@@ -2,9 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.20.2] - 2024-06-16
+
+### Fixed
+
+- Fixed manage errors in ResourceForm for create and update resource
+- Fixed topic selector error disappearance
+
 ## [0.20.1] - 2024-06-06
 
-###  Fixed
+### Fixed
 
 - Fixed missing resourceType error message
 - Fixed error message translations

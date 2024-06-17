@@ -8,6 +8,12 @@ All notable changes to this project will be documented in this file.
 
 - Added disable role, itinerary and delete option for mentor users
 
+## [0.23.1] - 2024-06-12
+
+### Fixed
+
+- Fixed styles to match ITA-Wiki layout
+
 ## [0.23.0] - 2024-06-10
 
 ### Added

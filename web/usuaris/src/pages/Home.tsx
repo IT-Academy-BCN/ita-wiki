@@ -8,7 +8,7 @@ const Container = styled(FlexBox)`
   width: 100%;
   height: 100vh;
   background-color: ${colors.gray.gray5};
-  padding: ${dimensions.spacing.xxs} ${dimensions.spacing.xxxl}
+  padding: ${dimensions.spacing.none} ${dimensions.spacing.md}
     ${dimensions.spacing.xl} ${dimensions.spacing.sm};
 `
 
