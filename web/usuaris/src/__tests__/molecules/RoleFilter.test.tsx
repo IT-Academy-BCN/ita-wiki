@@ -4,7 +4,6 @@ import { RoleFilter } from '../../components/molecules/RoleFilter'
 import { UserRole } from '../../types'
 import { roles } from '../../constants'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
-import { debug } from 'console'
 
 const mockHandleClick = vi.fn()
 
