@@ -1,6 +1,9 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, act } from '@testing-library/react'
+import { vi } from 'vitest'
 import { Search, type TSearch } from '../../../components/molecules'
 import { colors } from '../../../styles'
+
+const mockHandleSearchValue = vi.fn()
 
 const mockSearch: TSearch = {
   id: 'test',
@@ -9,10 +12,19 @@ const mockSearch: TSearch = {
   searchIconName: 'search',
   searchSvgIcon: 'testIcon',
   isSearchError: false,
-  handleSearchValue: () => {},
+  handleSearchValue: mockHandleSearchValue,
+  debounceDelay: 300,
 }
 
 describe('Search component', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
+  })
+
   it('renders correctly', () => {
     render(<Search {...mockSearch} />)
 
@@ -58,5 +70,35 @@ describe('Search component', () => {
 
     expect(input.value).toBe('')
     expect(closeIcon).not.toBeInTheDocument()
+  })
+
+  it('calls handleSearchValue with debounced value', () => {
+    const debounceDelay = 300
+
+    render(
+      <Search
+        {...mockSearch}
+        debounceDelay={debounceDelay}
+        handleSearchValue={mockHandleSearchValue}
+      />
+    )
+
+    const input: HTMLInputElement = screen.getByTestId('input-search-test')
+    fireEvent.change(input, { target: { value: 'debounce value test' } })
+    act(() => {
+      vi.advanceTimersByTime(debounceDelay)
+    })
+    expect(mockHandleSearchValue).toHaveBeenCalledWith('debounce value test')
+  })
+
+  it('uses default debounce delay when value not provided', () => {
+    render(<Search {...mockSearch} handleSearchValue={mockHandleSearchValue} />)
+
+    const input: HTMLInputElement = screen.getByTestId('input-search-test')
+    fireEvent.change(input, { target: { value: 'debounce default test' } })
+    act(() => {
+      vi.advanceTimersByTime(500)
+    })
+    expect(mockHandleSearchValue).toHaveBeenCalledWith('debounce default test')
   })
 })

@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.35.1] - 2024-06-18
+
+### Changed
+
+- Added debounceDelay as prop to Search
+
 ## [0.35.0] - 2024-06-10
 
 ### Added

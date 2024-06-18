@@ -20,6 +20,7 @@ const meta = {
     isSearchError: { control: 'boolean' },
     errorMessage: { control: 'text' },
     handleSearchValue: { control: 'action' },
+    debounceDelay: { control: 'number' },
   },
 } satisfies Meta<typeof Search>
 
@@ -33,6 +34,7 @@ export const Default: SearchStory = {
     label: 'Default search bar',
     placeholder: 'Default search bar',
     handleSearchValue: () => {},
+    debounceDelay: 500,
   },
 }
 
@@ -44,6 +46,7 @@ export const WithIcon: SearchStory = {
     searchIconName: 'search',
     placeholder: 'Search bar with icon',
     handleSearchValue: () => {},
+    debounceDelay: 500,
   },
 }
 
@@ -55,6 +58,7 @@ export const WithSvg: SearchStory = {
     searchSvgIcon: searchSvg,
     placeholder: 'Search bar with svg',
     handleSearchValue: () => {},
+    debounceDelay: 500,
   },
 }
 
@@ -67,6 +71,7 @@ export const WithLabel: SearchStory = {
     searchIconName: 'search',
     placeholder: 'Search bar with label',
     handleSearchValue: () => {},
+    debounceDelay: 500,
   },
 }
 
@@ -80,5 +85,6 @@ export const WithError: SearchStory = {
     isSearchError: true,
     errorMessage: 'Search error',
     handleSearchValue: () => {},
+    debounceDelay: 500,
   },
 }
