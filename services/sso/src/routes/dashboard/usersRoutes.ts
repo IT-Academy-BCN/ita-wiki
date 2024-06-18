@@ -29,7 +29,7 @@ dashboardUsersRoutes.get(
   }),
   dashboardListUsers
 )
-dashboardUsersRoutes.get('/me', authenticate, authorize('ADMIN'), getMe)
+dashboardUsersRoutes.get('/me', authenticate, authorize('MENTOR'), getMe)
 
 dashboardUsersRoutes.patch(
   '/:id',
