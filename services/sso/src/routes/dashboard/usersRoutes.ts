@@ -63,7 +63,7 @@ dashboardUsersRoutes.delete(
 dashboardUsersRoutes.post(
   '/status',
   authenticate,
-  authorize('ADMIN'),
+  authorize('MENTOR'),
   validate(z.object({ body: dashboardUsersUpdateStatusSchema })),
   dashboardUpdateStatusUsers
 )

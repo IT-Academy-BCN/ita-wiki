@@ -2,7 +2,20 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
-## [1.31.0] - 2024-06-12
+## [1.32.0] - 2024-06-18
+
+### Added
+
+- Mentor authorized in POST.`dashboard/users/status`.
+
+## [1.31.0] - 2024-06-17
+
+### Added
+
+- Role value to GET.`dashboard/users/me` endpoint response.
+- Mentor authorized in GET.`dashboard/users/me`.
+
+## [1.30.1] - 2024-06-12
 
 ### Changed
 
