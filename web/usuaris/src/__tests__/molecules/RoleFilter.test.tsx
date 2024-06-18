@@ -7,10 +7,6 @@ import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
 const mockHandleClick = vi.fn()
 
-afterEach(() => {
-  vi.restoreAllMocks()
-})
-
 beforeEach(() => {
   vi.mock('../../context/AuthProvider', async () => {
     const actual = await vi.importActual('../../context/AuthProvider')
@@ -19,6 +15,10 @@ beforeEach(() => {
       useAuth: vi.fn(),
     }
   })
+})
+
+afterEach(() => {
+  vi.restoreAllMocks()
 })
 
 describe('RolesFilter', () => {
@@ -84,7 +84,7 @@ describe('RolesFilter', () => {
     })
   })
 
-  it('calls handleRole with the mentor role', () => {
+  it('view users registered with the mentor role', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         dni: '12345678A',
@@ -95,9 +95,8 @@ describe('RolesFilter', () => {
 
     render(<RoleFilter handleRole={mockHandleClick} />)
 
-    const dropdown = screen.getByTestId('dropdown-header')
-    expect(dropdown).toBeInTheDocument()
-
-    expect(screen.getByText(/registrat/i)).toBeInTheDocument()
+    const dropdownRole = screen.getByTestId('dropdown-header')
+    expect(dropdownRole).toBeInTheDocument()
+    expect(dropdownRole).toHaveTextContent(/registrat/i)
   })
 })

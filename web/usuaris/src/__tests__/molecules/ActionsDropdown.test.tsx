@@ -147,7 +147,7 @@ describe('ActionsDropdown', () => {
     })
   })
 
-  it('mentor logged in user', () => {
+  it('renders corresponding option if mentor selects "active" user', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         dni: '12345678A',
@@ -182,7 +182,7 @@ describe('ActionsDropdown', () => {
     })
   })
 
-  it('mentor logged in user', () => {
+  it('renders corresponding option if mentor selects "pending" user', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         dni: '12345678A',
@@ -217,7 +217,7 @@ describe('ActionsDropdown', () => {
     })
   })
 
-  it('mentor logged in user', () => {
+  it('renders corresponding option if mentor selects "blocked" user', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         dni: '12345678A',

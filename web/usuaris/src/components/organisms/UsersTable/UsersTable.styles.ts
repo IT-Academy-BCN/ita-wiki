@@ -24,7 +24,6 @@ export const DisabledStyled = styled.div<TDisabled>`
   }};
 `
 
-
 type TStatusStyled = {
   status: UserStatus
   isDeleted: boolean
@@ -63,7 +62,8 @@ export const ButtonStyled = styled(Button)`
   }
 `
 export const ActionsHeader = styled(FlexBox)`
-  padding-right: ${dimensions.spacing.xxl};
+  display: flex;
+  justify-content: center;
 `
 
 export const ActionsContainer = styled(FlexBox)`

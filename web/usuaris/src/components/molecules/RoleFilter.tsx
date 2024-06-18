@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {
   colors,
@@ -41,6 +41,17 @@ export const RoleFilter: FC<TRoleFilter> = ({ handleRole }) => {
   const { pathname } = useLocation()
   const { user } = useAuth()
 
+  const [roleList, setRoleList] = useState<TRole[]>([])
+
+  useEffect(() => {
+    const roleDropdownList = Object.values(UserRole).map((role) => ({
+      id: role.toString(),
+      name: t(`${role}`),
+      slug: role.toString(),
+    }))
+    setRoleList(roleDropdownList)
+  }, [t])
+
   const handleSelectedValue = (selectedOption: TDropdownOption | undefined) => {
     if (selectedOption) {
       const selectedRole = roles.find(
@@ -65,7 +76,7 @@ export const RoleFilter: FC<TRoleFilter> = ({ handleRole }) => {
 
   return roles && roles.length > 0 ? (
     <StyledDropdown
-      options={roles}
+      options={roleList}
       placeholder={
         user?.role === UserRole.MENTOR ? t(UserRole.REGISTERED) : t('Rol')
       }

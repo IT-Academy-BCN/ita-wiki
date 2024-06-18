@@ -17,6 +17,7 @@ import {
   StatusStyled,
   TableContainer,
 } from './UsersTable.styles'
+import { useAuth } from '../../../context/AuthProvider'
 
 type TUsersTable = {
   filtersSelected: TFilters | Record<string, never>
@@ -44,6 +45,8 @@ export const UsersTable: FC<TUsersTable> = ({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   const [idToDelete, setIdToDelete] = useState<string>('')
+
+  const { user } = useAuth()
 
   useEffect(() => {
     setFilters(filtersSelected)
@@ -210,7 +213,7 @@ export const UsersTable: FC<TUsersTable> = ({
     }),
     columHelper.display({
       id: 'actions',
-      header: () => <ActionsHeader align="end">{t('Acciones')}</ActionsHeader>,
+      header: () => <ActionsHeader>{t('Acciones')}</ActionsHeader>,
       cell: ({ row }) => {
         const status: UserStatus = row.getValue('status')
         const id: string = row.getValue('id')
@@ -242,18 +245,20 @@ export const UsersTable: FC<TUsersTable> = ({
             >
               {buttonTxt}
             </ButtonStyled>
-            <DeleteButton
-              data-testid="delete-button"
-              size="small"
-              outline
-              disabled={isDisabled}
-              onClick={() => {
-                setIdToDelete(id)
-                setIsModalOpen(!isModalOpen)
-              }}
-            >
-              <DeleteIcon src={icons.deleteIcon} alt="delete-icon" />
-            </DeleteButton>
+            {user?.role === UserRole.ADMIN && (
+              <DeleteButton
+                data-testid="delete-button"
+                size="small"
+                outline
+                disabled={isDisabled}
+                onClick={() => {
+                  setIdToDelete(id)
+                  setIsModalOpen(!isModalOpen)
+                }}
+              >
+                <DeleteIcon src={icons.deleteIcon} alt="delete-icon" />
+              </DeleteButton>
+            )}
           </ActionsContainer>
         )
       },
