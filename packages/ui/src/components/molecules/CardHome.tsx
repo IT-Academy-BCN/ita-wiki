@@ -16,8 +16,11 @@ const CardContainer = styled(FlexBox)`
   padding: ${dimensions.spacing.md};
 `
 
-type CardHomeProp = Pick<TCardHome, 'backgroundImg'>
+// type CardHomeProp = Pick<TCardHome, 'backgroundImg'>
 
+type CardHomeProp = {
+  backgroundimg?: string
+}
 const IndicatorStyled = styled(FlexBox)<CardHomeProp>`
   position: absolute;
   left: 0px;
@@ -30,7 +33,7 @@ const IndicatorStyled = styled(FlexBox)<CardHomeProp>`
   font-weight: ${font.regular};
   color: ${colors.gray.gray3};
   font-family: ${font.fontFamily};
-  background: ${({ backgroundImg }) => `url(${backgroundImg}) no-repeat`};
+  background: ${({ backgroundimg }) => `url(${backgroundimg}) no-repeat`};
 `
 
 const ImgStyled = styled.img`
@@ -68,7 +71,7 @@ export const CardHome: FC<TCardHome> = ({
   backgroundImg,
 }: TCardHome) => (
   <CardContainer justify="flex-start">
-    <IndicatorStyled direction="row" backgroundImg={backgroundImg}>
+    <IndicatorStyled direction="row" backgroundimg={backgroundImg}>
       {indicator}
     </IndicatorStyled>
     <ImgStyled alt="" src={icon} data-testid="testIcon" />

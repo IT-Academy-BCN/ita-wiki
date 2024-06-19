@@ -29,7 +29,6 @@ export const Default: CardHomeStory = {
   args: {
     cardTitle: 'CardHome_title',
     cardSubtitle: 'CardHome_subtitle',
-    indicator: 'cardTitle_indicator',
     icon: '',
     backgroundImg: '',
   },

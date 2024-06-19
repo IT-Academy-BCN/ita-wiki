@@ -1,24 +1,27 @@
 import supertest from 'supertest'
-import { afterAll, beforeAll, describe, expect, it } from 'vitest'
+import { afterEach, beforeAll, describe, expect, it } from 'vitest'
 import { pathRoot } from '../../../routes/routes'
 import { server, testUserData } from '../../globalSetup'
-
 import { UserStatus } from '../../../schemas/users/userSchema'
 import { client } from '../../../db/client'
+import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
 
 const route = `${pathRoot.v1.dashboard.users}/status`
 
-let authAdminToken = ''
+let adminAuthToken = ''
+let mentorAuthToken = ''
 
 beforeAll(async () => {
-  const loginRoute = `${pathRoot.v1.dashboard.auth}/login`
-  const responseAdmin = await supertest(server).post(loginRoute).send({
-    dni: testUserData.admin.dni,
-    password: testUserData.admin.password,
-  })
-  ;[authAdminToken] = responseAdmin.header['set-cookie'][0].split(';')
+  adminAuthToken = await dashboardLoginAndGetToken(
+    testUserData.admin.dni,
+    testUserData.admin.password
+  )
+  mentorAuthToken = await dashboardLoginAndGetToken(
+    testUserData.mentor.dni,
+    testUserData.mentor.password
+  )
 })
-afterAll(async () => {
+afterEach(async () => {
   const restorePromises = [
     testUserData.blockedUser,
     testUserData.mentor,
@@ -30,7 +33,6 @@ afterAll(async () => {
       id,
     ])
   })
-
   await Promise.all(restorePromises)
 })
 describe('Testing POST dashboard/users/status endpoint', () => {
@@ -41,7 +43,7 @@ describe('Testing POST dashboard/users/status endpoint', () => {
     }
     const response = await supertest(server)
       .post(route)
-      .set('Cookie', [authAdminToken])
+      .set('Cookie', [adminAuthToken])
       .send(reqBody)
     expect(response.status).toBe(204)
     const promises = reqBody.ids.map(async (id) => {
@@ -61,7 +63,7 @@ describe('Testing POST dashboard/users/status endpoint', () => {
     }
     const response = await supertest(server)
       .post(route)
-      .set('Cookie', [authAdminToken])
+      .set('Cookie', [adminAuthToken])
       .send(reqBody)
     expect(response.status).toBe(204)
     const promises = reqBody.ids.map(async (id) => {
@@ -82,7 +84,7 @@ describe('Testing POST dashboard/users/status endpoint', () => {
     }
     const response = await supertest(server)
       .post(route)
-      .set('Cookie', [authAdminToken])
+      .set('Cookie', [adminAuthToken])
       .send(reqBody)
     expect(response.status).toBe(404)
     expect(response.body.message).toBe(
@@ -93,5 +95,25 @@ describe('Testing POST dashboard/users/status endpoint', () => {
       [id]
     )
     expect(result.rows[0].status).toBe(UserStatus.ACTIVE)
+  })
+
+  it('should return 204 when successfully updating a user to ACTIVE status with a mentor token', async () => {
+    const reqBody = {
+      ids: [testUserData.blockedUser.id],
+      status: UserStatus.ACTIVE,
+    }
+    const response = await supertest(server)
+      .post(route)
+      .set('Cookie', [mentorAuthToken])
+      .send(reqBody)
+    expect(response.status).toBe(204)
+    const promises = reqBody.ids.map(async (id) => {
+      const result = await client.query(
+        'SELECT status FROM "user" WHERE id = $1',
+        [id]
+      )
+      expect(result.rows[0].status).toBe(UserStatus.ACTIVE)
+    })
+    await Promise.all(promises)
   })
 })
