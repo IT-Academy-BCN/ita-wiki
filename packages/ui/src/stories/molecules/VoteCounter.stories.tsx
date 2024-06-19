@@ -6,7 +6,7 @@ import {
   type TVoteCounter,
 } from '../../components/molecules'
 
-const MockedVoteCounter: FC<TVoteCounter> = ({ voteCount }) => {
+const MockedVoteCounter: FC<TVoteCounter> = ({ voteCount, disabled }) => {
   const [voteCountUpdated, setVoteCountUpdated] =
     useState<TVoteCount>(voteCount)
 
@@ -35,7 +35,13 @@ const MockedVoteCounter: FC<TVoteCounter> = ({ voteCount }) => {
     }
   }
 
-  return <VoteCounter voteCount={voteCountUpdated} onClick={onVote} />
+  return (
+    <VoteCounter
+      voteCount={voteCountUpdated}
+      onClick={onVote}
+      disabled={disabled}
+    />
+  )
 }
 
 const meta = {
@@ -53,6 +59,7 @@ const meta = {
       userVote: { control: 'number' },
     },
     onClick: { action: 'clicked' },
+    disabled: { control: 'boolean' },
   },
 } satisfies Meta<typeof VoteCounter>
 
@@ -89,5 +96,17 @@ export const VoteDown: VoteCounterStory = {
       total: 5,
       userVote: -1,
     },
+  },
+}
+
+export const Disabled: VoteCounterStory = {
+  args: {
+    voteCount: {
+      downvote: 8,
+      upvote: 2,
+      total: 8,
+      userVote: 0,
+    },
+    disabled: true,
   },
 }

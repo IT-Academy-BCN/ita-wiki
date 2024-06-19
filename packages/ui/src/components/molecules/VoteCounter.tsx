@@ -5,16 +5,19 @@ import { Icon, Text } from '../atoms'
 
 const StyledIcon = styled(Icon)<ArrowProp>`
   color: ${({ color }) => color};
+  opacity: ${({ disabled }) => (disabled ? 0.4 : 1)};
+  cursor: ${({ disabled }) => (disabled ? 'no-drop' : 'pointer')};
 
   &:hover {
-    color: ${({ name }) =>
-      (name === 'expand_less' && colors.success) ||
-      (name === 'expand_more' && colors.error)};
+    color: ${({ name, disabled }) =>
+      (name === 'expand_less' && !disabled && colors.success) ||
+      (name === 'expand_more' && !disabled && colors.error)};
   }
 `
 
 export type ArrowProp = {
   color: string
+  disabled?: boolean
 }
 
 export type TVoteCount = {
@@ -27,15 +30,21 @@ export type TVoteCount = {
 export type TVoteCounter = {
   voteCount: TVoteCount
   onClick: (vote: 'up' | 'down') => void
+  disabled?: boolean
 }
 
-export const VoteCounter: FC<TVoteCounter> = ({ voteCount, onClick }) => (
+export const VoteCounter: FC<TVoteCounter> = ({
+  voteCount,
+  onClick,
+  disabled,
+}) => (
   <FlexBox data-testid="voteCounter">
     <StyledIcon
       name="expand_less"
       data-testid="increase"
       color={voteCount.userVote > 0 ? colors.success : colors.gray.gray3}
-      onClick={() => onClick('up')}
+      onClick={() => (disabled ? '' : onClick('up'))}
+      disabled={disabled}
     />
     <Text
       fontWeight="bold"
@@ -49,7 +58,8 @@ export const VoteCounter: FC<TVoteCounter> = ({ voteCount, onClick }) => (
       id="decrease"
       data-testid="decrease"
       color={voteCount.userVote < 0 ? colors.error : colors.gray.gray3}
-      onClick={() => onClick('down')}
+      onClick={() => (disabled ? '' : onClick('down'))}
+      disabled={disabled}
     />
   </FlexBox>
 )
