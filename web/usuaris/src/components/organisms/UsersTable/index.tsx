@@ -90,7 +90,7 @@ export const UsersTable: FC<TUsersTable> = ({
     if (e.target.checked) {
       setSelectedStatus(status)
       const userSelected: TUserData | undefined = users?.find(
-        (user) => user.id === id
+        (u) => u.id === id
       )
       const addUsers = [...selectedUsersIds]
       if (userSelected) {
@@ -101,10 +101,8 @@ export const UsersTable: FC<TUsersTable> = ({
       return addUsers
     }
 
-    const userUnselected = users?.find((user) => user.id === id)
-    const removeUsers = selectedUsersIds.filter(
-      (user) => user !== userUnselected?.id
-    )
+    const userUnselected = users?.find((u) => u.id === id)
+    const removeUsers = selectedUsersIds.filter((u) => u !== userUnselected?.id)
     setSelectedUsersIds(removeUsers)
 
     return removeUsers
