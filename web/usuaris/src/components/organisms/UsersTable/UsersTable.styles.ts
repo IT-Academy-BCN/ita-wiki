@@ -62,8 +62,7 @@ export const ButtonStyled = styled(Button)`
   }
 `
 export const ActionsHeader = styled(FlexBox)`
-  display: flex;
-  justify-content: center;
+  padding-right: ${dimensions.spacing.xxl};
 `
 
 export const ActionsContainer = styled(FlexBox)`

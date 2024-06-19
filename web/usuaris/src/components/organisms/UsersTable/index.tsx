@@ -211,7 +211,7 @@ export const UsersTable: FC<TUsersTable> = ({
     }),
     columHelper.display({
       id: 'actions',
-      header: () => <ActionsHeader>{t('Acciones')}</ActionsHeader>,
+      header: () => <ActionsHeader align="end">{t('Acciones')}</ActionsHeader>,
       cell: ({ row }) => {
         const status: UserStatus = row.getValue('status')
         const id: string = row.getValue('id')

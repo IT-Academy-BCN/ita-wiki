@@ -84,7 +84,7 @@ describe('RolesFilter', () => {
     })
   })
 
-  it('view users registered with the mentor role', () => {
+  it('disables roles filter when user mentor is logged', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         dni: '12345678A',
@@ -98,5 +98,6 @@ describe('RolesFilter', () => {
     const dropdownRole = screen.getByTestId('dropdown-header')
     expect(dropdownRole).toBeInTheDocument()
     expect(dropdownRole).toHaveTextContent(/registrat/i)
+    expect(dropdownRole).toBeDisabled()
   })
 })
