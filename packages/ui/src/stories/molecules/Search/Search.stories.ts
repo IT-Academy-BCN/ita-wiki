@@ -34,7 +34,6 @@ export const Default: SearchStory = {
     label: 'Default search bar',
     placeholder: 'Default search bar',
     handleSearchValue: () => {},
-    debounceDelay: 500,
   },
 }
 
