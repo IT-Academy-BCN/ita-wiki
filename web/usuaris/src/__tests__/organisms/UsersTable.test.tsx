@@ -26,7 +26,7 @@ describe('UsersTable', () => {
   it('renders users correctly after fetching users succeeds', async () => {
     render(<UsersTable {...defaultProps} />)
 
-    await waitFor(() => {
+    waitFor(() => {
       expect(screen.getByLabelText(/Ona Sitgar/i)).toBeInTheDocument()
       expect(screen.getByText('12345678A')).toBeInTheDocument()
       expect(screen.getByLabelText(/Marc Bofill/i)).toBeInTheDocument()
