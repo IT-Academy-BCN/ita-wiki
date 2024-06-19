@@ -23,7 +23,7 @@ describe('UsersTable', () => {
     })
   })
 
-  it('renders users correctly after fetching users succeeds', async () => {
+  it('renders users correctly after fetching users succeeds', () => {
     render(<UsersTable {...defaultProps} />)
 
     waitFor(() => {
