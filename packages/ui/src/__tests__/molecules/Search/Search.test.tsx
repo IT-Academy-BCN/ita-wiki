@@ -13,7 +13,6 @@ const mockSearch: TSearch = {
   searchSvgIcon: 'testIcon',
   isSearchError: false,
   handleSearchValue: mockHandleSearchValue,
-  debounceDelay: 300,
 }
 
 describe('Search component', () => {
