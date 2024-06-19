@@ -10,7 +10,8 @@ registry.registerPath({
   method: 'patch',
   tags: ['dashboard'],
   path: `${pathRoot.v1.dashboard.users}/{id}`,
-  description: 'Updates specific fields of a user.',
+  description:
+    'Updates specific fields of a user. Mentors can only update users from the same itinerary and cannot modify the role field.',
   summary: 'Update user information',
   security: [{ [cookieAuth.name]: [] }],
   request: {
@@ -44,6 +45,19 @@ registry.registerPath({
       },
     },
     401: invalidCredentialsResponse,
+    403: {
+      description: 'Forbidden',
+      content: {
+        'application/json': {
+          schema: z.object({
+            message: z.string().openapi({
+              example:
+                'Mentors can only update users from the same itinerary or Mentors cannot modify the role field',
+            }),
+          }),
+        },
+      },
+    },
     404: {
       description: 'User not found',
       content: {

@@ -14,6 +14,7 @@ import { updateUser } from '../../controllers/users/update'
 import { dashboardUsersUpdateStatusSchema } from '../../schemas/users/dashboardUsersUpdateStatusSchema'
 import { dashboardUpdateStatusUsers } from '../../controllers/dashboard/users/updateStatus'
 import { dashboardBatchDelete } from '../../controllers/dashboard/users/batchDelete'
+import { restrictMentorPatch } from '../../middleware/restrictMentorPatch'
 
 export const dashboardUsersRoutes = new Router()
 
@@ -34,7 +35,8 @@ dashboardUsersRoutes.get('/me', authenticate, authorize('MENTOR'), getMe)
 dashboardUsersRoutes.patch(
   '/:id',
   authenticate,
-  authorize('ADMIN'),
+  authorize('MENTOR'),
+  restrictMentorPatch,
   validate(
     z.object({
       params: z.object({ id: userIdSchema }),
@@ -63,7 +65,7 @@ dashboardUsersRoutes.delete(
 dashboardUsersRoutes.post(
   '/status',
   authenticate,
-  authorize('ADMIN'),
+  authorize('MENTOR'),
   validate(z.object({ body: dashboardUsersUpdateStatusSchema })),
   dashboardUpdateStatusUsers
 )

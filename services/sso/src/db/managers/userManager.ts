@@ -11,6 +11,10 @@ async function getSnakeCase() {
   const { snakeCase } = await import('change-case')
   return snakeCase
 }
+async function getCamelCase() {
+  const { camelCase } = await import('change-case')
+  return camelCase
+}
 export type GetUserOptions<T extends keyof User> = {
   fields: T[]
 }
@@ -46,13 +50,19 @@ export const userManager = {
     options: GetUserOptions<T>
   ): Promise<Pick<User, T> | null> {
     const snakeCase = await getSnakeCase()
+    const camelCase = await getCamelCase()
     const fieldsToSelect = options.fields.map((f) => snakeCase(f)).join(', ')
     const query = `SELECT ${fieldsToSelect} FROM "user" WHERE id = $1 AND deleted_at IS NULL`
     const values = [id]
     const result = await client.query(query, values)
 
     if (result.rows.length) {
-      return result.rows[0] as Pick<User, T>
+      const row = result.rows[0]
+      const camelCaseRow = Object.keys(row).reduce((acc: any, key) => {
+        acc[camelCase(key)] = row[key]
+        return acc
+      }, {} as Pick<User, T>)
+      return camelCaseRow
     }
     return null
   },
@@ -89,6 +99,7 @@ export const userManager = {
     ids?: string[]
   ): Promise<Pick<User, T>[]> {
     const snakeCase = await getSnakeCase()
+    const camelCase = await getCamelCase()
     const fieldsToSelect = options.fields.map((f) => snakeCase(f)).join(', ')
     let query = `SELECT ${fieldsToSelect} FROM "user" WHERE deleted_at IS NULL`
     const values: string[] = []
@@ -109,7 +120,13 @@ export const userManager = {
     const result = await client.query(query, values)
 
     if (result.rows.length) {
-      return result.rows.map((row) => row as Pick<User, T>)
+      return result.rows.map((row) => {
+        const camelCaseRow = Object.keys(row).reduce((acc: any, key) => {
+          acc[camelCase(key)] = row[key]
+          return acc
+        }, {} as Pick<User, T>)
+        return camelCaseRow
+      })
     }
     return []
   },

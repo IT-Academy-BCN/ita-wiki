@@ -2,7 +2,29 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
-## [1.31.0] - 2024-06-12
+## [1.33.0] - 2024-06-19
+
+### Added
+
+-  Middleware `restrictMentorPatch` to restrict mentors to only update users from the same itinerary and prevent them from modifying the role field.
+
+### Changed
+- Updated `userManager.getUser` and `userManager.getUsersByIds` to convert snake_case fields to camelCase.
+
+## [1.32.0] - 2024-06-18
+
+### Added
+
+- Mentor authorized in POST.`dashboard/users/status`.
+
+## [1.31.0] - 2024-06-17
+
+### Added
+
+- Role value to GET.`dashboard/users/me` endpoint response.
+- Mentor authorized in GET.`dashboard/users/me`.
+
+## [1.30.1] - 2024-06-12
 
 ### Changed
 
