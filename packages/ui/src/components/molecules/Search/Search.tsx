@@ -54,6 +54,7 @@ export type TSearch = {
   isSearchError: boolean
   errorMessage?: string
   handleSearchValue: (deboucedSearchValue: string) => void
+  debounceDelay?: number
 }
 
 export const Search: FC<TSearch> = ({
@@ -67,10 +68,11 @@ export const Search: FC<TSearch> = ({
   isSearchError = false,
   errorMessage,
   handleSearchValue,
+  debounceDelay = 500,
 }) => {
   const [searchValue, setSearchValue] = useState<string>('')
 
-  const debouncedSearchValue = useDebounce(searchValue, 500)
+  const debouncedSearchValue = useDebounce(searchValue, debounceDelay)
 
   useEffect(() => {
     handleSearchValue(debouncedSearchValue)
