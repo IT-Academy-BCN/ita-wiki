@@ -11,7 +11,7 @@ registry.registerPath({
   tags: ['dashboard'],
   path: `${pathRoot.v1.dashboard.users}/{id}`,
   description:
-    'Updates specific fields of a user. Mentors can only update users from the same itinerary and cannot modify the role field.',
+    'Updates specific fields of a user. Mentors can only update users from the same itinerary, can only update registered users, and cannot modify the role or status fields. Mentors can update their own information except for the role and status fields.',
   summary: 'Update user information',
   security: [{ [cookieAuth.name]: [] }],
   request: {
@@ -51,8 +51,7 @@ registry.registerPath({
         'application/json': {
           schema: z.object({
             message: z.string().openapi({
-              example:
-                'Mentors can only update users from the same itinerary or Mentors cannot modify the role field',
+              example: 'Mentors can only update users from the same itinerary',
             }),
           }),
         },

@@ -2,6 +2,14 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.33.1] - 2024-06-19
+
+### Fixed
+
+-  Middleware `restrictMentorPatch` now allows mentors to update their own information except for the role and status fields.
+-  Mentors are restricted to only update registered users.
+-  Ensured mentors cannot change their own role or status.
+
 ## [1.33.0] - 2024-06-19
 
 ### Added
@@ -9,6 +17,7 @@ All notable changes to this project will be documented in this file.
 -  Middleware `restrictMentorPatch` to restrict mentors to only update users from the same itinerary and prevent them from modifying the role field.
 
 ### Changed
+
 - Updated `userManager.getUser` and `userManager.getUsersByIds` to convert snake_case fields to camelCase.
 
 ## [1.32.0] - 2024-06-18
