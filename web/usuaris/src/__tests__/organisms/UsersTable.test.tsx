@@ -3,6 +3,7 @@ import { UsersTable } from '../../components/organisms'
 import { errorHandlers } from '../../__mocks__/handlers'
 import { server } from '../../__mocks__/server'
 import { UserRole, UserStatus } from '../../types'
+import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
 const defaultProps = {
   filtersSelected: {},
@@ -10,8 +11,33 @@ const defaultProps = {
   setSelectedStatus: vi.fn(),
   handleSelectedUsers: vi.fn(),
 }
+
+beforeEach(() => {
+  vi.mock('../../context/AuthProvider', async () => {
+    const actual = await vi.importActual('../../context/AuthProvider')
+    return {
+      ...actual,
+      useAuth: vi.fn(),
+    }
+  })
+})
+
+afterEach(() => {
+  vi.restoreAllMocks()
+  server.resetHandlers()
+})
+
+afterAll(() => server.close())
+
 describe('UsersTable', () => {
   it('renders loading spinner while fetching users', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
     render(<UsersTable {...defaultProps} />)
 
     const spinner = screen.getByRole('status') as HTMLDivElement
@@ -24,6 +50,13 @@ describe('UsersTable', () => {
   })
 
   it('renders users correctly after fetching users succeeds', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
     render(<UsersTable {...defaultProps} />)
 
     await waitFor(() => {
@@ -59,6 +92,13 @@ describe('UsersTable', () => {
   })
 
   it('renders filtered users correctly when filters applied', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
     render(
       <UsersTable
         filtersSelected={{
@@ -90,6 +130,13 @@ describe('UsersTable', () => {
   })
 
   it('renders error message when fetching users has error', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
     server.use(...errorHandlers)
 
     render(<UsersTable {...defaultProps} />)
@@ -105,6 +152,13 @@ describe('UsersTable', () => {
   })
 
   it('disables/enables users with different status when checkboxes are checked/unchecked', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
     render(<UsersTable {...defaultProps} />)
 
     await waitFor(() => {
@@ -155,6 +209,13 @@ describe('UsersTable', () => {
   })
 
   it('updates status and action button when user status changes', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
     render(<UsersTable {...defaultProps} />)
 
     await waitFor(() => {
@@ -173,6 +234,13 @@ describe('UsersTable', () => {
   })
 
   it('disables user when has been deleted', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
     render(<UsersTable {...defaultProps} />)
 
     await waitFor(() => {

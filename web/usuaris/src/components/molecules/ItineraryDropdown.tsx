@@ -10,8 +10,9 @@ import {
 } from '@itacademy/ui'
 import { useTranslation } from 'react-i18next'
 import { useGetItineraries } from '../../hooks'
-import { type TItinerary } from '../../types'
+import { UserRole, type TItinerary } from '../../types'
 import { icons } from '../../assets/icons'
+import { useAuth } from '../../context/AuthProvider'
 
 const StyledDropdown = styled(Dropdown)`
   && button {
@@ -57,6 +58,7 @@ export const ItineraryDropdown: FC<TItineraryDropdown> = ({
 
   const [itinerariesList, setItinerariesList] = useState<TItineraryItem[]>([])
   const { isLoading, error, data } = useGetItineraries()
+  const { user } = useAuth()
 
   useEffect(() => {
     const newData = data?.map((cat: TItinerary) => ({
@@ -92,6 +94,7 @@ export const ItineraryDropdown: FC<TItineraryDropdown> = ({
       closeText={t('Cerrar')}
       deselectText={t('Deseleccionar')}
       data-testid="itinerary-dropdown"
+      disabled={user?.role === UserRole.MENTOR}
     />
   ) : null
 }

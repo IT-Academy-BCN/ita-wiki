@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.24.0] - 2024-06-13
+
+### Added
+
+- Added disable role, itinerary and delete option for mentor users
+
 ## [0.23.1] - 2024-06-12
 
 ### Fixed
