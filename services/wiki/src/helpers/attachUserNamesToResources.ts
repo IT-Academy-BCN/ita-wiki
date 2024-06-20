@@ -13,20 +13,12 @@ type ResourceWithTopicsVote = Resource & {
 export type ExtendedResourceWithFavorites = ResourceWithTopicsVote & {
   favorites: Favorites[]
 }
-type ExtendedResourceWithAvatar = ResourceWithTopicsVote & {
-  user: {
-    avatarId: string | null
-  }
-}
-type UnifiedResources =
-  | ResourceWithTopicsVote
-  | ExtendedResourceWithFavorites
-  | ExtendedResourceWithAvatar
+
+type UnifiedResources = ResourceWithTopicsVote | ExtendedResourceWithFavorites
 
 type ResourceWithUserName =
   | (ResourceWithTopicsVote & { user: { name: string } })
   | (ExtendedResourceWithFavorites & { user: { name: string } })
-  | (ExtendedResourceWithAvatar & { user: { name: string } })
 
 export async function attachUserNamesToResources(
   resources: UnifiedResources[]
@@ -40,7 +32,7 @@ export async function attachUserNamesToResources(
     const updatedResource = {
       ...resource,
       user: {
-        ...('user' in resource ? resource.user : { avatarId: null }),
+        ...('user' in resource && resource.user ? resource.user : {}),
         name: user.name,
       },
       favorites: 'favorites' in resource ? resource.favorites : [],

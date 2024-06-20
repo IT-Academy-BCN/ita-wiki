@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.17] - 2024-06-20
+
+### Fix
+
+- Remove `Avatar`, update middleware, `/media` endpoint
+
 ## [0.16.1] - 2024-05-23
 
 ### Remove

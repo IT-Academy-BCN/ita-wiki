@@ -7,5 +7,4 @@ export const userGetSchema = userSchema.pick({
   email: true,
   role: true,
   status: true,
-  avatarId: true,
 })
