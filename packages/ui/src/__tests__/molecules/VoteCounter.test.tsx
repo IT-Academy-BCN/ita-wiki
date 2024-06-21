@@ -30,6 +30,16 @@ const negativeVotetMock = {
   },
 }
 
+const disabledVoteCountMock = {
+  voteCount: {
+    downvote: 3,
+    upvote: 5,
+    total: 2,
+    userVote: 1,
+  },
+  disabled: true,
+}
+
 const onClick = vi.fn()
 
 describe('Vote counter molecule', () => {
@@ -68,5 +78,27 @@ describe('Vote counter molecule', () => {
     expect(downVoteBtn).toBeInTheDocument()
     expect(screen.getByText('-5')).toBeInTheDocument()
     expect(downVoteBtn).toHaveStyle(`color: ${colors.error}`)
+  })
+
+  it('disables the buttons and sets the opacity correctly when disabled', () => {
+    render(
+      <VoteCounter
+        voteCount={disabledVoteCountMock.voteCount}
+        onClick={onClick}
+        disabled={disabledVoteCountMock.disabled}
+      />
+    )
+
+    const upVoteBtn = screen.getByTestId('increase')
+    const downVoteBtn = screen.getByTestId('decrease')
+
+    expect(upVoteBtn).toBeInTheDocument()
+    expect(downVoteBtn).toBeInTheDocument()
+
+    expect(upVoteBtn).toHaveStyle(`opacity: 0.4`)
+    expect(downVoteBtn).toHaveStyle(`opacity: 0.4`)
+
+    expect(upVoteBtn).toHaveStyle(`cursor: no-drop`)
+    expect(downVoteBtn).toHaveStyle(`cursor: no-drop`)
   })
 })

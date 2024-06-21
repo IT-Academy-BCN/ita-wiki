@@ -1,9 +1,20 @@
 import { vi } from 'vitest'
-import { fireEvent, render, screen, within } from '../test-utils'
+import { fireEvent, render, screen, waitFor, within } from '../test-utils'
 import { ActionsDropdown } from '../../components/molecules'
 import { UserStatus } from '../../types'
+import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
 const mockHandleClick = vi.fn()
+
+beforeEach(() => {
+  vi.mock('../../context/AuthProvider', async () => {
+    const actual = await vi.importActual('../../context/AuthProvider')
+    return {
+      ...actual,
+      useAuth: vi.fn(),
+    }
+  })
+})
 
 afterEach(() => {
   vi.restoreAllMocks()
@@ -11,6 +22,13 @@ afterEach(() => {
 
 describe('ActionsDropdown', () => {
   it('renders correctly', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
     render(
       <ActionsDropdown
         selectedStatus={undefined}
@@ -27,7 +45,15 @@ describe('ActionsDropdown', () => {
     expect(screen.getByTitle(/obre/i)).toBeInTheDocument()
   })
 
-  it('renders corresponding actions when users selected and returns selected action to parent', () => {
+  it('renders corresponding actions when users selected "active" and returns selected action to parent', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
+
     render(
       <ActionsDropdown
         selectedStatus={UserStatus.ACTIVE}
@@ -42,13 +68,187 @@ describe('ActionsDropdown', () => {
 
     fireEvent.click(actionsHeader)
 
-    const blockOption = screen.getByTestId('BLOCKED')
-    expect(blockOption).toBeInTheDocument()
-    expect(screen.getByTestId('DELETE')).toBeInTheDocument()
+    waitFor(() => {
+      const blockOption = screen.queryByTestId('BLOCKED')!
+      expect(blockOption).toBeInTheDocument()
+      expect(screen.queryByTestId('DELETE')).toBeInTheDocument()
 
-    fireEvent.click(blockOption)
+      fireEvent.click(blockOption)
+      expect(actionsHeader).toHaveTextContent(/bloquejar/i)
+      expect(mockHandleClick).toHaveBeenCalledWith(UserStatus.BLOCKED)
+    })
+  })
 
-    expect(actionsHeader).toHaveTextContent(/bloquejar/i)
-    expect(mockHandleClick).toHaveBeenCalledWith(UserStatus.BLOCKED)
+  it('renders corresponding actions when users selected "pending" and returns selected action to parent', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
+
+    render(
+      <ActionsDropdown
+        selectedStatus={UserStatus.PENDING}
+        handleAction={mockHandleClick}
+        isActionFinished={false}
+      />
+    )
+
+    const actionsHeader = screen.getByTestId('dropdown-header')
+
+    expect(actionsHeader).toHaveTextContent(/accions/i)
+
+    fireEvent.click(actionsHeader)
+
+    waitFor(() => {
+      const blockOption = screen.queryByTestId('BLOCKED')!
+      expect(blockOption).toBeInTheDocument()
+      expect(screen.queryByTestId('DELETE')).toBeInTheDocument()
+
+      fireEvent.click(blockOption)
+      expect(actionsHeader).toHaveTextContent(/bloquejar/i)
+      expect(mockHandleClick).toHaveBeenCalledWith(UserStatus.BLOCKED)
+    })
+  })
+
+  it('renders corresponding actions when users selected "blocked" and returns selected action to parent', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
+
+    render(
+      <ActionsDropdown
+        selectedStatus={UserStatus.BLOCKED}
+        handleAction={mockHandleClick}
+        isActionFinished={false}
+      />
+    )
+
+    const actionsHeader = screen.getByTestId('dropdown-header')
+
+    expect(actionsHeader).toHaveTextContent(/accions/i)
+
+    fireEvent.click(actionsHeader)
+
+    waitFor(() => {
+      const blockOption = screen.queryByTestId('BLOCKED')!
+      expect(blockOption).toBeInTheDocument()
+      expect(screen.queryByTestId('DELETE')).toBeInTheDocument()
+
+      fireEvent.click(blockOption)
+      expect(actionsHeader).toHaveTextContent(/bloquejar/i)
+      expect(mockHandleClick).toHaveBeenCalledWith(UserStatus.BLOCKED)
+    })
+  })
+
+  it('renders corresponding option if mentor selects "active" user', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'MENTOR',
+      },
+    } as TAuthContext)
+
+    render(
+      <ActionsDropdown
+        selectedStatus={UserStatus.ACTIVE}
+        handleAction={mockHandleClick}
+        isActionFinished={false}
+      />
+    )
+
+    const actionsHeader = screen.getByTestId('dropdown-header')
+
+    expect(actionsHeader).toHaveTextContent(/accions/i)
+
+    fireEvent.click(actionsHeader)
+
+    waitFor(() => {
+      const blockOption = screen.queryByTestId('BLOCKED')!
+      expect(blockOption).toBeInTheDocument()
+      expect(screen.getByTestId('DELETE')).not.toBeInTheDocument()
+
+      fireEvent.click(blockOption)
+
+      expect(actionsHeader).toHaveTextContent(/bloquejar/i)
+      expect(mockHandleClick).toHaveBeenCalledWith(UserStatus.BLOCKED)
+    })
+  })
+
+  it('renders corresponding option if mentor selects "pending" user', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'MENTOR',
+      },
+    } as TAuthContext)
+
+    render(
+      <ActionsDropdown
+        selectedStatus={UserStatus.PENDING}
+        handleAction={mockHandleClick}
+        isActionFinished={false}
+      />
+    )
+
+    const actionsHeader = screen.getByTestId('dropdown-header')
+
+    expect(actionsHeader).toHaveTextContent(/accions/i)
+
+    fireEvent.click(actionsHeader)
+
+    waitFor(() => {
+      const blockOption = screen.queryByTestId('BLOCKED')!
+      expect(blockOption).toBeInTheDocument()
+      expect(screen.getByTestId('DELETE')).not.toBeInTheDocument()
+
+      fireEvent.click(blockOption)
+
+      expect(actionsHeader).toHaveTextContent(/bloquejar/i)
+      expect(mockHandleClick).toHaveBeenCalledWith(UserStatus.BLOCKED)
+    })
+  })
+
+  it('renders corresponding option if mentor selects "blocked" user', () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'MENTOR',
+      },
+    } as TAuthContext)
+
+    render(
+      <ActionsDropdown
+        selectedStatus={UserStatus.BLOCKED}
+        handleAction={mockHandleClick}
+        isActionFinished={false}
+      />
+    )
+
+    const actionsHeader = screen.getByTestId('dropdown-header')
+
+    expect(actionsHeader).toHaveTextContent(/accions/i)
+
+    fireEvent.click(actionsHeader)
+
+    waitFor(() => {
+      const blockOption = screen.queryByTestId('BLOCKED')!
+      expect(blockOption).toBeInTheDocument()
+      expect(screen.getByTestId('DELETE')).not.toBeInTheDocument()
+
+      fireEvent.click(blockOption)
+
+      expect(actionsHeader).toHaveTextContent(/bloquejar/i)
+      expect(mockHandleClick).toHaveBeenCalledWith(UserStatus.BLOCKED)
+    })
   })
 })

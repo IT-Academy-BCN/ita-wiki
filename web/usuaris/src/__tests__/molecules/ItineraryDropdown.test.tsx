@@ -3,8 +3,19 @@ import { fireEvent, render, screen, waitFor } from '../test-utils'
 import { ItineraryDropdown } from '../../components/molecules'
 import { server } from '../../__mocks__/server'
 import { errorHandlers } from '../../__mocks__/handlers'
+import { TAuthContext, useAuth } from '../../context/AuthProvider'
 
 const mockHandleClick = vi.fn()
+
+beforeEach(() => {
+  vi.mock('../../context/AuthProvider', async () => {
+    const actual = await vi.importActual('../../context/AuthProvider')
+    return {
+      ...actual,
+      useAuth: vi.fn(),
+    }
+  })
+})
 
 afterEach(() => {
   vi.restoreAllMocks()
@@ -13,6 +24,13 @@ afterEach(() => {
 
 describe('ItineraryDropdown', () => {
   it('renders correctly', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
     render(<ItineraryDropdown handleItinerary={mockHandleClick} />)
 
     const spinnerComponent = screen.queryByTestId('spinner') as HTMLDivElement
@@ -25,6 +43,13 @@ describe('ItineraryDropdown', () => {
   })
 
   it('renders all itineraries with logo and returns selected option to parent', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
     render(<ItineraryDropdown handleItinerary={mockHandleClick} />)
 
     const spinnerComponent = screen.queryByTestId('spinner') as HTMLDivElement
@@ -56,6 +81,13 @@ describe('ItineraryDropdown', () => {
   })
 
   it('should return undefined to parent when user deselects option', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
     render(<ItineraryDropdown handleItinerary={mockHandleClick} />)
 
     const spinnerComponent = screen.queryByTestId('spinner') as HTMLDivElement
@@ -96,6 +128,13 @@ describe('ItineraryDropdown', () => {
   })
 
   it('renders correctly on error', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'ADMIN',
+      },
+    } as TAuthContext)
     server.use(...errorHandlers)
     render(<ItineraryDropdown handleItinerary={mockHandleClick} />)
 
@@ -105,6 +144,24 @@ describe('ItineraryDropdown', () => {
 
     await waitFor(() => {
       expect(screen.getByText(/hi ha hagut un error.../i)).toBeInTheDocument()
+    })
+  })
+
+  it('disables itinerary filter when user mentor is logged', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        dni: '12345678A',
+        email: 'user@example.cat',
+        role: 'MENTOR',
+      },
+    } as TAuthContext)
+
+    render(<ItineraryDropdown handleItinerary={mockHandleClick} />)
+
+    await waitFor(() => {
+      const dropdownItinerary = screen.getByTestId('dropdown-header')
+      expect(dropdownItinerary).toBeInTheDocument()
+      expect(dropdownItinerary).toBeDisabled()
     })
   })
 })

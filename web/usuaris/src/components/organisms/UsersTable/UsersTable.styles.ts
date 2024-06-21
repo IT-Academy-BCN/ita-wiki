@@ -24,7 +24,6 @@ export const DisabledStyled = styled.div<TDisabled>`
   }};
 `
 
-
 type TStatusStyled = {
   status: UserStatus
   isDeleted: boolean

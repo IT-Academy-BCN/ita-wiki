@@ -17,6 +17,7 @@ import {
   StatusStyled,
   TableContainer,
 } from './UsersTable.styles'
+import { useAuth } from '../../../context/AuthProvider'
 
 type TUsersTable = {
   filtersSelected: TFilters | Record<string, never>
@@ -44,6 +45,8 @@ export const UsersTable: FC<TUsersTable> = ({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   const [idToDelete, setIdToDelete] = useState<string>('')
+
+  const { user } = useAuth()
 
   useEffect(() => {
     setFilters(filtersSelected)
@@ -87,7 +90,7 @@ export const UsersTable: FC<TUsersTable> = ({
     if (e.target.checked) {
       setSelectedStatus(status)
       const userSelected: TUserData | undefined = users?.find(
-        (user) => user.id === id
+        (u) => u.id === id
       )
       const addUsers = [...selectedUsersIds]
       if (userSelected) {
@@ -98,10 +101,8 @@ export const UsersTable: FC<TUsersTable> = ({
       return addUsers
     }
 
-    const userUnselected = users?.find((user) => user.id === id)
-    const removeUsers = selectedUsersIds.filter(
-      (user) => user !== userUnselected?.id
-    )
+    const userUnselected = users?.find((u) => u.id === id)
+    const removeUsers = selectedUsersIds.filter((u) => u !== userUnselected?.id)
     setSelectedUsersIds(removeUsers)
 
     return removeUsers
@@ -242,18 +243,20 @@ export const UsersTable: FC<TUsersTable> = ({
             >
               {buttonTxt}
             </ButtonStyled>
-            <DeleteButton
-              data-testid="delete-button"
-              size="small"
-              outline
-              disabled={isDisabled}
-              onClick={() => {
-                setIdToDelete(id)
-                setIsModalOpen(!isModalOpen)
-              }}
-            >
-              <DeleteIcon src={icons.deleteIcon} alt="delete-icon" />
-            </DeleteButton>
+            {user?.role === UserRole.ADMIN && (
+              <DeleteButton
+                data-testid="delete-button"
+                size="small"
+                outline
+                disabled={isDisabled}
+                onClick={() => {
+                  setIdToDelete(id)
+                  setIsModalOpen(!isModalOpen)
+                }}
+              >
+                <DeleteIcon src={icons.deleteIcon} alt="delete-icon" />
+              </DeleteButton>
+            )}
           </ActionsContainer>
         )
       },
