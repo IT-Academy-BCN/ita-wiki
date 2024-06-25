@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+### Fixed
+
+## [0.36.1] - 2024-06-25
+
+- Fixed backgroundImg of CardHome
+
 ### Added
 
 ## [0.36.0] - 2024-06-03
