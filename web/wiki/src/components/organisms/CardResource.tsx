@@ -130,6 +130,10 @@ export const CardResource: FC<TCardResource> = ({
       return
     }
 
+    if (castVote?.isLoading) {
+      return
+    }
+
     if (
       (voteCount?.userVote === 1 && vote === 'up') ||
       (voteCount?.userVote === -1 && vote === 'down')
