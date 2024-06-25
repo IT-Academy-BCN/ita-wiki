@@ -3,12 +3,18 @@
 All notable changes to this project will be documented in this file.
 
 
-## [0.20.1] - 2024-05-29
+## [0.20.2] - 2024-06-25
 
 ### Fixed
 
 - Fix vote race codition
 
+## [0.20.1] - 2024-06-06
+
+###  Fixed
+
+- Fixed missing resourceType error message
+- Fixed error message translations
 
 ## [0.20.0] - 2024-05-28
 
