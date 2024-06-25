@@ -20,6 +20,7 @@ afterEach(() => {
 afterAll(() => {
   server.close()
 })
+
 describe('useCreateResource hook', () => {
   const reload = vi.fn(() => reloadPage)
 
@@ -32,6 +33,7 @@ describe('useCreateResource hook', () => {
       reloadPage: reload,
     }
   })
+
   beforeEach(() => {
     vi.mock('react-router-dom', async () => {
       const actual: Record<number, unknown> = await vi.importActual(
@@ -42,6 +44,7 @@ describe('useCreateResource hook', () => {
       }
     })
   })
+
   it('should initialize the useCreateResource hook correctly', async () => {
     const { result } = renderHook(() => useCreateResource(), {
       wrapper: ({ children }) => (
@@ -54,9 +57,10 @@ describe('useCreateResource hook', () => {
     expect(result.current.createResource).toBeDefined()
     expect(result.current.isLoading).toBe(false)
     expect(result.current.isSuccess).toBe(false)
+    expect(result.current.createResource.error).toBe(null)
   })
 
-  it.skip('should call createResourceFetcher on resource creation', async () => {
+  it('should call createResourceFetcher on resource creation', async () => {
     const { result } = renderHook(() => useCreateResource(), {
       wrapper: ({ children }) => (
         <QueryClientProvider client={queryClient}>
@@ -66,7 +70,7 @@ describe('useCreateResource hook', () => {
     })
 
     act(() => {
-      result.current.createResource.mutateAsync({
+      result.current.createResource.mutate({
         title: 'title',
         description: 'description',
         url: 'url',
@@ -80,6 +84,7 @@ describe('useCreateResource hook', () => {
       expect(result.current.createResource).toBeTruthy()
       expect(result.current.createResource.isLoading).toBe(false)
       expect(result.current.createResource.isSuccess).toBe(true)
+      expect(result.current.createResource.error).toBe(null)
     })
   })
 })

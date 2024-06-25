@@ -122,6 +122,7 @@
   "Error 404 - No se puede guardar": "Error en desar a la base de dades. Si us plau, torna a intentar-ho i si l'error persisteix, contacta amb l'administrador.",
   "Error 404 - Usuario no encontrado.": "Usuari no trobat.",
   "Error 405 - Id de usuario inválido": "Identificador d'usuari no vàlid.",
+  "Error 409 - El recurso ya existe": "Aquest recurs ja existeix. Si us plau, introdueix un recurs diferent.",
   "Error 500 - Error bbdd": "Error en la base de dades. Per favor, intenta-ho més tard.",
   "Error inesperado": "Error inesperat. Per favor, intenta-ho més tard.",
 

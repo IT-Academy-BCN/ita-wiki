@@ -121,6 +121,7 @@
   "Error 404 - No se puede guardar": "Error saving to database. Please try again and if the error persists, contact the administrator.",
   "Error 404 - Usuario no encontrado.": "User not found.",
   "Error 405 - Id de usuario inválido": "Invalid user ID.",
+  "Error 409 - El recurso ya existe": "This resource already exists. Please enter a different resource.",
   "Error 500 - Error bbdd": "Database error. Please try again later.",
   "Error 503 - Servicio no disponible": "Service unavailable. Please try again later.",
   "Error inesperado": "An unexpected error occurred. Please try again later.",
