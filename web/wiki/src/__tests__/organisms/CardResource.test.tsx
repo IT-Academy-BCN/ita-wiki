@@ -246,4 +246,44 @@ describe('CardResource component', () => {
       expect(queryResourcesByUserUpdated[0].voteCount.total).toBe(123)
     })
   })
+
+  it('disables upVote when isLoading is true', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Test author name',
+        avatarId: 'profileAvatar.jpg',
+      },
+    } as TAuthContext)
+
+    render(<CardResource {...mockCardResource} />)
+
+    const upvoteBtn = screen.getByTestId('increase')
+    expect(upvoteBtn).toBeInTheDocument()
+
+    fireEvent.click(upvoteBtn)
+
+    await waitFor(() => {
+      expect(screen.getByText('124')).toBeInTheDocument()
+    })
+  })
+
+  it('disables downVote when isLoading is true', async () => {
+    vi.mocked(useAuth).mockReturnValue({
+      user: {
+        name: 'Test author name',
+        avatarId: 'profileAvatar.jpg',
+      },
+    } as TAuthContext)
+
+    render(<CardResource {...mockCardResource} />)
+
+    const downvoteBtn = screen.getByTestId('decrease')
+    expect(downvoteBtn).toBeInTheDocument()
+
+    fireEvent.click(downvoteBtn)
+
+    await waitFor(() => {
+      expect(screen.getByText('124')).toBeInTheDocument()
+    })
+  })
 })
