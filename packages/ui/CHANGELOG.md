@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+### Added
+
+## [0.36.0] - 2024-06-03
+
+- Added prop disabled to VoteCounter
+
+## [0.35.1] - 2024-06-18
+
+### Changed
+
+- Added debounceDelay as prop to Search
+
 ## [0.35.0] - 2024-06-10
 
 ### Added

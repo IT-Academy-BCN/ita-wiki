@@ -1,5 +1,5 @@
 info:
-  version: 1.30.0
+  version: 1.33.1
   title: IT Academy SSO Service
   description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
@@ -837,9 +837,16 @@ paths:
                     minLength: 1
                     format: email
                     example: user@example.cat
+                  role:
+                    type: string
+                    enum:
+                      - ADMIN
+                      - MENTOR
+                      - REGISTERED
                 required:
                   - dni
                   - email
+                  - role
         "401":
           description: Invalid Credentials error
           content:
@@ -917,7 +924,10 @@ paths:
     patch:
       tags:
         - dashboard
-      description: Updates specific fields of a user.
+      description: Updates specific fields of a user. Mentors can only update users
+        from the same itinerary, can only update registered users, and cannot
+        modify the role or status fields. Mentors can update their own
+        information except for the role and status fields.
       summary: Update user information
       security:
         - cookieAuth: []
@@ -990,6 +1000,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/InvalidCredentialsError"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Mentors can only update users from the same itinerary
+                required:
+                  - message
         "404":
           description: User not found
           content:
