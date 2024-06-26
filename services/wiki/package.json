@@ -1,7 +1,7 @@
 {
   "name": "service_wiki",
   "private": true,
-  "version": "0.16.1",
+  "version": "0.17.0",
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
@@ -54,7 +54,6 @@
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "4.5.0",
     "@koa/cors": "5.0.0",
-    "@koa/multer": "^3.0.2",
     "@koa/router": "12.0.0",
     "@prisma/client": "^4.12.0",
     "bcrypt": "5.1.0",

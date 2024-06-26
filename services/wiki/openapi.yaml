@@ -308,9 +308,6 @@ paths:
                     enum:
                       - ACTIVE
                       - INACTIVE
-                  avatarId:
-                    type: string
-                    nullable: true
                 required:
                   - id
                   - dni
@@ -717,9 +714,6 @@ paths:
                       properties:
                         name:
                           type: string
-                        avatarId:
-                          type: string
-                          nullable: true
                     isAuthor:
                       type: boolean
                     voteCount:
@@ -1722,9 +1716,6 @@ paths:
                       type: string
                     name:
                       type: string
-                    avatarId:
-                      type: string
-                      nullable: true
                     itineraryId:
                       type: string
                       minLength: 1

@@ -5,7 +5,6 @@ const basePatchSchema = userSchema.pick({ id: true })
 const optionalUserSchema = userSchema
   .omit({
     id: true,
-    avatarId: true,
     specialization: true,
     updatedAt: true,
     createdAt: true,

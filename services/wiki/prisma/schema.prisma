@@ -10,8 +10,7 @@ datasource db {
 model User {
   id               String           @id @default(cuid())
   resources        Resource[]
-  media            Media[]
-  avatarId         String?          @unique @map("avatar_id")
+  media            Media[]  
   favorite         Favorites[]
   viewed           ViewedResource[]
   vote             Vote[]

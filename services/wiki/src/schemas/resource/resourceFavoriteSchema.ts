@@ -11,7 +11,6 @@ export const resourceFavoriteSchema = resourceSchema
   .extend({
     user: z.object({
       name: z.string().optional(),
-      avatarId: z.string().nullable().optional(),
     }),
     isAuthor: z.boolean(),
     voteCount: voteCountSchema,

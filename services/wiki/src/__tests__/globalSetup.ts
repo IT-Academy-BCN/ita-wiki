@@ -17,7 +17,6 @@ export const testUserData = {
     password: 'testingPswd5',
     role: UserRole.REGISTERED,
     status: UserStatus.ACTIVE,
-    avatarId: null,
   },
   user: {
     id: 'vwt15uwddul2afme75x6fs8q',
@@ -27,7 +26,6 @@ export const testUserData = {
     password: 'testingPswd1',
     role: UserRole.REGISTERED,
     status: UserStatus.ACTIVE,
-    avatarId: null,
   },
   admin: {
     id: 'ph4c1vq7s4hszoxbbwx4c2wd',
@@ -37,7 +35,6 @@ export const testUserData = {
     password: 'testingPswd2',
     role: UserRole.ADMIN,
     status: UserStatus.ACTIVE,
-    avatarId: null,
   },
   mentor: {
     id: 'qhpw2d4fykgcwiveh7mhfc3l',
@@ -47,7 +44,6 @@ export const testUserData = {
     password: 'testingPswd4',
     role: UserRole.MENTOR,
     status: UserStatus.ACTIVE,
-    avatarId: null,
   },
   inactiveUser: {
     id: 'wo3i34m29rhke1ptcwtmy3t2',
@@ -57,7 +53,6 @@ export const testUserData = {
     password: 'testingPswd3',
     role: UserRole.REGISTERED,
     status: UserStatus.INACTIVE,
-    avatarId: null,
   },
 }
 export const testCategoryData = {
