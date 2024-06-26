@@ -18,7 +18,9 @@ const CardContainer = styled(FlexBox)`
 
 type CardHomeProp = Pick<TCardHome, 'backgroundImg'>
 
-const IndicatorStyled = styled(FlexBox)<CardHomeProp>`
+const IndicatorStyled = styled(FlexBox).withConfig({
+  shouldForwardProp: (prop) => !['backgroundImg'].includes(prop),
+})<CardHomeProp>`
   position: absolute;
   left: 0px;
   top: 0px;
