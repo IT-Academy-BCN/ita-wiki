@@ -38,7 +38,7 @@ export const getResourcesByUserId: Middleware = async (ctx: Koa.Context) => {
     })
     resources = await prisma.resource.findMany({
       where: {
-        userId: user.id,
+        user: { id: { equals: user.id } },
         topics: {
           some: {
             topicId: {
