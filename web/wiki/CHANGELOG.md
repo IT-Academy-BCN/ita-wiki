@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.21.0] - 2024-06-25
+
+### Added
+
+- Added OpenApi implementation to generate types, fetchers and queries
+
 ## [0.20.2] - 2024-06-16
 
 ### Fixed
