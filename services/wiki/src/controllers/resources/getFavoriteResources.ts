@@ -41,7 +41,7 @@ export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
   const resourcesWithUserName = await attachUserNamesToResources(resources)
 
   const resourcesWithIsAuthor = resourcesWithUserName.map((resource) => {
-    const isAuthor = resource.userId === user.id
+    const isAuthor = resource.user.id === user.id
     return { ...resource, isAuthor }
   })
 

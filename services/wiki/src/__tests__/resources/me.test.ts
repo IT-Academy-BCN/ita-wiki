@@ -153,6 +153,7 @@ describe('Testing resources/me endpoint', () => {
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}/me`)
       .set('Cookie', [`authToken=${authToken.user}`])
+
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -163,7 +164,10 @@ describe('Testing resources/me endpoint', () => {
             userVote: 1,
           }),
           isFavorite: true,
-          userId: user!.id,
+          user: expect.objectContaining({
+            name: expect.any(String),
+            id: user?.id,
+          }),
         }),
       ])
     )
