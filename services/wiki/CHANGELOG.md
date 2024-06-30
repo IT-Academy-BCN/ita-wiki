@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.18.0] - 2024-06-26
+
+### Changed
+
+- `GET resources` `GET resources/favorites` `GET resources/{resourceId}` `GET resources/me` endpoints, `userId` has been nested in `user` object as `id`
+
 ## [0.17.0] - 2024-06-25
 
 ### Fix
