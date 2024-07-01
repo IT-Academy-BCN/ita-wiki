@@ -14,6 +14,7 @@ registry.registerPath({
   method: 'patch',
   tags: ['users'],
   path: `${pathRoot.v1.users}`,
+  operationId: 'patchUsersById',
   description: 'Allows a logged in ADMIN user to modify another user.',
   summary: 'Patch a user.',
   security: [{ [cookieAuth.name]: [] }],

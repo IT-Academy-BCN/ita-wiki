@@ -8,6 +8,7 @@ registry.registerPath({
   method: 'patch',
   tags: ['resources'],
   path: `${pathRoot.v1.resources}`,
+  operationId: 'patchResources',
   description: 'Allows a logged in user to modify his resources.',
   summary: 'Patch a resource',
   security: [{ [cookieAuth.name]: [] }],

@@ -11,6 +11,7 @@ registry.registerPath({
   method: 'get',
   tags: ['vote'],
   path: `${pathRoot.v1.vote}/{resourceId}`,
+  operationId: 'listVotes',
   description:
     'Retrieve a detailed vote count for a specified resource, including the number of upvotes, downvotes, and the overall vote balance.',
   summary: 'Fetch detailed vote statistics for a resource.',

@@ -12,6 +12,7 @@ registry.registerPath({
   method: 'post',
   tags: ['auth'],
   path: `${pathRoot.v1.auth}/register`,
+  operationId: 'postRegister',
   description:
     'Takes a DNI, a password, a name and an email an registers a user to the system',
   summary: 'Registers a new user',

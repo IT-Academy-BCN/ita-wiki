@@ -7,6 +7,7 @@ registry.registerPath({
   method: 'get',
   tags: ['itinerary'],
   path: `${pathRoot.v1.itinerary}`,
+  operationId: 'listItineraries',
   description: 'Fetches all available itineraries',
   summary: 'Get all itineraries',
   responses: {

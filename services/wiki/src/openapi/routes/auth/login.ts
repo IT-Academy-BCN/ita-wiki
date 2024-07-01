@@ -14,6 +14,7 @@ registry.registerPath({
   method: 'post',
   tags: ['auth'],
   path: `${pathRoot.v1.auth}/login`,
+  operationId: 'postLogin',
   description: 'Takes a DNI and a password and returns a session cookie',
   summary: 'Logs in a user',
   request: {

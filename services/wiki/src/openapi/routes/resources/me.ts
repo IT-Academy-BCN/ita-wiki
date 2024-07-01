@@ -12,6 +12,7 @@ registry.registerPath({
   method: 'get',
   tags: ['resources'],
   path: `${pathRoot.v1.resources}/me`,
+  operationId: 'listUserMeResources',
   summary: 'Get resources by logged in user',
   description:
     'Returns all the posted resources by a logged in user. In addition, if categorySlug query provided, returns only the resources posted in that category.',

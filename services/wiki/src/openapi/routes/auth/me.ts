@@ -14,6 +14,7 @@ registry.registerPath({
   method: 'get',
   tags: ['auth'],
   path: `${pathRoot.v1.auth}/me`,
+  operationId: 'getMe',
   description:
     'Returns information of a logged in user. Token recieved in the login necessary.',
   summary: 'Get user information',
