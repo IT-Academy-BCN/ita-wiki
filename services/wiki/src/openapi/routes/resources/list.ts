@@ -11,6 +11,7 @@ registry.registerPath({
   method: 'get',
   tags: ['resources'],
   path: `${pathRoot.v1.resources}`,
+  operationId: 'listResources',
   description:
     'Returns a collection of resources. Filters by resource type, topic name and category slug are optional. Resources that match all filters are fetched.',
   summary: 'Returns a collection of resources',
