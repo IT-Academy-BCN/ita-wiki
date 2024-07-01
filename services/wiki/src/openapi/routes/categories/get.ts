@@ -6,6 +6,7 @@ registry.registerPath({
   method: 'get',
   tags: ['categories'],
   path: `${pathRoot.v1.categories}`,
+  operationId: 'listCategories',
   description: 'Get all categories saved in the database',
   summary: 'Get all categories',
   responses: {
