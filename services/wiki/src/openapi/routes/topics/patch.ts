@@ -10,6 +10,7 @@ registry.registerPath({
   method: 'patch',
   tags: ['topics'],
   path: `${pathRoot.v1.topics}`,
+  operationId: 'patchTopics',
   description:
     'Modifies an existing topic. The requestor has to be logged in and with role MENTOR or higher.',
   summary: 'Patch a topic.',

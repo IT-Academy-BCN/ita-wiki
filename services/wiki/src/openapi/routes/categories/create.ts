@@ -10,6 +10,7 @@ registry.registerPath({
   method: 'post',
   tags: ['categories'],
   path: `${pathRoot.v1.categories}`,
+  operationId: 'postCategories',
   description:
     'Creates a new category. The requestor has to be logged in and with role ADMIN.',
   summary: 'Creates a new category.',
