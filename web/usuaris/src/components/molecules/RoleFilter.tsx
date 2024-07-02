@@ -10,8 +10,9 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useLocation } from 'react-router-dom'
 import { TRole, UserRole } from '../../types'
-import { paths, roles } from '../../constants'
+import { paths } from '../../constants'
 import { useAuth } from '../../context/AuthProvider'
+import { useRoles } from '../../hooks'
 
 const StyledDropdown = styled(Dropdown)`
   && button {
@@ -40,6 +41,7 @@ export const RoleFilter: FC<TRoleFilter> = ({ handleRole }) => {
   const { t } = useTranslation()
   const { pathname } = useLocation()
   const { user } = useAuth()
+  const { roles } = useRoles()
 
   const handleSelectedValue = (selectedOption: TDropdownOption | undefined) => {
     if (selectedOption) {

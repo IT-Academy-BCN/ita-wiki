@@ -10,6 +10,7 @@ registry.registerPath({
   method: 'get',
   tags: ['users'],
   path: `${pathRoot.v1.users}`,
+  operationId: 'listUsers',
   description:
     'Returns information of all users. User must be ADMIN and logged in.',
   summary: 'Get all users',

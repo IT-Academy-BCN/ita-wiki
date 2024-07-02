@@ -12,6 +12,7 @@ registry.registerPath({
   method: 'get',
   tags: ['resources'],
   path: `${pathRoot.v1.resources}/{resourceId}`,
+  operationId: 'getResourcesById',
   summary: 'Returns a resource by its ID',
   description:
     'Takes in a valid resource ID and returns the resource related to it.',

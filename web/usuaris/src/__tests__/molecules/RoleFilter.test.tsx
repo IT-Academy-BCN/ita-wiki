@@ -1,9 +1,11 @@
 import { vi } from 'vitest'
-import { fireEvent, render, screen, waitFor } from '../test-utils'
+import { I18nextProvider } from 'react-i18next'
+import { fireEvent, render, renderHook, screen, waitFor } from '../test-utils'
 import { RoleFilter } from '../../components/molecules/RoleFilter'
 import { UserRole } from '../../types'
-import { roles } from '../../constants'
+import { useRoles } from '../../hooks'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
+import i18n from '../../i18n'
 
 const mockHandleClick = vi.fn()
 
@@ -27,7 +29,7 @@ describe('RolesFilter', () => {
       user: {
         dni: '12345678A',
         email: 'user@example.cat',
-        role: 'ADMIN',
+        role: UserRole.ADMIN,
       },
     } as TAuthContext)
 
@@ -41,21 +43,27 @@ describe('RolesFilter', () => {
       user: {
         dni: '12345678A',
         email: 'user@example.cat',
-        role: 'ADMIN',
+        role: UserRole.ADMIN,
       },
     } as TAuthContext)
 
     render(<RoleFilter handleRole={mockHandleClick} />)
 
+    const { result } = renderHook(() => useRoles(), {
+      wrapper: ({ children }) => (
+        <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
+      ),
+    })
+
     const dropdown = screen.getByTestId('dropdown-header')
 
     fireEvent.click(dropdown)
 
-    const promises = roles.map((role) =>
-      waitFor(() => screen.getByTestId(role.id))
-    )
-
-    await Promise.all(promises)
+    await waitFor(() => {
+      result.current.roles.forEach((role) =>
+        expect(screen.getByTestId(role.id)).toBeInTheDocument()
+      )
+    })
   })
 
   it('calls handleRole with the correct role when an option is clicked', () => {
@@ -63,7 +71,7 @@ describe('RolesFilter', () => {
       user: {
         dni: '12345678A',
         email: 'user@example.cat',
-        role: 'ADMIN',
+        role: UserRole.ADMIN,
       },
     } as TAuthContext)
 
@@ -89,7 +97,7 @@ describe('RolesFilter', () => {
       user: {
         dni: '12345678A',
         email: 'user@example.cat',
-        role: 'MENTOR',
+        role: UserRole.MENTOR,
       },
     } as TAuthContext)
 

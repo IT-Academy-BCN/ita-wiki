@@ -11,6 +11,7 @@ registry.registerPath({
   method: 'get',
   tags: ['resources'],
   path: `${pathRoot.v1.resources}/favorites`,
+  operationId: 'listFavoritesResources',
   description: 'Retrieves the users favorite resources when logged in',
   summary: 'Returns favorite resources by user and category',
   parameters: [

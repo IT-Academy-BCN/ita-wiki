@@ -9,6 +9,7 @@ registry.registerPath({
   method: 'post',
   tags: ['seen'],
   path: `${pathRoot.v1.seen}/{resourceId}`,
+  operationId: 'postUserSeenResourcesById',
   description: 'Allows a logged in user to mark a resource as viewed.',
   summary: 'Mark a resource as viewed',
   security: [{ [cookieAuth.name]: [] }],
