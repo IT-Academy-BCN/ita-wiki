@@ -134,9 +134,9 @@ export const CardResource: FC<TCardResource> = ({
       (voteCount?.userVote === 1 && vote === 'up') ||
       (voteCount?.userVote === -1 && vote === 'down')
     ) {
-      castVote.mutate({ resourceId: id, vote: 'cancel' })
+      castVote?.mutate({ resourceId: id, vote: 'cancel' })
     } else {
-      castVote.mutate({ resourceId: id, vote })
+      castVote?.mutate({ resourceId: id, vote })
     }
   }
 
@@ -151,7 +151,11 @@ export const CardResource: FC<TCardResource> = ({
     >
       {voteCount && (
         <CounterContainerStyled>
-          <VoteCounter voteCount={voteCount} onClick={handleClick} />
+          <VoteCounter
+            voteCount={voteCount}
+            onClick={handleClick}
+            disabled={castVote.isLoading}
+          />
         </CounterContainerStyled>
       )}
 

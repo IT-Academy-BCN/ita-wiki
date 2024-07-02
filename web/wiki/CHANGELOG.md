@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.20.4] - 2024-06-27
+
+### Changed
+
+- Updated dependences itacademy/ui to fix backgroundImg warning
+
+## [0.20.3] - 2024-06-25
+
+### Fixed
+
+- Fixed vote race condition
+
 ## [0.20.2] - 2024-06-16
 
 ### Fixed

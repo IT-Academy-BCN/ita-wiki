@@ -1,5 +1,5 @@
 info:
-  version: 0.16.0
+  version: 0.18.1
   title: IT Academy Wiki
   description: Our app implements a Wiki to be used as a knowledge base by the
     students of the Barcelona Activa's IT Academy
@@ -138,6 +138,7 @@ paths:
     post:
       tags:
         - auth
+      operationId: postLogin
       description: Takes a DNI and a password and returns a session cookie
       summary: Logs in a user
       requestBody:
@@ -203,6 +204,7 @@ paths:
     post:
       tags:
         - auth
+      operationId: postRegister
       description: Takes a DNI, a password, a name and an email an registers a user to
         the system
       summary: Registers a new user
@@ -274,6 +276,7 @@ paths:
     get:
       tags:
         - auth
+      operationId: getMe
       description: Returns information of a logged in user. Token recieved in the
         login necessary.
       summary: Get user information
@@ -344,6 +347,7 @@ paths:
     get:
       tags:
         - auth
+      operationId: getLogout
       description: Deletes cookie and logouts user
       summary: Logs out user
       responses:
@@ -353,6 +357,7 @@ paths:
     get:
       tags:
         - categories
+      operationId: listCategories
       description: Get all categories saved in the database
       summary: Get all categories
       responses:
@@ -380,6 +385,7 @@ paths:
     post:
       tags:
         - categories
+      operationId: postCategories
       description: Creates a new category. The requestor has to be logged in and with
         role ADMIN.
       summary: Creates a new category.
@@ -432,6 +438,7 @@ paths:
     patch:
       tags:
         - categories
+      operationId: patchCategories
       summary: Patch a category by its ID.
       description: Modifies an existing category. The requestor has to be logged in
         and with role ADMIN.
@@ -493,6 +500,7 @@ paths:
     get:
       tags:
         - topics
+      operationId: listTopics
       description: Returns a list of all topics. Filter by category id or category
         slug possible. If both filters are sent, will only search by category
         id.
@@ -545,6 +553,7 @@ paths:
     post:
       tags:
         - topics
+      operationId: postTopics
       description: Creates a new topic. The requestor has to be logged in and with
         role MENTOR or higher.
       summary: Creates a new topic.
@@ -598,6 +607,7 @@ paths:
     patch:
       tags:
         - topics
+      operationId: patchTopics
       description: Modifies an existing topic. The requestor has to be logged in and
         with role MENTOR or higher.
       summary: Patch a topic.
@@ -656,6 +666,7 @@ paths:
     get:
       tags:
         - resources
+      operationId: listFavoritesResources
       description: Retrieves the users favorite resources when logged in
       summary: Returns favorite resources by user and category
       parameters:
@@ -712,8 +723,12 @@ paths:
                     user:
                       type: object
                       properties:
+                        id:
+                          type: string
                         name:
                           type: string
+                      required:
+                        - id
                     isAuthor:
                       type: boolean
                     voteCount:
@@ -806,6 +821,7 @@ paths:
     get:
       tags:
         - resources
+      operationId: listResources
       description: Returns a collection of resources. Filters by resource type, topic
         name and category slug are optional. Resources that match all filters
         are fetched.
@@ -896,8 +912,6 @@ paths:
                     resourceType:
                       type: string
                       enum: *a2
-                    userId:
-                      type: string
                     categoryId:
                       type: string
                       example: clocr0bi20000h8vwipfbazso
@@ -916,6 +930,10 @@ paths:
                       properties:
                         name:
                           type: string
+                        id:
+                          type: string
+                      required:
+                        - id
                     topics:
                       type: array
                       items:
@@ -984,7 +1002,6 @@ paths:
                     - slug
                     - url
                     - resourceType
-                    - userId
                     - categoryId
                     - createdAt
                     - updatedAt
@@ -1009,6 +1026,7 @@ paths:
     post:
       tags:
         - resources
+      operationId: postResources
       description: Allows a logged in user to post a resource.
       summary: Post a resource
       security:
@@ -1061,6 +1079,7 @@ paths:
     patch:
       tags:
         - resources
+      operationId: patchResources
       description: Allows a logged in user to modify his resources.
       summary: Patch a resource
       security:
@@ -1107,6 +1126,7 @@ paths:
     post:
       tags:
         - seen
+      operationId: postUserSeenResourcesById
       description: Allows a logged in user to mark a resource as viewed.
       summary: Mark a resource as viewed
       security:
@@ -1135,6 +1155,7 @@ paths:
     get:
       tags:
         - resources
+      operationId: getResourcesById
       summary: Returns a resource by its ID
       description: Takes in a valid resource ID and returns the resource related to it.
       parameters:
@@ -1173,8 +1194,6 @@ paths:
                   resourceType:
                     type: string
                     enum: *a2
-                  userId:
-                    type: string
                   categoryId:
                     type: string
                     example: clocr0bi20000h8vwipfbazso
@@ -1193,6 +1212,10 @@ paths:
                     properties:
                       name:
                         type: string
+                      id:
+                        type: string
+                    required:
+                      - id
                   topics:
                     type: array
                     items:
@@ -1261,7 +1284,6 @@ paths:
                   - slug
                   - url
                   - resourceType
-                  - userId
                   - categoryId
                   - createdAt
                   - updatedAt
@@ -1297,6 +1319,7 @@ paths:
     get:
       tags:
         - resources
+      operationId: listUserMeResources
       summary: Get resources by logged in user
       description: Returns all the posted resources by a logged in user. In addition,
         if categorySlug query provided, returns only the resources posted in
@@ -1342,8 +1365,6 @@ paths:
                         resourceType:
                           type: string
                           enum: *a2
-                        userId:
-                          type: string
                         categoryId:
                           type: string
                           example: clocr0bi20000h8vwipfbazso
@@ -1362,6 +1383,10 @@ paths:
                           properties:
                             name:
                               type: string
+                            id:
+                              type: string
+                          required:
+                            - id
                         topics:
                           type: array
                           items:
@@ -1430,7 +1455,6 @@ paths:
                         - slug
                         - url
                         - resourceType
-                        - userId
                         - categoryId
                         - createdAt
                         - updatedAt
@@ -1458,6 +1482,7 @@ paths:
     get:
       tags:
         - vote
+      operationId: listVotes
       description: Retrieve a detailed vote count for a specified resource, including
         the number of upvotes, downvotes, and the overall vote balance.
       summary: Fetch detailed vote statistics for a resource.
@@ -1673,6 +1698,7 @@ paths:
     get:
       tags:
         - types
+      operationId: listResourceTypes
       description: Returns an array of all the resource types
       summary: Returns resource types
       responses:
@@ -1692,6 +1718,7 @@ paths:
     get:
       tags:
         - users
+      operationId: listUsers
       description: Returns information of all users. User must be ADMIN and logged in.
       summary: Get all users
       security:
@@ -1776,6 +1803,7 @@ paths:
     patch:
       tags:
         - users
+      operationId: patchUsersById
       description: Allows a logged in ADMIN user to modify another user.
       summary: Patch a user.
       security:
@@ -1872,6 +1900,7 @@ paths:
     put:
       tags:
         - favorites
+      operationId: putFavorites
       description: Allows a logged in users to add/remove favorite resources.
       summary: Put or delete a favorite resource by userId.
       security:
@@ -1915,6 +1944,7 @@ paths:
     get:
       tags:
         - itinerary
+      operationId: listItineraries
       description: Fetches all available itineraries
       summary: Get all itineraries
       responses:
