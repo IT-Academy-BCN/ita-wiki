@@ -1,28 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { HamburgerMenu } from '../../components/atoms'
-import { FC, useState } from 'react'
 
-type THamburgerMenuForDocs = {
-  open: boolean
-  onClick: () => void
-}
-
-const HamburgerMenuForDocs: FC<THamburgerMenuForDocs> = ({ open, onClick }) => {
-  const [isOpen, setIsOpen] = useState(open)
-  return (
-    <HamburgerMenu
-      open={isOpen || open}
-      onClick={() => {
-        setIsOpen(!isOpen)
-        onClick()
-      }}
-    />
-  )
-}
-
-const meta: Meta<typeof HamburgerMenuForDocs> = {
+const meta: Meta<typeof HamburgerMenu> = {
   title: 'Atoms/HamburgerMenu',
-  component: HamburgerMenuForDocs,
+  component: HamburgerMenu,
   parameters: {
     layout: 'centered',
   },
@@ -34,7 +15,7 @@ const meta: Meta<typeof HamburgerMenuForDocs> = {
 }
 
 export default meta
-type HamburgerMenuStory = StoryObj<typeof HamburgerMenuForDocs>
+type HamburgerMenuStory = StoryObj<typeof HamburgerMenu>
 
 export const Closed: HamburgerMenuStory = {
   args: {
