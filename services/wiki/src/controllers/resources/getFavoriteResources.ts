@@ -30,11 +30,6 @@ export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
       categoryId: true,
       topics: { select: { topic: true } },
       vote: { select: { vote: true, userId: true } },
-      user: {
-        select: {
-          avatarId: true,
-        },
-      },
     },
   })
   if (resources.length === 0) {
@@ -46,7 +41,7 @@ export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
   const resourcesWithUserName = await attachUserNamesToResources(resources)
 
   const resourcesWithIsAuthor = resourcesWithUserName.map((resource) => {
-    const isAuthor = resource.userId === user.id
+    const isAuthor = resource.user.id === user.id
     return { ...resource, isAuthor }
   })
 

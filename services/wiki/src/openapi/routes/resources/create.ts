@@ -8,6 +8,7 @@ registry.registerPath({
   method: 'post',
   tags: ['resources'],
   path: `${pathRoot.v1.resources}`,
+  operationId: 'postResources',
   description: 'Allows a logged in user to post a resource.',
   summary: 'Post a resource',
   security: [{ [cookieAuth.name]: [] }],

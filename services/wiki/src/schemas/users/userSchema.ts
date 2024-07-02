@@ -17,7 +17,6 @@ export const userSchema = z.object({
   dni: dniSchema,
   password: z.string().min(8),
   name: z.string().optional(),
-  avatarId: z.string().optional().nullable(),
   itineraryId: z.string().nonempty().cuid(),
   status: z.nativeEnum(UserStatus),
   role: z.nativeEnum(UserRole),

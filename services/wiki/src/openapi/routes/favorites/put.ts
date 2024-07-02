@@ -13,6 +13,7 @@ registry.registerPath({
   method: 'put',
   tags: ['favorites'],
   path: `${pathRoot.v1.favorites}`,
+  operationId: 'putFavorites',
   description: 'Allows a logged in users to add/remove favorite resources.',
   summary: 'Put or delete a favorite resource by userId.',
   security: [{ [cookieAuth.name]: [] }],

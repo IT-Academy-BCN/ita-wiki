@@ -16,7 +16,6 @@ export const updateUserHandler = http.patch(
       password: 'testingPswd1',
       role: UserRole.REGISTERED,
       status: UserStatus.ACTIVE,
-      avatarId: null,
     }
     const updatedUserData = { ...testUserData, sampleUser }
     const { id } = params

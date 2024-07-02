@@ -8,6 +8,7 @@ registry.registerPath({
   method: 'get',
   tags: ['topics'],
   path: `${pathRoot.v1.topics}`,
+  operationId: 'listTopics',
   description:
     'Returns a list of all topics. Filter by category id or category slug possible. If both filters are sent, will only search by category id.',
   summary: 'Returns topics. Filter by category possible.',

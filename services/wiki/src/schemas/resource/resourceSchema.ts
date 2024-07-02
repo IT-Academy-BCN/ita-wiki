@@ -1,5 +1,4 @@
 import { z } from '../../openapi/zod'
-import { userId } from '../users/userSchema'
 
 export const resourceSchema = z.object({
   id: z.string().cuid(),
@@ -15,7 +14,6 @@ export const resourceSchema = z.object({
     .url()
     .openapi({ example: 'https://tutorials.cat/learn/javascript' }),
   resourceType: z.enum(['BLOG', 'VIDEO', 'TUTORIAL']),
-  userId,
   categoryId: z
     .string()
     .cuid()

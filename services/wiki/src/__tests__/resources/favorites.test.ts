@@ -126,7 +126,6 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
           updatedAt: expect.any(String),
           user: expect.objectContaining({
             name: expect.any(String),
-            avatarId: null,
           }),
           isAuthor: expect.any(Boolean),
           voteCount: expect.objectContaining({
@@ -215,6 +214,7 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
           isAuthor: true,
           user: expect.objectContaining({
             name: testUserData.user.name,
+            id: testUserData.user.id,
           }),
         }),
       ])
