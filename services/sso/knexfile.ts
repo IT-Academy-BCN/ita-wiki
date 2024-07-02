@@ -13,6 +13,9 @@ const config: { [key: string]: Knex.Config } = {
       password: process.env.DB_PASS ?? 'postgres',
       // filename: './dev.sqlite3',
     },
+    migrations: {
+      directory: './migrations',
+    },
   },
 
   // staging: {

@@ -10,8 +10,8 @@ import { errorMiddleware } from './middleware/errorMiddleware'
 import { generateOpenapiFile } from './openapi/generateFile'
 import { openapiFilename, swaggeruiUrl } from './openapi/config'
 import { swaggeruiCSPMiddleware } from './middleware/swaggeruiCSPMiddleware'
-import { appConfig } from './config/index'
-import { client } from './db/client'
+// import { appConfig } from './config/index'
+// import { client } from './db/client'
 
 const app = new Koa()
 
@@ -42,19 +42,19 @@ app.use(swaggeruiCSPMiddleware)
 generateOpenapiFile()
 const spec = yamljs.load(openapiFilename)
 app.use(koaSwagger({ routePrefix: swaggeruiUrl, swaggerOptions: { spec } }))
-client
-  .connect()
-  .then(() => {
-    if (process.env.NODE_ENV !== 'test') {
-      app.listen(appConfig.port, () => {
-        // eslint-disable-next-line no-console
-        console.log(`🚀 Server ready at http://localhost:${appConfig.port}`)
-      })
-    }
-  })
-  .catch((error: unknown) =>
-    // eslint-disable-next-line no-console
-    console.error('Unable to connect to the database:', error)
-  )
+// client
+//   .connect()
+//   .then(() => {
+//     if (process.env.NODE_ENV !== 'test') {
+//       app.listen(appConfig.port, () => {
+//         // eslint-disable-next-line no-console
+//         console.log(`🚀 Server ready at http://localhost:${appConfig.port}`)
+//       })
+//     }
+//   })
+// .catch((error: unknown) =>
+// eslint-disable-next-line no-console
+// console.error('Unable to connect to the database:', error)
+// )
 
 export { app }
