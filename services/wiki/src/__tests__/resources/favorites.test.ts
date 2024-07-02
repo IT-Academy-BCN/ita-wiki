@@ -214,6 +214,7 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
           isAuthor: true,
           user: expect.objectContaining({
             name: testUserData.user.name,
+            id: testUserData.user.id,
           }),
         }),
       ])

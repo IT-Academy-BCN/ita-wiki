@@ -10,6 +10,7 @@ registry.registerPath({
   method: 'post',
   tags: ['topics'],
   path: `${pathRoot.v1.topics}`,
+  operationId: 'postTopics',
   description:
     'Creates a new topic. The requestor has to be logged in and with role MENTOR or higher.',
   summary: 'Creates a new topic.',

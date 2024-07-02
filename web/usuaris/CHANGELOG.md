@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.24.1] - 2024-06-28
+
+### Fixed
+
+- Fixed dynamic translation for roles
+
 ## [0.24.0] - 2024-06-13
 
 ### Added

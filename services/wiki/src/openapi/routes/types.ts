@@ -9,6 +9,7 @@ registry.registerPath({
   method: 'get',
   tags: ['types'],
   path: `${pathRoot.v1.types}`,
+  operationId: 'listResourceTypes',
   description: 'Returns an array of all the resource types',
   summary: 'Returns resource types',
   responses: {
