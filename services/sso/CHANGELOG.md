@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.34.0] - 2024-07-03
+
+### Added
+
+-  Implement knex initial config.
+
 ## [1.33.1] - 2024-06-19
 
 ### Fixed

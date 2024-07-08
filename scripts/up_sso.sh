@@ -14,7 +14,6 @@ launchPostgres() {
         -e POSTGRES_PASSWORD=$DB_PASS \
         -e PGDATA=/var/lib/postgresql/data/pgdata \
         -v $DB_NAME:/var/lib/postgresql/data \
-        -v $(git_root)/services/sso/db/init.sql:/docker-entrypoint-initdb.d/init.sql \
         -p $DB_PORT:5432 \
         postgres:14.1-alpine
     timeout 90 "docker exec $DB_NAME pg_isready"
