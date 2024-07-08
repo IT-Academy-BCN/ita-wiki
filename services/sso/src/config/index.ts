@@ -23,6 +23,7 @@ const dbConfigSchema = z.object({
   user: z.string(),
   pass: z.string(),
   link: z.string(),
+  nodeEnv: z.string(),
 })
 
 const appConfig = appConfigSchema.parse({
@@ -44,6 +45,7 @@ const dbConfig = {
   link:
     process.env.DATABASE_URL ??
     'postgres://postgres:postgres@localhost:5432/postgres',
+  nodeEnv: process.env.NODE_ENV ?? 'development',
 }
 
 dbConfigSchema.parse(dbConfig)
