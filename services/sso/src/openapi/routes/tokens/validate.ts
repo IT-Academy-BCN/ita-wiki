@@ -12,6 +12,7 @@ registry.registerPath({
   method: 'post',
   tags: ['tokens'],
   path: `${pathRoot.v1.tokens}/validate`,
+  operationId: 'postValidateTokens',
   description: 'Validates a given authentication token.',
   summary: 'Validate a Token',
   request: {

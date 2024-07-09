@@ -11,6 +11,7 @@ registry.registerPath({
   method: 'post',
   tags: ['tokens'],
   path: `${pathRoot.v1.tokens}/refresh`,
+  operationId: 'postRefreshTokens',
   description:
     'Allows clients to obtain a new access token using a valid refresh token. Ensure to send the refresh token as a Bearer token in the Authorization header. This method extends user sessions securely without re-entering login credentials.',
   summary: 'Renew Access Token',

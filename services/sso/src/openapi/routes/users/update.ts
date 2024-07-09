@@ -13,6 +13,7 @@ registry.registerPath({
   method: 'patch',
   tags: ['users'],
   path: `${pathRoot.v1.users}/{id}`,
+  operationId: 'patchUsers',
   description: 'Allows a logged in ADMIN user to modify another user.',
   summary: 'Patch a user.',
   request: {

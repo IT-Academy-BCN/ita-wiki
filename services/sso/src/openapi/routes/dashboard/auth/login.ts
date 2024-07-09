@@ -12,6 +12,7 @@ registry.registerPath({
   method: 'post',
   tags: ['dashboard'],
   path: `${pathRoot.v1.dashboard.auth}/login`,
+  operationId: 'postDashboardLogin',
   description:
     'Takes a DNI and a password and returns authToken and refreshToken cookie',
   summary: 'Logs in a user',

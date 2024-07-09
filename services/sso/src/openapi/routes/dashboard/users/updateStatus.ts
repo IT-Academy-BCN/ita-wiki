@@ -12,6 +12,7 @@ registry.registerPath({
   method: 'post',
   tags: ['dashboard'],
   path: `${pathRoot.v1.dashboard.users}/status`,
+  operationId: 'postDashboardStatus',
   description: 'Update a collection of users status',
   summary: 'Get list of users name information',
   security: [{ [cookieAuth.name]: [] }],

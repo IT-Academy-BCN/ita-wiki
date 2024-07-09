@@ -12,6 +12,7 @@ registry.registerPath({
   method: 'get',
   tags: ['dashboard'],
   path: `${pathRoot.v1.dashboard.users}/me`,
+  operationId: 'getDashboardMe',
   description: 'Returns information of a logged in user.',
   summary: 'Get user information',
   security: [{ [cookieAuth.name]: [] }],
