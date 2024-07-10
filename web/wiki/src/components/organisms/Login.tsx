@@ -130,7 +130,7 @@ export const Login: FC<TLogin> = ({
         </FlexErrorStyled>
       )}
 
-      <FormStyled onSubmit={onSubmit}>
+      <FormStyled onSubmit={onSubmit} autoComplete="on">
         <InputGroup
           id="dni"
           label="dni"
