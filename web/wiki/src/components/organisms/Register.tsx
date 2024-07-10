@@ -163,7 +163,7 @@ export const Register: FC<TRegister> = ({
           <ValidationMessage color="error" text={error?.message ?? ''} />
         </FlexErrorStyled>
       )}
-      <FormStyled onSubmit={onSubmit}>
+      <FormStyled onSubmit={onSubmit} autoComplete='on'>
         <GridAreaStyled gridArea="dni">
           <InputGroup
             data-testid="DNI"
