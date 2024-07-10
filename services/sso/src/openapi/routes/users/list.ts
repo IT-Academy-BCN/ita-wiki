@@ -11,6 +11,7 @@ registry.registerPath({
   method: 'get',
   tags: ['users'],
   path: `${pathRoot.v1.users}`,
+  operationId: 'listUsers',
   description: 'Returns id and name information of users.',
   summary: 'Get list of users name information with given id array',
   request: {

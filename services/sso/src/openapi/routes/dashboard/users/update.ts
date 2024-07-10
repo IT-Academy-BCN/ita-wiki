@@ -10,6 +10,7 @@ registry.registerPath({
   method: 'patch',
   tags: ['dashboard'],
   path: `${pathRoot.v1.dashboard.users}/{id}`,
+  operationId: 'patchDashboardUsers',
   description:
     'Updates specific fields of a user. Mentors can only update users from the same itinerary, can only update registered users, and cannot modify the role or status fields. Mentors can update their own information except for the role and status fields.',
   summary: 'Update user information',

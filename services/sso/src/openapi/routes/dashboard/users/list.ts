@@ -12,6 +12,7 @@ registry.registerPath({
   method: 'get',
   tags: ['dashboard'],
   path: `${pathRoot.v1.dashboard.users}`,
+  operationId: 'listDashboardUsers',
   description:
     'Returns id, name, dni, itinerary, status, role, deletedAt and created at information of users.',
   summary: 'Get list of users name information',

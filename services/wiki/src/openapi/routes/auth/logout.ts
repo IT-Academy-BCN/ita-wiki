@@ -4,6 +4,7 @@ import { registry } from '../../registry'
 registry.registerPath({
   method: 'get',
   tags: ['auth'],
+  operationId: 'getLogout',
   path: `${pathRoot.v1.auth}/logout`,
   description: 'Deletes cookie and logouts user',
   summary: 'Logs out user',

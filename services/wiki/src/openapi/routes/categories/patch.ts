@@ -10,6 +10,7 @@ registry.registerPath({
   method: 'patch',
   tags: ['categories'],
   path: `${pathRoot.v1.categories}/id/{id}`,
+  operationId: 'patchCategories',
   summary: 'Patch a category by its ID.',
   description:
     'Modifies an existing category. The requestor has to be logged in and with role ADMIN.',

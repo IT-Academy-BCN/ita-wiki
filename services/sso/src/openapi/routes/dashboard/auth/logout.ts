@@ -5,6 +5,7 @@ registry.registerPath({
   method: 'post',
   tags: ['dashboard'],
   path: `${pathRoot.v1.dashboard.auth}/logout`,
+  operationId: 'postDashboardLogout',
   description: 'Deletes cookie and logouts user',
   summary: 'Logs out user',
   responses: {
