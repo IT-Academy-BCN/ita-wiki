@@ -134,6 +134,7 @@ export const Login: FC<TLogin> = ({
         <InputGroup
           id="dni"
           label="dni"
+          type="text"
           placeholder={t('DNI')}
           {...register('dni')}
           name="dni"
