@@ -13,6 +13,7 @@ registry.registerPath({
   method: 'delete',
   tags: ['dashboard'],
   path: `${pathRoot.v1.dashboard.users}/{id}`,
+  operationId: 'deleteDashboardUser',
   description: 'Soft deletes a user',
   summary: 'Delete a user',
   request: {
