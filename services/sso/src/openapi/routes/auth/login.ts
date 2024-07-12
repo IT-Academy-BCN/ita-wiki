@@ -12,6 +12,7 @@ registry.registerPath({
   method: 'post',
   tags: ['auth'],
   path: `${pathRoot.v1.auth}/login`,
+  operationId: 'postLogin',
   description:
     'Takes a DNI and a password and returns authToken and refreshToken',
   summary: 'Logs in a user',

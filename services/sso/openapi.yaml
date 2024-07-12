@@ -119,6 +119,7 @@ paths:
     post:
       tags:
         - auth
+      operationId: postLogin
       description: Takes a DNI and a password and returns authToken and refreshToken
       summary: Logs in a user
       requestBody:
@@ -177,6 +178,7 @@ paths:
     post:
       tags:
         - auth
+      operationId: postRegister
       description: Takes a DNI, email and a password and registers a new user in the
         database. No object is returned.
       summary: Register a user
@@ -267,6 +269,7 @@ paths:
     post:
       tags:
         - tokens
+      operationId: postValidateTokens
       description: Validates a given authentication token.
       summary: Validate a Token
       requestBody:
@@ -322,6 +325,7 @@ paths:
     post:
       tags:
         - tokens
+      operationId: postRefreshTokens
       description: Allows clients to obtain a new access token using a valid refresh
         token. Ensure to send the refresh token as a Bearer token in the
         Authorization header. This method extends user sessions securely without
@@ -365,6 +369,7 @@ paths:
     get:
       tags:
         - itineraries
+      operationId: listItineraries
       description: Fetches all available itineraries
       summary: Get all itineraries
       responses:
@@ -393,6 +398,7 @@ paths:
     post:
       tags:
         - users
+      operationId: postMe
       description: Returns information of a logged in user. Token received in the
         login necessary.
       summary: Get user information
@@ -461,6 +467,7 @@ paths:
     patch:
       tags:
         - users
+      operationId: patchUsers
       description: Allows a logged in ADMIN user to modify another user.
       summary: Patch a user.
       parameters:
@@ -556,6 +563,7 @@ paths:
     get:
       tags:
         - users
+      operationId: listUsers
       description: Returns id and name information of users.
       summary: Get list of users name information with given id array
       parameters:
@@ -623,6 +631,7 @@ paths:
     post:
       tags:
         - dashboard
+      operationId: postDashboardLogin
       description: Takes a DNI and a password and returns authToken and refreshToken cookie
       summary: Logs in a user
       requestBody:
@@ -667,6 +676,7 @@ paths:
     post:
       tags:
         - dashboard
+      operationId: postDashboardLogout
       description: Deletes cookie and logouts user
       summary: Logs out user
       responses:
@@ -676,6 +686,7 @@ paths:
     get:
       tags:
         - dashboard
+      operationId: listDashboardUsers
       description: Returns id, name, dni, itinerary, status, role, deletedAt and
         created at information of users.
       summary: Get list of users name information
@@ -818,6 +829,7 @@ paths:
     get:
       tags:
         - dashboard
+      operationId: getDashboardMe
       description: Returns information of a logged in user.
       summary: Get user information
       security:
@@ -875,6 +887,7 @@ paths:
     delete:
       tags:
         - dashboard
+      operationId: deleteDashboardUser
       description: Soft deletes a user
       summary: Delete a user
       security:
@@ -924,6 +937,7 @@ paths:
     patch:
       tags:
         - dashboard
+      operationId: patchDashboardUsers
       description: Updates specific fields of a user. Mentors can only update users
         from the same itinerary, can only update registered users, and cannot
         modify the role or status fields. Mentors can update their own
@@ -1040,6 +1054,7 @@ paths:
     delete:
       tags:
         - dashboard
+      operationId: deleteDashboardUsers
       description: Soft deletes a collection of users
       summary: Delete a collection of users
       security:
@@ -1095,6 +1110,7 @@ paths:
     post:
       tags:
         - dashboard
+      operationId: postDashboardStatus
       description: Update a collection of users status
       summary: Get list of users name information
       security:

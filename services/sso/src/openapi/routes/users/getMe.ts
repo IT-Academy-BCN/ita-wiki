@@ -12,6 +12,7 @@ registry.registerPath({
   method: 'post',
   tags: ['users'],
   path: `${pathRoot.v1.users}/me`,
+  operationId: 'postMe',
   description:
     'Returns information of a logged in user. Token received in the login necessary.',
   summary: 'Get user information',

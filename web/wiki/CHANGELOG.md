@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.20.5] - 2024-07-10
+
+### Fixed
+
+- Fix autocomplete for show DNI
+  
 ## [0.20.4] - 2024-06-27
 
 ### Changed
