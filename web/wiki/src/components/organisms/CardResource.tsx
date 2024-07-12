@@ -12,10 +12,11 @@ import { FC } from 'react'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { EditResource } from './EditResource'
 import { useAuth } from '../../context/AuthProvider'
-import { TCardResource, TResource, TUserVote } from '../../types'
+import { TCardResource, TUserVote } from '../../types'
 import { FavoritesIcon } from '../molecules'
 import { updateVote } from '../../helpers/fetchers'
 import { updateCachedVoteCount } from '../../helpers'
+import { type ListResourcesResponse } from '../../openapi/openapiComponents'
 
 const CardContainerStyled = styled(FlexBox)`
   background-color: ${colors.white};
@@ -105,7 +106,7 @@ export const CardResource: FC<TCardResource> = ({
       for (let i = 0; i < queryKeys.length; i += 1) {
         const queryKey = queryKeys[i]
 
-        queryClient.setQueryData(queryKey, (data?: TResource[]) => {
+        queryClient.setQueryData(queryKey, (data?: ListResourcesResponse) => {
           const newData = data?.map((resource) => {
             if (resource.id !== id) return resource
             const newVoteCount = updateCachedVoteCount(resource.voteCount, vote)
@@ -160,18 +161,26 @@ export const CardResource: FC<TCardResource> = ({
       )}
 
       <FlexBoxStyled align="start" justify="space-between" gap="4px">
-        <ResourceTitleLink
-          description={description}
-          title={title}
-          url={url}
-          id={id}
-        />
-        <CreateAuthor createdBy={createdBy} updatedAt={updatedAt} img={img} />
+        {description && (
+          <>
+            <ResourceTitleLink
+              description={description}
+              title={title}
+              url={url}
+              id={id}
+            />
+            <CreateAuthor
+              createdBy={createdBy}
+              updatedAt={updatedAt}
+              img={img}
+            />
+          </>
+        )}
       </FlexBoxStyled>
 
       {user ? (
         <UserWidgets direction="row" gap="0.5rem">
-          {editable && (
+          {editable && description && (
             <EditResource
               description={description}
               id={id}

@@ -1,11 +1,12 @@
 import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CheckboxFilterWidget, TCheckboxFilterItem } from '@itacademy/ui'
+import { TStatusData } from '../../types'
 
-const statusData: string[] = ['NOT_SEEN', 'SEEN']
+const statusData: TStatusData[] = ['NOT_SEEN', 'SEEN']
 
 type TStatusFilterWidget = {
-  handleStatusFilter: (selectedStatus: string[]) => void
+  handleStatusFilter: (selectedStatus: TStatusData[]) => void
 }
 
 export const StatusFilterWidget: FC<TStatusFilterWidget> = ({
@@ -31,7 +32,9 @@ export const StatusFilterWidget: FC<TStatusFilterWidget> = ({
   }, [t])
 
   const handleSelectedStatus = (selectedItems: TCheckboxFilterItem[]) => {
-    const userSelectedItems: string[] = selectedItems.map((item) => item.id)
+    const userSelectedItems = selectedItems.map(
+      (item) => item.id as TStatusData
+    )
 
     handleStatusFilter(userSelectedItems)
   }

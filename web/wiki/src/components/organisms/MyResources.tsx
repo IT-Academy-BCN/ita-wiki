@@ -19,7 +19,7 @@ import { CardResourceLink } from './CardResourceLink'
 import { Login } from './Login'
 import { Register } from './Register'
 import { TResource } from '../../types'
-import { useGetResourcesByUser } from '../../hooks'
+import { useListUserMeResources } from '../../openapi/openapiComponents'
 
 const TitleContainer = styled(FlexBox)`
   @media only ${device.Tablet} {
@@ -77,7 +77,10 @@ export const MyResources = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(getWindowMobile())
   const { t } = useTranslation()
-  const { data, isLoading, isError } = useGetResourcesByUser(slug)
+  const { data, isLoading, isError } = useListUserMeResources(
+    { queryParams: { categorySlug: slug } },
+    { enabled: !!user }
+  )
 
   useEffect(() => {
     const handleSize = () => {
@@ -121,13 +124,13 @@ export const MyResources = () => {
 
       {isLoading && user && <Spinner size="medium" role="status" />}
 
-      {data &&
-        (data.length > 0 ? (
+      {data?.resources &&
+        (data.resources.length > 0 ? (
           <ResourcesUserStyled direction="row">
-            {data.map((resource: TResource) => (
+            {data.resources.map((resource: TResource) => (
               <MyResourcesCardList key={resource.id}>
                 <CardResourceLink
-                  createdBy={resource?.userId ?? ''}
+                  createdBy={resource?.user.id ?? ''}
                   createdAt={resource.createdAt}
                   updatedAt={resource.updatedAt}
                   description={resource.description}

@@ -1,7 +1,10 @@
-import { urls } from '../constants'
+import { fetchGetLogout } from '../openapi/openapiComponents'
 
-export const logOut = async (navigate: (path: string) => void, to: string): Promise<void> => {
-  await fetch(urls.logOut);
-  navigate(to);
-  window.location.reload();
+export const logOut = async (
+  navigate: (path: string) => void,
+  to: string
+): Promise<void> => {
+  await fetchGetLogout({})
+  navigate(to)
+  window.location.reload()
 }

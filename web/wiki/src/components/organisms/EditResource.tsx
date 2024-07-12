@@ -6,7 +6,7 @@ import { Button, FlexBox, Modal, colors, dimensions } from '@itacademy/ui'
 import { ResourceForm } from './ResourceForm'
 import icons from '../../assets/icons'
 import { TEditResourceProps, TMappedTopics } from '../../types'
-import { useGetTopics } from '../../hooks'
+import { useListTopics } from '../../openapi/openapiComponents'
 
 const ButtonContainerStyled = styled(FlexBox)`
   margin: ${dimensions.spacing.xs} 0;
@@ -53,7 +53,9 @@ export const EditResource: FC<TEditResourceProps> = ({
   const openModal = () => {
     setIsModalOpen(true)
   }
-  const { data: fetchedTopics } = useGetTopics(slug)
+  const { data: fetchedTopics } = useListTopics({
+    queryParams: { slug },
+  })
   const mappedTopics =
     fetchedTopics?.map((topic: TMappedTopics) => ({
       id: topic.id,

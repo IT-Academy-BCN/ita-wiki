@@ -9,11 +9,12 @@ import {
   Text,
   EditableItem,
   TRowStatus,
+  TItem,
 } from '@itacademy/ui'
 import { useAuth } from '../../context/AuthProvider'
-import { useGetTopics, useManageTopic } from '../../hooks'
-import { TTopic } from '../../types'
+import { useManageTopic } from '../../hooks'
 import deleteIcon from '../../assets/icons/delete-icon.svg'
+import { useListTopics } from '../../openapi/openapiComponents'
 
 const StyledFlexBox = styled(FlexBox)`
   width: 100%;
@@ -25,7 +26,9 @@ export const TopicsManagerBoard: FC = () => {
   const { state } = useLocation()
   const { t } = useTranslation()
   const [selectedId, setSelectedId] = useState<string>('')
-  const { data, isLoading, isError } = useGetTopics(slug as string)
+  const { data, isLoading, isError } = useListTopics({
+    queryParams: { slug },
+  })
 
   const {
     updateTopic,
@@ -71,7 +74,7 @@ export const TopicsManagerBoard: FC = () => {
     setErrorMessage(messageTxt)
   }
 
-  const handleItemChange = (actionTopic: string, changedTopic: TTopic) => {
+  const handleItemChange = (actionTopic: string, changedTopic: TItem) => {
     // eslint-disable-next-line no-param-reassign
     changedTopic.categoryId = `${state?.id}`
 
@@ -79,9 +82,17 @@ export const TopicsManagerBoard: FC = () => {
       // TODO: Delete topic when DELETE endpoint exists
       handleErrorMessage(t('No es posible borrar el tema.'))
     } else if (actionTopic === 'update') {
-      updateTopic.mutate(changedTopic)
+      updateTopic({
+        body: {
+          id: selectedId,
+          name: changedTopic.name,
+          categoryId: changedTopic.categoryId,
+        },
+      })
     } else {
-      createTopic.mutate(changedTopic)
+      createTopic({
+        body: { name: changedTopic.name, categoryId: changedTopic.categoryId },
+      })
     }
   }
 

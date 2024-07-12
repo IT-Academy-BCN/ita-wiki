@@ -2,7 +2,7 @@ import { FC } from 'react'
 import styled from 'styled-components'
 import { useTranslation } from 'react-i18next'
 import { dimensions, Spinner, Radio } from '@itacademy/ui'
-import { useGetTopics } from '../../hooks'
+import { useListTopics } from '../../openapi/openapiComponents'
 
 const StyledRadio = styled(Radio)`
   align-items: start;
@@ -19,7 +19,9 @@ const SpinnerStyled = styled(Spinner)`
 `
 
 export const TopicsRadioWidget: FC<TTopicsSlug> = ({ slug, setTopic }) => {
-  const { data, isLoading, isError } = useGetTopics(slug)
+  const { data, isLoading, isError } = useListTopics({
+    queryParams: { slug },
+  })
 
   const { t } = useTranslation()
 
