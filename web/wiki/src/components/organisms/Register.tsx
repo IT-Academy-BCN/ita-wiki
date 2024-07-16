@@ -20,8 +20,12 @@ import {
   device,
   dimensions,
 } from '@itacademy/ui'
-import { TItinerary, TRegisterForm } from '../../types'
-import { useGetItineraries, useRegister } from '../../hooks'
+import { TItinerary } from '../../types'
+import {
+  type PostRegisterRequestBody,
+  useListItineraries,
+  usePostRegister,
+} from '../../openapi/openapiComponents'
 
 const RegisterStyled = styled(FlexBox)`
   padding: ${dimensions.spacing.lg};
@@ -121,16 +125,30 @@ export const Register: FC<TRegister> = ({
     handleSubmit,
     formState: { errors },
     trigger,
-  } = useForm<TRegisterForm>({ resolver: zodResolver(UserRegisterSchema) })
+  } = useForm<PostRegisterRequestBody>({
+    resolver: zodResolver(UserRegisterSchema),
+  })
 
-  const { data } = useGetItineraries()
+  const { data } = useListItineraries({})
   const itinerariesMap = data?.map((itinerary: TItinerary) => ({
     value: itinerary.id,
     label: itinerary.name,
   }))
 
-  const { registerUser, error, isLoading, isSuccess } =
-    useRegister(handleRegisterModal)
+  const {
+    mutateAsync: registerUser,
+    error,
+    isLoading,
+    isSuccess,
+  } = usePostRegister({
+    onMutate: () =>
+      new Promise((resolve) => {
+        setTimeout(resolve, 500)
+      }),
+    onSuccess: () => {
+      setTimeout(handleRegisterModal, 2000)
+    },
+  })
 
   const onSubmit = handleSubmit(async (userData) => {
     const { email, password, name, dni, itineraryId, confirmPassword, accept } =
@@ -141,14 +159,16 @@ export const Register: FC<TRegister> = ({
     )
 
     if (selectedCategory && password === confirmPassword && accept) {
-      await registerUser.mutateAsync({
-        email,
-        password,
-        name,
-        dni,
-        itineraryId: selectedCategory.value,
-        confirmPassword,
-        accept,
+      await registerUser({
+        body: {
+          email,
+          password,
+          name,
+          dni,
+          itineraryId: selectedCategory.value,
+          confirmPassword,
+          accept,
+        },
       })
     }
   })
@@ -160,7 +180,10 @@ export const Register: FC<TRegister> = ({
       </TitleStyled>
       {!!error && (
         <FlexErrorStyled align="start">
-          <ValidationMessage color="error" text={error?.message ?? ''} />
+          <ValidationMessage
+            color="error"
+            text={(error.payload as string) ?? ''}
+          />
         </FlexErrorStyled>
       )}
       <FormStyled onSubmit={onSubmit} autoComplete="on">

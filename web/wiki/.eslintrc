@@ -28,6 +28,7 @@
     "coverage",
     "public",
     "scripts",
-    "vite.config.ts"
+    "vite.config.ts",
+    "src/openapi"
   ]
 }

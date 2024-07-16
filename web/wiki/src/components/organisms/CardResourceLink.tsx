@@ -18,7 +18,11 @@ const CardContainerStyled = styled(FlexBox).withConfig({
   margin-top: ${dimensions.spacing.xxs};
 `
 
-export const CardResourceLink = ({ editable, ...rest }: TCardResource) => (
+export const CardResourceLink = ({
+  editable,
+  description,
+  ...rest
+}: TCardResource) => (
   <CardContainerStyled
     data-testid="resource-card"
     direction="row"
@@ -26,10 +30,11 @@ export const CardResourceLink = ({ editable, ...rest }: TCardResource) => (
     justify="space-between"
     {...rest}
   >
-    <ResourceTitleLink {...rest} />
-    {editable && (
+    {description && <ResourceTitleLink {...rest} description={description} />}
+    {editable && description && (
       <EditResource
         {...rest}
+        description={description}
         resourceType={rest.resourceType}
         topics={rest.topics}
       />

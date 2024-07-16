@@ -11,13 +11,13 @@ import {
   Title,
   InputGroup,
 } from '@itacademy/ui'
-import { TResource } from '../../types'
+import { type ListResourcesResponse } from '../../openapi/openapiComponents'
 
 type TSearch = {
   searchValue: string | null
   isSearchError: boolean
   $isSearch: boolean
-  resourcesData: TResource[] | undefined
+  resourcesData: ListResourcesResponse | undefined
   toggleSearch: () => void
   handleSearch: (value: string) => void
 }

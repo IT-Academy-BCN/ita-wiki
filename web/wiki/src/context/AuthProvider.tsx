@@ -6,20 +6,12 @@ import React, {
   useState,
 } from 'react'
 
-import { urls } from '../constants'
-
-type TUser = {
-  id?: string
-  name: string
-  avatarId: string
-  email?: string
-  role?: 'ADMIN' | 'REGISTERED' | 'MENTOR'
-} | null
+import { type GetMeResponse, fetchGetMe } from '../openapi/openapiComponents'
 
 export type TAuthContext = {
-  user: TUser
+  user: GetMeResponse | null
   children: React.ReactNode
-  setUser: (user: TUser) => void
+  setUser: (user: GetMeResponse | null) => void
   error: string
   setError: (error: string) => void
 }
@@ -39,7 +31,7 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<
   Omit<TAuthContext, 'user' | 'setUser' | 'error' | 'setError'>
 > = ({ children }) => {
-  const [user, setUser] = useState<TUser>(null)
+  const [user, setUser] = useState<GetMeResponse | null>(null)
   const [error, setError] = useState('')
 
   const value = useMemo(
@@ -48,13 +40,7 @@ export const AuthProvider: React.FC<
   )
 
   useEffect(() => {
-    fetch(urls.getMe)
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(res.statusText)
-        }
-        return res.json()
-      })
+    fetchGetMe({})
       .then((data) => {
         setUser(data)
       })

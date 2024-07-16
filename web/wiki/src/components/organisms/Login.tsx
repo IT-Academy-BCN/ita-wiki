@@ -17,7 +17,10 @@ import {
   colors,
   device,
 } from '@itacademy/ui'
-import { useLogin } from '../../hooks/useLogin'
+import {
+  type PostLoginRequestBody,
+  usePostLogin,
+} from '../../openapi/openapiComponents'
 
 const FlexErrorStyled = styled(FlexBox)`
   height: ${dimensions.spacing.none};
@@ -73,11 +76,6 @@ const TextDecorationStyled = styled.span`
   margin-bottom: ${dimensions.spacing.base};
 `
 
-type TForm = {
-  dni: string
-  password: string
-}
-
 type TLogin = {
   handleLoginModal: () => void
   handleRegisterModal: () => void
@@ -94,16 +92,26 @@ export const Login: FC<TLogin> = ({
     handleSubmit,
     formState: { errors },
     trigger,
-  } = useForm<TForm>({
+  } = useForm<PostLoginRequestBody>({
     resolver: zodResolver(UserLoginSchema),
   })
 
-  const { loginUser, responseError, isLoading, isSuccess } = useLogin()
+  const { mutate, error, isLoading, isSuccess } = usePostLogin({
+    onMutate: () =>
+      new Promise((resolve) => {
+        setTimeout(resolve, 500)
+      }),
+    onSuccess: () => {
+      setTimeout(() => window.location.reload(), 2000)
+    },
+  })
   const onSubmit = handleSubmit(async (data) => {
     const { dni, password } = data
-    loginUser.mutate({
-      dni,
-      password,
+    mutate({
+      body: {
+        dni,
+        password,
+      },
     })
   })
 
@@ -116,9 +124,9 @@ export const Login: FC<TLogin> = ({
       <TitleStyled as="h1" fontWeight="bold">
         Login
       </TitleStyled>
-      {responseError && (
+      {error && (
         <FlexErrorStyled align="start">
-          <ValidationMessage color="error" text={t(`${responseError}`)} />
+          <ValidationMessage color="error" text={t(`${error.payload}`)} />
         </FlexErrorStyled>
       )}
       {(errors.dni || errors.password) && (

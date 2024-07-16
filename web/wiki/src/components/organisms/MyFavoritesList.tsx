@@ -15,11 +15,11 @@ import {
   font,
   responsiveSizes,
 } from '@itacademy/ui'
-import { useGetFavorites } from '../../hooks/useGetFavorites'
 import { useAuth } from '../../context/AuthProvider'
 import { Login } from './Login'
 import { Register } from './Register'
 import { TFavorites } from '../../types'
+import { useListFavoritesResources } from '../../openapi/openapiComponents'
 
 const TitleContainer = styled(FlexBox)`
   @media only ${device.Tablet} {
@@ -77,7 +77,10 @@ export const MyFavoritesList: FC = () => {
   const [isLoginOpen, setIsLoginOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(getWindowIsMobile())
   const { t } = useTranslation()
-  const { isLoading, isError, data } = useGetFavorites(slug)
+  const { isLoading, isError, data } = useListFavoritesResources(
+    { queryParams: { categorySlug: slug } },
+    { enabled: !!user }
+  )
 
   useEffect(() => {
     const handleResize = () => {
@@ -127,12 +130,14 @@ export const MyFavoritesList: FC = () => {
           <FavoritesContainer direction="row">
             {data?.map((fav: TFavorites) => (
               <FavoritesCardList key={fav.id}>
-                <ResourceTitleLink
-                  url={fav.url}
-                  title={fav.title}
-                  description={fav.description}
-                  id={fav.id}
-                />
+                {fav.description && (
+                  <ResourceTitleLink
+                    url={fav.url}
+                    title={fav.title}
+                    description={fav.description}
+                    id={fav.id}
+                  />
+                )}
               </FavoritesCardList>
             ))}
           </FavoritesContainer>

@@ -13,11 +13,13 @@ import {
 } from '@itacademy/ui'
 import { paths } from '../constants'
 import { logOut } from '../utils/logOut'
-import { useGetFavorites } from '../hooks/useGetFavorites'
-import { useGetResourcesByUser } from '../hooks/useGetResourcesByUser'
 import { useAuth } from '../context/AuthProvider'
 import { TResource } from '../types'
 import { Navbar, UserProfileResourcesWidget } from '../components/organisms'
+import {
+  useListFavoritesResources,
+  useListUserMeResources,
+} from '../openapi/openapiComponents'
 
 const Container = styled(FlexBox)`
   width: 100%;
@@ -59,30 +61,33 @@ const getWindowMobile = () =>
   window.innerWidth <= parseInt(responsiveSizes.tablet, 10)
 
 export const UserProfile: FC = () => {
+  const { user } = useAuth()
   const {
     data: favoritesData,
     isLoading: favsLoading,
     isError: favsError,
-  } = useGetFavorites()
+  } = useListFavoritesResources({}, { enabled: !!user })
 
-  const favoritesLength = favoritesData?.length
+  const favoritesLength = favoritesData ? favoritesData.length : 0
 
   const {
     data: resourcesData,
     isLoading: resourcesLoading,
     isError: resourcesError,
-  } = useGetResourcesByUser()
+  } = useListUserMeResources({}, { enabled: !!user })
 
-  const resourcesLength = resourcesData?.length
-  const { user } = useAuth()
+  const resourcesLength = resourcesData?.resources
+    ? resourcesData.resources.length
+    : 0
+
   const navigate = useNavigate()
   const { t } = useTranslation()
 
   const [votes, setVotes] = useState<number | undefined>()
 
   useEffect(() => {
-    if (resourcesData) {
-      const newVotes = resourcesData
+    if (resourcesData?.resources) {
+      const newVotes = resourcesData.resources
         .map(({ voteCount }: TResource) => voteCount.total)
         .reduce((a: number, b: number) => a + b, 0)
       setVotes(newVotes)
@@ -103,8 +108,8 @@ export const UserProfile: FC = () => {
   }
 
   const userData = {
-    profilePicture: user?.avatarId,
-    profilePictureAlt: user?.avatarId ? user.name : t('Sin imagen de usuario'),
+    profilePicture: undefined,
+    profilePictureAlt: t('Sin imagen de usuario'),
     userName: user?.name || '@userName',
     userEmail: user?.email || 'user@user.com',
   }
@@ -161,7 +166,7 @@ export const UserProfile: FC = () => {
         <UserProfileResourcesWidget
           title={t('Mis recursos')}
           titleMobile={t('Tus recursos')}
-          resourcesArray={resourcesData ?? []}
+          resourcesArray={resourcesData?.resources ?? []}
           isLoading={resourcesLoading}
           isError={resourcesError}
         />

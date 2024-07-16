@@ -64,7 +64,7 @@ export const UserButton: FC = () => {
       )}
       {user && (
         <Avatar
-          src={user.avatarId ? user.avatarId : icons.profileAvatar}
+          src={icons.profileAvatar}
           alt="Avatar authenticated"
           avatarCss={avatarCss}
           forwardedRef={avatarRef}

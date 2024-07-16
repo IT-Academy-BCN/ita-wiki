@@ -1,7 +1,7 @@
 {
   "name": "web_wiki",
   "private": true,
-  "version": "0.20.5",
+  "version": "0.21.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,7 +9,8 @@
     "eslint": "npx eslint src --max-warnings 0",
     "preview": "vite preview",
     "test": "vitest",
-    "coverage": "vitest --coverage"
+    "coverage": "vitest --coverage",
+    "openapi": "npx openapi-codegen gen openapi"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.0.0",
@@ -29,6 +30,8 @@
     "zod": "3.22.4"
   },
   "devDependencies": {
+    "@openapi-codegen/cli": "^2.0.2",
+    "@openapi-codegen/typescript": "^8.0.2",
     "@tanstack/eslint-plugin-query": "4.29.4",
     "@testing-library/jest-dom": "5.16.5",
     "@testing-library/react": "14.0.0",
@@ -42,6 +45,7 @@
     "@typescript-eslint/parser": "5.55.0",
     "@vitejs/plugin-react-swc": "^3.0.0",
     "@vitest/coverage-v8": "1.2.2",
+    "confbox": "^0.1.7",
     "eslint": "8.36.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "17.0.0",

@@ -11,7 +11,7 @@ import {
 } from '@itacademy/ui'
 import icons from '../../assets/icons'
 import { TCategory, TLinkStyled } from '../../types'
-import { useGetCategories } from '../../hooks'
+import { useListCategories } from '../../openapi/openapiComponents'
 
 const ImgStyled = styled.img`
   height: 30px;
@@ -74,7 +74,7 @@ const categoryImg: Record<string, string> = {
 }
 
 export const CategoriesList: FC = () => {
-  const { isLoading, error, data } = useGetCategories()
+  const { isLoading, error, data } = useListCategories({})
   const { slug } = useParams()
 
   if (isLoading) return <SpinnerStyled size="medium" role="status" />
