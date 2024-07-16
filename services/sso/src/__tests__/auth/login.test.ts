@@ -3,13 +3,14 @@ import { expect, it, describe, afterAll } from 'vitest'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { tokenSchema } from '../../schemas/tokens/tokenSchema'
-import db from '../../db/knexClient'
+import { client } from '../../db/client'
 
 const route = `${pathRoot.v1.auth}/login`
 afterAll(async () => {
-  await db('user')
-    .where('dni', testUserData.userToDelete.dni)
-    .update({ deleted_at: null })
+  await client.query('UPDATE "user" SET deleted_at = $1 WHERE dni = $2', [
+    null,
+    testUserData.userToDelete.dni,
+  ])
 })
 
 describe('Testing authentication endpoint', () => {
@@ -77,9 +78,10 @@ describe('Testing authentication endpoint', () => {
   })
 
   it('should fail if user is deleted', async () => {
-    await db('user')
-      .where('dni', testUserData.userToDelete.dni)
-      .update({ deleted_at: db.fn.now() })
+    await client.query(
+      'UPDATE "user" SET deleted_at = CURRENT_TIMESTAMP WHERE dni = $1',
+      [testUserData.userToDelete.dni]
+    )
     const response = await supertest(server).post(route).send({
       dni: testUserData.userToDelete.dni,
       password: testUserData.userToDelete.password,
