@@ -6,6 +6,7 @@ import {
   RadioGroup,
   SelectGroup,
   Spinner,
+  TOption,
   TextareaGroup,
   ValidationMessage,
   colors,
@@ -18,7 +19,12 @@ import { useLocation } from 'react-router-dom'
 import styled from 'styled-components'
 import { FC, HTMLAttributes } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useCreateResource, useUpdateResource } from '../../hooks'
+import {
+  usePatchResources,
+  usePostResources,
+} from '../../openapi/openapiComponents'
+import { TResourceType } from '../../types'
+import { reloadPage } from '../../utils/navigation'
 
 type TButton = HTMLAttributes<HTMLParagraphElement> & {
   $backgroundColor?: string
@@ -86,6 +92,7 @@ export type TInitialValues = Omit<
   topics: string | string[]
   topicId?: string
   id?: string
+  resourceType: TResourceType
 }
 
 const StyledRadio = styled(RadioGroup)`
@@ -100,14 +107,8 @@ const StyledTextareaGroup = styled(TextareaGroup)<{ error?: boolean }>`
     error ? dimensions.spacing.none : dimensions.spacing.base}!important;
 `
 
-type TSelectOption = {
-  value: string
-  label: string
-  id?: string
-}
-
 export type TResourceForm = {
-  selectOptions: TSelectOption[]
+  selectOptions: TOption[]
   initialValues?: Partial<TInitialValues>
   resourceId?: string
 }
@@ -121,6 +122,7 @@ export const ResourceForm: FC<TResourceForm> = ({
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<TInitialValues>({
     resolver: zodResolver(ResourceFormSchema),
     defaultValues: initialValues ?? undefined,
@@ -133,40 +135,56 @@ export const ResourceForm: FC<TResourceForm> = ({
   const {
     isLoading: isCreateLoading,
     isSuccess: isCreateSuccess,
-    createResource,
-  } = useCreateResource()
+    mutate: createResource,
+    error: createResourceError,
+  } = usePostResources({
+    onSuccess: () => {
+      reset()
+      reloadPage()
+    },
+  })
 
   const {
     isLoading: isUpdateLoading,
     isSuccess: isUpdateSuccess,
-    updateResource,
-  } = useUpdateResource()
+    mutate: updateResource,
+    error: updateResourceError,
+  } = usePatchResources({
+    onSuccess: () => {
+      reset()
+      reloadPage()
+    },
+  })
 
   const create = handleSubmit(async (data) => {
     const { title, description, url, topics, resourceType } = data
 
-    createResource.mutate({
-      title,
-      description,
-      url,
-      topics: [topics],
-      resourceType,
-      categoryId: `${state.id}`,
+    createResource({
+      body: {
+        title,
+        description,
+        url,
+        topics: (topics as string[]) || [topics],
+        resourceType,
+        categoryId: `${state.id}`,
+      },
     })
   })
 
   const update = handleSubmit(async (data) => {
     const { title, description, url, topics, resourceType } = data
-
-    const updatedData = {
-      id: resourceId,
-      title,
-      description,
-      url,
-      topicId: (topics as string) ?? initialValues?.topicId,
-      resourceType,
+    if (resourceId !== undefined) {
+      updateResource({
+        body: {
+          id: resourceId,
+          title,
+          description,
+          url,
+          topicId: topics[0] ?? initialValues?.topicId,
+          resourceType,
+        },
+      })
     }
-    updateResource.mutate(updatedData)
   })
 
   const initialTopicLabel = selectOptions.find(
@@ -178,15 +196,12 @@ export const ResourceForm: FC<TResourceForm> = ({
       onSubmit={initialValues ? update : create}
       data-testid="resource-form"
     >
-      {createResource?.error || updateResource?.error ? (
+      {createResourceError || updateResourceError ? (
         <ErrorStyled data-testid="error-message">
           <ValidationMessage
             color="error"
             text={t(
-              `${
-                (createResource.error as Error)?.message ||
-                (updateResource.error as Error)?.message
-              }`
+              `${createResourceError?.payload || updateResourceError?.payload}`
             )}
           />
         </ErrorStyled>

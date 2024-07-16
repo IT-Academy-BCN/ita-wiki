@@ -21,6 +21,8 @@ import type {
   TRegisterForm,
   TUserUpdatedStatus,
   TFlexBox,
+  TStatusData,
+  TResourceType,
 } from './types'
 
 export type {
@@ -46,4 +48,6 @@ export type {
   TRegisterForm,
   TUserUpdatedStatus,
   TFlexBox,
+  TStatusData,
+  TResourceType,
 }

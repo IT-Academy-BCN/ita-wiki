@@ -1,18 +1,16 @@
 import { UserRegisterSchema } from '@itacademy/schemas'
 import { z } from 'zod'
+import type {
+  ListFavoritesResourcesResponse,
+  ListItinerariesResponse,
+  ListResourcesResponse,
+  ListResourceTypesResponse,
+  ListTopicsResponse,
+} from '../openapi/openapiComponents'
 
-export type TItinerary = {
-  id: string
-  name: string
-  slug: string
-}
+export type TItinerary = ListItinerariesResponse[number]
 
-export type TTopic = {
-  id?: string
-  name: string
-  slug?: string
-  categoryId?: string
-}
+export type TTopic = ListTopicsResponse[number]
 
 export type TGetTopics = {
   id: string
@@ -24,7 +22,7 @@ export type TTopicResource = {
   topic: {
     id: string
     name: string
-    slug: string
+    slug?: string
     categoryId: string
     createdAt: string
     updatedAt: string
@@ -32,32 +30,19 @@ export type TTopicResource = {
 }
 export type TGetTypes = string[]
 export type TTypesFilterWidget = {
-  handleTypesFilter: (selectedTypes: TGetTypes) => void
+  handleTypesFilter: (
+    selectedTypes: ListResourceTypesResponse | undefined
+  ) => void
 }
 
-export type TFavorites = {
-  id: string
-  title: string
-  slug: string
-  description: string
-  url: string
-  resourceType: string
-  categoryId: string
-  createdAt: string
-  updatedAt: string
-  user: {
-    name: string
-    avatarId: string
-  }
-  isAuthor: boolean
-  voteCount: {
-    upvote: number
-    downvote: number
-    total: number
-    userVote: number
-  }
-  topics: TTopicResource[]
+export enum StatusData {
+  SEEN = 'SEEN',
+  NOT_SEEN = 'NOT_SEEN',
 }
+
+export type TStatusData = keyof typeof StatusData
+
+export type TFavorites = ListFavoritesResourcesResponse[number]
 
 export type TUserData = {
   id: string
@@ -75,33 +60,19 @@ export type TUserUpdatedStatus = {
   status: string
 }
 
-export type TResource = {
-  id: string
-  title: string
-  slug: string
-  description: string
-  url: string
-  createdAt: string
-  updatedAt: string
-  userId?: string
-  user: {
-    name: string
-    avatarId: string
-  }
-  voteCount: {
-    upvote: number
-    downvote: number
-    total: number
-    userVote: number
-  }
-  resourceType: string
-  topics: TTopicResource[]
-  isFavorite: boolean
+export enum ResourceType {
+  BLOG = 'BLOG',
+  VIDEO = 'VIDEO',
+  TUTORIAL = 'TUTORIAL',
 }
+
+export type TResourceType = keyof typeof ResourceType
+
+export type TResource = ListResourcesResponse[number]
 
 export type TFilters = {
   categorySlug?: string
-  resourceTypes?: string[]
+  resourceTypes?: TResourceType[]
   status?: string[]
   topic?: string
   search?: string
@@ -111,7 +82,7 @@ export type TEditResourceProps = {
   id: string
   title: string
   url: string
-  resourceType: string
+  resourceType: TResourceType
   topics: TTopicResource[]
   isInCardResource?: boolean
 }
@@ -135,7 +106,7 @@ export type TLinkStyled = {
 export type TCardResource = {
   createdBy: string
   createdAt: string
-  description: string
+  description?: string | null
   img: string | undefined
   id: string
   voteCount?: {
@@ -147,7 +118,7 @@ export type TCardResource = {
   title: string
   updatedAt: string
   url: string
-  resourceType: string
+  resourceType: TResourceType
   topics: TTopicResource[]
   editable: boolean
   isFavorite: boolean

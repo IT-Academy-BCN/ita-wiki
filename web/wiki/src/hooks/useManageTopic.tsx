@@ -1,41 +1,56 @@
 import { useState } from 'react'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { TRowStatus } from '@itacademy/ui'
-import { createTopicFetcher, updateTopicFetcher } from '../helpers/fetchers'
-import { TGetTopics } from '../types'
+import {
+  type ListTopicsResponse,
+  usePatchTopics,
+  usePostTopics,
+} from '../openapi/openapiComponents'
+import { queryKeyFn } from '../openapi/openapiContext'
 
 export const useManageTopic = () => {
   const [rowStatus, setRowStatus] = useState<TRowStatus>('available')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const queryClient = useQueryClient()
 
-  const createTopic = useMutation({
-    mutationFn: createTopicFetcher,
+  const { mutate: createTopic } = usePostTopics({
     onSuccess: async () => {
       queryClient.invalidateQueries({
-        queryKey: ['getTopics'],
+        queryKey: queryKeyFn({
+          path: '/api/v1/topics',
+          operationId: 'listTopics',
+          variables: {
+            headers: undefined,
+            queryParams: undefined,
+          },
+        }),
       })
       if (errorMessage !== '') setErrorMessage('')
       setRowStatus('available')
     },
-    onError: (error: Error) => {
-      setErrorMessage(error.message)
+    onError: (error) => {
+      setErrorMessage(error.payload as string)
     },
   })
-  const updateTopic = useMutation({
-    mutationFn: updateTopicFetcher,
-    onMutate: (updatedTopic) => {
-      const queryCacheGetTopics = queryClient
-        .getQueryCache()
-        .findAll(['getTopics'])
+
+  const { mutate: updateTopic } = usePatchTopics({
+    onMutate: ({ body: { id: newId, name: newName } }) => {
+      const queryCacheGetTopics = queryClient.getQueryCache().findAll(
+        queryKeyFn({
+          path: '/api/v1/topics',
+          operationId: 'listTopics',
+          variables: {
+            headers: undefined,
+            queryParams: undefined,
+          },
+        })
+      )
       const queryKeys = queryCacheGetTopics.map((q) => q.queryKey)
       queryKeys.forEach((queryKey) => {
-        queryClient.setQueryData<TGetTopics>(queryKey, (prevData) => {
+        queryClient.setQueryData<ListTopicsResponse>(queryKey, (prevData) => {
           if (prevData) {
             return prevData?.map((topic) =>
-              topic.id === updatedTopic.id
-                ? { ...topic, name: updatedTopic.name }
-                : topic
+              topic.id === newId ? { ...topic, name: newName } : topic
             )
           }
           return prevData
@@ -46,10 +61,11 @@ export const useManageTopic = () => {
       if (errorMessage !== '') setErrorMessage('')
       setRowStatus('available')
     },
-    onError: (error: Error) => {
-      setErrorMessage(error.message)
+    onError: (error) => {
+      setErrorMessage(error.payload as string)
     },
   })
+
   return {
     createTopic,
     updateTopic,

@@ -7,8 +7,11 @@ import {
   TCheckboxFilterItem,
   Text,
 } from '@itacademy/ui'
-import { TGetTypes, TTypesFilterWidget } from '../../types/types'
-import { useGetTypes } from '../../hooks'
+import { TResourceType, TTypesFilterWidget } from '../../types/types'
+import {
+  type ListResourceTypesResponse,
+  useListResourceTypes,
+} from '../../openapi/openapiComponents'
 
 const StyledSpinner = styled(Spinner)`
   align-self: center;
@@ -18,7 +21,7 @@ const StyledSpinner = styled(Spinner)`
 export const TypesFilterWidget: FC<TTypesFilterWidget> = ({
   handleTypesFilter,
 }) => {
-  const { isLoading, data, error } = useGetTypes()
+  const { isLoading, data, error } = useListResourceTypes({})
   const [selectedTypes, setSelectedTypes] = useState<TCheckboxFilterItem[]>([])
 
   const { t } = useTranslation()
@@ -42,7 +45,9 @@ export const TypesFilterWidget: FC<TTypesFilterWidget> = ({
   }, [data, t])
 
   const handleSelectedTypes = (selectedItems: TCheckboxFilterItem[]) => {
-    const userSelectedItems: TGetTypes = selectedItems.map((item) => item.id)
+    const userSelectedItems: ListResourceTypesResponse = selectedItems.map(
+      (item) => item.id as TResourceType
+    )
 
     handleTypesFilter(userSelectedItems)
   }

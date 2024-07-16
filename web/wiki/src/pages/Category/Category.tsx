@@ -47,9 +47,14 @@ import {
   TypesFilterWidget,
 } from '../../components/molecules'
 import { useAuth } from '../../context/AuthProvider'
-import { useGetResources, useGetTopics } from '../../hooks'
-import { TFilters, TSortOrder } from '../../types'
+import { TSortOrder, TStatusData } from '../../types'
 import icons from '../../assets/icons'
+import {
+  type ListResourcesQueryParams,
+  type ListResourceTypesResponse,
+  useListResources,
+  useListTopics,
+} from '../../openapi/openapiComponents'
 
 const getWindowIsMobile = () =>
   window.innerWidth <= parseInt(responsiveSizes.tablet, 10)
@@ -67,17 +72,28 @@ export const Category: FC = () => {
   const [isSortByVotesActive, setIsSortByVotesActive] = useState(false)
 
   const [topic, setTopic] = useState('todos')
-  const [filters, setFilters] = useState<TFilters>({
+  const [filters, setFilters] = useState<ListResourcesQueryParams>({
     categorySlug: slug,
+    topicSlug: undefined,
     resourceTypes: [],
-    status: [],
     topic: topic === 'todos' ? undefined : topic,
+    status: [],
+    search: undefined,
   })
   const {
     data: resourcesData,
     isLoading: resourcesLoading,
     error: resourcesError,
-  } = useGetResources(filters)
+  } = useListResources({
+    queryParams: {
+      categorySlug: filters.categorySlug,
+      topicSlug: filters.topicSlug,
+      resourceTypes: filters.resourceTypes,
+      topic: filters.topic,
+      status: filters.status,
+      search: filters.search,
+    },
+  })
   const [sortOrder, setSortOrder] = useState<TSortOrder>('desc')
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string | null>('')
@@ -130,11 +146,14 @@ export const Category: FC = () => {
     }
     window.addEventListener('resize', handleResize)
   }, [isMobile])
-  const handleTypesFilter = (selectedTypes: string[]) => {
+
+  const handleTypesFilter = (
+    selectedTypes: ListResourceTypesResponse | undefined
+  ) => {
     setFilters({ ...filters, resourceTypes: selectedTypes })
   }
 
-  const handleStatusFilter = (selectedStatus: string[]) => {
+  const handleStatusFilter = (selectedStatus: TStatusData[]) => {
     setFilters({ ...filters, status: selectedStatus })
   }
 
@@ -183,19 +202,25 @@ export const Category: FC = () => {
     setIsSortByVotesActive(false)
   }
 
-  const { data: fetchedTopics } = useGetTopics(slug ?? '')
+  const { data: fetchedTopics } = useListTopics({
+    queryParams: { slug },
+  })
 
   const mappedTopicsForFilterWidget = [
     { value: 'todos', label: 'Todos' },
     ...(fetchedTopics?.map((tp) => {
-      const selectOptions = { id: tp.id, value: tp.slug, label: tp.name }
-      return selectOptions
+      const selectOption = {
+        id: tp.id,
+        value: tp.name.toLowerCase(),
+        label: tp.name,
+      }
+      return selectOption
     }) ?? []),
   ]
 
   const topicsForResourceForm = fetchedTopics?.map((tp) => ({
     id: tp.id,
-    value: tp.slug,
+    value: tp.name.toLowerCase(),
     label: tp.name,
   }))
 

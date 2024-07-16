@@ -2,11 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.20.6] - 2024-07-16
+## [0.21.0] - 2024-06-25
 
-### Changed
+### Added
 
-- Eliminated avatarId in tests that use useAuth mock
+- Added OpenApi implementation to generate types, fetchers and queries
 
 ## [0.20.5] - 2024-07-10
 

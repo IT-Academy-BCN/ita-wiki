@@ -163,7 +163,7 @@ export const UserProfileResourcesWidget: FC<TResourcesWidget> = ({
                 <CardResource
                   key={resource.id}
                   id={resource.id}
-                  img={resource.user?.avatarId ?? ''}
+                  img={undefined}
                   title={resource.title}
                   url={resource.url}
                   description={resource.description}

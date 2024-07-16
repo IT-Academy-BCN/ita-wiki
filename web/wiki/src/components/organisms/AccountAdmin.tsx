@@ -2,8 +2,12 @@ import styled from 'styled-components'
 import { FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { colors, device, Spinner } from '@itacademy/ui'
-import { TUserData } from '../../types'
-import { useGetUsers, useUpdateUserStatus } from '../../hooks'
+import {
+  type ListUsersResponse,
+  type PatchUsersByIdRequestBody,
+  useListUsers,
+  usePatchUsersById,
+} from '../../openapi/openapiComponents'
 
 const UserListContainer = styled.div`
   display: flex;
@@ -106,14 +110,14 @@ const DeactivateBtn = styled.button`
 
 const AccountAdmin: FC = () => {
   const { t } = useTranslation()
-  const { isLoading, isError, data: users } = useGetUsers()
+  const { isLoading, isError, data: users } = useListUsers({})
   const [searchTerm, setSearchTerm] = useState('')
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value)
   }
 
-  let filteredUsers: TUserData[] | null = null
+  let filteredUsers: ListUsersResponse | null = null
 
   if (!isLoading && users) {
     if (searchTerm.trim() !== '') {
@@ -125,16 +129,12 @@ const AccountAdmin: FC = () => {
     }
   }
 
-  const { changeUserStatus } = useUpdateUserStatus()
+  const { mutate: changeUserStatus } = usePatchUsersById()
 
-  const updateUserStatus = (user: TUserData) => {
+  const updateUserStatus = (user: PatchUsersByIdRequestBody) => {
     const updatedStatus = user.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
-    const updatedUser = {
-      id: user.id,
-      status: updatedStatus,
-    }
 
-    changeUserStatus.mutate(updatedUser)
+    changeUserStatus({ body: { id: user.id, status: updatedStatus } })
   }
 
   if (isLoading) return <Spinner size="medium" role="status" />

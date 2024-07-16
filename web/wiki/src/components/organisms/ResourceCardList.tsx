@@ -33,7 +33,7 @@ type TResourceCardList = {
   resourcesLoading: boolean
 }
 
-const ResourceCardList: FC<TResourceCardList> = ({
+export const ResourceCardList: FC<TResourceCardList> = ({
   handleAccessModal,
   sortOrder,
   isSortByVotesActive,
@@ -76,16 +76,12 @@ const ResourceCardList: FC<TResourceCardList> = ({
               url={resource.url}
               description={resource.description}
               voteCount={resource.voteCount}
-              createdBy={resource.user ? resource.user.name : ''}
+              createdBy={resource.user.name ? resource.user.name : ''}
               createdAt={resource.createdAt}
               updatedAt={resource.updatedAt}
               handleAccessModal={handleAccessModal}
               isFavorite={user ? resource.isFavorite : false}
-              editable={
-                resource.user
-                  ? user?.name === resource.user.name
-                  : user?.id === resource.userId
-              }
+              editable={user !== null ?? user?.id === resource.user.id}
               resourceType={resource.resourceType}
               topics={resource.topics}
             />
@@ -103,5 +99,3 @@ const ResourceCardList: FC<TResourceCardList> = ({
     </StyledFlexBox>
   )
 }
-
-export { ResourceCardList }
