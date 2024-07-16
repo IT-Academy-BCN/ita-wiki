@@ -45,6 +45,7 @@
     "@typescript-eslint/parser": "5.55.0",
     "@vitejs/plugin-react-swc": "^3.0.0",
     "@vitest/coverage-v8": "1.2.2",
+    "confbox": "^0.1.7",
     "eslint": "8.36.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "17.0.0",
