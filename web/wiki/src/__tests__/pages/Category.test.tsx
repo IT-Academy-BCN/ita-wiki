@@ -29,7 +29,6 @@ beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Name',
-      avatarId: 'Avatar',
     },
   } as TAuthContext)
 })
@@ -68,7 +67,6 @@ it('renders Navbar for logged in users', () => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Name',
-      avatarId: 'Avatar',
     },
   } as TAuthContext)
   render(<Category />)
@@ -147,7 +145,6 @@ it('status filter widget appears for users who are logged in', () => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Name',
-      avatarId: 'Avatar',
     },
   } as TAuthContext)
   render(<Category />)

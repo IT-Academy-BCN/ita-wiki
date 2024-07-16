@@ -12,13 +12,11 @@ import { server } from '../../__mocks__/server'
 
 const userMentor = {
   name: 'Name',
-  avatarId: 'Avatar',
   role: 'MENTOR',
 }
 
 const userStudent = {
   name: 'Name',
-  avatarId: 'Avatar',
   role: 'REGISTERED',
 }
 
