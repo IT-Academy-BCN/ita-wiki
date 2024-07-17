@@ -12,12 +12,11 @@ import { appConfig } from '../../../config'
 export const dashboardLoginController: Middleware = async (ctx: Context) => {
   const { dni, password }: UserLogin = ctx.request.body
   const dniToUpperCase = dni.toUpperCase()
-  const userResult = await db('user')
+  const user = await db<User>('user')
     .select('id', 'password', 'status', 'role')
     .where('dni', dniToUpperCase)
     .first()
 
-  const user = userResult as Pick<User, 'id' | 'password' | 'status' | 'role'>
   if (!user) {
     throw new InvalidCredentials()
   }
