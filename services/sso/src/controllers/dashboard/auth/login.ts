@@ -12,7 +12,10 @@ import { appConfig } from '../../../config'
 export const dashboardLoginController: Middleware = async (ctx: Context) => {
   const { dni, password }: UserLogin = ctx.request.body
   const dniToUpperCase = dni.toUpperCase()
-  const user = await db<User>('user')
+  const user:
+    | Pick<User, 'id' | 'password' | 'status' | 'role'>
+    | null
+    | undefined = await db<User>('user')
     .select('id', 'password', 'status', 'role')
     .where('dni', dniToUpperCase)
     .first()
