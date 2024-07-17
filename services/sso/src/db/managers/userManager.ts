@@ -1,5 +1,6 @@
 import { User } from '../../schemas'
 import { client } from '../client'
+import db from '../knexClient'
 
 /**
  * Dynamically loads the `change-case` module to access its `snakeCase` function, resolving
@@ -17,6 +18,34 @@ async function getCamelCase() {
 }
 export type GetUserOptions<T extends keyof User> = {
   fields: T[]
+}
+export async function fetchUser<T extends keyof User>(
+  field: 'id' | 'dni',
+  value: string,
+  options: GetUserOptions<T>
+): Promise<Pick<User, T> | null> {
+  const snakeCase = await getSnakeCase()
+  const camelCase = await getCamelCase()
+  const fieldsToSelect = options.fields.map((f) => snakeCase(f)) as Array<
+    keyof User
+  >
+
+  const result = await db<User>('user')
+    .select(fieldsToSelect as string[])
+    .where({ [snakeCase(field)]: value })
+    .andWhere('deleted_at', null)
+    .first<User | undefined>()
+
+  if (result) {
+    const camelCaseResult = Object.keys(result).reduce((acc, key) => {
+      const typedKey = key as keyof User
+      const camelKey = camelCase(key) as T
+      acc[camelKey] = result[typedKey] as Pick<User, T>[T]
+      return acc
+    }, {} as Pick<User, T>)
+    return camelCaseResult
+  }
+  return null
 }
 export const userManager = {
   /**
@@ -66,7 +95,71 @@ export const userManager = {
     }
     return null
   },
+  /**
+   * Retrieves a user from the database based on the user ID and selected fields.
+   * This function queries the database for a user by their ID and returns a dynamically
+   * typed object based on the fields specified in the `fields` option.
+   * The returned type is a `Pick` of the `User` type.
+   *
+   * @param {string} id - The unique identifier of the user to retrieve.
+   * @param {GetUserOptions<T>} options - Configuration options that specify which fields
+   *                                      of the `User` object should be returned. The `fields`
+   *                                      array must contain one or more keys of the `User` type.
+   * @returns {Promise<Pick<User, T> | null>} A promise that resolves to a `Pick` of the `User`
+   *                                          type with only the requested fields, or null if
+   *                                          the user is not found.
+   *
+   * Example usage:
+   * ```typescript
+   * findById('123', { fields: ['id', 'email', 'status'] }).then(user => {
+   *   if (user) {
+   *     console.log(user.email); // Accessible
+   *     console.log(user.id); // Accessible
+   *   }
+   * });
+   * ```
+   *
+   * @throws {Error} Throws an error if the SQL query fails.
+   */
+  async findById<T extends keyof User>(
+    id: string,
+    options: GetUserOptions<T>
+  ): Promise<Pick<User, T> | null> {
+    return fetchUser('id', id, options)
+  },
 
+  /**
+   * Retrieves a user from the database based on the user DNI and selected fields.
+   * This function queries the database for a user by their DNI and returns a dynamically
+   * typed object based on the fields specified in the `fields` option.
+   * The returned type is a `Pick` of the `User` type.
+   *
+   * @param {string} dni - The unique identifier of the user to retrieve.
+   * @param {GetUserOptions<T>} options - Configuration options that specify which fields
+   *                                      of the `User` object should be returned. The `fields`
+   *                                      array must contain one or more keys of the `User` type.
+   * @returns {Promise<Pick<User, T> | null>} A promise that resolves to a `Pick` of the `User`
+   *                                          type with only the requested fields, or null if
+   *                                          the user is not found.
+   *
+   * Example usage:
+   * ```typescript
+   * findByDni('12345678A', { fields: ['id', 'email', 'status'] }).then(user => {
+   *   if (user) {
+   *     console.log(user.email); // Accessible
+   *     console.log(user.id); // Accessible
+   *   }
+   * });
+   * ```
+   *
+   * @throws {Error} Throws an error if the SQL query fails.
+   */
+  async findByDni<T extends keyof User>(
+    dni: string,
+    options: GetUserOptions<T>
+  ): Promise<Pick<User, T> | null> {
+    return fetchUser('dni', dni, options)
+  },
   /**
    * Retrieves a list of users from the database based on selected fields and optional status.
    * This function queries the database for users and returns a dynamically typed array of objects
