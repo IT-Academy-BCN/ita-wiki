@@ -1,11 +1,11 @@
 import 'ts-node/register'
 import { IncomingMessage, Server, ServerResponse } from 'http'
-import fs from 'fs/promises'
 import { app } from '../app'
 import { client } from '../db/client'
 import { generateId } from '../utils/cuidGenerator'
 import { hashPassword } from '../utils/passwordHash'
 import { UserRole, UserStatus } from '../schemas/users/userSchema'
+import db from '../db/knexClient'
 
 // eslint-disable-next-line import/no-mutable-exports
 export let server: Server<typeof IncomingMessage, typeof ServerResponse>
@@ -95,14 +95,7 @@ export const itinerariesData = [
 ]
 
 export async function setup() {
-  await client.query('DROP TABLE IF EXISTS "user" CASCADE')
-  await client.query('DROP TABLE IF EXISTS "itinerary" CASCADE')
-
-  const sqlContent = await fs.readFile('db/init.sql', 'utf8')
-  await client.query(sqlContent)
-
-  // Cleanup database
-  await client.query('DELETE FROM "user"')
+  await db.migrate.latest()
 
   // Create required test data
 
@@ -166,8 +159,7 @@ export async function setup() {
 
 export async function teardown() {
   // Cleanup database
-  await client.query('DELETE FROM "user"')
-  await client.query('DELETE FROM "itinerary"')
+  await db.destroy()
   await client.end()
   server.close()
 }

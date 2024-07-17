@@ -2,6 +2,19 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.34.3] - 2024-07-17
+
+### Added
+
+- Created `userManager` method in `userManager` for fetching user data by DNI.
+
+- Created `findByID` method in `userManager` for fetching user data by ID.
+
+### Updated
+
+- Migrated `POST /auth/login` endpoint to use the new methods and Knex
+
+
 ## [1.34.2] - 2024-07-16
 
 ### Changed
