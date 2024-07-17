@@ -1,3 +1,4 @@
+import 'ts-node/register'
 import { IncomingMessage, Server, ServerResponse } from 'http'
 import fs from 'fs/promises'
 import { app } from '../app'
