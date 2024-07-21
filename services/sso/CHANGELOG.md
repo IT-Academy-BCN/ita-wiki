@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.34.4] - 2024-07-21
+
+### Changed
+
+- Updated `dashboard/user/getME` endpoint to Knex methods.
+
 ## [1.34.3] - 2024-07-17
 
 ### Added
@@ -13,7 +19,6 @@ All notable changes to this project will be documented in this file.
 ### Updated
 
 - Migrated `POST /auth/login` endpoint to use the new methods and Knex
-
 
 ## [1.34.2] - 2024-07-16
 
