@@ -1,7 +1,19 @@
-import { describe, it, expect, vi, beforeEach, Mock } from 'vitest'
+import {
+  describe,
+  it,
+  expect,
+  vi,
+  beforeEach,
+  Mock,
+  beforeAll,
+  afterAll,
+} from 'vitest'
+import { createTracker, MockClient, Tracker } from 'knex-mock-client'
+import knex from 'knex'
 import { client } from '../../../db/client'
 import { userManager } from '../../../db/managers/userManager'
 import { UserStatus } from '../../../schemas/users/userSchema'
+import db from '../../../db/knexClient'
 
 type MockUser = {
   id: string
@@ -14,7 +26,12 @@ vi.mock('../../../db/client', () => ({
     query: vi.fn(),
   },
 }))
-
+vi.mock('../../../db/knexClient', async () => {
+  const bd = knex({ client: MockClient })
+  return {
+    default: bd,
+  }
+})
 describe('userManager.getUser', () => {
   const userId = '123'
 
@@ -124,5 +141,90 @@ describe('userManager.getUsers', () => {
       []
     )
     expect(users).toEqual([])
+  })
+})
+let tracker: Tracker
+beforeAll(() => {
+  tracker = createTracker(db)
+})
+beforeEach(() => {
+  vi.clearAllMocks()
+  tracker.reset()
+})
+afterAll(() => {
+  tracker.reset()
+})
+describe('userManager.findById', () => {
+  const userId = '123'
+
+  it('should retrieve a user by ID with the specified fields', async () => {
+    const mockUser: MockUser = {
+      id: userId,
+      email: 'user@example.cat',
+      status: UserStatus.ACTIVE,
+    }
+    tracker.on.select('user').response([mockUser])
+
+    const user = await userManager.findById(userId, {
+      fields: ['id', 'email', 'status'],
+    })
+
+    expect(user).toEqual(mockUser)
+  })
+
+  it('should return null if user is not found', async () => {
+    tracker.on.select('user').response([])
+
+    const user = await userManager.findById(userId, {
+      fields: ['id', 'email', 'status'],
+    })
+
+    expect(user).toBeNull()
+  })
+
+  it('should handle SQL query errors', async () => {
+    tracker.on.select('user').simulateError('SQL query failed')
+
+    await expect(
+      userManager.findById(userId, { fields: ['id', 'email', 'status'] })
+    ).rejects.toThrow('SQL query failed')
+  })
+})
+
+describe('userManager.findByDni', () => {
+  const userDni = '12345678A'
+
+  it('should retrieve a user by DNI with the specified fields', async () => {
+    const mockUser = {
+      id: '1',
+      dni: userDni,
+      email: 'user@example.cat',
+      status: UserStatus.ACTIVE,
+    }
+    tracker.on.select('user').response([mockUser])
+
+    const user = await userManager.findByDni(userDni, {
+      fields: ['id', 'email', 'status'],
+    })
+
+    expect(user).toEqual(mockUser)
+  })
+
+  it('should return null if user is not found', async () => {
+    tracker.on.select('user').response([])
+
+    const user = await userManager.findByDni(userDni, {
+      fields: ['id', 'email', 'status'],
+    })
+
+    expect(user).toBeNull()
+  })
+
+  it('should handle SQL query errors', async () => {
+    tracker.on.select('user').simulateError('SQL query failed')
+
+    await expect(
+      userManager.findByDni(userDni, { fields: ['id', 'email', 'status'] })
+    ).rejects.toThrow('SQL query failed')
   })
 })
