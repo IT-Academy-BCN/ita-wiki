@@ -126,7 +126,7 @@ export const Login: FC<TLogin> = ({
       </TitleStyled>
       {error && (
         <FlexErrorStyled align="start">
-          <ValidationMessage color="error" text={t(`${error.payload}`)} />
+          <ValidationMessage color="error" text={t(`${error.stack.message}`)} />
         </FlexErrorStyled>
       )}
       {(errors.dni || errors.password) && (
