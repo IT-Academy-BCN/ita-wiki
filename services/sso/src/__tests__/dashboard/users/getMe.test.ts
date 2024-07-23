@@ -4,8 +4,8 @@ import { pathRoot } from '../../../routes/routes'
 import { server, testUserData } from '../../globalSetup'
 import { userSchema } from '../../../schemas'
 import { UserStatus } from '../../../schemas/users/userSchema'
-import { client } from '../../../db/client'
 import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
+import db from '../../../db/knexClient'
 
 const route = `${pathRoot.v1.dashboard.users}/me`
 let adminAuthToken = ''
@@ -26,10 +26,7 @@ beforeAll(async () => {
 afterAll(async () => {
   const userDni = testUserData.userToBeBlocked.dni
   const newStatus = UserStatus.ACTIVE
-  await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-    newStatus,
-    userDni,
-  ])
+  await db('user').update({ status: newStatus }).where({ dni: userDni })
 })
 
 describe('Testing get users/me endpoint', () => {
@@ -62,10 +59,9 @@ describe('Testing get users/me endpoint', () => {
 
 describe('User Status Handling in Get users/me Endpoint', () => {
   afterEach(async () => {
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      UserStatus.ACTIVE,
-      testUserData.admin.dni,
-    ])
+    await db('user').update({ status: UserStatus.ACTIVE }).where({
+      dni: testUserData.admin.dni,
+    })
   })
 
   it('should fail when the logged-in admin loses "active" status', async () => {
@@ -78,10 +74,10 @@ describe('User Status Handling in Get users/me Endpoint', () => {
       })
       .expect(204)
 
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      UserStatus.PENDING,
-      testUserData.admin.dni,
-    ])
+    await db('user').update({ status: UserStatus.PENDING }).where({
+      dni: testUserData.admin.dni,
+    })
+
     await agent
       .get(route)
       .expect(403)
