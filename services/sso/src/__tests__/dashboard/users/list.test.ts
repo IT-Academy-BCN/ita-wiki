@@ -142,7 +142,6 @@ describe('Testing get users endpoint', () => {
       .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
-    //
     expect(body).toHaveLength(7)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
