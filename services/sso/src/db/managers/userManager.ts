@@ -223,4 +223,8 @@ export const userManager = {
     }
     return []
   },
+
+  async updateUserByIds(options: Partial<User>, ids: string[]): Promise<void> {
+    await db('user').update(options).whereIn('id', ids)
+  },
 }

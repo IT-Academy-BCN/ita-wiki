@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.38.0] - 2024-07-25
+
+### Changed
+
+- Updated `user/user/upda` endpoint to Knex methods.
+
 ## [1.36.0] - 2024-07-22
 
 ### Changed
