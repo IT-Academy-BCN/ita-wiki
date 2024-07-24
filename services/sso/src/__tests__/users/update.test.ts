@@ -6,7 +6,7 @@ import { pathRoot } from '../../routes/routes'
 import { userUpdateSchema } from '../../schemas'
 import { checkPassword, hashPassword } from '../../utils/passwordHash'
 import { UserRole, UserStatus } from '../../schemas/users/userSchema'
-import { client } from '../../db/client'
+import db from '../../db/knexClient'
 
 const id = 'va3dvcicw0ttxccoe328v6bo'
 const dni = 'Y1868974P'
@@ -26,20 +26,22 @@ beforeAll(async () => {
       password: testUserData.admin.password,
     })
   authToken = response.body.authToken
-  const { rows: itineraryRows } = await client.query(
-    'SELECT id FROM "itinerary" LIMIT 1'
-  )
+  const itineraryRows = await db('itinerary').select('id').limit(1)
+
   const itineraryId = itineraryRows[0].id
 
-  const createUserQuery = {
-    text: 'INSERT INTO "user"(id, dni, email, name, password, itinerary_id) VALUES($1, $2, $3, $4, $5, $6)',
-    values: [id, dni, email, name, hashPassword(password), itineraryId],
-  }
-  await client.query(createUserQuery)
+  await db('user').insert({
+    id,
+    dni,
+    email,
+    name,
+    password: hashPassword(password),
+    itinerary_id: itineraryId,
+  })
 })
 
 afterAll(async () => {
-  await client.query('DELETE FROM "user" WHERE id = $1', [id])
+  await db('user').where({ id }).del()
 })
 
 describe('Testing patch user endpoint', () => {
@@ -52,13 +54,11 @@ describe('Testing patch user endpoint', () => {
     const parseResult = z.object({ body: userUpdateSchema }).safeParse({
       body,
     })
-    const userEmail = await client.query(
-      'SELECT email FROM "user" WHERE id = $1',
-      [id]
-    )
+    const userEmail = await db('user').select('email').where({ id })
+
     expect(response.status).toBe(204)
     expect(parseResult.success).toBe(true)
-    expect(userEmail.rows[0].email).toBe(email)
+    expect(userEmail[0].email).toBe(email)
   })
   it('Should succeed with duplicated dni', async () => {
     const body = {
@@ -69,12 +69,11 @@ describe('Testing patch user endpoint', () => {
     const parseResult = z.object({ body: userUpdateSchema }).safeParse({
       body,
     })
-    const userDni = await client.query('SELECT dni FROM "user" WHERE id = $1', [
-      id,
-    ])
+    const userDni = await db('user').select('dni').where({ id })
+
     expect(response.status).toBe(204)
     expect(parseResult.success).toBe(true)
-    expect(userDni.rows[0].dni).toBe(dni)
+    expect(userDni[0].dni).toBe(dni)
   })
   it('Should succeed with duplicated role', async () => {
     const body = {
@@ -85,11 +84,9 @@ describe('Testing patch user endpoint', () => {
     const parseResult = z.object({ body: userUpdateSchema }).safeParse({
       body,
     })
-    const userRole = await client.query(
-      'SELECT role FROM "user" WHERE id = $1',
-      [id]
-    )
-    expect(userRole.rows[0].role).toBe(role)
+    const userRole = await db('user').select('role').where({ id })
+
+    expect(userRole[0].role).toBe(role)
     expect(response.status).toBe(204)
     expect(parseResult.success).toBe(true)
   })
@@ -102,11 +99,9 @@ describe('Testing patch user endpoint', () => {
     const parseResult = z.object({ body: userUpdateSchema }).safeParse({
       body,
     })
-    const userStatus = await client.query(
-      'SELECT status FROM "user" WHERE id = $1',
-      [id]
-    )
-    expect(userStatus.rows[0].status).toBe(status)
+    const userStatus = await db('user').select('status').where({ id })
+
+    expect(userStatus[0].status).toBe(status)
     expect(response.status).toBe(204)
     expect(parseResult.success).toBe(true)
   })
@@ -119,11 +114,9 @@ describe('Testing patch user endpoint', () => {
     const parseResult = z.object({ body: userUpdateSchema }).safeParse({
       body,
     })
-    const userPassword = await client.query(
-      'SELECT password FROM "user" WHERE id = $1',
-      [id]
-    )
-    expect(checkPassword(password, userPassword.rows[0].password)).toBeTruthy()
+    const userPassword = await db('user').select('password').where({ id })
+
+    expect(checkPassword(password, userPassword[0].password)).toBeTruthy()
     expect(response.status).toBe(204)
     expect(parseResult.success).toBe(true)
   })
@@ -140,11 +133,11 @@ describe('Testing patch user endpoint', () => {
       .patch(`${route}/${id}`)
       .send({ authToken, password: updatedUserPassword, ...updatedUser })
 
-    const userQuery = await client.query(
-      'SELECT dni, email, name, password, role, status FROM "user" WHERE id = $1',
-      [id]
-    )
-    const user = userQuery.rows[0]
+    const userQuery = await db('user')
+      .select('dni', 'email', 'name', 'password', 'role', 'status')
+      .where({ id })
+
+    const user = userQuery[0]
     const { password: dbUserPassword, ...dbUser } = user
     expect(checkPassword(updatedUserPassword, dbUserPassword)).toBeTruthy()
     expect(dbUser).toEqual(updatedUser)
@@ -218,19 +211,14 @@ describe('Testing patch user endpoint', () => {
     expect(response1.status).toBe(204)
     const adminDni = testUserData.admin.dni
     let newStatus = UserStatus.PENDING
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      newStatus,
-      adminDni,
-    ])
+    await db('user').update({ status: newStatus }).where({ dni: adminDni })
+
     const response2 = await supertest(server)
       .patch(`${route}/${id}`)
       .send({ authToken, email: 'example1@example.com' })
     expect(response2.status).toBe(403)
     expect(response2.body.message).toBe('Only active users can proceed')
     newStatus = UserStatus.ACTIVE
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      newStatus,
-      adminDni,
-    ])
+    await db('user').update({ status: newStatus }).where({ dni: adminDni })
   })
 })

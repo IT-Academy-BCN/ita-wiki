@@ -223,4 +223,8 @@ export const userManager = {
     }
     return []
   },
+  // type TObject = Pick<User, T >{}
+  async updateUserByIds(options: object, ids: string[]): Promise<void> {
+    await db('user').update(options).whereIn('id', ids)
+  },
 }
