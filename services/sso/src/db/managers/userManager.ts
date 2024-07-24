@@ -1,4 +1,5 @@
 import { User } from '../../schemas'
+import { ItinerayList } from '../../schemas/itineraries/itinerariesListSchema'
 import { client } from '../client'
 import db from '../knexClient'
 
@@ -222,5 +223,9 @@ export const userManager = {
       })
     }
     return []
+  },
+  async getAllItineraries(): Promise<ItinerayList[]> {
+    const data = await db('itinerary').select('*')
+    return data
   },
 }

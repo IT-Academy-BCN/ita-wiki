@@ -116,7 +116,7 @@ describe('Testing get users endpoint', () => {
     expect(sortedResponseBody).toEqual(sortedExpected)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
-  it('returns a  collection of users within a date range successfully with a logged-in admin user', async () => {
+  it('returns a  collection of users within a date range successfully with a logged-in admin user, [NOT WORK WITHIN 00:00-02:00 AM!!]', async () => {
     const dateMinusOne = new Date()
     dateMinusOne.setDate(dateMinusOne.getDate() - 1)
     const datePlusOne = new Date()
@@ -142,6 +142,7 @@ describe('Testing get users endpoint', () => {
       .set('Cookie', [authAdminToken])
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
+    //
     expect(body).toHaveLength(7)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
