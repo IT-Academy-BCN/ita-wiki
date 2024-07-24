@@ -6,7 +6,13 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Updated `user/user/upda` endpoint to Knex methods.
+- Updated `PATCH users/:id` endpoint to Knex methods.
+
+## [1.37.0] - 2024-07-24
+
+### Changed
+
+- Updated `GET /itineraries` endpoint to Knex methods.
 
 ## [1.36.0] - 2024-07-22
 

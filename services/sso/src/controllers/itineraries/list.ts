@@ -1,8 +1,8 @@
 import { Context, Middleware } from 'koa'
-import { client } from '../../db/client'
+import { userManager } from '../../db/managers/userManager'
 
 export const listItineraries: Middleware = async (ctx: Context) => {
-  const { rows: data } = await client.query('SELECT * FROM "itinerary";')
+  const data = await userManager.getAllItineraries()
 
   ctx.status = 200
   ctx.body = data
