@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.18.2] - 2024-07-23
+
+### Added
+
+- Added `401` error `auth/login` endpoint in openapi.
+
 ## [0.18.1] - 2024-07-01
 
 ### Added

@@ -1,5 +1,5 @@
 info:
-  version: 1.34.3
+  version: 1.36.0
   title: IT Academy SSO Service
   description: This is an SSO service that is used across all ITA services.
 openapi: 3.0.0
@@ -17,7 +17,8 @@ components:
     Set-Cookie:
       schema:
         type: string
-        example: authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM;
+        example:
+          authToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbGdieTNyemYwMDAweG44eDdzeXJvMnc2IiwiaWF0IjoxNjgxMjEyNzAzLCJleHAiOjE2ODEyOTkxMDN9.G1F5XQLYu0uwxnJDx_qDUV3avIUPxHb3Ld-XZYvUfNM;
           path=/; httponly
         description: Sets the JWT session cookie
   schemas:
@@ -137,7 +138,7 @@ paths:
                 - dni
                 - password
       responses:
-        "200":
+        '200':
           description: The user has been authenticated
           content:
             application/json:
@@ -156,30 +157,31 @@ paths:
                   - authToken
                   - refreshToken
                   - id
-        "400":
+        '400':
           description: Zod validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ValidationError"
-        "401":
+                $ref: '#/components/schemas/ValidationError'
+        '401':
           description: Invalid Credentials error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidCredentialsError"
-        "403":
+                $ref: '#/components/schemas/InvalidCredentialsError'
+        '403':
           description: Forbidden error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ForbiddenError"
+                $ref: '#/components/schemas/ForbiddenError'
   /api/v1/auth/register:
     post:
       tags:
         - auth
       operationId: postRegister
-      description: Takes a DNI, email and a password and registers a new user in the
+      description:
+        Takes a DNI, email and a password and registers a new user in the
         database. No object is returned.
       summary: Register a user
       requestBody:
@@ -217,7 +219,7 @@ paths:
                 - password
                 - confirmPassword
       responses:
-        "200":
+        '200':
           description: The user has been registered.
           content:
             application/json:
@@ -229,19 +231,19 @@ paths:
                     example: b6z2od3ut12qs0ilem6njgjp
                 required:
                   - id
-        "400":
+        '400':
           description: Zod validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ValidationError"
-        "409":
+                $ref: '#/components/schemas/ValidationError'
+        '409':
           description: Email or User already exist
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/EmailError"
-        "422":
+                $ref: '#/components/schemas/EmailError'
+        '422':
           description: Invalid itinerary ID
           content:
             application/json:
@@ -253,7 +255,7 @@ paths:
                     example: Invalid itinerary
                 required:
                   - message
-        "500":
+        '500':
           description: Other error
           content:
             application/json:
@@ -285,7 +287,7 @@ paths:
                 - authToken
               additionalProperties: false
       responses:
-        "200":
+        '200':
           description: The token is valid
           content:
             application/json:
@@ -297,19 +299,19 @@ paths:
                     example: b6z2od3ut12qs0ilem6njgjp
                 required:
                   - id
-        "400":
+        '400':
           description: Zod validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ValidationError"
-        "401":
+                $ref: '#/components/schemas/ValidationError'
+        '401':
           description: Invalid Credentials error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidCredentialsError"
-        "500":
+                $ref: '#/components/schemas/InvalidCredentialsError'
+        '500':
           description: Other error
           content:
             application/json:
@@ -326,7 +328,8 @@ paths:
       tags:
         - tokens
       operationId: postRefreshTokens
-      description: Allows clients to obtain a new access token using a valid refresh
+      description:
+        Allows clients to obtain a new access token using a valid refresh
         token. Ensure to send the refresh token as a Bearer token in the
         Authorization header. This method extends user sessions securely without
         re-entering login credentials.
@@ -334,7 +337,7 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        "200":
+        '200':
           description: The token is valid
           content:
             application/json:
@@ -347,13 +350,13 @@ paths:
                 required:
                   - authToken
                 additionalProperties: false
-        "401":
+        '401':
           description: Invalid Credentials error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidCredentialsError"
-        "500":
+                $ref: '#/components/schemas/InvalidCredentialsError'
+        '500':
           description: Other error
           content:
             application/json:
@@ -373,7 +376,7 @@ paths:
       description: Fetches all available itineraries
       summary: Get all itineraries
       responses:
-        "200":
+        '200':
           description: List of all itineraries
           content:
             application/json:
@@ -399,7 +402,8 @@ paths:
       tags:
         - users
       operationId: postMe
-      description: Returns information of a logged in user. Token received in the
+      description:
+        Returns information of a logged in user. Token received in the
         login necessary.
       summary: Get user information
       requestBody:
@@ -415,7 +419,7 @@ paths:
                 - authToken
               additionalProperties: false
       responses:
-        "200":
+        '200':
           description: Token is valid and user information is returned.
           content:
             application/json:
@@ -439,19 +443,19 @@ paths:
                   - dni
                   - email
                   - role
-        "400":
+        '400':
           description: Zod validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ValidationError"
-        "401":
+                $ref: '#/components/schemas/ValidationError'
+        '401':
           description: Invalid Credentials error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidCredentialsError"
-        "500":
+                $ref: '#/components/schemas/InvalidCredentialsError'
+        '500':
           description: Other error
           content:
             application/json:
@@ -479,7 +483,8 @@ paths:
           required: true
       requestBody:
         required: true
-        description: Updates an existing user. The ID is mandatory, and all other fields
+        description:
+          Updates an existing user. The ID is mandatory, and all other fields
           are optional. Provide only the fields that need to be updated.
         content:
           application/json:
@@ -525,29 +530,29 @@ paths:
                 - authToken
               additionalProperties: false
       responses:
-        "204":
+        '204':
           description: User has been modified
-        "400":
+        '400':
           description: Zod validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ValidationError"
-        "401":
+                $ref: '#/components/schemas/ValidationError'
+        '401':
           description: Invalid token or missing token
           content:
             application/json:
               schema:
                 anyOf:
-                  - $ref: "#/components/schemas/InvalidTokenError"
-                  - $ref: "#/components/schemas/MissingTokenError"
-        "404":
+                  - $ref: '#/components/schemas/InvalidTokenError'
+                  - $ref: '#/components/schemas/MissingTokenError'
+        '404':
           description: User not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingUserError"
-        "500":
+                $ref: '#/components/schemas/MissingUserError'
+        '500':
           description: Other error
           content:
             application/json:
@@ -590,7 +595,7 @@ paths:
           description: Specify fields to return (id, name)
           explode: false
       responses:
-        "200":
+        '200':
           description: Token is valid and user information is returned.
           content:
             application/json:
@@ -609,13 +614,13 @@ paths:
                   required:
                     - id
                     - name
-        "400":
+        '400':
           description: Zod validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ValidationError"
-        "500":
+                $ref: '#/components/schemas/ValidationError'
+        '500':
           description: Other error
           content:
             application/json:
@@ -649,29 +654,29 @@ paths:
                 - dni
                 - password
       responses:
-        "204":
+        '204':
           description: The user has been authenticated
           headers:
             Set-Cookie:
-              $ref: "#/components/headers/Set-Cookie"
-        "400":
+              $ref: '#/components/headers/Set-Cookie'
+        '400':
           description: Zod validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ValidationError"
-        "401":
+                $ref: '#/components/schemas/ValidationError'
+        '401':
           description: Invalid Credentials error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidCredentialsError"
-        "403":
+                $ref: '#/components/schemas/InvalidCredentialsError'
+        '403':
           description: Forbidden error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ForbiddenError"
+                $ref: '#/components/schemas/ForbiddenError'
   /api/v1/dashboard/auth/logout:
     post:
       tags:
@@ -680,7 +685,7 @@ paths:
       description: Deletes cookie and logouts user
       summary: Logs out user
       responses:
-        "204":
+        '204':
           description: User has been logged out successfully
   /api/v1/dashboard/users:
     get:
@@ -759,7 +764,7 @@ paths:
           description: Role to filter by
           example: ADMIN
       responses:
-        "200":
+        '200':
           description: Token is valid and user information is returned.
           content:
             application/json:
@@ -807,13 +812,13 @@ paths:
                     - createdAt
                     - itineraryName
                     - deletedAt
-        "401":
+        '401':
           description: Invalid Credentials error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidCredentialsError"
-        "500":
+                $ref: '#/components/schemas/InvalidCredentialsError'
+        '500':
           description: Other error
           content:
             application/json:
@@ -835,7 +840,7 @@ paths:
       security:
         - cookieAuth: []
       responses:
-        "200":
+        '200':
           description: Token is valid and user information is returned.
           content:
             application/json:
@@ -859,19 +864,19 @@ paths:
                   - dni
                   - email
                   - role
-        "401":
+        '401':
           description: Invalid Credentials error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidCredentialsError"
-        "404":
+                $ref: '#/components/schemas/InvalidCredentialsError'
+        '404':
           description: User not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingUserError"
-        "500":
+                $ref: '#/components/schemas/MissingUserError'
+        '500':
           description: Other error
           content:
             application/json:
@@ -900,29 +905,29 @@ paths:
             example: b6z2od3ut12qs0ilem6njgjp
           required: true
       responses:
-        "204":
+        '204':
           description: User has been soft deleted
-        "401":
+        '401':
           description: Invalid token or missing token
           content:
             application/json:
               schema:
                 anyOf:
-                  - $ref: "#/components/schemas/InvalidTokenError"
-                  - $ref: "#/components/schemas/MissingTokenError"
-        "404":
+                  - $ref: '#/components/schemas/InvalidTokenError'
+                  - $ref: '#/components/schemas/MissingTokenError'
+        '404':
           description: User not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingUserError"
-        "410":
+                $ref: '#/components/schemas/MissingUserError'
+        '410':
           description: User is already soft deleted.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DeletedUserError"
-        "500":
+                $ref: '#/components/schemas/DeletedUserError'
+        '500':
           description: Other error
           content:
             application/json:
@@ -938,7 +943,8 @@ paths:
       tags:
         - dashboard
       operationId: patchDashboardUsers
-      description: Updates specific fields of a user. Mentors can only update users
+      description:
+        Updates specific fields of a user. Mentors can only update users
         from the same itinerary, can only update registered users, and cannot
         modify the role or status fields. Mentors can update their own
         information except for the role and status fields.
@@ -954,7 +960,8 @@ paths:
           required: true
       requestBody:
         required: true
-        description: Updates an existing user. The ID is mandatory, and all other fields
+        description:
+          Updates an existing user. The ID is mandatory, and all other fields
           are optional. Provide only the fields that need to be updated.
         content:
           application/json:
@@ -994,9 +1001,9 @@ paths:
                 itineraryId:
                   type: string
       responses:
-        "204":
+        '204':
           description: User has been updated
-        "400":
+        '400':
           description: Invalid request
           content:
             application/json:
@@ -1008,13 +1015,13 @@ paths:
                     example: No valid fields provided for update
                 required:
                   - message
-        "401":
+        '401':
           description: Invalid Credentials error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidCredentialsError"
-        "403":
+                $ref: '#/components/schemas/InvalidCredentialsError'
+        '403':
           description: Forbidden
           content:
             application/json:
@@ -1026,7 +1033,7 @@ paths:
                     example: Mentors can only update users from the same itinerary
                 required:
                   - message
-        "404":
+        '404':
           description: User not found
           content:
             application/json:
@@ -1038,7 +1045,7 @@ paths:
                     example: User not found
                 required:
                   - message
-        "500":
+        '500':
           description: Other error
           content:
             application/json:
@@ -1078,23 +1085,23 @@ paths:
               required:
                 - body
       responses:
-        "204":
+        '204':
           description: Collection of users has been soft deleted
-        "401":
+        '401':
           description: Invalid token or missing token
           content:
             application/json:
               schema:
                 anyOf:
-                  - $ref: "#/components/schemas/InvalidTokenError"
-                  - $ref: "#/components/schemas/MissingTokenError"
-        "404":
+                  - $ref: '#/components/schemas/InvalidTokenError'
+                  - $ref: '#/components/schemas/MissingTokenError'
+        '404':
           description: User not found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/MissingUserError"
-        "500":
+                $ref: '#/components/schemas/MissingUserError'
+        '500':
           description: Other error
           content:
             application/json:
@@ -1135,15 +1142,15 @@ paths:
                 - ids
                 - status
       responses:
-        "204":
+        '204':
           description: The user statuses have been updated successfully.
-        "401":
+        '401':
           description: Invalid Credentials error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/InvalidCredentialsError"
-        "404":
+                $ref: '#/components/schemas/InvalidCredentialsError'
+        '404':
           description: Users not found
           content:
             application/json:
@@ -1155,7 +1162,7 @@ paths:
                     example: b6z2od3ut12qs0ilem6njgjp not found
                 required:
                   - message
-        "500":
+        '500':
           description: Other error
           content:
             application/json:
