@@ -1,5 +1,6 @@
 import { pathRoot } from '../../../routes/routes'
 import { resourceFavoriteSchema } from '../../../schemas'
+import { categorySlug } from '../../components/paramSchemas'
 import {
   invalidTokenResponse,
   userNotFoundResponse,
@@ -10,10 +11,15 @@ import { z } from '../../zod'
 registry.registerPath({
   method: 'get',
   tags: ['resources'],
-  path: `${pathRoot.v1.resources}/favorites`,
+  path: `${pathRoot.v1.resources}/favorites/{categorySlug}`,
   operationId: 'listFavoritesResources',
   description: 'Retrieves the users favorite resources when logged in',
   summary: 'Returns favorite resources by user and category',
+  request: {
+    params: z.object({
+      categorySlug,
+    }),
+  },
   parameters: [
     {
       name: 'categorySlug',
