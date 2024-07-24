@@ -1,4 +1,5 @@
 import { User } from '../../schemas'
+import { ItinerayList } from '../../schemas/itineraries/itinerariesListSchema'
 import { client } from '../client'
 import db from '../knexClient'
 
@@ -226,5 +227,10 @@ export const userManager = {
 
   async updateUserByIds(options: Partial<User>, ids: string[]): Promise<void> {
     await db('user').update(options).whereIn('id', ids)
+  },
+
+  async getAllItineraries(): Promise<ItinerayList[]> {
+    const data = await db('itinerary').select('*')
+    return data
   },
 }
