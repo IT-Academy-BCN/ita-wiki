@@ -1,4 +1,3 @@
-export { AccountAdmin } from './AccountAdmin'
 export { CardResource } from './CardResource'
 export { CardResourceLink } from './CardResourceLink'
 export { CategoriesList } from './CategoriesList'

@@ -1,4 +1,4 @@
-import { User } from '../../schemas'
+import { User, UserPatch } from '../../schemas'
 import { ItinerayList } from '../../schemas/itineraries/itinerariesListSchema'
 import { client } from '../client'
 import db from '../knexClient'
@@ -225,7 +225,7 @@ export const userManager = {
     return []
   },
 
-  async updateUserByIds(options: Partial<User>, ids: string[]): Promise<void> {
+  async updateUserByIds(options: UserPatch, ids: string[]): Promise<void> {
     await db('user').update(options).whereIn('id', ids)
   },
 

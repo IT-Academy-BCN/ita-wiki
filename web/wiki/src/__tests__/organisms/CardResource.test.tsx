@@ -88,7 +88,6 @@ describe('CardResource component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Test author name',
-        avatarId: 'profileAvatar.jpg',
       },
     } as TAuthContext)
 
@@ -111,7 +110,6 @@ describe('CardResource component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Hola',
-        avatarId: 'Adios',
       },
     } as TAuthContext)
 
@@ -151,7 +149,6 @@ describe('CardResource component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Test author name',
-        avatarId: 'profileAvatar.jpg',
       },
     } as TAuthContext)
 
@@ -182,7 +179,6 @@ describe('CardResource component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Test author name',
-        avatarId: 'profileAvatar.jpg',
       },
     } as TAuthContext)
 
@@ -215,7 +211,6 @@ describe('CardResource component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Test author name',
-        avatarId: 'profileAvatar.jpg',
       },
     } as TAuthContext)
 
@@ -251,7 +246,6 @@ describe('CardResource component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Test author name',
-        avatarId: 'profileAvatar.jpg',
       },
     } as TAuthContext)
 
