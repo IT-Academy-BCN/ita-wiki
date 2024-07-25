@@ -7,6 +7,7 @@ import { userUpdateSchema } from '../../schemas'
 import { checkPassword, hashPassword } from '../../utils/passwordHash'
 import { UserRole, UserStatus } from '../../schemas/users/userSchema'
 import db from '../../db/knexClient'
+import { ItinerayList } from '../../schemas/itineraries/itinerariesListSchema'
 
 const id = 'va3dvcicw0ttxccoe328v6bo'
 const dni = 'Y1868974P'
@@ -26,7 +27,9 @@ beforeAll(async () => {
       password: testUserData.admin.password,
     })
   authToken = response.body.authToken
-  const itineraryRows = await db('itinerary').select('id').limit(1)
+  const itineraryRows: ItinerayList[] = await db('itinerary')
+    .select('id')
+    .limit(1)
 
   const itineraryId = itineraryRows[0].id
 
