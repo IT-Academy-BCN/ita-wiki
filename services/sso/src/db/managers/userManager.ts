@@ -224,9 +224,37 @@ export const userManager = {
     }
     return []
   },
-
+  /**
+   * Retrieves a user from the database based on the user IDs and selected fields.
+   * This function queries the database for a user by their IDs and returns a dynamically
+   * typed object based on the fields specified in the `fields` option.
+   * The returned type is a `Partial` of the `UserPatch` type.
+   *
+   * @param {string[]} ids - The unique identifier Array of the users to retrieve.
+   * @param {UserPatch} options - Configuration options that specify
+   *                                      of the `UserPatch` object should be returned. The `options`
+   *                                       must contain one or more keys of the `UserPatch` type.
+   * @returns {Promise<void>} A promise of void.
+   *
+   *
+   * Example usage:
+   * ```typescript
+   * updateUserByIds({deletedAt: String(knex.fn.now]), status: PENDING }, ['bbiax2thm5usyfg7lus1sosp'])
+   * ```
+   *
+   * @throws {Error} Throws an error if the SQL query fails.
+   */
   async updateUserByIds(options: UserPatch, ids: string[]): Promise<void> {
-    await db('user').update(options).whereIn('id', ids)
+    const snakeCase = await getSnakeCase()
+    const keyObject = Object.keys(options)
+    const valueObject = Object.values(options)
+    const setArray = keyObject.map((key, index) => [
+      snakeCase(key),
+      valueObject[index],
+    ])
+    const setObject = Object.fromEntries(setArray)
+
+    await db('user').update(setObject).whereIn('id', ids)
   },
 
   async getAllItineraries(): Promise<ItinerayList[]> {
