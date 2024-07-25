@@ -20,7 +20,6 @@ describe('Home page', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Hola',
-        avatarId: 'Adios',
       },
     } as TAuthContext)
     render(<Home />)
@@ -49,7 +48,6 @@ describe('Home page', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Hola',
-        avatarId: 'Adios',
       },
     } as TAuthContext)
     render(<Home />)

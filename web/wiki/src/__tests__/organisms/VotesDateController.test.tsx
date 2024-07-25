@@ -20,7 +20,6 @@ beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'TestName',
-      avatarId: 'TestAvatar',
     },
   } as TAuthContext)
 })
@@ -33,7 +32,7 @@ describe('VotesDate component', () => {
   it('changes Votos and Fecha styles on click', () => {
     render(
       <VotesDateController
-        sortOrder='desc'
+        sortOrder="desc"
         handleSortOrder={mockHandleSortOrder}
         handleSortByVotes={mockHandleSortByVotes}
         handleSortByDates={mockHandleSortByDates}

@@ -12,7 +12,6 @@ const mockUsers = [
     email: 'user1@example.com',
     dni: '12345678',
     name: 'User One',
-    avatarId: 'testAvatar.jpg',
     itineraryId: 'react',
     status: 'ACTIVE',
     role: 'REGISTERED',
@@ -41,7 +40,6 @@ beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'AdminName',
-      avatarId: 'AdminAvatar',
       role: 'ADMIN',
     },
   } as TAuthContext)
@@ -84,7 +82,6 @@ describe('SettingsManager component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'MentorName',
-        avatarId: 'MentorAvatar',
         role: 'MENTOR',
       },
     } as TAuthContext)
@@ -105,7 +102,6 @@ describe('User Permissions', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'MentorName',
-        avatarId: 'MentorAvatar',
         role: 'MENTOR',
       },
     } as TAuthContext)
