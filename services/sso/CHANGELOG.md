@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+### [1.38.0] - 2024-07-17
+
+### Changed
+
+- Migrated `POST /users/getME/` endpoint to Knex.
+
 ## [1.37.0] - 2024-07-24
 
 ### Changed
