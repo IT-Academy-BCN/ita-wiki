@@ -2,13 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.22.1] - 2024-07-25
+
+## Changed
+
+- Eliminated avatarId in tests that use useAuth mock
+
 ## [0.22.0] - 2024-07-24
 
 ### Deleted
 
 - Deleted AccountAdmin component and test
 - Deleted UsersManager component and test
-
 
 ## [0.21.0] - 2024-06-25
 

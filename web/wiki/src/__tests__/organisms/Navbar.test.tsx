@@ -27,7 +27,6 @@ beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'TestName',
-      avatarId: 'TestAvatar',
       role: 'REGISTERED',
     },
   } as TAuthContext)
@@ -185,7 +184,6 @@ describe('Navbar', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'TestName',
-        avatarId: 'TestAvatar',
         role: 'MENTOR',
       },
     } as TAuthContext)

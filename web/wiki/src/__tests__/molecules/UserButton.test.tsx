@@ -45,7 +45,6 @@ describe('UserButton', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'User',
-        avatarId: 'Avatar',
       },
     } as TAuthContext)
 
