@@ -1,5 +1,5 @@
 info:
-  version: 0.18.1
+  version: 0.18.3
   title: IT Academy Wiki
   description: Our app implements a Wiki to be used as a knowledge base by the
     students of the Barcelona Activa's IT Academy
@@ -167,6 +167,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ValidationError"
+        "401":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissingUserError"
         "403":
           description: Forbidden error
           content:
@@ -662,7 +668,7 @@ paths:
                     example: Database error
                 required:
                   - message
-  /api/v1/resources/favorites:
+  "/api/v1/resources/favorites/{categorySlug}":
     get:
       tags:
         - resources
@@ -670,11 +676,12 @@ paths:
       description: Retrieves the users favorite resources when logged in
       summary: Returns favorite resources by user and category
       parameters:
-        - name: categorySlug
-          in: path
-          required: false
-          description: Slug of the category for which to retrieve favorite resources
-          example: node
+        - in: path
+          name: categorySlug
+          schema:
+            type: string
+            minLength: 1
+          required: true
       responses:
         "200":
           description: Favorite resources retrieved successfully.

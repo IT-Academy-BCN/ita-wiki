@@ -13,6 +13,7 @@ const appConfigSchema = z
     refreshJwtExpiration: z.string(),
     authCookieExpiration: z.string().transform(parseDuration),
     refreshCookieExpiration: z.string().transform(parseDuration),
+    nodeEnv: z.string(),
   })
   .strict()
 
@@ -23,7 +24,6 @@ const dbConfigSchema = z.object({
   user: z.string(),
   pass: z.string(),
   link: z.string(),
-  nodeEnv: z.string(),
 })
 
 const appConfig = appConfigSchema.parse({
@@ -34,9 +34,10 @@ const appConfig = appConfigSchema.parse({
   refreshJwtExpiration: process.env.REFRESH_JWT_EXPIRATION,
   authCookieExpiration: process.env.AUTH_COOKIE_EXPIRATION,
   refreshCookieExpiration: process.env.REFRESH_COOKIE_EXPIRATION,
+  nodeEnv: process.env.NODE_ENV ?? 'development',
 })
 
-const dbConfig = {
+const dbConfig = dbConfigSchema.parse({
   host: process.env.DB_HOST ?? 'localhost',
   port: process.env.DB_PORT ?? 5432,
   database: process.env.DB_NAME ?? 'ita_sso',
@@ -45,13 +46,19 @@ const dbConfig = {
   link:
     process.env.DATABASE_URL ??
     'postgres://postgres:postgres@localhost:5432/postgres',
-  nodeEnv: process.env.NODE_ENV ?? 'development',
-}
+})
 
-dbConfigSchema.parse(dbConfig)
+const testDbConfig = dbConfigSchema.parse({
+  host: process.env.TEST_DB_HOST ?? dbConfig.host,
+  port: process.env.TEST_DB_PORT ?? dbConfig.port,
+  database: process.env.TEST_DB_NAME ?? dbConfig.database,
+  user: process.env.TEST_DB_USER ?? dbConfig.user,
+  pass: process.env.TEST_DB_PASS ?? dbConfig.pass,
+  link: process.env.TEST_DATABASE_URL ?? dbConfig.link,
+})
 
 const bcryptConfig = {
   saltRounds: 10,
 }
 
-export { appConfig, dbConfig, bcryptConfig }
+export { appConfig, dbConfig, testDbConfig, bcryptConfig }

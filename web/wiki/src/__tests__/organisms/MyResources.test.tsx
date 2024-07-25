@@ -19,7 +19,6 @@ beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'Hola',
-      avatarId: 'Adios',
     },
   } as TAuthContext)
   vi.mock('react-router-dom', async () => {
@@ -96,7 +95,6 @@ describe('MyResources component', () => {
     vi.mocked(useAuth).mockReturnValue({
       user: {
         name: 'Hola',
-        avatarId: 'Adios',
       },
     } as TAuthContext)
 

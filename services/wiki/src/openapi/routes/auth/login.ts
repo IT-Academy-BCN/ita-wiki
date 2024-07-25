@@ -32,6 +32,7 @@ registry.registerPath({
       headers: { 'Set-Cookie': setCookieHeader.ref },
     },
     400: zodValidationErrorResponse,
+    401: userNotFoundResponse,
     403: forbiddenResponse,
     404: userNotFoundResponse,
     422: {

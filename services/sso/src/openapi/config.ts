@@ -5,7 +5,7 @@ export const openapiFilename = 'openapi.yaml'
 
 export const generatorConfig = {
   info: {
-    version: '1.34.0',
+    version: '1.38.0',
     title: 'IT Academy SSO Service',
     description: 'This is an SSO service that is used across all ITA services.',
   },

@@ -20,9 +20,11 @@ afterAll(() => {
   server.close()
 })
 
+const slug = 'test-slug'
+
 describe('useManageTopic hook', () => {
   it('should initialize the useManageTopic with default values', async () => {
-    const { result } = renderHook(() => useManageTopic(), {
+    const { result } = renderHook(() => useManageTopic({ slug }), {
       wrapper: ({ children }) => (
         <QueryClientProvider client={queryClient}>
           {children}
@@ -39,8 +41,8 @@ describe('useManageTopic hook', () => {
     })
   })
 
-  it('should call createTopicFetcher on topic creation', async () => {
-    const { result } = renderHook(() => useManageTopic(), {
+  it('should call fetchPostTopics on topic creation', async () => {
+    const { result } = renderHook(() => useManageTopic({ slug }), {
       wrapper: ({ children }) => (
         <QueryClientProvider client={queryClient}>
           {children}
@@ -49,8 +51,10 @@ describe('useManageTopic hook', () => {
     })
     act(() => {
       result.current.createTopic.mutate({
-        name: 'test',
-        categoryId: '1',
+        body: {
+          name: 'test',
+          categoryId: '1',
+        },
       })
     })
     await waitFor(() => {
@@ -61,8 +65,8 @@ describe('useManageTopic hook', () => {
     })
   })
 
-  it('should call updateTopicFetcher on topic update', async () => {
-    const { result } = renderHook(() => useManageTopic(), {
+  it('should call fetchPatchTopics on topic update', async () => {
+    const { result } = renderHook(() => useManageTopic({ slug }), {
       wrapper: ({ children }) => (
         <QueryClientProvider client={queryClient}>
           {children}
@@ -71,9 +75,11 @@ describe('useManageTopic hook', () => {
     })
     act(() => {
       result.current.updateTopic.mutate({
-        name: 'testUpdated',
-        categoryId: '1',
-        id: '1',
+        body: {
+          name: 'testUpdated',
+          categoryId: '1',
+          id: '1',
+        },
       })
     })
     await waitFor(() => {
