@@ -9,3 +9,5 @@ export const resourceId = z
     param: { description: 'ID of the resource to be retrieved.' },
     example: 'cln2u09xo0037s6wvbf6t9jfg',
   })
+
+export const categorySlug = z.string().trim().min(1).cuid()
