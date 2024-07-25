@@ -1,8 +1,4 @@
 import qs from 'qs'
-import {
-  type ListResourcesQueryParams,
-  type ListTopicsQueryParams,
-} from './openapiComponents'
 import { OpenapiContext } from './openapiContext'
 
 const baseUrl = '' // TODO add your baseUrl
@@ -110,27 +106,13 @@ export async function openapiFetch<
   }
 }
 
-const buildQueryStringResources = ({
-  categorySlug,
-  topicSlug,
-  resourceTypes,
-  topic,
-  status,
-  search,
-}: ListResourcesQueryParams) =>
-  qs.stringify({
-    categorySlug,
-    topicSlug,
-    resourceTypes,
-    topic,
-    status,
-    search,
-  })
-
-const buildQueryStringTopics = ({ categoryId, slug }: ListTopicsQueryParams) =>
-  qs.stringify({
-    categoryId,
-    slug,
+const buildQueryString = (queryParams: Record<string, string>) =>
+  qs.stringify(queryParams, {
+    skipNulls: true,
+    filter: (_prefix, value) => {
+      if (value === '') return undefined
+      return value
+    },
   })
 
 const resolveUrl = (
@@ -138,13 +120,7 @@ const resolveUrl = (
   queryParams: Record<string, string> = {},
   pathParams: Record<string, string> = {}
 ) => {
-  let query = new URLSearchParams(queryParams).toString()
-
-  if (queryParams as ListResourcesQueryParams) {
-    query = buildQueryStringResources(queryParams)
-  } else if (queryParams as ListTopicsQueryParams) {
-    query = buildQueryStringTopics(queryParams)
-  }
+  let query = buildQueryString(queryParams)
 
   if (query) query = `?${query}`
   return url.replace(/\{\w*\}/g, (key) => pathParams[key.slice(1, -1)]) + query
