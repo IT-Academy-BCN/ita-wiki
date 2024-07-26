@@ -6,9 +6,9 @@ This project uses a set of technologies to facilitate the development of web app
 
 Follow the steps below:
 
-1. cd into the front folder if you haven't already:
+1. cd into the web/wiki folder if you haven't already:
 
-   `cd front`
+   `cd web/wiki`
 
 2. Install the required dependencies:
 
@@ -26,6 +26,7 @@ Here are some of the useful scripts you can use:
 - `"build"`: build for production.
 - `"preview"`: locally preview production build.
 - `"test"`: runs the tests using the `vitest` test runner.
+- `"codegen"`: generates fetchers, hooks and types from Swagger specifications using OpenAPI-codegen library
 
 ### Golden Rules
 
@@ -35,7 +36,7 @@ Here are some of the useful scripts you can use:
 
 ### Use of context AuthProvider
 
-AuthProvider gives us access to the user information in all our app. It tell us if the user is logged and the name and avatar he/she uses.
+AuthProvider gives us access to the user information in all our app. It tell us if the user is logged in and their details.
 
 To use it, we call the custom hook useAuth:
 
@@ -46,10 +47,13 @@ const { user } = useAuth()
 This user would be the next object:
 
 ```
-{
-    name: 'Jane'
-    avatar: 'avatarJane'
-}
+   {
+      id: 'mk0xwkx64yq4v9wmu01mx709',
+      dni: '12345678A',
+      email: 'user_email@email.com',
+      name: 'Jane',
+      role: 'REGISTERED'
+   }
 ```
 
 ## Very Useful Documentation
@@ -60,5 +64,6 @@ Here are some useful links to official documentation for the technologies used i
 - [Typescript](https://www.typescriptlang.org/docs/handbook/react.html) - Typescript documentation.
 - [vitest](https://vitest.dev/guide/) - Vitest testing framework documentation.
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - React Testing Library documentation.
+- [OpenAPI-Codegen](https://github.com/fabien0102/openapi-codegen)
 
 For the students of IT Academy there is a course on YouTube that will teach you the why's behind the structure of the project and can be a good introduction to Atomic Design, testing, etc...: [Curso React Avanzado - YouTube](https://www.youtube.com/watch?v=0Fg_Rgcgvj0&list=PLr1rMfNwtgewBlEmzdqx88_i1ddKZA9n7&ab_channel=KevinMamaqiKapllani)
