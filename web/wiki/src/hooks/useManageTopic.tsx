@@ -1,56 +1,58 @@
 import { useState } from 'react'
-import { useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { TRowStatus } from '@itacademy/ui'
 import {
+  fetchPatchTopics,
+  fetchPostTopics,
+  PatchTopicsError,
+  PostTopicsError,
+  type ListTopicsQueryParams,
   type ListTopicsResponse,
-  usePatchTopics,
-  usePostTopics,
 } from '../openapi/openapiComponents'
 import { queryKeyFn } from '../openapi/openapiContext'
+import { type TTopic } from '../types'
 
-export const useManageTopic = () => {
+export const useManageTopic = ({ slug }: ListTopicsQueryParams) => {
   const [rowStatus, setRowStatus] = useState<TRowStatus>('available')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const queryClient = useQueryClient()
 
-  const { mutate: createTopic } = usePostTopics({
+  const queryKeyTopics = queryKeyFn({
+    path: '/api/v1/topics',
+    operationId: 'listTopics',
+    variables: {
+      headers: undefined,
+      queryParams: { slug },
+    },
+  })
+
+  const createTopic = useMutation({
+    mutationFn: fetchPostTopics,
     onSuccess: async () => {
       queryClient.invalidateQueries({
-        queryKey: queryKeyFn({
-          path: '/api/v1/topics',
-          operationId: 'listTopics',
-          variables: {
-            headers: undefined,
-            queryParams: undefined,
-          },
-        }),
+        queryKey: queryKeyTopics,
       })
       if (errorMessage !== '') setErrorMessage('')
       setRowStatus('available')
     },
-    onError: (error) => {
+    onError: (error: PostTopicsError) => {
       setErrorMessage(error.payload as string)
     },
   })
 
-  const { mutate: updateTopic } = usePatchTopics({
-    onMutate: ({ body: { id: newId, name: newName } }) => {
-      const queryCacheGetTopics = queryClient.getQueryCache().findAll(
-        queryKeyFn({
-          path: '/api/v1/topics',
-          operationId: 'listTopics',
-          variables: {
-            headers: undefined,
-            queryParams: undefined,
-          },
-        })
-      )
+  const updateTopic = useMutation({
+    mutationFn: fetchPatchTopics,
+    onMutate: ({ body: { id, name: newName } }) => {
+      const queryCacheGetTopics = queryClient
+        .getQueryCache()
+        .findAll(queryKeyTopics)
+
       const queryKeys = queryCacheGetTopics.map((q) => q.queryKey)
       queryKeys.forEach((queryKey) => {
         queryClient.setQueryData<ListTopicsResponse>(queryKey, (prevData) => {
-          if (prevData) {
-            return prevData?.map((topic) =>
-              topic.id === newId ? { ...topic, name: newName } : topic
+          if (prevData && newName) {
+            return prevData?.map((topic: TTopic) =>
+              topic.id === id ? { ...topic, name: newName } : topic
             )
           }
           return prevData
@@ -61,7 +63,7 @@ export const useManageTopic = () => {
       if (errorMessage !== '') setErrorMessage('')
       setRowStatus('available')
     },
-    onError: (error) => {
+    onError: (error: PatchTopicsError) => {
       setErrorMessage(error.payload as string)
     },
   })

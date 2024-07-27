@@ -53,29 +53,16 @@ afterEach(() => {
 afterAll(() => server.close())
 
 describe('SettingsManager component', () => {
-  it('renders Temes and Usuaris tabs correctly for admin role', () => {
+  it('renders Temes tab correctly for admin role', () => {
     render(<SettingsManager />)
 
     expect(screen.getByText('Temes')).toBeInTheDocument()
-    expect(screen.getByText(/usuaris/i)).toBeInTheDocument()
     expect(
       screen.getByText(
         /No hi ha temes disponibles. *Accedeix des d'una categoria per veure o gestionar els temes./
       )
     ).toBeInTheDocument()
     expect(screen.queryByText('Users Manager')).not.toBeInTheDocument()
-  })
-
-  it('changes content tab according to click on menu tab', () => {
-    render(<SettingsManager />)
-
-    fireEvent.click(screen.getByText('Usuaris'))
-
-    expect(screen.getByText(/Administrador d'Usuaris/)).toBeInTheDocument()
-
-    fireEvent.click(screen.getByText('Temes'))
-
-    expect(screen.getByText(/No hi ha temes disponibles./)).toBeInTheDocument()
   })
 
   it('filters out tabs that the mentor role is not authorized to view', async () => {

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.22.2] - 2024-07-25
+
+### Fixed
+
+- Fixed useManageTopic hook and tests to pass tests related to `/api/v1/topics` endpoint
+- Changed openapiFetcher file to manage query string
+
 ## [0.22.1] - 2024-07-25
 
 ## Changed
