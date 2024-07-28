@@ -3,7 +3,7 @@ import { expect, it, describe, beforeEach, afterEach } from 'vitest'
 import { pathRoot } from '../../../routes/routes'
 import { server, testUserData } from '../../globalSetup'
 import { UserRole } from '../../../schemas'
-import { UserStatus } from '../../../schemas/users/userSchema'
+import { User, UserStatus } from '../../../schemas/users/userSchema'
 import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
 import db from '../../../db/knexClient'
 
@@ -19,14 +19,14 @@ beforeEach(async () => {
     testUserData.admin.dni,
     testUserData.admin.password
   )
-  await db('user')
+  await db<User>('user')
     .update('deleted_at', null)
     .where('dni', testUserData.userToDelete.dni)
 })
 
 describe('Testing dashboard delete endpoint', () => {
   it('should succeed deleting a user with a logged-in admin user', async () => {
-    let deletedAt = await db('user')
+    let deletedAt = await db<User>('user')
       .select('deleted_at')
       .where('dni', testUserData.userToDelete.dni)
       .first()
@@ -36,7 +36,7 @@ describe('Testing dashboard delete endpoint', () => {
       .set('Cookie', [authAdminToken])
     expect(response.status).toBe(204)
 
-    deletedAt = await db('user')
+    deletedAt = await db<User>('user')
       .select('deleted_at')
       .where('dni', testUserData.userToDelete.dni)
       .first()
@@ -58,7 +58,7 @@ describe('Testing dashboard delete endpoint', () => {
     expect(response.body.message).toBe('Invalid Credentials')
   })
   it('should fail with a user already deleted', async () => {
-    let deletedAt = await db('user')
+    let deletedAt = await db<User>('user')
       .select('deleted_at')
       .where('dni', testUserData.userToDelete.dni)
       .first()
@@ -70,7 +70,7 @@ describe('Testing dashboard delete endpoint', () => {
       .set('Cookie', [authAdminToken])
     expect(response1.status).toBe(204)
 
-    deletedAt = await db('user')
+    deletedAt = await db<User>('user')
       .select('deleted_at')
       .where('dni', testUserData.userToDelete.dni)
       .first()
@@ -81,7 +81,7 @@ describe('Testing dashboard delete endpoint', () => {
       .delete(`${route}/${userToDeleteId}`)
       .set('Cookie', [authAdminToken])
 
-    deletedAt = await db('user')
+    deletedAt = await db<User>('user')
       .select('deleted_at')
       .where('dni', testUserData.userToDelete.dni)
       .first()
@@ -107,7 +107,7 @@ describe('Testing dashboard delete endpoint', () => {
 })
 describe('Authentication test', () => {
   afterEach(async () => {
-    await db('user')
+    await db<User>('user')
       .update({
         status: UserStatus.ACTIVE,
         role: UserRole.ADMIN,
@@ -117,7 +117,7 @@ describe('Authentication test', () => {
   it('should fail to return a collection of users with a blocked logged-in admin', async () => {
     const adminDni = testUserData.admin.dni
     const newStatus = UserStatus.BLOCKED
-    await db('user').update('status', newStatus).where('dni', adminDni)
+    await db<User>('user').update('status', newStatus).where('dni', adminDni)
     const response = await supertest(server)
       .get(route)
       .set('Cookie', [authAdminToken])
@@ -125,7 +125,7 @@ describe('Authentication test', () => {
   })
 
   it('should fail when the logged-in admin loses "active" status', async () => {
-    await db('user')
+    await db<User>('user')
       .update('status', UserStatus.PENDING)
       .where('dni', testUserData.admin.dni)
     const response = await supertest(server)
@@ -135,7 +135,7 @@ describe('Authentication test', () => {
     expect(response.body.message).toBe('Only active users can proceed')
   })
   it('Should fail if user level is not ADMIN', async () => {
-    await db('user')
+    await db<User>('user')
       .update('role', UserRole.MENTOR)
       .where('dni', testUserData.admin.dni)
     const response = await supertest(server)
