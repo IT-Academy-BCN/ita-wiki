@@ -77,13 +77,18 @@ export const userManager = {
    */
   async getUser<T extends keyof User>(
     id: string,
-    options: GetUserOptions<T>
+    options: GetUserOptions<T>,
+    activeOnly: boolean = false
   ): Promise<Pick<User, T> | null> {
     const snakeCase = await getSnakeCase()
     const camelCase = await getCamelCase()
     const fieldsToSelect = options.fields.map((f) => snakeCase(f)).join(', ')
-    const query = `SELECT ${fieldsToSelect} FROM "user" WHERE id = $1 AND deleted_at IS NULL`
     const values = [id]
+    let query = `SELECT ${fieldsToSelect} FROM "user" WHERE id = $1`
+
+    if (!activeOnly) {
+      query += ' AND deleted_at IS NULL'
+    }
     const result = await client.query(query, values)
 
     if (result.rows.length) {

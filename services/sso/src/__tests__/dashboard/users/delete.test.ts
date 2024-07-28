@@ -4,16 +4,15 @@ import { pathRoot } from '../../../routes/routes'
 import { server, testUserData } from '../../globalSetup'
 import { UserRole } from '../../../schemas'
 import { UserStatus } from '../../../schemas/users/userSchema'
-import db from '../../../db/knexClient'
 import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
+import db from '../../../db/knexClient'
 
-const route = `${pathRoot.v1.dashboard.users}/`
+const route = `${pathRoot.v1.dashboard.users}`
 let authAdminToken = ''
-const user = await db('user')
+const { id: userToDeleteId } = await db('user')
   .select('id')
   .where('dni', testUserData.userToDelete.dni)
   .first()
-const userToDeleteId = user.id
 
 beforeEach(async () => {
   authAdminToken = await dashboardLoginAndGetToken(
@@ -21,8 +20,8 @@ beforeEach(async () => {
     testUserData.admin.password
   )
   await db('user')
+    .update('deleted_at', null)
     .where('dni', testUserData.userToDelete.dni)
-    .update({ deleted_at: null })
 })
 
 describe('Testing dashboard delete endpoint', () => {
@@ -41,7 +40,7 @@ describe('Testing dashboard delete endpoint', () => {
       .select('deleted_at')
       .where('dni', testUserData.userToDelete.dni)
       .first()
-    expect(deletedAt.deleted_at).toContain(Date)
+    expect(deletedAt.deleted_at).toBeTruthy()
   })
   it('should fail with no cookies', async () => {
     const response = await supertest(server).delete(
@@ -63,35 +62,32 @@ describe('Testing dashboard delete endpoint', () => {
       .select('deleted_at')
       .where('dni', testUserData.userToDelete.dni)
       .first()
-    expect(deletedAt.deleted_at).toBe(null)
+
+    expect(deletedAt?.deleted_at).toBe(null)
 
     const response1 = await supertest(server)
       .delete(`${route}/${userToDeleteId}`)
       .set('Cookie', [authAdminToken])
     expect(response1.status).toBe(204)
-    console.log('status-response1:', response1.status)
 
     deletedAt = await db('user')
       .select('deleted_at')
       .where('dni', testUserData.userToDelete.dni)
       .first()
-    expect(new Date(deletedAt.deleted_at)).toContain(Date)
-    console.log('date:', deletedAt)
+
+    expect(deletedAt?.deleted_at).toBeTruthy() // toBeTruthy()
 
     const response2 = await supertest(server)
       .delete(`${route}/${userToDeleteId}`)
       .set('Cookie', [authAdminToken])
-    console.log('cookie-auth:', authAdminToken)
-
-    console.log('status-response2:', response2.status)
-    expect(response2.status).toBe(410)
-    expect(response2.body.message).toBe('User already deleted')
 
     deletedAt = await db('user')
       .select('deleted_at')
       .where('dni', testUserData.userToDelete.dni)
       .first()
-    expect(new Date(deletedAt.deleted_at)).toContain(Date)
+    expect(response2.status).toBe(410)
+    expect(response2.body.message).toBe('User already deleted')
+    expect(deletedAt?.deleted_at).toBeTruthy()
   })
   it('Should return error if id does not exist', async () => {
     const falseId = 'falseid'
@@ -111,15 +107,17 @@ describe('Testing dashboard delete endpoint', () => {
 })
 describe('Authentication test', () => {
   afterEach(async () => {
-    await db('user').where('dni', testUserData.admin.dni).update({
-      status: UserStatus.ACTIVE,
-      role: UserRole.ADMIN,
-    })
+    await db('user')
+      .update({
+        status: UserStatus.ACTIVE,
+        role: UserRole.ADMIN,
+      })
+      .where('dni', testUserData.admin.dni)
   })
   it('should fail to return a collection of users with a blocked logged-in admin', async () => {
     const adminDni = testUserData.admin.dni
     const newStatus = UserStatus.BLOCKED
-    await db('user').where('dni', adminDni).update({ status: newStatus })
+    await db('user').update('status', newStatus).where('dni', adminDni)
     const response = await supertest(server)
       .get(route)
       .set('Cookie', [authAdminToken])
@@ -128,8 +126,8 @@ describe('Authentication test', () => {
 
   it('should fail when the logged-in admin loses "active" status', async () => {
     await db('user')
+      .update('status', UserStatus.PENDING)
       .where('dni', testUserData.admin.dni)
-      .update({ status: UserStatus.PENDING })
     const response = await supertest(server)
       .delete(`${route}/${userToDeleteId}`)
       .set('Cookie', [authAdminToken])
@@ -138,8 +136,8 @@ describe('Authentication test', () => {
   })
   it('Should fail if user level is not ADMIN', async () => {
     await db('user')
+      .update('role', UserRole.MENTOR)
       .where('dni', testUserData.admin.dni)
-      .update({ role: UserRole.MENTOR })
     const response = await supertest(server)
       .delete(`${route}/${userToDeleteId}`)
       .set('Cookie', [authAdminToken])
