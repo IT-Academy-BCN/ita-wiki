@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.18.4] - 2024-07-29
+
+### Fixed
+
+– Resolved Swagger path parameters for `resources/me/{categorySlug}`
+
 ## [0.18.3] - 2024-07-24
 
 ### Fixed

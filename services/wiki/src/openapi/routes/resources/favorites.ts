@@ -17,14 +17,14 @@ registry.registerPath({
   summary: 'Returns favorite resources by user and category',
   request: {
     params: z.object({
-      categorySlug,
+      categorySlug: categorySlug.openapi({ example: 'node' }),
     }),
   },
   parameters: [
     {
       name: 'categorySlug',
       in: 'path',
-      required: false,
+      required: true,
       description:
         'Slug of the category for which to retrieve favorite resources',
       example: 'node',

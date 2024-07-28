@@ -1,5 +1,5 @@
 info:
-  version: 0.18.3
+  version: 0.18.4
   title: IT Academy Wiki
   description: Our app implements a Wiki to be used as a knowledge base by the
     students of the Barcelona Activa's IT Academy
@@ -681,6 +681,7 @@ paths:
           schema:
             type: string
             minLength: 1
+            example: node
           required: true
       responses:
         "200":
@@ -1322,7 +1323,7 @@ paths:
                   - $ref: "#/components/schemas/MissingUserError"
                   - example:
                       message: Resource not found
-  /api/v1/resources/me:
+  "/api/v1/resources/me/{categorySlug}":
     get:
       tags:
         - resources
@@ -1331,15 +1332,16 @@ paths:
       description: Returns all the posted resources by a logged in user. In addition,
         if categorySlug query provided, returns only the resources posted in
         that category.
-      security:
-        - cookieAuth: []
       parameters:
-        - in: query
+        - in: path
           name: categorySlug
           schema:
             type: string
+            minLength: 1
             example: react
           required: false
+      security:
+        - cookieAuth: []
       responses:
         "200":
           description: All resources posted by user are returned.
