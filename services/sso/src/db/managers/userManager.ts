@@ -1,4 +1,4 @@
-import { User } from '../../schemas'
+import { User, UserPatch } from '../../schemas'
 import { ItinerayList } from '../../schemas/itineraries/itinerariesListSchema'
 import { client } from '../client'
 import db from '../knexClient'
@@ -227,5 +227,20 @@ export const userManager = {
   async getAllItineraries(): Promise<ItinerayList[]> {
     const data = await db('itinerary').select('*')
     return data
+  },
+  async updateUserByIds<T extends UserPatch>(
+    options: T,
+    ids: string[]
+  ): Promise<void> {
+    const snakeCase = await getSnakeCase()
+    const keyObject = Object.keys(options)
+    const valueObject = Object.values(options)
+    const setArray = keyObject.map((key, index) => [
+      snakeCase(key),
+      valueObject[index],
+    ])
+    const setObject = Object.fromEntries(setArray)
+
+    await db('user').update(setObject).whereIn('id', ids)
   },
 }

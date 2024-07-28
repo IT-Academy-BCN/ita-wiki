@@ -1,23 +1,24 @@
 import { Middleware } from 'koa'
 import { Context } from 'vm'
 import { userIdSchema } from '../../../schemas/users/userSchema'
-import { client } from '../../../db/client'
 import { DeletedError, NotFoundError } from '../../../utils/errors'
+import { fetchUser, userManager } from '../../../db/managers/userManager'
 
 export const dashboardDeleteUser: Middleware = async (ctx: Context) => {
   const id = userIdSchema.parse(ctx.params.id)
-  const userResult = await client.query(
-    'SELECT id, deleted_at FROM "user" WHERE id = $1',
-    [id]
-  )
-  if (!userResult.rows.length) {
+  const user = await fetchUser('id', id, { fields: ['id', 'deletedAt'] })
+
+  if (!user) {
     throw new NotFoundError('User not found')
   }
-  if (userResult.rows[0].deleted_at !== null) {
+
+  console.log('user', user.deletedAt)
+  if (user.deletedAt !== null) {
     throw new DeletedError('User already deleted')
   }
-  const updateQuery =
-    'UPDATE "user" SET deleted_at = CURRENT_TIMESTAMP WHERE id = $1'
-  await client.query(updateQuery, [id])
+  await userManager.updateUserByIds({ deletedAt: new Date().toISOString() }, [
+    id,
+  ])
+
   ctx.status = 204
 }
