@@ -19,6 +19,7 @@ type MockUser = {
   id: string
   email: string
   status: string
+  deletedAt?: null | Date
 }
 
 vi.mock('../../../db/client', () => ({
@@ -91,8 +92,16 @@ describe('userManager.getUsers', () => {
 
   it('should retrieve a list of users with the specified fields and active status', async () => {
     const mockUsers: MockUser[] = [
-      { id: '123', email: 'user1@example.com', status: UserStatus.ACTIVE },
-      { id: '456', email: 'user2@example.com', status: UserStatus.ACTIVE },
+      {
+        id: '123',
+        email: 'user1@example.com',
+        status: UserStatus.ACTIVE,
+      },
+      {
+        id: '456',
+        email: 'user2@example.com',
+        status: UserStatus.ACTIVE,
+      },
     ]
     ;(client.query as Mock).mockResolvedValue({ rows: mockUsers })
 
@@ -111,8 +120,16 @@ describe('userManager.getUsers', () => {
 
   it('should retrieve a list of users with the specified fields without filtering by status', async () => {
     const mockUsers: MockUser[] = [
-      { id: '123', email: 'user1@example.com', status: UserStatus.BLOCKED },
-      { id: '456', email: 'user2@example.com', status: UserStatus.PENDING },
+      {
+        id: '123',
+        email: 'user1@example.com',
+        status: UserStatus.BLOCKED,
+      },
+      {
+        id: '456',
+        email: 'user2@example.com',
+        status: UserStatus.PENDING,
+      },
     ]
     ;(client.query as Mock).mockResolvedValue({ rows: mockUsers })
 
@@ -226,5 +243,70 @@ describe('userManager.findByDni', () => {
     await expect(
       userManager.findByDni(userDni, { fields: ['id', 'email', 'status'] })
     ).rejects.toThrow('SQL query failed')
+  })
+
+  describe('userManger.updateUserByIds', () => {
+    const userId = '123'
+
+    it('Should return nothing but set a new values on fields specified', async () => {
+      const mockUser: MockUser = {
+        id: userId,
+        email: 'user1@example.com',
+        status: UserStatus.ACTIVE,
+        deletedAt: null,
+      }
+      const mockUserUpdated: MockUser = {
+        id: userId,
+        email: 'joanbr4@itacademy.cat',
+        status: UserStatus.ACTIVE,
+        deletedAt: new Date('2024-07-28 22:02:15.668467+00'),
+      }
+
+      tracker.on.select('user').response([mockUser])
+
+      const response0 = await userManager.findById(userId, {
+        fields: ['id', 'email', 'deletedAt'],
+      })
+
+      expect(response0).toEqual(mockUser)
+
+      tracker.on.update('user').response([])
+
+      await userManager.updateUserByIds(
+        {
+          email: 'joanbr4@itacademy.cat',
+          deletedAt: '2024-07-28 22:02:15.668467+00',
+        },
+        [userId]
+      )
+
+      tracker.reset()
+
+      tracker.on.select('user').response([mockUserUpdated])
+
+      const response2 = await userManager.findById(userId, {
+        fields: ['id', 'email', 'deletedAt'],
+      })
+
+      expect(response2).toEqual(mockUserUpdated)
+    })
+
+    it('should return null if user is not found', async () => {
+      tracker.on.select('user').response([])
+
+      const user = await userManager.findById(userId, {
+        fields: ['id', 'email', 'status'],
+      })
+
+      expect(user).toBeNull()
+    })
+
+    it('should handle SQL query errors', async () => {
+      tracker.on.select('user').simulateError('SQL query failed')
+
+      await expect(
+        userManager.findById(userId, { fields: ['id', 'email', 'status'] })
+      ).rejects.toThrow('SQL query failed')
+    })
   })
 })
