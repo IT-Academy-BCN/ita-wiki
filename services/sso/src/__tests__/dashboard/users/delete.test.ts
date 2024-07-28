@@ -40,7 +40,7 @@ describe('Testing dashboard delete endpoint', () => {
       .select('deleted_at')
       .where('dni', testUserData.userToDelete.dni)
       .first()
-    expect(deletedAt.deleted_at).toBeTruthy()
+    expect(deletedAt.deleted_at).toContain(Date)
   })
   it('should fail with no cookies', async () => {
     const response = await supertest(server).delete(
@@ -63,7 +63,7 @@ describe('Testing dashboard delete endpoint', () => {
       .where('dni', testUserData.userToDelete.dni)
       .first()
 
-    expect(deletedAt?.deleted_at).toBe(null)
+    expect(deletedAt.deleted_at).toBe(null)
 
     const response1 = await supertest(server)
       .delete(`${route}/${userToDeleteId}`)
@@ -75,7 +75,7 @@ describe('Testing dashboard delete endpoint', () => {
       .where('dni', testUserData.userToDelete.dni)
       .first()
 
-    expect(deletedAt?.deleted_at).toBeTruthy() // toBeTruthy()
+    expect(deletedAt.deleted_at).toContain(Date)
 
     const response2 = await supertest(server)
       .delete(`${route}/${userToDeleteId}`)
@@ -87,7 +87,7 @@ describe('Testing dashboard delete endpoint', () => {
       .first()
     expect(response2.status).toBe(410)
     expect(response2.body.message).toBe('User already deleted')
-    expect(deletedAt?.deleted_at).toBeTruthy()
+    expect(deletedAt.deleted_at).toContain(Date)
   })
   it('Should return error if id does not exist', async () => {
     const falseId = 'falseid'
