@@ -2,11 +2,11 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
-### [1.39.0] - 2024-07-28
+## [1.39.0] - 2024-07-25
 
 ### Changed
 
-- Migrated `POST /dashboard/users/{id}/` endpoint to Knex.
+- Updated `PATCH users/:id` endpoint to Knex methods.
 
 ### [1.38.0] - 2024-07-17
 

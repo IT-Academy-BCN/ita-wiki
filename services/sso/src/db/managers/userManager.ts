@@ -229,6 +229,51 @@ export const userManager = {
     }
     return []
   },
+  /**
+   * Set a new values to a user from the database based on the user IDs and selected fields key/values.
+   * This function queries the database for a user by their IDs and no retrieves nothing, just a void.
+   * The parmater type is a `Partial` of the `UserPatch` type.
+   * The returned type is a void.
+   *
+   * @param {string[]} ids - The unique identifier Array of the users to retrieve.
+   * @param {UserPatch} options - Configuration options that specify
+   *                                      field to set and its values. The `options`
+   *                                       must contain one or more keys/value of the `UserPatch` type to SET.
+   * @returns {Promise<void>} A promise of void.
+   *
+   *
+   * Example usage:
+   * ```typescript
+   * updateUserByIds({name: 'Joan', deletedAt: String(knex.fn.now])  }, ['bbiax2thm5usyfg7lus1sosp'])
+   * ```
+   *
+   * @throws {Error} Throws an error if the SQL query fails.
+   */
+  async updateUserByIds<T extends UserPatch>(
+    options: T,
+    ids: string[]
+  ): Promise<void> {
+    const snakeCase = await getSnakeCase()
+    const keyObject = Object.keys(options)
+    const valueObject = Object.values(options)
+    const setArray = keyObject.map((key, index) => [
+      snakeCase(key),
+      valueObject[index],
+    ])
+    const setObject = Object.fromEntries(setArray)
+
+    await db('user').update(setObject).whereIn('id', ids)
+  },
+
+  /**
+   * Retrieve a list of all itineraries  from the database
+   * Doesn't requiere any parameters
+   * The returned type is a Array of ItineraryList type.
+   *
+   * @returns {Promise<ItinerayList[]>} A promise of list of itineraries
+   *
+   */
+
   async getAllItineraries(): Promise<ItinerayList[]> {
     const data = await db('itinerary').select('*')
     return data
