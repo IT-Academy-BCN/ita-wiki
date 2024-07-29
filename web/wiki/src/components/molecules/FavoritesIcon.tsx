@@ -2,10 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Icon, colors } from '@itacademy/ui'
 import { FC } from 'react'
-import {
-  PutFavoritesError,
-  usePutFavorites,
-} from '../../openapi/openapiComponents'
+import { usePutFavorites } from '../../openapi/openapiComponents'
 import { type TFavorites, type TResource } from '../../types'
 
 type TResourceFav = {
@@ -77,9 +74,6 @@ export const FavoritesIcon: FC<TResourceFav> = ({
           )
         })
       }
-    },
-    onError: (error: PutFavoritesError) => {
-      console.error('Error updating favorite resource: ', error.payload)
     },
   })
 
