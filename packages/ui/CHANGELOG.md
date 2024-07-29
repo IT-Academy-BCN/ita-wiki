@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 
+## [0.36.2] - 2024-07-02
+
+- Fixed HamburguerMenu in Storybook
+
+### Fixed
+
 ## [0.36.1] - 2024-06-25
 
 - Fixed backgroundImg of CardHome
