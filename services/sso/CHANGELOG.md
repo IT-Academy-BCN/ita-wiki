@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.40.0] - 2024-07-25
+
+### Changed
+
+- Migrated `DELETE dashboard/users/:id` endpoint to Knex.
+
 ## [1.39.0] - 2024-07-25
 
 ### Changed

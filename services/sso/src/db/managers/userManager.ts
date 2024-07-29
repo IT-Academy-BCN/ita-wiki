@@ -278,19 +278,4 @@ export const userManager = {
     const data = await db('itinerary').select('*')
     return data
   },
-  async updateUserByIds<T extends UserPatch>(
-    options: T,
-    ids: string[]
-  ): Promise<void> {
-    const snakeCase = await getSnakeCase()
-    const keyObject = Object.keys(options)
-    const valueObject = Object.values(options)
-    const setArray = keyObject.map((key, index) => [
-      snakeCase(key),
-      valueObject[index],
-    ])
-    const setObject = Object.fromEntries(setArray)
-
-    await db('user').update(setObject).whereIn('id', ids)
-  },
 }
