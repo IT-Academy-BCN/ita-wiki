@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.23.2] - 2024-07-29
+
+### Changed
+
+- Replaced favMutation in FavoritesIcon component with corresponding openapi generated fetcher
+
 ## [0.22.2] - 2024-07-25
 
 ### Fixed
