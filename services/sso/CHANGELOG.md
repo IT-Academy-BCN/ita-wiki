@@ -2,6 +2,13 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.37.0] - 2024-07-26
+
+### Added
+
+- Implemented `dashboardBatchDelete` middleware for batch deletion of users in the dashboard.
+- Updated `dashboardBatchDelete` middleware to use Knex for database operations.
+
 ## [1.36.0] - 2024-07-22
 
 ### Changed
