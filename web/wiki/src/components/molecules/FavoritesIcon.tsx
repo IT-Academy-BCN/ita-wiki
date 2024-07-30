@@ -21,7 +21,7 @@ export const FavoritesIcon: FC<TResourceFav> = ({
 
   const newFav = useMutation({
     mutationFn: fetchPutFavorites,
-    onSuccess: async () => {
+    onSuccess: () => {
       const queryCacheGetResources = queryClient
         .getQueryCache()
         .findAll(['getResources'])
