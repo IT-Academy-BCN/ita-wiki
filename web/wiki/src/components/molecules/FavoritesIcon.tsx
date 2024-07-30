@@ -1,8 +1,8 @@
-import { useQueryClient } from '@tanstack/react-query'
+import { useQueryClient, useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
 import { Icon, colors } from '@itacademy/ui'
 import { FC } from 'react'
-import { usePutFavorites } from '../../openapi/openapiComponents'
+import { fetchPutFavorites } from '../../openapi/openapiComponents'
 import { type TFavorites, type TResource } from '../../types'
 
 type TResourceFav = {
@@ -19,8 +19,9 @@ export const FavoritesIcon: FC<TResourceFav> = ({
   const queryClient = useQueryClient()
   const { t } = useTranslation()
 
-  const newFav = usePutFavorites({
-    onSuccess: () => {
+  const newFav = useMutation({
+    mutationFn: fetchPutFavorites,
+    onSuccess: async () => {
       const queryCacheGetResources = queryClient
         .getQueryCache()
         .findAll(['getResources'])
@@ -78,8 +79,7 @@ export const FavoritesIcon: FC<TResourceFav> = ({
   })
 
   const handleFavorite = (id: string) => {
-    const variables = { body: { id } }
-    newFav.mutate(variables)
+    newFav.mutate({ body: { id } })
   }
 
   return (
