@@ -159,12 +159,14 @@ export const ResourceForm: FC<TResourceForm> = ({
   const create = handleSubmit(async (data) => {
     const { title, description, url, topics, resourceType } = data
 
+    const topicsSelected = typeof topics === 'string' ? [topics] : topics
+
     createResource({
       body: {
         title,
         description,
         url,
-        topics: (topics as string[]) || [topics],
+        topics: topicsSelected,
         resourceType,
         categoryId: `${state.id}`,
       },

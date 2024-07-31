@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import {
   BackButton,
@@ -62,11 +62,15 @@ const getWindowMobile = () =>
 
 export const UserProfile: FC = () => {
   const { user } = useAuth()
+  const { slug } = useParams()
   const {
     data: favoritesData,
     isLoading: favsLoading,
     isError: favsError,
-  } = useListFavoritesResources({}, { enabled: !!user })
+  } = useListFavoritesResources(
+    { queryParams: { categorySlug: slug ?? '' } },
+    { enabled: !!user }
+  )
 
   const favoritesLength = favoritesData ? favoritesData.length : 0
 
@@ -74,7 +78,12 @@ export const UserProfile: FC = () => {
     data: resourcesData,
     isLoading: resourcesLoading,
     isError: resourcesError,
-  } = useListUserMeResources({}, { enabled: !!user })
+  } = useListUserMeResources(
+    { queryParams: { categorySlug: slug ?? undefined } },
+    { enabled: !!user }
+  )
+
+  console.log('resourcesData', resourcesData)
 
   const resourcesLength = resourcesData?.resources
     ? resourcesData.resources.length
@@ -116,7 +125,7 @@ export const UserProfile: FC = () => {
 
   const counterData = [
     {
-      number: resourcesLength,
+      number: resourcesLoading ? undefined : resourcesLength,
       text: `${t('Aportaciones')}`,
       icon: 'attach_file',
       isError: resourcesError,
@@ -130,7 +139,7 @@ export const UserProfile: FC = () => {
       errorMessage: `${t('n/d')}`,
     },
     {
-      number: favoritesLength,
+      number: favsLoading ? undefined : favoritesLength,
       text: `${t('Favoritos guardados')}`,
       icon: 'favorite',
       isError: favsError,
@@ -166,7 +175,7 @@ export const UserProfile: FC = () => {
         <UserProfileResourcesWidget
           title={t('Mis recursos')}
           titleMobile={t('Tus recursos')}
-          resourcesArray={resourcesData?.resources ?? []}
+          resourcesArray={resourcesData ?? undefined}
           isLoading={resourcesLoading}
           isError={resourcesError}
         />

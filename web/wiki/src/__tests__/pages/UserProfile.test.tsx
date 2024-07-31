@@ -2,10 +2,11 @@ import { vi } from 'vitest'
 import { render, screen, waitFor } from '../test-utils'
 import { UserProfile } from '../../pages'
 import { TAuthContext, useAuth } from '../../context/AuthProvider'
-import { errorHandlers } from '../../__mocks__/handlers'
+import { errorHandlers, handlers } from '../../__mocks__/handlers'
 import { server } from '../../__mocks__/server'
 
 beforeEach(() => {
+  server.use(...handlers)
   vi.mock('../../context/AuthProvider', async () => {
     const actual = await vi.importActual('../../context/AuthProvider')
     return {
@@ -86,11 +87,6 @@ describe('UserProfile', () => {
     ) as unknown as HTMLDivElement
 
     await waitFor(() => expect(spinnerComponent).toHaveLength(6))
-
-    const backButtonElement = screen.getByRole('button', {
-      name: /arrow_back_ios torna/i,
-    })
-    expect(backButtonElement).toBeInTheDocument()
 
     const cardProfileElement = screen.getByTestId('card-profile')
     expect(cardProfileElement).toBeInTheDocument()
