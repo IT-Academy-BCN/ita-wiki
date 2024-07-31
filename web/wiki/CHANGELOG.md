@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.22.4] - 2024-07-31
+
+### Fixed
+
+- Fix test of MyFavoritesList, MyResources, UserProfile, ResourceForm
+
 ## [0.22.3] - 2024-07-30
 
 ### Fixed

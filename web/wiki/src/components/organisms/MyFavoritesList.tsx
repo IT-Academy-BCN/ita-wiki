@@ -78,7 +78,7 @@ export const MyFavoritesList: FC = () => {
   const [isMobile, setIsMobile] = useState(getWindowIsMobile())
   const { t } = useTranslation()
   const { isLoading, isError, data } = useListFavoritesResources(
-    { queryParams: { categorySlug: slug } },
+    { pathParams: { categorySlug: slug ?? '' } },
     { enabled: !!user }
   )
 
