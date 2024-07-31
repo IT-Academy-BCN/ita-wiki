@@ -5,7 +5,31 @@ const baseUrl = '' // TODO add your baseUrl
 
 export type ErrorWrapper<TError> =
   | TError
-  | { status: 'unknown'; payload: string }
+  | { status: number | string; payload: string }
+
+class OpenapiError<TError> extends Error {
+  constructor(public error: ErrorWrapper<TError>) {
+    super()
+  }
+}
+
+async function processError<TError>(
+  response: Response
+): Promise<ErrorWrapper<TError>> {
+  let error: ErrorWrapper<TError>
+  try {
+    error = {
+      status: response.status,
+      payload: await response.json(),
+    }
+  } catch (e) {
+    error = {
+      status: 'unknown' as const,
+      payload: 'Unexpected error',
+    }
+  }
+  return error
+}
 
 export type OpenapiFetcherOptions<TBody, THeaders, TQueryParams, TPathParams> =
   {
@@ -75,7 +99,7 @@ export async function openapiFetch<
     if (!response.ok) {
       let error: ErrorWrapper<TError>
       try {
-        error = await response.json()
+        error = await processError<TError>(response)
       } catch (e) {
         error = {
           status: 'unknown' as const,
@@ -85,8 +109,7 @@ export async function openapiFetch<
               : 'Unexpected error',
         }
       }
-
-      throw error
+      throw new OpenapiError(error)
     }
 
     if (response.headers.get('content-type')?.includes('json')) {
@@ -96,13 +119,17 @@ export async function openapiFetch<
       return (await response.blob()) as unknown as TData
     }
   } catch (e) {
-    let errorObject: Error = {
-      name: 'unknown' as const,
-      message:
-        e instanceof Error ? `Network error (${e.message})` : 'Network error',
-      stack: e as string,
+    if (e instanceof OpenapiError) {
+      throw e.error
+    } else {
+      let errorObject: Error = {
+        name: 'unknown' as const,
+        message:
+          e instanceof Error ? `Network error (${e.message})` : 'Network error',
+        stack: e as string,
+      }
+      throw errorObject
     }
-    throw errorObject
   }
 }
 
@@ -120,8 +147,7 @@ const resolveUrl = (
   queryParams: Record<string, string> = {},
   pathParams: Record<string, string> = {}
 ) => {
-  let query = buildQueryString(queryParams)
-
+  let query = new URLSearchParams(queryParams).toString()
   if (query) query = `?${query}`
   return url.replace(/\{\w*\}/g, (key) => pathParams[key.slice(1, -1)]) + query
 }
