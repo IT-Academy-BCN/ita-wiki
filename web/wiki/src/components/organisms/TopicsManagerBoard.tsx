@@ -37,7 +37,7 @@ export const TopicsManagerBoard: FC = () => {
     rowStatus,
     setRowStatus,
     setErrorMessage,
-  } = useManageTopic()
+  } = useManageTopic({ slug })
 
   if (slug === undefined) {
     return (
@@ -82,7 +82,7 @@ export const TopicsManagerBoard: FC = () => {
       // TODO: Delete topic when DELETE endpoint exists
       handleErrorMessage(t('No es posible borrar el tema.'))
     } else if (actionTopic === 'update') {
-      updateTopic({
+      updateTopic.mutate({
         body: {
           id: selectedId,
           name: changedTopic.name,
@@ -90,7 +90,7 @@ export const TopicsManagerBoard: FC = () => {
         },
       })
     } else {
-      createTopic({
+      createTopic.mutate({
         body: { name: changedTopic.name, categoryId: changedTopic.categoryId },
       })
     }

@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, useState } from 'react'
+import { FC, HTMLAttributes, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import styled from 'styled-components'
@@ -17,6 +17,7 @@ import {
   colors,
   device,
 } from '@itacademy/ui'
+import { ValidationError } from '../../openapi/openapiSchemas'
 import {
   type PostLoginRequestBody,
   usePostLogin,
@@ -92,6 +93,7 @@ export const Login: FC<TLogin> = ({
     handleSubmit,
     formState: { errors },
     trigger,
+    setError,
   } = useForm<PostLoginRequestBody>({
     resolver: zodResolver(UserLoginSchema),
   })
@@ -114,7 +116,26 @@ export const Login: FC<TLogin> = ({
       },
     })
   })
-
+  const errorMessage = useMemo(() => {
+    const { payload, status } = error ?? {}
+    if (typeof payload === 'string') {
+      return t(`${payload}`)
+    }
+    if (typeof payload !== 'string' && typeof payload?.message === 'string') {
+      return t(`${payload?.message}`)
+    }
+    if (status === 400) {
+      const { code, message, path } = (payload as ValidationError).message[0]
+      if (path.includes('dni')) {
+        setError('dni', { type: code, message })
+      }
+      return t(message)
+    }
+    if (error) {
+      return 'Error'
+    }
+    return undefined
+  }, [setError, error, t])
   return (
     <LoginStyled
       data-testid="loginModal"
@@ -124,9 +145,9 @@ export const Login: FC<TLogin> = ({
       <TitleStyled as="h1" fontWeight="bold">
         Login
       </TitleStyled>
-      {error && (
+      {errorMessage && (
         <FlexErrorStyled align="start">
-          <ValidationMessage color="error" text={t(`${error.payload}`)} />
+          <ValidationMessage color="error" text={t(`${errorMessage}`)} />
         </FlexErrorStyled>
       )}
       {(errors.dni || errors.password) && (

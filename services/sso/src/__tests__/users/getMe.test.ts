@@ -4,7 +4,7 @@ import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { userSchema } from '../../schemas'
 import { UserStatus } from '../../schemas/users/userSchema'
-import { client } from '../../db/client'
+import db from '../../db/knexClient'
 
 const route = `${pathRoot.v1.users}/me`
 const userToBeBlockedDni = testUserData.userToBeBlocked.dni
@@ -12,6 +12,7 @@ const userToDeleteDni = testUserData.userToDelete.dni
 let adminAuthToken = ''
 let userToBlockAuthToken = ''
 let userToDeleteAuthToken = ''
+
 beforeAll(async () => {
   const responseAdmin = await supertest(server)
     .post(`${pathRoot.v1.auth}/login`)
@@ -38,14 +39,11 @@ beforeAll(async () => {
 
 afterAll(async () => {
   const newStatus = UserStatus.ACTIVE
-  await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-    newStatus,
-    userToBeBlockedDni,
-  ])
-  await client.query('UPDATE "user" SET deleted_at = $1 WHERE dni = $2', [
-    null,
-    userToDeleteDni,
-  ])
+  await db('user')
+    .update({ status: newStatus })
+    .where({ dni: userToBeBlockedDni })
+
+  await db('user').update('deleted_at', null).where('dni', userToDeleteDni)
 })
 
 describe('Testing get user endpoint', () => {
@@ -53,6 +51,7 @@ describe('Testing get user endpoint', () => {
     const response = await supertest(server).post(route).send({
       authToken: adminAuthToken,
     })
+
     expect(response.status).toBe(200)
     expect(response.body.dni).toBeTypeOf('string')
     expect(
@@ -97,10 +96,11 @@ describe('Testing get user endpoint', () => {
     })
     expect(response1.status).toBe(200)
     const newStatus = UserStatus.BLOCKED
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      newStatus,
-      userToBeBlockedDni,
-    ])
+
+    await db('user')
+      .update({ status: newStatus })
+      .where({ dni: userToBeBlockedDni })
+
     const response2 = await supertest(server).post(route).send({
       authToken: userToBlockAuthToken,
     })
@@ -108,20 +108,21 @@ describe('Testing get user endpoint', () => {
     expect(response2.body.message).toBe('The user is Blocked')
 
     const newNewStatus = UserStatus.ACTIVE
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      newNewStatus,
-      userToBeBlockedDni,
-    ])
+
+    await db('user')
+      .update({ status: newNewStatus })
+      .where({ dni: userToBeBlockedDni })
   })
   it('should fail if user is deleted', async () => {
     const response1 = await supertest(server).post(route).send({
       authToken: userToDeleteAuthToken,
     })
     expect(response1.status).toBe(200)
-    await client.query(
-      'UPDATE "user" SET deleted_at = CURRENT_TIMESTAMP WHERE dni = $1',
-      [userToDeleteDni]
-    )
+
+    await db('user')
+      .update({ deleted_at: db.fn.now() })
+      .where({ dni: userToDeleteDni })
+
     const response2 = await supertest(server).post(route).send({
       authToken: userToDeleteAuthToken,
     })

@@ -18,7 +18,6 @@ beforeEach(() => {
   vi.mocked(useAuth).mockReturnValue({
     user: {
       name: 'User Test Name',
-      avatarId: 'Adios',
       email: 'mail@test.com',
     },
   } as TAuthContext)

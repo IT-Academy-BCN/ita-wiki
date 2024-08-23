@@ -2,12 +2,23 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
-## [1.37.0] - 2024-07-26
+## [1.39.0] - 2024-07-25
 
-### Added
+### Changed
 
-- Implemented `dashboardBatchDelete` middleware for batch deletion of users in the dashboard.
-- Updated `dashboardBatchDelete` middleware to use Knex for database operations.
+- Updated `PATCH users/:id` endpoint to Knex methods.
+
+### [1.38.0] - 2024-07-17
+
+### Changed
+
+- Migrated `POST /users/getME/` endpoint to Knex.
+
+## [1.37.0] - 2024-07-24
+
+### Changed
+
+- Updated `GET /itineraries` endpoint to Knex methods.
 
 ## [1.36.0] - 2024-07-22
 

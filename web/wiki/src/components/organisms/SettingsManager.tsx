@@ -2,7 +2,6 @@ import { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Tabs } from '@itacademy/ui'
 import { TopicsManagerBoard } from './TopicsManagerBoard'
-import { UsersManager } from './UsersManager'
 import { useAuth } from '../../context/AuthProvider'
 
 type TTabsDataInfo = {
@@ -18,12 +17,6 @@ const tabsDataInfo: TTabsDataInfo[] = [
     title: 'Temas',
     tabComponent: <TopicsManagerBoard />,
     requiredRole: ['MENTOR', 'ADMIN'],
-  },
-  {
-    id: 'usersTab',
-    title: 'Usuarios',
-    tabComponent: <UsersManager />,
-    requiredRole: ['ADMIN'],
   },
 ]
 
