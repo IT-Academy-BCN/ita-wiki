@@ -2,11 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.22.3] - 2024-09-16
+## [0.23.0] - 2024-07-31
 
-### Updated
+### Changed
 
-- Updated version
+- Replaced favMutation in FavoritesIcon component with corresponding openapi generated fetcher
+
+## [0.22.3] - 2024-07-30
+
+### Fixed
+
+- Fixed Login and tests to pass tests at Login.test.tsx
+- Changed openapiFetcher file to manage openapi error
 
 ## [0.22.2] - 2024-07-25
 
