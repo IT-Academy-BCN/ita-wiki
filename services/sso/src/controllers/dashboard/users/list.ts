@@ -18,7 +18,8 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
     ctx.body = []
     return
   }
-  const usersName = queryResult.rows
+
+  const usersName = queryResult
   ctx.status = 200
   ctx.body = usersName
 }
