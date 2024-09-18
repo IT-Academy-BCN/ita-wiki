@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { pathRoot } from '../../../routes/routes'
 import { userSchema } from '../../../schemas'
 import { itinerariesData, server, testUserData } from '../../globalSetup'
-import { client } from '../../../db/client'
+import db from '../../../db/knexClient'
 import { DashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
 import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
 import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
@@ -36,25 +36,24 @@ beforeAll(async () => {
     testUserData.mentor.dni,
     testUserData.mentor.password
   )
-  const queryResult = await client.query(
-    `SELECT
-    u.id,
-    u.name AS name,
-    u.dni AS dni,
-    u.status,
-    u.role,
-    u.deleted_at AS "deletedAt",
-    TO_CHAR(u.created_at, 'YYYY-MM-DD') AS "createdAt",
-    i.name AS "itineraryName"
-  FROM
-    "user" u
-  JOIN itinerary i ON u.itinerary_id = i.id;`
-  )
+  const queryResult = await db('user')
+    .select(
+      'user.id',
+      'user.name',
+      'user.dni',
+      'user.status',
+      'user.role',
+      'user.deleted_at as deletedAt',
+      db.raw("TO_CHAR(user.created_at, 'YYYY-MM-DD') as createdAt"),
+      'itinerary.name as itineraryName'
+    )
+    .innerJoin('itinerary', 'user.itinerary_id', 'itinerary.id')
 
-  users = queryResult.rows
+  users = queryResult
 })
+
 describe('Testing get users endpoint', () => {
-  it('returns a  collection of users successfully with a logged-in admin user', async () => {
+  it('returns a collection of users successfully with a logged-in admin user', async () => {
     const response = await supertest(server)
       .get(route)
       .set('Cookie', [authAdminToken])
@@ -63,6 +62,7 @@ describe('Testing get users endpoint', () => {
     expect(response.body).toEqual(users)
     expect(responseSchema.safeParse(response.body).success).toBeTruthy()
   })
+
   it('Returns a collection of users successfully with a logged-in mentor user, where the collection must contain users with the same itinerary.', async () => {
     const response = await supertest(server)
       .get(route)
@@ -77,7 +77,8 @@ describe('Testing get users endpoint', () => {
       .every((user) => user.itineraryName === firstItineraryName)
     expect(allSameItinerary).toBe(true)
   })
-  it('returns a  collection of users by itinerary slug successfully with a logged-in admin user ', async () => {
+
+  it('returns a collection of users by itinerary slug successfully with a logged-in admin user ', async () => {
     const response = await supertest(server)
       .get(route)
       .query({ itinerarySlug: itinerariesData[3].slug })
@@ -89,6 +90,7 @@ describe('Testing get users endpoint', () => {
     ])
     expect(responseSchema.safeParse(response.body).success).toBeTruthy()
   })
+
   it('returns an empty collection of users for an itinerary slug when no users are assigned, with admin logged in', async () => {
     const response = await supertest(server)
       .get(route)
@@ -99,7 +101,8 @@ describe('Testing get users endpoint', () => {
     expect(response.body).toEqual([])
     expect(responseSchema.safeParse(response.body).success).toBeTruthy()
   })
-  it('returns a  collection of users by status successfully with a logged-in admin user ', async () => {
+
+  it('returns a collection of users by status successfully with a logged-in admin user ', async () => {
     const activeUsers = users.filter((u) => u.status === UserStatus.ACTIVE)
     const response = await supertest(server)
       .get(route)
@@ -116,7 +119,8 @@ describe('Testing get users endpoint', () => {
     expect(sortedResponseBody).toEqual(sortedExpected)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
-  it('returns a  collection of users within a date range successfully with a logged-in admin user, [NOT WORK WITHIN 00:00-02:00 AM!!]', async () => {
+
+  it('returns a collection of users within a date range successfully with a logged-in admin user, [NOT WORK WITHIN 00:00-02:00 AM!!]', async () => {
     const dateMinusOne = new Date()
     dateMinusOne.setDate(dateMinusOne.getDate() - 1)
     const datePlusOne = new Date()
@@ -145,6 +149,7 @@ describe('Testing get users endpoint', () => {
     expect(body).toHaveLength(7)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
+
   it('returns a collection of users successfully with a name query of 2 or more characters', async () => {
     const response = await supertest(server)
       .get(route)
@@ -158,6 +163,7 @@ describe('Testing get users endpoint', () => {
       expect(user.name).toContain(testName)
     })
   })
+
   it('returns only the user that match the exact name when searched', async () => {
     const exactName = 'testingAdmin'
     const response = await supertest(server)
@@ -171,6 +177,7 @@ describe('Testing get users endpoint', () => {
     expect(body[0].name).toBe('testingAdmin')
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
+
   it('returns Zod error when name query is less than 2 characters', async () => {
     const response = await supertest(server)
       .get(route)
@@ -231,18 +238,14 @@ describe('Testing get users endpoint', () => {
 })
 describe('User Status Handling in Get Users Endpoint', () => {
   afterEach(async () => {
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      UserStatus.ACTIVE,
-      testUserData.admin.dni,
-    ])
+    await db('user')
+      .update({ status: UserStatus.ACTIVE })
+      .where('dni', testUserData.admin.dni)
   })
   it('should fail to return a collection of users with a blocked logged-in admin', async () => {
     const adminDni = testUserData.admin.dni
     const newStatus = UserStatus.BLOCKED
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      newStatus,
-      adminDni,
-    ])
+    await db('user').update({ status: newStatus }).where('dni', adminDni)
     const response = await supertest(server)
       .get(route)
       .set('Cookie', [authAdminToken])
@@ -260,10 +263,7 @@ describe('User Status Handling in Get Users Endpoint', () => {
 
     const adminDni = testUserData.admin.dni
     const newStatus = UserStatus.PENDING
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      newStatus,
-      adminDni,
-    ])
+    await db('user').update({ status: newStatus }).where('dni', adminDni)
     const response2 = await supertest(server)
       .get(route)
       .set('Cookie', [authAdminToken])
