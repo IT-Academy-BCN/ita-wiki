@@ -3,6 +3,8 @@ import { UserRegister } from '../../schemas/auth/registerSchema'
 import db from '../../db/knexClient'
 import { hashPassword } from '../../utils/passwordHash'
 import { generateId } from '../../utils/cuidGenerator'
+import { userManager } from '../../db/managers/userManager'
+import { DuplicateError } from '../../utils/errors'
 
 export const registerController: Middleware = async (ctx: Context) => {
   const { dni, email, name, password, itineraryId }: UserRegister =
@@ -10,6 +12,21 @@ export const registerController: Middleware = async (ctx: Context) => {
   const dniToUpperCase = dni.toUpperCase()
   const hashedPassword = await hashPassword(password)
   const id = generateId()
+
+  const dniNotValid = await userManager.findByDni(dniToUpperCase, {
+    fields: ['dni'],
+  })
+  const emailNotValid = await userManager.getUser(email, {
+    fields: ['email'],
+  })
+
+  if (dniNotValid) {
+    throw new DuplicateError('email or dni already exists')
+  }
+
+  if (emailNotValid) {
+    throw new DuplicateError('email or dni already exists')
+  }
 
   await db('user').insert({
     id,
