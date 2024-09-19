@@ -36,19 +36,20 @@ beforeAll(async () => {
     testUserData.mentor.dni,
     testUserData.mentor.password
   )
-  const queryResult = await db('user')
-    .select(
-      'user.id',
-      'user.name',
-      'user.dni',
-      'user.status',
-      'user.role',
-      'user.deleted_at as deletedAt',
-      db.raw("TO_CHAR(user.created_at, 'YYYY-MM-DD') as createdAt"),
-      'itinerary.name as itineraryName'
-    )
-    .innerJoin('itinerary', 'user.itinerary_id', 'itinerary.id')
 
+  const queryResult = await db('user as u')
+    .select(
+      'u.id',
+      'u.dni as dni',
+      'u.name as name',
+      'u.status',
+      'u.role',
+      'u.deleted_at as deletedAt',
+      db.raw("TO_CHAR(u.created_at, 'YYYY-MM-DD') as createdAt"),
+      'i.name as itineraryName'
+    )
+    .join('itinerary as i', 'u.itinerary_id', '=', 'i.id')
+    .whereNull('u.deleted_at')
   users = queryResult
 })
 

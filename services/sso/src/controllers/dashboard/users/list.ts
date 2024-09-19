@@ -10,11 +10,9 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
     mentorUserId = id
   }
 
-  const { query, queryParams } = queryBuilder(ctx.state.query, mentorUserId)
+  const { query, queryParams } = queryBuilder(ctx, mentorUserId)
 
-  const queryResult = await db('user')
-    .whereRaw(query, queryParams)
-    .andWhere('deleted_at', null)
+  const queryResult = await db.raw(query, queryParams)
 
   if (!queryResult.length) {
     ctx.status = 200
@@ -22,7 +20,7 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
     return
   }
 
-  const usersName = queryResult
+  const usersList = queryResult
   ctx.status = 200
-  ctx.body = usersName
+  ctx.body = usersList
 }
