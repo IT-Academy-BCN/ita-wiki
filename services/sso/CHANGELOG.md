@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.40.0] - 2024-09-18
+
+### Changed
+
+- Updated `dashboard/user/getME` endpoint to Knex methods.
+
 ## [1.39.0] - 2024-07-25
 
 ### Changed
