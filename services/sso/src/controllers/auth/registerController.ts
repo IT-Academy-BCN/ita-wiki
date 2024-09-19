@@ -20,11 +20,7 @@ export const registerController: Middleware = async (ctx: Context) => {
     fields: ['email'],
   })
 
-  if (dniNotValid) {
-    throw new DuplicateError('email or dni already exists')
-  }
-
-  if (emailNotValid) {
+  if (dniNotValid || emailNotValid) {
     throw new DuplicateError('email or dni already exists')
   }
 
