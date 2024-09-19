@@ -147,7 +147,8 @@ const resolveUrl = (
   queryParams: Record<string, string> = {},
   pathParams: Record<string, string> = {}
 ) => {
-  let query = new URLSearchParams(queryParams).toString()
+  let query = buildQueryString(queryParams)
+
   if (query) query = `?${query}`
   return url.replace(/\{\w*\}/g, (key) => pathParams[key.slice(1, -1)]) + query
 }
