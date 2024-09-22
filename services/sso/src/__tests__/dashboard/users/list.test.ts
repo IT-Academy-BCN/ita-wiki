@@ -49,6 +49,19 @@ beforeAll(async () => {
 
   const queryResult = await query
 
+  // const queryResult = await db('user as u')
+  //   .select(
+  //     'u.id',
+  //     'u.dni as dni',
+  //     'u.name as name',
+  //     'u.status',
+  //     'u.role',
+  //     'u.deleted_at as deletedAt',
+  //     db.raw("TO_CHAR(u.created_at, 'YYYY-MM-DD') as createdAt"),
+  //     'i.name as itineraryName'
+  //   )
+  //   .join('itinerary as i', 'u.itinerary_id', '=', 'i.id')
+  //   .whereNull('u.deleted_at')
   users = queryResult
 })
 
