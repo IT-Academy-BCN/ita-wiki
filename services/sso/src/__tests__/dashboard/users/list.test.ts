@@ -8,6 +8,7 @@ import db from '../../../db/knexClient'
 import { DashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
 import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
 import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
+import { knexQueryBuilder } from '../../../utils/knex.queryBuilder'
 
 const route = `${pathRoot.v1.dashboard.users}`
 
@@ -27,6 +28,14 @@ const testName = 'testing'
 const testDni = '38826335N'
 const testRole = UserRole.REGISTERED
 const testStatus = UserStatus.ACTIVE
+const testItinerarySlug = 'frontend_angular'
+const testStartDate = '10/01/2024'
+const testEndDate = '10/06/2024'
+const testRoleMentor = UserRole.MENTOR
+const testMentorId = 'b6z2od3ut12qs0ilem6njgjp'
+
+const testCtx = { testItinerarySlug, testStatus, testStartDate, testEndDate, testName, testDni, testRoleMentor }
+
 beforeAll(async () => {
   authAdminToken = await dashboardLoginAndGetToken(
     testUserData.admin.dni,
@@ -36,18 +45,9 @@ beforeAll(async () => {
     testUserData.mentor.dni,
     testUserData.mentor.password
   )
-  const queryResult = await db('user')
-    .select(
-      'user.id',
-      'user.name',
-      'user.dni',
-      'user.status',
-      'user.role',
-      'user.deleted_at as deletedAt',
-      db.raw("TO_CHAR(user.created_at, 'YYYY-MM-DD') as createdAt"),
-      'itinerary.name as itineraryName'
-    )
-    .innerJoin('itinerary', 'user.itinerary_id', 'itinerary.id')
+  const { query } = knexQueryBuilder(testCtx, db, testMentorId)
+
+  const queryResult = await query
 
   users = queryResult
 })

@@ -1,7 +1,8 @@
 import { Context, Middleware } from 'koa'
-import { queryBuilder } from '../../../utils/queryBuilder'
+// import { queryBuilder } from '../../../utils/queryBuilder'
 import { User, UserRole } from '../../../schemas'
 import db from '../../../db/knexClient'
+import { knexQueryBuilder } from '../../../utils/knex.queryBuilder'
 
 export const dashboardListUsers: Middleware = async (ctx: Context) => {
   const { role, id } = ctx.state.user as Pick<User, 'id' | 'role'>
@@ -10,11 +11,11 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
     mentorUserId = id
   }
 
-  const { query, queryParams } = queryBuilder(ctx.state.query, mentorUserId)
+  // const { query, queryParams } = queryBuilder(ctx.state.query, mentorUserId) 
+  //MIGRATION TO KNEX => 
+  const { query } = knexQueryBuilder(ctx, db, mentorUserId)
 
-  const queryResult = await db('user')
-    .whereRaw(query, queryParams)
-    .andWhere('deleted_at', null)
+  const queryResult = await query
 
   if (!queryResult.length) {
     ctx.status = 200
@@ -22,7 +23,7 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
     return
   }
 
-  const usersName = queryResult
+  const usersList = queryResult
   ctx.status = 200
-  ctx.body = usersName
+  ctx.body = usersList
 }
