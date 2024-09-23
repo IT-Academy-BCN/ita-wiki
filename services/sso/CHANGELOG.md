@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.40.0] - 2024-07-25
+
+### Added
+
+- Error handling for unique email or id, in register controller.
+
 ## [1.39.0] - 2024-07-25
 
 ### Changed
