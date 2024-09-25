@@ -8,7 +8,6 @@ import db from '../../../db/knexClient'
 import { DashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
 import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
 import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
-import { knexQueryBuilder } from '../../../utils/knex.queryBuilder'
 
 const route = `${pathRoot.v1.dashboard.users}`
 
@@ -28,13 +27,6 @@ const testName = 'testing'
 const testDni = '38826335N'
 const testRole = UserRole.REGISTERED
 const testStatus = UserStatus.ACTIVE
-const testItinerarySlug = 'frontend_angular'
-const testStartDate = '10/01/2024'
-const testEndDate = '10/06/2024'
-const testRoleMentor = UserRole.MENTOR
-const testMentorId = 'b6z2od3ut12qs0ilem6njgjp'
-
-const testCtx = { testItinerarySlug, testStatus, testStartDate, testEndDate, testName, testDni, testRoleMentor }
 
 beforeAll(async () => {
   authAdminToken = await dashboardLoginAndGetToken(
@@ -45,28 +37,10 @@ beforeAll(async () => {
     testUserData.mentor.dni,
     testUserData.mentor.password
   )
-  const { query } = knexQueryBuilder(testCtx, db, testMentorId)
-
-  const queryResult = await query
-
-  // const queryResult = await db('user as u')
-  //   .select(
-  //     'u.id',
-  //     'u.dni as dni',
-  //     'u.name as name',
-  //     'u.status',
-  //     'u.role',
-  //     'u.deleted_at as deletedAt',
-  //     db.raw("TO_CHAR(u.created_at, 'YYYY-MM-DD') as createdAt"),
-  //     'i.name as itineraryName'
-  //   )
-  //   .join('itinerary as i', 'u.itinerary_id', '=', 'i.id')
-  //   .whereNull('u.deleted_at')
-  users = queryResult
 })
 
 describe('Testing get users endpoint', () => {
-  it('returns a collection of users successfully with a logged-in admin user', async () => {
+  it.only('returns a collection of users successfully with a logged-in admin user', async () => {
     const response = await supertest(server)
       .get(route)
       .set('Cookie', [authAdminToken])

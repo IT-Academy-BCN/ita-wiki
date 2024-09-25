@@ -10,9 +10,15 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
   if (role === UserRole.MENTOR) {
     mentorUserId = id
   }
+  console.log('Contexto.state:', ctx.state)
+  // No llega la query
+  // Contexto.state: {
+  //   user: { id: 'q28v1k1h9g8uk0pwzaek2hhx', role: 'ADMIN', status: 'ACTIVE' },
+  //   query: {}
+  // }
 
-  // const { query, queryParams } = queryBuilder(ctx.state.query, mentorUserId) 
-  //MIGRATION TO KNEX => 
+  // const { query, queryParams } = queryBuilder(ctx.state.query, mentorUserId)
+  // MIGRATION TO KNEX =>
   const { query } = knexQueryBuilder(ctx, db, mentorUserId)
 
   const queryResult = await query
