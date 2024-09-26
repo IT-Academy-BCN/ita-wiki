@@ -15,7 +15,7 @@ export const knexQueryBuilder = (
   knexClient: Knex,
   mentorUserId?: string
 ) => {
-  const { itinerarySlug, status, startDate, endDate, name, dni, role } =
+  const { itinerarySlug, startDate, endDate, name, dni, role, status } =
     ctx.state.query
 
   const query = knexClient('user as u')
@@ -27,11 +27,10 @@ export const knexQueryBuilder = (
       'u.status',
       'u.role',
       'u.deleted_at as deletedAt',
-      'u.created_at as createdAt', // change date
+      knexClient.raw("TO_CHAR(u.created_at, 'YYYY-MM-DD') as createdAt"), // change date
       'i.name as itineraryName'
     )
 
-  // TODO Check this =>
   if (name) {
     const parsedName = userNameSchema.parse(name)
     query.where('u.name', 'ILIKE', `%${parsedName}%`)
@@ -44,12 +43,6 @@ export const knexQueryBuilder = (
         mentorUserId,
       ])
     )
-  }
-  // MIGRAR A KNEX =>
-
-  if (name) {
-    const parsedName = userNameSchema.parse(name)
-    query.where('u.name', 'ILIKE', `%${parsedName}%`)
   }
 
   if (dni) {

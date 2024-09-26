@@ -37,16 +37,34 @@ beforeAll(async () => {
     testUserData.mentor.dni,
     testUserData.mentor.password
   )
+
+  const query = db('user as u')
+    .join('itinerary as i', 'u.itinerary_id', '=', 'i.id')
+    .select(
+      'u.id',
+      'u.name as name',
+      'u.dni as dni',
+      'u.status',
+      'u.role',
+      'u.deleted_at as deletedAt',
+      db.raw("TO_CHAR(u.created_at, 'YYYY-MM-DD') as createdAt"), // change date
+      'i.name as itineraryName'
+    )
+
+  users = await query
+
+  console.log('usuarios devueltos: ', users)
 })
 
 describe('Testing get users endpoint', () => {
-  it.only('returns a collection of users successfully with a logged-in admin user', async () => {
+  it.only('returns a collection of users successfully, with a logged-in admin user', async () => {
     const response = await supertest(server)
       .get(route)
       .set('Cookie', [authAdminToken])
+    console.log('cuerpo de la respuesta: ', response.body)
     expect(response.status).toBe(200)
-    expect(response.body).toHaveLength(users.length)
     expect(response.body).toEqual(users)
+    expect(response.body).toHaveLength(users.length)
     expect(responseSchema.safeParse(response.body).success).toBeTruthy()
   })
 
