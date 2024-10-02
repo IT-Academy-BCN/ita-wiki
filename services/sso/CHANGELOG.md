@@ -2,6 +2,42 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.40.0] - 2024-07-25
+
+### Added
+
+- Error handling for unique email or id, in register controller.
+
+## [1.39.0] - 2024-07-25
+
+### Changed
+
+- Updated `PATCH users/:id` endpoint to Knex methods.
+
+### [1.38.0] - 2024-07-17
+
+### Changed
+
+- Migrated `POST /users/getME/` endpoint to Knex.
+
+## [1.37.0] - 2024-07-24
+
+### Changed
+
+- Updated `GET /itineraries` endpoint to Knex methods.
+
+## [1.36.0] - 2024-07-22
+
+### Changed
+
+- Updated `dashboard/user/getME` endpoint to Knex methods.
+
+### [1.35.0] - 2024-07-17
+
+### Changed
+
+- Migrated `POST /auth/register/` endpoint to Knex.
+
 ## [1.34.3] - 2024-07-17
 
 ### Added
@@ -13,7 +49,6 @@ All notable changes to this project will be documented in this file.
 ### Updated
 
 - Migrated `POST /auth/login` endpoint to use the new methods and Knex
-
 
 ## [1.34.2] - 2024-07-16
 

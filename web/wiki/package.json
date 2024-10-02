@@ -1,7 +1,7 @@
 {
   "name": "web_wiki",
   "private": true,
-  "version": "0.21.0",
+  "version": "0.23.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "coverage": "vitest --coverage",
-    "openapi": "npx openapi-codegen gen openapi"
+    "codegen": "npx openapi-codegen gen openapi"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.0.0",
@@ -58,7 +58,7 @@
     "msw": "2.1.5",
     "prettier": "2.8.4",
     "typescript": "^5.0.4",
-    "vite": "5.0.13",
+    "vite": "5.4.6",
     "vitest": "1.2.2"
   }
 }

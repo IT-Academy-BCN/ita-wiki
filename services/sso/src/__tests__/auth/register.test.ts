@@ -3,16 +3,17 @@ import { expect, it, describe, afterAll, beforeAll, afterEach } from 'vitest'
 import { server } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { UserRegister } from '../../schemas/auth/registerSchema'
-import { client } from '../../db/client'
+import db from '../../db/knexClient'
 
 const route = `${pathRoot.v1.auth}/register`
 
 let itineraryId: string = ''
 let registerUser: UserRegister
+
 beforeAll(async () => {
-  const { rows } = await client.query('SELECT id FROM "itinerary" LIMIT 1')
-  const [id] = rows
-  itineraryId = id.id
+  const itinerary = await db('itinerary').select('id').first()
+  itineraryId = itinerary.id
+
   registerUser = {
     dni: '43246278E',
     email: 'example@example.cat',
@@ -24,14 +25,14 @@ beforeAll(async () => {
 })
 
 afterEach(async () => {
-  await client.query('DELETE FROM "user" WHERE dni IN ($1) ', ['43246278E'])
+  await db('user').where({ dni: '43246278E' }).del()
 })
+
 afterAll(async () => {
-  await client.query('DELETE FROM "user" WHERE dni IN ($1, $2) OR email = $3', [
-    '43246278E',
-    '99102000Z',
-    'example@example.com',
-  ])
+  await db('user')
+    .whereIn('dni', ['43246278E', '99102000Z'])
+    .orWhere('email', 'example@example.com')
+    .del()
 })
 
 describe('Testing registration endpoint', () => {
@@ -40,16 +41,20 @@ describe('Testing registration endpoint', () => {
     expect(response.status).toBe(200)
     expect(response.body.id).toBeTypeOf('string')
   })
+
   it('should succeed with correct credentials and save DNI in uppercase', async () => {
     registerUser.dni = registerUser.dni.toLowerCase()
     const response = await supertest(server).post(route).send(registerUser)
-    const query = await client.query('SELECT dni FROM "user" WHERE dni = $1', [
-      registerUser.dni.toUpperCase(),
-    ])
-    expect(query.rows[0].dni).toBe(registerUser.dni.toUpperCase())
+    const user = await db('user')
+      .select('dni')
+      .where({ dni: registerUser.dni.toUpperCase() })
+      .first()
+
+    expect(user.dni).toBe(registerUser.dni.toUpperCase())
     expect(response.status).toBe(200)
     expect(response.body.id).toBeTypeOf('string')
   })
+
   describe('should fail with duplicate', () => {
     it('should fail with duplicate: DNI', async () => {
       const response = await supertest(server)
