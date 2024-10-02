@@ -6,53 +6,43 @@ import { UserRole } from '../../../schemas'
 import { UserStatus } from '../../../schemas/users/userSchema'
 import { client } from '../../../db/client'
 import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
+import db from '../../../db/knexClient'
 
 const route = `${pathRoot.v1.dashboard.users}`
 let authAdminToken = ''
-const id = await client.query('SELECT id FROM "user" WHERE dni = $1', [
-  testUserData.userToDelete.dni,
-])
-const userToDeleteId = id.rows[0].id
+const { id } = testUserData.userToDelete
 
 beforeEach(async () => {
   authAdminToken = await dashboardLoginAndGetToken(
     testUserData.admin.dni,
     testUserData.admin.password
   )
-  await client.query('UPDATE "user" SET deleted_at = null WHERE dni = $1', [
-    testUserData.userToDelete.dni,
-  ])
+  await db('user').update('deleted_at', null).where('id', id)
 })
 
 describe('Testing dashboard delete endpoint', () => {
   it('should succeed deleting a user with a logged-in admin user', async () => {
-    let deletedAt = await client.query(
-      'SELECT deleted_at FROM "user" WHERE dni = $1',
-      [testUserData.userToDelete.dni]
-    )
-    expect(deletedAt.rows[0].deleted_at).toBe(null)
+    let deletedAt = await db('user').select('deleted_at').where('id', id)
+
+    expect(deletedAt[0].deleted_at).toBe(null)
     const response = await supertest(server)
-      .delete(`${route}/${userToDeleteId}`)
+      .delete(`${route}/${id}`)
       .set('Cookie', [authAdminToken])
     expect(response.status).toBe(204)
 
-    deletedAt = await client.query(
-      'SELECT deleted_at FROM "user" WHERE dni = $1',
-      [testUserData.userToDelete.dni]
-    )
-    expect(deletedAt.rows[0].deleted_at).toContain(Date)
+    deletedAt = await db('user').select('deleted_at').where('id', id)
+
+    expect(deletedAt[0].deleted_at).toContain(Date)
   })
   it('should fail with no cookies', async () => {
-    const response = await supertest(server).delete(
-      `${route}/${userToDeleteId}`
-    )
+    const response = await supertest(server).delete(`${route}/${id}`)
     expect(response.status).toBe(401)
     expect(response.body.message).toBe('Invalid Credentials')
   })
   it('should fail with invalid token', async () => {
     authAdminToken = 'invalidToken'
     const response = await supertest(server)
-      .delete(`${route}/${userToDeleteId}`)
+      .delete(`${route}/${id}`)
       .set('Cookie', [authAdminToken])
     expect(response.status).toBe(401)
     expect(response.body.message).toBe('Invalid Credentials')
@@ -64,7 +54,7 @@ describe('Testing dashboard delete endpoint', () => {
     )
     expect(deletedAt.rows[0].deleted_at).toBe(null)
     const response1 = await supertest(server)
-      .delete(`${route}/${userToDeleteId}`)
+      .delete(`${route}/${id}`)
       .set('Cookie', [authAdminToken])
     expect(response1.status).toBe(204)
 
@@ -75,7 +65,7 @@ describe('Testing dashboard delete endpoint', () => {
     expect(deletedAt.rows[0].deleted_at).toContain(Date)
 
     const response2 = await supertest(server)
-      .delete(`${route}/${userToDeleteId}`)
+      .delete(`${route}/${id}`)
       .set('Cookie', [authAdminToken])
 
     deletedAt = await client.query(
@@ -128,7 +118,7 @@ describe('Authentication test', () => {
       testUserData.admin.dni,
     ])
     const response = await supertest(server)
-      .delete(`${route}/${userToDeleteId}`)
+      .delete(`${route}/${id}`)
       .set('Cookie', [authAdminToken])
     expect(response.status).toBe(403)
     expect(response.body.message).toBe('Only active users can proceed')
@@ -139,7 +129,7 @@ describe('Authentication test', () => {
       testUserData.admin.dni,
     ])
     const response = await supertest(server)
-      .delete(`${route}/${userToDeleteId}`)
+      .delete(`${route}/${id}`)
       .set('Cookie', [authAdminToken])
     expect(response.status).toBe(403)
     expect(response.body.message).toBe(
