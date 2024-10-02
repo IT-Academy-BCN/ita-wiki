@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.41.0] - 2024-07-25
+
+### Added
+
+- Update delete endpoint. Migrate to Knex.
+
 ## [1.40.0] - 2024-07-25
 
 ### Added
