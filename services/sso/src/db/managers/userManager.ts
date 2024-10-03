@@ -1,6 +1,5 @@
 import { User, UserPatch } from '../../schemas'
 import { ItinerayList } from '../../schemas/itineraries/itinerariesListSchema'
-import { client } from '../client'
 import db from '../knexClient'
 
 /**
@@ -196,33 +195,28 @@ export const userManager = {
     const snakeCase = await getSnakeCase()
     const camelCase = await getCamelCase()
     const fieldsToSelect = options.fields.map((f) => snakeCase(f)).join(', ')
-    // let query = `SELECT ${fieldsToSelect} FROM "user" WHERE deleted_at IS NULL`
-    let query = `SELECT ${fieldsToSelect} FROM "user" WHERE deleted_at IS NULL`
-    const values: string[] = []
+    const query = db<User>('user')
+      .select(fieldsToSelect)
+      .where('deleted_at', null)
 
     if (activeOnly) {
-      query += ` AND status = $1`
-      values.push('ACTIVE')
+      query.where('status', 'ACTIVE')
     }
 
     if (ids && ids.length > 0) {
-      const idsPlaceholders = ids
-        .map((_, index) => `$${values.length + index + 1}`)
-        .join(', ')
-      query += ` AND id IN (${idsPlaceholders})`
-      values.push(...ids)
+      query.whereIn('id', ids)
     }
 
-    const result = await client.query(query, values)
-
-    if (result.rows.length) {
-      return result.rows.map((row) => {
+    const result = await query
+    if (result.length) {
+      const res: Pick<User, T>[] = result.map((row) => {
         const camelCaseRow = Object.keys(row).reduce((acc: any, key) => {
           acc[camelCase(key)] = row[key]
           return acc
         }, {} as Pick<User, T>)
         return camelCaseRow
       })
+      return res
     }
     return []
   },
