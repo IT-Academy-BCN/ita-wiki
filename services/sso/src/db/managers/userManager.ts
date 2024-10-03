@@ -82,12 +82,13 @@ export const userManager = {
     const snakeCase = await getSnakeCase()
     const camelCase = await getCamelCase()
     const fieldsToSelect = options.fields.map((f) => snakeCase(f)).join(', ')
-    const query = `SELECT ${fieldsToSelect} FROM "user" WHERE id = $1 AND deleted_at IS NULL`
     const values = [id]
-    const result = await client.query(query, values)
-
-    if (result.rows.length) {
-      const row = result.rows[0]
+    const result = await db('user')
+      .select(fieldsToSelect)
+      .where('id', values)
+      .andWhere('deleted_at', null)
+    if (result.length) {
+      const row = result[0]
       const camelCaseRow = Object.keys(row).reduce((acc: any, key) => {
         acc[camelCase(key)] = row[key]
         return acc
@@ -195,6 +196,7 @@ export const userManager = {
     const snakeCase = await getSnakeCase()
     const camelCase = await getCamelCase()
     const fieldsToSelect = options.fields.map((f) => snakeCase(f)).join(', ')
+    // let query = `SELECT ${fieldsToSelect} FROM "user" WHERE deleted_at IS NULL`
     let query = `SELECT ${fieldsToSelect} FROM "user" WHERE deleted_at IS NULL`
     const values: string[] = []
 
