@@ -1,35 +1,32 @@
 import { Context, Middleware } from 'koa'
 import { NotFoundError } from '../../../utils/errors'
-import { client } from '../../../db/client'
+import db from '../../../db/knexClient'
 
 export const dashboardBatchDelete: Middleware = async (ctx: Context) => {
   const { ids } = ctx.request.body
   if (ids.length === 0) {
     throw new NotFoundError('No user found')
   }
-  const verifyQuery = `
-  SELECT id, deleted_at FROM "user" WHERE id = ANY($1::text[]);
-  `
-  const verifyResult = await client.query(verifyQuery, [ids])
-  const existingIds = verifyResult.rows.map((row) => row.id)
+
+  const verifyResult = await db('user')
+    .select('id', 'deleted_at')
+    .whereIn('id', ids)
+
+  const existingIds = verifyResult.map((row) => row.id)
+
   if (existingIds.length === 0) {
     throw new NotFoundError('No user found')
   }
 
-  const toBeDeletedUser: string[] = []
-  verifyResult.rows.forEach((row) => {
-    if (row.deleted_at === null) {
-      toBeDeletedUser.push(row.id)
-    }
-  })
+  const toBeDeletedUser: string[] = verifyResult
+    .filter((row) => row.deleted_at === null)
+    .map((row) => row.id)
 
   if (toBeDeletedUser.length > 0) {
-    const deleteQuery = `
-      UPDATE "user"
-      SET deleted_at = CURRENT_TIMESTAMP
-      WHERE id = ANY($1::text[])
-    `
-    await client.query(deleteQuery, [toBeDeletedUser])
+    await db('user')
+      .whereIn('id', toBeDeletedUser)
+      .update({ deleted_at: db.fn.now() })
   }
+
   ctx.status = 204
 }
