@@ -4,13 +4,11 @@ import {
   expect,
   vi,
   beforeEach,
-  Mock,
   beforeAll,
-  afterAll,
+  afterEach,
 } from 'vitest'
 import { createTracker, MockClient, Tracker } from 'knex-mock-client'
 import knex from 'knex'
-import { client } from '../../../db/client'
 import { userManager } from '../../../db/managers/userManager'
 import { UserStatus } from '../../../schemas/users/userSchema'
 import db from '../../../db/knexClient'
@@ -21,14 +19,22 @@ type MockUser = {
   status: string
   deletedAt?: null | Date
 }
+let tracker: Tracker
+beforeAll(() => {
+  tracker = createTracker(db)
+})
+beforeEach(() => {
+  vi.clearAllMocks()
+})
+afterEach(() => {
+  tracker.reset()
+})
 
-vi.mock('../../../db/client', () => ({
-  client: {
-    query: vi.fn(),
-  },
-}))
 vi.mock('../../../db/knexClient', async () => {
-  const bd = knex({ client: MockClient })
+  const bd = knex({
+    client: MockClient,
+    dialect: 'pg',
+  })
   return {
     default: bd,
   }
@@ -36,46 +42,38 @@ vi.mock('../../../db/knexClient', async () => {
 describe('userManager.getUser', () => {
   const userId = '123'
 
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
   it('should retrieve a user with the specified fields', async () => {
     const mockUser: MockUser = {
       id: userId,
       email: 'user@example.cat',
       status: UserStatus.ACTIVE,
     }
-    ;(client.query as Mock).mockResolvedValue({ rows: [mockUser] })
+    tracker.on.select('user').response([mockUser])
 
     const user = await userManager.getUser(userId, {
       fields: ['id', 'email', 'status'],
     })
-
-    expect(client.query).toHaveBeenCalledWith(
-      `SELECT id, email, status FROM "user" WHERE id = $1 AND deleted_at IS NULL`,
-      [userId]
+    expect(tracker.history.select[0].sql).toEqual(
+      'select "id", "email", "status" from "user" where "id" in ($1) and "deleted_at" is null'
     )
     expect(user).toEqual(mockUser)
   })
 
   it('should return null if user is not found', async () => {
-    ;(client.query as Mock).mockResolvedValue({ rows: [] })
+    tracker.on.select('user').response([])
 
     const user = await userManager.getUser(userId, {
       fields: ['id', 'email', 'status'],
     })
-
-    expect(client.query).toHaveBeenCalledWith(
-      `SELECT id, email, status FROM "user" WHERE id = $1 AND deleted_at IS NULL`,
-      [userId]
+    expect(tracker.history.select[0].sql).toEqual(
+      'select "id", "email", "status" from "user" where "id" in ($1) and "deleted_at" is null'
     )
     expect(user).toBeNull()
   })
 
   it('should handle SQL query errors', async () => {
     const errorMessage = 'SQL query failed'
-    ;(client.query as Mock).mockRejectedValue(new Error(errorMessage))
+    tracker.on.select('user').simulateError(errorMessage)
 
     await expect(
       userManager.getUser(userId, {
@@ -86,10 +84,6 @@ describe('userManager.getUser', () => {
 })
 
 describe('userManager.getUsers', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
   it('should retrieve a list of users with the specified fields and active status', async () => {
     const mockUsers: MockUser[] = [
       {
@@ -103,18 +97,17 @@ describe('userManager.getUsers', () => {
         status: UserStatus.ACTIVE,
       },
     ]
-    ;(client.query as Mock).mockResolvedValue({ rows: mockUsers })
 
+    tracker.on.select('user').response(mockUsers)
     const users = await userManager.getUsersByIds(
       { fields: ['id', 'email', 'status'] },
       true,
       ['123', '456']
     )
-
-    expect(client.query).toHaveBeenCalledWith(
-      `SELECT id, email, status FROM "user" WHERE deleted_at IS NULL AND status = $1 AND id IN ($2, $3)`,
-      ['ACTIVE', '123', '456']
+    expect(tracker.history.all[0].sql).toEqual(
+      'select "id", "email", "status" from "user" where "deleted_at" is null and "status" = $1 and "id" in ($2, $3)'
     )
+    expect(tracker.history.all[0].bindings).toEqual(['ACTIVE', '123', '456'])
     expect(users).toEqual(mockUsers)
   })
 
@@ -131,7 +124,8 @@ describe('userManager.getUsers', () => {
         status: UserStatus.PENDING,
       },
     ]
-    ;(client.query as Mock).mockResolvedValue({ rows: mockUsers })
+
+    tracker.on.select('user').response(mockUsers)
 
     const users = await userManager.getUsersByIds(
       { fields: ['id', 'email', 'status'] },
@@ -139,38 +133,27 @@ describe('userManager.getUsers', () => {
       ['123', '456']
     )
 
-    expect(client.query).toHaveBeenCalledWith(
-      `SELECT id, email, status FROM "user" WHERE deleted_at IS NULL AND id IN ($1, $2)`,
-      ['123', '456']
+    expect(tracker.history.all[0].sql).toEqual(
+      'select "id", "email", "status" from "user" where "deleted_at" is null and "id" in ($1, $2)'
     )
+    expect(tracker.history.all[0].bindings).toEqual(['123', '456'])
+
     expect(users).toEqual(mockUsers)
   })
 
   it('should return an empty array if no users are found', async () => {
-    ;(client.query as Mock).mockResolvedValue({ rows: [] })
+    tracker.on.select('user').response([])
 
     const users = await userManager.getUsersByIds({
       fields: ['id', 'email', 'status'],
     })
-
-    expect(client.query).toHaveBeenCalledWith(
-      `SELECT id, email, status FROM "user" WHERE deleted_at IS NULL`,
-      []
+    expect(tracker.history.all[0].sql).toEqual(
+      'select "id", "email", "status" from "user" where "deleted_at" is null'
     )
     expect(users).toEqual([])
   })
 })
-let tracker: Tracker
-beforeAll(() => {
-  tracker = createTracker(db)
-})
-beforeEach(() => {
-  vi.clearAllMocks()
-  tracker.reset()
-})
-afterAll(() => {
-  tracker.reset()
-})
+
 describe('userManager.findById', () => {
   const userId = '123'
 
