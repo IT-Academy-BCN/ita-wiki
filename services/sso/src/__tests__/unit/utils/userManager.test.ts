@@ -54,7 +54,7 @@ describe('userManager.getUser', () => {
       fields: ['id', 'email', 'status'],
     })
     expect(tracker.history.select[0].sql).toEqual(
-      'select "id, email, status" from "user" where "id" = $1 and "deleted_at" is null'
+      'select "id", "email", "status" from "user" where "id" in ($1) and "deleted_at" is null'
     )
     expect(user).toEqual(mockUser)
   })
@@ -66,7 +66,7 @@ describe('userManager.getUser', () => {
       fields: ['id', 'email', 'status'],
     })
     expect(tracker.history.select[0].sql).toEqual(
-      'select "id, email, status" from "user" where "id" = $1 and "deleted_at" is null'
+      'select "id", "email", "status" from "user" where "id" in ($1) and "deleted_at" is null'
     )
     expect(user).toBeNull()
   })
@@ -105,7 +105,7 @@ describe('userManager.getUsers', () => {
       ['123', '456']
     )
     expect(tracker.history.all[0].sql).toEqual(
-      'select "id, email, status" from "user" where "deleted_at" is null and "status" = $1 and "id" in ($2, $3)'
+      'select "id", "email", "status" from "user" where "deleted_at" is null and "status" = $1 and "id" in ($2, $3)'
     )
     expect(tracker.history.all[0].bindings).toEqual(['ACTIVE', '123', '456'])
     expect(users).toEqual(mockUsers)
@@ -134,7 +134,7 @@ describe('userManager.getUsers', () => {
     )
 
     expect(tracker.history.all[0].sql).toEqual(
-      'select "id, email, status" from "user" where "deleted_at" is null and "id" in ($1, $2)'
+      'select "id", "email", "status" from "user" where "deleted_at" is null and "id" in ($1, $2)'
     )
     expect(tracker.history.all[0].bindings).toEqual(['123', '456'])
 
@@ -148,7 +148,7 @@ describe('userManager.getUsers', () => {
       fields: ['id', 'email', 'status'],
     })
     expect(tracker.history.all[0].sql).toEqual(
-      'select "id, email, status" from "user" where "deleted_at" is null'
+      'select "id", "email", "status" from "user" where "deleted_at" is null'
     )
     expect(users).toEqual([])
   })

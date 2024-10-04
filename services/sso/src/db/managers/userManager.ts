@@ -80,11 +80,11 @@ export const userManager = {
   ): Promise<Pick<User, T> | null> {
     const snakeCase = await getSnakeCase()
     const camelCase = await getCamelCase()
-    const fieldsToSelect = options.fields.map((f) => snakeCase(f)).join(', ')
+    const fieldsToSelect = options.fields.map((f) => snakeCase(f))
     const values = [id]
     const result = await db('user')
       .select(fieldsToSelect)
-      .where('id', values)
+      .whereIn('id', values)
       .andWhere('deleted_at', null)
     if (result.length) {
       const row = result[0]
@@ -194,11 +194,10 @@ export const userManager = {
   ): Promise<Pick<User, T>[]> {
     const snakeCase = await getSnakeCase()
     const camelCase = await getCamelCase()
-    const fieldsToSelect = options.fields.map((f) => snakeCase(f)).join(', ')
+    const fieldsToSelect = options.fields.map((f) => snakeCase(f))
     const query = db<User>('user')
       .select(fieldsToSelect)
       .where('deleted_at', null)
-
     if (activeOnly) {
       query.where('status', 'ACTIVE')
     }
@@ -206,14 +205,16 @@ export const userManager = {
     if (ids && ids.length > 0) {
       query.whereIn('id', ids)
     }
-
     const result = await query
     if (result.length) {
       const res: Pick<User, T>[] = result.map((row) => {
-        const camelCaseRow = Object.keys(row).reduce((acc: any, key) => {
-          acc[camelCase(key)] = row[key]
-          return acc
-        }, {} as Pick<User, T>)
+        const camelCaseRow = Object.entries(row).reduce(
+          (acc: any, [key, value]) => {
+            acc[camelCase(key)] = value
+            return acc
+          },
+          {} as Pick<User, T>
+        )
         return camelCaseRow
       })
       return res
@@ -252,6 +253,7 @@ export const userManager = {
       valueObject[index],
     ])
     const setObject = Object.fromEntries(setArray)
+    // console.log('setObject', setObject)
 
     await db('user').update(setObject).whereIn('id', ids)
   },
