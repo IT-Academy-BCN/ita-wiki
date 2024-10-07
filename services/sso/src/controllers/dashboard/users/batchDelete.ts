@@ -3,7 +3,7 @@ import { NotFoundError } from '../../../utils/errors'
 import db from '../../../db/knexClient'
 
 export const dashboardBatchDelete: Middleware = async (ctx: Context) => {
-  const { ids } = ctx.request.body
+  const ids = ctx.request.body
   if (ids.length === 0) {
     throw new NotFoundError('No user found')
   }

@@ -25,17 +25,13 @@ afterEach(async () => {
     .where('id', [userToDeleteId, userToBeBlockedId])
 })
 describe('Testing dashboard delete endpoint', () => {
-  it.only('should succeed deleting a user with a logged-in admin user', async () => {
-    /* let deletedAt = await client.query(
-      'SELECT deleted_at FROM "user" WHERE id IN ( $1, $2 )',
-      [userToDeleteId, userToBeBlockedId]
-    ) */
+  it('should succeed deleting a user with a logged-in admin user', async () => {
     let deletedAt = await db('user')
       .select('deleted_at')
       .whereIn('id', [userToDeleteId, userToBeBlockedId])
     expect(deletedAt).toBe(null)
+    expect(deletedAt[0].deleted_at).toBe(null)
     expect(deletedAt[1].deleted_at).toBe(null)
-    expect(deletedAt[2].deleted_at).toBe(null)
 
     const ids = [userToDeleteId, userToBeBlockedId]
     const response = await supertest(server)
@@ -50,13 +46,7 @@ describe('Testing dashboard delete endpoint', () => {
     expect(deletedAt[0]).toContain(Date)
     expect(deletedAt[1]).toContain(Date)
   })
-  /*  client.query(
-      'SELECT deleted_at FROM "user" WHERE id IN ( $1, $2 )',
-      [userToDeleteId, userToBeBlockedId]
-    )
-    expect(deletedAt.rows[0].deleted_at).toContain(Date)
-    expect(deletedAt.rows[1].deleted_at).toContain(Date)
-  }) */
+
   it('should return 404 if no ids are provided', async () => {
     const ids = []
     const response = await supertest(server)
