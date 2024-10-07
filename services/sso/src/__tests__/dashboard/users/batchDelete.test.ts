@@ -22,14 +22,13 @@ beforeEach(async () => {
 afterEach(async () => {
   await db('user')
     .update('deleted_at', null)
-    .where('id', [userToDeleteId, userToBeBlockedId])
+    .whereIn('id', [userToDeleteId, userToBeBlockedId])
 })
 describe('Testing dashboard delete endpoint', () => {
   it('should succeed deleting a user with a logged-in admin user', async () => {
     let deletedAt = await db('user')
       .select('deleted_at')
       .whereIn('id', [userToDeleteId, userToBeBlockedId])
-    expect(deletedAt).toBe(null)
     expect(deletedAt[0].deleted_at).toBe(null)
     expect(deletedAt[1].deleted_at).toBe(null)
 
