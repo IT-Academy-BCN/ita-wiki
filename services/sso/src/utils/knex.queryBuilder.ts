@@ -27,7 +27,7 @@ export const knexQueryBuilder = (
       'u.status',
       'u.role',
       'u.deleted_at as deletedAt',
-      knexClient.raw("TO_CHAR(u.created_at, 'YYYY-MM-DD') as createdAt"), // change date
+      'u.created_at as createdAt',
       'i.name as itineraryName'
     )
 

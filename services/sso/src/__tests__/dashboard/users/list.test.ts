@@ -5,7 +5,10 @@ import { pathRoot } from '../../../routes/routes'
 import { userSchema } from '../../../schemas'
 import { itinerariesData, server, testUserData } from '../../globalSetup'
 import db from '../../../db/knexClient'
-import { DashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
+import {
+  DashboardUsersList,
+  dashboardUsersListSchema,
+} from '../../../schemas/users/dashboardUsersListSchema'
 import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
 import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
 
@@ -38,7 +41,7 @@ beforeAll(async () => {
     testUserData.mentor.password
   )
 
-  const query = db('user as u')
+  users = await db('user as u')
     .join('itinerary as i', 'u.itinerary_id', '=', 'i.id')
     .select(
       'u.id',
@@ -47,13 +50,10 @@ beforeAll(async () => {
       'u.status',
       'u.role',
       'u.deleted_at as deletedAt',
-      db.raw("TO_CHAR(u.created_at, 'YYYY-MM-DD') as createdAt"), // change date
+      'u.created_at as createdAt',
       'i.name as itineraryName'
     )
-
-  users = await query
-
-  console.log('usuarios devueltos: ', users)
+  console.log('users', users)
 })
 
 describe('Testing get users endpoint', () => {
@@ -61,8 +61,9 @@ describe('Testing get users endpoint', () => {
     const response = await supertest(server)
       .get(route)
       .set('Cookie', [authAdminToken])
-    console.log('cuerpo de la respuesta: ', response.body)
+    console.log('response.body', response.body)
     expect(response.status).toBe(200)
+    // problemas con la fecha
     expect(response.body).toEqual(users)
     expect(response.body).toHaveLength(users.length)
     expect(responseSchema.safeParse(response.body).success).toBeTruthy()
