@@ -8,13 +8,21 @@ All notable changes to this project will be documented in this file.
 
 - Update userManager controller. Migrate to Knex.
 
-## [1.41.0] - 2024-07-25
+## [1.42.0] - 2024-10-07
 
-### Added
+### Changed
+
+- Migrated `DELETE /dashboard/users` endpoint to Knex.
+  - Replaced `client.query` with Knex methods (`whereIn`, `update`, `select`).
+  - Updated related tests to use Knex.
+
+## [1.41.0] - 2024-10-02
+
+### Changed
 
 - Update delete endpoint. Migrate to Knex.
 
-## [1.40.0] - 2024-07-25
+## [1.40.0] - 2024-09-23
 
 ### Added
 
