@@ -253,7 +253,6 @@ export const userManager = {
       valueObject[index],
     ])
     const setObject = Object.fromEntries(setArray)
-    // console.log('setObject', setObject)
 
     await db('user').update(setObject).whereIn('id', ids)
   },
