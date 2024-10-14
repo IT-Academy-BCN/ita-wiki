@@ -1,5 +1,4 @@
 import { Context, Middleware } from 'koa'
-// import { queryBuilder } from '../../../utils/queryBuilder'
 import { User, UserRole } from '../../../schemas'
 import db from '../../../db/knexClient'
 import { knexQueryBuilder } from '../../../utils/knex.queryBuilder'
@@ -11,7 +10,6 @@ export const dashboardListUsers: Middleware = async (ctx: Context) => {
     mentorUserId = id
   }
 
-  // MIGRATION TO KNEX =>
   const { query } = knexQueryBuilder(ctx, db, mentorUserId)
 
   const queryResult = await query

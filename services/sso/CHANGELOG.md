@@ -2,6 +2,13 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+
+## [1.44.0] - 2024-10-14
+
+### Changed
+
+- Updated `dashboard/user/list` endpoint to Knex methods.
+
 ## [1.41.0] - 2024-09-18
 
 ### Changed

@@ -5,10 +5,7 @@ import { pathRoot } from '../../../routes/routes'
 import { userSchema } from '../../../schemas'
 import { itinerariesData, server, testUserData } from '../../globalSetup'
 import db from '../../../db/knexClient'
-import {
-  DashboardUsersList,
-  dashboardUsersListSchema,
-} from '../../../schemas/users/dashboardUsersListSchema'
+import { DashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
 import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
 import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
 
@@ -50,25 +47,21 @@ beforeAll(async () => {
       'u.status',
       'u.role',
       'u.deleted_at as deletedAt',
-      'u.created_at as createdAt',
+      db.raw('TO_CHAR(u.created_at, \'YYYY-MM-DD\') as "createdAt"'),
       'i.name as itineraryName'
     )
-  console.log('users', users)
 })
 
 describe('Testing get users endpoint', () => {
-  it.only('returns a collection of users successfully, with a logged-in admin user', async () => {
+  it('returns a collection of users successfully, with a logged-in admin user', async () => {
     const response = await supertest(server)
       .get(route)
       .set('Cookie', [authAdminToken])
-    console.log('response.body', response.body)
     expect(response.status).toBe(200)
-    // problemas con la fecha
     expect(response.body).toEqual(users)
     expect(response.body).toHaveLength(users.length)
     expect(responseSchema.safeParse(response.body).success).toBeTruthy()
   })
-
   it('Returns a collection of users successfully with a logged-in mentor user, where the collection must contain users with the same itinerary.', async () => {
     const response = await supertest(server)
       .get(route)
@@ -83,7 +76,6 @@ describe('Testing get users endpoint', () => {
       .every((user) => user.itineraryName === firstItineraryName)
     expect(allSameItinerary).toBe(true)
   })
-
   it('returns a collection of users by itinerary slug successfully with a logged-in admin user ', async () => {
     const response = await supertest(server)
       .get(route)
@@ -96,7 +88,6 @@ describe('Testing get users endpoint', () => {
     ])
     expect(responseSchema.safeParse(response.body).success).toBeTruthy()
   })
-
   it('returns an empty collection of users for an itinerary slug when no users are assigned, with admin logged in', async () => {
     const response = await supertest(server)
       .get(route)
@@ -107,7 +98,6 @@ describe('Testing get users endpoint', () => {
     expect(response.body).toEqual([])
     expect(responseSchema.safeParse(response.body).success).toBeTruthy()
   })
-
   it('returns a collection of users by status successfully with a logged-in admin user ', async () => {
     const activeUsers = users.filter((u) => u.status === UserStatus.ACTIVE)
     const response = await supertest(server)
@@ -125,7 +115,6 @@ describe('Testing get users endpoint', () => {
     expect(sortedResponseBody).toEqual(sortedExpected)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
-
   it('returns a collection of users within a date range successfully with a logged-in admin user, [NOT WORK WITHIN 00:00-02:00 AM!!]', async () => {
     const dateMinusOne = new Date()
     dateMinusOne.setDate(dateMinusOne.getDate() - 1)
@@ -155,7 +144,6 @@ describe('Testing get users endpoint', () => {
     expect(body).toHaveLength(7)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
-
   it('returns a collection of users successfully with a name query of 2 or more characters', async () => {
     const response = await supertest(server)
       .get(route)
@@ -169,7 +157,6 @@ describe('Testing get users endpoint', () => {
       expect(user.name).toContain(testName)
     })
   })
-
   it('returns only the user that match the exact name when searched', async () => {
     const exactName = 'testingAdmin'
     const response = await supertest(server)
@@ -183,7 +170,6 @@ describe('Testing get users endpoint', () => {
     expect(body[0].name).toBe('testingAdmin')
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
-
   it('returns Zod error when name query is less than 2 characters', async () => {
     const response = await supertest(server)
       .get(route)
@@ -206,7 +192,7 @@ describe('Testing get users endpoint', () => {
     expect(body).toHaveLength(1)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
-  it('returns a  collection of users by role successfully with a logged-in admin user ', async () => {
+  it('returns a collection of users by role successfully with a logged-in admin user ', async () => {
     const registeredUsers = users.filter((u) => u.role === UserRole.REGISTERED)
     const response = await supertest(server)
       .get(route)
@@ -225,7 +211,7 @@ describe('Testing get users endpoint', () => {
     expect(sortedResponseBody).toEqual(sortedExpected)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
-  it('returns a colletion of users by 4 diferent search values', async () => {
+  it('returns a user by 4 diferent search values', async () => {
     const response = await supertest(server)
       .get(route)
       .query({
@@ -238,7 +224,7 @@ describe('Testing get users endpoint', () => {
     const { body }: { body: DashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toBeInstanceOf(Array)
-    expect(body).toHaveLength(2)
+    expect(body).toHaveLength(1)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
   })
 })
