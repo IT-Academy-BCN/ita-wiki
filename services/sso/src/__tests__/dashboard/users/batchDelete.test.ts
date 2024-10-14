@@ -3,6 +3,7 @@ import { expect, it, describe, beforeEach, afterEach } from 'vitest'
 import { pathRoot } from '../../../routes/routes'
 import { server, testUserData } from '../../globalSetup'
 import { client } from '../../../db/client'
+import db from '../../../db/knexClient'
 
 const route = `${pathRoot.v1.dashboard.users}`
 let authAdminToken = ''
@@ -19,33 +20,32 @@ beforeEach(async () => {
 })
 
 afterEach(async () => {
-  await client.query(
-    'UPDATE "user" SET deleted_at = null WHERE id IN ( $1, $2 )',
-    [userToDeleteId, userToBeBlockedId]
-  )
+  await db('user')
+    .update('deleted_at', null)
+    .whereIn('id', [userToDeleteId, userToBeBlockedId])
 })
-
 describe('Testing dashboard delete endpoint', () => {
   it('should succeed deleting a user with a logged-in admin user', async () => {
-    let deletedAt = await client.query(
-      'SELECT deleted_at FROM "user" WHERE id IN ( $1, $2 )',
-      [userToDeleteId, userToBeBlockedId]
-    )
-    expect(deletedAt.rows[0].deleted_at).toBe(null)
-    expect(deletedAt.rows[1].deleted_at).toBe(null)
+    let deletedAt = await db('user')
+      .select('deleted_at')
+      .whereIn('id', [userToDeleteId, userToBeBlockedId])
+    expect(deletedAt[0].deleted_at).toBe(null)
+    expect(deletedAt[1].deleted_at).toBe(null)
+
     const ids = [userToDeleteId, userToBeBlockedId]
     const response = await supertest(server)
       .delete(`${route}/`)
       .set('Cookie', [authAdminToken])
       .send({ ids })
     expect(response.status).toBe(204)
-    deletedAt = await client.query(
-      'SELECT deleted_at FROM "user" WHERE id IN ( $1, $2 )',
-      [userToDeleteId, userToBeBlockedId]
-    )
-    expect(deletedAt.rows[0].deleted_at).toContain(Date)
-    expect(deletedAt.rows[1].deleted_at).toContain(Date)
+    deletedAt = await db('user')
+      .select('deleted_at')
+      .whereIn('id', [userToDeleteId, userToBeBlockedId])
+
+    expect(deletedAt[0]).toContain(Date)
+    expect(deletedAt[1]).toContain(Date)
   })
+
   it('should return 404 if no ids are provided', async () => {
     const ids = []
     const response = await supertest(server)
