@@ -1,13 +1,13 @@
 export { loginSchema } from './auth/loginSchema'
 export { registerSchema } from './auth/registerSchema'
-export { userSchema, UserRole, User } from './users/userSchema'
+export { userSchema, UserRole, TUser } from './users/userSchema'
 export {
-  UserPatch,
+  TUserPatch,
   userUpdateSchema,
   optionalUserUpdateSchema,
 } from './users/userUpdateSchema'
 export { dniSchema } from './dniSchema'
-export { ValidateSchema, validateSchema } from './tokens/validateSchema'
-export { UsersList, usersListSchema } from './users/usersListSchema'
+export { TValidateSchema, validateSchema } from './tokens/validateSchema'
+export { TUsersList, usersListSchema } from './users/usersListSchema'
 export { dashboardUsersListSchema } from './users/dashboardUsersListSchema'
 export { dashboardUsersListQuerySchema } from './users/dashboardUsersListQuerySchema'

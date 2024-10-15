@@ -1,7 +1,7 @@
 import { Context, Middleware } from 'koa'
 import db from '../../../db/knexClient'
-import { User } from '../../../schemas'
-import { UserLogin } from '../../../schemas/auth/loginSchema'
+import { TUser } from '../../../schemas'
+import { TUserLogin } from '../../../schemas/auth/loginSchema'
 import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
 import { generateToken } from '../../../utils/jwtAuth'
 import { InvalidCredentials, ForbiddenError } from '../../../utils/errors'
@@ -10,12 +10,12 @@ import { checkRoleAccess } from '../../../utils/checkRoleAccess'
 import { appConfig } from '../../../config'
 
 export const dashboardLoginController: Middleware = async (ctx: Context) => {
-  const { dni, password }: UserLogin = ctx.request.body
+  const { dni, password }: TUserLogin = ctx.request.body
   const dniToUpperCase = dni.toUpperCase()
   const user:
-    | Pick<User, 'id' | 'password' | 'status' | 'role'>
+    | Pick<TUser, 'id' | 'password' | 'status' | 'role'>
     | null
-    | undefined = await db<User>('user')
+    | undefined = await db<TUser>('user')
     .select('id', 'password', 'status', 'role')
     .where('dni', dniToUpperCase)
     .first()

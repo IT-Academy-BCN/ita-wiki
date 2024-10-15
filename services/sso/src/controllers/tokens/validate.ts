@@ -1,9 +1,9 @@
 import { Context, Middleware } from 'koa'
 import { InvalidCredentials } from '../../utils/errors'
-import { User } from '../../schemas'
+import { TUser } from '../../schemas'
 
 export const validate: Middleware = async (ctx: Context) => {
-  const { id } = ctx.state.user as Pick<User, 'id' | 'role'>
+  const { id } = ctx.state.user as Pick<TUser, 'id' | 'role'>
 
   if (!id) {
     throw new InvalidCredentials()

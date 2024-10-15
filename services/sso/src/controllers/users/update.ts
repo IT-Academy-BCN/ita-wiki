@@ -1,6 +1,6 @@
 import { Context, Middleware } from 'koa'
 import { hashPassword } from '../../utils/passwordHash'
-import { UserPatch } from '../../schemas'
+import { TUserPatch } from '../../schemas'
 import { NotFoundError } from '../../utils/errors'
 import { userManager } from '../../db/managers/userManager'
 
@@ -8,7 +8,7 @@ export const updateUser: Middleware = async (ctx: Context) => {
   const { id } = ctx.params
   const requestBody = ctx.request.body
   const { authToken, ...restOfData } = requestBody
-  const data: UserPatch = authToken ? restOfData : requestBody
+  const data: TUserPatch = authToken ? restOfData : requestBody
 
   const userResult = await userManager.findById(id, { fields: ['id'] })
 
