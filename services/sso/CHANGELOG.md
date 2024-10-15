@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.45.00] - 2024-10-15
+### Changed
+
+- Updated `dashboard/users/batchDelete.test ` to Knex.
+- Replaced `client.query` with Knex methods (`whereIn`, `select`).
+
 ## [1.44.0] - 2024-10-15
 
 ### Changed
