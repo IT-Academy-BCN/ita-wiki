@@ -6,7 +6,6 @@ import { dashboardListUsers } from '../../controllers/dashboard/users/list'
 import { parse, validate } from '../../middleware/validate'
 import { z } from '../../openapi/zod'
 import { getMe } from '../../controllers/dashboard/users/getMe'
-// import { dashboardUsersListQuerySchema } from '../../schemas'
 import { dashboardUserUpdateSchema } from '../../schemas/users/dashboardUserUpdateSchema'
 import { userIdSchema } from '../../schemas/users/userSchema'
 import { dashboardDeleteUser } from '../../controllers/dashboard/users/delete'
@@ -20,7 +19,7 @@ import { dashboardUsersListQuerySchema } from '../../schemas'
 export const dashboardUsersRoutes = new Router()
 
 dashboardUsersRoutes.prefix(pathRoot.v1.dashboard.users)
-// REVISAR RUTA =>
+
 dashboardUsersRoutes.get(
   '/',
   authenticate,
