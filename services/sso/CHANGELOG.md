@@ -2,11 +2,17 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
-## [1.43.0] - 2024-10-15
+## [1.44.0] - 2024-10-15
 
 ### Changed
 
 - Updated `dashboard/user/list` endpoint to Knex methods.
+
+## [1.43.0] - 2024-10-15
+
+### Changed
+
+- Update userManager controller. Migrate to Knex.
 
 ## [1.42.0] - 2024-10-07
 
