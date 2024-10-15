@@ -1,10 +1,10 @@
 import { Context, Middleware } from 'koa'
 import { client } from '../../../db/client'
 import { NotFoundError } from '../../../utils/errors'
-import { DashboardUsersUpdateStatus } from '../../../schemas/users/dashboardUsersUpdateStatusSchema'
+import { TDashboardUsersUpdateStatus } from '../../../schemas/users/dashboardUsersUpdateStatusSchema'
 
 export const dashboardUpdateStatusUsers: Middleware = async (ctx: Context) => {
-  const { ids, status } = ctx.request.body as DashboardUsersUpdateStatus
+  const { ids, status } = ctx.request.body as TDashboardUsersUpdateStatus
 
   const verifyQuery = `
       SELECT id FROM "user" WHERE id = ANY($1::text[]);
