@@ -2,7 +2,13 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
-## [1.43.0] - 2024-10-14
+## [1.44.0] - 2024-10-15
+
+### Changed
+
+- Updated `dashboard/user/list` endpoint to Knex methods.
+
+## [1.43.0] - 2024-10-15
 
 ### Changed
 
@@ -13,8 +19,8 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 - Migrated `DELETE /dashboard/users` endpoint to Knex.
-  - Replaced `client.query` with Knex methods (`whereIn`, `update`, `select`).
-  - Updated related tests to use Knex.
+- Replaced `client.query` with Knex methods (`whereIn`, `update`, `select`).
+- Updated related tests to use Knex.
 
 ## [1.41.0] - 2024-10-02
 

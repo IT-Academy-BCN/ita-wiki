@@ -6,7 +6,6 @@ import { dashboardListUsers } from '../../controllers/dashboard/users/list'
 import { parse, validate } from '../../middleware/validate'
 import { z } from '../../openapi/zod'
 import { getMe } from '../../controllers/dashboard/users/getMe'
-import { dashboardUsersListQuerySchema } from '../../schemas'
 import { dashboardUserUpdateSchema } from '../../schemas/users/dashboardUserUpdateSchema'
 import { userIdSchema } from '../../schemas/users/userSchema'
 import { dashboardDeleteUser } from '../../controllers/dashboard/users/delete'
@@ -15,6 +14,7 @@ import { dashboardUsersUpdateStatusSchema } from '../../schemas/users/dashboardU
 import { dashboardUpdateStatusUsers } from '../../controllers/dashboard/users/updateStatus'
 import { dashboardBatchDelete } from '../../controllers/dashboard/users/batchDelete'
 import { restrictMentorPatch } from '../../middleware/restrictMentorPatch'
+import { dashboardUsersListQuerySchema } from '../../schemas'
 
 export const dashboardUsersRoutes = new Router()
 
