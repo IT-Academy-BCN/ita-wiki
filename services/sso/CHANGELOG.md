@@ -3,17 +3,31 @@ All notable changes to this project will be documented in this file.
 # Changelog
 
 
-## [1.44.0] - 2024-10-14
+## [1.43.0] - 2024-10-15
 
 ### Changed
 
 - Updated `dashboard/user/list` endpoint to Knex methods.
 
-## [1.41.0] - 2024-09-18
+## [1.42.0] - 2024-10-07
 
 ### Changed
 
-- Updated `dashboard/user/getME` endpoint to Knex methods.
+- Migrated `DELETE /dashboard/users` endpoint to Knex.
+- Replaced `client.query` with Knex methods (`whereIn`, `update`, `select`).
+- Updated related tests to use Knex.
+
+## [1.41.0] - 2024-10-02
+
+### Changed
+
+- Update delete endpoint. Migrate to Knex.
+
+## [1.40.0] - 2024-09-23
+
+### Added
+
+- Error handling for unique email or id, in register controller.
 
 ## [1.39.0] - 2024-07-25
 
