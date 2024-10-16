@@ -4,35 +4,37 @@ import qs from 'qs'
 import { userSchema } from '../../schemas'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
-import { client } from '../../db/client'
+import db from '../../db/knexClient'
 
 const route = `${pathRoot.v1.users}`
-const adminIdData = await client.query(
-  'SELECT id FROM "user" WHERE dni IN ($1) ',
-  [testUserData.admin.dni]
-)
-const userIdData = await client.query(
-  'SELECT id FROM "user" WHERE dni IN ($1) ',
-  [testUserData.user.dni]
-)
-const deletedUserIdData = await client.query(
-  'SELECT id FROM "user" WHERE dni IN ($1) ',
-  [testUserData.userToDelete.dni]
-)
-const { id } = adminIdData.rows[0]
-const { id: userId } = userIdData.rows[0]
-const { id: deletedUserId } = deletedUserIdData.rows[0]
+
+const adminIdData = await db('user')
+  .select('id')
+  .where({ dni: testUserData.admin.dni })
+  .first()
+const userIdData = await db('user')
+  .select('id')
+  .where({ dni: testUserData.user.dni })
+  .first()
+const deletedUserIdData = await db('user')
+  .select('id')
+  .where({ dni: testUserData.userToDelete.dni })
+  .first()
+const { id } = adminIdData
+const { id: userId } = userIdData
+const { id: deletedUserId } = deletedUserIdData
+
 const responseSchema = userSchema.pick({ id: true, name: true }).array()
+
 const stringData = (data: string[]) =>
   qs.stringify(
     { id: data, fields: ['id', 'name'] },
     { indices: false, arrayFormat: 'comma' }
   )
 afterEach(async () => {
-  await client.query('UPDATE "user" SET deleted_at = $1 WHERE dni = $2', [
-    null,
-    testUserData.userToDelete.dni,
-  ])
+  await db('user')
+    .update({ deleted_at: null })
+    .where({ dni: testUserData.userToDelete.dni })
 })
 describe('Testing get users name by Id endpoint', () => {
   it('returns a user successfully with a single valid ID', async () => {
@@ -84,10 +86,10 @@ describe('Testing get users name by Id endpoint', () => {
   })
 
   it('returns an empty array if the user is deleted', async () => {
-    await client.query(
-      'UPDATE "user" SET deleted_at = CURRENT_TIMESTAMP WHERE dni = $1',
-      [testUserData.userToDelete.dni]
-    )
+    await db('user')
+      .update({ deleted_at: new Date() })
+      .where({ dni: testUserData.userToDelete.dni })
+
     const response = await supertest(server).get(
       `${route}?${stringData([deletedUserId])}`
     )
@@ -96,10 +98,9 @@ describe('Testing get users name by Id endpoint', () => {
   })
 
   it('returns just the not deleted user', async () => {
-    await client.query(
-      'UPDATE "user" SET deleted_at = CURRENT_TIMESTAMP WHERE dni = $1',
-      [testUserData.userToDelete.dni]
-    )
+    await db('user')
+      .update({ deleted_at: new Date() })
+      .where({ dni: testUserData.userToDelete.dni })
     const response = await supertest(server).get(
       `${route}?${stringData([deletedUserId, id])}`
     )
