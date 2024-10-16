@@ -1,5 +1,5 @@
-import { User, UserPatch } from '../../schemas'
-import { ItinerayList } from '../../schemas/itineraries/itinerariesListSchema'
+import { TUser, TUserPatch } from '../../schemas'
+import { TItinerayList } from '../../schemas/itineraries/itinerariesListSchema'
 import db from '../knexClient'
 
 /**
@@ -16,33 +16,33 @@ async function getCamelCase() {
   const { camelCase } = await import('change-case')
   return camelCase
 }
-export type GetUserOptions<T extends keyof User> = {
+export type GetUserOptions<T extends keyof TUser> = {
   fields: T[]
 }
-export async function fetchUser<T extends keyof User>(
+export async function fetchUser<T extends keyof TUser>(
   field: 'id' | 'dni',
   value: string,
   options: GetUserOptions<T>
-): Promise<Pick<User, T> | null> {
+): Promise<Pick<TUser, T> | null> {
   const snakeCase = await getSnakeCase()
   const camelCase = await getCamelCase()
   const fieldsToSelect = options.fields.map((f) => snakeCase(f)) as Array<
-    keyof User
+    keyof TUser
   >
 
-  const result = await db<User>('user')
+  const result = await db<TUser>('user')
     .select(fieldsToSelect as string[])
     .where({ [snakeCase(field)]: value })
     .andWhere('deleted_at', null)
-    .first<User | undefined>()
+    .first<TUser | undefined>()
 
   if (result) {
     const camelCaseResult = Object.keys(result).reduce((acc, key) => {
-      const typedKey = key as keyof User
+      const typedKey = key as keyof TUser
       const camelKey = camelCase(key) as T
-      acc[camelKey] = result[typedKey] as Pick<User, T>[T]
+      acc[camelKey] = result[typedKey] as Pick<TUser, T>[T]
       return acc
-    }, {} as Pick<User, T>)
+    }, {} as Pick<TUser, T>)
     return camelCaseResult
   }
   return null
@@ -58,7 +58,7 @@ export const userManager = {
    * @param {GetUserOptions<T>} options - Configuration options that specify which fields
    *                                      of the `User` object should be returned. The `fields`
    *                                      array must contain one or more keys of the `User` type.
-   * @returns {Promise<Pick<User, T> | null>} A promise that resolves to a `Pick` of the `User`
+   * @returns {Promise<Pick<TUser, T> | null>} A promise that resolves to a `Pick` of the `User`
    *                                          type with only the requested fields, or null if
    *                                          the user is not found.
    *
@@ -74,10 +74,10 @@ export const userManager = {
    *
    * @throws {Error} Throws an error if the SQL query fails.
    */
-  async getUser<T extends keyof User>(
+  async getUser<T extends keyof TUser>(
     id: string,
     options: GetUserOptions<T>
-  ): Promise<Pick<User, T> | null> {
+  ): Promise<Pick<TUser, T> | null> {
     const snakeCase = await getSnakeCase()
     const camelCase = await getCamelCase()
     const fieldsToSelect = options.fields.map((f) => snakeCase(f))
@@ -91,7 +91,7 @@ export const userManager = {
       const camelCaseRow = Object.keys(row).reduce((acc: any, key) => {
         acc[camelCase(key)] = row[key]
         return acc
-      }, {} as Pick<User, T>)
+      }, {} as Pick<TUser, T>)
       return camelCaseRow
     }
     return null
@@ -106,7 +106,7 @@ export const userManager = {
    * @param {GetUserOptions<T>} options - Configuration options that specify which fields
    *                                      of the `User` object should be returned. The `fields`
    *                                      array must contain one or more keys of the `User` type.
-   * @returns {Promise<Pick<User, T> | null>} A promise that resolves to a `Pick` of the `User`
+   * @returns {Promise<Pick<TUser, T> | null>} A promise that resolves to a `Pick` of the `User`
    *                                          type with only the requested fields, or null if
    *                                          the user is not found.
    *
@@ -122,10 +122,10 @@ export const userManager = {
    *
    * @throws {Error} Throws an error if the SQL query fails.
    */
-  async findById<T extends keyof User>(
+  async findById<T extends keyof TUser>(
     id: string,
     options: GetUserOptions<T>
-  ): Promise<Pick<User, T> | null> {
+  ): Promise<Pick<TUser, T> | null> {
     return fetchUser('id', id, options)
   },
 
@@ -139,7 +139,7 @@ export const userManager = {
    * @param {GetUserOptions<T>} options - Configuration options that specify which fields
    *                                      of the `User` object should be returned. The `fields`
    *                                      array must contain one or more keys of the `User` type.
-   * @returns {Promise<Pick<User, T> | null>} A promise that resolves to a `Pick` of the `User`
+   * @returns {Promise<Pick<TUser, T> | null>} A promise that resolves to a `Pick` of the `User`
    *                                          type with only the requested fields, or null if
    *                                          the user is not found.
    *
@@ -155,10 +155,10 @@ export const userManager = {
    *
    * @throws {Error} Throws an error if the SQL query fails.
    */
-  async findByDni<T extends keyof User>(
+  async findByDni<T extends keyof TUser>(
     dni: string,
     options: GetUserOptions<T>
-  ): Promise<Pick<User, T> | null> {
+  ): Promise<Pick<TUser, T> | null> {
     return fetchUser('dni', dni, options)
   },
   /**
@@ -172,7 +172,7 @@ export const userManager = {
    *                                      array must contain one or more keys of the `User` type.
    * @param {boolean} [activeOnly=false] - Optional parameter to filter users by active status.
    * @param {string[]} [ids] - Optional array of user IDs to filter the results. If not provided, all users will be returned.
-   * @returns {Promise<Pick<User, T>[]>} A promise that resolves to an array of `Pick` of the `User`
+   * @returns {Promise<Pick<TUser, T>[]>} A promise that resolves to an array of `Pick` of the `User`
    *                                     type with only the requested fields. Returns an empty array if no users are found.
    *
    * Example usage:
@@ -187,15 +187,15 @@ export const userManager = {
    *
    * @throws {Error} Throws an error if the SQL query fails.
    */
-  async getUsersByIds<T extends keyof User>(
+  async getUsersByIds<T extends keyof TUser>(
     options: GetUserOptions<T>,
     activeOnly: boolean = false,
     ids?: string[]
-  ): Promise<Pick<User, T>[]> {
+  ): Promise<Pick<TUser, T>[]> {
     const snakeCase = await getSnakeCase()
     const camelCase = await getCamelCase()
     const fieldsToSelect = options.fields.map((f) => snakeCase(f))
-    const query = db<User>('user')
+    const query = db<TUser>('user')
       .select(fieldsToSelect)
       .where('deleted_at', null)
     if (activeOnly) {
@@ -207,13 +207,13 @@ export const userManager = {
     }
     const result = await query
     if (result.length) {
-      const res: Pick<User, T>[] = result.map((row) => {
+      const res: Pick<TUser, T>[] = result.map((row) => {
         const camelCaseRow = Object.entries(row).reduce(
           (acc: any, [key, value]) => {
             acc[camelCase(key)] = value
             return acc
           },
-          {} as Pick<User, T>
+          {} as Pick<TUser, T>
         )
         return camelCaseRow
       })
@@ -228,7 +228,7 @@ export const userManager = {
    * The returned type is a void.
    *
    * @param {string[]} ids - The unique identifier Array of the users to retrieve.
-   * @param {UserPatch} options - Configuration options that specify
+   * @param {TUserPatch} options - Configuration options that specify
    *                                      field to set and its values. The `options`
    *                                       must contain one or more keys/value of the `UserPatch` type to SET.
    * @returns {Promise<void>} A promise of void.
@@ -241,7 +241,7 @@ export const userManager = {
    *
    * @throws {Error} Throws an error if the SQL query fails.
    */
-  async updateUserByIds<T extends UserPatch>(
+  async updateUserByIds<T extends TUserPatch>(
     options: T,
     ids: string[]
   ): Promise<void> {
@@ -266,7 +266,7 @@ export const userManager = {
    *
    */
 
-  async getAllItineraries(): Promise<ItinerayList[]> {
+  async getAllItineraries(): Promise<TItinerayList[]> {
     const data = await db('itinerary').select('*')
     return data
   },

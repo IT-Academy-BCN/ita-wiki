@@ -19,4 +19,4 @@ export const userUpdateSchema = mergedSchema.refine(
   }
 )
 
-export type UserPatch = z.infer<typeof optionalUserUpdateSchema>
+export type TUserPatch = z.infer<typeof optionalUserUpdateSchema>

@@ -6,6 +6,6 @@ export const dashboardUsersUpdateStatusSchema = z.object({
   status: z.enum([userStatusSchema.enum.ACTIVE, userStatusSchema.enum.BLOCKED]),
 })
 
-export type DashboardUsersUpdateStatus = z.infer<
+export type TDashboardUsersUpdateStatus = z.infer<
   typeof dashboardUsersUpdateStatusSchema
 >

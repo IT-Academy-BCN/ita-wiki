@@ -1,10 +1,10 @@
 import { Context, Middleware } from 'koa'
-import { User, UserRole } from '../../../schemas'
+import { TUser, UserRole } from '../../../schemas'
 import db from '../../../db/knexClient'
 import { knexQueryBuilder } from '../../../utils/knex.queryBuilder'
 
 export const dashboardListUsers: Middleware = async (ctx: Context) => {
-  const { role, id } = ctx.state.user as Pick<User, 'id' | 'role'>
+  const { role, id } = ctx.state.user as Pick<TUser, 'id' | 'role'>
   let mentorUserId: string | undefined
   if (role === UserRole.MENTOR) {
     mentorUserId = id

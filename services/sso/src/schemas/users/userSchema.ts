@@ -34,4 +34,4 @@ export const userSchema = z.object({
   itineraryId: z.string().cuid2(),
 })
 
-export type User = z.infer<typeof userSchema>
+export type TUser = z.infer<typeof userSchema>

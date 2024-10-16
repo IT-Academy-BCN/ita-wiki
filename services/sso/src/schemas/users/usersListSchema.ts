@@ -21,4 +21,4 @@ export const usersListSchema = z
     }),
   })
   .strict()
-export type UsersList = z.infer<typeof usersListSchema>
+export type TUsersList = z.infer<typeof usersListSchema>
