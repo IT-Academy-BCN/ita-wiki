@@ -2,7 +2,14 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.46.0] - 2024-10-15
+
+### Changed
+
+- Updated all Typescript types to it's corresponding TTypeNames.
+
 ## [1.45.00] - 2024-10-15
+
 ### Changed
 
 - Updated `dashboard/users/batchDelete.test ` to Knex.
@@ -321,7 +328,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Endpoint `POST /dashboard/login` and ` POST /dashboard/logout` for admin users.
+- Endpoint `POST /dashboard/login` and `POST /dashboard/logout` for admin users.
 
 ## [1.9.0] - 2024-02-12
 

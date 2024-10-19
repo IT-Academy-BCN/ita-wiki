@@ -3,4 +3,4 @@ import { tokenSchema } from './tokenSchema'
 
 export const validateSchema = tokenSchema.pick({ authToken: true }).strict()
 
-export type ValidateSchema = z.infer<typeof validateSchema>
+export type TValidateSchema = z.infer<typeof validateSchema>

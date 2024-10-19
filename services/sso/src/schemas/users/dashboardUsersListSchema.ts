@@ -17,4 +17,4 @@ export const dashboardUsersListSchema = userSchema
   })
   .array()
 
-export type DashboardUsersList = z.infer<typeof dashboardUsersListSchema>
+export type TDashboardUsersList = z.infer<typeof dashboardUsersListSchema>
