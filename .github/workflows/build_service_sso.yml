@@ -75,7 +75,7 @@ jobs:
         with:
           context: services/sso
           push: true
-          tags: itacademybcn/ita-sso-service:v${{ steps.version.outputs.version }}
+          tags: itacademybcn/service_sso:v${{ steps.version.outputs.version }}
 
       - name: Tag and Push Git Tag
         env:
