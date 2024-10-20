@@ -3,10 +3,10 @@ import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { pathRoot } from '../../../routes/routes'
 import { server, testUserData } from '../../globalSetup'
 import { hashPassword } from '../../../utils/passwordHash'
-import { client } from '../../../db/client'
 import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
 import { UserRole } from '../../../schemas'
 import { UserStatus } from '../../../schemas/users/userSchema'
+import db from '../../../db/knexClient'
 
 const id = 'nmfg3bvexwotarwcpl6t5qjy'
 const route = `${pathRoot.v1.dashboard.users}`
@@ -24,70 +24,66 @@ beforeAll(async () => {
     testUserData.mentor.dni,
     testUserData.mentor.password
   )
-  const mentorItineraryResult = await client.query(
-    'SELECT itinerary_id FROM "user" WHERE dni = $1',
-    [testUserData.mentor.dni]
-  )
-  const mentorItineraryId = mentorItineraryResult.rows[0].itinerary_id
 
-  const otherItinerary = await client.query(
-    'SELECT id FROM "itinerary" WHERE id != $1 LIMIT 1',
-    [mentorItineraryId]
-  )
-  const itineraryId = otherItinerary.rows[0].id
-  const createUserQuery = {
-    text: 'INSERT INTO "user"(id, dni, email, name, password, role, status, user_meta, itinerary_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)',
-    values: [
+  const mentorItinerary = await db('user').select('itinerary_id').where({
+    dni: testUserData.mentor.dni,
+  })
+  const mentorItineraryId = mentorItinerary[0].itinerary_id
+
+  const otherItinerary = await db('itinerary')
+    .select('id')
+    .whereNot({ id: mentorItineraryId })
+    .limit(1)
+
+  const itineraryId = otherItinerary[0].id
+
+  await db('user')
+    .insert({
       id,
-      'Y1868974P',
-      'example@example.com',
-      'nameExample',
-      hashPassword('hashedPassword'),
-      UserRole.REGISTERED,
-      UserStatus.ACTIVE,
-      {},
-      mentorItineraryId,
-    ],
-  }
-  await client.query(createUserQuery)
-  const createOtherItineraryUserQuery = {
-    text: 'INSERT INTO "user"(id, dni, email, name, password, role, status, user_meta, itinerary_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id',
-    values: [
-      otherUserId,
-      'Y1868976R',
-      'otherItinerary@example.com',
-      'otherItineraryName',
-      hashPassword('hashedPassword'),
-      UserRole.REGISTERED,
-      UserStatus.ACTIVE,
-      {},
-      itineraryId,
-    ],
-  }
-  await client.query(createOtherItineraryUserQuery)
-  const createAdminWithSameItineraryQuery = {
-    text: 'INSERT INTO "user"(id, dni, email, name, password, role, status, user_meta, itinerary_id) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id',
-    values: [
-      adminUserIdWithSameItineraryId,
-      '81486658G',
-      'adminexample@example.com',
-      'AdminNameExample',
-      hashPassword('hashedPassword'),
-      UserRole.ADMIN,
-      UserStatus.ACTIVE,
-      {},
-      itineraryId,
-    ],
-  }
-  await client.query(createAdminWithSameItineraryQuery)
+      dni: 'Y1868974P',
+      email: 'example@example.com',
+      name: 'nameExample',
+      password: hashPassword('hashedPassword'),
+      role: UserRole.REGISTERED,
+      status: UserStatus.ACTIVE,
+      user_meta: {},
+      itinerary_id: mentorItineraryId,
+    })
+    .returning('id')
+
+  await db('user')
+    .insert({
+      id: otherUserId,
+      dni: 'Y1868976R',
+      email: 'otherItinerary@example.com',
+      name: 'otherItineraryName',
+      password: hashPassword('hashedPassword'),
+      role: UserRole.REGISTERED,
+      status: UserStatus.ACTIVE,
+      user_meta: {},
+      itinerary_id: itineraryId,
+    })
+    .returning('id')
+
+  await db('user')
+    .insert({
+      id: adminUserIdWithSameItineraryId,
+      dni: '81486658G',
+      email: 'adminexample@example.com',
+      name: 'AdminNameExample',
+      password: hashPassword('hashedPassword'),
+      role: UserRole.ADMIN,
+      status: UserStatus.ACTIVE,
+      user_meta: {},
+      itinerary_id: itineraryId,
+    })
+    .returning('id')
 })
 
 afterAll(async () => {
-  await client.query('DELETE FROM "user" WHERE id IN ($1, $2, $3)', [
-    id,
-    otherUserId,
-    adminUserIdWithSameItineraryId,
-  ])
+  await db('user')
+    .whereIn('id', [id, otherUserId, adminUserIdWithSameItineraryId])
+    .del()
 })
 
 describe('Testing patch dashboard endpoint', () => {
@@ -101,13 +97,11 @@ describe('Testing patch dashboard endpoint', () => {
       .set('Cookie', [adminAuthToken])
       .send(body)
 
-    const newData = await client.query(
-      ' SELECT name, email FROM "user" WHERE id = $1',
-      [id]
-    )
+    const newData = await db('user').select('name', 'email').where({ id })
+
     expect(response.status).toBe(204)
-    expect(body.name).toBe(newData.rows[0].name)
-    expect(body.email).toBe(newData.rows[0].email)
+    expect(body.name).toBe(newData[0].name)
+    expect(body.email).toBe(newData[0].email)
   })
 
   it('should return an error if the user does not exist', async () => {
@@ -143,13 +137,11 @@ describe('Testing patch dashboard endpoint with restrictMentorPatch middleware',
       .set('Cookie', [mentorAuthToken])
       .send(body)
 
-    const newData = await client.query(
-      'SELECT name, email FROM "user" WHERE id = $1',
-      [id]
-    )
+    const newData = await db('user').select('name', 'email').where({ id })
+
     expect(response.status).toBe(204)
-    expect(body.name).toBe(newData.rows[0].name)
-    expect(body.email).toBe(newData.rows[0].email)
+    expect(body.name).toBe(newData[0].name)
+    expect(body.email).toBe(newData[0].email)
   })
 
   it('should allow mentor to update their own information except role and status', async () => {
@@ -162,13 +154,13 @@ describe('Testing patch dashboard endpoint with restrictMentorPatch middleware',
       .set('Cookie', [mentorAuthToken])
       .send(body)
 
-    const newData = await client.query(
-      'SELECT name, email FROM "user" WHERE id = $1',
-      [testUserData.mentor.id]
-    )
+    const newData = await db('user')
+      .select('name', 'email')
+      .where('id', '=', testUserData.mentor.id)
+
     expect(response.status).toBe(204)
-    expect(body.name).toBe(newData.rows[0].name)
-    expect(body.email).toBe(newData.rows[0].email)
+    expect(body.name).toBe(newData[0].name)
+    expect(body.email).toBe(newData[0].email)
   })
 
   it('should return an error if mentor tries to update their own role or status', async () => {
