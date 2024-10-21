@@ -51,10 +51,14 @@ jobs:
             if [ -z "$minor" ]; then minor=0; fi
             if [ -z "$patch" ]; then patch=0; fi
 
+            # Labels
+            labels=${{ toJson(github.event.pull_request.labels.*.name) }}
+            echo "Labels: $labels"
+
             # Increment the version based on labels using GitHub Actions event context
-            if contains(github.event.pull_request.labels.*.name, 'tag/major'); then
+            if [[ "$labels" == *"tag/major"* ]]; then
                 next_version="$((major + 1)).0.0"
-            elif contains(github.event.pull_request.labels.*.name, 'tag/minor'); then
+            if [[ "$labels" == *"tag/minor"* ]]; then
                 next_version="$major.$((minor + 1)).0"
             else
                 next_version="$major.$minor.$((patch + 1))"
