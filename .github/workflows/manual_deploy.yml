@@ -33,14 +33,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Get versions
-        id: versions
-        run: |
-          sso_service_version=$(grep version: ./config/dev/service_sso.yml | awk '{print $2}')
-          usuaris_web_version=$(grep version: ./config/dev/web_usuaris.yml | awk '{print $2}')
-          echo "::set-output name=sso_service_version::$sso_service_version"
-          echo "::set-output name=usuaris_web_version::$usuaris_web_version"
-
       - name: Execute SSH Command
         uses: appleboy/ssh-action@master
         with:

@@ -29,34 +29,26 @@ jobs:
       - name: Determine Semantic Version
         id: version
         env:
-          LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
+          LABELS: ${{ github.event.pull_request.labels.*.name }}
         run: |
             current_version=$(git tag --sort=-v:refname | grep '^service_sso/[0-9]\+' | head -n1)
-            echo "Current version 1: $current_version"
 
             if [ -z "$current_version" ]; then
                 current_version="service_sso/0.0.0"
             fi
-            echo "Current version 2: $current_version"
 
             # Extract major, minor, and patch components safely
             major=$(echo $current_version | cut -d'/' -f2 | cut -d'.' -f1 | sed 's/v//')
             minor=$(echo $current_version | cut -d'.' -f2)
             patch=$(echo $current_version | cut -d'.' -f3)
-            echo "Current version: $current_version"
-            echo "Major: $major"
-            echo "Minor: $minor"
-            echo "Patch: $patch"
+
 
             # Handle empty values
             if [ -z "$major" ]; then major=0; fi
             if [ -z "$minor" ]; then minor=0; fi
             if [ -z "$patch" ]; then patch=0; fi
 
-            # Labels
-            echo "Labels: $LABELS"
-
-            # Increment the version based on labels using GitHub Actions event context
+            # Increment the version based on labels
             if [[ "$LABELS" == *"tag/major"* ]]; then
                 next_version="$((major + 1)).0.0"
             elif [[ "$LABELS" == *"tag/minor"* ]]; then
