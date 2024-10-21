@@ -52,9 +52,9 @@ jobs:
             if [ -z "$patch" ]; then patch=0; fi
 
             # Increment the version based on labels using GitHub Actions event context
-            if [[ "${{ toJson(github.event.pull_request.labels) }}" == *"tag/major"* ]]; then
+            if contains(github.event.pull_request.labels.*.name, 'tag/major'); then
                 next_version="$((major + 1)).0.0"
-            elif [[ "${{ toJson(github.event.pull_request.labels) }}" == *"tag/minor"* ]]; then
+            elif contains(github.event.pull_request.labels.*.name, 'tag/minor'); then
                 next_version="$major.$((minor + 1)).0"
             else
                 next_version="$major.$minor.$((patch + 1))"
