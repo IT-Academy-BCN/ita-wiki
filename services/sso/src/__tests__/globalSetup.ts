@@ -109,11 +109,15 @@ export async function setup() {
   ] = await Promise.all(
     itinerariesData.map(async (itinerary) => {
       const itineraryId = generateId()
-      const query = `
-        INSERT INTO "itinerary" (id, name, slug)
-        VALUES ($1, $2, $3)
-        ON CONFLICT (slug) DO NOTHING;`
-      await client.query(query, [itineraryId, itinerary.name, itinerary.slug])
+
+      await db('itinerary')
+        .insert({
+          id: itineraryId,
+          name: itinerary.name,
+          slug: itinerary.slug,
+        })
+        .onConflict('slug')
+        .ignore()
       return itineraryId
     })
   )
@@ -137,21 +141,20 @@ export async function setup() {
       itineraryId = mentorItineraryId
     }
 
-    const query = `
-      INSERT INTO "user" (id, dni, email, name, password, role, status, user_meta, itinerary_id)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-      ON CONFLICT (dni) DO NOTHING;`
-    await client.query(query, [
-      user.id,
-      user.dni,
-      user.email,
-      user.name,
-      await hashPassword(user.password),
-      user.role,
-      user.status,
-      user.user_meta,
-      itineraryId,
-    ])
+    await db('user')
+      .insert({
+        id: user.id,
+        dni: user.dni,
+        email: user.email,
+        name: user.name,
+        password: await hashPassword(user.password),
+        role: user.role,
+        status: user.status,
+        user_meta: user.user_meta,
+        itinerary_id: itineraryId,
+      })
+      .onConflict('dni')
+      .ignore()
   })
 
   await Promise.all(userCreationPromises)
