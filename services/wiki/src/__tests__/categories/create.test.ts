@@ -1,23 +1,29 @@
 import supertest from 'supertest'
-import { expect, it, describe, afterEach } from 'vitest'
+import { expect, it, describe, afterAll } from 'vitest'
 import { server } from '../globalSetup'
-import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
+import db from '../../db/knex'
+import cuid from 'cuid'
 
-const newCategory = { name: 'New Category' }
+const newCategory = 'New Category'
+
+const mockCategory = {
+  id: cuid(),
+  name: newCategory,
+  created_at: new Date(),
+  updated_at: new Date(),
+}
 describe('Testing category POST method', () => {
-  afterEach(async () => {
-    await prisma.category.deleteMany({
-      where: { name: newCategory.name },
-    })
+  afterAll(async () => {
+    await db('category').where({ name: mockCategory.name }).del()
   })
   it('Should respond 204 status when creating a new category', async () => {
     const response = await supertest(server)
       .post(`${pathRoot.v1.categories}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
-      .send(newCategory)
+      .send(mockCategory)
 
     expect(response.status).toBe(204)
   })
@@ -25,8 +31,7 @@ describe('Testing category POST method', () => {
     const response = await supertest(server)
       .post(`${pathRoot.v1.categories}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
-      .send({ name: 'Testing category' })
-
+      .send(mockCategory)
     expect(response.status).toBe(409)
   })
   it('Should not be able to create a new category if not admin user', async () => {
