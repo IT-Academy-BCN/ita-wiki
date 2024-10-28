@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.18.4] - 2024-10-28
+## Added
+
+- Created `knex.ts` file containing the Knex setup and configuration (knex.file and knex.config) in a single location.
+
 ## [0.18.3] - 2024-07-24
 
 ### Fixed
