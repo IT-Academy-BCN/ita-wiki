@@ -5,7 +5,7 @@ import { pathRoot } from '../../../routes/routes'
 import { userSchema } from '../../../schemas'
 import { itinerariesData, server, testUserData } from '../../globalSetup'
 import db from '../../../db/knexClient'
-import { DashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
+import { TDashboardUsersList } from '../../../schemas/users/dashboardUsersListSchema'
 import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
 import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
 
@@ -22,7 +22,7 @@ const responseSchema = userSchema
 
 let authAdminToken = ''
 let authMentorToken = ''
-let users: DashboardUsersList
+let users: TDashboardUsersList
 const testName = 'testing'
 const testDni = '38826335N'
 const testRole = UserRole.REGISTERED
@@ -104,7 +104,7 @@ describe('Testing get users endpoint', () => {
       .get(route)
       .query({ status: UserStatus.ACTIVE })
       .set('Cookie', [authAdminToken])
-    const { body }: { body: DashboardUsersList } = response
+    const { body }: { body: TDashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toHaveLength(5)
     body.forEach((user) => {
@@ -139,7 +139,7 @@ describe('Testing get users endpoint', () => {
         endDate,
       })
       .set('Cookie', [authAdminToken])
-    const { body }: { body: DashboardUsersList } = response
+    const { body }: { body: TDashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toHaveLength(7)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
@@ -149,7 +149,7 @@ describe('Testing get users endpoint', () => {
       .get(route)
       .query({ name: testName })
       .set('Cookie', [authAdminToken])
-    const { body }: { body: DashboardUsersList } = response
+    const { body }: { body: TDashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toBeInstanceOf(Array)
     expect(responseSchema.safeParse(body).success).toBeTruthy()
@@ -163,7 +163,7 @@ describe('Testing get users endpoint', () => {
       .get(route)
       .query({ name: exactName })
       .set('Cookie', [authAdminToken])
-    const { body }: { body: DashboardUsersList } = response
+    const { body }: { body: TDashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toBeInstanceOf(Array)
     expect(body).toHaveLength(1)
@@ -186,7 +186,7 @@ describe('Testing get users endpoint', () => {
       .get(route)
       .query({ dni: validDni })
       .set('Cookie', [authAdminToken])
-    const { body }: { body: DashboardUsersList } = response
+    const { body }: { body: TDashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toBeInstanceOf(Array)
     expect(body).toHaveLength(1)
@@ -198,7 +198,7 @@ describe('Testing get users endpoint', () => {
       .get(route)
       .query({ role: UserRole.REGISTERED })
       .set('Cookie', [authAdminToken])
-    const { body }: { body: DashboardUsersList } = response
+    const { body }: { body: TDashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toHaveLength(5)
     body.forEach((user) => {
@@ -221,7 +221,7 @@ describe('Testing get users endpoint', () => {
         status: testStatus,
       })
       .set('Cookie', [authAdminToken])
-    const { body }: { body: DashboardUsersList } = response
+    const { body }: { body: TDashboardUsersList } = response
     expect(response.status).toBe(200)
     expect(body).toBeInstanceOf(Array)
     expect(body).toHaveLength(1)

@@ -1,26 +1,64 @@
 name: build_service_sso
-
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches:
       - main
     paths:
       - "services/sso/**"
 
+permissions:
+  contents: write
+
 jobs:
   build_service_sso:
     runs-on: ubuntu-latest
-
+    if: contains(github.event.pull_request.labels.*.name, 'tag/major') || contains(github.event.pull_request.labels.*.name, 'tag/minor') || contains(github.event.pull_request.labels.*.name, 'tag/patch')
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
 
-      - name: Grab version
+      - name: Determine Semantic Version
         id: version
-        run: echo "::set-output name=version::$(jq -r '.version' services/sso/package.json)"
+        env:
+          LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
+        run: |
+            current_version=$(git tag --sort=-v:refname | grep '^service_sso/[0-9]\+' | head -n1)
+
+            if [ -z "$current_version" ]; then
+                current_version="service_sso/0.0.0"
+            fi
+
+            # Extract major, minor, and patch components safely
+            major=$(echo $current_version | cut -d'/' -f2 | cut -d'.' -f1 | sed 's/v//')
+            minor=$(echo $current_version | cut -d'.' -f2)
+            patch=$(echo $current_version | cut -d'.' -f3)
+
+            # Handle empty values
+            if [ -z "$major" ]; then major=0; fi
+            if [ -z "$minor" ]; then minor=0; fi
+            if [ -z "$patch" ]; then patch=0; fi
+
+            # Increment the version based on labels using GitHub Actions event context
+            if [[ "$LABELS" == *"tag/major"* ]]; then
+                next_version="$((major + 1)).0.0"
+            elif [[ "$LABELS" == *"tag/minor"* ]]; then
+                next_version="$major.$((minor + 1)).0"
+            else
+                next_version="$major.$minor.$((patch + 1))"
+            fi
+
+            # Output the next version
+            echo "Next version: $next_version"
+            echo "::set-output name=version::$next_version"
 
       - name: Login to Docker Hub
         uses: docker/login-action@v2
@@ -33,24 +71,15 @@ jobs:
         with:
           context: services/sso
           push: true
-          tags: itacademybcn/ita-sso-service:v${{ steps.version.outputs.version }}
+          tags: itacademybcn/service_sso:v${{ steps.version.outputs.version }}
 
-      - name: Update version
+      - name: Tag and Push Git Tag
+        env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --global user.name "ITA Wiki bot"
-          git config --global user.email "bot@itawiki.com"
-          version=$(grep version: ./config/dev/service_sso.yml | awk '{print $2}')
-          sed -i "s/version: $version/version: ${{ steps.version.outputs.version }}/" ./config/dev/service_sso.yml
-          git add ./config/dev/service_sso.yml
-          git commit -m "Bump service_sso image to v${{ steps.version.outputs.version }}"
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
-        with:
-          title: "Bump service_sso image version to v${{ steps.version.outputs.version }}"
-          commit-message: "Bump service_sso image version to v${{ steps.version.outputs.version }}"
-          branch: "bump-service_sso-to-v${{ steps.version.outputs.version }}"
-          delete-branch: true
-          token: ${{ secrets.GITHUB_TOKEN }}
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          assignees: ${{ github.actor }}
+            git config --local user.name "github-actions[bot]"
+            git config --local user.email "github-actions[bot]@users.noreply.github.com"
+            git remote set-url origin "https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+            # Create and push the tag
+            git tag -a "service_sso/${{ steps.version.outputs.version }}" -m "service_sso/${{ steps.version.outputs.version }}"
+            git push origin "service_sso/${{ steps.version.outputs.version }}"

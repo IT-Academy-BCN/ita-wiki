@@ -4,7 +4,6 @@ import { pathRoot } from '../../../routes/routes'
 import { server, testUserData } from '../../globalSetup'
 import { UserRole } from '../../../schemas'
 import { UserStatus } from '../../../schemas/users/userSchema'
-import { client } from '../../../db/client'
 import { dashboardLoginAndGetToken } from '../../helpers/testHelpers'
 import db from '../../../db/knexClient'
 
@@ -44,93 +43,113 @@ describe('Testing dashboard delete endpoint', () => {
     const response = await supertest(server)
       .delete(`${route}/${id}`)
       .set('Cookie', [authAdminToken])
+
     expect(response.status).toBe(401)
     expect(response.body.message).toBe('Invalid Credentials')
   })
+
   it('should fail with a user already deleted', async () => {
-    let deletedAt = await client.query(
-      'SELECT deleted_at FROM "user" WHERE dni = $1',
-      [testUserData.userToDelete.dni]
-    )
-    expect(deletedAt.rows[0].deleted_at).toBe(null)
+    let deletedAt = await db('user')
+      .select('deleted_at')
+      .where('id', testUserData.userToDelete.id)
+
+    expect(deletedAt[0].deleted_at).toBe(null)
+
     const response1 = await supertest(server)
       .delete(`${route}/${id}`)
       .set('Cookie', [authAdminToken])
+
     expect(response1.status).toBe(204)
 
-    deletedAt = await client.query(
-      'SELECT deleted_at FROM "user" WHERE dni = $1',
-      [testUserData.userToDelete.dni]
-    )
-    expect(deletedAt.rows[0].deleted_at).toContain(Date)
+    deletedAt = await db('user')
+      .select('deleted_at')
+      .where('id', testUserData.userToDelete.id)
+
+    expect(deletedAt[0].deleted_at).toContain(Date)
 
     const response2 = await supertest(server)
       .delete(`${route}/${id}`)
       .set('Cookie', [authAdminToken])
 
-    deletedAt = await client.query(
-      'SELECT deleted_at FROM "user" WHERE dni = $1',
-      [testUserData.userToDelete.dni]
-    )
+    deletedAt = await db('user')
+      .select('deleted_at')
+      .where('id', testUserData.userToDelete.id)
+
     expect(response2.status).toBe(410)
     expect(response2.body.message).toBe('User already deleted')
-    expect(deletedAt.rows[0].deleted_at).toContain(Date)
+    expect(deletedAt.length).toBe(1)
+    expect(deletedAt[0].deleted_at).toBeInstanceOf(Date)
   })
+
   it('Should return error if id does not exist', async () => {
     const falseId = 'falseid'
+
     const response = await supertest(server)
       .delete(`${route}/${falseId}`)
       .set('Cookie', [authAdminToken])
+
     expect(response.status).toBe(404)
     expect(response.body.message).toBe('User not found')
   })
+
   it('Should return error if no id is provided', async () => {
     const response = await supertest(server)
       .delete(`${route}/${undefined}`)
       .set('Cookie', [authAdminToken])
+
     expect(response.status).toBe(404)
     expect(response.body.message).toBe('User not found')
   })
 })
+
 describe('Authentication test', () => {
   afterEach(async () => {
-    await client.query(
-      'UPDATE "user" SET status = $1, role = $2 WHERE dni = $3',
-      [UserStatus.ACTIVE, UserRole.ADMIN, testUserData.admin.dni]
-    )
+    await db('user')
+      .update({
+        status: UserStatus.ACTIVE,
+        role: UserRole.ADMIN,
+      })
+      .where('id', testUserData.admin.id)
   })
+
   it('should fail to return a collection of users with a blocked logged-in admin', async () => {
-    const adminDni = testUserData.admin.dni
-    const newStatus = UserStatus.BLOCKED
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      newStatus,
-      adminDni,
-    ])
+    await db('user')
+      .update({
+        status: UserStatus.BLOCKED,
+      })
+      .where('id', testUserData.admin.id)
+
     const response = await supertest(server)
       .get(route)
       .set('Cookie', [authAdminToken])
+
     expect(response.status).toBe(403)
   })
 
   it('should fail when the logged-in admin loses "active" status', async () => {
-    await client.query('UPDATE "user" SET status = $1 WHERE dni = $2', [
-      UserStatus.PENDING,
-      testUserData.admin.dni,
-    ])
+    await db('user')
+      .update({
+        status: UserStatus.PENDING,
+      })
+      .where('id', testUserData.admin.id)
+
     const response = await supertest(server)
       .delete(`${route}/${id}`)
       .set('Cookie', [authAdminToken])
+
     expect(response.status).toBe(403)
     expect(response.body.message).toBe('Only active users can proceed')
   })
+
   it('Should fail if user level is not ADMIN', async () => {
-    await client.query('UPDATE "user" SET role = $1 WHERE dni = $2', [
-      UserRole.MENTOR,
-      testUserData.admin.dni,
-    ])
+    await db('user')
+      .update({ role: UserRole.MENTOR })
+      .where('dni', testUserData.admin.dni)
+
     const response = await supertest(server)
       .delete(`${route}/${id}`)
       .set('Cookie', [authAdminToken])
+
     expect(response.status).toBe(403)
     expect(response.body.message).toBe(
       "Access denied. You don't have permissions"
