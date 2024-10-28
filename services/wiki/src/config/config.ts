@@ -4,14 +4,14 @@ const appConfigSchema = z.object({
   port: z.string(),
   jwtKey: z.string(),
   jwtExpiration: z.string(),
-  wikiUrl: z.string(),
+  ssoUrl: z.string(),
   nodeEnv: z.string(),
 })
 const appConfig = appConfigSchema.parse({
   port: process.env.PORT ?? 8999,
   jwtKey: process.env.JWT_KEY ?? 'secret',
   jwtExpiration: process.env.JWT_EXPIRATION ?? '14d',
-  wikiUrl: process.env.WIKI_URL ?? 'http://localhost:5000',
+  ssoUrl: process.env.SSO_URL ?? 'http://localhost:8000',
   nodeEnv: process.env.NODE_ENV ?? 'development',
 })
 const dbConfigSchema = z.object({
