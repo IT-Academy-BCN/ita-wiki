@@ -13,7 +13,7 @@ describe('Testing authentication endpoint', () => {
     })
     expect(response.status).toBe(204)
 
-    const cookie = response.header['set-cookie'] as string[]
+    const cookie = response.header['set-cookie']
     expect(cookie[0]).toMatch(/authToken/)
     expect(cookie[1]).toMatch(/refreshToken/)
   })
@@ -25,7 +25,7 @@ describe('Testing authentication endpoint', () => {
     })
     expect(response.status).toBe(204)
 
-    const cookie = response.header['set-cookie'] as string[]
+    const cookie = response.header['set-cookie']
     expect(cookie[0]).toMatch(/authToken/)
     expect(cookie[1]).toMatch(/refreshToken/)
   })
