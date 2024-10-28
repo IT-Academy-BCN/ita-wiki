@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.49.0] - 2024-10-28
+
+### Changed
+
+- Updated `dashboard/users/list.test.ts` to Knex methods.
+
 ## [1.48.0] - 2024-10-28
 
 ### Changed
@@ -19,13 +25,13 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
-- Updated all Typescript types to it's corresponding TTypeNames.
+- Updated test suite `__tests__/users/list.test.ts` queries to Knex methods.
 
 ## [1.45.00] - 2024-10-15
 
 ### Changed
 
-- Updated `dashboard/users/batchDelete.test ` to Knex.
+- Updated `dashboard/users/batchDelete.test` to Knex.
 - Replaced `client.query` with Knex methods (`whereIn`, `select`).
 
 ## [1.44.0] - 2024-10-15
