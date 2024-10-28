@@ -2,6 +2,12 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
+## [1.48.0] - 2024-10-28
+
+### Changed
+
+- Updated `dashboard/users/update.test.ts` to Knex methods.
+
 ## [1.47.0] - 2024-10-19
 
 ### Changed
