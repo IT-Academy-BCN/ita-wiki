@@ -2,11 +2,18 @@ All notable changes to this project will be documented in this file.
 
 # Changelog
 
-## [1.47.0] - 2024-10-15
+## [1.48.0] - 2024-10-28
 
 ### Changed
 
 - Updated `dashboard/users/update.test.ts` to Knex methods.
+
+## [1.47.0] - 2024-10-19
+
+### Changed
+
+- Migrate `DELETE _tests_/dashboard/users` to Knex.
+- Replaced `client.query` with Knex methods (where`, whereIn`, `update`, `select`).
 
 ## [1.46.0] - 2024-10-15
 
