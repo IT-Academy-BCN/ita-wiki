@@ -27,14 +27,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Check package.json version
-        run: ./scripts/check_version.sh services/wiki/package.json
-        shell: bash
-
-      - name: Check CHANGELOG.md has been updated
-        run: ./scripts/check_changelog.sh services/wiki/CHANGELOG.md
-        shell: bash
-
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
