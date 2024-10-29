@@ -1,11 +1,11 @@
 import supertest from 'supertest'
+import cuid from 'cuid'
 import { expect, it, describe, afterAll } from 'vitest'
 import { server } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
 import db from '../../db/knex'
-import cuid from 'cuid'
 
 const newCategory = 'New Category'
 
