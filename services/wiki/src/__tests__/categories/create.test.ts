@@ -5,15 +5,9 @@ import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
 import db from '../../db/knex'
-import cuid from 'cuid'
-
-const newCategory = 'New Category'
 
 const mockCategory = {
-  id: cuid(),
-  name: newCategory,
-  created_at: new Date(),
-  updated_at: new Date(),
+  name: 'New Category',
 }
 describe('Testing category POST method', () => {
   afterAll(async () => {
@@ -38,17 +32,17 @@ describe('Testing category POST method', () => {
     const response = await supertest(server)
       .post(`${pathRoot.v1.categories}`)
       .set('Cookie', [`authToken=${authToken.user}`])
-      .send(newCategory)
+      .send(mockCategory.name)
 
     expect(response.status).toBe(403)
   })
   it('Should return 401 status if no token is provided', async () => {
     const response = await supertest(server)
       .post(`${pathRoot.v1.categories}`)
-      .send(newCategory)
+      .send(mockCategory.name)
     expect(response.status).toBe(401)
     expect(response.body.message).toBe('Missing token')
   })
 
-  checkInvalidToken(`${pathRoot.v1.categories}`, 'post', newCategory)
+  checkInvalidToken(`${pathRoot.v1.categories}`, 'post', mockCategory)
 })
