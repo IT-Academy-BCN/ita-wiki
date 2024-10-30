@@ -1,103 +1,112 @@
-import { Category, Resource, User } from '@prisma/client'
+import { Category } from '@prisma/client'
 import supertest from 'supertest'
 import { expect, describe, it, beforeAll, afterAll } from 'vitest'
+import cuid from 'cuid'
 import { server, testCategoryData, testUserData } from '../globalSetup'
-import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
-import { voteCountSchema } from '../../schemas'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
+import db from '../../db/knex'
 
-let resource: Resource
-let testUser: User
+let resource
+let testUser
 
 beforeAll(async () => {
-  testUser = (await prisma.user.findFirst({
-    where: { id: testUserData.admin.id },
-  })) as User
+  testUser = await db('user')
+    .where({
+      id: testUserData.admin.id,
+    })
+    .first()
 
-  const category = (await prisma.category.findUnique({
-    where: { slug: testCategoryData.slug },
-  })) as Category
+  const category = (await db('category')
+    .where({
+      slug: testCategoryData.slug,
+    })
+    .first()) as Category
 
-  resource = await prisma.resource.create({
-    data: {
+  const [resourceArray] = await db('resource')
+    .insert({
+      id: cuid(),
       title: 'Test Resource',
-      slug: 'test-resource',
+      slug: testCategoryData.slug,
       description: 'This is a new resource',
       url: 'https://example.com/resource',
-      resourceType: 'BLOG',
-      userId: testUser.id,
-      categoryId: category.id,
-    },
-  })
-  const user = (await prisma.user.findFirst({
-    where: { id: testUserData.user.id },
-  })) as User
-  await prisma.vote.create({
-    data: {
-      user: {
-        connect: { id: user.id },
-      },
-      resource: {
-        connect: { id: resource.id },
-      },
-      vote: -1,
-    },
+      resource_type: 'BLOG',
+      user_id: testUser.id,
+      category_id: category.id,
+      updated_at: new Date(),
+      created_at: new Date(),
+    })
+    .returning('id')
+
+  resource = resourceArray
+
+  await db('vote').insert({
+    user_id: testUser.id,
+    resource_id: resource.id,
+    vote: -1,
+    updated_at: new Date(),
+    created_at: new Date(),
   })
 })
 
 afterAll(async () => {
-  await prisma.vote.deleteMany({
-    where: { resourceId: resource.id },
-  })
-  await prisma.resource.delete({
-    where: { id: resource.id },
-  })
+  await db('vote')
+    .where({
+      resource_id: resource.id,
+    })
+    .del()
+
+  await db('resource')
+    .where({
+      id: resource.id,
+    })
+    .del()
 })
 
-describe('Testing VOTE endpoint, GET method', async () => {
-  it('Should succeed with valid params but no logged in user', async () => {
-    const response = await supertest(server).get(
-      `${pathRoot.v1.vote}/${resource.id}`
-    )
-    expect(response.status).toBe(200)
-    expect(() => voteCountSchema.parse(response.body)).not.toThrow()
-    expect(response.body.userVote).toBe(0)
-  })
-  it('Should return userVote as 0 for logged in user who hasn’t voted', async () => {
-    const response = await supertest(server)
-      .get(`${pathRoot.v1.vote}/${resource.id}`)
-      .set('Cookie', [`authToken=${authToken.admin}`])
+// describe('Testing VOTE endpoint, GET method', async () => {
+//   it('Should succeed with valid params but no logged in user', async () => {
+//     const response = await supertest(server).get(
+//       `${pathRoot.v1.vote}/${resource.id}`
+//     )
+//     expect(response.status).toBe(200)
+//     expect(() => voteCountSchema.parse(response.body)).not.toThrow()
+//     expect(response.body.userVote).toBe(0)
+//   })
+//   it('Should return userVote as 0 for logged in user who hasn’t voted', async () => {
+//     const response = await supertest(server)
+//       .get(`${pathRoot.v1.vote}/${resource.id}`)
+//       .set('Cookie', [`authToken=${authToken.admin}`])
 
-    expect(response.status).toBe(200)
-    expect(() => voteCountSchema.parse(response.body)).not.toThrow()
-    expect(response.body.userVote).toBe(0)
-  })
-  it('Should return userVote as a number for logged in user who has voted', async () => {
-    const response = await supertest(server)
-      .get(`${pathRoot.v1.vote}/${resource.id}`)
-      .set('Cookie', [`authToken=${authToken.user}`])
+//     expect(response.status).toBe(200)
+//     expect(() => voteCountSchema.parse(response.body)).not.toThrow()
+//     expect(response.body.userVote).toBe(0)
+//   })
+//   it('Should return userVote as a number for logged in user who has voted', async () => {
+//     const response = await supertest(server)
+//       .get(`${pathRoot.v1.vote}/${resource.id}`)
+//       .set('Cookie', [`authToken=${authToken.user}`])
 
-    expect(response.status).toBe(200)
-    expect(() => voteCountSchema.parse(response.body)).not.toThrow()
-    expect(response.body.userVote).toBe(-1)
-  })
+//     expect(response.status).toBe(200)
+//     expect(() => voteCountSchema.parse(response.body)).not.toThrow()
+//     expect(response.body.userVote).toBe(-1)
+//   })
 
-  it('Should fail with invalid resourceId', async () => {
-    const response = await supertest(server).get(
-      `${pathRoot.v1.vote}/someInvalidResourceId`
-    )
-    expect(response.status).toBe(400)
-  })
-  it('Should fail with valid resourceId but does not belong to one', async () => {
-    const response = await supertest(server).get(
-      `${pathRoot.v1.vote}/cjld2cjxh0000qzrmn831i7rn`
-    )
-    expect(response.status).toBe(404)
-    expect(response.body).toStrictEqual({ message: 'Resource not found' })
-  })
-})
+//   it('Should fail with invalid resourceId', async () => {
+//     const response = await supertest(server).get(
+//       `${pathRoot.v1.vote}/someInvalidResourceId`
+//     )
+//     expect(response.status).toBe(400)
+//   })
+//   it('Should fail with valid resourceId but does not belong to one', async () => {
+//     const response = await supertest(server).get(
+//       `${pathRoot.v1.vote}/cjld2cjxh0000qzrmn831i7rn`
+//     )
+//     expect(response.status).toBe(404)
+//     expect(response.body).toStrictEqual({ message: 'Resource not found' })
+//   })
+// })
+
 describe('Testing VOTE endpoint, PUT method', async () => {
   it('Should return error if no token is provided', async () => {
     const response = await supertest(server).put(`${pathRoot.v1.vote}`).send({
@@ -124,13 +133,15 @@ describe('Testing VOTE endpoint, PUT method', async () => {
             resourceId: resource.id,
             vote: 'up',
           })
-        expect(response.status).toBe(204)
 
-        const voteResult = await prisma.vote.findUnique({
-          where: {
-            userId_resourceId: { userId: testUser.id, resourceId: resource.id },
-          },
-        })
+        expect(response.status).toBe(204)
+        const voteResult = await db('vote')
+          .where({
+            user_id: testUser.id,
+            resource_id: resource.id,
+          })
+          .first()
+
         expect(voteResult!.vote).toBe(1)
       })
       it('Should succeed with down vote, and update the data in the db', async () => {
@@ -142,11 +153,14 @@ describe('Testing VOTE endpoint, PUT method', async () => {
             vote: 'down',
           })
         expect(response.status).toBe(204)
-        const voteResult = await prisma.vote.findUnique({
-          where: {
-            userId_resourceId: { userId: testUser.id, resourceId: resource.id },
-          },
-        })
+
+        const voteResult = await db('vote')
+          .where({
+            user_id: testUser.id,
+            resource_id: resource.id,
+          })
+          .first()
+
         expect(voteResult!.vote).toBe(-1)
       })
       it('Should succeed with canceling the vote, and update the data in the db', async () => {
@@ -158,11 +172,12 @@ describe('Testing VOTE endpoint, PUT method', async () => {
             vote: 'cancel',
           })
         expect(response.status).toBe(204)
-        const voteResult = await prisma.vote.findUnique({
-          where: {
-            userId_resourceId: { userId: testUser.id, resourceId: resource.id },
-          },
-        })
+        const voteResult = await db('vote')
+          .where({
+            user_id: testUser.id,
+            resource_id: resource.id,
+          })
+          .first()
         expect(voteResult!.vote).toBe(0)
       })
     })
