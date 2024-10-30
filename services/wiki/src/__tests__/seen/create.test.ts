@@ -1,53 +1,57 @@
 import supertest from 'supertest'
+import cuid from 'cuid'
 import { expect, describe, beforeAll, afterAll, it, afterEach } from 'vitest'
-import { Category, Resource, User } from '@prisma/client'
 import { server, testCategoryData, testUserData } from '../globalSetup'
-import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { resourceTestData } from '../mocks/resources'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
+import db from '../../db/knex'
 
-let testResource: Resource
+let testResource: any // Change type to Resource (not prisma)
 const uri = `${pathRoot.v1.seen}/`
-let user: User | null
+
+const testResourceData = {
+  ...resourceTestData[1],
+  id: cuid(),
+  user_id: testUserData.user.id,
+  created_at: new Date(),
+  updated_at: new Date(),
+}
+
 beforeAll(async () => {
-  const testCategory = (await prisma.category.findUnique({
-    where: { slug: testCategoryData.slug },
-  })) as Category
-  user = await prisma.user.findFirst({
-    where: { id: testUserData.user.id },
-  })
-  const testResourceData = {
-    ...resourceTestData[0],
-    user: { connect: { id: user?.id } },
-    category: { connect: { id: testCategory.id } },
-  }
-  testResource = await prisma.resource.create({
-    data: testResourceData,
-  })
+  const testCategory = await db('category')
+    .where({
+      slug: testCategoryData.slug,
+    })
+    .first()
+
+  testResource = await db('resource')
+    .insert({ ...testResourceData, category_id: testCategory.id })
+    .returning('id')
 })
 
 afterAll(async () => {
-  await prisma.viewedResource.deleteMany({ where: {} })
-  await prisma.resource.deleteMany({
-    where: { user: { id: user?.id } },
-  })
+  await db('viewed_resource').where({}).del()
+  await db('resource')
+    .where({
+      user_id: testUserData.user.id,
+    })
+    .del()
 })
 
 afterEach(async () => {
-  await prisma.viewedResource.deleteMany({ where: {} })
+  await db('viewed_resource').where({}).del()
 })
 describe('Testing viewed resource creation endpoint', () => {
   it('should mark a resource as viewed', async () => {
     const response = await supertest(server)
-      .post(`${pathRoot.v1.seen}/${testResource.id}`)
+      .post(`${pathRoot.v1.seen}/${testResource[0].id}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
-    const viewedResources = await prisma.viewedResource.findMany({
-      where: {
-        user: { id: testUserData.admin.id },
-        resourceId: testResource.id,
-      },
+
+    const viewedResources = await db('viewed_resource').where({
+      user_id: testUserData.admin.id,
+      resource_id: testResource[0].id,
     })
     expect(response.status).toBe(204)
     expect(viewedResources.length).toBeGreaterThanOrEqual(1)
@@ -55,18 +59,17 @@ describe('Testing viewed resource creation endpoint', () => {
 
   it('should not create duplicate entries for viewed resources', async () => {
     const response = await supertest(server)
-      .post(`${uri + testResource.id}`)
+      .post(`${uri + testResource[0].id}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
     expect(response.statusCode).toBe(204)
     const secondResponse = await supertest(server)
-      .post(`${uri + testResource.id}`)
+      .post(`${uri + testResource[0].id}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
     expect(secondResponse.statusCode).toBe(204)
-    const viewedResources = await prisma.viewedResource.findMany({
-      where: {
-        user: { id: testUserData.admin.id },
-        resourceId: testResource.id,
-      },
+
+    const viewedResources = await db('viewed_resource').where({
+      user_id: testUserData.admin.id,
+      resource_id: testResource[0].id,
     })
     expect(viewedResources.length).toBe(1)
   })
@@ -84,13 +87,15 @@ describe('Testing viewed resource creation endpoint', () => {
       })
     })
     it('Should response status code 401 if no token is provided', async () => {
-      const response = await supertest(server).post(`${uri + testResource.id}`)
+      const response = await supertest(server).post(
+        `${uri + testResource[0].id}`
+      )
       expect(response.status).toBe(401)
       expect(response.body.message).toBe('Missing token')
     })
 
     it('Check invalid token', async () => {
-      checkInvalidToken(`${uri + testResource.id}`, 'post')
+      checkInvalidToken(`${uri + testResource[0].id}`, 'post')
     })
 
     it('should response status code 404 if resource does not exist', async () => {
