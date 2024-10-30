@@ -1,27 +1,30 @@
 import supertest from 'supertest'
 import { expect, it, describe, afterAll } from 'vitest'
-import { Category } from '@prisma/client'
-import { prisma } from '../../prisma/client'
-import { server, testCategoryData } from '../globalSetup'
+import slugify from 'slugify'
+import cuid from 'cuid'
+import db from '../../db/knex'
+import { server } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
 
 describe('Testing category PATCH method', async () => {
-  let newTestCategory: Category | null = null
+  const mockCategory = {
+    id: cuid(),
+    name: 'Debugging',
+    slug: slugify('Debugging', { lower: true }),
+    created_at: new Date(),
+    updated_at: new Date(),
+  }
   let baseURL: string | null = ''
-  await prisma.category.create({
-    data: { name: 'Debugging', slug: 'debugging' },
-  })
-  newTestCategory = await prisma.category.findUnique({
-    where: { name: 'Debugging' },
-  })
+  await db('category').insert(mockCategory)
+  const newTestCategory = await db('category')
+    .where({ name: 'Debugging' })
+    .first()
   baseURL = `${pathRoot.v1.categories}/id/${newTestCategory!.id}`
 
   afterAll(async () => {
-    await prisma.category.deleteMany({
-      where: { id: newTestCategory!.id },
-    })
+    await db('category').where({ id: newTestCategory!.id }).del()
   })
 
   it('Should respond 204 status when patching a category', async () => {
@@ -35,7 +38,6 @@ describe('Testing category PATCH method', async () => {
   it('Should not be able to patch a category if no admin user', async () => {
     const response = await supertest(server)
       .patch(baseURL!)
-
       .set('Cookie', [`authToken=${authToken.user}`])
       .send({ name: 'Test Debugging' })
 
@@ -45,7 +47,7 @@ describe('Testing category PATCH method', async () => {
     const response = await supertest(server)
       .patch(baseURL!)
       .set('Cookie', [`authToken=${authToken.admin}`])
-      .send({ name: testCategoryData.name })
+      .send({ name: 'Test Debugging' })
 
     expect(response.status).toBe(409)
   })
