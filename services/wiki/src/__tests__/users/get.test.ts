@@ -1,11 +1,15 @@
 import supertest from 'supertest'
 import { expect, it, describe, expectTypeOf } from 'vitest'
-import { User } from '@prisma/client'
 import { server, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
 
+type User = {
+  id: string
+  createdAt: Date
+  updatedAt: Date
+}
 describe('Testing GET endpoint', () => {
   it('Should return error if no token is provided', async () => {
     const response = await supertest(server).get(`${pathRoot.v1.users}`)
