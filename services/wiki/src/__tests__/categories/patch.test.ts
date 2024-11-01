@@ -1,30 +1,22 @@
 import supertest from 'supertest'
-import { expect, it, describe, afterAll } from 'vitest'
-import slugify from 'slugify'
-import cuid from 'cuid'
+import { expect, it, describe, afterAll, beforeAll } from 'vitest'
 import db from '../../db/knex'
 import { server } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
+import { mockCategory, newMockCategory } from '../mocks/category'
 
 describe('Testing category PATCH method', async () => {
-  const mockCategory = {
-    id: cuid(),
-    name: 'Debugging',
-    slug: slugify('Debugging', { lower: true }),
-    created_at: new Date(),
-    updated_at: new Date(),
-  }
-  let baseURL: string | null = ''
-  await db('category').insert(mockCategory)
-  const newTestCategory = await db('category')
-    .where({ name: 'Debugging' })
-    .first()
-  baseURL = `${pathRoot.v1.categories}/id/${newTestCategory!.id}`
+  const baseURL = `${pathRoot.v1.categories}/id/${mockCategory.id}`
 
+  beforeAll(async () => {
+    await db('category').insert(mockCategory)
+    await db('category').insert(newMockCategory)
+  })
   afterAll(async () => {
-    await db('category').where({ id: newTestCategory!.id }).del()
+    await db('category').where({ id: mockCategory.id }).del()
+    await db('category').where({ id: newMockCategory.id }).del()
   })
 
   it('Should respond 204 status when patching a category', async () => {
@@ -43,6 +35,14 @@ describe('Testing category PATCH method', async () => {
 
     expect(response.status).toBe(403)
   })
+  it('Should respond 409 if attempting to patch a category with a name that already exists in another category', async () => {
+    const response = await supertest(server)
+      .patch(`${pathRoot.v1.categories}/id/${newMockCategory.id}`)
+      .set('Cookie', [`authToken=${authToken.admin}`])
+      .send({ name: 'Test Debugging' })
+
+    expect(response.status).toBe(409)
+  })
   it('Should respond 409 if attempting to patch a category with an already existing name', async () => {
     const response = await supertest(server)
       .patch(baseURL!)
@@ -51,6 +51,7 @@ describe('Testing category PATCH method', async () => {
 
     expect(response.status).toBe(409)
   })
+
   it('Should return 401 status if no token is provided', async () => {
     const response = await supertest(server)
       .patch(baseURL!)
@@ -59,4 +60,13 @@ describe('Testing category PATCH method', async () => {
     expect(response.body.message).toBe('Missing token')
   })
   checkInvalidToken(baseURL!, 'patch', { name: 'New Debugging' })
+
+  it('Should respond 404 if category is not found', async () => {
+    const response = await supertest(server)
+      .patch(`${pathRoot.v1.categories}/id/d290f1ee6c544b01}`)
+      .set('Cookie', [`authToken=${authToken.admin}`])
+      .send({ name: 'Test Debugging' })
+
+    expect(response.status).toBe(404)
+  })
 })
