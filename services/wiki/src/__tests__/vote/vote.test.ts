@@ -7,6 +7,7 @@ import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
 import db from '../../db/knex'
+import { voteCountSchema } from '../../schemas'
 
 let resource
 let testUser
@@ -64,48 +65,48 @@ afterAll(async () => {
     .del()
 })
 
-// describe('Testing VOTE endpoint, GET method', async () => {
-//   it('Should succeed with valid params but no logged in user', async () => {
-//     const response = await supertest(server).get(
-//       `${pathRoot.v1.vote}/${resource.id}`
-//     )
-//     expect(response.status).toBe(200)
-//     expect(() => voteCountSchema.parse(response.body)).not.toThrow()
-//     expect(response.body.userVote).toBe(0)
-//   })
-//   it('Should return userVote as 0 for logged in user who hasn’t voted', async () => {
-//     const response = await supertest(server)
-//       .get(`${pathRoot.v1.vote}/${resource.id}`)
-//       .set('Cookie', [`authToken=${authToken.admin}`])
+describe('Testing VOTE endpoint, GET method', async () => {
+  it('Should succeed with valid params but no logged in user', async () => {
+    const response = await supertest(server).get(
+      `${pathRoot.v1.vote}/${resource.id}`
+    )
+    expect(response.status).toBe(200)
+    expect(() => voteCountSchema.parse(response.body)).not.toThrow()
+    expect(response.body.userVote).toBe(0)
+  })
+  it('Should return userVote as 0 for logged in user who hasn’t voted', async () => {
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.vote}/${resource.id}`)
+      .set('Cookie', [`authToken=${authToken.user}`])
 
-//     expect(response.status).toBe(200)
-//     expect(() => voteCountSchema.parse(response.body)).not.toThrow()
-//     expect(response.body.userVote).toBe(0)
-//   })
-//   it('Should return userVote as a number for logged in user who has voted', async () => {
-//     const response = await supertest(server)
-//       .get(`${pathRoot.v1.vote}/${resource.id}`)
-//       .set('Cookie', [`authToken=${authToken.user}`])
+    expect(response.status).toBe(200)
+    expect(() => voteCountSchema.parse(response.body)).not.toThrow()
+    expect(response.body.userVote).toBe(0)
+  })
+  it('Should return userVote as a number for logged in user who has voted', async () => {
+    const response = await supertest(server)
+      .get(`${pathRoot.v1.vote}/${resource.id}`)
+      .set('Cookie', [`authToken=${authToken.admin}`])
 
-//     expect(response.status).toBe(200)
-//     expect(() => voteCountSchema.parse(response.body)).not.toThrow()
-//     expect(response.body.userVote).toBe(-1)
-//   })
+    expect(response.status).toBe(200)
+    expect(() => voteCountSchema.parse(response.body)).not.toThrow()
+    expect(response.body.userVote).toBe(-1)
+  })
 
-//   it('Should fail with invalid resourceId', async () => {
-//     const response = await supertest(server).get(
-//       `${pathRoot.v1.vote}/someInvalidResourceId`
-//     )
-//     expect(response.status).toBe(400)
-//   })
-//   it('Should fail with valid resourceId but does not belong to one', async () => {
-//     const response = await supertest(server).get(
-//       `${pathRoot.v1.vote}/cjld2cjxh0000qzrmn831i7rn`
-//     )
-//     expect(response.status).toBe(404)
-//     expect(response.body).toStrictEqual({ message: 'Resource not found' })
-//   })
-// })
+  it('Should fail with invalid resourceId', async () => {
+    const response = await supertest(server).get(
+      `${pathRoot.v1.vote}/someInvalidResourceId`
+    )
+    expect(response.status).toBe(400)
+  })
+  it('Should fail with valid resourceId but does not belong to one', async () => {
+    const response = await supertest(server).get(
+      `${pathRoot.v1.vote}/cjld2cjxh0000qzrmn831i7rn`
+    )
+    expect(response.status).toBe(404)
+    expect(response.body).toStrictEqual({ message: 'Resource not found' })
+  })
+})
 
 describe('Testing VOTE endpoint, PUT method', async () => {
   it('Should return error if no token is provided', async () => {
