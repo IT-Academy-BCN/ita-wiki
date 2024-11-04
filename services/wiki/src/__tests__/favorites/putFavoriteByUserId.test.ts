@@ -1,6 +1,5 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeEach, afterEach } from 'vitest'
-import { User } from '@prisma/client'
 import cuid from 'cuid'
 import { server, testCategoryData, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
@@ -8,6 +7,11 @@ import { authToken } from '../mocks/ssoHandlers/authToken'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import db from '../../db/knex'
 
+type User = {
+  id: string
+  created_at: Date
+  updated_at: Date
+}
 describe('Testing resource modify endpoint', () => {
   const req: { id: string } = { id: '' }
   let user: User | null
