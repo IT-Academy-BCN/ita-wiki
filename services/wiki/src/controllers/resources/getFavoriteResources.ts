@@ -1,37 +1,58 @@
-import { User } from '@prisma/client'
 import Koa, { Middleware } from 'koa'
-import { prisma } from '../../prisma/client'
 import { resourceFavoriteSchema } from '../../schemas'
 import {
   attachUserNamesToResources,
   transformResourceToAPI,
 } from '../../helpers'
+import db from '../../db/knex'
+import { User } from '../../db/knexTypes'
 
 export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User
 
   const { categorySlug } = ctx.params
 
-  const resources = await prisma.resource.findMany({
-    where: {
-      favorites: { some: { userId: user.id } },
-      category: { slug: categorySlug },
-    },
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      description: true,
-      url: true,
-      resourceType: true,
-      userId: true,
-      createdAt: true,
-      updatedAt: true,
-      categoryId: true,
-      topics: { select: { topic: true } },
-      vote: { select: { vote: true, userId: true } },
-    },
-  })
+  const resources = await db('resource')
+    .join('favorites', 'resource.id', '=', 'favorites.resource_id')
+    .join('category', 'resource.category_id', '=', 'category.id')
+    .where('favorites.user_id', user.id)
+    .andWhere('category.slug', categorySlug)
+    .select(
+      'resource.id',
+      'resource.title',
+      'resource.slug',
+      'resource.description',
+      'resource.url',
+      'resource.resource_type',
+      'resource.user_id',
+      'resource.created_at',
+      'resource.updated_at',
+      'resource.category_id'
+    )
+
+  const getTopics = (resourceId: string) =>
+    db('topic')
+      .join('topic_resource', 'topic.id', '=', 'topic_resource.topic_id')
+      .where('topic_resource.resource_id', resourceId)
+      .select('topic.name')
+
+  const getVotes = (resourceId: string) =>
+    db('vote').where('resource_id', resourceId).select('vote', 'user_id')
+
+  await Promise.all(
+    resources.map(async (resource) => {
+      const [topics, votes] = await Promise.all([
+        getTopics(resource.id),
+        getVotes(resource.id),
+      ])
+
+      return {
+        ...resource,
+        topics,
+        vote: votes,
+      }
+    })
+  )
   if (resources.length === 0) {
     ctx.status = 200
     ctx.body = []

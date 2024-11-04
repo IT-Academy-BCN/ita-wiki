@@ -1,12 +1,14 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
-import { Category, User, Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { server, testCategoryData, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
 import { resourceTestData } from '../mocks/resources'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
+import { Category, User } from '../../db/knexTypes'
+import db from '../../db/knex'
 
 const url: string = `${pathRoot.v1.resources}/favorites`
 const categorySlug = testCategoryData.slug
@@ -14,19 +16,17 @@ let adminUser: User | null
 let user: User | null
 let userWithNoName: User | null
 beforeAll(async () => {
-  const testCategory = (await prisma.category.findUnique({
-    where: { slug: testCategoryData.slug },
-  })) as Category
-  user = await prisma.user.findFirst({
-    where: { id: testUserData.user.id },
-  })
-  adminUser = await prisma.user.findFirst({
-    where: { id: testUserData.admin.id },
-  })
+  const testCategory = (await db('category')
+    .where({ slug: testCategoryData.slug })
+    .first()) as Category
+  user = (await db('user').where({ id: testUserData.user.id }).first()) as User
+  adminUser = (await db('user')
+    .where({ id: testUserData.admin.id })
+    .first()) as User
+  userWithNoName = (await db('user')
+    .where({ id: testUserData.userWithNoName.id })
+    .first()) as User
 
-  userWithNoName = await prisma.user.findFirst({
-    where: { id: testUserData.userWithNoName.id },
-  })
   const testResources = resourceTestData.map((testResource) => ({
     ...testResource,
     user: { connect: { id: user?.id } },
