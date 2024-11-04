@@ -1,6 +1,7 @@
 import Koa, { Middleware } from 'koa'
 import slugify from 'slugify'
 import db from '../../db/knex'
+import { DuplicateError, NotFoundError } from '../../helpers/errors'
 
 export const patchCategory: Middleware = async (ctx: Koa.Context) => {
   const newData = ctx.request.body
@@ -10,13 +11,13 @@ export const patchCategory: Middleware = async (ctx: Koa.Context) => {
 
   if (!category) {
     ctx.status = 404
-    return
+    throw new NotFoundError('Category not found')
   }
 
   if (newData.name) {
     if (newData.name === category.name) {
       ctx.status = 409
-      return
+      throw new DuplicateError('Category name already exists')
     }
 
     const nameExists = await db('category')
@@ -26,7 +27,7 @@ export const patchCategory: Middleware = async (ctx: Koa.Context) => {
 
     if (nameExists) {
       ctx.status = 409
-      return
+      throw new DuplicateError('Category name already exists')
     }
   }
 
