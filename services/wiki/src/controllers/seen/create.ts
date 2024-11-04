@@ -1,29 +1,29 @@
 import Koa, { Middleware } from 'koa'
-
-import { User } from '@prisma/client'
 import { MissingParamError, NotFoundError } from '../../helpers/errors'
-import { prisma } from '../../prisma/client'
+import db from '../../db/knex'
+
+type User = {
+  id: string
+  created_at: Date
+  updated_at: Date
+}
 
 export const createSeenResource: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User
   const { resourceId } = ctx.params
-  if (!resourceId) throw new MissingParamError('resourceId')
-  const resourceFound = await prisma.resource.findUnique({
-    where: {
-      id: resourceId,
-    },
-  })
+  if (!resourceId) throw new MissingParamError('resource_id')
 
-  if (!resourceFound) throw new NotFoundError('Resource not found')
-  await prisma.viewedResource.upsert({
-    create: { userId: user.id, resourceId },
-    update: {},
-    where: {
-      userId_resourceId: {
-        userId: user.id,
-        resourceId,
-      },
-    },
-  })
+  const resourceFound = await db('resource').where({ id: resourceId }).first()
+
+  if (resourceFound === undefined) throw new NotFoundError('Resource not found')
+
+  await db('viewed_resource')
+    .insert({
+      user_id: user.id,
+      resource_id: resourceFound.id,
+    })
+    .onConflict(['user_id', 'resource_id'])
+    .merge()
+
   ctx.status = 204
 }

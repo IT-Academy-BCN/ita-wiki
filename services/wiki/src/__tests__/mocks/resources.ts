@@ -26,3 +26,13 @@ export const resourceTestData: Omit<
     resourceType: 'TUTORIAL',
   },
 ]
+
+export const knexResourceTestData = resourceTestData.map((resource) => {
+  const { resourceType, ...rest } = resource
+  return {
+    ...rest,
+    resource_type: resource.resourceType,
+    created_at: new Date(),
+    updated_at: new Date(),
+  }
+})
