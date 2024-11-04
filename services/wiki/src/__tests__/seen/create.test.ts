@@ -3,17 +3,35 @@ import cuid from 'cuid'
 import { expect, describe, beforeAll, afterAll, it, afterEach } from 'vitest'
 import { server, testCategoryData, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
-import { resourceTestData } from '../mocks/resources'
+import { knexResourceTestData } from '../mocks/resources'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
 import db from '../../db/knex'
 
-let testResource: any // Change type to Resource (not prisma)
-const uri = `${pathRoot.v1.seen}/`
+type ResourceType = {
+  BLOG: 'BLOG'
+  VIDEO: 'VIDEO'
+  TUTORIAL: 'TUTORIAL'
+}
+type Resource = {
+  id: string
+  title: string
+  slug: string
+  description: string | null
+  url: string
+  resource_type: ResourceType
+  user_id: string
+  category_id: string
+  created_at: Date
+  updated_at: Date
+}
 
+let testResource: Resource // Change type to Resource (not prisma)
+const uri = `${pathRoot.v1.seen}/`
+const resourceId = cuid()
 const testResourceData = {
-  ...resourceTestData[1],
-  id: cuid(),
+  ...knexResourceTestData[0],
+  id: resourceId,
   user_id: testUserData.user.id,
   created_at: new Date(),
   updated_at: new Date(),
@@ -32,7 +50,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  await db('viewed_resource').where({}).del()
+  await db('viewed_resource').del()
   await db('resource')
     .where({
       user_id: testUserData.user.id,
@@ -41,7 +59,7 @@ afterAll(async () => {
 })
 
 afterEach(async () => {
-  await db('viewed_resource').where({}).del()
+  await db('viewed_resource').del()
 })
 describe('Testing viewed resource creation endpoint', () => {
   it('should mark a resource as viewed', async () => {
@@ -61,10 +79,13 @@ describe('Testing viewed resource creation endpoint', () => {
     const response = await supertest(server)
       .post(`${uri + testResource[0].id}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
+
     expect(response.statusCode).toBe(204)
+
     const secondResponse = await supertest(server)
       .post(`${uri + testResource[0].id}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
+
     expect(secondResponse.statusCode).toBe(204)
 
     const viewedResources = await db('viewed_resource').where({

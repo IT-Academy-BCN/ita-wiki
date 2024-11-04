@@ -1,7 +1,12 @@
 import Koa, { Middleware } from 'koa'
-import { User } from '@prisma/client'
 import { MissingParamError, NotFoundError } from '../../helpers/errors'
 import db from '../../db/knex'
+
+type User = {
+  id: string
+  created_at: Date
+  updated_at: Date
+}
 
 export const createSeenResource: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User
