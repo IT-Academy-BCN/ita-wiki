@@ -39,8 +39,6 @@ describe('Testing resource modify endpoint', () => {
       ['id']
     )
 
-    console.log('resource', resource)
-
     req.id = String(resource[0].id)
   })
 
