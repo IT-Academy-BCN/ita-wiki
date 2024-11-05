@@ -1,8 +1,8 @@
 import { Context, Middleware } from 'koa'
-import { prisma } from '../../prisma/client'
+import db from '../../db/knex'
 
 export const getUsers: Middleware = async (ctx: Context) => {
-  const users = await prisma.user.findMany()
+  const users = await db('user').select('*')
 
   ctx.status = 200
   ctx.body = users
