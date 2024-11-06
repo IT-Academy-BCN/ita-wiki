@@ -1,9 +1,14 @@
 import Koa, { Middleware } from 'koa'
-import { User } from '@prisma/client'
 import { z } from 'zod'
 import { favoritePutSchema } from '../../schemas/favorites/favoritePutSchema'
 import { NotFoundError } from '../../helpers/errors'
 import db from '../../db/knex'
+
+type User = {
+  id: string
+  createdAt: Date
+  updatedAt: Date
+}
 
 type FavoriteByUserId = z.infer<typeof favoritePutSchema>
 
