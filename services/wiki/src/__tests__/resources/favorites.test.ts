@@ -1,9 +1,9 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
-import { Prisma } from '@prisma/client'
+import cuid from 'cuid'
 import { server, testCategoryData, testUserData } from '../globalSetup'
 import { prisma } from '../../prisma/client'
-import { resourceTestData } from '../mocks/resources'
+import { knexResourceTestDataUpdated } from '../mocks/resources'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
@@ -12,13 +12,16 @@ import db from '../../db/knex'
 
 const url: string = `${pathRoot.v1.resources}/favorites`
 const categorySlug = testCategoryData.slug
+console.log('category slug: ', categorySlug)
 let adminUser: User | null
 let user: User | null
 let userWithNoName: User | null
+const testingCartegorySlugMock = 'testing-category'
 beforeAll(async () => {
   const testCategory = (await db('category')
     .where({ slug: testCategoryData.slug })
     .first()) as Category
+  console.log('testCategory: ', testCategory)
   user = (await db('user').where({ id: testUserData.user.id }).first()) as User
   adminUser = (await db('user')
     .where({ id: testUserData.admin.id })
@@ -26,64 +29,117 @@ beforeAll(async () => {
   userWithNoName = (await db('user')
     .where({ id: testUserData.userWithNoName.id })
     .first()) as User
-
-  const testResources = resourceTestData.map((testResource) => ({
+  const resourcesToInsert = knexResourceTestDataUpdated.map((testResource) => ({
     ...testResource,
-    user: { connect: { id: user?.id } },
-    topics: {
-      create: [{ topic: { connect: { slug: 'testing' } } }],
-    },
-    favorites: {
-      create: [{ user: { connect: { id: adminUser?.id } } }],
-    },
-    category: { connect: { id: testCategory.id } },
+    user_id: user?.id,
+    category_id: testCategory.id,
+  }))
+  console.log('resources to insert: ', resourcesToInsert)
+
+  const insertedResources = await db('resource')
+    .insert(resourcesToInsert)
+    .returning('*')
+  console.log('inserted resources: ', insertedResources)
+
+  const topicCategoryId = await db('category')
+    .where({ slug: testingCartegorySlugMock })
+    .returning('id')
+    .first()
+  console.log('topic category id: ', topicCategoryId)
+
+  const topicToInsert = {
+    id: '1fr3zflwq341178x93ohv8xy9',
+    name: 'Testing',
+    slug: testingCartegorySlugMock,
+    category_id: topicCategoryId.id,
+    created_at: new Date(),
+    updated_at: new Date(),
+  }
+  await db('topic').insert(topicToInsert)
+  const topicWithSlug = await db('topic').where({
+    slug: testingCartegorySlugMock,
+  })
+  console.log('topic with slug: ', topicWithSlug)
+
+  const topicInserts = insertedResources.flatMap((resource) =>
+    topicWithSlug.map((topic) => ({
+      resource_id: resource.id,
+      topic_id: topic.id,
+    }))
+  )
+  console.log('topic inserts successfully')
+
+  const favoriteInserts = insertedResources.map((resource) => ({
+    resource_id: resource.id,
+    user_id: adminUser?.id,
   }))
 
-  const resourceTest4: Omit<
-    Prisma.ResourceCreateArgs['data'],
-    'userId' | 'categoryId'
-  > = {
+  await Promise.all([
+    db('topic_resource').insert(topicInserts),
+    db('favorites').insert(favoriteInserts),
+  ])
+
+  const resourceTest4 = {
+    id: cuid(),
     title: 'test-resource-4-blog',
     slug: 'test-resource-4-blog',
     description: 'Lorem ipsum blog',
     url: 'https://sample.com',
-    resourceType: 'BLOG',
+    resource_type: 'BLOG',
+    created_at: new Date(),
+    updated_at: new Date(),
   }
 
   const testResourceDataWithNoName = {
     ...resourceTest4,
-    user: { connect: { id: userWithNoName?.id } },
-    topics: {
-      create: [{ topic: { connect: { slug: 'testing' } } }],
-    },
-    favorites: {
-      create: [{ user: { connect: { id: adminUser?.id } } }],
-    },
-    category: { connect: { id: testCategory.id } },
+    user_id: userWithNoName?.id,
+    category_id: testCategory.id,
   }
-  testResources.push(testResourceDataWithNoName)
 
-  await prisma.$transaction(
-    testResources.map((resource) => prisma.resource.create({ data: resource }))
+  const [insertedResourceId] = await db('resource')
+    .insert(testResourceDataWithNoName)
+    .returning('id')
+  console.log('insertedResourceId', insertedResourceId)
+
+  const validResourceIds = await db.raw(
+    `SELECT id FROM resource WHERE id = ANY(?)`,
+    [insertedResources.map((resource) => resource.id)]
   )
+
+  const validIdsSet = new Set(
+    validResourceIds.rows.map((row: { id: any }) => row.id)
+  )
+  console.log('valid ids set', validIdsSet)
+  const topicsToInsert = insertedResources
+    .filter((resource) => validIdsSet.has(resource.id))
+    .flatMap((resource) =>
+      topicWithSlug.map((topic) => ({
+        resource_id: resource.id,
+        topic_id: topic.id,
+      }))
+    )
+  console.log('topics to insert:', topicsToInsert)
+  await db('topic_resource').insert(topicsToInsert).onConflict().ignore()
+  console.log('inserted resource', insertedResourceId)
+  await db('favorites').insert({
+    resource_id: insertedResourceId.id,
+    user_id: adminUser?.id,
+  })
+  ;(knexResourceTestDataUpdated as any).push(testResourceDataWithNoName)
 })
 
 afterAll(async () => {
-  await prisma.topicsOnResources.deleteMany({
-    where: { topic: { slug: 'testing' } },
-  })
-  await prisma.favorites.deleteMany({
-    where: {
-      user: { id: { in: [adminUser!.id, user!.id, userWithNoName!.id] } },
-    },
-  })
-  await prisma.vote.deleteMany({})
-  await prisma.resource.deleteMany({
-    where: { user: { id: user?.id } },
-  })
-  await prisma.resource.deleteMany({
-    where: { user: { id: userWithNoName?.id } },
-  })
+  await db('topic_resource')
+    .leftJoin('topic', 'topic.id', '=', 'topic_resource.topic_id')
+    .where({ slug: testingCartegorySlugMock })
+    .del()
+  await db('topic').where({ slug: testingCartegorySlugMock }).del()
+  await db('favorites')
+    .whereIn('user_id', [adminUser!.id, user!.id, userWithNoName!.id])
+    .del()
+  await db('vote').del()
+  await db('resource').where({ user_id: user!.id }).del()
+  await db('resource').where({ user_id: userWithNoName!.id }).del()
 })
 
 describe('Testing GET resource/favorites/:categorySlug?', () => {
@@ -106,11 +162,11 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
 
   checkInvalidToken(`${url}/${categorySlug}`, 'get')
 
-  it('Should return favorites as an array of objects.', async () => {
+  it.only('Should return favorites as an array of objects.', async () => {
     const response = await supertest(server)
-      .get(`${url}`)
+      .get(`${url}/${categorySlug}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
-
+    console.log('test response', response.body)
     expect(response.body).toBeInstanceOf(Array)
     expect(response.body.length).toBeGreaterThan(0)
     expect(response.body).toEqual(

@@ -4,8 +4,8 @@
  */
 export type User = {
   id: string
-  createdAt: Date
-  updatedAt: Date
+  created_at: Date
+  updated_at: Date
 }
 
 /**
@@ -18,11 +18,11 @@ export type Resource = {
   slug: string
   description: string | null
   url: string
-  resourceType: RESOURCE
-  userId: string
-  categoryId: string
-  createdAt: Date
-  updatedAt: Date
+  resource_type: TRESOURCE
+  user_id: string
+  category_id: string
+  created_at: Date
+  updated_at: Date
 }
 
 /**
@@ -33,9 +33,9 @@ export type Category = {
   id: string
   name: string
   slug: string
-  createdAt: Date
-  updatedAt: Date
-  mediaId: string | null
+  created_at: Date
+  updated_at: Date
+  media_id: string | null
 }
 
 /**
@@ -46,9 +46,9 @@ export type Topic = {
   id: string
   name: string
   slug: string
-  categoryId: string
-  createdAt: Date
-  updatedAt: Date
+  category_id: string
+  created_at: Date
+  updated_at: Date
 }
 
 /**
@@ -59,9 +59,9 @@ export type Media = {
   id: string
   mimeType: string
   filePath: string
-  userId: string
-  createdAt: Date
-  updatedAt: Date
+  user_id: string
+  created_at: Date
+  updated_at: Date
 }
 
 /**
@@ -69,9 +69,9 @@ export type Media = {
  *
  */
 export type TopicsOnResources = {
-  resourceId: string
-  topicId: string
-  createdAt: Date
+  resource_id: string
+  topic_id: string
+  created_at: Date
 }
 
 /**
@@ -79,9 +79,9 @@ export type TopicsOnResources = {
  *
  */
 export type Favorites = {
-  userId: string
-  resourceId: string
-  createdAt: Date
+  user_id: string
+  resource_id: string
+  created_at: Date
 }
 
 /**
@@ -89,8 +89,8 @@ export type Favorites = {
  *
  */
 export type ViewedResource = {
-  userId: string
-  resourceId: string
+  user_id: string
+  resource_id: string
 }
 
 /**
@@ -98,11 +98,11 @@ export type ViewedResource = {
  *
  */
 export type Vote = {
-  userId: string
-  resourceId: string
+  user_id: string
+  resource_id: string
   vote: number
-  createdAt: Date
-  updatedAt: Date
+  created_at: Date
+  updated_at: Date
 }
 
 /**
@@ -111,10 +111,10 @@ export type Vote = {
 
 // Based on
 // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
-export const RESOURCE_TYPE: {
+export type TRESOURCE = {
   BLOG: 'BLOG'
   VIDEO: 'VIDEO'
   TUTORIAL: 'TUTORIAL'
 }
 
-export type RESOURCE = (typeof RESOURCE_TYPE)[keyof typeof RESOURCE_TYPE]
+// export type RESOURCE = (typeof RESOURCE_TYPE)[keyof typeof RESOURCE_TYPE]
