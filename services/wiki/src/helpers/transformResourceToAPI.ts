@@ -1,7 +1,26 @@
-import { TResourceSchema } from '../schemas/resource/resourceSchema'
+import { TRESOURCE, Vote } from '../db/knexTypes'
+// import { TResourceSchema } from '../schemas/resource/resourceSchema'
 
-type TResource = TResourceSchema & {
+type ResourceSch = {
+  id: string
+  title: string
+  slug: string
+  description: string | null
+  url: string
+  resource_type?: TRESOURCE
+  resourceType?: TRESOURCE
+  user_id?: string
+  category_id?: string
+  categoryId?: string
+  created_at?: Date
+  updated_at?: Date
+  createdAt?: Date
+  updatedAt?: Date
+}
+
+type TResource = ResourceSch & {
   userId?: string
+  user_id?: string
   user?: {
     name: string
   }
@@ -13,14 +32,6 @@ export type TVoteCount = {
   downvote: number
   total: number
   userVote: number
-}
-export type Vote = {
-  user_id: string
-  userId: string // TODO, old prisma prperty delete when fully migrated to Knex
-  resource_id: string
-  vote: number
-  created_at: Date
-  updated_at: Date
 }
 
 type TResourceWithVoteCount = TResource & {
