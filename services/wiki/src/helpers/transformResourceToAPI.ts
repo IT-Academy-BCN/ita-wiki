@@ -1,4 +1,3 @@
-import { Vote } from '@prisma/client'
 import { TResourceSchema } from '../schemas/resource/resourceSchema'
 
 type TResource = TResourceSchema & {
@@ -14,6 +13,14 @@ export type TVoteCount = {
   downvote: number
   total: number
   userVote: number
+}
+export type Vote = {
+  user_id: string
+  userId: string // TODO, old prisma prperty delete when fully migrated to Knex
+  resource_id: string
+  vote: number
+  created_at: Date
+  updated_at: Date
 }
 
 type TResourceWithVoteCount = TResource & {
@@ -38,7 +45,8 @@ export function calculateVoteCount(vote: Partial<Vote>[], userId?: string) {
   vote.forEach((_vote: Partial<Vote>) => {
     if (_vote.vote === 1) upvote += 1
     else if (_vote.vote === -1) downvote += 1
-    if (userId && _vote.userId === userId) userVote = _vote.vote ?? 0
+    if ((_vote.user_id === userId || _vote.userId === userId) && userId)
+      userVote = _vote.vote ?? 0
   })
   const voteCount = {
     upvote,
