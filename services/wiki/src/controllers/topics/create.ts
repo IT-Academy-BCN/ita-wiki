@@ -5,6 +5,7 @@ import db from '../../db/knex'
 
 export const createTopic: Middleware = async (ctx: Koa.Context) => {
   const topic = ctx.request.body
+  console.log('res1', topic)
   const id = cuid()
   const timestamps = { created_at: new Date(), updated_at: new Date() }
   const slug = slugify(topic.name, { lower: true })
@@ -15,6 +16,10 @@ export const createTopic: Middleware = async (ctx: Koa.Context) => {
     ctx.body = { error: 'Topic already exists' }
     return
   }
-  await db.insert({ id, ...topic, slug, ...timestamps }).into('topic')
+  const response = await db('topic')
+    .insert(topic)
+    .insert({ id, ...topic, slug, ...timestamps })
+    .returning('*')
+  console.log('res2', response)
   ctx.status = 204
 }
