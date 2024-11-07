@@ -1,36 +1,41 @@
 import Koa, { Middleware } from 'koa'
-import { User } from '@prisma/client'
-import { prisma } from '../../prisma/client'
-import { resourceGetSchema } from '../../schemas'
+// import { User } from '@prisma/client'
 import { NotFoundError } from '../../helpers/errors'
-import {
-  attachUserNamesToResources,
-  transformResourceToAPI,
-} from '../../helpers'
+import db from '../../db/knex'
+import { attachUserNamesToResources } from '../../helpers/wiki/attachUserNamesToResources'
+import { knexTransformResourceToAPI } from '../../helpers/wiki/transformResourceToAPI'
+import { knexResourceGetSchema } from '../../schemas/resource/resourceGetSchema'
+import { User } from '../../db/knexTypes'
 
 export const getResourcesById: Middleware = async (ctx: Koa.Context) => {
   const resourceId = ctx.params.id
 
   const user = ctx.user as User | null
-  const voteSelect =
-    ctx.user !== null ? { userId: true, vote: true } : { vote: true }
+  const voteSelect = user ? ['user_id as userId', 'vote'] : ['vote']
 
-  const resource = await prisma.resource.findUnique({
-    where: { id: resourceId },
-    include: {
-      vote: { select: voteSelect },
-      topics: { select: { topic: true } },
-    },
-  })
+  const resource = await db('resource').where({ id: resourceId }).first()
   if (!resource) throw new NotFoundError('Resource not found')
+
+  const votes = await db('vote')
+    .where({ resource_id: resourceId })
+    .select(voteSelect)
+  const topics = await db('topic')
+    .join('topic_resource', 'topic.id', 'topic_resource.topic_id')
+    .where('topic_resource.resource_id', resourceId)
+    .select('*')
+
+  resource.topics = topics
+  resource.vote = votes
 
   const usersWithName = await attachUserNamesToResources([resource])
 
-  const resourceWithVote = transformResourceToAPI(
+  const resourceWithVote = knexTransformResourceToAPI(
     usersWithName[0],
     user ? user.id : undefined
   )
-  const parsedResource = resourceGetSchema.parse(resourceWithVote)
+
+  const parsedResource = knexResourceGetSchema.parse(resourceWithVote)
+
   ctx.status = 200
   ctx.body = parsedResource
 }
