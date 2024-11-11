@@ -27,7 +27,7 @@ export const resourceTestData: Omit<
     url: 'https://sample.com',
     resourceType: 'TUTORIAL',
   },
-
+]
 export const knexResourceTestData = resourceTestData.map((resource) => {
   const { resourceType, ...rest } = resource
   return {
@@ -38,10 +38,10 @@ export const knexResourceTestData = resourceTestData.map((resource) => {
   }
 })
 
-export const knexResourceTestDataUpdated = [
 const id1 = cuid()
 const id2 = cuid()
 const id3 = cuid()
+export const knexResourceTestDataUpdated = [
   {
     id: id1,
     title: 'test-resource-1-blog',
