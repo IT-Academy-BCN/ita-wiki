@@ -81,7 +81,6 @@ export function knexTransformResourceToAPI(
   user_id?: string
 ): TKnexResourceWithVoteCount {
   const voteCount = knexCalculateVoteCount(resource.vote, user_id)
-
   return {
     ...resource,
     vote_count: voteCount,

@@ -1,49 +1,62 @@
 import supertest from 'supertest'
 import { expect, it, describe, beforeEach, afterEach } from 'vitest'
-import { Favorites, User, Resource } from '@prisma/client'
+import cuid from 'cuid'
 import { server, testCategoryData, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
-import { prisma } from '../../prisma/client'
 import { authToken } from '../mocks/ssoHandlers/authToken'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
+import db from '../../db/knex'
 
+type User = {
+  id: string
+  created_at: Date
+  updated_at: Date
+}
 describe('Testing resource modify endpoint', () => {
   const req: { id: string } = { id: '' }
   let user: User | null
   beforeEach(async () => {
-    user = await prisma.user.findFirst({
-      where: { id: testUserData.user.id },
-    })
+    user = await db('user').where({ id: testUserData.user.id }).first()
 
-    const category = await prisma.category.findUnique({
-      where: { slug: testCategoryData.slug },
-    })
+    const category = await db('category')
+      .where({ slug: testCategoryData.slug })
+      .first()
 
-    const resource = await prisma.resource.create({
-      data: {
+    const testId = cuid()
+
+    const resource = await db('resource').insert(
+      {
+        id: testId,
         title: 'test-patch-resource',
         slug: 'test-patch-resource',
         description: 'Test patch resource',
         url: 'https://test.patch',
-        resourceType: 'BLOG',
-        userId: user!.id,
-        categoryId: category!.id,
+        resource_type: 'BLOG',
+        user_id: user!.id,
+        updated_at: new Date(),
+        category_id: category!.id,
       },
-    })
-    req.id = resource.id
+      ['id']
+    )
+
+    req.id = String(resource[0].id)
   })
 
   afterEach(async () => {
-    const resource = await prisma.resource.findUnique({
-      where: { slug: 'test-patch-resource' },
-    })
+    const resource = await db('resource')
+      .where({ slug: 'test-patch-resource' })
+      .first()
 
-    await prisma.favorites.deleteMany({
-      where: { userId: user!.id, resourceId: resource!.id },
-    })
-    await prisma.resource.deleteMany({
-      where: { user: { id: user?.id } },
-    })
+    await db('favorites')
+      .where({
+        user_id: user!.id,
+        resource_id: resource.id,
+      })
+      .del()
+
+    await db('resource')
+      .where({ user_id: user!.id, slug: 'test-patch-resource' })
+      .del()
   })
 
   it('should create a favorite', async () => {
@@ -52,34 +65,35 @@ describe('Testing resource modify endpoint', () => {
       .set('Cookie', [`authToken=${authToken.user}`])
       .send(req)
 
-    const favorite = await prisma.favorites.findFirst({
-      where: { resourceId: req.id },
-    })
+    const favorite = await db('favorites')
+      .where({ resource_id: req.id })
+      .first()
 
     expect(favorite).not.toBe(null)
-    expect(favorite?.resourceId).toBe(req.id)
+    expect(favorite?.resource_id).toBe(req.id)
     expect(response.status).toBe(204)
   })
 
   it('should delete a favorite if already exists', async () => {
-    const resource = (await prisma.resource.findFirst({
-      where: { slug: 'test-patch-resource' },
-    })) as Resource
+    const resource = await db('resource')
+      .where({ slug: 'test-patch-resource' })
+      .first()
 
-    ;(await prisma.favorites.create({
-      data: { resourceId: req.id, userId: user!.id },
-    })) as Favorites
+    await db('favorites').insert({
+      user_id: user!.id,
+      resource_id: resource.id,
+    })
 
     const response = await supertest(server)
       .put(`${pathRoot.v1.favorites}/`)
       .set('Cookie', [`authToken=${authToken.user}`])
       .send(resource!)
 
-    const favorite = await prisma.favorites.findFirst({
-      where: { resourceId: resource.id },
-    })
+    const favorite = await db('favorites')
+      .where({ resource_id: resource.id })
+      .first()
 
-    expect(favorite).toBe(null)
+    expect(favorite).toBe(undefined)
     expect(response.status).toBe(204)
   })
 
