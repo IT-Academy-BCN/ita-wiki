@@ -1,5 +1,6 @@
 import { Prisma } from '@prisma/client'
 import cuid from 'cuid'
+import { KnexResource } from '../../db/knexTypes'
 
 export const resourceTestData: Omit<
   Prisma.ResourceCreateArgs['data'],
@@ -46,7 +47,7 @@ export const knexResourceTestDataUpdated = [
     slug: 'test-resource-1-blogs',
     description: 'Lorem ipsum blog',
     url: 'https://sample.com',
-    resource_type: 'BLOG',
+    resource_type: KnexResource.BLOG,
     created_at: new Date('2022-01-01'),
     updated_at: new Date('2022-01-02'),
   },
@@ -56,7 +57,7 @@ export const knexResourceTestDataUpdated = [
     slug: 'test-resource-2-videos',
     description: 'Lorem ipsum video',
     url: 'https://sample.com',
-    resource_type: 'VIDEO',
+    resource_type: KnexResource.VIDEO,
     created_at: new Date('2022-01-01'),
     updated_at: new Date('2022-01-02'),
   },
@@ -66,7 +67,7 @@ export const knexResourceTestDataUpdated = [
     slug: 'test-resource-3-tutorials',
     description: 'Lorem ipsum tutorial',
     url: 'https://sample.com',
-    resource_type: 'TUTORIAL',
+    resource_type: KnexResource.TUTORIAL,
     created_at: new Date('2022-01-01'),
     updated_at: new Date('2022-01-02'),
   },

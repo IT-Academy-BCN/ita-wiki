@@ -12,13 +12,14 @@ export type User = {
  * Model Resource
  *
  */
+
 export type Resource = {
   id: string
   title: string
   slug: string
   description: string | null
   url: string
-  resource_type: TRESOURCE
+  resource_type: KnexResource
   user_id: string
   category_id: string
   created_at: Date
@@ -109,12 +110,9 @@ export type Vote = {
  * Enums
  */
 
-// Based on
-// https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
-export type TRESOURCE = {
-  BLOG: 'BLOG'
-  VIDEO: 'VIDEO'
-  TUTORIAL: 'TUTORIAL'
+export enum KnexResource {
+  BLOG = 'BLOG',
+  VIDEO = 'VIDEO',
+  TUTORIAL = 'TUTORIAL',
 }
-
-// export type RESOURCE = (typeof RESOURCE_TYPE)[keyof typeof RESOURCE_TYPE]
+export type KRESOURCE = (typeof KnexResource)[keyof typeof KnexResource]

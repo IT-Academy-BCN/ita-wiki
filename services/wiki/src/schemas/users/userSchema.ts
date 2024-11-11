@@ -23,3 +23,15 @@ export const userSchema = z.object({
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
 })
+export const knexUserSchema = z.object({
+  id: userId,
+  email: z.string().email().openapi({ example: 'user@example.cat' }),
+  dni: dniSchema,
+  password: z.string().min(8),
+  name: z.string().optional(),
+  itinerary_id: z.string().nonempty().cuid(),
+  status: z.nativeEnum(UserStatus),
+  role: z.nativeEnum(UserRole),
+  created_at: z.string().datetime(),
+  updated_at: z.string().datetime(),
+})
