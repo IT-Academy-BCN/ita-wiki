@@ -44,7 +44,7 @@ export const knexResourceTestDataUpdated = [
   {
     id: id1,
     title: 'test-resource-1-blog',
-    slug: 'test-resource-1-blogs',
+    slug: 'test-resource-1-blog',
     description: 'Lorem ipsum blog',
     url: 'https://sample.com',
     resource_type: KnexResource.BLOG,
@@ -54,7 +54,7 @@ export const knexResourceTestDataUpdated = [
   {
     id: id2,
     title: 'test-resource-2-video',
-    slug: 'test-resource-2-videos',
+    slug: 'test-resource-2-video',
     description: 'Lorem ipsum video',
     url: 'https://sample.com',
     resource_type: KnexResource.VIDEO,
@@ -64,7 +64,7 @@ export const knexResourceTestDataUpdated = [
   {
     id: id3,
     title: 'test-resource-3-tutorial',
-    slug: 'test-resource-3-tutorials',
+    slug: 'test-resource-3-tutorial',
     description: 'Lorem ipsum tutorial',
     url: 'https://sample.com',
     resource_type: KnexResource.TUTORIAL,

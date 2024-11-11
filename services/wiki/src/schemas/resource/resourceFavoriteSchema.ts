@@ -1,6 +1,5 @@
-// import { userSchema } from '../users/userSchema'
 import { z } from 'zod'
-import { topicSchema } from '../topic/topicSchema'
+import { knexTopicSchema, topicSchema } from '../topic/topicSchema'
 import { knexVoteCountSchema, voteCountSchema } from '../voteCountSchema'
 import { knexResourceSchema, resourceSchema } from './resourceSchema'
 import { knexUserSchema, userSchema } from '../users/userSchema'
@@ -21,5 +20,5 @@ export const knexResourceFavoriteSchema = knexResourceSchema.extend({
   }),
   isAuthor: z.boolean(),
   vote_count: knexVoteCountSchema,
-  // topics: z.array(z.object({ topic: knexTopicSchema })),  // TODO uncomment this
+  topics: z.array(knexTopicSchema),
 })

@@ -8,6 +8,7 @@ import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
 import { Category, KnexResource, User } from '../../db/knexTypes'
 import db from '../../db/knex'
+import { categoryFavoriteTest } from '../mocks/category'
 
 const url: string = `${pathRoot.v1.resources}/favorites`
 const categorySlug = testCategoryData.slug
@@ -38,12 +39,12 @@ beforeAll(async () => {
 
   const votesToInsert = insertedResources.map((resource) => ({
     resource_id: resource.id,
-    user_id: user?.id,
+    user_id: adminUser?.id,
     created_at: new Date(),
     updated_at: new Date(),
     vote: 1,
   }))
-
+  await db('category').insert(categoryFavoriteTest)
   await db('vote').insert(votesToInsert)
 
   const topicCategoryId = await db('category')
@@ -52,7 +53,7 @@ beforeAll(async () => {
     .first()
 
   const topicToInsert = {
-    id: '1fr3zflwq341178x93ohv8xy9',
+    id: cuid(),
     name: 'Testing',
     slug: testingCartegorySlugMock,
     category_id: topicCategoryId.id,
@@ -74,6 +75,7 @@ beforeAll(async () => {
   const favoriteInserts = insertedResources.map((resource) => ({
     resource_id: resource.id,
     user_id: adminUser?.id,
+    created_at: new Date(),
   }))
 
   await Promise.all([
@@ -137,6 +139,7 @@ afterAll(async () => {
   await db('vote').del()
   await db('resource').where({ user_id: user!.id }).del()
   await db('resource').where({ user_id: userWithNoName!.id }).del()
+  await db('category').whereNot({ slug: testCategoryData.slug }).del()
 })
 
 describe('Testing GET resource/favorites/:categorySlug?', () => {
@@ -163,7 +166,6 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
     const response = await supertest(server)
       .get(`${url}/${categorySlug}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
-    console.log('test response', response.body)
     expect(response.body).toBeInstanceOf(Array)
     expect(response.body.length).toBeGreaterThan(0)
     expect(response.body).toEqual(
@@ -188,89 +190,30 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
             total: expect.any(Number),
             user_vote: expect.any(Number),
           }),
-          // topics: expect.arrayContaining([  // TODO uncomment this
-          //   expect.objectContaining({
-          //     topic: expect.objectContaining({
-          //       id: expect.any(String),
-          //       name: expect.any(String),
-          //       slug: expect.any(String),
-          //       category_id: expect.any(String),
-          //       created_it: expect.any(String),
-          //       updated_at: expect.any(String),
-          //     }),
-          //   }),
-          // ]),
+          topics: expect.arrayContaining([
+            expect.objectContaining({
+              id: expect.any(String),
+              name: expect.any(String),
+              slug: expect.any(String),
+              category_id: expect.any(String),
+              created_at: expect.any(String),
+              updated_at: expect.any(String),
+            }),
+          ]),
         }),
       ])
     )
-    // response.body.forEach((resource: { voteCount: { user_vote: any } }) => {
-    //   expect([-1, 0, 1]).toContain(resource.voteCount.user_vote)
-    // })
+    response.body.forEach((resource: { vote_count: { user_vote: any } }) => {
+      expect([-1, 0, 1]).toContain(resource.vote_count.user_vote)
+    })
   })
-  // it('Should return favorites as an array of objects.', async () => {
-  //   const response = await supertest(server)
-  //     .get(`${url}/:${categorySlug}`)
-  //     .set('Cookie', [`authToken=${authToken.admin}`])
-
-  //   console.log('test response', response.body)
-
-  //   expect(response.body).toBeInstanceOf(Array)
-  //   expect(response.body.length).toBeGreaterThan(0)
-  //   console.log('response body length: ', response.body.length)
-
-  //   response.body.forEach((item: any) => {
-  //     expect(item).not.toBeNull()
-  //   })
-
-  //   expect(response.body).toEqual(
-  //     expect.arrayContaining([
-  //       expect.objectContaining({
-  //         id: expect.any(String),
-  //         title: expect.any(String),
-  //         slug: expect.any(String),
-  //         description: expect.any(String),
-  //         url: expect.any(String),
-  //         resource_type: expect.any(String),
-  //         created_at: expect.any(String),
-  //         updated_at: expect.any(String),
-  //         user: expect.objectContaining({
-  //           name: expect.any(String),
-  //         }),
-  //         isAuthor: expect.any(Boolean),
-  //         voteCount: expect.objectContaining({
-  //           upvote: expect.any(Number),
-  //           downvote: expect.any(Number),
-  //           total: expect.any(Number),
-  //           userVote: expect.any(Number),
-  //         }),
-  //         topics: expect.arrayContaining([
-  //           expect.objectContaining({
-  //             topic: expect.objectContaining({
-  //               id: expect.any(String),
-  //               name: expect.any(String),
-  //               slug: expect.any(String),
-  //               category_id: expect.any(String),
-  //               created_at: expect.any(String),
-  //               updated_at: expect.any(String),
-  //             }),
-  //           }),
-  //         ]),
-  //       }),
-  //     ])
-  //   )
-
-  //   response.body.forEach((resource: { voteCount: { userVote: any } }) => {
-  //     expect([-1, 0, 1]).toContain(resource.voteCount.userVote)
-  //   })
-  // })
 
   it('If the user voted a favorite resource, it should be reflected on the response object', async () => {
     const testFavoriteVoteResource = await db('resource')
       .where({
-        slug: 'test-resource-1-blogs',
+        slug: 'test-resource-1-blog',
       })
       .first()
-    console.log('testFavoriteVoteResource: ', testFavoriteVoteResource)
     await db('vote')
       .insert({
         user_id: adminUser!.id,
@@ -287,25 +230,24 @@ describe('Testing GET resource/favorites/:categorySlug?', () => {
     const response = await supertest(server)
       .get(`${url}/${testFavoriteVoteResource!.slug}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
-    console.log('response last test: ', response.body)
     expect(response.body).toBeInstanceOf(Array)
     expect(response.body.length).toBeGreaterThan(0)
-    // expect(response.body).toEqual(
-    //   expect.arrayContaining([
-    //     expect.objectContaining({
-    //       voteCount: expect.objectContaining({
-    //         upvote: 1,
-    //         downvote: 0,
-    //         total: 1,
-    //         user_vote: 1,
-    //       }),
-    //     }),
-    //   ])
-    // )
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          vote_count: expect.objectContaining({
+            upvote: 1,
+            downvote: 0,
+            total: 1,
+            user_vote: 1,
+          }),
+        }),
+      ])
+    )
   })
   it('If a user favorited his own created resources, it should be reflected as author', async () => {
     const resourceToFavorite = await db('resource')
-      .where({ slug: 'test-resource-1-blogs' })
+      .where({ slug: 'test-resource-1-blog' })
       .first()
     await db('category')
       .where({

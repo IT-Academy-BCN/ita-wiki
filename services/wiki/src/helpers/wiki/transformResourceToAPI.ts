@@ -26,6 +26,14 @@ export type TVoteCount = {
   total: number
   user_vote: number
 }
+export type TTopics = {
+  id: string
+  name: string
+  category_id: string
+  created_at: Date
+  updated_at: Date
+  slug: string
+}
 
 type TKnexResourceWithVoteCount = TKnexResource & {
   vote_count: TVoteCount
@@ -37,7 +45,7 @@ export function knexCalculateVoteCount(
   let upvote = 0
   let downvote = 0
   let userVote = 0
-  console.log('votes recieved:', votes)
+
   votes.forEach((_vote: Partial<Vote>) => {
     if (_vote.vote === 1) upvote += 1
     else if (_vote.vote === -1) downvote += 1
@@ -73,7 +81,7 @@ export function knexTransformResourceToAPI(
   user_id?: string
 ): TKnexResourceWithVoteCount {
   const voteCount = knexCalculateVoteCount(resource.vote, user_id)
-  console.log('vote count result:', voteCount)
+
   return {
     ...resource,
     vote_count: voteCount,

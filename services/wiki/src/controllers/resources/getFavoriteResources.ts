@@ -8,20 +8,20 @@ import { knexResourceFavoriteSchema } from '../../schemas/resource/resourceFavor
 export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
   const user = ctx.user as User
   const { categorySlug } = ctx.params
-
   if (!categorySlug) {
     ctx.status = 200
     ctx.body = []
     return
   }
-
   try {
     const resources = await db('resource')
+      // eslint-disable-next-line func-names
       .whereExists(function () {
         this.select('*')
           .from('category')
           .where('category.slug', '=', categorySlug)
       })
+      // eslint-disable-next-line func-names
       .whereExists(function () {
         this.select('*')
           .from('favorites')
@@ -45,12 +45,12 @@ export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
         db.raw('json_agg(vote.*) AS vote')
       )
       .groupBy('resource.id')
+
     if (resources.length === 0) {
       ctx.status = 200
       ctx.body = []
       return
     }
-
     const resourcesWithUserName = await attachUserNamesToResources(resources)
 
     const resourcesWithIsAuthor = resourcesWithUserName.map((resource) => {
@@ -71,13 +71,13 @@ export const getFavoriteResources: Middleware = async (ctx: Koa.Context) => {
             isAuthor: resource.isAuthor,
           })
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.error('Error during resource parsing:', error)
           return null
         }
       })
       .filter((resource) => resource !== null)
 
-    console.log('Parsed resources:', parsedResources)
     ctx.status = 200
     ctx.body = parsedResources
   } catch (error) {
