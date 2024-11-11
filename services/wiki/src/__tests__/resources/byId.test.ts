@@ -1,44 +1,47 @@
 import supertest from 'supertest'
-import { Category, Resource, User } from '@prisma/client'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { server, testCategoryData, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
-import { prisma } from '../../prisma/client'
-import { resourceGetSchema } from '../../schemas'
-import { resourceTestData } from '../mocks/resources'
+import { knexResourceTestData } from '../mocks/resources'
+import { knexResourceGetSchema } from '../../schemas/resource/resourceGetSchema'
+import db from '../../db/knex'
+import { Category, Resource, User } from '../../db/knexTypes'
 
 let testResource: Resource
 let user: User | null
 beforeAll(async () => {
-  const testCategory = (await prisma.category.findUnique({
-    where: { slug: testCategoryData.slug },
-  })) as Category
-  user = await prisma.user.findFirst({
-    where: { id: testUserData.user.id },
-  })
+  const testCategory = (await db('category')
+    .where({
+      slug: testCategoryData.slug,
+    })
+    .first()) as Category
+
+  user = await db('user')
+    .where({
+      id: testUserData.user.id,
+    })
+    .first()
+
   const testResourceData = {
-    ...resourceTestData[0],
-    user: { connect: { id: user?.id } },
-    category: { connect: { id: testCategory.id } },
+    ...knexResourceTestData[0],
+    user_id: user?.id,
+    category_id: testCategory.id,
   }
-  testResource = await prisma.resource.create({
-    data: testResourceData,
-  })
+
+  testResource = await db('resource').insert(testResourceData).returning('id')
 })
 
 afterAll(async () => {
-  await prisma.resource.deleteMany({
-    where: { user: { id: user?.id } },
-  })
+  await db('resource').where('id', '=', knexResourceTestData[0].id).del()
 })
 
 describe('Testing resource/id GET endpoint', () => {
   it('should return a resource with a valid id belonging to one', async () => {
     const response = await supertest(server).get(
-      `${pathRoot.v1.resources}/${testResource.id}`
+      `${pathRoot.v1.resources}/${testResource[0].id}`
     )
     expect(response.status).toBe(200)
-    expect(() => resourceGetSchema.parse(response.body)).not.toThrow()
+    expect(() => knexResourceGetSchema.parse(response.body)).not.toThrow()
   })
 
   it('should return a 404 for a valid id belonging to no resource', async () => {
