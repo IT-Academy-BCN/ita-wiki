@@ -2,7 +2,7 @@ import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import { server, testCategoryData, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
-import { knexResourceTestData } from '../mocks/resources'
+import { knexResourceTestDataUpdated } from '../mocks/resources'
 import { knexResourceGetSchema } from '../../schemas/resource/resourceGetSchema'
 import db from '../../db/knex'
 import { Category, Resource, User } from '../../db/knexTypes'
@@ -23,7 +23,7 @@ beforeAll(async () => {
     .first()
 
   const testResourceData = {
-    ...knexResourceTestData[0],
+    ...knexResourceTestDataUpdated[0],
     user_id: user?.id,
     category_id: testCategory.id,
   }
@@ -32,7 +32,7 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
-  await db('resource').where('id', '=', knexResourceTestData[0].id).del()
+  await db('resource').where({ id: knexResourceTestDataUpdated[0].id }).del()
 })
 
 describe('Testing resource/id GET endpoint', () => {
