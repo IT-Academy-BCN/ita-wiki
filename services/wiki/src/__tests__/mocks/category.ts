@@ -15,3 +15,11 @@ export const newMockCategory = {
   created_at: new Date(),
   updated_at: new Date(),
 }
+
+export const categoryFavoriteTest = {
+  id: cuid(),
+  name: 'test-resource-1-blog',
+  slug: slugify('test-resource-1-blog', { lower: true }),
+  created_at: new Date(),
+  updated_at: new Date(),
+}

@@ -26,18 +26,27 @@ export type TVoteCount = {
   total: number
   user_vote: number
 }
+export type TTopics = {
+  id: string
+  name: string
+  category_id: string
+  created_at: Date
+  updated_at: Date
+  slug: string
+}
 
 type TKnexResourceWithVoteCount = TKnexResource & {
   vote_count: TVoteCount
 }
 export function knexCalculateVoteCount(
-  vote: Partial<Vote>[],
+  votes: Partial<Vote>[],
   user_id?: string
 ) {
   let upvote = 0
   let downvote = 0
   let userVote = 0
-  vote.forEach((_vote: Partial<Vote>) => {
+
+  votes.forEach((_vote: Partial<Vote>) => {
     if (_vote.vote === 1) upvote += 1
     else if (_vote.vote === -1) downvote += 1
     if ((_vote.user_id === user_id || _vote.userId === user_id) && user_id)
@@ -51,6 +60,7 @@ export function knexCalculateVoteCount(
   }
   return voteCount
 }
+
 function getResourceType(
   resourceType: KRESOURCE
 ): 'BLOG' | 'VIDEO' | 'TUTORIAL' {
@@ -71,7 +81,6 @@ export function knexTransformResourceToAPI(
   user_id?: string
 ): TKnexResourceWithVoteCount {
   const voteCount = knexCalculateVoteCount(resource.vote, user_id)
-
   return {
     ...resource,
     vote_count: voteCount,

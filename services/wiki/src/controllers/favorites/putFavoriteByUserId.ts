@@ -1,9 +1,14 @@
 import Koa, { Middleware } from 'koa'
-import { User } from '@prisma/client'
 import { z } from 'zod'
 import { favoritePutSchema } from '../../schemas/favorites/favoritePutSchema'
-import { prisma } from '../../prisma/client'
 import { NotFoundError } from '../../helpers/errors'
+import db from '../../db/knex'
+
+type User = {
+  id: string
+  createdAt: Date
+  updatedAt: Date
+}
 
 type FavoriteByUserId = z.infer<typeof favoritePutSchema>
 
@@ -15,24 +20,19 @@ export const putFavoriteByUserId: Middleware = async (ctx: Koa.Context) => {
     throw new NotFoundError('User not found')
   }
 
-  const resource = await prisma.favorites.findFirst({
-    where: { resourceId: data.id, userId: user.id },
-  })
+  const resource = await db('favorites')
+    .where({ resource_id: data.id, user_id: user.id })
+    .first()
 
   if (!resource) {
-    await prisma.favorites.create({
-      data: {
-        resourceId: data.id,
-        userId: user.id,
-      },
+    await db('favorites').insert({
+      resource_id: data.id,
+      user_id: user.id,
     })
   } else {
-    await prisma.favorites.deleteMany({
-      where: {
-        resourceId: data.id,
-        userId: user.id,
-      },
-    })
+    await db('favorites')
+      .where({ resource_id: data.id, user_id: user.id })
+      .del()
   }
 
   ctx.status = 204
