@@ -1,34 +1,33 @@
+import cuid from 'cuid'
 import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
-import { Category } from '@prisma/client'
 import { server } from '../globalSetup'
-import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
+import { TCategory } from '../../helpers/wiki/transformResourceToAPI'
+import db from '../../db/knex'
 
-let testCategory: Category | null
+let testCategory: TCategory | null | undefined
 
 beforeAll(async () => {
-  await prisma.category.create({
-    data: {
+  const categoryId = cuid()
+  const res: TCategory[] = await db<TCategory>('category')
+    .returning('*')
+    .insert({
+      id: categoryId,
       name: 'Node',
       slug: 'node',
-    },
-  })
-
-  testCategory = await prisma.category.findUnique({
-    where: { slug: 'node' },
-  })
+      updated_at: new Date(),
+      created_at: new Date(),
+    })
+  // eslint-disable-next-line prefer-destructuring
+  testCategory = res[0]
 })
 
 afterAll(async () => {
-  await prisma.topic.deleteMany({
-    where: { slug: 'node-file-system' },
-  })
-  await prisma.category.deleteMany({
-    where: { slug: 'node' },
-  })
+  await db('topic').where({ slug: 'node-file-system' }).del()
+  await db('category').where({ slug: 'node' }).del()
 })
 
 describe('Testing resource creation endpoint', () => {

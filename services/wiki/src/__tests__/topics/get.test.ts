@@ -2,8 +2,8 @@ import supertest from 'supertest'
 import { expect, it, describe, beforeAll } from 'vitest'
 import { Category } from '@prisma/client'
 import { server, testCategoryData } from '../globalSetup'
-import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
+import db from '../../db/knex'
 
 describe('Testing topics endpoint', () => {
   describe('With no query parameteres', () => {
@@ -20,7 +20,7 @@ describe('Testing topics endpoint', () => {
             id: expect.any(String),
             name: expect.any(String),
             slug: expect.any(String),
-            categoryId: expect.any(String),
+            category_id: expect.any(String),
           }),
         ])
       )
@@ -30,9 +30,11 @@ describe('Testing topics endpoint', () => {
     let category: Category
     beforeAll(async () => {
       // A testing Topic on testing Category has been created for this test on globalSetup.
-      category = (await prisma.category.findUnique({
-        where: { name: testCategoryData.name },
-      })) as Category
+      category = await db('category')
+        .where({
+          name: testCategoryData.name,
+        })
+        .first()
     })
 
     it('Should respond OK status and return topics as an array. when categoryId given', async () => {
@@ -49,11 +51,12 @@ describe('Testing topics endpoint', () => {
             id: expect.any(String),
             name: expect.any(String),
             slug: expect.any(String),
-            categoryId: expect.any(String),
+            category_id: expect.any(String),
           }),
         ])
       )
     })
+
     it('Should respond OK status and return topics as an array. when category slug given', async () => {
       const response = await supertest(server)
         .get(`${pathRoot.v1.topics}`)
@@ -68,7 +71,7 @@ describe('Testing topics endpoint', () => {
             id: expect.any(String),
             name: expect.any(String),
             slug: expect.any(String),
-            categoryId: expect.any(String),
+            category_id: expect.any(String),
           }),
         ])
       )
@@ -92,11 +95,12 @@ describe('Testing topics endpoint', () => {
             id: expect.any(String),
             name: expect.any(String),
             slug: expect.any(String),
-            categoryId: expect.any(String),
+            category_id: expect.any(String),
           }),
         ])
       )
     })
+
     describe('Testing fail cases', () => {
       it('Should 404 if category is not found, by slug', async () => {
         const response = await supertest(server)
