@@ -1,14 +1,12 @@
 import Koa, { Middleware } from 'koa'
 import slugify from 'slugify'
-import { prisma } from '../../prisma/client'
 import { NotFoundError } from '../../helpers/errors'
+import db from '../../db/knex'
+import { TTopic } from '../../helpers/wiki/transformResourceToAPI'
 
 export const patchTopic: Middleware = async (ctx: Koa.Context) => {
   const { id, ...newData } = ctx.request.body
-
-  const topic = await prisma.topic.findFirst({
-    where: { id },
-  })
+  const topic = await db<TTopic>('topic').where({ id }).first()
 
   if (!topic) {
     throw new NotFoundError('Topic not found')
@@ -21,21 +19,16 @@ export const patchTopic: Middleware = async (ctx: Koa.Context) => {
     updatedName = newData.name
   }
 
-  let updatedCategoryId: string = topic.categoryId
-  if (topic.categoryId !== newData.categoryId) {
+  let updatedCategoryId: string = topic.category_id
+  if (topic.category_id !== newData.categoryId) {
     updatedCategoryId = newData.categoryId
   }
 
-  await prisma.$transaction(async (tx) => {
-    await tx.topic.update({
-      where: { id },
-      data: {
-        id,
-        name: updatedName,
-        slug: updatedSlug,
-        categoryId: updatedCategoryId,
-      },
-    })
+  await db('topic').where({ id }).update({
+    name: updatedName,
+    slug: updatedSlug,
+    category_id: updatedCategoryId,
+    updated_at: new Date(),
   })
 
   ctx.status = 204

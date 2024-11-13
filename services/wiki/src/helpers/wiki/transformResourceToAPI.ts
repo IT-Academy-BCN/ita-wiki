@@ -26,13 +26,23 @@ export type TVoteCount = {
   total: number
   user_vote: number
 }
-export type TTopics = {
+
+export type TTopic = {
   id: string
   name: string
   category_id: string
   created_at: Date
   updated_at: Date
   slug: string
+}
+
+export type TCategory = {
+  id: string
+  name: string
+  slug: string
+  updated_at: Date
+  created_at: Date
+  media_id: string
 }
 
 type TKnexResourceWithVoteCount = TKnexResource & {
