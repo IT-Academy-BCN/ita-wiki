@@ -1,38 +1,41 @@
 import supertest from 'supertest'
-import { expect, test, describe, beforeAll, afterAll } from 'vitest'
+import { expect, describe, beforeAll, afterAll, test } from 'vitest'
+import cuid from 'cuid'
 import { server, testCategoryData } from '../globalSetup'
-import { prisma } from '../../prisma/client'
 import { pathRoot } from '../../routes/routes'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
+import db from '../../db/knex'
+import { KnexResource } from '../../db/knexTypes'
 
 let topicIds: string[] = []
 
 beforeAll(async () => {
-  topicIds = (await prisma.topic.findMany()).map((topic) => topic.id)
+  topicIds = (await db('topic').select('id')).map((topic) => topic.id)
 })
 
 afterAll(async () => {
-  await prisma.topicsOnResources.deleteMany({
-    where: { resource: { slug: 'test-resource' } },
-  })
-  await prisma.resource.deleteMany({
-    where: { slug: 'test-resource' },
-  })
+  await db('topic_resource')
+    // eslint-disable-next-line func-names
+    .whereIn('resource_id', function () {
+      this.select('id').from('resource').where({ slug: 'test-resource' })
+    })
+    .del()
+  await db('resource').where({ slug: 'test-resource' }).del()
 })
-
 describe('Testing resource creation endpoint', async () => {
-  const category = await prisma.category.findUnique({
-    where: { slug: testCategoryData.slug },
-  })
+  const category = await db('category')
+    .where({ slug: testCategoryData.slug })
+    .first()
 
   const newResource = {
+    id: cuid(),
     title: 'Test Resource',
     description: 'This is a new resource',
     url: 'https://example.com/resource',
-    resourceType: 'BLOG',
+    resource_type: KnexResource.BLOG,
+    category_id: category?.id,
     topics: topicIds,
-    categoryId: category?.id,
   }
   test('should create a new resource with topics', async () => {
     newResource.topics = topicIds
@@ -40,7 +43,6 @@ describe('Testing resource creation endpoint', async () => {
       .post(`${pathRoot.v1.resources}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
       .send(newResource)
-
     expect(response.status).toBe(204)
   })
 
@@ -50,25 +52,24 @@ describe('Testing resource creation endpoint', async () => {
       .post(`${pathRoot.v1.resources}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
       .send(newResource)
-
     expect(response.status).toBe(422)
   })
 
   test('should fail with wrong resource type', async () => {
+    const id2 = cuid()
     const invalidResource = {
+      id: id2,
       title: 'Invalid Resource',
       description: 'This is a new resource',
       url: 'https://example.com/resource',
-      resourceType: 'INVALIDE-RESOURCE',
-      topicId: topicIds,
-      status: 'NOT_SEEN',
+      resource_type: 'INVALIDE-RESOURCE',
+      topics: topicIds,
     }
 
     const response = await supertest(server)
       .post(`${pathRoot.v1.resources}`)
       .set('Cookie', [`authToken=${authToken.admin}`])
       .send(invalidResource)
-
     expect(response.status).toBe(400)
     expect(response.body.message[0].received).toBe('INVALIDE-RESOURCE')
   })
