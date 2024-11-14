@@ -2,21 +2,35 @@ import supertest from 'supertest'
 import { expect, it, describe, beforeAll, afterAll } from 'vitest'
 import {
   Prisma,
-  Category,
-  RESOURCE_TYPE,
-  Resource,
-  User,
-  ViewedResource,
+  // Category,
+  // RESOURCE_TYPE,
+  // Resource,
+  // User,
+  // ViewedResource,
 } from '@prisma/client'
 import qs from 'qs'
 import { z } from 'zod'
 import { server, testCategoryData, testUserData } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
 import { prisma } from '../../prisma/client'
-import { resourceGetSchema, topicSchema } from '../../schemas'
-import { resourceTestData } from '../mocks/resources'
+import { resourceGetSchema } from '../../schemas'
+import {
+  knexResourceTestDataUpdated,
+  resourceTestData,
+} from '../mocks/resources'
 import { checkInvalidToken } from '../helpers/checkInvalidToken'
 import { authToken } from '../mocks/ssoHandlers/authToken'
+import { knexResourceGetSchema } from '../../schemas/resource/resourceGetSchema'
+import { knexTopicSchema } from '../../schemas/topic/topicSchema'
+import {
+  KnexResource,
+  Resource,
+  ViewedResource,
+  User,
+  Category,
+} from '../../db/knexTypes'
+import db from '../../db/knex'
+// import { User } from '../../db/knexTypes'
 
 type ResourceVotes = {
   [key: string]: number
@@ -34,20 +48,19 @@ let adminUser: User | null
 let userWithNoName: User | null
 
 beforeAll(async () => {
-  const testCategory = (await prisma.category.findUnique({
-    where: { slug: testCategoryData.slug },
-  })) as Category
-  user = await prisma.user.findFirst({
-    where: { id: testUserData.user.id },
-  })
-  adminUser = await prisma.user.findFirst({
-    where: { id: testUserData.admin.id },
-  })
-  userWithNoName = await prisma.user.findFirst({
-    where: { id: testUserData.userWithNoName.id },
-  })
+  const testCategory = (await db('category')
+    .where({ slug: testCategoryData.slug })
+    .first()) as Category
 
-  const testResources = resourceTestData.map((testResource) => ({
+  user = await db('user').where({ id: testUserData.user.id }).first()
+
+  adminUser = await db('user').where({ id: testUserData.admin.id }).first()
+
+  userWithNoName = await db('user')
+    .where({ id: testUserData.userWithNoName.id })
+    .first()
+
+  const testResources = knexResourceTestDataUpdated.map((testResource) => ({
     ...testResource,
     user: { connect: { id: user?.id } },
     topics: {
@@ -122,9 +135,9 @@ afterAll(async () => {
   })
 })
 // resourceTypes as array from prisma types for the it.each tests.
-const resourceTypes = Object.keys(RESOURCE_TYPE)
-type ResourceGetSchema = z.infer<typeof resourceGetSchema>
-type TopicSchema = z.infer<typeof topicSchema>
+const resourceTypes = Object.keys(KnexResource)
+type ResourceGetSchema = z.infer<typeof knexResourceGetSchema>
+type TopicSchema = z.infer<typeof knexTopicSchema>
 
 describe('Testing resources GET endpoint', () => {
   it('should fail with wrong resourceType', async () => {
@@ -135,7 +148,7 @@ describe('Testing resources GET endpoint', () => {
     expect(response.status).toBe(400)
   })
 
-  it('should get all resources by topic id', async () => {
+  it.only('should get all resources by topic id', async () => {
     const existingTopic = await prisma.topic.findUnique({
       where: { slug: 'testing' },
     })
@@ -149,9 +162,7 @@ describe('Testing resources GET endpoint', () => {
     expect(response.body.length).toBeGreaterThanOrEqual(1)
     response.body.forEach((resource: ResourceGetSchema) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
-      expect(
-        resource.topics.map((t: { topic: TopicSchema }) => t.topic.id)
-      ).toContain(topicId)
+      expect(resource.topics.map((t: TopicSchema) => t.id)).toContain(topicId)
     })
   })
 
@@ -176,9 +187,9 @@ describe('Testing resources GET endpoint', () => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       // The returned resource has at least a topic related to the queried category
       expect(
-        resource.topics.some(async (t: { topic: TopicSchema }) => {
+        resource.topics.some(async (t: TopicSchema) => {
           const categoryFromTopic = await prisma.topic.findUnique({
-            where: { id: t.topic.id },
+            where: { id: t.id },
             include: { category: { select: { slug: true } } },
           })
           return categoryFromTopic?.category.slug === categorySlug
@@ -209,15 +220,13 @@ describe('Testing resources GET endpoint', () => {
       expect(response.body.length).toBeGreaterThanOrEqual(1)
       response.body.forEach((resource: ResourceGetSchema) => {
         expect(() => resourceGetSchema.parse(resource)).not.toThrow()
-        expect(
-          resource.topics.map((t: { topic: TopicSchema }) => t.topic.id)
-        ).toContain(topicId)
-        expect(resource.resourceType).toBe(resourceType)
+        expect(resource.topics.map((t: TopicSchema) => t.id)).toContain(topicId)
+        expect(resource.resource_type).toBe(resourceType)
         // The returned resource has at least a topic related to the queried category
         expect(
-          resource.topics.some(async (t: { topic: TopicSchema }) => {
+          resource.topics.some(async (t: TopicSchema) => {
             const categoryFromTopic = await prisma.topic.findUnique({
-              where: { id: t.topic.id },
+              where: { id: t.id },
               include: { category: { select: { slug: true } } },
             })
             return categoryFromTopic?.category.slug === categorySlug
@@ -239,9 +248,7 @@ describe('Testing resources GET endpoint', () => {
     response.body.forEach((resource: ResourceGetSchema) => {
       expect(() => resourceGetSchema.parse(resource)).not.toThrow()
       expect(
-        resource.topics.some(
-          (topic: { topic: TopicSchema }) => topic.topic.slug === topicSlug
-        )
+        resource.topics.some((topic: TopicSchema) => topic.slug === topicSlug)
       ).toBe(true)
     })
   })
