@@ -1,7 +1,7 @@
 import Koa from 'koa'
 import { NotFoundError, UnauthorizedError } from '../helpers/errors'
-import { prisma } from '../prisma/client'
 import { ssoHandler } from '../helpers'
+import db from '../db/knex'
 
 export const authenticate = async (ctx: Koa.Context, next: Koa.Next) => {
   const authToken = ctx.cookies.get('authToken')
@@ -9,11 +9,15 @@ export const authenticate = async (ctx: Koa.Context, next: Koa.Next) => {
     throw new UnauthorizedError()
   }
   const { id } = await ssoHandler.validate(ctx, { authToken })
-  const user = await prisma.user.findUnique({ where: { id } })
+  const user = await db('user').where({ id }).first()
 
   if (!user) throw new NotFoundError('User not found')
 
-  ctx.user = user
+  ctx.user = {
+    id: user?.id,
+    updatedAt: user?.updated_at,
+    createdAt: user?.created_at,
+  }
   await next()
 }
 
@@ -29,8 +33,12 @@ export const getUserFromToken = async (ctx: Koa.Context, next: Koa.Next) => {
   if (authToken) {
     const { id } = await ssoHandler.validate(ctx, { authToken })
 
-    const user = await prisma.user.findUnique({ where: { id } })
-    ctx.user = user
+    const user = await db('user').where({ id }).first()
+    ctx.user = {
+      id: user?.id,
+      updatedAt: user?.updated_at,
+      createdAt: user?.created_at,
+    }
   }
   await next()
 }
