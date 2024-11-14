@@ -8,10 +8,11 @@ import {
   getFavoriteResources,
   postResource,
 } from '../controllers'
-import { resourceCreateSchema, resourcesListParamsSchema } from '../schemas'
+import { resourcesListParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
 import { patchResource } from '../controllers/resources/patchResource'
 import { resourcePatchSchema } from '../schemas/resource/resourcePatchSchema'
+import { knexResourceCreateSchema } from '../schemas/resource/resourceCreateSchema'
 
 const resourcesRouter = new Router()
 
@@ -20,7 +21,7 @@ resourcesRouter.prefix(pathRoot.v1.resources)
 resourcesRouter.post(
   '/',
   authenticate,
-  validate(z.object({ body: resourceCreateSchema })),
+  validate(z.object({ body: knexResourceCreateSchema })),
   postResource
 )
 
