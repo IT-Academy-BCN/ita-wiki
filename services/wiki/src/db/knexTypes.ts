@@ -6,6 +6,8 @@ export type User = {
   id: string
   created_at: Date
   updated_at: Date
+  // createdAt?: Date
+  // updatedAt?: Date
 }
 
 /**
@@ -80,7 +82,7 @@ export type TopicsOnResources = {
  *
  */
 export type Favorites = {
-  user_id: string
+  user_id?: string
   resource_id: string
   created_at: Date
 }
