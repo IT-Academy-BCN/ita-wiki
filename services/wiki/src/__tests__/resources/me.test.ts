@@ -13,16 +13,20 @@ let user: User | null
 let userWithNoName: User | null
 
 beforeAll(async () => {
+  // Buscar categoria por slug
   const testCategory = (await prisma.category.findUnique({
     where: { slug: testCategoryData.slug },
   })) as Category
+  // Busco usuario
   user = await prisma.user.findFirst({
     where: { id: testUserData.user.id },
   })
+  // busco usuario sin nombre
   userWithNoName = await prisma.user.findFirst({
     where: { id: testUserData.userWithNoName.id },
   })
 
+  // recursos con user
   const testResourcesWithUser = resourceTestData.map((resource) => {
     return {
       ...resource,
@@ -31,6 +35,7 @@ beforeAll(async () => {
     }
   })
 
+  // creo recurso sin user
   const resourceTest4: Omit<
     Prisma.ResourceCreateArgs['data'],
     'userId' | 'categoryId'
@@ -48,23 +53,27 @@ beforeAll(async () => {
     categoryId: testCategory.id,
   }
 
+  // junto los 4 recursos
   testResourcesWithUser.push(testResourcesWithNoUserName)
 
+  // creo 4 recursos
   await prisma.resource.createMany({
     data: testResourcesWithUser,
   })
 
+  // busco un recurso por slug
   const testResource = await prisma.resource.findUnique({
     where: { slug: resourceTestData[0].slug },
   })
 
+  // creo favorito entre recurso y usuario
   await prisma.favorites.create({
     data: {
       resourceId: testResource!.id,
       userId: user!.id,
     },
   })
-
+  // agrego un voto al recurso donde coincide usuario y recurso
   await prisma.vote.upsert({
     where: {
       userId_resourceId: {
@@ -84,18 +93,21 @@ beforeAll(async () => {
 })
 
 afterAll(async () => {
+  // borro favoritos del usuario
   await prisma.favorites.deleteMany({
     where: { user: { id: user?.id } },
   })
-
+  // borro favoritos del usuario sin nombre
   await prisma.favorites.deleteMany({
     where: { user: { id: userWithNoName?.id } },
   })
+  // borro votos y recursos del usuario
   await prisma.vote.deleteMany({})
   await prisma.resource.deleteMany({
     where: { user: { id: user?.id } },
   })
 
+  // borro recursos sin usuario
   await prisma.resource.deleteMany({
     where: { user: { id: userWithNoName?.id } },
   })
@@ -135,12 +147,14 @@ describe('Testing resources/me endpoint', () => {
     })
   })
 
-  it('Given a valid category slug, should return resources related to that category', async () => {
-    const testCategorySlug = 'testing'
+  it.only('Given a valid category slug, should return resources related to that category', async () => {
+    const categorySlug = testCategoryData.slug
     const response = await supertest(server)
       .get(`${pathRoot.v1.resources}/me`)
       .set('Cookie', [`authToken=${authToken.user}`])
-      .query({ testCategorySlug })
+      .query({ categorySlug })
+    console.log('response body', response.body)
+
     expect(response.status).toBe(200)
     expect(response.body).toBeInstanceOf(Array)
     expect(response.body.length).toBeGreaterThanOrEqual(1)
