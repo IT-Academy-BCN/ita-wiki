@@ -12,6 +12,8 @@ import { resourceCreateSchema, resourcesListParamsSchema } from '../schemas'
 import { pathRoot } from './routes'
 import { patchResource } from '../controllers/resources/patchResource'
 import { resourcePatchSchema } from '../schemas/resource/resourcePatchSchema'
+import { generateDescriptionSchema } from '../schemas/resource/generateDescriptionSchema'
+import { generateDescription } from '../controllers/resources/generateDescription'
 
 const resourcesRouter = new Router()
 
@@ -22,6 +24,12 @@ resourcesRouter.post(
   authenticate,
   validate(z.object({ body: resourceCreateSchema })),
   postResource
+)
+resourcesRouter.post(
+  '/generate-description',
+  authenticate,
+  validate(z.object({ body: generateDescriptionSchema })),
+  generateDescription
 )
 
 resourcesRouter.get(
