@@ -4,7 +4,6 @@ import supertest from 'supertest'
 import 'dotenv/config'
 import { pathRoot } from '../routes/routes'
 import { authToken } from '../__tests__/mocks/ssoHandlers/authToken'
-// import { checkInvalidToken } from '../__tests__/helpers/checkInvalidToken'
 import { server } from '../__tests__/globalSetup'
 import { generateDescription } from '../controllers'
 
@@ -80,7 +79,7 @@ describe('generateDescription Controller', () => {
 
     const response = await supertest(server)
       .post(`${url}?language=es`)
-      .set('Cookie', [`authToken=${authToken.admin}`])
+      .set('Cookie', [`authToken=${authToken.mentor}`])
       .send({
         title: 'Introducción a Node.js',
         url: 'http://example.com',
@@ -96,7 +95,7 @@ describe('generateDescription Controller', () => {
   it('should return 422 if language is missing', async () => {
     const response = await supertest(server)
       .post(`${url}`)
-      .set('Cookie', [`authToken=${authToken.admin}`])
+      .set('Cookie', [`authToken=${authToken.mentor}`])
       .send({ title: 'Title', url: 'http://example.com', topic: 'Topic' })
     expect(response.status).toBe(422)
     expect(response.body.error).toBe('Language parameter is required')
@@ -105,7 +104,7 @@ describe('generateDescription Controller', () => {
   it('should return 400 if required parameters are missing', async () => {
     const response = await supertest(server)
       .post(`${url}?language=es`)
-      .set('Cookie', [`authToken=${authToken.admin}`])
+      .set('Cookie', [`authToken=${authToken.mentor}`])
       .send({
         title: '',
         url: 'http://example.com',
@@ -116,7 +115,7 @@ describe('generateDescription Controller', () => {
   })
 
   it('mocks a POST request to HuggingFace API to generate a description', async () => {
-    const token = `${authToken.admin}`
+    const token = `${authToken.mentor}`
     const language = 'es'
     const expectedResponse = [
       {
@@ -174,10 +173,4 @@ describe('generateDescription Controller', () => {
       expectedResponse[0].generated_text
     )
   })
-
-  // checkInvalidToken(`${url}?language=en`, 'post', {
-  //   title: 'Example title',
-  //   url: 'http://www.example.com',
-  //   topic: 'Example topic',
-  // })
 })

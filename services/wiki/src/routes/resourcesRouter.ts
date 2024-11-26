@@ -30,7 +30,6 @@ resourcesRouter.post(
 )
 resourcesRouter.post(
   '/generate-description',
-  authenticate,
   validate(
     z.object({
       body: generateDescriptionSchema,
