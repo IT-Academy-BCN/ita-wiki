@@ -1,6 +1,7 @@
 import Koa, { Middleware } from 'koa'
 import { HuggingFaceRepository } from '../../repository/huggingFace'
 import { getLanguageInput } from '../../helpers/getLanguageInput'
+import { TSupportedLanguage } from '../../db/knexTypes'
 
 export const generateDescription: Middleware = async (ctx: Koa.Context) => {
   const { title, url, topic } = ctx.request.body
@@ -46,7 +47,7 @@ export const generateDescription: Middleware = async (ctx: Koa.Context) => {
 
     const cleanResponse = await huggingFaceRepository.cleanHFResponse(
       [{ generated_text: response.generated_text }],
-      language,
+      language as TSupportedLanguage,
       title,
       url,
       topic

@@ -135,3 +135,5 @@ export type TCleanTextOptions = {
 export type TCleanHFResponseOutput = {
   generated_text: string
 }[]
+
+export type TSupportedLanguage = 'en' | 'es' | 'ca'

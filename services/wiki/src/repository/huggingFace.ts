@@ -3,6 +3,7 @@ import {
   TCleanTextOptions,
   THuggingFaceResponseInput,
   TResponse,
+  TSupportedLanguage,
 } from '../db/knexTypes'
 import { extractSummary, trimDoubleBackspace } from '../helpers/getHFCleanText'
 
@@ -38,7 +39,7 @@ export class HuggingFaceRepository {
     const output = await fetchResponse.json()
     const response = this.cleanHFResponse(
       output[0],
-      input.language,
+      input.language as TSupportedLanguage,
       input.title,
       input.url,
       input.topic
@@ -72,41 +73,9 @@ export class HuggingFaceRepository {
 
     return trimDoubleBackspace(extractedSummary)
   }
-
-  async cleanTextByLanguage(
-    output: { generated_text: string }[],
-    language: 'es' | 'en' | 'ca',
-    title: string,
-    url: string,
-    topic: string
-  ): Promise<string> {
-    const languageOptions = {
-      es: {
-        summaryPrefix: 'Resumen: ',
-        removeInputTemplate: `Por favor, proporciona una resumen detallado de la siguiente fuente ${title}, incluyendo los puntos clave, el propósito principal y los conceptos relevantes. Usa un tono claro y accesible. La fuente puede ser encontrada en ${url}, y su tema es ${topic}. El resumen debe estar entre 200 y 300 palabras. Resumen:`,
-      },
-      en: {
-        summaryPrefix: 'Summary:\n',
-        removeInputTemplate: `Please provide a detailed summary of the following resource ${title}, including the key points, the main purpose, and the most relevant concepts. Use a clear and accessible tone. The resource can be found at ${url}, and its topic is ${topic}. The summary should be between 200 and 300 words. Summary:\n`,
-      },
-      ca: {
-        summaryPrefix: 'RESUM: ',
-        removeInputTemplate: `Si us plau, porporciona un resum detallat de la següent font ${title}, incloent els punts clau, el propòsit principal i els conceptes més rellevants. Empra un to clar i accesible. La font es pot trobar a ${url}, i el seu tema és ${topic}. El resum ha de tenir entre 200 a 300 paraules. RESUM:`,
-      },
-    }
-
-    const options = languageOptions[language]
-
-    if (!options) {
-      throw new Error(`Unsupported language: ${language}`)
-    }
-
-    return this.cleanText(output, { ...options, titleIncluded: true }, title)
-  }
-
   async cleanHFResponse(
     output: { generated_text: any }[] | { generated_text: any },
-    language: string,
+    language: TSupportedLanguage,
     title: string,
     url: string,
     topic: string
@@ -123,38 +92,31 @@ export class HuggingFaceRepository {
     let text = ''
 
     try {
-      switch (language) {
-        case 'en':
-          text = await this.cleanTextByLanguage(
-            output,
-            language,
-            title,
-            url,
-            topic
-          )
-          break
-        case 'es':
-          text = await this.cleanTextByLanguage(
-            output,
-            language,
-            title,
-            url,
-            topic
-          )
-          break
-        case 'ca':
-          text = await this.cleanTextByLanguage(
-            output,
-            language,
-            title,
-            url,
-            topic
-          )
-          break
-        default:
-          throw new Error(`Invalid language ${language}`)
+      const languageOptions = {
+        es: {
+          summaryPrefix: 'Resumen: ',
+          removeInputTemplate: `Por favor, proporciona una resumen detallado de la siguiente fuente ${title}, incluyendo los puntos clave, el propósito principal y los conceptos relevantes. Usa un tono claro y accesible. La fuente puede ser encontrada en ${url}, y su tema es ${topic}. El resumen debe estar entre 200 y 300 palabras. Resumen:`,
+        },
+        en: {
+          summaryPrefix: 'Summary:\n',
+          removeInputTemplate: `Please provide a detailed summary of the following resource ${title}, including the key points, the main purpose, and the most relevant concepts. Use a clear and accessible tone. The resource can be found at ${url}, and its topic is ${topic}. The summary should be between 200 and 300 words. Summary:\n`,
+        },
+        ca: {
+          summaryPrefix: 'RESUM: ',
+          removeInputTemplate: `Si us plau, porporciona un resum detallat de la següent font ${title}, incloent els punts clau, el propòsit principal i els conceptes més rellevants. Empra un to clar i accesible. La font es pot trobar a ${url}, i el seu tema és ${topic}. El resum ha de tenir entre 200 a 300 paraules. RESUM:`,
+        },
       }
 
+      const options = languageOptions[language]
+
+      if (!options) {
+        throw new Error(`Unsupported language: ${language}`)
+      }
+      text = await this.cleanText(
+        output,
+        { ...options, titleIncluded: true },
+        title
+      )
       if (!text || text.trim().length === 0) {
         throw new Error('Cleaned text is empty')
       }
