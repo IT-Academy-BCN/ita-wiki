@@ -2,6 +2,7 @@ import { IncomingMessage, Server, ServerResponse } from 'http'
 import { prisma } from '../prisma/client'
 import { app } from '../server'
 import { UserRole, UserStatus } from '../schemas/users/userSchema'
+import { TSupportedLanguage } from '../db/knexTypes'
 
 // eslint-disable-next-line import/no-mutable-exports
 export let server: Server<typeof IncomingMessage, typeof ServerResponse>
@@ -54,6 +55,13 @@ export const testUserData = {
     role: UserRole.REGISTERED,
     status: UserStatus.INACTIVE,
   },
+}
+export const inputToTest = {
+  input: 'Test input',
+  title: 'Test Title',
+  url: 'https://example.com',
+  topic: 'Test Topic',
+  language: TSupportedLanguage.English,
 }
 export const testCategoryData = {
   name: 'Testing category',

@@ -136,4 +136,8 @@ export type TCleanHFResponseOutput = {
   generated_text: string
 }[]
 
-export type TSupportedLanguage = 'en' | 'es' | 'ca'
+export enum TSupportedLanguage {
+  English = 'en',
+  Spanish = 'es',
+  Catalan = 'ca',
+}
