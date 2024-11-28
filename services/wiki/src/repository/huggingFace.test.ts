@@ -34,7 +34,7 @@ describe('HuggingFaceRepository', () => {
     expect(fetch).toHaveBeenCalledWith(expect.any(String), {
       method: 'POST',
       headers: expect.objectContaining({
-        Authorization: 'Bearer mockapikey',
+        Authorization: `Bearer ${process.env.HF_API_KEY as string}`,
         'Content-Type': 'application/json',
       }),
       body: expect.stringContaining('Test input'),

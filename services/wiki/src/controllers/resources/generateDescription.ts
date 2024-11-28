@@ -16,14 +16,9 @@ export const generateDescription: Middleware = async (ctx: Koa.Context) => {
     if (!title || !url || !topic || !language) {
       throw new MissingParamError('required params')
     }
-
-    const input = getLanguageInput(
-      language as TSupportedLanguage,
-      title,
-      url,
-      topic
-    )
     const languageInput = language as TSupportedLanguage
+
+    const input = getLanguageInput(languageInput, title, url, topic)
 
     const response = await huggingFaceRepository.getResponse({
       input,
@@ -35,7 +30,7 @@ export const generateDescription: Middleware = async (ctx: Koa.Context) => {
 
     const cleanResponse = await huggingFaceRepository.cleanHFResponse(
       [{ generated_text: response.generated_text }],
-      language as TSupportedLanguage,
+      languageInput,
       title,
       url,
       topic
