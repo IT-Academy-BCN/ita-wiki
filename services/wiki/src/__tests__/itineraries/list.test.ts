@@ -5,9 +5,7 @@ import { pathRoot } from '../../routes/routes'
 import { ssoServer } from '../mocks/ssoServer'
 import { itinerariesListSchema } from '../../schemas/itinerary/itinerariesListSchema'
 
-const wait = async (int: number) => {
-  setTimeout(() => {}, int)
-}
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 describe('Testing category GET method', () => {
   it('Should respond OK status and return itineraries as an array. As per seed data, it should not be empty, and contain objects with an id and category name.', async () => {
@@ -31,8 +29,7 @@ describe('Testing category GET method', () => {
     'Should fail and respond 503 status if ssoServer is not available',
     async () => {
       ssoServer.close()
-
-      await wait(500)
+      await wait(1000)
       const response = await supertest(server).get(`${pathRoot.v1.itinerary}`)
 
       expect(response.status).toBe(503)
