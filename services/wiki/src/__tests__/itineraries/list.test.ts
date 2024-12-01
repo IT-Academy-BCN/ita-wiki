@@ -5,6 +5,7 @@ import { pathRoot } from '../../routes/routes'
 import { ssoServer } from '../mocks/ssoServer'
 import { itinerariesListSchema } from '../../schemas/itinerary/itinerariesListSchema'
 
+// eslint-disable-next-line no-promise-executor-return
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 describe('Testing category GET method', () => {
