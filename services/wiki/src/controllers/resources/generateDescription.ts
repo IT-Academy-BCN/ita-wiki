@@ -1,54 +1,28 @@
 import Koa, { Middleware } from 'koa'
 import { HuggingFaceRepository } from '../../repository/huggingFace'
 import { getLanguageInput } from '../../helpers/getLanguageInput'
-import { TSupportedLanguage } from '../../db/knexTypes'
-import {
-  DefaultError,
-  MissingParamError,
-  ServiceFail,
-} from '../../helpers/errors'
+import { DefaultError } from '../../helpers/errors'
+import generateHFDescriptionSchema from '../../schemas/huggingFace/generateHFDescription'
 
 export const generateDescription: Middleware = async (ctx: Koa.Context) => {
-  const { title, url, topic } = ctx.request.body
-  const { language } = ctx.query
+  const { title, url, topic, language } = generateHFDescriptionSchema.parse(
+    ctx.request.body
+  )
   const huggingFaceRepository = new HuggingFaceRepository()
   try {
-    if (!title || !url || !topic || !language) {
-      throw new MissingParamError('required params')
-    }
-    const languageInput = language as TSupportedLanguage
-
-    const input = getLanguageInput(languageInput, title, url, topic)
+    const input = getLanguageInput(language, title, url, topic)
 
     const response = await huggingFaceRepository.getResponse({
       input,
       title,
       url,
       topic,
-      language: languageInput,
+      language,
     })
 
-    const cleanResponse = await huggingFaceRepository.cleanHFResponse(
-      [{ generated_text: response.generated_text }],
-      languageInput,
-      title,
-      url,
-      topic
-    )
-
-    if (!cleanResponse || !cleanResponse.generated_text) {
-      throw new ServiceFail('Failed to process the response from external API')
-    }
-
     ctx.status = 200
-    ctx.body = cleanResponse
+    ctx.body = response
   } catch (error: any) {
-    if (error instanceof DefaultError) {
-      ctx.status = error.status
-      ctx.body = { error: error.message }
-    } else {
-      ctx.status = 500
-      ctx.body = { error: error.message }
-    }
+    throw new DefaultError(error, 'Failed to generate description')
   }
 }

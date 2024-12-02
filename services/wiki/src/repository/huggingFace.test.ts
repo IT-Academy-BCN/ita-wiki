@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { HuggingFaceRepository } from './huggingFace'
-import { TSupportedLanguage } from '../db/knexTypes'
 import { inputToTest } from '../__tests__/globalSetup'
 
 global.fetch = vi.fn()
@@ -57,49 +56,5 @@ describe('HuggingFaceRepository', () => {
     await expect(repo.getResponse(inputToTest)).rejects.toThrow(
       'HTTP error! status: 500'
     )
-  })
-
-  it('should clean the response text properly', async () => {
-    const output = [{ generated_text: 'Summary:\nThis is a test summary.' }]
-    const options = {
-      summaryPrefix: 'Summary:\n',
-      removeInputTemplate: 'Summary:\n',
-    }
-
-    const result = await repo.cleanText(output, options)
-
-    expect(result).toBe('This is a test summary.')
-  })
-
-  it('should return a cleaned HuggingFace response', async () => {
-    const output = [{ generated_text: 'Mocked summary text' }]
-
-    const result = await repo.cleanHFResponse(
-      output,
-      TSupportedLanguage.English,
-      inputToTest.title,
-      inputToTest.url,
-      inputToTest.topic
-    )
-
-    expect(result).toEqual({
-      generated_text: expect.any(String),
-    })
-  })
-
-  it('should return an error message if cleaning the text fails', async () => {
-    const output = [{ generated_text: null }]
-
-    const result = await repo.cleanHFResponse(
-      output,
-      TSupportedLanguage.English,
-      inputToTest.title,
-      inputToTest.url,
-      inputToTest.topic
-    )
-
-    expect(result).toEqual({
-      generated_text: 'Error: Unable to clean text.',
-    })
   })
 })
