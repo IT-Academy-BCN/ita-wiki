@@ -8,17 +8,13 @@ export const generateDescription: Middleware = async (ctx: Koa.Context) => {
   const { title, url, topic, language } = generateHFDescriptionSchema.parse(
     ctx.request.body
   )
+
   const huggingFaceRepository = new HuggingFaceRepository()
+
   try {
     const input = getLanguageInput(language, title, url, topic)
 
-    const response = await huggingFaceRepository.getResponse({
-      input,
-      title,
-      url,
-      topic,
-      language,
-    })
+    const response = await huggingFaceRepository.getResponse(input)
 
     ctx.status = 200
     ctx.body = response

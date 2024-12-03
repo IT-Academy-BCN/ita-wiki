@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { HuggingFaceRepository } from './huggingFace'
-import { inputToTest } from '../__tests__/globalSetup'
 
 global.fetch = vi.fn()
 
@@ -23,12 +22,12 @@ describe('HuggingFaceRepository', () => {
       status: 200,
       json: vi
         .fn()
-        .mockResolvedValue([{ generated_text: 'Mocked text response' }]),
+        .mockResolvedValue({ generated_text: 'Mocked text response' }),
     }
 
     global.fetch = vi.fn().mockResolvedValue(mockResponse)
 
-    const result = await repo.getResponse(inputToTest)
+    const result = await repo.getResponse('Test input')
 
     expect(fetch).toHaveBeenCalledWith(expect.any(String), {
       method: 'POST',
@@ -53,7 +52,7 @@ describe('HuggingFaceRepository', () => {
 
     global.fetch = vi.fn().mockResolvedValue(mockResponse)
 
-    await expect(repo.getResponse(inputToTest)).rejects.toThrow(
+    await expect(repo.getResponse('Test input')).rejects.toThrow(
       'HTTP error! status: 500'
     )
   })

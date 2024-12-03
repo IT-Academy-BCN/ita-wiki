@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { THuggingFaceResponseInput, TResponse } from '../db/knexTypes'
+import { TResponse } from '../db/knexTypes'
 
 export class HuggingFaceRepository {
   private apiEndpoint: string
@@ -10,7 +10,7 @@ export class HuggingFaceRepository {
     this.apiKey = process.env.HF_API_KEY as string
   }
 
-  async getResponse(input: THuggingFaceResponseInput): Promise<TResponse> {
+  async getResponse(input: string): Promise<TResponse> {
     const fetchResponse = await fetch(`${this.apiEndpoint}`, {
       method: 'POST',
       headers: {
@@ -18,7 +18,7 @@ export class HuggingFaceRepository {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        inputs: input.input,
+        inputs: input,
         parameters: {
           max_length: Number(process.env.HF_RES_MAX_LENGTH),
           temperature: Number(process.env.HF_RES_TEMPERATURE),

@@ -116,25 +116,11 @@ export enum KnexResource {
   TUTORIAL = 'TUTORIAL',
 }
 export type KRESOURCE = (typeof KnexResource)[keyof typeof KnexResource]
-export type THuggingFaceResponseInput = {
-  input: string
-  title: string
-  url: string
-  topic: string
-  language: string
-}
+
 export type TResponse = {
   status: number
   generated_text: string
 }
-export type TCleanTextOptions = {
-  summaryPrefix: string
-  titleIncluded?: boolean
-  removeInputTemplate: string
-}
-export type TCleanHFResponseOutput = {
-  generated_text: string
-}[]
 
 export enum TSupportedLanguage {
   English = 'en',

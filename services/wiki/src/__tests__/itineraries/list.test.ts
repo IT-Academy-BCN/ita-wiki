@@ -2,7 +2,7 @@ import supertest from 'supertest'
 import { expect, it, describe } from 'vitest'
 import { server } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
-import { ssoServer } from '../mocks/ssoServer'
+import { mswServer } from '../mocks/mswServer'
 import { itinerariesListSchema } from '../../schemas/itinerary/itinerariesListSchema'
 
 // eslint-disable-next-line no-promise-executor-return
@@ -29,7 +29,7 @@ describe('Testing category GET method', () => {
   it(
     'Should fail and respond 503 status if ssoServer is not available',
     async () => {
-      ssoServer.close()
+      mswServer.close()
       await wait(1000)
       const response = await supertest(server).get(`${pathRoot.v1.itinerary}`)
 

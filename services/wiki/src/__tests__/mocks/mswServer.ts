@@ -21,4 +21,4 @@ const handlers = [
 ]
 const huggingFaceHandlers = [generateTextHandler]
 
-export const ssoServer = setupServer(...handlers, ...huggingFaceHandlers)
+export const mswServer = setupServer(...handlers, ...huggingFaceHandlers)
