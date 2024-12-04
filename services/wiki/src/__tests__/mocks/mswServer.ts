@@ -8,6 +8,7 @@ import {
   registerHandler,
   validateTokenHandler,
 } from './ssoHandlers'
+import { generateTextHandler } from './huggingFaceHandlers'
 
 const handlers = [
   loginHandler,
@@ -18,5 +19,6 @@ const handlers = [
   getUsersNameByIdHandler,
   listItinerariesHandler,
 ]
+const huggingFaceHandlers = [generateTextHandler]
 
-export const ssoServer = setupServer(...handlers)
+export const mswServer = setupServer(...handlers, ...huggingFaceHandlers)

@@ -1129,6 +1129,92 @@ paths:
                   - $ref: "#/components/schemas/MissingTokenError"
         "404":
           description: Not found
+  /api/v1/resources/generate-description:
+    post:
+      tags:
+        - resources
+      operationId: postResourcesGenerateDescription
+      description: Allows an authenticated user to generate a description for a
+        resource. Requires language as a query parameter and title, url, and
+        topic in the request body.
+      summary: Generates a description for a resource
+      security:
+        - cookieAuth: []
+      parameters:
+        - in: query
+          name: language
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 2
+            example: es
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  example: https://tutorials.cat/learn/javascript
+                title:
+                  type: string
+                  example: My Resource in Javascript
+              required:
+                - url
+                - title
+      responses:
+        "200":
+          description: A description for the resource is generated.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  description:
+                    type: string
+                required:
+                  - description
+        "400":
+          description: Error fetching data from external API
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: Error fetching data from external API
+                required:
+                  - error
+        "401":
+          description: Invalid token
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: "#/components/schemas/InvalidTokenError"
+                  - $ref: "#/components/schemas/MissingTokenError"
+        "422":
+          description: Missing required parameters
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        "500":
+          description: An error occured while getting the description
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: An error occured while getting the description
+                required:
+                  - message
   "/api/v1/seen/{resourceId}":
     post:
       tags:

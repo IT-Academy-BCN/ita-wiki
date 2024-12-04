@@ -1,0 +1,1 @@
+export { generateTextHandler } from './generateText'

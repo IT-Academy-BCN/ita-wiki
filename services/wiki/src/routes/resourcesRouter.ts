@@ -7,8 +7,13 @@ import {
   getResourcesByUserId,
   getFavoriteResources,
   postResource,
+  generateDescription,
 } from '../controllers'
-import { resourceCreateSchema, resourcesListParamsSchema } from '../schemas'
+import {
+  resourceCreateSchema,
+  resourcesListParamsSchema,
+  generateDescriptionSchema,
+} from '../schemas'
 import { pathRoot } from './routes'
 import { patchResource } from '../controllers/resources/patchResource'
 import { resourcePatchSchema } from '../schemas/resource/resourcePatchSchema'
@@ -22,6 +27,18 @@ resourcesRouter.post(
   authenticate,
   validate(z.object({ body: resourceCreateSchema })),
   postResource
+)
+resourcesRouter.post(
+  '/generate-description',
+  validate(
+    z.object({
+      body: generateDescriptionSchema,
+      query: z.object({
+        language: z.string().min(2).max(2).optional(),
+      }),
+    })
+  ),
+  generateDescription
 )
 
 resourcesRouter.get(
