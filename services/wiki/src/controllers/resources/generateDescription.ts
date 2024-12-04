@@ -1,5 +1,5 @@
 import Koa, { Middleware } from 'koa'
-import { HuggingFaceRepository } from '../../repository/huggingFace'
+import { HuggingFaceRepository } from '../../repository/huggingFace/repo'
 import { getLanguageInput } from '../../helpers/getLanguageInput'
 import { DefaultError } from '../../helpers/errors'
 import generateHFDescriptionSchema from '../../schemas/huggingFace/generateHFDescription'

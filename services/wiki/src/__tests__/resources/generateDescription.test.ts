@@ -3,7 +3,7 @@ import supertest from 'supertest'
 import 'dotenv/config'
 import { pathRoot } from '../../routes/routes'
 import { server } from '../globalSetup'
-import { HuggingFaceRepository } from '../../repository/huggingFace'
+import { HuggingFaceRepository } from '../../repository/huggingFace/repo'
 import { TResponse } from '../../db/knexTypes'
 
 const url: string = `${pathRoot.v1.resources}/generate-description`

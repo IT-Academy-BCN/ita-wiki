@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { TResponse } from '../db/knexTypes'
+import { TResponse } from '../../db/knexTypes'
 
 export class HuggingFaceRepository {
   private apiEndpoint: string
