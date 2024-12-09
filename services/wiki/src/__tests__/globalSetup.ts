@@ -55,10 +55,12 @@ export const testUserData = {
     status: UserStatus.INACTIVE,
   },
 }
+
 export const testCategoryData = {
   name: 'Testing category',
   slug: 'testing-category',
 }
+
 export async function setup() {
   // Cleanup database
   await prisma.topicsOnResources.deleteMany()

@@ -1,6 +1,6 @@
 import { beforeAll, afterEach, afterAll } from 'vitest'
-import { ssoServer } from './mocks/ssoServer'
+import { mswServer } from './mocks/mswServer'
 
-beforeAll(() => ssoServer.listen())
-afterEach(() => ssoServer.resetHandlers())
-afterAll(() => ssoServer.close())
+beforeAll(() => mswServer.listen())
+afterEach(() => mswServer.resetHandlers())
+afterAll(() => mswServer.close())

@@ -2,7 +2,7 @@ import supertest from 'supertest'
 import { expect, it, describe } from 'vitest'
 import { server } from '../globalSetup'
 import { pathRoot } from '../../routes/routes'
-import { ssoServer } from '../mocks/ssoServer'
+import { mswServer } from '../mocks/mswServer'
 import { itinerariesListSchema } from '../../schemas/itinerary/itinerariesListSchema'
 
 describe('Testing category GET method', () => {
@@ -24,7 +24,8 @@ describe('Testing category GET method', () => {
     )
   })
   it('Should fail and respond 503 status if ssoServer is not available', async () => {
-    ssoServer.close()
+    mswServer.close()
+
     const response = await supertest(server).get(`${pathRoot.v1.itinerary}`)
 
     expect(response.status).toBe(503)

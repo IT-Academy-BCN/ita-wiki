@@ -1,10 +1,12 @@
 import { http, HttpResponse } from 'msw'
-import { TSsoPatchUserRequest } from '../../../schemas/sso'
+import { TSsoUpdateUserRequest } from '../../../schemas/sso'
 import { authToken } from './authToken'
 import { testUserData } from '../../globalSetup'
 import { UserRole, UserStatus } from '../../../schemas/users/userSchema'
 
-type UpdateUserResponse = { message: string }
+type UpdateUserResponse =
+  | { message: string }
+  | { dni: string; email: string; name: string; role: string; status: string }
 export const updateUserHandler = http.patch(
   'http://localhost:8000/api/v1/users/:id',
   async ({ request, params }) => {
@@ -19,7 +21,7 @@ export const updateUserHandler = http.patch(
     }
     const updatedUserData = { ...testUserData, sampleUser }
     const { id } = params
-    const { authToken: token } = (await request.json()) as TSsoPatchUserRequest
+    const { authToken: token } = (await request.json()) as TSsoUpdateUserRequest
     const isValidToken = Object.values(authToken).includes(token)
     if (!isValidToken) {
       return HttpResponse.json(
@@ -39,8 +41,8 @@ export const updateUserHandler = http.patch(
       )
     }
     const userType = Object.keys(authToken).find(
-      (key) => authToken[key] === token
-    )
+      (key) => authToken[key as keyof typeof authToken] === token
+    ) as keyof typeof authToken | undefined
     if (!userType) {
       return HttpResponse.json(
         {

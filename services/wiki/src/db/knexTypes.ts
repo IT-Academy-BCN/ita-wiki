@@ -116,3 +116,14 @@ export enum KnexResource {
   TUTORIAL = 'TUTORIAL',
 }
 export type KRESOURCE = (typeof KnexResource)[keyof typeof KnexResource]
+
+export type TResponse = {
+  status: number
+  generated_text: string
+}
+
+export enum TSupportedLanguage {
+  English = 'en',
+  Spanish = 'es',
+  Catalan = 'ca',
+}
