@@ -1,5 +1,4 @@
 import Koa, { Middleware } from 'koa'
-// import { User } from '@prisma/client'
 import { NotFoundError } from '../../helpers/errors'
 import db from '../../db/knex'
 import { attachUserNamesToResources } from '../../helpers/wiki/attachUserNamesToResources'
