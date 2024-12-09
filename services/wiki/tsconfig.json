@@ -14,8 +14,7 @@
     "skipLibCheck": true
   },
   "include": [
-    "src/**/*.ts",
-    "src/repository/huggingFace/repo.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules",

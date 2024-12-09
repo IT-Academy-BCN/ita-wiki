@@ -3,7 +3,10 @@ import { prisma } from '../../../prisma/client'
 import { testUserData } from '../../globalSetup'
 import { authToken } from './authToken'
 
-type ValidationResponse = { message: string } | { id: string }
+type ValidationResponse =
+  | { message: string }
+  | { id: string }
+  | { dni: string; email: string; name: string; role: string; status: string }
 export const validateTokenHandler = http.post(
   'http://localhost:8000/api/v1/tokens/validate',
   async ({ request }) => {
@@ -20,8 +23,9 @@ export const validateTokenHandler = http.post(
       )
     }
     const userType = Object.keys(authToken).find(
-      (key) => authToken[key] === token
-    )
+      (key) => authToken[key as keyof typeof authToken] === token
+    ) as keyof typeof authToken | undefined
+
     if (!userType) {
       return HttpResponse.json(
         {
