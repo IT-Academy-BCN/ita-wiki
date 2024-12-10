@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { http, HttpResponse } from 'msw'
-import { HuggingFaceRepository } from './repo'
-import { mswServer } from '../../__tests__/mocks/mswServer'
-import { generateTextHandler } from '../../__tests__/mocks/huggingFaceHandlers'
+import { HuggingFaceRepository } from '../../../repository/huggingFace/repo'
+import { mswServer } from '../../mocks/mswServer'
+import { generateTextHandler } from '../../mocks/huggingFaceHandlers'
 
 describe('HuggingFaceRepository', () => {
   let repo: HuggingFaceRepository
