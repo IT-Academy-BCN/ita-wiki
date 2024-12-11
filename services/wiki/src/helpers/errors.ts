@@ -80,6 +80,13 @@ class ServiceUnavailable extends DefaultError {
     super(503, `${message}`)
   }
 }
+class HTTPError extends DefaultError {
+  constructor(status: number, message: string) {
+    super(status, message)
+    this.status = status
+    this.message = message
+  }
+}
 
 export {
   DefaultError,
@@ -94,4 +101,5 @@ export {
   MissingParamError,
   ServiceFail,
   ServiceUnavailable,
+  HTTPError,
 }

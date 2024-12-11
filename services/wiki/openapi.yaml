@@ -1140,15 +1140,6 @@ paths:
       summary: Generates a description for a resource
       security:
         - cookieAuth: []
-      parameters:
-        - in: query
-          name: language
-          schema:
-            type: string
-            minLength: 2
-            maxLength: 2
-            example: es
-          required: false
       requestBody:
         content:
           application/json:
@@ -1162,9 +1153,21 @@ paths:
                 title:
                   type: string
                   example: My Resource in Javascript
+                topic:
+                  type: string
+                  example: Web Development
+                language:
+                  type: string
+                  enum:
+                    - en
+                    - es
+                    - ca
+                  example: en
               required:
                 - url
                 - title
+                - topic
+                - language
       responses:
         "200":
           description: A description for the resource is generated.

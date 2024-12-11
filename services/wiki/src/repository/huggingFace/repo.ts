@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import { TResponse } from '../../db/knexTypes'
+import { HTTPError } from '../../helpers/errors'
 
 export class HuggingFaceRepository {
   private apiEndpoint: string
@@ -29,8 +30,10 @@ export class HuggingFaceRepository {
     })
 
     if (!fetchResponse.ok) {
-      await fetchResponse.text()
-      throw new Error(`HTTP error! status: ${fetchResponse.status}`)
+      throw new HTTPError(
+        fetchResponse.status,
+        fetchResponse.statusText || 'Unknown error'
+      )
     }
 
     const response = await fetchResponse.json()
