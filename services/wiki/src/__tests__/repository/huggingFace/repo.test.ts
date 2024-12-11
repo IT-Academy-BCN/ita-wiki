@@ -38,7 +38,7 @@ describe('HuggingFaceRepository', () => {
     )
 
     await expect(repo.getResponse('Test input')).rejects.toThrow(
-      'HTTP error! status: 500'
+      'Internal Server Error'
     )
   })
 })
