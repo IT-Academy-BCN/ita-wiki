@@ -16,11 +16,6 @@ registry.registerPath({
   summary: 'Generates a description for a resource',
   security: [{ [cookieAuth.name]: [] }],
   request: {
-    query: z.object({
-      language: z.string().min(2).max(2).optional().openapi({
-        example: 'es',
-      }),
-    }),
     body: {
       content: {
         'application/json': {
