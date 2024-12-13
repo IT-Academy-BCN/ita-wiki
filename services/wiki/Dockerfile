@@ -1,5 +1,5 @@
 # Stage 1: Building the application
-FROM node:18.17.1-alpine AS builder
+FROM node:18-slim AS builder
 RUN apk add --no-cache libc6-compat python3 make g++ && \
     if [ ! -e /usr/bin/python ]; then ln -s /usr/bin/python3 /usr/bin/python; fi
 ENV PYTHON=/usr/bin/python
@@ -19,7 +19,7 @@ COPY package*.json ./
 RUN npm ci --only=production
 
 # Stage 3: Running the application
-FROM node:18.17.1-alpine
+FROM node:18-slim
 RUN apk add --no-cache openssl1.1-compat
 WORKDIR /app
 
