@@ -332,6 +332,7 @@ type TGenerateDescription = {
 
 export const generateDescriptionFetcher = (
   generateDescription: TGenerateDescription
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> =>
   fetch(urls.generateDescription, {
     method: 'POST',
