@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.24.0] - 2024-07-31
+
+### Changed
+
+- Added generate description
+
 ## [0.23.0] - 2024-07-31
 
 ### Changed
