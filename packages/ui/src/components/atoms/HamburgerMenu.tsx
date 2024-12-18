@@ -1,6 +1,6 @@
 import { FC } from 'react'
 import styled from 'styled-components'
-import { colors, dimensions, device } from '../../styles'
+import { colors, dimensions } from '../../styles'
 
 export type THamburgerMenu = {
   open: boolean
@@ -45,10 +45,6 @@ const StyledBurger = styled.button<THamburgerMenu>`
       width: ${({ open }) => (open ? '2rem' : '1.5rem')};
       transform: ${({ open }) => (open ? 'rotate(-45deg)' : 'rotate(0)')};
     }
-  }
-
-  @media ${device.Tablet} {
-    display: none;
   }
 `
 
