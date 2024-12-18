@@ -25,6 +25,7 @@ import {
 } from '../../openapi/openapiComponents'
 import { TResourceType } from '../../types'
 import { reloadPage } from '../../utils/navigation'
+import { DescriptionGenerator } from '../molecules'
 
 type TButton = HTMLAttributes<HTMLParagraphElement> & {
   $backgroundColor?: string
@@ -119,6 +120,8 @@ export const ResourceForm: FC<TResourceForm> = ({
   resourceId,
 }) => {
   const {
+    watch,
+    setValue,
     register,
     handleSubmit,
     formState: { errors },
@@ -230,6 +233,12 @@ export const ResourceForm: FC<TResourceForm> = ({
           errors.description && t(`${errors.description?.message}`)
         }
         validationType="error"
+      />
+      <DescriptionGenerator
+        title={watch('title')}
+        url={watch('url')}
+        topic={watch('topics')}
+        setDescription={(desc) => setValue('description', desc)}
       />
       <InputGroup
         hiddenLabel

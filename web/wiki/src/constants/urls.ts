@@ -19,4 +19,5 @@ export const urls = {
   favorites: '/api/v1/favorites',
   postStatus: '/api/v1/seen',
   getItineraries: '/api/v1/itinerary',
+  generateDescription: '/api/v1/resources/generate-description',
 }

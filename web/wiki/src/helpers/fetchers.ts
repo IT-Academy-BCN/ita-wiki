@@ -322,3 +322,26 @@ export const patchUserStatus = async (updatedUser: TUserUpdatedStatus) => {
   }
   return response.status === 204 ? {} : response.json()
 }
+
+type TGenerateDescription = {
+  title: string
+  url: string
+  topic: string
+  language: string
+}
+
+export const generateDescriptionFetcher = (
+  generateDescription: TGenerateDescription
+): Promise<any> =>
+  fetch(urls.generateDescription, {
+    method: 'POST',
+    body: JSON.stringify(generateDescription),
+    headers: {
+      'Content-type': 'application/json',
+    },
+  }).then((res) => {
+    if (!res.ok) {
+      throw new Error('Error inesperado')
+    }
+    return res.status === 204 ? {} : res.json()
+  })
