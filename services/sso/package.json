@@ -62,7 +62,7 @@
     "dotenv": "16.0.3",
     "jsonwebtoken": "^9.0.0",
     "knex": "3.1.0",
-    "koa": "2.14.1",
+    "koa": "2.15.4",
     "koa-body": "6.0.1",
     "koa-helmet": "7.0.1",
     "koa2-swagger-ui": "^5.7.0",
